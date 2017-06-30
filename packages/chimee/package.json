@@ -1,0 +1,27 @@
+{
+  "name": "chimee",
+  "version": "0.1.0",
+  "description": "a video-player aims to bing wonderful experience on browser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toxic-johann/chimee.git"
+  },
+  "keywords": [
+    "video",
+    "player",
+    "h5",
+    "hls",
+    "mp4",
+    "flv"
+  ],
+  "author": "Qiwoo Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/toxic-johann/chimee/issues"
+  },
+  "homepage": "https://github.com/toxic-johann/chimee#readme"
+}
