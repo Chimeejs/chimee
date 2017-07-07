@@ -1,9 +1,10 @@
 [ignore]
 .*/node_modules/.*
 [include]
-
+flow
 [libs]
 ./node_modules/toxic-predicate-functions/lib/index.flow.js
+./node_modules/toxic-utils/lib/index.flow.js
 [options]
 
 [lints]

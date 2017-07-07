@@ -1,7 +1,7 @@
 
 /**
- * chimee-helper-log v0.1.0
- * (c) 2017 songguangyu
+ * chimee-helper-log v0.1.1
+ * (c) 2017 toxic-johann
  * Released under MIT
  */
 
@@ -11,6 +11,17 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var _classCallCheck = _interopDefault(require('babel-runtime/helpers/classCallCheck'));
 var _createClass = _interopDefault(require('babel-runtime/helpers/createClass'));
+var toxicPredicateFunctions = require('toxic-predicate-functions');
+
+function formatter(tag, msg) {
+  if (!toxicPredicateFunctions.isString(tag)) throw new TypeError("Log's method only acccept string as argument");
+  if (!toxicPredicateFunctions.isString(msg)) return '[' + Log.GLOBAL_TAG + '] > ' + tag;
+  tag = Log.FORCE_GLOBAL_TAG ? Log.GLOBAL_TAG : tag || Log.GLOBAL_TAG;
+  return '[' + tag + '] > ' + msg;
+}
+/**
+ * Log Object
+ */
 
 var Log = function () {
   function Log() {
@@ -19,93 +30,102 @@ var Log = function () {
 
   _createClass(Log, null, [{
     key: 'error',
+
+    /**
+     * equal to console.error, output `[${tag}] > {$msg}`
+     * @param {string} tag optional, the header of log 
+     * @param {string} msg the message
+     */
+
+    /**
+     * @member {boolean}
+     */
+
+    /**
+     * @member {boolean}
+     */
+
+    /**
+     * @member {boolean}
+     */
     value: function error(tag, msg) {
       if (!Log.ENABLE_ERROR) {
         return;
       }
 
-      if (!tag || Log.FORCE_GLOBAL_TAG) {
-        tag = Log.GLOBAL_TAG;
-      }
-      var str = '[' + tag + '] > ' + msg;
-
-      if (console.error) {
-        console.error(str);
-      } else if (console.warn) {
-        console.warn(str);
-      } else {
-        console.log(str);
-      }
+      (console.error || console.warn || console.log)(formatter(tag, msg));
     }
+    /**
+     * equal to console.info, output `[${tag}] > {$msg}`
+     * @param {string} tag optional, the header of log 
+     * @param {string} msg the message
+     */
+
+    /**
+     * @member {boolean}
+     */
+
+    /**
+     * @member {boolean}
+     */
+
+    /**
+     * @member {boolean}
+     */
+
+    /**
+     * @member {string}
+     */
+
   }, {
     key: 'info',
     value: function info(tag, msg) {
       if (!Log.ENABLE_INFO) {
         return;
       }
-
-      if (!tag || Log.FORCE_GLOBAL_TAG) {
-        tag = Log.GLOBAL_TAG;
-      }
-
-      var str = '[' + tag + '] > ' + msg;
-
-      if (console.info) {
-        console.info(str);
-      } else {
-        console.log(str);
-      }
+      (console.info || console.log)(formatter(tag, msg));
     }
+    /**
+     * equal to console.warn, output `[${tag}] > {$msg}`
+     * @param {string} tag optional, the header of log 
+     * @param {string} msg the message
+     */
+
   }, {
     key: 'warn',
     value: function warn(tag, msg) {
       if (!Log.ENABLE_WARN) {
         return;
       }
-
-      if (!tag || Log.FORCE_GLOBAL_TAG) {
-        tag = Log.GLOBAL_TAG;
-      }
-
-      var str = '[' + tag + '] > ' + msg;
-
-      if (console.warn) {
-        console.warn(str);
-      } else {
-        console.log(str);
-      }
+      (console.warn || console.log)(formatter(tag, msg));
     }
+    /**
+     * equal to console.debug, output `[${tag}] > {$msg}`
+     * @param {string} tag optional, the header of log 
+     * @param {string} msg the message
+     */
+
   }, {
     key: 'debug',
     value: function debug(tag, msg) {
       if (!Log.ENABLE_DEBUG) {
         return;
       }
-
-      if (!tag || Log.FORCE_GLOBAL_TAG) {
-        tag = Log.GLOBAL_TAG;
-      }
-
-      var str = '[' + tag + '] > ' + msg;
-
-      if (console.debug) {
-        console.debug(str);
-      } else {
-        console.log(str);
-      }
+      (console.debug || console.log)(formatter(tag, msg));
     }
+    /**
+     * equal to console.verbose, output `[${tag}] > {$msg}`
+     * @param {string} tag optional, the header of log 
+     * @param {string} msg the message
+     */
+
   }, {
     key: 'verbose',
     value: function verbose(tag, msg) {
       if (!Log.ENABLE_VERBOSE) {
         return;
       }
-
-      if (!tag || Log.FORCE_GLOBAL_TAG) {
-        tag = Log.GLOBAL_TAG;
-      }
-
-      console.log('[' + tag + '] > ' + msg);
+      console.log(formatter(tag, msg));
     }
   }]);
 

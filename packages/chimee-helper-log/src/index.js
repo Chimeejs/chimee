@@ -1,97 +1,108 @@
+// @flow
+import {isString} from 'toxic-predicate-functions';
+function formatter (tag: string, msg?: string): string {
+  if(!isString(tag)) throw new TypeError("Log's method only acccept string as argument");
+  if(!isString(msg)) return `[${Log.GLOBAL_TAG}] > ${tag}`;
+  tag = Log.FORCE_GLOBAL_TAG
+    ? Log.GLOBAL_TAG
+    : (tag || Log.GLOBAL_TAG);
+  return `[${tag}] > ${msg}`;
+}
+/**
+ * Log Object
+ */
 class Log {
-  static error (tag, msg) {
+  static GLOBAL_TAG: string;
+  static FORCE_GLOBAL_TAG: boolean;
+  static ENABLE_ERROR: boolean;
+  static ENABLE_INFO: boolean;
+  static ENABLE_WARN: boolean;
+  static ENABLE_DEBUG: boolean;
+  static ENABLE_VERBOSE: boolean;
+  /**
+   * @member {string}
+   */
+  static GLOBAL_TAG = 'chimee';
+  /**
+   * @member {boolean}
+   */
+  static FORCE_GLOBAL_TAG = false;
+  /**
+   * @member {boolean}
+   */
+  static ENABLE_ERROR = true;
+  /**
+   * @member {boolean}
+   */
+  static ENABLE_INFO = true;
+  /**
+   * @member {boolean}
+   */
+  static ENABLE_WARN = true;
+  /**
+   * @member {boolean}
+   */
+  static ENABLE_DEBUG = true;
+  /**
+   * @member {boolean}
+   */
+  static ENABLE_VERBOSE = true;
+  /**
+   * equal to console.error, output `[${tag}] > {$msg}`
+   * @param {string} tag optional, the header of log 
+   * @param {string} msg the message
+   */
+  static error (tag: string, msg?: string) {
     if (!Log.ENABLE_ERROR) {
       return;
     }
 
-    if (!tag || Log.FORCE_GLOBAL_TAG) {
-      tag = Log.GLOBAL_TAG;
-    }
-    const str = `[${tag}] > ${msg}`;
-
-    if (console.error) {
-      console.error(str);
-    } else if (console.warn) {
-      console.warn(str);
-    } else {
-      console.log(str);
-    }
+    (console.error || console.warn || console.log)(formatter(tag, msg));
   }
-
-  static info (tag, msg) {
+  /**
+   * equal to console.info, output `[${tag}] > {$msg}`
+   * @param {string} tag optional, the header of log 
+   * @param {string} msg the message
+   */
+  static info (tag: string, msg?: string) {
     if (!Log.ENABLE_INFO) {
       return;
     }
-
-    if (!tag || Log.FORCE_GLOBAL_TAG) {
-      tag = Log.GLOBAL_TAG;
-    }
-
-    const str = `[${tag}] > ${msg}`;
-
-    if (console.info) {
-      console.info(str);
-    } else {
-      console.log(str);
-    }
+    (console.info || console.log)(formatter(tag, msg));
   }
-
-  static warn (tag, msg) {
+  /**
+   * equal to console.warn, output `[${tag}] > {$msg}`
+   * @param {string} tag optional, the header of log 
+   * @param {string} msg the message
+   */
+  static warn (tag: string, msg?: string) {
     if (!Log.ENABLE_WARN) {
       return;
     }
-
-    if (!tag || Log.FORCE_GLOBAL_TAG) {
-      tag = Log.GLOBAL_TAG;
-    }
-
-    const str = `[${tag}] > ${msg}`;
-
-    if (console.warn) {
-      console.warn(str);
-    } else {
-      console.log(str);
-    }
+    (console.warn || console.log)(formatter(tag, msg));
   }
-
-  static debug (tag, msg) {
+  /**
+   * equal to console.debug, output `[${tag}] > {$msg}`
+   * @param {string} tag optional, the header of log 
+   * @param {string} msg the message
+   */
+  static debug (tag: string, msg?: string) {
     if (!Log.ENABLE_DEBUG) {
       return;
     }
-
-    if (!tag || Log.FORCE_GLOBAL_TAG) {
-      tag = Log.GLOBAL_TAG;
-    }
-
-    const str = `[${tag}] > ${msg}`;
-
-    if (console.debug) {
-      console.debug(str);
-    } else {
-      console.log(str);
-    }
+    (console.debug || console.log)(formatter(tag, msg));
   }
-
-  static verbose (tag, msg) {
+  /**
+   * equal to console.verbose, output `[${tag}] > {$msg}`
+   * @param {string} tag optional, the header of log 
+   * @param {string} msg the message
+   */
+  static verbose (tag: string, msg?: string) {
     if (!Log.ENABLE_VERBOSE) {
       return;
     }
-
-    if (!tag || Log.FORCE_GLOBAL_TAG) {
-      tag = Log.GLOBAL_TAG;
-    }
-
-    console.log(`[${tag}] > ${msg}`);
+    console.log(formatter(tag, msg));
   }
-
 }
-
-Log.GLOBAL_TAG = 'chimee';
-Log.FORCE_GLOBAL_TAG = false;
-Log.ENABLE_ERROR = true;
-Log.ENABLE_INFO = true;
-Log.ENABLE_WARN = true;
-Log.ENABLE_DEBUG = true;
-Log.ENABLE_VERBOSE = true;
 
 export default Log;

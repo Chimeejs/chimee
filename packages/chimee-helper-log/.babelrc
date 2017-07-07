@@ -1,7 +1,9 @@
 {
  "presets": [
     "flow",
-    "latest"
+    "latest",
+    "stage-0"
   ],
-  "plugins": []
+  "plugins": [
+  ]
 }

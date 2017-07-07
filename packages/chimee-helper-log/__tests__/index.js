@@ -108,3 +108,29 @@ function testBasic ({
 
 }
 
+describe('arguments is not enough', () => {
+  let origin;
+  let fn;
+  beforeAll(() => {
+    origin = global.console.error;
+    fn = jest.fn();
+    global.console.error = fn;
+  });
+  afterAll(() => {
+    global.console.error = origin;
+  });
+  test('only message but no tag', () => {
+    Log.error('i am ok');
+    expect(fn).lastCalledWith('[chimee] > i am ok');
+  });
+  test('when pass nothing, throws error', () => {
+    expect(() => Log.error(1)).toThrow();
+  });
+  test('empty tag', () => {
+    Log.FORCE_GLOBAL_TAG = false;
+    Log.error('', 'i am ok');
+    expect(fn).lastCalledWith('[chimee] > i am ok');
+  });
+});
+  
+

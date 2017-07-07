@@ -1,6 +1,6 @@
 {
   "name": "chimee-helper-log",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "logger of chimee",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -17,7 +17,8 @@
     "b-common": "rollup -c build/rollup.config.common.js",
     "b-es": "rollup -c build/rollup.config.es.js",
     "b-umd": "rollup -c build/rollup.config.umd.js",
-    "b-min": "rollup -c build/rollup.config.min.js"
+    "b-min": "rollup -c build/rollup.config.min.js",
+    "doc": "documentation readme  src/index.js --section=doc --github=true --project-version=true"
   },
   "repository": {
     "type": "git",
@@ -28,14 +29,15 @@
     "chimee",
     "video"
   ],
-  "author": "songguangyu",
+  "author": "toxic-johann",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Chimeejs/chimee-helper-log/issues"
   },
   "homepage": "https://github.com/Chimeejs/chimee-helper-log#readme",
   "dependencies": {
-    "babel-runtime": "^6.23.0"
+    "babel-runtime": "^6.23.0",
+    "toxic-predicate-functions": "^0.1.2"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -44,6 +46,8 @@
     "babel-preset-es2015-rollup": "^3.0.0",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-latest": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "documentation": "^4.0.0-rc.1",
     "eslint": "^4.0.0",
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-jest": "^20.0.3",
