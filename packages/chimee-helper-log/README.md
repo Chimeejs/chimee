@@ -6,7 +6,7 @@
 [![dependency Status](https://david-dm.org/Chimeejs/chimee-helper-log.svg)](https://david-dm.org/Chimeejs/chimee-helper-log)
 [![devDependency Status](https://david-dm.org/Chimeejs/chimee-helper-log/dev-status.svg)](https://david-dm.org/Chimeejs/chimee-helper-log?type=dev)
 
-dom handler of chimee
+logger of chimee
 
 ## get started
 
