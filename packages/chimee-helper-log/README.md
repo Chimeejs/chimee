@@ -1,2 +1,2 @@
-# chimee-helper-log
-logger for chimee
+# chimee-helper
+utils of chimee

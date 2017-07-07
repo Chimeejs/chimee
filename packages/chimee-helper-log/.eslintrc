@@ -1,0 +1,316 @@
+{
+  "globals": {
+    "process": true
+  },
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jest/globals": true
+  },
+  "extends": [
+    "plugin:flowtype/recommended"
+  ],
+  "plugins": [
+    "flowtype",
+    "jest"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "rules": {
+    // 强制getter/setter成对出现在对象中
+    "accessor-pairs": 2,
+    // 禁止在括号内使用空格
+    "array-bracket-spacing": 0,
+    // 把 var 语句看作是在块级作用域范围之内
+    "block-scoped-var": 0,
+    // 大括号风格
+    "brace-style": [2, "1tbs", { "allowSingleLine": true }],
+    // 不强制要求使用骆驼拼写法 
+    "camelcase": 0,
+    // 强制在逗号周围使用空格
+    "comma-spacing": [2, { "before": false, "after": true }],
+    // 逗号风格（必须要放在末尾）
+    "comma-style": [2, "last"],
+    // 限制圈复杂度（条件数目，0为不作限制）
+    "complexity": 0,
+    // 禁止在计算属性内使用空格
+    "computed-property-spacing": 0,
+    // 允许返回不指定的值
+    "consistent-return": 0,
+    // 不要求一致的 This
+    "consistent-this": 0,
+    // 验证构造函数中 super() 的调用 
+    "constructor-super": 2,
+    // 多行是必须遵循大括号约定
+    "curly": [2, "multi-line"],
+    // 不强制要求含有default分支
+    "default-case": 0,
+    // 强制在点号之前换行
+    "dot-location": [2, "property"],
+    // 不强制要求使用点号
+    "dot-notation": 0,
+    // 要求文件末尾保留一行空行
+    "eol-last": 2,
+    // 要求使用全等号
+    "eqeqeq": [2, "allow-null"],
+    // 可以使用匿名函数
+    "func-names": 0,
+    // 不强制 function 声明或表达式的一致性
+    "func-style": 0,
+    // 强制 generator 函数中 * 号周围有空格
+    "generator-star-spacing": [2, { "before": true, "after": true }],
+    // 不要求 for-in 语句中包含 if
+    "guard-for-in": 0,
+    // 强制回调错误处理，必须要使用err或error。不处理则会报错
+    "handle-callback-err": [2, "^(err|error)$" ],
+    // 强制使用一致的缩进
+    //"indent": [2, 2, { "SwitchCase": 1 }],
+    // 强制在对象字面量的键和值之间使用一致的空格
+    "key-spacing": [2, { "beforeColon": false, "afterColon": true }],
+    // 不强制使用一致的换行符风格
+    "linebreak-style": 0,
+    // 不强制注释周围有空行
+    "lines-around-comment": 0,
+    // 不强制回调函数最大嵌套深度
+    "max-nested-callbacks": 0,
+    // 要求构造函数首字母大写
+    "new-cap": [2, { "newIsCap": true, "capIsNew": false }],
+    // 要求调用无参构造函数时带括号
+    "new-parens": 2,
+    // 不要求变量声明语句后有一行空行
+    "newline-after-var": 0,
+    // 不禁用alert
+    "no-alert": 0,
+    // 禁止使用 Array 构造函数
+    "no-array-constructor": 2,
+    // 禁用 caller 或 callee
+    "no-caller": 2,
+    // 不禁用在 catch 语句中遮盖变量
+    "no-catch-shadow": 0,
+    // 禁止在条件语句中出现赋值操作符
+    "no-cond-assign": 2,
+    // 禁止使用console符
+    "no-console": 0,
+    // 禁止在条件中使用常量表达式
+    "no-constant-condition": 2,
+    // 不禁用 continue 
+    "no-continue": 0,
+    // 禁止在正则表达式中使用控制字符
+    "no-control-regex": 2,
+    // 禁用debugger
+    // "no-debugger": 2,
+    // 禁止删除变量
+    "no-delete-var": 2,
+    // 不禁止使用看起来像除法的正则表达式
+    "no-div-regex": 0,
+    // 禁止 function 定义中出现重名参数
+    "no-dupe-args": 2,
+    // 禁止对象字面量中出现重复的 key
+    "no-dupe-keys": 2,
+    // 禁止出现重复的 case 标签
+    "no-duplicate-case": 2,
+    // 不禁止 if 语句中 return 语句之后有 else 块
+    "no-else-return": 0,
+    // 不禁止出现空语句块
+    "no-empty": 0,
+    // 禁止在正则表达式中使用空字符集
+    "no-empty-character-class": 2,
+    // 禁止与 null 进行比较
+    "no-eq-null": 2,
+    // 禁止使用eval
+    "no-eval": 2,
+    // 禁止对 catch 子句中的异常重新赋值
+    "no-ex-assign": 2,
+    // 禁止扩展原生类型
+    "no-extend-native": 2,
+    // 禁止不必要的 .bind() 调用
+    "no-extra-bind": 2,
+    // 禁止不必要的布尔转换
+    "no-extra-boolean-cast": 2,
+    // 不禁止冗余的括号
+    "no-extra-parens": 0,
+    // 不禁止不必要的分号
+    "no-extra-semi": 0,
+    // 禁止 case 语句落空
+    "no-fallthrough": 2,
+    // 禁止数字字面量中使用前导和末尾小数点
+    "no-floating-decimal": 2,
+    // 禁止对 function 声明重新赋值
+    "no-func-assign": 2,
+    // 禁用隐式的eval()
+    "no-implied-eval": 2,
+    // 允许在代码后使用内联注释
+    "no-inline-comments": 0,
+    // 禁止 function 声明出现在嵌套的语句块中
+    "no-inner-declarations": [2, "functions"],
+    // 禁止 RegExp 构造函数中存在无效的正则表达式字符串
+    "no-invalid-regexp": 2,
+    // 禁止在字符串和注释之外不规则的空白
+    "no-irregular-whitespace": 2,
+    // 禁用迭代器
+    "no-iterator": 2,
+    // 不允许标签与变量同名
+    "no-label-var": 2,
+    // 禁用不必要的嵌套块
+    "no-lone-blocks": 2,
+    // 不禁止 if 作为唯一的语句出现在 else 语句中
+    "no-lonely-if": 0,
+    // 不禁止循环中存在函数
+    "no-loop-func": 0,
+    // 不禁止 require 调用与普通变量声明混合使用
+    "no-mixed-requires": 0,
+    // 禁止空格和 tab 的混合缩进
+    //"no-mixed-spaces-and-tabs": 2,
+    // 禁止出现多个空格
+    "no-multi-spaces": 2,
+    // 禁止多行字符串
+    "no-multi-str": 2,
+    // 不允许多个空行
+    "no-multiple-empty-lines": [2, { "max": 1 }],
+    "no-native-reassign": 2,
+    "no-negated-in-lhs": 2,
+    // 不禁止使用嵌套的三元表达式，但是要换行！！！
+    "no-nested-ternary": 0,
+    // 禁止在非赋值或条件语句中使用 new 操作符
+    "no-new": 2,
+    // 不禁止对 Function 对象使用 new 操作符
+    "no-new-func": 0,
+    // 禁用 Object 的构造函数
+    "no-new-object": 2,
+    // 禁止调用 require 时使用 new 操作符
+    "no-new-require": 2,
+    // 禁止对 String，Number 和 Boolean 使用 new 操作符
+    "no-new-wrappers": 2,
+    // 禁止把全局对象作为函数调用
+    "no-obj-calls": 2,
+    // 禁用八进制字面量
+    "no-octal": 2,
+    // 禁止在字符串中使用八进制转义序列
+    "no-octal-escape": 2,
+    // 不禁止对 function 的参数进行重新赋值
+    "no-param-reassign": 0,
+    // 不禁止对 __dirname 和 __filename 进行字符串连接
+    "no-path-concat": 0,
+    // 不禁用 process.env
+    "no-process-env": 0,
+    // 不禁用 process.exit()
+    "no-process-exit": 0,
+    // 不禁用禁用 __proto__ 属性
+    "no-proto": 0,
+    // 禁止重新声明变量
+    "no-redeclare": 2,
+    // 禁止正则表达式字面量中出现多个空格
+    "no-regex-spaces": 2,
+    // 不禁用通过 require 加载的指定模块
+    "no-restricted-modules": 0,
+    // 禁止在返回语句中赋值
+    "no-return-assign": 2,
+    // 不禁止使用 javascript: url
+    "no-script-url": 0,
+    // 禁止自身比较
+    "no-self-compare": 2,
+    // 不允许使用逗号操作符
+    "no-sequences": 2,
+    // 不禁止变量声明与外层作用域的变量同名
+    "no-shadow": 0,
+    // 关键字不能被遮蔽
+    "no-shadow-restricted-names": 2,
+    "no-spaced-func": 2,
+    // 禁用稀疏数组
+    "no-sparse-arrays": 2,
+    // 不禁止使用同步方法
+    "no-sync": 0,
+    // 不禁用三元操作符
+    "no-ternary": 0,
+    // 禁止在构造函数中，在调用 super() 之前使用 this 或 super
+    "no-this-before-super": 2,
+    // 禁止抛出异常字面量
+    "no-throw-literal": 2,
+    // 禁用行尾空格
+    "no-trailing-spaces": 2,
+    // 禁用未声明的变量，除非它们在 /*global */ 注释中被提到
+    "no-undef": 2,
+    // 禁止将变量初始化为 undefined
+    "no-undef-init": 2,
+    // 不禁止将 undefined 作为标识符
+    "no-undefined": 0,
+    // 允许标识符中有悬空下划线
+    "no-underscore-dangle": 0,
+    // 禁止出现令人困惑的多行表达式
+    "no-unexpected-multiline": 2,
+    // 禁止可以在有更简单的可替代的表达式时使用三元操作符
+    "no-unneeded-ternary": 2,
+    // 禁止在return、throw、continue 和 break 语句之后出现不可达代码
+    "no-unreachable": 2,
+    "no-unused-expressions": 0,
+    // 禁止未使用过的变量 
+    "no-unused-vars": [2, { "vars": "all", "args": "none" }],
+    // 不禁止定义前使用
+    "no-use-before-define": 0,
+    // 要求使用 let 或 const 而不是 var
+    "no-var": 2,
+    // 不禁用 void 操作符
+    "no-void": 0,
+    // 不禁用警告注释
+    "no-warning-comments": 0,
+    // 禁用with
+    "no-with": 2,
+    // 不强制在花括号中使用一致的空格
+    "object-curly-spacing": 0,
+    // 要求对象字面量简写语法
+    "object-shorthand": 2,
+    // 强制函数中的变量在一起声明
+    "one-var": [2, { "initialized": "never" }],
+    // 不要求或禁止尽可能地简化赋值操作
+    "operator-assignment": 0,
+    // 强制操作符使用一致的换行符
+    "operator-linebreak": [2, "after", { "overrides": { "?": "before", ":": "before" } }],
+    // 不要求或禁止块内填充
+    "padded-blocks": 0,
+    // 建议使用const
+    "prefer-const": 2,
+    // 不要求对象字面量属性名称使用引号
+    "quote-props": 0,
+    // 引号
+    "quotes": [2, "single", "avoid-escape"],
+    // parseint输入10防止八进制
+    "radix": 0,
+    // 用分号
+    "semi": 1,
+    // 不强制分号之前和之后使用一致的空格
+    "semi-spacing": 0,
+    // 无需变量排序
+    "sort-vars": 0,
+    // 要求语句块之前的空格
+    "space-before-blocks": [2, "always"],
+    // 强制在 function的左括号之前使用一致的空格
+    "space-before-function-paren": [2, "always"],
+    // 强制在圆括号内使用一致的空格
+    "space-in-parens": [2, "never"],
+    // 要求操作符周围有空格
+    "space-infix-ops": 2,
+    // 强制在一元操作符前后使用一致的空格
+    "space-unary-ops": [2, { "words": true, "nonwords": false }],
+    // 强制在注释中 // 或 /* 使用一致的空格
+    "spaced-comment": [2, "always", { "markers": ["global", "globals", "eslint", "eslint-disable", "*package", "!"] }],
+    // 不要求严格模式
+    "strict": 0,
+    // 要求使用 isNaN() 检查 NaN
+    "use-isnan": 2,
+    // 不强制使用有效的 JSDoc 注释 
+    "valid-jsdoc": 0,
+    // 强制 typeof 表达式与有效的字符串进行比较
+    "valid-typeof": 2,
+    // 不要求所有的 var 声明出现在它们所在的作用域顶部
+    "vars-on-top": 0,
+    // 要求 IIFE 使用括号括起来
+    "wrap-iife": [2, "any"],
+    // 不要求正则表达式被括号括起来
+    "wrap-regex": 0,
+    // 比较时，变量值必须放在首位
+    "yoda": [2, "never"]
+  }
+}
