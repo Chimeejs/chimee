@@ -1,0 +1,54 @@
+{
+  "name": "chimee-kernel",
+  "version": "1.0.0",
+  "description": "kernel of chimee",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "jsnext:main": "lib/index.mjs",
+  "browser": "lib/index.browser.js",
+  "scripts": {
+    "build": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
+    "b-common": "rollup -c config/rollup.config.common.js",
+    "b-es": "rollup -c config/rollup.config.es.js",
+    "b-umd": "rollup -c config/rollup.config.umd.js",
+    "b-min": "rollup -c config/rollup.config.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chimeejs/chimee-kernel.git"
+  },
+  "keywords": [
+    "kernel",
+    "chimee",
+    "video"
+  ],
+  "author": "songguangyu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Chimeejs/chimee-kernel/issues"
+  },
+  "homepage": "https://github.com/Chimeejs/chimee-kernel#readme",
+  "dependencies": {
+    "babel-runtime": "^6.23.0",
+    "chimee-flv2fmp4": "^0.1.8",
+    "chimee-helper": "^0.1.10",
+    "webworkify": "^1.4.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "babel-preset-latest": "^6.24.1",
+    "chimee-helper": "^0.1.8",
+    "eslint": "^4.0.0",
+    "eslint-plugin-flowtype": "^2.34.0",
+    "eslint-plugin-jest": "^20.0.3",
+    "hls.js": "^0.7.10",
+    "rollup": "^0.43.0",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-includepaths": "^0.2.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1"
+  }
+}
