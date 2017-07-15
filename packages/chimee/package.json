@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/toxic-johann/chimee.git"
+    "url": "git+https://github.com/Chimeejs/chimee.git"
   },
   "keywords": [
     "video",
@@ -18,10 +18,10 @@
     "mp4",
     "flv"
   ],
-  "author": "Qiwoo Team",
+  "author": "toxic-johann",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/toxic-johann/chimee/issues"
+    "url": "https://github.com/Chimeejs/chimee/issues"
   },
-  "homepage": "https://github.com/toxic-johann/chimee#readme"
+  "homepage": "https://github.com/Chimeejs/chimee#readme"
 }
