@@ -161,8 +161,8 @@ async function inited () {
 
 插件位置主要涉及以下几个问题
 
-- [节点位置](#node-position)
-- [层级位置](#level-position)
+- [节点位置](#节点位置)
+- [层级位置](#层级位置)
 
 ### 节点位置
 
