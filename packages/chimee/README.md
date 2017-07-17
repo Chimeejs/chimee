@@ -117,6 +117,8 @@ const chimee = new ChimeePlayer({
 
 ## Documentation
 
+> coming soon~
+
 1. [What is Chimee?](https://github.com/Chimeejs/chimee/blob/master/doc/en/chimee-api.md)
 2. [What is Chimee's plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/en/plugin-api.md)
 3. [How to write a plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/en/how-to-write-a-plugin.md)
