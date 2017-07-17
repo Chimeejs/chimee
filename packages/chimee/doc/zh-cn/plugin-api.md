@@ -4,24 +4,25 @@
 
 本文会深度介绍插件的原理。包括以下几部分。
 
-- [什么是插件](#what)
-- [生命周期](#lifecycle)
-- [插件位置](#inner)
-- [透明插件](#non-operable-plugin)
-- [穿透插件](#penetrate-plugin)
-- [事件机制](#event)
-- [video 事件](#video-event)
-- [video 的DOM事件](#video-dom-event)
-- [video 元素相关方法](#video-method)
-- [video 元素相关属性](#video-parameter)
-- [$attr](#attr)
-- [$css](#css)
-- [$bumpToTop](#bumpToTop)
-- [全屏](#fullscreen)
+- [什么是插件](#什么是插件)
+- [生命周期](#生命周期)
+- [插件位置](#插件位置)
+- [透明插件](#透明插件)
+- [穿透插件](#穿透插件)
+- [事件机制](#事件机制)
+- [video 事件](#video 事件)
+- [video 的DOM事件](#video 的DOM事件)
+- [video 元素相关方法](#video 元素相关方法)
+- [video 元素相关属性](#video 元素相关属性)
+- [$attr](#$attr)
+- [$css](#$css)
+- [$bumpToTop](#$bumpToTop)
+- [全屏](#全屏)
 - [pluginConfig参数](#pluginConfig参数)
-- [插件属性](#plugin-attr)
-- [插件方法](#plugin-method)
-- [基本应用](#plugin-use)
+- [插件属性](#插件属性)
+- [插件方法](#插件方法)
+- [插件用法](#插件用法)
+
 
 ## 什么是插件
 
