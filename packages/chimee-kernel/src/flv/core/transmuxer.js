@@ -1,7 +1,7 @@
 import IoLoader from '../io/io-loader';
 import {CustEvent} from 'chimee-helper';
 import {Log} from 'chimee-helper';
-import work from 'workify';
+import work from 'webworkify';
 const F2M = require('chimee-flv2fmp4');
 
 export default class Transmuxer extends CustEvent {
