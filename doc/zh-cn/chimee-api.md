@@ -98,6 +98,10 @@ const chimee = new Chimee({
 chimee.load();
 ```
 
+插件间具有优先级关系，在 plugins 数组中，插件的优先级由高到低排列。
+
+优先级高的插件将在事件处理机制中优先获得事件，因此可以阻截后方插件获取事件。
+
 > 要理解插件的具体用法，请阅读[为什么要将 Chimee 设计成一个组件化框架？](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/why-chimee-is-a-frame.md)
 >
 > 要获知插件相关的 api， 请阅读[Chimee 插件 API 介绍](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)
@@ -125,6 +129,8 @@ chimee.load();
 | playbackRate            | 回放速率                           | number         | 1         | 大于1加速，小于1减速                              |
 | defaultPlaybackRate     | 默认回放速率                         | number         | 1         | 大于1加速，小于1减速                              |
 | autoload                | 设置`src`时是否进行自动加载               | boolean        | true      |                                          |
+| defaultMuted            | 是否是默认静音                        | boolean        | false     | 对应于 video 上的 muted 标签                    |
+| disableRemotePlayback   | 是否不展示远程回放标志                    | boolean        | false     | 对应于 video 上的  disableRemotePlayback 标签   |
 
 > 注意
 >
@@ -377,10 +383,16 @@ chimee.load();
 - 含义：是否循环
 - 默认：`false`
 
+### defaultMuted
+
+* 类型：`boolean`
+* 含义：video 上的 muted 属性
+* 默认： `false`
+
 ### muted
 
 - 类型：`boolean`
-- 含义：video 上的 muted， 代表是否静音
+- 含义： 代表是否静音
 - 默认：`false`
 
 ### preload
@@ -430,6 +442,11 @@ chimee.load();
 - 类型：`number`
 - 含义：默认回放速率，1代表正常，大于1代表加速，小于1代表减速
 - 默认：`1`
+
+### disableRemotePlayback
+
+* 类型：`boolean`
+* 默认：`false`
 
 ## 事件监听相关方法
 

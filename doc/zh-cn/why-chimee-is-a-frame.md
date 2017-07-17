@@ -264,7 +264,7 @@ this.on('beforeSeek', () => false);
 > 1. 因为被放到 event loop 中，故不能阻止事件冒泡
 > 2. 外层调用需要考虑异步场景，最好使用 await 作处理
 >
-> 因此，在 Chimee 中只有 play, pause, load 三种事件和用户使用 emit 调用的事件允许挂起。
+> 因此，在 Chimee 中只有 play, pause 两种事件和用户使用 emit 调用的事件允许挂起。
 
 通过事件中断、事件挂起等方式，开发者现在能轻松地处理视频状态冲突的问题。
 
@@ -290,7 +290,22 @@ Chimee 同时也会承担事件转发的功能。你可以通过 `autoFocus` 进
 
 ### 多种组件设置
 
-为了方面我们覆盖各式场景，我们提供了[透明插件]()、[穿透插件]()、[内层插件]()和[外层插件]()四种概念，具体区别请查看[插件 Api]()。
+为了方面我们覆盖各式场景，我们提供了[透明插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)、[穿透插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)、[内层插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)和[外层插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)四种概念，具体区别请查看[插件 Api](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)。
+
+### 异步组件加载
+
+为了更加优质的用户体验，部分组件可能会进行异步加载。在 Chimee 中，我们支持动态加载组件。
+
+要使用一个组件，我们首先要安装组件，然后再使用之。而组件是可以在实例建立后才使用的。
+
+```javascript
+import Chimee from 'chimee';
+import asyncPlugin from './async-plugin';
+
+const chimee = new Chimee('#wrapper');
+Chimee.install(asyncPlugin);
+chimee.use(asyncPlugin.name);
+```
 
 ## 编写组件的注意事项
 
