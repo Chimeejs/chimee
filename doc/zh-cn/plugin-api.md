@@ -10,10 +10,10 @@
 - [透明插件](#透明插件)
 - [穿透插件](#穿透插件)
 - [事件机制](#事件机制)
-- [video 事件](#video 事件)
-- [video 的DOM事件](#video 的DOM事件)
-- [video 元素相关方法](#video 元素相关方法)
-- [video 元素相关属性](#video 元素相关属性)
+- [video事件](#video事件)
+- [video的DOM事件](#video的DOM事件)
+- [video元素相关方法](#video元素相关方法)
+- [video元素相关属性](#video元素相关属性)
 - [$attr](#$attr)
 - [$css](#$css)
 - [$bumpToTop](#$bumpToTop)
@@ -353,7 +353,7 @@ level 值可以由用户设置、插件默认设置或插件内部通过 `$level
 >
 > 换言之`this.$emitSync('click')` 会触发 `video.click()`， 而`this.$emitSync('c_click')`并不会触发 `container.click()` 
 
-## video 事件
+## video事件
 
 因为要兼顾到各种容器，顾 video 上的事件可能与我们日常有所不同。
 
@@ -395,11 +395,11 @@ level 值可以由用户设置、插件默认设置或插件内部通过 `$level
   - 需要传入数字参数作为时间
   - 可使用`this.$emit`触发。
 
-## video 的 DOM 事件
+## video的DOM事件
 
 其实与正常无异。不过有一点需要注意的是。由于穿透性插件的存在，该事件未必发生在原生 video 上。因此不要通过事件对象去获取 dom。
 
-## video 元素相关方法
+## video元素相关方法
 
 > \* 前缀为 chimee 自定义方法
 
@@ -495,7 +495,7 @@ load 方法会将地址设置到 video 元素上。之后才能进行相应的�
     - `'maybe'`: Cannot tell if the media type is playable without playing it.
     - `''` (empty string): The specified media type definitely cannot be played.
 
-## video 元素相关属性
+## video元素相关属性
 
 > \* 前缀为 chimee 自定义属性
 
@@ -1079,5 +1079,5 @@ const chimee2 = new Chimee({
 chimee2.use(pluginConfig.name);
 ```
 
-> 要了解如看编写与使用更丰富的UI插件，[请看这里](http://hzj.qihu.work/h5-videoplayer/esdoc/manual/tutorial/how-to-write-a-ui-plugin.html)。
+> 要了解如看编写与使用弹窗组件，[请看这里](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-popup-plugin.md)。
 
