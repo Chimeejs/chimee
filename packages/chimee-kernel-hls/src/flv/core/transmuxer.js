@@ -2,7 +2,8 @@ import IoLoader from '../io/io-loader';
 import {CustEvent} from 'chimee-helper';
 import {Log} from 'chimee-helper';
 import work from 'webworkify';
-const F2M = require('chimee-flv2fmp4');
+// const F2M = require('chimee-flv2fmp4');
+import F2M from '../flvdecode/flv2fmp4';
 
 export default class Transmuxer extends CustEvent {
 	constructor (mediaSource, config) {
@@ -15,7 +16,7 @@ export default class Transmuxer extends CustEvent {
     this.w = null;
     Object.assign(this.config, config);
     if(this.config.webWorker) {
-      this.w = work(require.resolve('./transmuxer-worker'));
+      this.w = work('./transmuxer-worker');
       this.w.postMessage({cmd: 'init'});
       this.w.addEventListener('message', (e) => {
         this.parseCallback(e.data);

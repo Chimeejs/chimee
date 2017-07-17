@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<video id="player" controls="controls"></video>
+</body>
+<script type="text/javascript" src="../lib/index.browser.js"></script>
+<script type="text/javascript">
+	var Kernel = new chimeeKernel(document.querySelector('#player'),{
+	   src:'http://yunxianchang.live.ujne7.com/vod-system-bj/44_176_20170224113626af3a75cd-3508-4bc3-b51f-366fca3c7e39.m3u8',
+	   box:'hls',
+	   type:'vod'
+	});
+	Kernel.load();
+</script>
+</html>

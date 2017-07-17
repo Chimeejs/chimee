@@ -42,7 +42,6 @@ const babelConfig = {
 };
 const externalRegExp = new RegExp(Object.keys(dependencies).join('|'));
 export default function (mode) {
-  console.log(mode);
   return {
     entry: 'src/index.js',
     external (id) {

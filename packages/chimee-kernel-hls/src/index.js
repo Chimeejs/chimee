@@ -53,6 +53,7 @@ export default class Kernel extends CustEvent {
 		} else if (box === 'flv') {
 			return new Flv(this.video, config);
 		} else if (box === 'hls') {
+			console.log(config);
 			return new Hls(this.video, config);
 		} else {
 			Log.error(this.tag, 'not mactch any player, please check your config');
