@@ -264,7 +264,7 @@ this.on('beforeSeek', () => false);
 > 1. 因为被放到 event loop 中，故不能阻止事件冒泡
 > 2. 外层调用需要考虑异步场景，最好使用 await 作处理
 >
-> 因此，在 Chimee 中只有 play, pause 两种事件和用户使用 emit 调用的事件允许挂起。
+> 因此，在 Chimee 中只有 play, pause, load 三种事件和用户使用 emit 调用的事件允许挂起。
 
 通过事件中断、事件挂起等方式，开发者现在能轻松地处理视频状态冲突的问题。
 
