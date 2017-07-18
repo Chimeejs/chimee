@@ -117,11 +117,20 @@ const chimee = new ChimeePlayer({
 4. [如何编写一个插件?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-plugin.md)
 5. [如何编写一个广告插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-an-ad-plugin.md)
 6. [如何编鞋一个UI插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-ui-plugin.md)
-6. [如何编鞋一个弹窗插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-popup-plugin.md)
+7. [如何编鞋一个弹窗插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-popup-plugin.md)
 
 ## 贡献
 
-请阅读相关贡献文档
+克隆本项目
+
+```
+npm install
+npm start
+```
+
+然后打开如下网页 [http://127.0.0.1:10001/demo/base/index.html](http://127.0.0.1:10001/demo/base/index.html)
+
+你可以选择其他你想要的 demo
 
 ## 更新日志
 
