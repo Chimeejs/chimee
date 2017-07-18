@@ -6,4 +6,4 @@ node_js:
 script:
     - "npm test"
 after_success:
-    - 'npm install coveralls && ./node_modules/.bin/nyc report --temp-directory=coverage --reporter=text-lcov | ./node_modules/.bin/coveralls'
+    - 'npm install coveralls && npm install nyc && ./node_modules/.bin/nyc report --temp-directory=coverage --reporter=text-lcov | ./node_modules/.bin/coveralls'
