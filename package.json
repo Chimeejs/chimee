@@ -14,7 +14,7 @@
     "unit": "jest --coverage --watch",
     "lint": "eslint ./src --fix && flow",
     "flow": "flow",
-    "start": "rollup -c build/rollup.config.dev.js",
+    "start": "rollup -c build/rollup.config.dev.js -w",
     "build": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
     "b-common": "rollup -c build/rollup.config.common.js",
     "b-es": "rollup -c build/rollup.config.es.js",
@@ -68,7 +68,8 @@
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-replace": "^1.1.1",
     "rollup-plugin-serve": "^0.4.0",
-    "rollup-plugin-uglify": "^2.0.1"
+    "rollup-plugin-uglify": "^2.0.1",
+    "rollup-watch": "^4.3.1"
   },
   "jest": {
     "modulePaths": [

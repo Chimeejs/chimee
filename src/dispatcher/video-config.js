@@ -134,8 +134,14 @@ export default class VideoConfig {
   disableRemotePlayback = false;
   @frozen
   _kernelProperty = ['type', 'box', 'runtimeOrder'];
+  get volume (): number {
+    return this.dispatcher.dom.videoElement.volume;
+  }
+  set volume (volume: number) {
+    this.dispatcher.dom.videoElement.volume = volume;
+  }
   @frozen
-  _realDomAttr = ['src', 'controls', 'width', 'height', 'crossorigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsinline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted'];
+  _realDomAttr = ['src', 'controls', 'width', 'height', 'crossorigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsinline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
   lockKernelProperty () {
     applyDecorators(this, {
       type: lock,
