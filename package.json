@@ -8,6 +8,7 @@
     "prepush": "npm run test",
     "postmerge": "sh tool/auto-npm-install.sh",
     "test": "jest --coverage",
+    "unit": "jest --coverage --watch",
     "lint": "eslint ./src --fix && flow",
     "flow": "flow",
     "start": "rollup -c build/rollup.config.dev.js"
