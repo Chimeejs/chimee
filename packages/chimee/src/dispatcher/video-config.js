@@ -58,7 +58,7 @@ export default class VideoConfig {
       if(this.needToLoadSrc) {
         // unlock it at first, to avoid deadlock
         this.needToLoadSrc = false;
-        this.dispatcher.bus.emitSync('load', val);
+        this.dispatcher.bus.emit('load', val);
       }
       return val;
     }

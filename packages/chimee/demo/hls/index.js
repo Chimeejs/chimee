@@ -15,10 +15,11 @@ const player = new window.Chimee({
     width: '100%',
     height: '100%',
     autoplay: false,
-    autoload: true,
+    autoload: false,
     controls: true
   });
 
   // player.attachMedia();
 
-  // player.load();
+  player.load();
+  player.play();

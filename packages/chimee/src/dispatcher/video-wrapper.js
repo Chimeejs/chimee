@@ -52,7 +52,7 @@ export default class VideoWrapper {
         value (...args: any) {
           return new Promise((resolve, reject) => {
             this.__dispatcher.bus.once(this.__id, '_' + key, resolve);
-            this.__dispatcher.bus[/^(seek|load)$/.test(key) ? 'emitSync' : 'emit'](key, ...args);
+            this.__dispatcher.bus[/^(seek)$/.test(key) ? 'emitSync' : 'emit'](key, ...args);
           });
         },
         configurable: true,
