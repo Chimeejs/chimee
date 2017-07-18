@@ -1,8 +1,11 @@
 {
   "name": "chimee",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "a video-player aims to bing wonderful experience on browser",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "jsnext:main": "lib/index.mjs",
+  "browser": "lib/index.browser.js",
   "scripts": {
     "precommit": "npm run lint",
     "prepush": "npm run test",
@@ -11,7 +14,12 @@
     "unit": "jest --coverage --watch",
     "lint": "eslint ./src --fix && flow",
     "flow": "flow",
-    "start": "rollup -c build/rollup.config.dev.js"
+    "start": "rollup -c build/rollup.config.dev.js",
+    "build": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
+    "b-common": "rollup -c build/rollup.config.common.js",
+    "b-es": "rollup -c build/rollup.config.es.js",
+    "b-umd": "rollup -c build/rollup.config.umd.js",
+    "b-min": "rollup -c build/rollup.config.min.js"
   },
   "repository": {
     "type": "git",
