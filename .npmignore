@@ -1,0 +1,11 @@
+__mocks__/
+__tests__/
+build/
+coverage/
+demo/
+doc/
+flow/
+node_modules/
+tool/
+.babelrc
+.flowconfig

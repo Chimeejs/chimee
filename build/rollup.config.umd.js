@@ -4,5 +4,5 @@ import {camelize} from 'toxic-utils';
 export default Object.assign(base('umd'), {
   format: 'umd',
   dest: 'lib/index.browser.js',
-  moduleName: camelize(name)
+  moduleName: camelize(name, true)
 });

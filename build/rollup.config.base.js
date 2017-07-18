@@ -10,6 +10,7 @@ import flow from 'rollup-plugin-flow-no-whitespace';
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import replace from 'rollup-plugin-replace';
 const babelConfig = {
   common: {
     presets: [
@@ -79,7 +80,10 @@ export default function (mode) {
           moduleDirectory: ['src', 'node_modules']
         }
       }),
-      commonjs()
+      commonjs(),
+      replace({
+        'process.env.PLAYER_VERSION': `'${version}'`
+      })
     ]
   };
 };
