@@ -7,7 +7,7 @@ const player = new window.Chimee({
     // 直播:live 点播：vod
     type: 'vod',
     // 编解码容器
-    box: 'flv', // flv hls mp4
+    box: 'hls', // flv hls mp4
     // dom容器
     wrapper: '#wrapper',
     // video
@@ -15,11 +15,10 @@ const player = new window.Chimee({
     width: '100%',
     height: '100%',
     autoplay: false,
-    autoload: false,
-    controls: true,
-    webWorker: true
+    autoload: true,
+    controls: true
   });
 
   // player.attachMedia();
 
-  player.load();
+  // player.load();
