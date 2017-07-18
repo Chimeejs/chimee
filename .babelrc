@@ -1,0 +1,10 @@
+{
+ "presets": [
+    "flow",
+    "latest",
+    "stage-0"
+  ],
+  "plugins": [
+    "transform-decorators-legacy"
+  ]
+}

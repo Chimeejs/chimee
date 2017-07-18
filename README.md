@@ -127,7 +127,16 @@ const chimee = new ChimeePlayer({
 
 ## Contribution
 
-Please read the contrrbution guide line.
+clone this project
+
+```
+npm install
+npm start
+```
+
+Then open [http://127.0.0.1:10001/demo/base/index.html](http://127.0.0.1:10001/demo/base/index.html)
+
+You can choose another page as you want
 
 ## Changelog
 

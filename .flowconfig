@@ -1,0 +1,15 @@
+[ignore]
+.*/node_modules/.*
+.*/demos/.*
+.*/dist/.*
+[include]
+.*/src/.*
+[libs]
+flow
+./node_modules/chimee-helper/lib/index.flow.js
+[options]
+unsafe.enable_getters_and_setters=true
+module.name_mapper='^helper/\(.*\)$' -> '<PROJECT_ROOT>/src/helper/\1'
+module.name_mapper='^dispatcher/\(.*\)$' -> '<PROJECT_ROOT>/src/dispatcher/\1'
+module.name_mapper='^global/\(.*\)$' -> '<PROJECT_ROOT>/src/global/\1'
+esproposal.decorators=ignore
