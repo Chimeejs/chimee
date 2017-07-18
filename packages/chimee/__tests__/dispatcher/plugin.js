@@ -507,6 +507,16 @@ describe('dispatcher/plugin', () => {
     plugin.$destroy();
   });
 
+  test('fullScreen', () => {
+    const plugin = new Plugin({id: 'normal'}, dispatcher);
+    plugin.fullScreen();
+    plugin.fullScreen(true);
+    plugin.fullScreen(false);
+    plugin.fullScreen();
+    plugin.fullScreen(false, 'container');
+    plugin.$destroy();
+  });
+
   describe('$attr & $css', () => {
     let plugin;
     beforeEach(() => {
