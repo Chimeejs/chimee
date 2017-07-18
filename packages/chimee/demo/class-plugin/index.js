@@ -2,22 +2,23 @@
   class Controller extends Chimee.plugin {
     constructor (...args) {
       super(...args);
-      this.$dom.classList.add('video-state');
       this.button = document.createElement('button');
-      this.button.innerText = 'Play';
-      this.event = 'play';
+      this.text = 'play';
+      this.button.innerText = this.text;
       this.button.addEventListener('click', () => {
-        this.$emit(this.event);
+        this[this.text]();
       });
       this.$dom.appendChild(this.button);
       this.$on('pause', () => {
-        this.button.innerText = 'Play';
-        this.event = 'play';
+        this.changeButtonText('play');
       });
       this.$on('play', () => {
-        this.button.innerText = 'Pause';
-        this.event = 'pause';
+        this.changeButtonText('pause');
       });
+    }
+    changeButtonText (text) {
+      this.text = text;
+      this.button.innerText = text;
     }
     destroy () {
       this.$dom.removeChild(this.button);
@@ -36,6 +37,7 @@
     plugin: ['controller'],
     // video
     runtimeOrder: ['html5', 'flash'],
+    volume: 0.1,
     autoplay: true,
     controls: true
   });

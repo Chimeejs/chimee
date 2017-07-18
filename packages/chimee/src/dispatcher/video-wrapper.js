@@ -71,14 +71,6 @@ export default class VideoWrapper {
       });
     });
   }
-  get volume (): number {
-    return this.__dispatcher.dom.videoElement.volume;
-  }
-
-  set volume (volume: number) {
-    this.__dispatcher.dom.videoElement.volume = volume;
-  }
-
   get currentTime (): number {
     return this.__dispatcher.kernel.currentTime;
   }
