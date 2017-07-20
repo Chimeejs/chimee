@@ -84,4 +84,9 @@ export default class Hls extends CustEvent {
   pause () {
     return this.video.pause();
   }
+
+  refresh () {
+    this.hls.stopLoad();
+    this.hls.loadSource(this.config.src);
+  }
 }

@@ -9,5 +9,7 @@ export default {
   lockInternalProperty: false,
   debug: true,
   webWorker: false,
-  autoCleanupSourceBuffer: true
+  autoCleanupSourceBuffer: true,
+  autoCleanupMaxBackwardDuration: 30,
+  autoCleanupMinBackwardDuration: 30
 };

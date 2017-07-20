@@ -7,6 +7,12 @@
 import handleRange from './handleRange';
 import {CustEvent} from 'chimee-helper';
 
+/**
+ * MozChunkLoader
+ * @class MozChunkLoader
+ * @param {string} video url
+ * @param  {object} range.from range.to
+ */
 export default class RangeLoader extends CustEvent {
 
    /**
@@ -23,10 +29,6 @@ export default class RangeLoader extends CustEvent {
     }
   }
 
-  /**
-   * @param {string} video url
-   * @param  {object} video config
-   */
   constructor (src, config) {
     super();
     this.tag = 'RangeLoader';

@@ -5,7 +5,6 @@ import defaultConfig from './config';
 import {throttle, deepAssign, Log} from 'chimee-helper';
 /**
  * flv 控制层
- *
  * @export
  * @class mp4
  */
@@ -22,7 +21,9 @@ export default class Flv extends CustEvent {
     this.bindEvents();
     this.attachMedia();
   }
-
+  /**
+   * 内部控制能否设置currentTime
+   */
   internalPropertyHandle () {
     if(!Object.getOwnPropertyDescriptor) {
       return;
@@ -44,6 +45,9 @@ export default class Flv extends CustEvent {
     });
   }
 
+  /**
+   * 绑定事件
+   */
   bindEvents () {
     if(this.video) {
       this.video.addEventListener('canplay', () => {
@@ -57,6 +61,9 @@ export default class Flv extends CustEvent {
     }
   }
 
+  /**
+   * 建立 mediaSource
+   */
   attachMedia () {
     this.mediaSource = new MseContriller(this.video, this.config);
     this.mediaSource.on('source_open', ()=>{
@@ -71,7 +78,14 @@ export default class Flv extends CustEvent {
     this.mediaSource.on('updateend', this.onmseUpdateEnd.bind(this));
   }
 
-  load () {
+  /**
+   * load
+   * @param {string} video url
+   */
+  load (src) {
+    if(src) {
+      this.config.src = src;
+    }
     this.video.src = URL.createObjectURL(this.mediaSource.mediaSource);
     this.video.addEventListener('seeking', throttle(this._seek.bind(this), 200, {leading: false}));
     this.transmuxer = new Transmuxer(this.mediaSource, this.config);
@@ -86,6 +100,10 @@ export default class Flv extends CustEvent {
     });
   }
 
+  /**
+   * seek in buffered
+   * @param {number} seek time
+   */
   isTimeinBuffered (seconds) {
     const buffered = this.video.buffered;
     for (let i = 0; i < buffered.length; i++) {
@@ -98,6 +116,9 @@ export default class Flv extends CustEvent {
     return false;
   }
 
+  /**
+   * get current buffer end
+   */
   getCurrentBufferEnd () {
     const buffered = this.video.buffered;
     const currentTime = this.video.currentTime;
@@ -112,8 +133,11 @@ export default class Flv extends CustEvent {
       }
     }
   }
-
-  _seek (e, seconds) {
+  /**
+   * _seek
+   * @param {number} seek time
+   */
+  _seek (seconds) {
     this.currentTimeLock = true;
     this.timer = null;
 
@@ -147,6 +171,9 @@ export default class Flv extends CustEvent {
     return currentTime;
   }
 
+  /**
+   * mediaSource updateend
+   */
   onmseUpdateEnd () {
     if (this.config.isLive) {
       return;
@@ -159,6 +186,9 @@ export default class Flv extends CustEvent {
     }
   }
 
+  /**
+   * 心跳
+   */
   heartbeat () {
     const currentTime = this.video.currentTime;
     const buffered = this.video.buffered;
@@ -179,11 +209,14 @@ export default class Flv extends CustEvent {
     if (needResume) {
       window.clearInterval(this.timer);
       this.timer = null;
-      Log.verbose(this.TAG, 'Continue loading from paused position');
+      Log.verbose(this.tag, 'Continue loading from paused position');
       this.transmuxer.resume();
     }
   }
 
+  /**
+   * 暂停 transmuxer
+   */
   pauseTransmuxer () {
     this.transmuxer.pause();
     if(!this.timer) {
@@ -195,6 +228,9 @@ export default class Flv extends CustEvent {
 
   }
 
+  /**
+   * destroy
+   */
   destroy () {
     if(this.video) {
       this.video.src = '';
@@ -207,8 +243,7 @@ export default class Flv extends CustEvent {
   }
 
   seek (seconds) {
-    // throttle(this._seek.bind(this, seconds), 200, {leading: false});
-    return this._seek(null, seconds);
+    return this._seek(seconds);
   }
 
   play () {
@@ -217,5 +252,9 @@ export default class Flv extends CustEvent {
 
   pause () {
     return this.video.pause();
+  }
+
+  refresh () {
+    this.transmuxer.refresh();
   }
 }

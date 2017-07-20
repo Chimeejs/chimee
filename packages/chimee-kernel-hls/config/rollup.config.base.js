@@ -29,8 +29,10 @@ const babelConfig = {
     babelrc: false
   },
   iife: {
-    presets: ['es2015-rollup'],
-    plugins: [],
+    presets: ['es2015-rollup', 'stage-0'],
+    plugins: ['transform-decorators-legacy'],
+    exclude: 'node_modules/**',
+    runtimeHelpers: true,
     babelrc: false
   },
   min: {
