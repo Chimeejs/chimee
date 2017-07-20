@@ -4,7 +4,8 @@ import tagdemux from './flv/tagdemux';
 import mp4remux from './mp4/mp4remux';
 import mp4moof from './mp4/mp4moof';
 import { CustEvent } from 'chimee-helper';
-class flv2fmp4 {
+
+class flv2fmp4 extends CustEvent{
 
     /**
      * Creates an instance of flv2fmp4.
@@ -14,6 +15,7 @@ class flv2fmp4 {
      * @memberof flv2fmp4
      */
     constructor(config) {
+        super();
         this._config = { _isLive: false };
         this._config = Object.assign(this._config, config);
 

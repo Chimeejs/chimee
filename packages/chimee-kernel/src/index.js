@@ -18,18 +18,25 @@ export default class Kernel extends CustEvent {
 		this.config = config;
 		this.video = videoElement;
 		this.videokernel = this.selectKernel();
-		this.bindEvents(this.videokernel);
+		this.bindEvents(this.videokernel, this.video);
+		this.timer = null;
 	}
 
 	/**
 	 * 绑定事件
 	 * @memberof kernel
 	 */
-	bindEvents (videokernel) {
+	bindEvents (videokernel, video) {
 		if (videokernel) {
 			videokernel.on('mediaInfo', (mediaInfo) => {
 				this.emit('mediaInfo', mediaInfo);
 			});
+
+			video.addEventListener('canplay', ()=> {
+				clearTimeout(this.timer);
+				this.timer = null;
+			});
+
 		}
 	}
 
@@ -53,7 +60,6 @@ export default class Kernel extends CustEvent {
 		} else if (box === 'flv') {
 			return new Flv(this.video, config);
 		} else if (box === 'hls') {
-			console.log(config);
 			return new Hls(this.video, config);
 		} else {
 			Log.error(this.tag, 'not mactch any player, please check your config');
@@ -78,6 +84,13 @@ export default class Kernel extends CustEvent {
 		this.config.src = src || this.config.src;
 		if (this.videokernel && this.config.src) {
 			this.videokernel.load(src);
+			if(!this.timer) {
+				this.timer = setTimeout(()=>{
+				this.timer = null;
+				this.pause();
+				this.refresh();
+				}, 1000);
+			}
 		} else {
 			Log.error(this.tag, 'video player is not already, must init player');
 		}
@@ -135,6 +148,10 @@ export default class Kernel extends CustEvent {
 			return;
 		}
 		return this.videokernel.seek(seconds);
+	}
+
+	refresh () {
+		this.videokernel.refresh();
 	}
 	/**
 	 * get video duration

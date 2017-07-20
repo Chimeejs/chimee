@@ -7,6 +7,12 @@ import handleRange from './handleRange';
 import {CustEvent} from 'chimee-helper';
 import {Log} from 'chimee-helper';
 
+/**
+ * FetchLoader
+ * @class FetchLoader
+ * @param {string} video url
+ * @param  {object} range.from range.to
+ */
 export default class FetchLoader extends CustEvent {
 
 	/**
@@ -19,11 +25,6 @@ export default class FetchLoader extends CustEvent {
 			return false;
 		}
 	}
-
-	/**
-   * @param {string} video url
-   * @param  {object} range.from range.to
-   */
 
 	constructor (src, config) {
 		super();
@@ -64,7 +65,6 @@ export default class FetchLoader extends CustEvent {
 		this.req = new Request(this.src, {headers: reqHeaders});
 
 		fetch(this.req).then((res)=>{
-			// console.log(response.headers.get("Content-Range"));
 			if(res.ok) {
 				const reader = res.body.getReader();
 				return this.pump(reader, keyframePoint);
@@ -85,7 +85,7 @@ export default class FetchLoader extends CustEvent {
 	pump (reader, keyframePoint) { // ReadableStreamReader
     return reader.read().then((result) => {
         if (result.done) {
-					Log.ver;
+					Log.verbose('play end');
         	// trigger complete
         } else {
         	if (this.requestAbort === true) {

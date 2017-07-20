@@ -9,12 +9,13 @@ import RangeLoader from './xhr-range';
 import MozChunkLoader from './xhr-moz-chunk';
 import {CustEvent} from 'chimee-helper';
 
+/**
+ * Ioloader 处理io的调用器 缓存多余数据
+ * @class Ioloader
+ * @param  {object} video config
+ */
 export default class Ioloader extends CustEvent {
 
-	/**
-	* 处理io的调用器 缓存多余数据
-	* @param  {object} video config
-	*/
 	constructor (config) {
 		super();
 		this.loader = null;
@@ -31,6 +32,7 @@ export default class Ioloader extends CustEvent {
 		this.currentRange = {};
 		this.totalReceive = 0;
 		this.seekPonit = 0;
+		this.timer = null;
 	}
 
 	/**
@@ -126,27 +128,6 @@ export default class Ioloader extends CustEvent {
       }
 		}
 	}
-	// 	if(this.arrivalDataCallback) {
-	// 		this.totalReceive += chunk.byteLength;
-	// 		if(this.cacheRemain) {
-	// 			if(this.cacheRemain + chunk.byteLength > this.bufferSize) {
-	// 				this.expandBuffer();
-	// 			}
-	// 			console.log(this.cacheRemain);
-	// 			const stashArray = new Uint8Array(this.cacheBuffer, 0, this.bufferSize);
-  //     	stashArray.set(new Uint8Array(chunk), this.cacheRemain);
-	// 			this.cacheRemain = this.arrivalDataCallback(this.cacheBuffer, byteStart, this.seekPonit);
-	// 			if(this.cacheRemain && this.cacheRemain < chunk.byteLength) {
-	// 				this.initCacheBuffer();
-	// 				const stashArray = new Uint8Array(this.cacheBuffer, 0, this.bufferSize);
-  //     		stashArray.set(new Uint8Array(chunk.slice(this.cacheRemain)), 0);
-	// 			}
-	// 		} else {
-	// 			this.cacheRemain = this.arrivalDataCallback(chunk, byteStart, this.seekPonit);
-	// 		}
-
-	// 	}
-	// }
 	/**
 	* 清空缓存buffer
 	*/
@@ -209,6 +190,9 @@ export default class Ioloader extends CustEvent {
   	this.loader.open({from: bytes, to: -1}, keyframePoint);
   }
 
+	/**
+	* destory
+	*/
 	destroy () {
 		this.pause();
 		this.cacheBuffer = null;
