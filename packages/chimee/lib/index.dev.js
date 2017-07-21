@@ -51,8 +51,6 @@ var _aFunction = function(it){
   return it;
 };
 
-// optional / simple context binding
-
 var _ctx = function(fn, that, length){
   _aFunction(fn);
   if(that === undefined)return fn;
@@ -89,7 +87,6 @@ var _fails = function(exec){
   }
 };
 
-// Thank's IE8 for his funny defineProperty
 var _descriptors = !_fails(function(){
   return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
@@ -104,10 +101,6 @@ var _ie8DomDefine = !_descriptors && !_fails(function(){
   return Object.defineProperty(_domCreate('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
 
-// 7.1.1 ToPrimitive(input [, PreferredType])
-
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
 var _toPrimitive = function(it, S){
   if(!_isObject(it))return it;
   var fn, val;
@@ -209,7 +202,6 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library` 
 var _export = $export;
 
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 _export(_export.S + _export.F * !_descriptors, 'Object', {defineProperty: _objectDp.f});
 
 var $Object = _core.Object;
@@ -268,8 +260,6 @@ var _defined = function(it){
   return it;
 };
 
-// true  -> String#at
-// false -> String#codePointAt
 var _stringAt = function(TO_STRING){
   return function(that, pos){
     var s = String(_defined(that))
@@ -301,19 +291,14 @@ var _cof = function(it){
   return toString.call(it).slice(8, -1);
 };
 
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-
 var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function(it){
   return _cof(it) == 'String' ? it.split('') : Object(it);
 };
-
-// to indexed object, toObject with fallback for non-array-like ES3 strings
 
 var _toIobject = function(it){
   return _iobject(_defined(it));
 };
 
-// 7.1.15 ToLength
 var min       = Math.min;
 var _toLength = function(it){
   return it > 0 ? min(_toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
@@ -325,9 +310,6 @@ var _toIndex = function(index, length){
   index = _toInteger(index);
   return index < 0 ? max(index + length, 0) : min$1(index, length);
 };
-
-// false -> Array#indexOf
-// true  -> Array#includes
 
 var _arrayIncludes = function(IS_INCLUDES){
   return function($this, el, fromIndex){
@@ -384,9 +366,6 @@ var _enumBugKeys = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
 
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-
-
 var _objectKeys = Object.keys || function keys(O){
   return _objectKeysInternal(O, _enumBugKeys);
 };
@@ -403,7 +382,6 @@ var _objectDps = _descriptors ? Object.defineProperties : function definePropert
 
 var _html = _global.document && document.documentElement;
 
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var IE_PROTO    = _sharedKey('IE_PROTO');
 var Empty       = function(){ /* empty */ };
 var PROTOTYPE$1   = 'prototype';
@@ -472,13 +450,10 @@ var _iterCreate = function(Constructor, NAME, next){
   _setToStringTag(Constructor, NAME + ' Iterator');
 };
 
-// 7.1.13 ToObject(argument)
-
 var _toObject = function(it){
   return Object(_defined(it));
 };
 
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var IE_PROTO$2    = _sharedKey('IE_PROTO');
 var ObjectProto = Object.prototype;
 
@@ -574,10 +549,6 @@ var _iterStep = function(done, value){
   return {value: value, done: !!done};
 };
 
-// 22.1.3.4 Array.prototype.entries()
-// 22.1.3.13 Array.prototype.keys()
-// 22.1.3.29 Array.prototype.values()
-// 22.1.3.30 Array.prototype[@@iterator]()
 var es6_array_iterator = _iterDefine(Array, 'Array', function(iterated, kind){
   this._t = _toIobject(iterated); // target
   this._i = 0;                   // next index
@@ -706,8 +677,6 @@ var _objectPie = {
 	f: f$3
 };
 
-// all enumerable object keys, includes symbols
-
 var _enumKeys = function(it){
   var result     = _objectKeys(it)
     , getSymbols = _objectGops.f;
@@ -720,13 +689,10 @@ var _enumKeys = function(it){
   } return result;
 };
 
-// 7.2.2 IsArray(argument)
-
 var _isArray = Array.isArray || function isArray(arg){
   return _cof(arg) == 'Array';
 };
 
-// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 var hiddenKeys = _enumBugKeys.concat('length', 'prototype');
 
 var f$5 = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
@@ -737,7 +703,6 @@ var _objectGopn = {
 	f: f$5
 };
 
-// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 var gOPN$1      = _objectGopn.f;
 var toString$1  = {}.toString;
 
@@ -775,7 +740,6 @@ var _objectGopd = {
 	f: f$6
 };
 
-// ECMAScript 6 symbols shim
 var META           = _meta.KEY;
 var gOPD           = _objectGopd.f;
 var dP$1             = _objectDp.f;
@@ -1022,17 +986,12 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 
 var _typeof = unwrapExports(_typeof_1);
 
-// most Object methods by ES6 should accept primitives
-
 var _objectSap = function(KEY, exec){
   var fn  = (_core.Object || {})[KEY] || Object[KEY]
     , exp = {};
   exp[KEY] = exec(fn);
   _export(_export.S + _export.F * _fails(function(){ fn(1); }), 'Object', exp);
 };
-
-// 19.1.2.14 Object.keys(O)
-
 
 _objectSap('keys', function(){
   return function keys(it){
@@ -1048,14 +1007,10 @@ module.exports = { "default": keys$1, __esModule: true };
 
 var _Object$keys = unwrapExports(keys);
 
-// 20.1.2.3 Number.isInteger(number)
 var floor$1    = Math.floor;
 var _isInteger = function isInteger(it){
   return !_isObject(it) && isFinite(it) && floor$1(it) === it;
 };
-
-// 20.1.2.3 Number.isInteger(number)
-
 
 _export(_export.S, 'Number', {isInteger: _isInteger});
 
@@ -1106,7 +1061,6 @@ var _parseFloat$3 = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function p
   return result === 0 && string.charAt(0) == '-' ? -0 : result;
 } : $parseFloat;
 
-// 20.1.2.12 Number.parseFloat(string)
 _export(_export.S + _export.F * (Number.parseFloat != _parseFloat$3), 'Number', {parseFloat: _parseFloat$3});
 
 var _parseFloat$1 = parseFloat;
@@ -1121,11 +1075,6 @@ module.exports = { "default": _parseFloat$1, __esModule: true };
  * Released under MIT
  */
 
-/**
- * is void element or not ? Means it will return true when val is undefined or null
- * @param  {Anything}  obj
- * @return {Boolean}   return true when val is undefined or null
- */
 function isVoid(obj) {
   return obj === undefined || obj === null;
 }
@@ -1165,7 +1114,7 @@ function isNumber(obj) {
   return typeof obj === 'number';
 }
 /**
- * 判断是否为整数
+ * to tell you if the val can be transfer into data
  * @param  {Anything}  obj [description]
  * @return {Boolean}     [description]
  */
@@ -1190,8 +1139,8 @@ function isEmpty(obj) {
   }
 }
 /**
- * 判断是否是string
- * @param  {Anything}  str [description]
+ * 判断是否为事件
+ * @param  {Anything}  obj [description]
  * @return {Boolean}     [description]
  */
 function isString(str) {
@@ -1222,8 +1171,8 @@ function isPrimitive(val) {
   return isVoid(val) || isBoolean(val) || isString(val) || isNumber(val);
 }
 /**
- * to test if a HTML node
- * @param  {Anything}  obj [description]
+ * 判断是否为url且必须要带有协议头
+ * @param  {Anything}  str [description]
  * @return {Boolean}     [description]
  */
 function isNode(obj) {
@@ -1238,7 +1187,7 @@ function isElement(obj) {
   return !!((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? obj instanceof HTMLElement : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string');
 }
 /**
- * check if node B is node A's posterrity or not
+ * check if node A is node B's parent or not
  * @param  {Node}  parent
  * @param  {Node}  child
  * @return {Boolean}
@@ -1406,8 +1355,6 @@ Log.ENABLE_WARN = true;
 Log.ENABLE_DEBUG = true;
 Log.ENABLE_VERBOSE = true;
 
-// call something on iterator step with safe closing on error
-
 var _iterCall = function(iterator, fn, value, entries){
   try {
     return entries ? fn(_anObject(value)[0], value[1]) : fn(value);
@@ -1419,7 +1366,6 @@ var _iterCall = function(iterator, fn, value, entries){
   }
 };
 
-// check on default Array iterator
 var ITERATOR$1   = _wks('iterator');
 var ArrayProto = Array.prototype;
 
@@ -1432,7 +1378,6 @@ var _createProperty = function(object, index, value){
   else object[index] = value;
 };
 
-// getting tag from 19.1.3.6 Object.prototype.toString()
 var TAG$1 = _wks('toStringTag');
 var ARG = _cof(function(){ return arguments; }()) == 'Arguments';
 
@@ -1551,11 +1496,6 @@ var _toConsumableArray = unwrapExports(toConsumableArray);
  * Released under MIT
  */
 
-/**
- * 生成深度遍历函数的处理器，常用于生成深度拷贝等
- * @param  {Function} fn 遍历到深度变量的时候的操作
- * @return {Function}     可用的操作函数
- */
 function genTraversalHandler(fn) {
   function recursiveFn(source, target, key) {
     if (isArray(source) || isObject$1(source)) {
@@ -1656,6 +1596,11 @@ function bind(fn, context) {
   }
 }
 
+// **********************  计算类    ************************
+// 计算获取某种东西或者计算出某种东西
+// ********************************************************
+// 生成uuid
+
 var _anInstance = function(it, Constructor, name, forbiddenField){
   if(!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)){
     throw TypeError(name + ': incorrect invocation!');
@@ -1684,7 +1629,6 @@ exports.BREAK  = BREAK;
 exports.RETURN = RETURN;
 });
 
-// 7.3.20 SpeciesConstructor(O, defaultConstructor)
 var SPECIES   = _wks('species');
 var _speciesConstructor = function(O, D){
   var C = _anObject(O).constructor, S;
@@ -2171,19 +2115,11 @@ var _Promise = unwrapExports(promise);
  * Released under MIT
  */
 
-// **********************  judgement   ************************
-/**
- * check if the code running in browser environment (not include worker env)
- * @returns {Boolean}
- */
 var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
 
+// **********************  对象操作  ************************
 /**
- * sort Object attributes by function
- * and transfer them into array
- * @param  {Object} obj Object form from numric
- * @param  {Function} fn sort function
- * @return {Array} the sorted attirbutes array
+ * 转变一个类数组对象为数组
  */
 function transObjectAttrIntoArray(obj) {
   var fn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function (a, b) {
@@ -2242,15 +2178,11 @@ function runStoppableQueue(queue) {
   return step(0);
 }
 /**
- * 函数节流（控制函数执行频率）
- * @param  {Function} func 要节流控制的函数，必填
- * @return {Number}   wait 等待时长
- * @return {Object}   options {
- *                      leading<是否首次调用立即执行，否：则按wait设定等待到期后调用才执行>:false,
- *                      trailing<是否在调用并未到期时启用定时器，以保证一定执行>:true
- *                    }
- * @return {Object}   cxt 上下文对象
- * @return {Function}
+ * set an attribute to an object which is frozen.
+ * Means you can't remove it, iterate it or rewrite it.
+ * @param {!primitive} obj
+ * @param {string} key
+ * @param {Anything} value
  */
 function throttle(func, wait, options, cxt) {
   /* options的默认值
@@ -2304,7 +2236,8 @@ function throttle(func, wait, options, cxt) {
   };
 }
 
-// 19.1.2.1 Object.assign(target, source, ...)
+// requestAnimationFrame
+
 var $assign  = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
@@ -2332,9 +2265,6 @@ var _objectAssign = !$assign || _fails(function(){
   } return T;
 } : $assign;
 
-// 19.1.3.1 Object.assign(target, source)
-
-
 _export(_export.S + _export.F, 'Object', {assign: _objectAssign});
 
 var assign$1 = _core.Object.assign;
@@ -2345,7 +2275,6 @@ module.exports = { "default": assign$1, __esModule: true };
 
 var _Object$assign = unwrapExports(assign);
 
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 _export(_export.S, 'Object', {create: _objectCreate});
 
 var $Object$1 = _core.Object;
@@ -2365,19 +2294,6 @@ var _Object$create = unwrapExports(create);
  * Released under MIT
  */
 
-/**
-* @module event
-* @author huzunjie
-* @description 自定义事件基础类
-*/
-
-/* 缓存事件监听方法及包装，内部数据格式：
- * targetIndex_<type:'click|mouseup|done'>: [ [
- *   function(){ ... handler ... },
- *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
- *   isOnce
- * ]]
- */
 var _evtListenerCache = _Object$create(null);
 _evtListenerCache.count = 0;
 
@@ -2611,25 +2527,6 @@ var CustEvent = function () {
  * Released under MIT
  */
 
-/**
- * chimee-helper-events v0.1.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-/**
-* @module event
-* @author huzunjie
-* @description 自定义事件基础类
-*/
-
-/* 缓存事件监听方法及包装，内部数据格式：
- * targetIndex_<type:'click|mouseup|done'>: [ [
- *   function(){ ... handler ... },
- *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
- *   isOnce
- * ]]
- */
 var _evtListenerCache$1 = _Object$create(null);
 _evtListenerCache$1.count = 0;
 
@@ -3532,9 +3429,6 @@ var NodeWrap = function () {
  * Released under MIT
  */
 
-// 19.1.2.9 Object.getPrototypeOf(O)
-
-
 _objectSap('getPrototypeOf', function(){
   return function getPrototypeOf(it){
     return _objectGpo(_toObject(it));
@@ -3571,9 +3465,6 @@ exports.default = function (self, call) {
 
 var _possibleConstructorReturn = unwrapExports(possibleConstructorReturn);
 
-// Works with __proto__ only. Old v8 can't work with null proto objects.
-/* eslint-disable no-proto */
-
 var check = function(O, proto){
   _anObject(O);
   if(!_isObject(proto) && proto !== null)throw TypeError(proto + ": can't set as prototype!");
@@ -3595,8 +3486,6 @@ var _setProto = {
     }({}, false) : undefined),
   check: check
 };
-
-// 19.1.3.19 Object.setPrototypeOf(O, proto)
 
 _export(_export.S, 'Object', {setPrototypeOf: _setProto.set});
 
@@ -3644,7 +3533,6 @@ exports.default = function (subClass, superClass) {
 
 var _inherits = unwrapExports(inherits);
 
-// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
 var $getOwnPropertyDescriptor$1 = _objectGopd.f;
 
 _objectSap('getOwnPropertyDescriptor', function(){
@@ -26213,16 +26101,12 @@ var Bus = function () {
   return Bus;
 }();
 
-// all object keys, includes non-enumerable and symbols
 var Reflect  = _global.Reflect;
 var _ownKeys = Reflect && Reflect.ownKeys || function ownKeys(it){
   var keys       = _objectGopn.f(_anObject(it))
     , getSymbols = _objectGops.f;
   return getSymbols ? keys.concat(getSymbols(it)) : keys;
 };
-
-// https://github.com/tc39/proposal-object-getownpropertydescriptors
-
 
 _export(_export.S, 'Object', {
   getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object){
@@ -26253,7 +26137,6 @@ module.exports = { "default": getOwnPropertySymbols$2, __esModule: true };
 
 var _Object$getOwnPropertySymbols = unwrapExports(getOwnPropertySymbols$1);
 
-// 19.1.2.7 Object.getOwnPropertyNames(O)
 _objectSap('getOwnPropertyNames', function(){
   return _objectGopnExt.f;
 });
@@ -26366,20 +26249,9 @@ var _arraySpeciesConstructor = function(original){
   } return C === undefined ? Array : C;
 };
 
-// 9.4.2.3 ArraySpeciesCreate(originalArray, length)
-
-
 var _arraySpeciesCreate = function(original, length){
   return new (_arraySpeciesConstructor(original))(length);
 };
-
-// 0 -> Array#forEach
-// 1 -> Array#map
-// 2 -> Array#filter
-// 3 -> Array#some
-// 4 -> Array#every
-// 5 -> Array#find
-// 6 -> Array#findIndex
 
 var _arrayMethods = function(TYPE, $create){
   var IS_MAP        = TYPE == 1
@@ -26627,7 +26499,6 @@ exports.default = function (obj, key, value) {
 };
 });
 
-// 19.1.2.15 Object.preventExtensions(O)
 var meta     = _meta.onFreeze;
 
 _objectSap('preventExtensions', function($preventExtensions){
@@ -27653,11 +27524,6 @@ function number$1() {
   return accessor({ set: args, get: args });
 }
 
-/**
- * checker for on, off, once function
- * @param {string} key
- * @param {Function} fn
- */
 function eventBinderCheck(key, fn) {
   if (!isString(key)) throw new TypeError('key parameter must be String');
   if (!isFunction(fn)) throw new TypeError('fn parameter must be Function');
@@ -27817,13 +27683,6 @@ function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, c
   return desc;
 }
 
-/**
- * <pre>
- * Plugin is the class for plugin developer.
- * When we use a plugin, we will generate an instance of plugin.
- * Developer can do most of things base on this plugin
- * </pre>
- */
 var Plugin = (_dec$2 = autobindClass(), _dec2$2 = before(attrAndStyleCheck), _dec3$2 = before(attrAndStyleCheck), _dec4$2 = before(eventBinderCheck), _dec5$2 = before(eventBinderCheck), _dec6$1 = before(eventBinderCheck), _dec$2(_class$2 = (_class2$1 = function (_VideoWrapper) {
   inherits$1(Plugin, _VideoWrapper);
 
@@ -28930,6 +28789,7 @@ function setPlaysInline() {
     }
   });
 }
+
 var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
   set: function set$$1(val) {
     if (this.needToLoadSrc) {
@@ -29031,12 +28891,12 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
     }
   }]);
   return VideoConfig;
-}(), (_descriptor$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'needToLoadSrc', [nonenumerable], {
+}(), (_descriptor$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'needToLoadSrc', [nonconfigurable, nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor2$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'src', [_dec$4, _dec2$4, _dec3$4], {
+}), _descriptor2$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'src', [nonconfigurable, _dec$4, _dec2$4, _dec3$4], {
   enumerable: true,
   initializer: function initializer() {
     return '';
@@ -29056,92 +28916,92 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
   initializer: function initializer() {
     return ['html5', 'flash'];
   }
-}), _descriptor6 = _applyDecoratedDescriptor$4(_class$4.prototype, 'autoplay', [_dec7$1, _dec8$1], {
+}), _descriptor6 = _applyDecoratedDescriptor$4(_class$4.prototype, 'autoplay', [nonconfigurable, _dec7$1, _dec8$1], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor7 = _applyDecoratedDescriptor$4(_class$4.prototype, 'autoload', [_dec9], {
+}), _descriptor7 = _applyDecoratedDescriptor$4(_class$4.prototype, 'autoload', [nonconfigurable, _dec9], {
   enumerable: true,
   initializer: function initializer() {
     return true;
   }
-}), _descriptor8 = _applyDecoratedDescriptor$4(_class$4.prototype, 'controls', [_dec10, _dec11], {
+}), _descriptor8 = _applyDecoratedDescriptor$4(_class$4.prototype, 'controls', [nonconfigurable, _dec10, _dec11], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor9 = _applyDecoratedDescriptor$4(_class$4.prototype, 'width', [_dec12, _dec13], {
+}), _descriptor9 = _applyDecoratedDescriptor$4(_class$4.prototype, 'width', [nonconfigurable, _dec12, _dec13], {
   enumerable: true,
   initializer: function initializer() {
     return undefined;
   }
-}), _descriptor10 = _applyDecoratedDescriptor$4(_class$4.prototype, 'height', [_dec14, _dec15], {
+}), _descriptor10 = _applyDecoratedDescriptor$4(_class$4.prototype, 'height', [nonconfigurable, _dec14, _dec15], {
   enumerable: true,
   initializer: function initializer() {
     return undefined;
   }
-}), _descriptor11 = _applyDecoratedDescriptor$4(_class$4.prototype, 'crossorigin', [_dec16, _dec17], {
+}), _descriptor11 = _applyDecoratedDescriptor$4(_class$4.prototype, 'crossorigin', [nonconfigurable, _dec16, _dec17], {
   enumerable: true,
   initializer: function initializer() {
     return undefined;
   }
-}), _descriptor12 = _applyDecoratedDescriptor$4(_class$4.prototype, 'loop', [_dec18, _dec19], {
+}), _descriptor12 = _applyDecoratedDescriptor$4(_class$4.prototype, 'loop', [nonconfigurable, _dec18, _dec19], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor13 = _applyDecoratedDescriptor$4(_class$4.prototype, 'defaultMuted', [_dec20, _dec21], {
+}), _descriptor13 = _applyDecoratedDescriptor$4(_class$4.prototype, 'defaultMuted', [nonconfigurable, _dec20, _dec21], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor14 = _applyDecoratedDescriptor$4(_class$4.prototype, 'muted', [_dec22, _dec23], {
+}), _descriptor14 = _applyDecoratedDescriptor$4(_class$4.prototype, 'muted', [nonconfigurable, _dec22, _dec23], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor15 = _applyDecoratedDescriptor$4(_class$4.prototype, 'preload', [_dec24, _dec25], {
+}), _descriptor15 = _applyDecoratedDescriptor$4(_class$4.prototype, 'preload', [nonconfigurable, _dec24, _dec25], {
   enumerable: true,
   initializer: function initializer() {
     return undefined;
   }
-}), _descriptor16 = _applyDecoratedDescriptor$4(_class$4.prototype, 'poster', [_dec26, _dec27], {
+}), _descriptor16 = _applyDecoratedDescriptor$4(_class$4.prototype, 'poster', [nonconfigurable, _dec26, _dec27], {
   enumerable: true,
   initializer: function initializer() {
     return '';
   }
-}), _descriptor17 = _applyDecoratedDescriptor$4(_class$4.prototype, 'playsinline', [_dec28, _dec29], {
+}), _descriptor17 = _applyDecoratedDescriptor$4(_class$4.prototype, 'playsinline', [nonconfigurable, _dec28, _dec29], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor18 = _applyDecoratedDescriptor$4(_class$4.prototype, 'x5VideoPlayerFullScreen', [_dec30, _dec31], {
+}), _descriptor18 = _applyDecoratedDescriptor$4(_class$4.prototype, 'x5VideoPlayerFullScreen', [nonconfigurable, _dec30, _dec31], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor19 = _applyDecoratedDescriptor$4(_class$4.prototype, 'x5VideoOrientation', [_dec32, _dec33], {
+}), _descriptor19 = _applyDecoratedDescriptor$4(_class$4.prototype, 'x5VideoOrientation', [nonconfigurable, _dec32, _dec33], {
   enumerable: true,
   initializer: function initializer() {
     return undefined;
   }
-}), _descriptor20 = _applyDecoratedDescriptor$4(_class$4.prototype, 'xWebkitAirplay', [_dec34, _dec35], {
+}), _descriptor20 = _applyDecoratedDescriptor$4(_class$4.prototype, 'xWebkitAirplay', [nonconfigurable, _dec34, _dec35], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor21 = _applyDecoratedDescriptor$4(_class$4.prototype, 'playbackRate', [_dec36, _dec37], {
+}), _descriptor21 = _applyDecoratedDescriptor$4(_class$4.prototype, 'playbackRate', [nonconfigurable, _dec36, _dec37], {
   enumerable: true,
   initializer: function initializer() {
     return 1;
   }
-}), _descriptor22 = _applyDecoratedDescriptor$4(_class$4.prototype, 'defaultPlaybackRate', [_dec38, _dec39], {
+}), _descriptor22 = _applyDecoratedDescriptor$4(_class$4.prototype, 'defaultPlaybackRate', [nonconfigurable, _dec38, _dec39], {
   enumerable: true,
   initializer: function initializer() {
     return 1;
   }
-}), _descriptor23 = _applyDecoratedDescriptor$4(_class$4.prototype, 'disableRemotePlayback', [_dec40, _dec41], {
+}), _descriptor23 = _applyDecoratedDescriptor$4(_class$4.prototype, 'disableRemotePlayback', [nonconfigurable, _dec40, _dec41], {
   enumerable: true,
   initializer: function initializer() {
     return false;

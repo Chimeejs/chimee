@@ -39,8 +39,10 @@ function setPlaysInline () {
     }
   });
 }
+
 export default class VideoConfig {
   dispatcher: Dispatcher;
+  @configurable
   @nonenumerable
   needToLoadSrc = false;
   constructor (dispatcher: Dispatcher, config: Object) {
@@ -52,6 +54,7 @@ export default class VideoConfig {
     });
     deepAssign(this, config);
   }
+  @configurable
   @alwaysString()
   @accessor({
     set (val: string) {
@@ -82,56 +85,74 @@ export default class VideoConfig {
   @configurable
   @initArray()
   runtimeOrder = ['html5', 'flash'];
+  @configurable
   @setVideo('autoplay', true)
   @alwaysBoolean()
   autoplay = false;
+  @configurable
   @alwaysBoolean()
   autoload = true;
+  @configurable
   @setVideo('controls', true)
   @alwaysBoolean()
   controls = false;
+  @configurable
   @setVideo('width')
   @accessor({set: numberOrVoid})
   width = undefined;
+  @configurable
   @setVideo('height')
   @accessor({set: numberOrVoid})
   height = undefined;
+  @configurable
   @setVideo('crossorigin')
   @accessor({set: stringOrVoid})
   crossorigin = undefined;
+  @configurable
   @setVideo('loop', true)
   @alwaysBoolean()
   loop = false;
+  @configurable
   @setVideo('defaultMuted')
   @alwaysBoolean()
   defaultMuted = false;
+  @configurable
   @setVideo('muted')
   @alwaysBoolean()
   muted = false;
+  @configurable
   @setVideo('preload')
   @accessor({set: stringOrVoid})
   preload = undefined;
+  @configurable
   @setVideo('poster')
   @alwaysString()
   poster = '';
+  @configurable
   @setPlaysInline()
   @alwaysBoolean()
   playsinline = false;
+  @configurable
   @setVideo('x5-video-player-fullscreen', true)
   @alwaysBoolean()
   x5VideoPlayerFullScreen = false;
+  @configurable
   @setVideo('x5-video-orientation')
   @accessor({set: stringOrVoid})
   x5VideoOrientation = undefined;
+  @configurable
   @setVideo('x-webkit-airplay', true)
   @alwaysBoolean()
   xWebkitAirplay = false;
+  @configurable
   @setVideo('playbackRate')
   @alwaysNumber(1)
   playbackRate = 1;
+  @configurable
   @setVideo('defaultPlaybackRate')
   @alwaysNumber(1)
   defaultPlaybackRate = 1;
+  @configurable
   @setVideo('disableRemotePlayback', true)
   @alwaysBoolean()
   disableRemotePlayback = false;
