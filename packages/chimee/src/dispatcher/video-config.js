@@ -132,8 +132,6 @@ export default class VideoConfig {
   @setVideo('disableRemotePlayback', true)
   @alwaysBoolean()
   disableRemotePlayback = false;
-  @frozen
-  _kernelProperty = ['type', 'box', 'runtimeOrder'];
   get volume (): number {
     return this.dispatcher.dom.videoElement.volume;
   }
@@ -141,12 +139,16 @@ export default class VideoConfig {
     this.dispatcher.dom.videoElement.volume = volume;
   }
   @frozen
+  _kernelProperty = ['type', 'box', 'runtimeOrder'];
+  @frozen
   _realDomAttr = ['src', 'controls', 'width', 'height', 'crossorigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsinline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
   lockKernelProperty () {
+    // const desc = Object.getOwnPropertyDescriptor(this, 'type');
+    // if(desc.configurable) console.warn(desc);
     applyDecorators(this, {
       type: lock,
       box: lock,
       runtimeOrder: lock
-    }, {self: true});
+    }, {self: true, omit: true});
   }
 }
