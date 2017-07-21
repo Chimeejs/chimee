@@ -146,8 +146,6 @@ export default class VideoConfig {
   @frozen
   _realDomAttr = ['src', 'controls', 'width', 'height', 'crossorigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsinline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
   lockKernelProperty () {
-    // const desc = Object.getOwnPropertyDescriptor(this, 'type');
-    // if(desc.configurable) console.warn(desc);
     applyDecorators(this, {
       type: lock,
       box: lock,
