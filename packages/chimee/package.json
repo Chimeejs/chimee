@@ -43,7 +43,7 @@
     "babel-runtime": "^6.23.0",
     "chimee-helper": "^0.1.10",
     "chimee-kernel": "^1.0.3",
-    "toxic-decorators": "^0.3.2"
+    "toxic-decorators": "^0.3.3"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

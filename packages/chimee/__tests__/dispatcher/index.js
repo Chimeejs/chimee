@@ -238,11 +238,7 @@ describe('dispatcher', () => {
           expect(this.box).toBe('mp4');
         }
         inited () {
-          // this.box = 'hls';
-          // console.log(this.box, this.$videoConfig.box);
-          // console.log(Object.getOwnPropertyDescriptor(this, 'box'), Object.getOwnPropertyDescriptor(this.$videoConfig, 'box'));
-          // console.error(Object.getOwnPropertyDescriptor(this, 'box'));
-          // expect(() => {this.box = 'hls';}).toThrow();
+          expect(() => {this.box = 'hls';}).toThrow();
         }
       }
       Dispatcher.install(LockKernelProperty);

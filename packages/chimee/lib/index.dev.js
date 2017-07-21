@@ -26472,6 +26472,33 @@ module.exports = { "default": weakMap$1, __esModule: true };
 
 var _WeakMap = unwrapExports(weakMap);
 
+var defineProperty$6$1 = createCommonjsModule(function (module, exports) {
+"use strict";
+
+exports.__esModule = true;
+
+
+
+var _defineProperty2 = _interopRequireDefault(defineProperty);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (obj, key, value) {
+  if (key in obj) {
+    (0, _defineProperty2.default)(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+};
+});
+
 var meta     = _meta.onFreeze;
 
 _objectSap('preventExtensions', function($preventExtensions){
@@ -26489,7 +26516,7 @@ module.exports = { "default": preventExtensions$2, __esModule: true };
 var _Object$preventExtensions = unwrapExports(preventExtensions$1);
 
 /**
- * toxic-decorators v0.3.1
+ * toxic-decorators v0.3.3
  * (c) 2017 toxic-johann
  * Released under GPL-3.0
  */
@@ -27349,99 +27376,70 @@ function lock(obj, prop, descriptor) {
   return descriptor;
 }
 
-var getOwnPropertyDescriptor$3$1 = _Object$getOwnPropertyDescriptor;
-var defineProperty$6 = _Object$defineProperty;
-
-var Hooks = function () {
-  function Hooks(_ref) {
-    var prop = _ref.prop,
-        handler = _ref.handler,
-        deep = _ref.deep;
-
-    _classCallCheck(this, Hooks);
-
-    this.oldVal = undefined;
-    this.newVal = undefined;
-    this.inited = false;
-
-    this.prop = prop;
-    this.handler = handler;
-    this.deep = deep;
+function nonenumerable(obj, prop, descriptor) {
+  if (descriptor === undefined) {
+    return {
+      value: undefined,
+      enumerable: false,
+      configurable: true,
+      writable: true
+    };
   }
+  descriptor.enumerable = false;
+  return descriptor;
+}
 
-  _createClass(Hooks, [{
-    key: 'pre',
-    value: function pre(value, context) {
-      this.oldVal = context[this.prop];
-      return value;
-    }
-  }, {
-    key: 'post',
-    value: function post(value, context) {
-      var oldVal = this.oldVal,
-          handler = this.handler,
-          deep = this.deep,
-          prop = this.prop;
+var defineProperty$6 = _Object$defineProperty;
+var getOwnPropertyDescriptor$3$1 = _Object$getOwnPropertyDescriptor;
 
-      if (oldVal === value) return value;
-      var newVal = this.newVal = context[prop];
-      bind(handler, context)(newVal, oldVal);
-      if (deep) this.iterate(newVal, context);
-      this.inited = true;
-      this.oldVal = newVal;
-      return value;
-    }
-  }, {
-    key: 'getter',
-    value: function getter(value, context) {
-      var inited = this.inited,
-          oldVal = this.oldVal,
-          deep = this.deep;
 
-      if (!inited && oldVal !== value) {
-        this.inited = true;
-        this.oldVal = value;
-        if (deep) this.iterate(value, context);
-      }
-      return value;
-    }
-  }, {
-    key: 'deepObeserve',
-    value: function deepObeserve(obj, key, context) {
-      var handler = this.handler,
-          deep = this.deep;
+function applyDecorators(Class, props) {
+  var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+      _ref$self = _ref.self,
+      self = _ref$self === undefined ? false : _ref$self,
+      _ref$omit = _ref.omit,
+      omit = _ref$omit === undefined ? false : _ref$omit;
 
-      var descriptor = getOwnPropertyDescriptor$3$1(obj, key);
-      if (descriptor.writable === false || descriptor.configurable === false) return;
-      var hooks = new Hooks({ prop: key, handler: handler, deep: deep });
-      defineProperty$6(obj, key, compressMultipleDecorators(accessor({
-        set: function set(value) {
-          return hooks.pre(value, context);
-        },
-        get: function get(value) {
-          return hooks.getter(value, context);
-        }
-      }, { preSet: true }), accessor({
-        set: function set(value) {
-          return hooks.post(value, context);
-        }
-      }, { preSet: false }))(obj, key, descriptor));
-    }
-  }, {
-    key: 'iterate',
-    value: function iterate(value, context) {
-      if (isObject$1(value) || isArray(value)) {
-        var keys$$1 = getOwnKeys(value);
-        for (var i = 0, len = keys$$1.length; i < len; i++) {
-          var key = keys$$1[i];
-          this.deepObeserve(value, key, context);
-        }
+  var isPropsFunction = isFunction(props);
+  if (isPropsFunction || isArray(props)) {
+    // apply decorators on class
+    if (!isFunction(Class)) throw new TypeError('If you want to decorator class, you must pass it a legal class');
+    // $FlowFixMe: Terrible union, it's function now
+    if (isPropsFunction) props(Class);else {
+      // $FlowFixMe: Terrible union, it's array now
+      for (var i = 0, len = props.length; i < len; i++) {
+        // $FlowFixMe: Terrible union, it's array now
+        var fn = props[i];
+        if (!isFunction(fn)) throw new TypeError('If you want to decorate an class, you must pass it function or array of function');
+        fn(Class);
       }
     }
-  }]);
-
-  return Hooks;
-}();
+    return Class;
+  }
+  if (!self && !isFunction(Class)) throw new TypeError('applyDecorators only accept class as first arguments. If you want to modify instance, you should set options.self true.');
+  if (self && isPrimitive(Class)) throw new TypeError("We can't apply docorators on a primitive value, even in self mode");
+  if (!isObject$1(props)) throw new TypeError('applyDecorators only accept object as second arguments');
+  var prototype = self ? Class : Class.prototype;
+  if (isVoid(prototype)) throw new Error('The class muse have a prototype, please take a check');
+  for (var key in props) {
+    var value = props[key];
+    var decorators = isArray(value) ? value : [value];
+    var handler = void 0;
+    try {
+      handler = compressMultipleDecorators.apply(undefined, _toConsumableArray(decorators));
+    } catch (err) {
+      warn(err && err.message);
+      throw new Error('The decorators set on props must be Function or Array of Function');
+    }
+    var descriptor = getOwnPropertyDescriptor$3$1(prototype, key);
+    if (descriptor && !descriptor.configurable) {
+      if (!omit) throw new Error(key + ' of ' + prototype + ' is unconfigurable');
+      continue;
+    }
+    defineProperty$6(prototype, key, handler(prototype, key, descriptor));
+  }
+  return Class;
+}
 
 var preventExtensions = _Object$preventExtensions;
 
@@ -27453,16 +27451,16 @@ function nonextendable(obj, prop, descriptor) {
   })(obj, prop, descriptor);
 }
 
-function nonenumerable(obj, prop, descriptor) {
+function nonconfigurable(obj, prop, descriptor) {
   if (descriptor === undefined) {
     return {
       value: undefined,
-      enumerable: false,
+      enumerable: true,
       configurable: true,
       writable: true
     };
   }
-  descriptor.enumerable = false;
+  descriptor.configurable = true;
   return descriptor;
 }
 
@@ -27524,52 +27522,6 @@ function number$1() {
     return isNumber(value) ? value : defaultValue;
   });
   return accessor({ set: args, get: args });
-}
-
-var defineProperty$7 = _Object$defineProperty;
-var getOwnPropertyDescriptor$4 = _Object$getOwnPropertyDescriptor;
-
-
-function applyDecorators(Class, props) {
-  var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
-      _ref$self = _ref.self,
-      self = _ref$self === undefined ? false : _ref$self;
-
-  var isPropsFunction = isFunction(props);
-  if (isPropsFunction || isArray(props)) {
-    // apply decorators on class
-    if (!isFunction(Class)) throw new TypeError('If you want to decorator class, you must pass it a legal class');
-    // $FlowFixMe: Terrible union, it's function now
-    if (isPropsFunction) props(Class);else {
-      // $FlowFixMe: Terrible union, it's array now
-      for (var i = 0, len = props.length; i < len; i++) {
-        // $FlowFixMe: Terrible union, it's array now
-        var fn = props[i];
-        if (!isFunction(fn)) throw new TypeError('If you want to decorate an class, you must pass it function or array of function');
-        fn(Class);
-      }
-    }
-    return Class;
-  }
-  if (!self && !isFunction(Class)) throw new TypeError('applyDecorators only accept class as first arguments. If you want to modify instance, you should set options.self true.');
-  if (self && isPrimitive(Class)) throw new TypeError("We can't apply docorators on a primitive value, even in self mode");
-  if (!isObject$1(props)) throw new TypeError('applyDecorators only accept object as second arguments');
-  var prototype = self ? Class : Class.prototype;
-  if (isVoid(prototype)) throw new Error('The class muse have a prototype, please take a check');
-  for (var key in props) {
-    var value = props[key];
-    var decorators = isArray(value) ? value : [value];
-    var handler = void 0;
-    try {
-      handler = compressMultipleDecorators.apply(undefined, _toConsumableArray(decorators));
-    } catch (err) {
-      warn(err && err.message);
-      throw new Error('The decorators set on props must be Function or Array of Function');
-    }
-    var descriptor = getOwnPropertyDescriptor$4(prototype, key);
-    defineProperty$7(prototype, key, handler(prototype, key, descriptor));
-  }
-  return Class;
 }
 
 function eventBinderCheck(key, fn) {
@@ -28922,6 +28874,8 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
   createClass$1(VideoConfig, [{
     key: 'lockKernelProperty',
     value: function lockKernelProperty() {
+      // const desc = Object.getOwnPropertyDescriptor(this, 'type');
+      // if(desc.configurable) console.warn(desc);
       applyDecorators(this, {
         type: lock,
         box: lock,
@@ -28948,17 +28902,17 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
   initializer: function initializer() {
     return '';
   }
-}), _descriptor3$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'type', [_dec4$4], {
+}), _descriptor3$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'type', [nonconfigurable, _dec4$4], {
   enumerable: true,
   initializer: function initializer() {
     return 'vod';
   }
-}), _descriptor4 = _applyDecoratedDescriptor$4(_class$4.prototype, 'box', [_dec5$4], {
+}), _descriptor4 = _applyDecoratedDescriptor$4(_class$4.prototype, 'box', [nonconfigurable, _dec5$4], {
   enumerable: true,
   initializer: function initializer() {
     return '';
   }
-}), _descriptor5 = _applyDecoratedDescriptor$4(_class$4.prototype, 'runtimeOrder', [_dec6$3], {
+}), _descriptor5 = _applyDecoratedDescriptor$4(_class$4.prototype, 'runtimeOrder', [nonconfigurable, _dec6$3], {
   enumerable: true,
   initializer: function initializer() {
     return ['html5', 'flash'];
