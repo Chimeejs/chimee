@@ -1,5 +1,5 @@
 // @flow
-import {alwaysString, initString, initArray, accessor, alwaysBoolean, frozen, alwaysNumber, nonenumerable, lock, applyDecorators} from 'toxic-decorators';
+import {alwaysString, initString, initArray, accessor, alwaysBoolean, frozen, alwaysNumber, nonenumerable, lock, applyDecorators, configurable} from 'toxic-decorators';
 import {isNumber, isString, deepAssign} from 'chimee-helper';
 function setVideo (key: string, isBooleanAttribute?: boolean) {
   return accessor({
@@ -73,10 +73,13 @@ export default class VideoConfig {
     }
   })
   src = '';
+  @configurable
   @initString()
   type = 'vod';
+  @configurable
   @initString(str => str.toLocaleLowerCase())
   box = '';
+  @configurable
   @initArray()
   runtimeOrder = ['html5', 'flash'];
   @setVideo('autoplay', true)
@@ -149,6 +152,6 @@ export default class VideoConfig {
       type: lock,
       box: lock,
       runtimeOrder: lock
-    }, {self: true, omit: true});
+    }, {self: true});
   }
 }
