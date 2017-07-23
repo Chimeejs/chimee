@@ -179,6 +179,7 @@ describe('Chimee', () => {
   });
 
   describe('video attr', () => {
+    let videoElement;
     beforeEach(() => {
       player = new Chimee({
         // 播放地址
@@ -192,6 +193,7 @@ describe('Chimee', () => {
         plugin: [],
         events: {}
       });
+      videoElement = player.__dispatcher.dom.videoElement;
     });
     test('buffered', () => {
       expect(typeof player.buffered.start).toBe('function');
@@ -199,32 +201,41 @@ describe('Chimee', () => {
       expect(typeof player.buffered.length).toBe('number');
     });
     test('duration', () => {
-      expect(player.duration).toBe(player.__dispatcher.dom.videoElement.duration);
+      expect(player.duration).toBe(videoElement.duration);
       expect(() => {player.duration = 40;}).toThrow();
     });
     test('volume', () => {
-      expect(player.volume).toBe(player.__dispatcher.dom.videoElement.volume);
+      expect(player.volume).toBe(videoElement.volume);
       player.volume = 1;
       expect(player.volume).toBe(1);
-      expect(player.volume).toBe(player.__dispatcher.dom.videoElement.volume);
+      expect(player.volume).toBe(videoElement.volume);
+      videoElement.volume = 0.3;
+      expect(player.volume).toBe(0.3);
+      expect(player.volume).toBe(videoElement.volume);
     });
     test('defaultMuted', () => {
       expect(player.defaultMuted).toBe(false);
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'muted')).toBe(null);
-      expect(player.__dispatcher.dom.videoElement.defaultMuted).toBe(false);
+      expect(getAttr(videoElement, 'muted')).toBe(null);
+      expect(videoElement.defaultMuted).toBe(false);
       player.defaultMuted = true;
       expect(player.defaultMuted).toBe(true);
-      expect(player.__dispatcher.dom.videoElement.defaultMuted).toBe(true);
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'muted')).toBe('');
+      expect(videoElement.defaultMuted).toBe(true);
+      expect(getAttr(videoElement, 'muted')).toBe('');
+      videoElement.defaultMuted = false;
+      expect(player.defaultMuted).toBe(false);
+      expect(getAttr(videoElement, 'muted')).toBe(null);
     });
     test('muted', () => {
       expect(player.muted).toBe(false);
       player.muted = true;
       expect(player.muted).toBe(true);
-      expect(player.muted).toBe(player.__dispatcher.dom.videoElement.muted);
+      expect(player.muted).toBe(videoElement.muted);
+      videoElement.muted = false;
+      expect(player.muted).toBe(false);
+      expect(player.muted).toBe(videoElement.muted);
     });
     test('currentTime', () => {
-      expect(player.currentTime).toBe(player.__dispatcher.dom.videoElement.currentTime);
+      expect(player.currentTime).toBe(videoElement.currentTime);
       expect(player.currentTime).toBe(player.__dispatcher.kernel.currentTime);
       player.currentTime = 99;
       expect(player.currentTime).toBe(99);
@@ -235,120 +246,144 @@ describe('Chimee', () => {
       player.src = url;
       setTimeout(() => {
         expect(player.src).toBe(url);
-        expect(player.__dispatcher.dom.videoElement.src).toBe(player.src);
+        expect(videoElement.src).toBe(player.src);
         done();
       }, 0);
     });
     test('autoplay', () => {
       player.autoplay = true;
       expect(player.autoplay).toBe(true);
-      expect(player.__dispatcher.dom.videoElement.autoplay).toBe(true);
+      expect(videoElement.autoplay).toBe(true);
       player.autoplay = false;
       expect(player.autoplay).toBe(false);
-      expect(player.__dispatcher.dom.videoElement.autoplay).toBe(false);
+      expect(videoElement.autoplay).toBe(false);
+      videoElement.autoplay = true;
+      expect(player.autoplay).toBe(true);
+      expect(videoElement.autoplay).toBe(true);
     });
     test('controls', () => {
       player.controls = true;
       expect(player.controls).toBe(true);
-      expect(player.__dispatcher.dom.videoElement.controls).toBe(true);
+      expect(videoElement.controls).toBe(true);
       player.controls = false;
       expect(player.controls).toBe(false);
-      expect(player.__dispatcher.dom.videoElement.controls).toBe(false);
+      expect(videoElement.controls).toBe(false);
+      videoElement.controls = true;
+      expect(player.controls).toBe(true);
+      expect(videoElement.controls).toBe(true);
     });
     test('loop', () => {
       player.loop = true;
       expect(player.loop).toBe(true);
-      expect(player.__dispatcher.dom.videoElement.loop).toBe(true);
+      expect(videoElement.loop).toBe(true);
       player.loop = false;
       expect(player.loop).toBe(false);
-      expect(player.__dispatcher.dom.videoElement.loop).toBe(false);
+      expect(videoElement.loop).toBe(false);
+      videoElement.loop = true;
+      expect(player.loop).toBe(true);
+      expect(videoElement.loop).toBe(true);
     });
     test('preload', () => {
-      expect(player.preload).toBe();
-      expect(player.__dispatcher.dom.videoElement.preload).toBe('');
+      expect(player.preload).toBe('auto');
+      expect(videoElement.preload).toBe('auto');
       player.preload = 'none';
       expect(player.preload).toBe('none');
-      expect(player.__dispatcher.dom.videoElement.preload).toBe('none');
+      expect(videoElement.preload).toBe('none');
       player.preload = 'auto';
       expect(player.preload).toBe('auto');
-      expect(player.__dispatcher.dom.videoElement.preload).toBe('auto');
+      expect(videoElement.preload).toBe('auto');
     });
     test('width', () => {
       player.width = 100;
       expect(player.width).toBe(100);
-      expect(player.__dispatcher.dom.videoElement.width).toBe(100);
+      expect(videoElement.width).toBe(100);
+      videoElement.width = 10;
+      expect(player.width).toBe(10);
+      expect(videoElement.width).toBe(10);
     });
     test('height', () => {
       player.height = 100;
       expect(player.height).toBe(100);
-      expect(player.__dispatcher.dom.videoElement.height).toBe(100);
+      expect(videoElement.height).toBe(100);
+      videoElement.height = 10;
+      expect(player.height).toBe(10);
+      expect(videoElement.height).toBe(10);
     });
     test('crossorigin', () => {
       player.crossorigin = 'use-credentials';
       expect(player.crossorigin).toBe('use-credentials');
-      expect(player.__dispatcher.dom.videoElement.crossOrigin).toBe('use-credentials');
+      expect(videoElement.crossOrigin).toBe('use-credentials');
     });
     test('poster', () => {
       expect(player.poster).toBe('');
-      expect(player.__dispatcher.dom.videoElement.poster).toBe('');
+      expect(videoElement.poster).toBe('');
       const url = 'https://www.baidu.com/';
       player.poster = url;
       expect(player.poster).toBe(url);
-      expect(player.__dispatcher.dom.videoElement.poster).toBe(url);
+      expect(videoElement.poster).toBe(url);
     });
     test('playsinline', () => {
       expect(player.playsinline).toBe(false);
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'playsinline')).toBe(null);
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'webkit-playsinline')).toBe(null);
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'x5-video-player-type')).toBe(null);
+      expect(getAttr(videoElement, 'playsinline')).toBe(null);
+      expect(getAttr(videoElement, 'webkit-playsinline')).toBe(null);
+      expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
       player.playsinline = true;
       expect(player.playsinline).toBe(true);
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'playsinline')).toBe('true');
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'webkit-playsinline')).toBe('true');
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'x5-video-player-type')).toBe('h5');
+      expect(getAttr(videoElement, 'playsinline')).toBe('true');
+      expect(getAttr(videoElement, 'webkit-playsinline')).toBe('true');
+      expect(getAttr(videoElement, 'x5-video-player-type')).toBe('h5');
     });
     test('x5VideoPlayerFullScreen', () => {
       expect(player.x5VideoPlayerFullScreen).toBe(false);
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'x5-video-player-fullscreen')).toBe(null);
+      expect(getAttr(videoElement, 'x5-video-player-fullscreen')).toBe(null);
       player.x5VideoPlayerFullScreen = true;
       expect(player.x5VideoPlayerFullScreen).toBe(true);
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'x5-video-player-fullscreen')).toBe('true');
+      expect(getAttr(videoElement, 'x5-video-player-fullscreen')).toBe('true');
     });
     test('xWebkitAirplay', () => {
       expect(player.xWebkitAirplay).toBe(false);
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'x-webkit-airplay')).toBe(null);
+      expect(getAttr(videoElement, 'x-webkit-airplay')).toBe(null);
       player.xWebkitAirplay = true;
       expect(player.xWebkitAirplay).toBe(true);
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'x-webkit-airplay')).toBe('true');
+      expect(getAttr(videoElement, 'x-webkit-airplay')).toBe('true');
     });
     test('x5VideoOrientation', () => {
       expect(player.x5VideoOrientation).toBe();
-       expect(getAttr(player.__dispatcher.dom.videoElement, 'x5-video-orientation')).toBe(null);
+      expect(getAttr(videoElement, 'x5-video-orientation')).toBe(null);
       player.x5VideoOrientation = 'landscape';
       expect(player.x5VideoOrientation).toBe('landscape');
-      expect(getAttr(player.__dispatcher.dom.videoElement, 'x5-video-orientation')).toBe('landscape');
+      expect(getAttr(videoElement, 'x5-video-orientation')).toBe('landscape');
     });
     test('playbackRate', () => {
-      expect(player.playbackRate).toBe(player.__dispatcher.dom.videoElement.playbackRate);
+      expect(player.playbackRate).toBe(videoElement.playbackRate);
       player.playbackRate = 2;
-      expect(player.playbackRate).toBe(player.__dispatcher.dom.videoElement.playbackRate);
+      expect(player.playbackRate).toBe(videoElement.playbackRate);
       expect(player.playbackRate).toBe(2);
+      videoElement.playbackRate = 3;
+      expect(player.playbackRate).toBe(videoElement.playbackRate);
+      expect(player.playbackRate).toBe(3);
     });
     test('defaultPlaybackRate', () => {
-      expect(player.defaultPlaybackRate).toBe(player.__dispatcher.dom.videoElement.defaultPlaybackRate);
+      expect(player.defaultPlaybackRate).toBe(videoElement.defaultPlaybackRate);
       player.defaultPlaybackRate = 2;
-      expect(player.defaultPlaybackRate).toBe(player.__dispatcher.dom.videoElement.defaultPlaybackRate);
+      expect(player.defaultPlaybackRate).toBe(videoElement.defaultPlaybackRate);
       expect(player.defaultPlaybackRate).toBe(2);
+      videoElement.defaultPlaybackRate = 3;
+      expect(player.defaultPlaybackRate).toBe(videoElement.defaultPlaybackRate);
+      expect(player.defaultPlaybackRate).toBe(3);
     });
     test('disableRemotePlayback', () => {
-      expect(player.__dispatcher.dom.videoElement.disableRemotePlayback).toBe(false);
-      expect(player.disableRemotePlayback).toBe(false);
+      expect(player.disableRemotePlayback).toBe(videoElement.disableRemotePlayback);
       player.disableRemotePlayback = true;
       expect(player.disableRemotePlayback).toBe(true);
+      expect(videoElement.disableRemotePlayback).toBe(true);
+      videoElement.disableRemotePlayback = false;
+      expect(videoElement.disableRemotePlayback).toBe(false);
+      expect(player.disableRemotePlayback).toBe(false);
     });
     videoReadOnlyProperties.forEach(key => {
       test(key, () => {
-        expect(player[key]).toBe(player.__dispatcher.dom.videoElement[key]);
+        expect(player[key]).toBe(videoElement[key]);
       });
     });
     describe('autoload', async () => {
@@ -430,11 +465,11 @@ describe('Chimee', () => {
     });
     test('attr on video property', () => {
       player.__dispatcher.videoConfigReady = false;
-      player.attr('video', 'controls', true);
+      player.attr('video', 'controls', false);
       expect(player.attr('video', 'controls')).toBe(null);
       player.__dispatcher.videoConfigReady = true;
-      player.attr('video', 'controls', true);
-      expect(player.attr('video', 'controls')).toBe('true');
+      player.attr('video', 'controls', false);
+      expect(player.attr('video', 'controls')).toBe(null);
     });
     test('attr on video property but it is not in videoconfig', () => {
       player.__dispatcher.videoConfigReady = false;

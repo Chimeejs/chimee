@@ -1,6 +1,7 @@
 __mocks__/
 __tests__/
 build/
+lib/index.dev.js
 coverage/
 demo/
 doc/

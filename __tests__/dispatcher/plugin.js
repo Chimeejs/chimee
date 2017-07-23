@@ -437,8 +437,8 @@ describe('dispatcher/plugin', () => {
       expect(dispatcher.dom.videoElement.loop).toBe(false);
     });
     test('preload', () => {
-      expect(plugin.preload).toBe();
-      expect(dispatcher.dom.videoElement.preload).toBe('');
+      expect(plugin.preload).toBe('auto');
+      expect(dispatcher.dom.videoElement.preload).toBe('auto');
       plugin.preload = 'none';
       expect(plugin.preload).toBe('none');
       expect(dispatcher.dom.videoElement.preload).toBe('none');
@@ -542,10 +542,10 @@ describe('dispatcher/plugin', () => {
       plugin.$attr('video', 'controls', true);
       expect(plugin.$attr('video', 'controls')).toBe(null);
       expect(Log.data.warn[0]).toEqual([ 'plugin',
-          'Plugin normal is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger' ])
+          'Plugin normal is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger' ]);
       dispatcher.videoConfigReady = true;
       plugin.$attr('video', 'controls', true);
-      expect(plugin.$attr('video', 'controls')).toBe('true');
+      expect(plugin.$attr('video', 'controls')).toBe('');
     });
     test('$attr on video property but it is not in videoconfig', () => {
       plugin.$attr('video', 'data-controls', true);
