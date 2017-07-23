@@ -337,6 +337,11 @@ describe('Chimee', () => {
       expect(getAttr(videoElement, 'playsinline')).toBe('');
       expect(getAttr(videoElement, 'webkit-playsinline')).toBe('');
       expect(getAttr(videoElement, 'x5-video-player-type')).toBe('h5');
+      videoElement.playsInline = false;
+      expect(player.playsInline).toBe(false);
+      expect(getAttr(videoElement, 'playsinline')).toBe('');
+      expect(getAttr(videoElement, 'webkit-playsinline')).toBe('');
+      expect(getAttr(videoElement, 'x5-video-player-type')).toBe('h5');
     });
     test('x5VideoPlayerFullScreen', () => {
       expect(player.x5VideoPlayerFullScreen).toBe(false);
