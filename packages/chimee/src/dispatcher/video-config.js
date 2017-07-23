@@ -1,6 +1,6 @@
 // @flow
 import {alwaysString, initString, initArray, accessor, alwaysBoolean, frozen, alwaysNumber, nonenumerable, lock, applyDecorators, configurable} from 'toxic-decorators';
-import {isNumber, isString, deepAssign} from 'chimee-helper';
+import {isNumber, isString, deepAssign, isObject} from 'chimee-helper';
 function setVideo (key: string, isBooleanAttribute?: boolean) {
   return accessor({
     set (val: any) {
@@ -40,11 +40,60 @@ function setPlaysInline () {
   });
 }
 
+function accessorVideoProperty (property: string): Function {
+  return accessor({
+    get (value) {
+      return (this.dispatcher.videoConfigReady && this.inited)
+        ? this.videoElement[property]
+        : value;
+    },
+    set (value) {
+      if(!this.dispatcher.videoConfigReady) return value;
+      this.videoElement[property] = value;
+      return value;
+    }
+  });
+}
+
+function accessorVideoAttribute (attribute: string | {set: string, get: string, isBoolean: boolean}): Function {
+  const {set, get, isBoolean} = isObject(attribute)
+    ? attribute
+    : {
+      set: attribute,
+      get: attribute,
+      isBoolean: false
+    };
+  return accessor({
+    get (value) {
+      return (this.dispatcher.videoConfigReady && this.inited)
+        ? this.videoElement[get]
+        : value;
+    },
+    set (value) {
+      if(!this.dispatcher.videoConfigReady) return value;
+      value = isBoolean
+        ? value
+          ? ''
+          : undefined
+        : value;
+      this.dispatcher.dom.setAttr('video', set, value);
+      return value;
+    }
+  });
+}
+
 export default class VideoConfig {
   dispatcher: Dispatcher;
+  videoElement: HTMLVideoElement;
+  inited: boolean;
+
   @configurable
   @nonenumerable
   needToLoadSrc = false;
+
+  @nonenumerable
+  inited = false;
+
   constructor (dispatcher: Dispatcher, config: Object) {
     Object.defineProperty(this, 'dispatcher', {
       value: dispatcher,
@@ -52,8 +101,23 @@ export default class VideoConfig {
       writable: false,
       configurable: false
     });
+    Object.defineProperty(this, 'videoElement', {
+      value: dispatcher.dom.videoElement,
+      enumerable: false,
+      writable: false,
+      configurable: false
+    });
     deepAssign(this, config);
   }
+
+  init () {
+    this._realDomAttr.forEach(key => {
+      // $FlowFixMe: we have check the computed here
+      this[key] = this[key];
+    });
+    this.inited = true;
+  }
+
   @configurable
   @alwaysString()
   @accessor({
@@ -76,94 +140,116 @@ export default class VideoConfig {
     }
   })
   src = '';
-  @configurable
+
   @initString()
+  @configurable
   type = 'vod';
-  @configurable
+
   @initString(str => str.toLocaleLowerCase())
+  @configurable
   box = '';
-  @configurable
+
   @initArray()
+  @configurable
   runtimeOrder = ['html5', 'flash'];
-  @configurable
-  @setVideo('autoplay', true)
+
   @alwaysBoolean()
-  autoplay = false;
   @configurable
-  @alwaysBoolean()
   autoload = true;
-  @configurable
-  @setVideo('controls', true)
+
   @alwaysBoolean()
+  @accessorVideoProperty('autoplay')
+  @configurable
+  autoplay = false;
+
+  @alwaysBoolean()
+  @accessorVideoProperty('controls')
+  @configurable
   controls = false;
-  @configurable
-  @setVideo('width')
+
   @accessor({set: numberOrVoid})
+  @accessorVideoAttribute('width')
+  @configurable
   width = undefined;
-  @configurable
-  @setVideo('height')
+
   @accessor({set: numberOrVoid})
+  @accessorVideoAttribute('height')
+  @configurable
   height = undefined;
+
   @configurable
-  @setVideo('crossorigin')
   @accessor({set: stringOrVoid})
+  @accessorVideoAttribute({set: 'crossorigin', get: 'crossOrigin'})
   crossorigin = undefined;
-  @configurable
-  @setVideo('loop', true)
+
   @alwaysBoolean()
+  @accessorVideoProperty('loop')
+  @configurable
   loop = false;
-  @configurable
-  @setVideo('defaultMuted')
+
   @alwaysBoolean()
+  @accessorVideoAttribute({get: 'defaultMuted', set: 'muted', isBoolean: true})
+  @configurable
   defaultMuted = false;
-  @configurable
-  @setVideo('muted')
+
   @alwaysBoolean()
+  @accessorVideoProperty('muted')
+  @configurable
   muted = false;
-  @configurable
-  @setVideo('preload')
+
   @accessor({set: stringOrVoid})
-  preload = undefined;
+  @accessorVideoAttribute('preload')
   @configurable
-  @setVideo('poster')
-  @alwaysString()
-  poster = '';
+  preload = 'auto';
+
+  @accessor({set: stringOrVoid})
+  @accessorVideoAttribute('poster')
+  @configurable
+  poster = undefined;
+
   @configurable
   @setPlaysInline()
   @alwaysBoolean()
   playsinline = false;
-  @configurable
+
+  @alwaysBoolean()
   @setVideo('x5-video-player-fullscreen', true)
-  @alwaysBoolean()
+  @configurable
   x5VideoPlayerFullScreen = false;
-  @configurable
-  @setVideo('x5-video-orientation')
+
   @accessor({set: stringOrVoid})
+  @setVideo('x5-video-orientation')
+  @configurable
   x5VideoOrientation = undefined;
-  @configurable
+
+  @alwaysBoolean()
   @setVideo('x-webkit-airplay', true)
-  @alwaysBoolean()
+  @configurable
   xWebkitAirplay = false;
-  @configurable
-  @setVideo('playbackRate')
+
   @alwaysNumber(1)
+  @accessorVideoProperty('playbackRate')
+  @configurable
   playbackRate = 1;
-  @configurable
-  @setVideo('defaultPlaybackRate')
+
+  @accessorVideoProperty('defaultPlaybackRate')
   @alwaysNumber(1)
-  defaultPlaybackRate = 1;
   @configurable
-  @setVideo('disableRemotePlayback', true)
+  defaultPlaybackRate = 1;
+
   @alwaysBoolean()
+  @accessorVideoProperty('disableRemotePlayback')
+  @configurable
   disableRemotePlayback = false;
-  get volume (): number {
-    return this.dispatcher.dom.videoElement.volume;
-  }
-  set volume (volume: number) {
-    this.dispatcher.dom.videoElement.volume = volume;
-  }
+
+  @alwaysNumber(1)
+  @accessorVideoProperty('volume')
+  @configurable
+  volume = 1;
+
   @frozen
   _kernelProperty = ['type', 'box', 'runtimeOrder'];
+
   @frozen
   _realDomAttr = ['src', 'controls', 'width', 'height', 'crossorigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsinline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
   lockKernelProperty () {

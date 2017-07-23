@@ -101,13 +101,7 @@ export default class Dispatcher {
     this.order.forEach(key => this.plugins[key].__init(this.videoConfig));
     this.videoConfig.lockKernelProperty();
     this.videoConfigReady = true;
-    // if we do not reset the value, the value would be add to video element
-    // if we call the setAttr here, we will have to set attr on video-config and here
-    // which makes us wet
-    this.videoConfig._realDomAttr.forEach(key => {
-      // $FlowFixMe: we have check the computed here
-      this.videoConfig[key] = this.videoConfig[key];
-    });
+    this.videoConfig.init();
     /**
      * video kernel
      * @type {Kernel}

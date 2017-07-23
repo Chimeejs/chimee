@@ -28685,6 +28685,8 @@ var _dec38;
 var _dec39;
 var _dec40;
 var _dec41;
+var _dec42;
+var _dec43;
 var _class$4;
 var _descriptor$1;
 var _descriptor2$1;
@@ -28711,6 +28713,8 @@ var _descriptor22;
 var _descriptor23;
 var _descriptor24;
 var _descriptor25;
+var _descriptor26;
+var _descriptor27;
 
 function _initDefineProp$1(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -28790,6 +28794,42 @@ function setPlaysInline() {
   });
 }
 
+function accessorVideoProperty(property) {
+  return accessor({
+    get: function get(value) {
+      return this.dispatcher.videoConfigReady && this.inited ? this.videoElement[property] : value;
+    },
+    set: function set$$1(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      this.videoElement[property] = value;
+      return value;
+    }
+  });
+}
+
+function accessorVideoAttribute(attribute) {
+  var _ref = isObject$1(attribute) ? attribute : {
+    set: attribute,
+    get: attribute,
+    isBoolean: false
+  },
+      _set = _ref.set,
+      _get = _ref.get,
+      isBoolean$$1 = _ref.isBoolean;
+
+  return accessor({
+    get: function get(value) {
+      return this.dispatcher.videoConfigReady && this.inited ? this.videoElement[_get] : value;
+    },
+    set: function set$$1(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      value = isBoolean$$1 ? value ? '' : undefined : value;
+      this.dispatcher.dom.setAttr('video', _set, value);
+      return value;
+    }
+  });
+}
+
 var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
   set: function set$$1(val) {
     if (this.needToLoadSrc) {
@@ -28809,62 +28849,72 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
   }
 }), _dec4$4 = string(), _dec5$4 = string(function (str) {
   return str.toLocaleLowerCase();
-}), _dec6$3 = array(), _dec7$1 = setVideo('autoplay', true), _dec8$1 = boolean$1(), _dec9 = boolean$1(), _dec10 = setVideo('controls', true), _dec11 = boolean$1(), _dec12 = setVideo('width'), _dec13 = accessor({ set: numberOrVoid }), _dec14 = setVideo('height'), _dec15 = accessor({ set: numberOrVoid }), _dec16 = setVideo('crossorigin'), _dec17 = accessor({ set: stringOrVoid }), _dec18 = setVideo('loop', true), _dec19 = boolean$1(), _dec20 = setVideo('defaultMuted'), _dec21 = boolean$1(), _dec22 = setVideo('muted'), _dec23 = boolean$1(), _dec24 = setVideo('preload'), _dec25 = accessor({ set: stringOrVoid }), _dec26 = setVideo('poster'), _dec27 = string$1(), _dec28 = setPlaysInline(), _dec29 = boolean$1(), _dec30 = setVideo('x5-video-player-fullscreen', true), _dec31 = boolean$1(), _dec32 = setVideo('x5-video-orientation'), _dec33 = accessor({ set: stringOrVoid }), _dec34 = setVideo('x-webkit-airplay', true), _dec35 = boolean$1(), _dec36 = setVideo('playbackRate'), _dec37 = number$1(1), _dec38 = setVideo('defaultPlaybackRate'), _dec39 = number$1(1), _dec40 = setVideo('disableRemotePlayback', true), _dec41 = boolean$1(), (_class$4 = function () {
+}), _dec6$3 = array(), _dec7$1 = boolean$1(), _dec8$1 = boolean$1(), _dec9 = accessorVideoProperty('autoplay'), _dec10 = boolean$1(), _dec11 = accessorVideoProperty('controls'), _dec12 = accessor({ set: numberOrVoid }), _dec13 = accessorVideoAttribute('width'), _dec14 = accessor({ set: numberOrVoid }), _dec15 = accessorVideoAttribute('height'), _dec16 = accessor({ set: stringOrVoid }), _dec17 = accessorVideoAttribute({ set: 'crossorigin', get: 'crossOrigin' }), _dec18 = boolean$1(), _dec19 = accessorVideoProperty('loop'), _dec20 = boolean$1(), _dec21 = accessorVideoAttribute({ get: 'defaultMuted', set: 'muted', isBoolean: true }), _dec22 = boolean$1(), _dec23 = accessorVideoProperty('muted'), _dec24 = accessor({ set: stringOrVoid }), _dec25 = accessorVideoAttribute('preload'), _dec26 = accessor({ set: stringOrVoid }), _dec27 = accessorVideoAttribute('poster'), _dec28 = setPlaysInline(), _dec29 = boolean$1(), _dec30 = boolean$1(), _dec31 = setVideo('x5-video-player-fullscreen', true), _dec32 = accessor({ set: stringOrVoid }), _dec33 = setVideo('x5-video-orientation'), _dec34 = boolean$1(), _dec35 = setVideo('x-webkit-airplay', true), _dec36 = number$1(1), _dec37 = accessorVideoProperty('playbackRate'), _dec38 = accessorVideoProperty('defaultPlaybackRate'), _dec39 = number$1(1), _dec40 = boolean$1(), _dec41 = accessorVideoProperty('disableRemotePlayback'), _dec42 = number$1(1), _dec43 = accessorVideoProperty('volume'), (_class$4 = function () {
   function VideoConfig(dispatcher, config) {
     classCallCheck$1(this, VideoConfig);
 
     _initDefineProp$1(this, 'needToLoadSrc', _descriptor$1, this);
 
-    _initDefineProp$1(this, 'src', _descriptor2$1, this);
+    _initDefineProp$1(this, 'inited', _descriptor2$1, this);
 
-    _initDefineProp$1(this, 'type', _descriptor3$1, this);
+    _initDefineProp$1(this, 'src', _descriptor3$1, this);
 
-    _initDefineProp$1(this, 'box', _descriptor4, this);
+    _initDefineProp$1(this, 'type', _descriptor4, this);
 
-    _initDefineProp$1(this, 'runtimeOrder', _descriptor5, this);
+    _initDefineProp$1(this, 'box', _descriptor5, this);
 
-    _initDefineProp$1(this, 'autoplay', _descriptor6, this);
+    _initDefineProp$1(this, 'runtimeOrder', _descriptor6, this);
 
     _initDefineProp$1(this, 'autoload', _descriptor7, this);
 
-    _initDefineProp$1(this, 'controls', _descriptor8, this);
+    _initDefineProp$1(this, 'autoplay', _descriptor8, this);
 
-    _initDefineProp$1(this, 'width', _descriptor9, this);
+    _initDefineProp$1(this, 'controls', _descriptor9, this);
 
-    _initDefineProp$1(this, 'height', _descriptor10, this);
+    _initDefineProp$1(this, 'width', _descriptor10, this);
 
-    _initDefineProp$1(this, 'crossorigin', _descriptor11, this);
+    _initDefineProp$1(this, 'height', _descriptor11, this);
 
-    _initDefineProp$1(this, 'loop', _descriptor12, this);
+    _initDefineProp$1(this, 'crossorigin', _descriptor12, this);
 
-    _initDefineProp$1(this, 'defaultMuted', _descriptor13, this);
+    _initDefineProp$1(this, 'loop', _descriptor13, this);
 
-    _initDefineProp$1(this, 'muted', _descriptor14, this);
+    _initDefineProp$1(this, 'defaultMuted', _descriptor14, this);
 
-    _initDefineProp$1(this, 'preload', _descriptor15, this);
+    _initDefineProp$1(this, 'muted', _descriptor15, this);
 
-    _initDefineProp$1(this, 'poster', _descriptor16, this);
+    _initDefineProp$1(this, 'preload', _descriptor16, this);
 
-    _initDefineProp$1(this, 'playsinline', _descriptor17, this);
+    _initDefineProp$1(this, 'poster', _descriptor17, this);
 
-    _initDefineProp$1(this, 'x5VideoPlayerFullScreen', _descriptor18, this);
+    _initDefineProp$1(this, 'playsinline', _descriptor18, this);
 
-    _initDefineProp$1(this, 'x5VideoOrientation', _descriptor19, this);
+    _initDefineProp$1(this, 'x5VideoPlayerFullScreen', _descriptor19, this);
 
-    _initDefineProp$1(this, 'xWebkitAirplay', _descriptor20, this);
+    _initDefineProp$1(this, 'x5VideoOrientation', _descriptor20, this);
 
-    _initDefineProp$1(this, 'playbackRate', _descriptor21, this);
+    _initDefineProp$1(this, 'xWebkitAirplay', _descriptor21, this);
 
-    _initDefineProp$1(this, 'defaultPlaybackRate', _descriptor22, this);
+    _initDefineProp$1(this, 'playbackRate', _descriptor22, this);
 
-    _initDefineProp$1(this, 'disableRemotePlayback', _descriptor23, this);
+    _initDefineProp$1(this, 'defaultPlaybackRate', _descriptor23, this);
 
-    _initDefineProp$1(this, '_kernelProperty', _descriptor24, this);
+    _initDefineProp$1(this, 'disableRemotePlayback', _descriptor24, this);
 
-    _initDefineProp$1(this, '_realDomAttr', _descriptor25, this);
+    _initDefineProp$1(this, 'volume', _descriptor25, this);
+
+    _initDefineProp$1(this, '_kernelProperty', _descriptor26, this);
+
+    _initDefineProp$1(this, '_realDomAttr', _descriptor27, this);
 
     Object.defineProperty(this, 'dispatcher', {
       value: dispatcher,
+      enumerable: false,
+      writable: false,
+      configurable: false
+    });
+    Object.defineProperty(this, 'videoElement', {
+      value: dispatcher.dom.videoElement,
       enumerable: false,
       writable: false,
       configurable: false
@@ -28873,6 +28923,17 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
   }
 
   createClass$1(VideoConfig, [{
+    key: 'init',
+    value: function init() {
+      var _this = this;
+
+      this._realDomAttr.forEach(function (key) {
+        // $FlowFixMe: we have check the computed here
+        _this[key] = _this[key];
+      });
+      this.inited = true;
+    }
+  }, {
     key: 'lockKernelProperty',
     value: function lockKernelProperty() {
       applyDecorators(this, {
@@ -28881,14 +28942,6 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
         runtimeOrder: lock
       }, { self: true });
     }
-  }, {
-    key: 'volume',
-    get: function get() {
-      return this.dispatcher.dom.videoElement.volume;
-    },
-    set: function set$$1(volume) {
-      this.dispatcher.dom.videoElement.volume = volume;
-    }
   }]);
   return VideoConfig;
 }(), (_descriptor$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'needToLoadSrc', [nonconfigurable, nonenumerable], {
@@ -28896,122 +28949,132 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
   initializer: function initializer() {
     return false;
   }
-}), _descriptor2$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'src', [nonconfigurable, _dec$4, _dec2$4, _dec3$4], {
+}), _descriptor2$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'inited', [nonenumerable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return false;
+  }
+}), _descriptor3$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'src', [nonconfigurable, _dec$4, _dec2$4, _dec3$4], {
   enumerable: true,
   initializer: function initializer() {
     return '';
   }
-}), _descriptor3$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'type', [nonconfigurable, _dec4$4], {
+}), _descriptor4 = _applyDecoratedDescriptor$4(_class$4.prototype, 'type', [_dec4$4, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return 'vod';
   }
-}), _descriptor4 = _applyDecoratedDescriptor$4(_class$4.prototype, 'box', [nonconfigurable, _dec5$4], {
+}), _descriptor5 = _applyDecoratedDescriptor$4(_class$4.prototype, 'box', [_dec5$4, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return '';
   }
-}), _descriptor5 = _applyDecoratedDescriptor$4(_class$4.prototype, 'runtimeOrder', [nonconfigurable, _dec6$3], {
+}), _descriptor6 = _applyDecoratedDescriptor$4(_class$4.prototype, 'runtimeOrder', [_dec6$3, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return ['html5', 'flash'];
   }
-}), _descriptor6 = _applyDecoratedDescriptor$4(_class$4.prototype, 'autoplay', [nonconfigurable, _dec7$1, _dec8$1], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor7 = _applyDecoratedDescriptor$4(_class$4.prototype, 'autoload', [nonconfigurable, _dec9], {
+}), _descriptor7 = _applyDecoratedDescriptor$4(_class$4.prototype, 'autoload', [_dec7$1, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return true;
   }
-}), _descriptor8 = _applyDecoratedDescriptor$4(_class$4.prototype, 'controls', [nonconfigurable, _dec10, _dec11], {
+}), _descriptor8 = _applyDecoratedDescriptor$4(_class$4.prototype, 'autoplay', [_dec8$1, _dec9, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor9 = _applyDecoratedDescriptor$4(_class$4.prototype, 'width', [nonconfigurable, _dec12, _dec13], {
+}), _descriptor9 = _applyDecoratedDescriptor$4(_class$4.prototype, 'controls', [_dec10, _dec11, nonconfigurable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return false;
+  }
+}), _descriptor10 = _applyDecoratedDescriptor$4(_class$4.prototype, 'width', [_dec12, _dec13, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return undefined;
   }
-}), _descriptor10 = _applyDecoratedDescriptor$4(_class$4.prototype, 'height', [nonconfigurable, _dec14, _dec15], {
+}), _descriptor11 = _applyDecoratedDescriptor$4(_class$4.prototype, 'height', [_dec14, _dec15, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return undefined;
   }
-}), _descriptor11 = _applyDecoratedDescriptor$4(_class$4.prototype, 'crossorigin', [nonconfigurable, _dec16, _dec17], {
+}), _descriptor12 = _applyDecoratedDescriptor$4(_class$4.prototype, 'crossorigin', [nonconfigurable, _dec16, _dec17], {
   enumerable: true,
   initializer: function initializer() {
     return undefined;
   }
-}), _descriptor12 = _applyDecoratedDescriptor$4(_class$4.prototype, 'loop', [nonconfigurable, _dec18, _dec19], {
+}), _descriptor13 = _applyDecoratedDescriptor$4(_class$4.prototype, 'loop', [_dec18, _dec19, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor13 = _applyDecoratedDescriptor$4(_class$4.prototype, 'defaultMuted', [nonconfigurable, _dec20, _dec21], {
+}), _descriptor14 = _applyDecoratedDescriptor$4(_class$4.prototype, 'defaultMuted', [_dec20, _dec21, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor14 = _applyDecoratedDescriptor$4(_class$4.prototype, 'muted', [nonconfigurable, _dec22, _dec23], {
+}), _descriptor15 = _applyDecoratedDescriptor$4(_class$4.prototype, 'muted', [_dec22, _dec23, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor15 = _applyDecoratedDescriptor$4(_class$4.prototype, 'preload', [nonconfigurable, _dec24, _dec25], {
+}), _descriptor16 = _applyDecoratedDescriptor$4(_class$4.prototype, 'preload', [_dec24, _dec25, nonconfigurable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return 'auto';
+  }
+}), _descriptor17 = _applyDecoratedDescriptor$4(_class$4.prototype, 'poster', [_dec26, _dec27, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return undefined;
   }
-}), _descriptor16 = _applyDecoratedDescriptor$4(_class$4.prototype, 'poster', [nonconfigurable, _dec26, _dec27], {
-  enumerable: true,
-  initializer: function initializer() {
-    return '';
-  }
-}), _descriptor17 = _applyDecoratedDescriptor$4(_class$4.prototype, 'playsinline', [nonconfigurable, _dec28, _dec29], {
+}), _descriptor18 = _applyDecoratedDescriptor$4(_class$4.prototype, 'playsinline', [nonconfigurable, _dec28, _dec29], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor18 = _applyDecoratedDescriptor$4(_class$4.prototype, 'x5VideoPlayerFullScreen', [nonconfigurable, _dec30, _dec31], {
+}), _descriptor19 = _applyDecoratedDescriptor$4(_class$4.prototype, 'x5VideoPlayerFullScreen', [_dec30, _dec31, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor19 = _applyDecoratedDescriptor$4(_class$4.prototype, 'x5VideoOrientation', [nonconfigurable, _dec32, _dec33], {
+}), _descriptor20 = _applyDecoratedDescriptor$4(_class$4.prototype, 'x5VideoOrientation', [_dec32, _dec33, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return undefined;
   }
-}), _descriptor20 = _applyDecoratedDescriptor$4(_class$4.prototype, 'xWebkitAirplay', [nonconfigurable, _dec34, _dec35], {
+}), _descriptor21 = _applyDecoratedDescriptor$4(_class$4.prototype, 'xWebkitAirplay', [_dec34, _dec35, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor21 = _applyDecoratedDescriptor$4(_class$4.prototype, 'playbackRate', [nonconfigurable, _dec36, _dec37], {
+}), _descriptor22 = _applyDecoratedDescriptor$4(_class$4.prototype, 'playbackRate', [_dec36, _dec37, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return 1;
   }
-}), _descriptor22 = _applyDecoratedDescriptor$4(_class$4.prototype, 'defaultPlaybackRate', [nonconfigurable, _dec38, _dec39], {
+}), _descriptor23 = _applyDecoratedDescriptor$4(_class$4.prototype, 'defaultPlaybackRate', [_dec38, _dec39, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return 1;
   }
-}), _descriptor23 = _applyDecoratedDescriptor$4(_class$4.prototype, 'disableRemotePlayback', [nonconfigurable, _dec40, _dec41], {
+}), _descriptor24 = _applyDecoratedDescriptor$4(_class$4.prototype, 'disableRemotePlayback', [_dec40, _dec41, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor24 = _applyDecoratedDescriptor$4(_class$4.prototype, '_kernelProperty', [frozen], {
+}), _descriptor25 = _applyDecoratedDescriptor$4(_class$4.prototype, 'volume', [_dec42, _dec43, nonconfigurable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return 1;
+  }
+}), _descriptor26 = _applyDecoratedDescriptor$4(_class$4.prototype, '_kernelProperty', [frozen], {
   enumerable: true,
   initializer: function initializer() {
     return ['type', 'box', 'runtimeOrder'];
   }
-}), _descriptor25 = _applyDecoratedDescriptor$4(_class$4.prototype, '_realDomAttr', [frozen], {
+}), _descriptor27 = _applyDecoratedDescriptor$4(_class$4.prototype, '_realDomAttr', [frozen], {
   enumerable: true,
   initializer: function initializer() {
     return ['src', 'controls', 'width', 'height', 'crossorigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsinline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
@@ -29137,13 +29200,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2$1 = before(checkPlug
     });
     this.videoConfig.lockKernelProperty();
     this.videoConfigReady = true;
-    // if we do not reset the value, the value would be add to video element
-    // if we call the setAttr here, we will have to set attr on video-config and here
-    // which makes us wet
-    this.videoConfig._realDomAttr.forEach(function (key) {
-      // $FlowFixMe: we have check the computed here
-      _this.videoConfig[key] = _this.videoConfig[key];
-    });
+    this.videoConfig.init();
     /**
      * video kernel
      * @type {Kernel}
