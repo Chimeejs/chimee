@@ -1,5 +1,5 @@
 import Chimee from 'index';
-import {Log, getAttr} from 'chimee-helper';
+import {Log, getAttr, setAttr} from 'chimee-helper';
 import {videoReadOnlyProperties} from 'helper/const';
 
 describe('Chimee', () => {
@@ -356,9 +356,12 @@ describe('Chimee', () => {
       player.xWebkitAirplay = true;
       expect(player.xWebkitAirplay).toBe(true);
       expect(getAttr(videoElement, 'x-webkit-airplay')).toBe('true');
+      setAttr(videoElement, 'x-webkit-airplay', undefined);
+      expect(player.xWebkitAirplay).toBe(false);
+      expect(getAttr(videoElement, 'x-webkit-airplay')).toBe(null);
     });
     test('x5VideoOrientation', () => {
-      expect(player.x5VideoOrientation).toBe();
+      expect(player.x5VideoOrientation).toBe(null);
       expect(getAttr(videoElement, 'x5-video-orientation')).toBe(null);
       player.x5VideoOrientation = 'landscape';
       expect(player.x5VideoOrientation).toBe('landscape');

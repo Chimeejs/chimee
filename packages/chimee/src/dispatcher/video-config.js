@@ -1,27 +1,7 @@
 // @flow
 import {alwaysString, initString, initArray, accessor, alwaysBoolean, frozen, alwaysNumber, nonenumerable, lock, applyDecorators, configurable} from 'toxic-decorators';
 import {isNumber, isString, deepAssign, isObject} from 'chimee-helper';
-function setVideo (key: string, isBooleanAttribute?: boolean) {
-  return accessor({
-    set (val: any) {
-      // if it's not ready, the config should be set to the video
-      // but it can be different from the video, so that it can be set
-      if(!this.dispatcher.videoConfigReady) return val;
 
-      if(!/^(playbackRate|defaultPlaybackRate|muted|defaultMuted|disableRemotePlayback)$/.test(key)) {
-        if(isBooleanAttribute) {
-          val = val ? true : undefined;
-        }
-        this.dispatcher.dom.setAttr('video', key, val);
-      }
-      if(/^(playbackRate|defaultPlaybackRate|muted|defaultMuted|disableRemotePlayback)$/.test(key)) {
-        val = isBooleanAttribute ? !!val : val;
-        this.dispatcher.dom.videoElement[key] = val;
-      }
-      return val;
-    }
-  });
-}
 function numberOrVoid (value: any): number | void {
   return isNumber(value) ? value : undefined;
 }
@@ -66,6 +46,23 @@ function accessorVideoAttribute (attribute: string | {set: string, get: string, 
           : undefined
         : value;
       this.dispatcher.dom.setAttr('video', set, value);
+      return value;
+    }
+  });
+}
+
+function accessorCustomAttribute (attribute: string, isBoolean: boolean): Function {
+  return accessor({
+    get (value) {
+      const attrValue = this.dispatcher.dom.getAttr('video', attribute);
+      return (this.dispatcher.videoConfigReady && this.inited)
+        ? attrValue
+        : value;
+    },
+    set (value) {
+      if(!this.dispatcher.videoConfigReady) return value;
+      if(isBoolean) value = value || undefined;
+      this.dispatcher.dom.setAttr('video', attribute, value);
       return value;
     }
   });
@@ -219,18 +216,18 @@ export default class VideoConfig {
   @alwaysBoolean()
   playsInline = false;
 
-  @alwaysBoolean()
-  @setVideo('x5-video-player-fullscreen', true)
+  @accessor({set (value) {return !!value;}, get (value) {return !!value;}})
+  @accessorCustomAttribute('x5-video-player-fullscreen', true)
   @configurable
   x5VideoPlayerFullScreen = false;
 
   @accessor({set: stringOrVoid})
-  @setVideo('x5-video-orientation')
+  @accessorCustomAttribute('x5-video-orientation')
   @configurable
   x5VideoOrientation = undefined;
 
-  @alwaysBoolean()
-  @setVideo('x-webkit-airplay', true)
+  @accessor({set (value) {return !!value;}, get (value) {return !!value;}})
+  @accessorCustomAttribute('x-webkit-airplay', true)
   @configurable
   xWebkitAirplay = false;
 
