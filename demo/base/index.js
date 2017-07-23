@@ -38,7 +38,8 @@
     wrapper: '#wrapper',
     plugin: ['controller'],
     volume: 0.1,
-    playsInline: true
+    playsInline: true,
+    xWebkitAirplay: true
   });
   window.player = player;
 })(window.Chimee);
