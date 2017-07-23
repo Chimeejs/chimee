@@ -28,17 +28,6 @@ function numberOrVoid (value: any): number | void {
 function stringOrVoid (value: any): string | void {
   return isString(value) ? value : undefined;
 }
-function setPlaysInline () {
-  return accessor({
-    set (val: boolean | void) {
-      val = val || undefined;
-      this.dispatcher.dom.setAttr('video', 'playsinline', val);
-      this.dispatcher.dom.setAttr('video', 'webkit-playsinline', val);
-      this.dispatcher.dom.setAttr('video', 'x5-video-player-type', val ? 'h5' : undefined);
-      return val;
-    }
-  });
-}
 
 function accessorVideoProperty (property: string): Function {
   return accessor({
@@ -180,7 +169,7 @@ export default class VideoConfig {
   @configurable
   @accessor({set: stringOrVoid})
   @accessorVideoAttribute({set: 'crossorigin', get: 'crossOrigin'})
-  crossorigin = undefined;
+  crossOrigin = undefined;
 
   @alwaysBoolean()
   @accessorVideoProperty('loop')
@@ -208,9 +197,27 @@ export default class VideoConfig {
   poster = undefined;
 
   @configurable
-  @setPlaysInline()
+  @accessor({
+    get (value) {
+      const playsInline = this.videoElement.playsInline;
+      return (this.dispatcher.videoConfigReady && this.inited)
+        ? playsInline === undefined
+          ? value
+          : playsInline
+        : value;
+    },
+    set (value) {
+      if(!this.dispatcher.videoConfigReady) return value;
+      this.videoElement.playsInline = value;
+      value = value ? '' : undefined;
+      this.dispatcher.dom.setAttr('video', 'playsinline', value);
+      this.dispatcher.dom.setAttr('video', 'webkit-playsinline', value);
+      this.dispatcher.dom.setAttr('video', 'x5-video-player-type', value === '' ? 'h5' : undefined);
+      return value;
+    }
+  })
   @alwaysBoolean()
-  playsinline = false;
+  playsInline = false;
 
   @alwaysBoolean()
   @setVideo('x5-video-player-fullscreen', true)
@@ -251,7 +258,7 @@ export default class VideoConfig {
   _kernelProperty = ['type', 'box', 'runtimeOrder'];
 
   @frozen
-  _realDomAttr = ['src', 'controls', 'width', 'height', 'crossorigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsinline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
+  _realDomAttr = ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
   lockKernelProperty () {
     applyDecorators(this, {
       type: lock,

@@ -457,8 +457,8 @@ describe('dispatcher/plugin', () => {
       expect(dispatcher.dom.videoElement.height).toBe(100);
     });
     test('crossorigin', () => {
-      plugin.crossorigin = 'use-credentials';
-      expect(plugin.crossorigin).toBe('use-credentials');
+      plugin.crossOrigin = 'use-credentials';
+      expect(plugin.crossOrigin).toBe('use-credentials');
       expect(dispatcher.dom.videoElement.crossOrigin).toBe('use-credentials');
     });
     test('poster', () => {
@@ -468,10 +468,10 @@ describe('dispatcher/plugin', () => {
       expect(dispatcher.dom.videoElement.poster).toBe(url);
     });
     test('playsinline', () => {
-      plugin.playsinline = true;
-      expect(plugin.playsinline).toBe(true);
-      expect(getAttr(dispatcher.dom.videoElement, 'playsinline')).toBe('true');
-      expect(getAttr(dispatcher.dom.videoElement, 'webkit-playsinline')).toBe('true');
+      plugin.playsInline = true;
+      expect(plugin.playsInline).toBe(true);
+      expect(getAttr(dispatcher.dom.videoElement, 'playsinline')).toBe('');
+      expect(getAttr(dispatcher.dom.videoElement, 'webkit-playsinline')).toBe('');
       expect(getAttr(dispatcher.dom.videoElement, 'x5-video-player-type')).toBe('h5');
     });
     test('x5VideoPlayerFullScreen', () => {

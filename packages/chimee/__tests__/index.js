@@ -310,9 +310,14 @@ describe('Chimee', () => {
       expect(videoElement.height).toBe(10);
     });
     test('crossorigin', () => {
-      player.crossorigin = 'use-credentials';
-      expect(player.crossorigin).toBe('use-credentials');
+      expect(player.crossOrigin).toBe('');
+      expect(videoElement.crossOrigin).toBe('');
+      player.crossOrigin = 'use-credentials';
+      expect(player.crossOrigin).toBe('use-credentials');
       expect(videoElement.crossOrigin).toBe('use-credentials');
+      videoElement.crossOrigin = 'anonymous';
+      expect(player.crossOrigin).toBe('anonymous');
+      expect(videoElement.crossOrigin).toBe('anonymous');
     });
     test('poster', () => {
       expect(player.poster).toBe('');
@@ -323,14 +328,14 @@ describe('Chimee', () => {
       expect(videoElement.poster).toBe(url);
     });
     test('playsinline', () => {
-      expect(player.playsinline).toBe(false);
+      expect(player.playsInline).toBe(false);
       expect(getAttr(videoElement, 'playsinline')).toBe(null);
       expect(getAttr(videoElement, 'webkit-playsinline')).toBe(null);
       expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
-      player.playsinline = true;
-      expect(player.playsinline).toBe(true);
-      expect(getAttr(videoElement, 'playsinline')).toBe('true');
-      expect(getAttr(videoElement, 'webkit-playsinline')).toBe('true');
+      player.playsInline = true;
+      expect(player.playsInline).toBe(true);
+      expect(getAttr(videoElement, 'playsinline')).toBe('');
+      expect(getAttr(videoElement, 'webkit-playsinline')).toBe('');
       expect(getAttr(videoElement, 'x5-video-player-type')).toBe('h5');
     });
     test('x5VideoPlayerFullScreen', () => {

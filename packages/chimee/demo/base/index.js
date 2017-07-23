@@ -37,7 +37,8 @@
     // dom容器
     wrapper: '#wrapper',
     plugin: ['controller'],
-    volume: 0.1
+    volume: 0.1,
+    playsInline: true
   });
   window.player = player;
 })(window.Chimee);

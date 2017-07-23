@@ -28782,17 +28782,6 @@ function numberOrVoid(value) {
 function stringOrVoid(value) {
   return isString(value) ? value : undefined;
 }
-function setPlaysInline() {
-  return accessor({
-    set: function set$$1(val) {
-      val = val || undefined;
-      this.dispatcher.dom.setAttr('video', 'playsinline', val);
-      this.dispatcher.dom.setAttr('video', 'webkit-playsinline', val);
-      this.dispatcher.dom.setAttr('video', 'x5-video-player-type', val ? 'h5' : undefined);
-      return val;
-    }
-  });
-}
 
 function accessorVideoProperty(property) {
   return accessor({
@@ -28849,7 +28838,21 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
   }
 }), _dec4$4 = string(), _dec5$4 = string(function (str) {
   return str.toLocaleLowerCase();
-}), _dec6$3 = array(), _dec7$1 = boolean$1(), _dec8$1 = boolean$1(), _dec9 = accessorVideoProperty('autoplay'), _dec10 = boolean$1(), _dec11 = accessorVideoProperty('controls'), _dec12 = accessor({ set: numberOrVoid }), _dec13 = accessorVideoAttribute('width'), _dec14 = accessor({ set: numberOrVoid }), _dec15 = accessorVideoAttribute('height'), _dec16 = accessor({ set: stringOrVoid }), _dec17 = accessorVideoAttribute({ set: 'crossorigin', get: 'crossOrigin' }), _dec18 = boolean$1(), _dec19 = accessorVideoProperty('loop'), _dec20 = boolean$1(), _dec21 = accessorVideoAttribute({ get: 'defaultMuted', set: 'muted', isBoolean: true }), _dec22 = boolean$1(), _dec23 = accessorVideoProperty('muted'), _dec24 = accessor({ set: stringOrVoid }), _dec25 = accessorVideoAttribute('preload'), _dec26 = accessor({ set: stringOrVoid }), _dec27 = accessorVideoAttribute('poster'), _dec28 = setPlaysInline(), _dec29 = boolean$1(), _dec30 = boolean$1(), _dec31 = setVideo('x5-video-player-fullscreen', true), _dec32 = accessor({ set: stringOrVoid }), _dec33 = setVideo('x5-video-orientation'), _dec34 = boolean$1(), _dec35 = setVideo('x-webkit-airplay', true), _dec36 = number$1(1), _dec37 = accessorVideoProperty('playbackRate'), _dec38 = accessorVideoProperty('defaultPlaybackRate'), _dec39 = number$1(1), _dec40 = boolean$1(), _dec41 = accessorVideoProperty('disableRemotePlayback'), _dec42 = number$1(1), _dec43 = accessorVideoProperty('volume'), (_class$4 = function () {
+}), _dec6$3 = array(), _dec7$1 = boolean$1(), _dec8$1 = boolean$1(), _dec9 = accessorVideoProperty('autoplay'), _dec10 = boolean$1(), _dec11 = accessorVideoProperty('controls'), _dec12 = accessor({ set: numberOrVoid }), _dec13 = accessorVideoAttribute('width'), _dec14 = accessor({ set: numberOrVoid }), _dec15 = accessorVideoAttribute('height'), _dec16 = accessor({ set: stringOrVoid }), _dec17 = accessorVideoAttribute({ set: 'crossorigin', get: 'crossOrigin' }), _dec18 = boolean$1(), _dec19 = accessorVideoProperty('loop'), _dec20 = boolean$1(), _dec21 = accessorVideoAttribute({ get: 'defaultMuted', set: 'muted', isBoolean: true }), _dec22 = boolean$1(), _dec23 = accessorVideoProperty('muted'), _dec24 = accessor({ set: stringOrVoid }), _dec25 = accessorVideoAttribute('preload'), _dec26 = accessor({ set: stringOrVoid }), _dec27 = accessorVideoAttribute('poster'), _dec28 = accessor({
+  get: function get(value) {
+    var playsInline = this.videoElement.playsInline;
+    return this.dispatcher.videoConfigReady && this.inited ? playsInline === undefined ? value : playsInline : value;
+  },
+  set: function set$$1(value) {
+    if (!this.dispatcher.videoConfigReady) return value;
+    this.videoElement.playsInline = value;
+    value = value ? '' : undefined;
+    this.dispatcher.dom.setAttr('video', 'playsinline', value);
+    this.dispatcher.dom.setAttr('video', 'webkit-playsinline', value);
+    this.dispatcher.dom.setAttr('video', 'x5-video-player-type', value === '' ? 'h5' : undefined);
+    return value;
+  }
+}), _dec29 = boolean$1(), _dec30 = boolean$1(), _dec31 = setVideo('x5-video-player-fullscreen', true), _dec32 = accessor({ set: stringOrVoid }), _dec33 = setVideo('x5-video-orientation'), _dec34 = boolean$1(), _dec35 = setVideo('x-webkit-airplay', true), _dec36 = number$1(1), _dec37 = accessorVideoProperty('playbackRate'), _dec38 = accessorVideoProperty('defaultPlaybackRate'), _dec39 = number$1(1), _dec40 = boolean$1(), _dec41 = accessorVideoProperty('disableRemotePlayback'), _dec42 = number$1(1), _dec43 = accessorVideoProperty('volume'), (_class$4 = function () {
   function VideoConfig(dispatcher, config) {
     classCallCheck$1(this, VideoConfig);
 
@@ -28875,7 +28878,7 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
 
     _initDefineProp$1(this, 'height', _descriptor11, this);
 
-    _initDefineProp$1(this, 'crossorigin', _descriptor12, this);
+    _initDefineProp$1(this, 'crossOrigin', _descriptor12, this);
 
     _initDefineProp$1(this, 'loop', _descriptor13, this);
 
@@ -28887,7 +28890,7 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
 
     _initDefineProp$1(this, 'poster', _descriptor17, this);
 
-    _initDefineProp$1(this, 'playsinline', _descriptor18, this);
+    _initDefineProp$1(this, 'playsInline', _descriptor18, this);
 
     _initDefineProp$1(this, 'x5VideoPlayerFullScreen', _descriptor19, this);
 
@@ -28999,7 +29002,7 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
   initializer: function initializer() {
     return undefined;
   }
-}), _descriptor12 = _applyDecoratedDescriptor$4(_class$4.prototype, 'crossorigin', [nonconfigurable, _dec16, _dec17], {
+}), _descriptor12 = _applyDecoratedDescriptor$4(_class$4.prototype, 'crossOrigin', [nonconfigurable, _dec16, _dec17], {
   enumerable: true,
   initializer: function initializer() {
     return undefined;
@@ -29029,7 +29032,7 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
   initializer: function initializer() {
     return undefined;
   }
-}), _descriptor18 = _applyDecoratedDescriptor$4(_class$4.prototype, 'playsinline', [nonconfigurable, _dec28, _dec29], {
+}), _descriptor18 = _applyDecoratedDescriptor$4(_class$4.prototype, 'playsInline', [nonconfigurable, _dec28, _dec29], {
   enumerable: true,
   initializer: function initializer() {
     return false;
@@ -29077,7 +29080,7 @@ var VideoConfig = (_dec$4 = string$1(), _dec2$4 = accessor({
 }), _descriptor27 = _applyDecoratedDescriptor$4(_class$4.prototype, '_realDomAttr', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return ['src', 'controls', 'width', 'height', 'crossorigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsinline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
+    return ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
   }
 })), _class$4));
 
