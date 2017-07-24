@@ -63,8 +63,10 @@ function accessorCustomAttribute (attribute: string, isBoolean?: boolean): Funct
     },
     set (value) {
       if(!this.dispatcher.videoConfigReady) return value;
-      if(isBoolean) value = value || undefined;
-      this.dispatcher.dom.setAttr('video', attribute, value);
+      const val = isBoolean
+        ? value || undefined
+        : value;
+      this.dispatcher.dom.setAttr('video', attribute, val);
       return value;
     }
   });
@@ -147,10 +149,10 @@ const accessorMap = {
       set (value) {
         if(!this.dispatcher.videoConfigReady) return value;
         this.videoElement.playsInline = value;
-        value = value ? '' : undefined;
-        this.dispatcher.dom.setAttr('video', 'playsinline', value);
-        this.dispatcher.dom.setAttr('video', 'webkit-playsinline', value);
-        this.dispatcher.dom.setAttr('video', 'x5-video-player-type', value === '' ? 'h5' : undefined);
+        const val = value ? '' : undefined;
+        this.dispatcher.dom.setAttr('video', 'playsinline', val);
+        this.dispatcher.dom.setAttr('video', 'webkit-playsinline', val);
+        this.dispatcher.dom.setAttr('video', 'x5-video-player-type', value ? 'h5' : undefined);
         return value;
       }
     }),
@@ -254,6 +256,7 @@ export default class VideoConfig {
 
   @frozen
   _realDomAttr = ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
+  
   lockKernelProperty () {
     applyDecorators(this, {
       type: lock,

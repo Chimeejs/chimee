@@ -22,7 +22,7 @@
       this.$watch('text', function (newVal, oldVal) {
         console.log(newVal, oldVal);
       });
-      this.$watch('src', function (newVal, oldVal) {
+      this.$watch('defaultMuted', function (newVal, oldVal) {
         console.log(newVal, oldVal);
       });
     },

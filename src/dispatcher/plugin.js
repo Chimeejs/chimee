@@ -397,6 +397,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
    */
   $destroy () {
     isFunction(this.destroy) && this.destroy();
+    this.__unwatchHandlers.forEach(unwatcher => unwatcher());
     Object.keys(this.__events)
     .forEach(key => {
       if(!isArray(this.__events[key])) return;
