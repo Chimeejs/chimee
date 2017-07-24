@@ -576,7 +576,7 @@ load 方法会将地址设置到 video 元素上。之后才能进行相应的�
 - 含义：高度
 - 默认：`undefined`
 
-### crossorigin
+### crossOrigin
 
 - 类型：`string | void`
 - 含义：宽度
@@ -612,7 +612,7 @@ load 方法会将地址设置到 video 元素上。之后才能进行相应的�
 - 含义：视频封面
 - 默认：`''`
 
-### playsinline
+### playsInline
 
 - 类型：`boolean`
 - 含义：是否内连播放，会添加相应的兼容属性，详细见上方 video 属性
@@ -886,12 +886,12 @@ $css 允许我们操作 video, container, wrapper 的样式。
 | controls                | 是否展示控制条                        | boolean        | false        | 在没有安装任何皮肤插件时，该属性控制是否展示原生控制条。若果安装了皮肤插件，则意味着是否展示皮肤自带的控制条。 |
 | width                   | 宽度                             | number         | undefined    |                                          |
 | height                  | 高度                             | number         | undefined    |                                          |
-| crossorigin             | 是否跨域                           | boolean        | undefined    |                                          |
+| crossOrigin             | 是否跨域                           | boolean        | undefined    |                                          |
 | loop                    | 是否循环                           | boolean        | false        |                                          |
 | muted                   | 是否静音                           | boolean        | false        |                                          |
 | preload                 | 是否预加载                          | boolean        | undefined    |                                          |
 | poster                  | 封面                             | string         | ''           |                                          |
-| playsinline             | 是否内联                           | boolean        | false        | 我们会为此添加 `playsinle="true" webkit-playsinline="true" x5-video-player-type="h5"` |
+| playsInline             | 是否内联                           | boolean        | false        | 我们会为此添加 `playsinle="true" webkit-playsinline="true" x5-video-player-type="h5"` |
 | xWebkitAirplay          | 是否添加 `x-webkit-airplay`        | boolean        | false        |                                          |
 | x5VideoPlayerFullScreen | 是否添加`x5-video-play-fullscreen` | boolean        | false        |                                          |
 | x5VideoOrientation      | ` x5-video-orientation`        | string \| void | undefined    | 可选 landscape 和 portrait                  |
