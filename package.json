@@ -41,9 +41,9 @@
   "homepage": "https://github.com/Chimeejs/chimee#readme",
   "dependencies": {
     "babel-runtime": "^6.23.0",
-    "chimee-helper": "^0.1.10",
+    "chimee-helper": "^0.1.12",
     "chimee-kernel": "^1.0.3",
-    "toxic-decorators": "^0.3.3"
+    "toxic-decorators": "^0.3.6"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
