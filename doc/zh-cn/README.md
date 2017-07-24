@@ -34,7 +34,7 @@ Chimee 首先是一个[视频播放器](https://github.com/Chimeejs/chimee/blob/
 ### npm
 
 ```
-npm install --save chime
+npm install --save chimee
 ```
 
 ### cdn

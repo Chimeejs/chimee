@@ -38,7 +38,7 @@ What's more, it's also a [component framework](https://github.com/Chimeejs/chime
 ### npm
 
 ```
-npm install --save chime
+npm install --save chimee
 ```
 
 ### cdn
