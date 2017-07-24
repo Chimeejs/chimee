@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.1.1
+ * chimee v0.1.2
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -572,14 +572,6 @@ var VideoWrapper = function () {
       });
     }
   }, {
-    key: 'volume',
-    get: function get() {
-      return this.__dispatcher.dom.videoElement.volume;
-    },
-    set: function set(volume) {
-      this.__dispatcher.dom.videoElement.volume = volume;
-    }
-  }, {
     key: 'currentTime',
     get: function get() {
       return this.__dispatcher.kernel.currentTime;
@@ -703,7 +695,7 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec2$2 = toxicDecorator
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.1.1';
+    _this.VERSION = '0.1.2';
     _this.__operable = true;
     _this.__events = {};
     _this.__level = 0;
@@ -1605,44 +1597,6 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
 var _dec$4;
 var _dec2$4;
 var _dec3$4;
-var _dec4$4;
-var _dec5$4;
-var _dec6$3;
-var _dec7$1;
-var _dec8$1;
-var _dec9;
-var _dec10;
-var _dec11;
-var _dec12;
-var _dec13;
-var _dec14;
-var _dec15;
-var _dec16;
-var _dec17;
-var _dec18;
-var _dec19;
-var _dec20;
-var _dec21;
-var _dec22;
-var _dec23;
-var _dec24;
-var _dec25;
-var _dec26;
-var _dec27;
-var _dec28;
-var _dec29;
-var _dec30;
-var _dec31;
-var _dec32;
-var _dec33;
-var _dec34;
-var _dec35;
-var _dec36;
-var _dec37;
-var _dec38;
-var _dec39;
-var _dec40;
-var _dec41;
 var _class$4;
 var _descriptor$1;
 var _descriptor2$1;
@@ -1651,24 +1605,6 @@ var _descriptor4;
 var _descriptor5;
 var _descriptor6;
 var _descriptor7;
-var _descriptor8;
-var _descriptor9;
-var _descriptor10;
-var _descriptor11;
-var _descriptor12;
-var _descriptor13;
-var _descriptor14;
-var _descriptor15;
-var _descriptor16;
-var _descriptor17;
-var _descriptor18;
-var _descriptor19;
-var _descriptor20;
-var _descriptor21;
-var _descriptor22;
-var _descriptor23;
-var _descriptor24;
-var _descriptor25;
 
 function _initDefineProp$1(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -1710,126 +1646,135 @@ function _applyDecoratedDescriptor$4(target, property, decorators, descriptor, c
   return desc;
 }
 
-function setVideo(key, isBooleanAttribute) {
-  return toxicDecorators.accessor({
-    set: function set(val) {
-      // if it's not ready, the config should be set to the video
-      // but it can be different from the video, so that it can be set
-      if (!this.dispatcher.videoConfigReady) return val;
-
-      if (!/^(playbackRate|defaultPlaybackRate|muted|defaultMuted|disableRemotePlayback)$/.test(key)) {
-        if (isBooleanAttribute) {
-          val = val ? true : undefined;
-        }
-        this.dispatcher.dom.setAttr('video', key, val);
-      }
-      if (/^(playbackRate|defaultPlaybackRate|muted|defaultMuted|disableRemotePlayback)$/.test(key)) {
-        val = isBooleanAttribute ? !!val : val;
-        this.dispatcher.dom.videoElement[key] = val;
-      }
-      return val;
-    }
-  });
-}
 function numberOrVoid(value) {
   return chimeeHelper.isNumber(value) ? value : undefined;
 }
 function stringOrVoid(value) {
   return chimeeHelper.isString(value) ? value : undefined;
 }
-function setPlaysInline() {
+
+function accessorVideoProperty(property) {
   return toxicDecorators.accessor({
-    set: function set(val) {
-      val = val || undefined;
-      this.dispatcher.dom.setAttr('video', 'playsinline', val);
-      this.dispatcher.dom.setAttr('video', 'webkit-playsinline', val);
-      this.dispatcher.dom.setAttr('video', 'x5-video-player-type', val ? 'h5' : undefined);
-      return val;
+    get: function get(value) {
+      return this.dispatcher.videoConfigReady && this.inited ? this.videoElement[property] : value;
+    },
+    set: function set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      this.videoElement[property] = value;
+      return value;
     }
   });
 }
-var VideoConfig = (_dec$4 = toxicDecorators.alwaysString(), _dec2$4 = toxicDecorators.accessor({
-  set: function set(val) {
-    if (this.needToLoadSrc) {
-      // unlock it at first, to avoid deadlock
-      this.needToLoadSrc = false;
-      this.dispatcher.bus.emit('load', val);
+
+function accessorVideoAttribute(attribute) {
+  var _ref = chimeeHelper.isObject(attribute) ? attribute : {
+    set: attribute,
+    get: attribute,
+    isBoolean: false
+  },
+      _set = _ref.set,
+      _get = _ref.get,
+      isBoolean$$1 = _ref.isBoolean;
+
+  return toxicDecorators.accessor({
+    get: function get(value) {
+      return this.dispatcher.videoConfigReady && this.inited ? this.videoElement[_get] : value;
+    },
+    set: function set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      value = isBoolean$$1 ? value ? '' : undefined : value;
+      this.dispatcher.dom.setAttr('video', _set, value);
+      return value;
     }
-    return val;
-  }
-}, { preSet: false }), _dec3$4 = toxicDecorators.accessor({
-  set: function set(val) {
-    // must check val !== this.src here
-    // as we will set config.src in the video
-    // the may cause dead lock
-    if (this.dispatcher.readySync && this.autoload && val !== this.src) this.needToLoadSrc = true;
-    return val;
-  }
-}), _dec4$4 = toxicDecorators.initString(), _dec5$4 = toxicDecorators.initString(function (str) {
+  });
+}
+
+function accessorCustomAttribute(attribute, isBoolean$$1) {
+  return toxicDecorators.accessor({
+    get: function get(value) {
+      var attrValue = this.dispatcher.dom.getAttr('video', attribute);
+      return this.dispatcher.videoConfigReady && this.inited ? isBoolean$$1 ? !!attrValue : attrValue : value;
+    },
+    set: function set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      if (isBoolean$$1) value = value || undefined;
+      this.dispatcher.dom.setAttr('video', attribute, value);
+      return value;
+    }
+  });
+}
+
+var accessorMap = {
+  src: [toxicDecorators.alwaysString(), toxicDecorators.accessor({
+    set: function set(val) {
+      if (this.needToLoadSrc) {
+        // unlock it at first, to avoid deadlock
+        this.needToLoadSrc = false;
+        this.dispatcher.bus.emit('load', val);
+      }
+      return val;
+    }
+  }, { preSet: false }), toxicDecorators.accessor({
+    set: function set(val) {
+      // must check val !== this.src here
+      // as we will set config.src in the video
+      // the may cause dead lock
+      if (this.dispatcher.readySync && this.autoload && val !== this.src) this.needToLoadSrc = true;
+      return val;
+    }
+  })],
+  autoload: toxicDecorators.alwaysBoolean(),
+  autoplay: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('autoplay')],
+  controls: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('controls')],
+  width: [toxicDecorators.accessor({ set: numberOrVoid }), accessorVideoAttribute('width')],
+  height: [toxicDecorators.accessor({ set: numberOrVoid }), accessorVideoAttribute('height')],
+  crossOrigin: [toxicDecorators.accessor({ set: stringOrVoid }), accessorVideoAttribute({ set: 'crossorigin', get: 'crossOrigin' })],
+  loop: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('loop')],
+  defaultMuted: [toxicDecorators.alwaysBoolean(), accessorVideoAttribute({ get: 'defaultMuted', set: 'muted', isBoolean: true })],
+  muted: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('muted')],
+  preload: [toxicDecorators.accessor({ set: stringOrVoid }), accessorVideoAttribute('preload')],
+  poster: [toxicDecorators.accessor({ set: stringOrVoid }), accessorVideoAttribute('poster')],
+  playsInline: [toxicDecorators.accessor({
+    get: function get(value) {
+      var playsInline = this.videoElement.playsInline;
+      return this.dispatcher.videoConfigReady && this.inited ? playsInline === undefined ? value : playsInline : value;
+    },
+    set: function set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      this.videoElement.playsInline = value;
+      value = value ? '' : undefined;
+      this.dispatcher.dom.setAttr('video', 'playsinline', value);
+      this.dispatcher.dom.setAttr('video', 'webkit-playsinline', value);
+      this.dispatcher.dom.setAttr('video', 'x5-video-player-type', value === '' ? 'h5' : undefined);
+      return value;
+    }
+  }), toxicDecorators.alwaysBoolean()],
+  x5VideoPlayerFullScreen: [toxicDecorators.accessor({
+    set: function set(value) {
+      return !!value;
+    },
+    get: function get(value) {
+      return !!value;
+    }
+  }), accessorCustomAttribute('x5-video-player-fullscreen', true)],
+  x5VideoOrientation: [toxicDecorators.accessor({ set: stringOrVoid }), accessorCustomAttribute('x5-video-orientation')],
+  xWebkitAirplay: [toxicDecorators.accessor({
+    set: function set(value) {
+      return !!value;
+    },
+    get: function get(value) {
+      return !!value;
+    }
+  }), accessorCustomAttribute('x-webkit-airplay', true)],
+  playbackRate: [toxicDecorators.alwaysNumber(1), accessorVideoProperty('playbackRate')],
+  defaultPlaybackRate: [accessorVideoProperty('defaultPlaybackRate'), toxicDecorators.alwaysNumber(1)],
+  disableRemotePlayback: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('disableRemotePlayback')],
+  volume: [toxicDecorators.alwaysNumber(1), accessorVideoProperty('volume')]
+};
+
+var VideoConfig = (_dec$4 = toxicDecorators.initString(), _dec2$4 = toxicDecorators.initString(function (str) {
   return str.toLocaleLowerCase();
-}), _dec6$3 = toxicDecorators.initArray(), _dec7$1 = setVideo('autoplay', true), _dec8$1 = toxicDecorators.alwaysBoolean(), _dec9 = toxicDecorators.alwaysBoolean(), _dec10 = setVideo('controls', true), _dec11 = toxicDecorators.alwaysBoolean(), _dec12 = setVideo('width'), _dec13 = toxicDecorators.accessor({ set: numberOrVoid }), _dec14 = setVideo('height'), _dec15 = toxicDecorators.accessor({ set: numberOrVoid }), _dec16 = setVideo('crossorigin'), _dec17 = toxicDecorators.accessor({ set: stringOrVoid }), _dec18 = setVideo('loop', true), _dec19 = toxicDecorators.alwaysBoolean(), _dec20 = setVideo('defaultMuted'), _dec21 = toxicDecorators.alwaysBoolean(), _dec22 = setVideo('muted'), _dec23 = toxicDecorators.alwaysBoolean(), _dec24 = setVideo('preload'), _dec25 = toxicDecorators.accessor({ set: stringOrVoid }), _dec26 = setVideo('poster'), _dec27 = toxicDecorators.alwaysString(), _dec28 = setPlaysInline(), _dec29 = toxicDecorators.alwaysBoolean(), _dec30 = setVideo('x5-video-player-fullscreen', true), _dec31 = toxicDecorators.alwaysBoolean(), _dec32 = setVideo('x5-video-orientation'), _dec33 = toxicDecorators.accessor({ set: stringOrVoid }), _dec34 = setVideo('x-webkit-airplay', true), _dec35 = toxicDecorators.alwaysBoolean(), _dec36 = setVideo('playbackRate'), _dec37 = toxicDecorators.alwaysNumber(1), _dec38 = setVideo('defaultPlaybackRate'), _dec39 = toxicDecorators.alwaysNumber(1), _dec40 = setVideo('disableRemotePlayback', true), _dec41 = toxicDecorators.alwaysBoolean(), (_class$4 = function () {
-  function VideoConfig(dispatcher, config) {
-    _classCallCheck(this, VideoConfig);
-
-    _initDefineProp$1(this, 'needToLoadSrc', _descriptor$1, this);
-
-    _initDefineProp$1(this, 'src', _descriptor2$1, this);
-
-    _initDefineProp$1(this, 'type', _descriptor3$1, this);
-
-    _initDefineProp$1(this, 'box', _descriptor4, this);
-
-    _initDefineProp$1(this, 'runtimeOrder', _descriptor5, this);
-
-    _initDefineProp$1(this, 'autoplay', _descriptor6, this);
-
-    _initDefineProp$1(this, 'autoload', _descriptor7, this);
-
-    _initDefineProp$1(this, 'controls', _descriptor8, this);
-
-    _initDefineProp$1(this, 'width', _descriptor9, this);
-
-    _initDefineProp$1(this, 'height', _descriptor10, this);
-
-    _initDefineProp$1(this, 'crossorigin', _descriptor11, this);
-
-    _initDefineProp$1(this, 'loop', _descriptor12, this);
-
-    _initDefineProp$1(this, 'defaultMuted', _descriptor13, this);
-
-    _initDefineProp$1(this, 'muted', _descriptor14, this);
-
-    _initDefineProp$1(this, 'preload', _descriptor15, this);
-
-    _initDefineProp$1(this, 'poster', _descriptor16, this);
-
-    _initDefineProp$1(this, 'playsinline', _descriptor17, this);
-
-    _initDefineProp$1(this, 'x5VideoPlayerFullScreen', _descriptor18, this);
-
-    _initDefineProp$1(this, 'x5VideoOrientation', _descriptor19, this);
-
-    _initDefineProp$1(this, 'xWebkitAirplay', _descriptor20, this);
-
-    _initDefineProp$1(this, 'playbackRate', _descriptor21, this);
-
-    _initDefineProp$1(this, 'defaultPlaybackRate', _descriptor22, this);
-
-    _initDefineProp$1(this, 'disableRemotePlayback', _descriptor23, this);
-
-    _initDefineProp$1(this, '_kernelProperty', _descriptor24, this);
-
-    _initDefineProp$1(this, '_realDomAttr', _descriptor25, this);
-
-    Object.defineProperty(this, 'dispatcher', {
-      value: dispatcher,
-      enumerable: false,
-      writable: false,
-      configurable: false
-    });
-    chimeeHelper.deepAssign(this, config);
-  }
-
+}), _dec3$4 = toxicDecorators.initArray(), (_class$4 = function () {
   _createClass(VideoConfig, [{
     key: 'lockKernelProperty',
     value: function lockKernelProperty() {
@@ -1841,131 +1786,109 @@ var VideoConfig = (_dec$4 = toxicDecorators.alwaysString(), _dec2$4 = toxicDecor
     }
   }]);
 
+  function VideoConfig(dispatcher, config) {
+    _classCallCheck(this, VideoConfig);
+
+    _initDefineProp$1(this, 'needToLoadSrc', _descriptor$1, this);
+
+    _initDefineProp$1(this, 'inited', _descriptor2$1, this);
+
+    this.src = '';
+
+    _initDefineProp$1(this, 'type', _descriptor3$1, this);
+
+    _initDefineProp$1(this, 'box', _descriptor4, this);
+
+    _initDefineProp$1(this, 'runtimeOrder', _descriptor5, this);
+
+    this.autoload = true;
+    this.autoplay = false;
+    this.controls = false;
+    this.width = undefined;
+    this.height = undefined;
+    this.crossOrigin = undefined;
+    this.loop = false;
+    this.defaultMuted = false;
+    this.muted = false;
+    this.preload = 'auto';
+    this.poster = undefined;
+    this.playsInline = false;
+    this.x5VideoPlayerFullScreen = false;
+    this.x5VideoOrientation = undefined;
+    this.xWebkitAirplay = false;
+    this.playbackRate = 1;
+    this.defaultPlaybackRate = 1;
+    this.disableRemotePlayback = false;
+    this.volume = 1;
+
+    _initDefineProp$1(this, '_kernelProperty', _descriptor6, this);
+
+    _initDefineProp$1(this, '_realDomAttr', _descriptor7, this);
+
+    toxicDecorators.applyDecorators(this, accessorMap, { self: true });
+    Object.defineProperty(this, 'dispatcher', {
+      value: dispatcher,
+      enumerable: false,
+      writable: false,
+      configurable: false
+    });
+    Object.defineProperty(this, 'videoElement', {
+      value: dispatcher.dom.videoElement,
+      enumerable: false,
+      writable: false,
+      configurable: false
+    });
+    chimeeHelper.deepAssign(this, config);
+  }
+
+  _createClass(VideoConfig, [{
+    key: 'init',
+    value: function init() {
+      var _this = this;
+
+      this._realDomAttr.forEach(function (key) {
+        // $FlowFixMe: we have check the computed here
+        _this[key] = _this[key];
+      });
+      this.inited = true;
+    }
+  }]);
+
   return VideoConfig;
 }(), (_descriptor$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'needToLoadSrc', [toxicDecorators.nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor2$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'src', [_dec$4, _dec2$4, _dec3$4], {
+}), _descriptor2$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'inited', [toxicDecorators.nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
-    return '';
+    return false;
   }
-}), _descriptor3$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'type', [_dec4$4], {
+}), _descriptor3$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'type', [_dec$4, toxicDecorators.configurable], {
   enumerable: true,
   initializer: function initializer() {
     return 'vod';
   }
-}), _descriptor4 = _applyDecoratedDescriptor$4(_class$4.prototype, 'box', [_dec5$4], {
+}), _descriptor4 = _applyDecoratedDescriptor$4(_class$4.prototype, 'box', [_dec2$4, toxicDecorators.configurable], {
   enumerable: true,
   initializer: function initializer() {
     return '';
   }
-}), _descriptor5 = _applyDecoratedDescriptor$4(_class$4.prototype, 'runtimeOrder', [_dec6$3], {
+}), _descriptor5 = _applyDecoratedDescriptor$4(_class$4.prototype, 'runtimeOrder', [_dec3$4, toxicDecorators.configurable], {
   enumerable: true,
   initializer: function initializer() {
     return ['html5', 'flash'];
   }
-}), _descriptor6 = _applyDecoratedDescriptor$4(_class$4.prototype, 'autoplay', [_dec7$1, _dec8$1], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor7 = _applyDecoratedDescriptor$4(_class$4.prototype, 'autoload', [_dec9], {
-  enumerable: true,
-  initializer: function initializer() {
-    return true;
-  }
-}), _descriptor8 = _applyDecoratedDescriptor$4(_class$4.prototype, 'controls', [_dec10, _dec11], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor9 = _applyDecoratedDescriptor$4(_class$4.prototype, 'width', [_dec12, _dec13], {
-  enumerable: true,
-  initializer: function initializer() {
-    return undefined;
-  }
-}), _descriptor10 = _applyDecoratedDescriptor$4(_class$4.prototype, 'height', [_dec14, _dec15], {
-  enumerable: true,
-  initializer: function initializer() {
-    return undefined;
-  }
-}), _descriptor11 = _applyDecoratedDescriptor$4(_class$4.prototype, 'crossorigin', [_dec16, _dec17], {
-  enumerable: true,
-  initializer: function initializer() {
-    return undefined;
-  }
-}), _descriptor12 = _applyDecoratedDescriptor$4(_class$4.prototype, 'loop', [_dec18, _dec19], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor13 = _applyDecoratedDescriptor$4(_class$4.prototype, 'defaultMuted', [_dec20, _dec21], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor14 = _applyDecoratedDescriptor$4(_class$4.prototype, 'muted', [_dec22, _dec23], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor15 = _applyDecoratedDescriptor$4(_class$4.prototype, 'preload', [_dec24, _dec25], {
-  enumerable: true,
-  initializer: function initializer() {
-    return undefined;
-  }
-}), _descriptor16 = _applyDecoratedDescriptor$4(_class$4.prototype, 'poster', [_dec26, _dec27], {
-  enumerable: true,
-  initializer: function initializer() {
-    return '';
-  }
-}), _descriptor17 = _applyDecoratedDescriptor$4(_class$4.prototype, 'playsinline', [_dec28, _dec29], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor18 = _applyDecoratedDescriptor$4(_class$4.prototype, 'x5VideoPlayerFullScreen', [_dec30, _dec31], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor19 = _applyDecoratedDescriptor$4(_class$4.prototype, 'x5VideoOrientation', [_dec32, _dec33], {
-  enumerable: true,
-  initializer: function initializer() {
-    return undefined;
-  }
-}), _descriptor20 = _applyDecoratedDescriptor$4(_class$4.prototype, 'xWebkitAirplay', [_dec34, _dec35], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor21 = _applyDecoratedDescriptor$4(_class$4.prototype, 'playbackRate', [_dec36, _dec37], {
-  enumerable: true,
-  initializer: function initializer() {
-    return 1;
-  }
-}), _descriptor22 = _applyDecoratedDescriptor$4(_class$4.prototype, 'defaultPlaybackRate', [_dec38, _dec39], {
-  enumerable: true,
-  initializer: function initializer() {
-    return 1;
-  }
-}), _descriptor23 = _applyDecoratedDescriptor$4(_class$4.prototype, 'disableRemotePlayback', [_dec40, _dec41], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor24 = _applyDecoratedDescriptor$4(_class$4.prototype, '_kernelProperty', [toxicDecorators.frozen], {
+}), _descriptor6 = _applyDecoratedDescriptor$4(_class$4.prototype, '_kernelProperty', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
     return ['type', 'box', 'runtimeOrder'];
   }
-}), _descriptor25 = _applyDecoratedDescriptor$4(_class$4.prototype, '_realDomAttr', [toxicDecorators.frozen], {
+}), _descriptor7 = _applyDecoratedDescriptor$4(_class$4.prototype, '_realDomAttr', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return ['src', 'controls', 'width', 'height', 'crossorigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsinline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted'];
+    return ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
   }
 })), _class$4));
 
@@ -2089,13 +2012,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2$1 = 
     });
     this.videoConfig.lockKernelProperty();
     this.videoConfigReady = true;
-    // if we do not reset the value, the value would be add to video element
-    // if we call the setAttr here, we will have to set attr on video-config and here
-    // which makes us wet
-    this.videoConfig._realDomAttr.forEach(function (key) {
-      // $FlowFixMe: we have check the computed here
-      _this.videoConfig[key] = _this.videoConfig[key];
-    });
+    this.videoConfig.init();
     /**
      * video kernel
      * @type {Kernel}
@@ -2693,7 +2610,7 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec2 = toxicDecorators.al
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.1.1';
+    return '0.1.2';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
