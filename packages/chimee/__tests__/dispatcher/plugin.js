@@ -1,9 +1,10 @@
 import Dom from 'dispatcher/dom';
 import Bus from 'dispatcher/bus';
-import {Log, getAttr} from 'chimee-helper';
+import {Log, getAttr, isString, isNumber, isBoolean} from 'chimee-helper';
 import Plugin from 'dispatcher/plugin';
 import Dispatcher from 'dispatcher/index';
 import VideoConfig from 'dispatcher/video-config';
+import Chimee from 'index';
 describe('dispatcher/plugin', () => {
   let dispatcher;
   beforeEach(() => {
@@ -745,5 +746,106 @@ describe('dispatcher/plugin', () => {
     dispatcher = new Dispatcher({wrapper: document.createElement('div')}, {});
     dispatcher.use('p');
     expect(dispatcher.plugins.p.$plugins).toBe(dispatcher.plugins);
+  });
+});
+
+describe('dispatcher/plugin => $watch', () => {
+  let fn;
+  let wrapper;
+  beforeEach(() => {
+    fn = jest.fn();
+    wrapper = document.createElement('div');
+  });
+  test('normal watch', () => {
+    const normalWatch = {
+      name: 'normalWatch',
+      data: {
+        test: 1
+      },
+      create () {
+        this.unwatch = this.$watch('test', fn);
+        this.$watch(['array'], fn);
+      }
+    };
+    Chimee.install(normalWatch);
+    const player = new Chimee({
+      wrapper,
+      plugin: ['normalWatch']
+    });
+    player.normalWatch.test = 2;
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(fn).lastCalledWith(2, 1);
+    player.normalWatch.unwatch();
+    player.normalWatch.test = 3;
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+  test('videoConfig watch', () => {
+    const videoConfigWatch = {
+      name: 'videoConfigWatch',
+      data: {
+        test: 1
+      },
+      create () {
+        this.$videoConfig._realDomAttr.forEach(key => {
+          this.$watch(key, fn);
+        });
+      }
+    };
+    Chimee.install(videoConfigWatch);
+    const player = new Chimee({
+      wrapper,
+      plugin: ['videoConfigWatch']
+    });
+    let index = 0;
+    player.__dispatcher.videoConfig._realDomAttr.forEach(key => {
+      if(['defaultMuted', 'src'].indexOf(key) > -1) return;
+      if(isBoolean(player[key])) {
+        player[key] = !player[key];
+        // console.warn(key, index, player[key]);
+        expect(fn).toHaveBeenCalledTimes(++index);
+        expect(fn).lastCalledWith(player[key], !player[key]);
+      }
+      if(isNumber(player[key])) {
+        player[key] = key === 'volume'
+          ? player[key] / 2
+          : player[key] + 1;
+        expect(fn).toHaveBeenCalledTimes(++index);
+        expect(fn).lastCalledWith(player[key], key === 'volume'
+          ? player[key] * 2
+          : player[key] - 1
+        );
+      }
+      if(isString(player[key])) {
+        const origin = player[key];
+        player[key] = '123';
+        expect(fn).toHaveBeenCalledTimes(++index);
+        expect(fn).lastCalledWith('123', origin);
+      }
+    });
+  });
+  test('only accept string or array', () => {
+    const errorWatch = {
+      name: 'errorWatch',
+      data: {
+        test: 1
+      },
+      create () {
+        this.$watch(1, fn);
+      }
+    };
+    Chimee.install(errorWatch);
+    expect(() => new Chimee({
+      wrapper,
+      plugin: ['errorWatch']
+    })).toThrow('$watch only accept string and Array<string> as key to find the target to spy on, but not 1, whose type is number');
+  });
+  test('unwatch nothing', () => {
+    const player = new Chimee({
+      wrapper,
+      plugin: ['normalWatch']
+    });
+    player.normalWatch.__unwatchHandlers.pop();
+    player.normalWatch.__unwatchHandlers.pop();
+    player.normalWatch.unwatch();
   });
 });
