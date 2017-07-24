@@ -300,6 +300,10 @@ describe('Chimee', () => {
       videoElement.width = 10;
       expect(player.width).toBe(10);
       expect(videoElement.width).toBe(10);
+      player.__dispatcher.videoConfigReady = false;
+      player.width = 20;
+      expect(player.width).toBe(20);
+      expect(videoElement.width).toBe(10);
     });
     test('height', () => {
       player.height = 100;
@@ -343,11 +347,27 @@ describe('Chimee', () => {
       expect(getAttr(videoElement, 'webkit-playsinline')).toBe('');
       expect(getAttr(videoElement, 'x5-video-player-type')).toBe('h5');
     });
+    test('playsinline with videoconfigready = false', () => {
+      player.__dispatcher.videoConfigReady = false;
+      player.playsInline = true;
+      expect(player.playsInline).toBe(true);
+      expect(getAttr(videoElement, 'playsinline')).toBe(null);
+      expect(getAttr(videoElement, 'webkit-playsinline')).toBe(null);
+      expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
+    });
+    test('get playsinline when playsInline of videoElement is undefined', () => {
+      videoElement.playsInline = undefined;
+      expect(player.playsInline).toBe(false);
+    });
     test('x5VideoPlayerFullScreen', () => {
       expect(player.x5VideoPlayerFullScreen).toBe(false);
       expect(getAttr(videoElement, 'x5-video-player-fullscreen')).toBe(null);
       player.x5VideoPlayerFullScreen = true;
       expect(player.x5VideoPlayerFullScreen).toBe(true);
+      expect(getAttr(videoElement, 'x5-video-player-fullscreen')).toBe('true');
+      player.__dispatcher.videoConfigReady = false;
+      player.x5VideoPlayerFullScreen = false;
+      expect(player.x5VideoPlayerFullScreen).toBe(false);
       expect(getAttr(videoElement, 'x5-video-player-fullscreen')).toBe('true');
     });
     test('xWebkitAirplay', () => {
@@ -431,6 +451,26 @@ describe('Chimee', () => {
         await waiter;
         expect(loadCount).toBe(1);
       });
+      test('_autoloadVideoSrcAtFirst', async () => {
+        player = new Chimee({
+          // 播放地址
+          src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+          // 直播:live 点播：vod
+          type: 'vod',
+          // 编解码容器
+          box: 'mp4',
+          // dom容器
+          wrapper: 'body',
+          plugin: ['autoloadtest'],
+          events: {},
+          autoload: false
+        });
+        await player.ready;
+        const waiter = new Promise(resolve => {resolveFn = resolve;});
+        player.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
+        await waiter;
+        expect(loadCount).toBe(1);
+      });
     });
   });
 
@@ -464,8 +504,6 @@ describe('Chimee', () => {
     });
     afterEach(() => {
       player.destroy();
-      // dispatcher.dom.__dispatcher.videoConfigReady = false;
-      // dispatcher.videoConfigReady = false;
     });
     test('attr', () => {
       player.attr('container', 'data-id', 1);

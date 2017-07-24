@@ -37,9 +37,7 @@
     // dom容器
     wrapper: '#wrapper',
     plugin: ['controller'],
-    volume: 0.1,
-    playsInline: true,
-    xWebkitAirplay: true
+    volume: 0.1
   });
   const player2 = new Chimee({
     // 播放地址
