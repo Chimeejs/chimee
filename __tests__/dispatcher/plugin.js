@@ -798,7 +798,7 @@ describe('dispatcher/plugin => $watch', () => {
     });
     let index = 0;
     player.__dispatcher.videoConfig._realDomAttr.forEach(key => {
-      if(['defaultMuted', 'src'].indexOf(key) > -1) return;
+      if(['src'].indexOf(key) > -1) return;
       if(isBoolean(player[key])) {
         player[key] = !player[key];
         // console.warn(key, index, player[key]);

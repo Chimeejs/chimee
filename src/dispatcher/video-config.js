@@ -40,12 +40,12 @@ function accessorVideoAttribute (attribute: string | {set: string, get: string, 
     },
     set (value) {
       if(!this.dispatcher.videoConfigReady) return value;
-      value = isBoolean
+      const val = isBoolean
         ? value
           ? ''
           : undefined
         : value;
-      this.dispatcher.dom.setAttr('video', set, value);
+      this.dispatcher.dom.setAttr('video', set, val);
       return value;
     }
   });
@@ -256,7 +256,7 @@ export default class VideoConfig {
 
   @frozen
   _realDomAttr = ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
-  
+
   lockKernelProperty () {
     applyDecorators(this, {
       type: lock,
