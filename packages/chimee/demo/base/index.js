@@ -19,12 +19,12 @@
     // 在插件创建的阶段，我们为插件绑定事件。
     create () {
       this.$dom.addEventListener('click', this.changeVideoStatus);
-      this.$watch('text', function (newVal, oldVal) {
+      this.$watch('src', function (newVal, oldVal) {
         console.log(newVal, oldVal);
-      });
+      }, {diff: false});
       this.$watch('defaultMuted', function (newVal, oldVal) {
         console.log(newVal, oldVal);
-      });
+      }, {diff: false});
     },
     // 插件会在播放暂停操作发生后改变自己的文案及相应的行为
     events: {
