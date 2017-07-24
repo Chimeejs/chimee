@@ -39,5 +39,13 @@
     plugin: ['controller'],
     volume: 0.1
   });
+  const player2 = new Chimee({
+    // 播放地址
+    src: 'http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4',
+    // dom容器
+    wrapper: '#wrapper2',
+    controls: true
+  });
   window.player = player;
+  window.player2 = player2;
 })(window.Chimee);
