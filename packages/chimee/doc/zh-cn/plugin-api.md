@@ -17,6 +17,7 @@
 - [$attr](#$attr)
 - [$css](#$css)
 - [$bumpToTop](#$bumpToTop)
+- [$watch](#watch)
 - [全屏](#全屏)
 - [pluginConfig参数](#pluginConfig参数)
 - [插件属性](#插件属性)

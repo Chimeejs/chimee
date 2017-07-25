@@ -1,6 +1,6 @@
 // @flow
-import {isError, isString, isFunction, isEmpty, isObject, isBoolean, isInteger, isPromise, deepAssign, bind, isArray, Log, getDeepProperty} from 'chimee-helper';
-import {before, accessor, applyDecorators, frozen, autobindClass, nonenumerable, nonextendable, watch} from 'toxic-decorators';
+import {isError, isString, isFunction, isEmpty, isObject, isBoolean, isInteger, isPromise, deepAssign, bind, isArray, Log} from 'chimee-helper';
+import {before, accessor, applyDecorators, frozen, autobindClass, nonenumerable, nonextendable} from 'toxic-decorators';
 import {eventBinderCheck, attrAndStyleCheck} from 'helper/checker';
 import {domEvents} from 'helper/const';
 import VideoWrapper from 'dispatcher/video-wrapper';
@@ -36,13 +36,11 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   $autoFocus: boolean;
   $penetrate: boolean;
   VERSION: string;
-  __unwatchHandlers: Array<Function>;
   destroyed = false;
   VERSION = process.env.PLAYER_VERSION;
   __operable = true;
   __events = {};
   __level = 0;
-  __unwatchHandlers = [];
   /**
    * <pre>
    * to create a plugin, we need three parameter
@@ -354,42 +352,6 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   }
   $throwError (error: Error | string) {
     this.__dispatcher.throwError(error);
-  }
-  $watch (key: string | Array<string>, handler: Function, {
-    deep,
-    diff = true,
-    other
-  }: {
-    deep?: boolean,
-    diff?: boolean,
-    other?: any
-  } = {}) {
-    if(!isString(key) && !isArray(key)) throw new TypeError(`$watch only accept string and Array<string> as key to find the target to spy on, but not ${key}, whose type is ${typeof key}`);
-    let watching = true;
-    const watcher = function (...args) {
-      if(watching) bind(handler, this)(...args);
-    };
-    const unwatcher = () => {
-      watching = false;
-      const index = this.__unwatchHandlers.indexOf(unwatcher);
-      if(index > -1) this.__unwatchHandlers.splice(index, 1);
-    };
-    const keys = isString(key)
-      ? key.split('.')
-      : key;
-    const property = keys.pop();
-    const target = (
-      keys.length === 0 &&
-      !other &&
-      this.$videoConfig._realDomAttr.indexOf(property) > -1
-    )
-      ? this.$videoConfig
-      : getDeepProperty(other || this, keys, {throwError: true});
-    applyDecorators(target, {
-      [property]: watch(watcher, {deep, diff})
-    }, {self: true});
-    this.__unwatchHandlers.push(unwatcher);
-    return unwatcher;
   }
   /**
    * officail destroy function for plugin

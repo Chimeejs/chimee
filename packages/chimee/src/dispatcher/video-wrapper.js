@@ -1,10 +1,12 @@
 // @flow
-import {bind} from 'chimee-helper';
+import {bind, isString, getDeepProperty, isArray, isObject, isFunction, Log} from 'chimee-helper';
 import {videoReadOnlyProperties, videoMethods, kernelMethods, domMethods} from 'helper/const';
-import {accessor, nonenumerable, applyDecorators} from 'toxic-decorators';
+import {accessor, nonenumerable, applyDecorators, watch} from 'toxic-decorators';
 export default class VideoWrapper {
   __id: string;
   __dispatcher: Dispatcher;
+  __unwatchHandlers: Array<Function>;
+  __unwatchHandlers = [];
   __wrapAsVideo (videoConfig: VideoConfig) {
     // bind video read only properties on instance, so that you can get info like buffered
     videoReadOnlyProperties.forEach(key => {
@@ -77,5 +79,67 @@ export default class VideoWrapper {
 
   set currentTime (second: number) {
     this.__dispatcher.bus.emitSync('seek', second);
+  }
+
+  $watch (key: string | Array<string>, handler: Function, {
+    deep,
+    diff = true,
+    other
+  }: {
+    deep?: boolean,
+    diff?: boolean,
+    other?: any
+  } = {}) {
+    if(!isString(key) && !isArray(key)) throw new TypeError(`$watch only accept string and Array<string> as key to find the target to spy on, but not ${key}, whose type is ${typeof key}`);
+    let watching = true;
+    const watcher = function (...args) {
+      if(watching) bind(handler, this)(...args);
+    };
+    const unwatcher = () => {
+      watching = false;
+      const index = this.__unwatchHandlers.indexOf(unwatcher);
+      if(index > -1) this.__unwatchHandlers.splice(index, 1);
+    };
+    const keys = isString(key)
+      ? key.split('.')
+      : key;
+    const property = keys.pop();
+    const videoConfig = this.__dispatcher.videoConfig;
+    const target = (
+      keys.length === 0 &&
+      !other &&
+      videoConfig._realDomAttr.indexOf(property) > -1
+    )
+      ? videoConfig
+      : getDeepProperty(other || this, keys, {throwError: true});
+    applyDecorators(target, {
+      [property]: watch(watcher, {deep, diff})
+    }, {self: true});
+    this.__unwatchHandlers.push(unwatcher);
+    return unwatcher;
+  }
+
+  $set (obj: Object | Array<*>, property: string | number, value: any) {
+    if(!isObject(obj) && !isArray(obj)) throw new TypeError(`$set only support Array or Object, but not ${obj}, whose type is ${typeof obj}`);
+    // $FlowFixMe: we have custom this function
+    if(!isFunction(obj.__set)) {
+      Log.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $set.`);
+      // $FlowFixMe: we support computed string on array here
+      obj[property] = value;
+      return;
+    }
+    obj.__set(property, value);
+  }
+
+  $del (obj: Object | Array<*>, property: string) {
+    if(!isObject(obj) && !isArray(obj)) throw new TypeError(`$del only support Array or Object, but not ${obj}, whose type is ${typeof obj}`);
+    // $FlowFixMe: we have custom this function
+    if(!isFunction(obj.__del)) {
+      Log.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $del.`);
+      // $FlowFixMe: we support computed string on array here
+      delete obj[property];
+      return;
+    }
+    obj.__del(property);
   }
 }
