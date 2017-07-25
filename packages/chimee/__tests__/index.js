@@ -531,5 +531,4 @@ describe('Chimee', () => {
       expect(player.attr('video', 'data-controls')).toBe('true');
     });
   });
-
 });

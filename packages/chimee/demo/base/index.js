@@ -33,6 +33,9 @@
       },
       play () {
         this.changeButtonText('pause');
+      },
+      c_contextmenu (evt) {
+        console.log(evt);
       }
     }
   };
