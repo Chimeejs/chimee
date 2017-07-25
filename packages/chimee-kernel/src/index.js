@@ -1,16 +1,14 @@
 import { Log } from 'chimee-helper';
 import { CustEvent } from 'chimee-helper';
 import { isNumber } from 'chimee-helper';
-import Mp4 from './mp4/index';
-import Flv from './flv/index';
-import Hls from './hls/index';
+import Native from './native/index';
 
 export default class Kernel extends CustEvent {
 	/**
 	 * 创建核心解码器
 	 * @param {any} wrap 父层容器
 	 * @param {any} option 整合参数
-	 * @\ kernel
+	 * @class kernel
 	 */
 	constructor (videoElement, config) {
 		super();
@@ -36,7 +34,6 @@ export default class Kernel extends CustEvent {
 				clearTimeout(this.timer);
 				this.timer = null;
 			});
-
 		}
 	}
 
@@ -53,14 +50,14 @@ export default class Kernel extends CustEvent {
 				? 'flv'
 				: config.src.indexOf('.m3u8') !== -1
 					? 'hls'
-					: 'mp4';
+					: 'native';
 
-		if (box === 'mp4') {
-			return new Mp4(this.video, config);
+		if (box === 'native') {
+			return new Native(this.video, config);
 		} else if (box === 'flv') {
-			return new Flv(this.video, config);
+			return new config.preset[box](this.video, config);
 		} else if (box === 'hls') {
-			return new Hls(this.video, config);
+			return new config.preset[box](this.video, config);
 		} else {
 			Log.error(this.tag, 'not mactch any player, please check your config');
 			return null;

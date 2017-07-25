@@ -5,20 +5,19 @@ import { deepAssign } from 'chimee-helper';
  * mp4解码器
  *
  * @export
- * @class Mp4
+ * @class Native
  */
-export default class Mp4 extends CustEvent {
+export default class Native extends CustEvent {
     /**
-     * Creates an instance of Mp4.
+     * Creates an instance of Native.
      * @param {any} videodom video dom对象
      * @param {any} config 配置
-     *
-     * @memberof Mp4
+     * @memberof Native
      */
     constructor (videodom, config) {
         super();
         this.video = videodom;
-        this.box = 'mp4';
+        this.box = 'Native';
         this.config = defaultConfig;
         deepAssign(this.config, config);
         this.bindEvents();

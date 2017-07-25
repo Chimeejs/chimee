@@ -1,4 +1,10 @@
-#   用法示例
+# chimee-kernel
+
+## Installation
+```
+npm install --save chimee-kernel
+```
+## Usage
 ```
 import kernel from '/src/kernel/kernel'
 //参数1是video dom

@@ -1,7 +1,7 @@
 export default {
   type: 'vod',
   autoPlay: false,
-  box: 'mp4',
+  box: 'native',
   lockInternalProperty: false,
   debug: true
 };
