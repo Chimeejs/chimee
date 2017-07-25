@@ -670,6 +670,143 @@ $css 允许我们操作 video, container, wrapper 的样式。
 
 置顶函数。调用该方法，你的插件的 level 值将会移至最顶。
 
+## $watch
+
+$watch 可用于监听特定属性的变化。当属性变化时，会执行传入的回调函数，回调函数会接收到新的属性值和原属性值。
+
+**参数**
+* key
+  * `string | Array<string>`
+  * 用于查找特定属性值，仅接受用 `.` 分割的字符串。
+* handler
+  * `Function`
+  * 当产生变化的时候会执行的函数
+  * 接受两个参数 `newVal` 和 `oldVal`，分别代表新旧属性值。但是在 `deep` 模式下对子元素的修改不会保存两份快照。
+* option
+  * `Object`
+  * 可选项
+  * 内容包括
+    * deep
+      * `boolean`
+      * 是否深度监听，可用于监听 `Object` 和 `Array` 内部变量的变化。但是某些情况下需要配合`$set` 和`$del`使用
+      * 默认为`false`
+    * diff
+      * `boolean`
+      * 是否需要比对。如果为 `false`，只要有对属性的相关设置就会执行回调函数。
+      * 默认为`true`
+    * other
+      * `Object | Array<*>`
+      * 在寻找属性的时候，一般会从所在实例本身上寻找，加入需要监听其他实例的属性，可以穿入该参数。
+      * 默认为`undefined`
+    * proxy
+      * `boolean`
+        * 在做深度监听的时候我们会发现，对于新添加的元素或删除已知元素无法监听。因此我们需要使用`$set`和`$del`触发行为。事实上，[Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) 可以帮助我们解决这个问题。如果设定 proxy 为 `true`， 我们可以随意操作对象。
+        * 但是由于[浏览器的支持度不佳](http://caniuse.com/#search=proxy)，我们不推荐在生产环境下使用。
+
+ **返回**
+
+* unwatch
+  * `Function`
+  * 函数用于解绑监听函数，执行后，变化不会再调用回调函数
+
+**例子：**
+
+你可以轻易监听 video 上的一些属性。
+
+```javascript
+import Chimee from 'chimme';
+const plugin = {
+  name: 'plugin',
+  create () {
+    this.$watch('controls', (newVal, oldVal) => console.log(newVal, oldVal));
+  }
+}
+Chimee.install(plugin);
+const player = new Chimee({
+  wrapper: 'body',
+  plugin: ['plugin']
+});
+player.controls = true; // true, false
+```
+
+又或者自定义属性：
+
+```javascript
+import Chimee from 'chimme';
+const plugin = {
+  name: 'plugin',
+  data: {
+    test: 1
+  }
+  create () {
+    this.$watch('test', (newVal, oldVal) => console.log(newVal, oldVal));
+  }
+}
+Chimee.install(plugin);
+const player = new Chimee({
+  wrapper: 'body',
+  plugin: ['plugin']
+});
+player.plugin.test = 2; // 2, 1
+```
+
+你也可以深度监听数组，直接调用数组的操作方法：
+
+```javascript
+import Chimee from 'chimme';
+const plugin = {
+  name: 'plugin',
+  data: {
+    test: [1, 2, 3]
+  }
+  create () {
+    this.$watch('test', (newVal, oldVal) => console.log(newVal, oldVal), {deep: true});
+  }
+}
+Chimee.install(plugin);
+const player = new Chimee({
+  wrapper: 'body',
+  plugin: ['plugin']
+});
+player.plugin.test.push(4); // [1, 2, 3, 4], [1, 2, 3, 4]
+```
+
+同理你也可以深度监听对象，但是对新增元素或者删除元素需要使用 `$set` 和 `$del` 进行辅助。
+
+```javascript
+import Chimee from 'chimme';
+const plugin = {
+  name: 'plugin',
+  data: {
+    test: {
+      foo: 1
+    }
+  }
+  create () {
+    this.$watch('test', (newVal, oldVal) => console.log(newVal, oldVal), {deep: true});
+  }
+}
+Chimee.install(plugin);
+const player = new Chimee({
+  wrapper: 'body',
+  plugin: ['plugin']
+});
+player.plugin.test.foo = 2; // {foo: 2}, {foo: 2}
+player.$set(test, 'bar', 1); // {foo: 2, bar: 1}, {foo: 2, bar: 1}
+player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
+```
+
+>注意：
+>
+>1. 并非所有 video 相关属性都可以监听。现阶段只支持监听[$videoConfig](#videoConfig) 中除`src` 以外的部分。
+>
+>`src` 的值因为涉及到 video 播放核心的变换，以及事件拦截等，建议采取事件驱动模式编写。
+>
+>`paused` 等 video 只读属性，因为需要监听原生 video，故暂不提供。且以上属性大部分可以通过事件获取。
+>
+>2. 采取深度监听时，子元素修改后回调函数并不会获得原有对象快照
+>3. 深度监听时需要使用 `$set` 和 `$del` 进行辅助。
+
 ## 全屏
 
 我们可以使用`$fullscreen`进行全屏操作。
@@ -880,28 +1017,28 @@ $css 允许我们操作 video, container, wrapper 的样式。
 - 类型： `Object`
 - 含义：播放器的参数设置
 
-| 属性                      | 含义                             | 类型             | 默认值          | 备注                                       |
-| ----------------------- | ------------------------------ | -------------- | ------------ | ---------------------------------------- |
-| src                     | 播放地址                           | string         | ''           | 假如 `autoload` 为 `true`，则当我们设置 `src` 后，该地址会加载到 `video` 元素上，并作出相应加载。若果 `autoload` 为 `false`， 则意味着我们仅仅在 `videoConfig` 上设置了地址，此时可以手动调用 `load` 方法进行 |
-| autoplay                | 是否自动播放                         | boolean        | false        | autoplay 指在分配 src 后自动播放，即调用`chimee.load()`后。 |
-| controls                | 是否展示控制条                        | boolean        | false        | 在没有安装任何皮肤插件时，该属性控制是否展示原生控制条。若果安装了皮肤插件，则意味着是否展示皮肤自带的控制条。 |
-| width                   | 宽度                             | number         | undefined    |                                          |
-| height                  | 高度                             | number         | undefined    |                                          |
-| crossOrigin             | 是否跨域                           | boolean        | undefined    |                                          |
-| loop                    | 是否循环                           | boolean        | false        |                                          |
-| muted                   | 是否静音                           | boolean        | false        |                                          |
-| preload                 | 是否预加载                          | boolean        | undefined    |                                          |
-| poster                  | 封面                             | string         | ''           |                                          |
-| playsInline             | 是否内联                           | boolean        | false        | 我们会为此添加 `playsinle="true" webkit-playsinline="true" x5-video-player-type="h5"` |
-| xWebkitAirplay          | 是否添加 `x-webkit-airplay`        | boolean        | false        |                                          |
-| x5VideoPlayerFullScreen | 是否添加`x5-video-play-fullscreen` | boolean        | false        |                                          |
-| x5VideoOrientation      | ` x5-video-orientation`        | string \| void | undefined    | 可选 landscape 和 portrait                  |
-| playbackRate            | 回放速率                           | number         | 1            | 大于1加速，小于1减速                              |
-| defaultPlaybackRate     | 默认回放速率                         | number         | 1            | 大于1加速，小于1减速                              |
-| autoload                | 设置`src`时是否进行自动加载               | boolean        | true         |                                          |
-| defaultMuted            | 是否是默认静音                        | boolean        | false        | 对应于 video 上的 muted 标签                    |
-| disableRemotePlayback   | 是否不展示远程回放标志                    | boolean        | false        | 对应于 video 上的  disableRemotePlayback 标签   |
-| volume                  | 音量                             | number         | 原 video 上的音量 |                                          |
+| 属性                      | 含义                             | 类型             | 默认值       | 备注                                       |
+| ----------------------- | ------------------------------ | -------------- | --------- | ---------------------------------------- |
+| src                     | 播放地址                           | string         | ''        | 假如 `autoload` 为 `true`，则当我们设置 `src` 后，该地址会加载到 `video` 元素上，并作出相应加载。若果 `autoload` 为 `false`， 则意味着我们仅仅在 `videoConfig` 上设置了地址，此时可以手动调用 `load` 方法进行 |
+| autoplay                | 是否自动播放                         | boolean        | false     | autoplay 指在分配 src 后自动播放，即调用`chimee.load()`后。 |
+| controls                | 是否展示控制条                        | boolean        | false     | 在没有安装任何皮肤插件时，该属性控制是否展示原生控制条。若果安装了皮肤插件，则意味着是否展示皮肤自带的控制条。 |
+| width                   | 宽度                             | number         | undefined |                                          |
+| height                  | 高度                             | number         | undefined |                                          |
+| crossOrigin             | 是否跨域                           | boolean        | undefined |                                          |
+| loop                    | 是否循环                           | boolean        | false     |                                          |
+| muted                   | 是否静音                           | boolean        | false     |                                          |
+| preload                 | 是否预加载                          | boolean        | auto      |                                          |
+| poster                  | 封面                             | string         | ''        |                                          |
+| playsInline             | 是否内联                           | boolean        | false     | 我们会为此添加 `playsinle="true" webkit-playsinline="true" x5-video-player-type="h5"` |
+| xWebkitAirplay          | 是否添加 `x-webkit-airplay`        | boolean        | false     |                                          |
+| x5VideoPlayerFullScreen | 是否添加`x5-video-play-fullscreen` | boolean        | false     |                                          |
+| x5VideoOrientation      | ` x5-video-orientation`        | string \| void | undefined | 可选 landscape 和 portrait                  |
+| playbackRate            | 回放速率                           | number         | 1         | 大于1加速，小于1减速                              |
+| defaultPlaybackRate     | 默认回放速率                         | number         | 1         | 大于1加速，小于1减速                              |
+| autoload                | 设置`src`时是否进行自动加载               | boolean        | true      |                                          |
+| defaultMuted            | 是否是默认静音                        | boolean        | false     | 对应于 video 上的 muted 标签                    |
+| disableRemotePlayback   | 是否不展示远程回放标志                    | boolean        | false     | 对应于 video 上的  disableRemotePlayback 标签   |
+| volume                  | 音量                             | number         | 1         |                                          |
 
 > 注意
 >
@@ -1023,7 +1160,40 @@ this.$css('width', 100);
 
 ### $fullscreen
 
-详情见全屏章节
+详情见[全屏](#全屏)章节
+
+### $watch
+
+详情见[$watch](#watch)章节
+
+### $set
+
+设置对象或者数组的值， 可以触发`$watch` 的回调函数
+
+**参数**
+
+* obj
+  * `Object | Array` 
+  * 目标对象
+* property
+  * `string`
+  * 属性名
+* value
+  * `any`
+  * 属性值
+
+### $del
+
+删除对象或者数组的值， 可以触发`$watch` 的回调函数
+
+**参数**
+
+- obj
+  - `Object | Array` 
+  - 目标对象
+- property
+  - `string`
+  - 属性名
 
 ### $bumpToTop
 

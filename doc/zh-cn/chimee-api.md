@@ -4,6 +4,15 @@ Chimee 本质上是对原生 video 元素的一个封装。因此在许多用法
 
 同时，Chimee 也是一个组件化框架，要理解这个框架的具体用法，请阅读[为什么要将 Chimee 设计成一个组件化框架？](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/why-chimee-is-a-frame.md)
 
+本文将分为以下几个部分进行阐述：
+
+* [生成实例](#生成实例)
+* [video元素相关方法](#video元素相关方法)
+* [video元素相关属性](#video元素相关属性)
+* [事件监听相关方法](#事件监听相关方法)
+* [数据监听相关方法](#数据监听相关方法)
+* [插件操作](#插件操作)
+
 ## 生成实例
 
 我们直接调用`new`就可以生成一个 Chimee 实例。这个实例中我们需要使用者提供一个 dom 节点，我们称之为 wrapper。因此，在构造函数里我们接受三种参数——`string | HTMLElment | Object`。
@@ -167,7 +176,7 @@ const chimee = new Chimee({
 >
 > 2）以上所有属性均可以在 chimee 实例上直接自上使用，如`this.src`。
 
-## video 元素相关方法
+## video元素相关方法
 
 > \* 前缀为 chimee 自定义方法
 
@@ -289,7 +298,7 @@ chimee.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
     - `'maybe'`: Cannot tell if the media type is playable without playing it.
     - `''` (empty string): The specified media type definitely cannot be played.
 
-## video 元素相关属性
+## video元素相关属性
 
 > \* 前缀为 chimee 自定义属性
 
@@ -535,7 +544,144 @@ chimee 作为 video 的映射，自然也是可以监听 video 上的事件。�
 
 一般用于触发 dom 事件。
 
-### 插件操作
+## 数据监听相关方法
+
+## $watch
+
+$watch 可用于监听特定属性的变化。当属性变化时，会执行传入的回调函数，回调函数会接收到新的属性值和原属性值。
+
+**参数**
+
+- key
+  - `string | Array<string>`
+  - 用于查找特定属性值，仅接受用 `.` 分割的字符串。
+- handler
+  - `Function`
+  - 当产生变化的时候会执行的函数
+  - 接受两个参数 `newVal` 和 `oldVal`，分别代表新旧属性值。但是在 `deep` 模式下对子元素的修改不会保存两份快照。
+- option
+  - `Object`
+  - 可选项
+  - 内容包括
+    - deep
+      - `boolean`
+      - 是否深度监听，可用于监听 `Object` 和 `Array` 内部变量的变化。但是某些情况下需要配合`$set` 和`$del`使用
+      - 默认为`false`
+    - diff
+      - `boolean`
+      - 是否需要比对。如果为 `false`，只要有对属性的相关设置就会执行回调函数。
+      - 默认为`true`
+    - other
+      - `Object | Array<*>`
+      - 在寻找属性的时候，一般会从所在实例本身上寻找，加入需要监听其他实例的属性，可以穿入该参数。
+      - 默认为`undefined`
+    - proxy
+      - `boolean`
+        - 在做深度监听的时候我们会发现，对于新添加的元素或删除已知元素无法监听。因此我们需要使用`$set`和`$del`触发行为。事实上，[Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) 可以帮助我们解决这个问题。如果设定 proxy 为 `true`， 我们可以随意操作对象。
+        - 但是由于[浏览器的支持度不佳](http://caniuse.com/#search=proxy)，我们不推荐在生产环境下使用。
+
+ **返回**
+
+- unwatch
+  - `Function`
+  - 函数用于解绑监听函数，执行后，变化不会再调用回调函数
+
+**例子：**
+
+你可以轻易监听 video 上的一些属性。
+
+```javascript
+import Chimee from 'chimme';
+const player = new Chimee({
+  wrapper: 'body',
+  plugin: ['plugin']
+});
+player.$watch('controls', (newVal, oldVal) => console.log(newVal, oldVal));
+player.controls = true; // true, false
+```
+
+又或者自定义属性：
+
+```javascript
+import Chimee from 'chimme';
+const player = new Chimee({
+  wrapper: 'body',
+  plugin: ['plugin']
+});
+player.test = 1;
+player.$watch('test', (newVal, oldVal) => console.log(newVal, oldVal));
+player.test = 2; // 2, 1
+```
+
+你也可以深度监听数组，直接调用数组的操作方法：
+
+```javascript
+import Chimee from 'chimme';
+const player = new Chimee({
+  wrapper: 'body',
+  plugin: ['plugin']
+});
+player.test = [1, 2, 3];
+player.$watch('test', (newVal, oldVal) => console.log(newVal, oldVal), {deep: true});
+player.plugin.test.push(4); // [1, 2, 3, 4], [1, 2, 3, 4]
+```
+
+同理你也可以深度监听对象，但是对新增元素或者删除元素需要使用 `$set` 和 `$del` 进行辅助。
+
+```javascript
+import Chimee from 'chimme';
+const player = new Chimee({
+  wrapper: 'body',
+  plugin: ['plugin']
+});
+player.test = {foo: 1};
+player.$watch('test', (newVal, oldVal) => console.log(newVal, oldVal), {deep: true});
+player.plugin.test.foo = 2; // {foo: 2}, {foo: 2}
+player.$set(test, 'bar', 1); // {foo: 2, bar: 1}, {foo: 2, bar: 1}
+player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
+```
+
+> 注意：
+>
+> 1. 并非所有 video 相关属性都可以监听。现阶段只支持监听[$videoConfig](#videoConfig) 中除`src` 以外的部分。
+>
+> `src` 的值因为涉及到 video 播放核心的变换，以及事件拦截等，建议采取事件驱动模式编写。
+>
+> `paused` 等 video 只读属性，因为需要监听原生 video，故暂不提供。且以上属性大部分可以通过事件获取。
+>
+> 1. 采取深度监听时，子元素修改后回调函数并不会获得原有对象快照
+> 2. 深度监听时需要使用 `$set` 和 `$del` 进行辅助。
+
+### $set
+
+设置对象或者数组的值， 可以触发`$watch` 的回调函数
+
+**参数**
+
+- obj
+  - `Object | Array` 
+  - 目标对象
+- property
+  - `string`
+  - 属性名
+- value
+  - `any`
+  - 属性值
+
+### $del
+
+删除对象或者数组的值， 可以触发`$watch` 的回调函数
+
+**参数**
+
+- obj
+  - `Object | Array` 
+  - 目标对象
+- property
+  - `string`
+  - 属性名
+
+## 插件操作
 
 在 chimee 中我们会使用插件来实现业务需求，因此我们要进行插件安装。在 chimee 上有以下几个方法。
 

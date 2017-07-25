@@ -84,11 +84,13 @@ export default class VideoWrapper {
   $watch (key: string | Array<string>, handler: Function, {
     deep,
     diff = true,
-    other
+    other,
+    proxy = false
   }: {
     deep?: boolean,
     diff?: boolean,
-    other?: any
+    other?: any,
+    proxy?: boolean
   } = {}) {
     if(!isString(key) && !isArray(key)) throw new TypeError(`$watch only accept string and Array<string> as key to find the target to spy on, but not ${key}, whose type is ${typeof key}`);
     let watching = true;
@@ -113,7 +115,7 @@ export default class VideoWrapper {
       ? videoConfig
       : getDeepProperty(other || this, keys, {throwError: true});
     applyDecorators(target, {
-      [property]: watch(watcher, {deep, diff})
+      [property]: watch(watcher, {deep, diff, proxy})
     }, {self: true});
     this.__unwatchHandlers.push(unwatcher);
     return unwatcher;
