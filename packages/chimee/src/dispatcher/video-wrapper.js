@@ -142,4 +142,8 @@ export default class VideoWrapper {
     }
     obj.__del(property);
   }
+
+  __destroy () {
+    this.__unwatchHandlers.forEach(unwatcher => unwatcher());
+  }
 }

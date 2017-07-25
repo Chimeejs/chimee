@@ -62,6 +62,7 @@ export default class Chimee extends VideoWrapper {
     this.__wrapAsVideo(this.__dispatcher.videoConfig);
 	}
   destroy () {
+    super.__destroy();
     this.__dispatcher.destroy();
     this.destroyed = true;
   }
