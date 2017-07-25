@@ -104,37 +104,59 @@ export default class Dom {
      * referrence of video's dom element
      * @type {Element}
      */
-    this.videoElement = videoElement;
-    this.__videoExtendedNodes.push(videoElement);
-    this.setAttr('videoElement', 'tabindex', -1);
-    this._autoFocusToVideo(this.videoElement);
-    // create container
-    if(this.videoElement.parentElement && isElement(this.videoElement.parentElement) && this.videoElement.parentElement !== this.wrapper) {
-      this.container = this.videoElement.parentElement;
-    } else {
-      this.container = document.createElement('container');
-      $(this.container).append(this.videoElement);
-    }
-    // check container.position
-    if(this.container.parentElement !== this.wrapper) {
-      $wrapper.append(this.container);
-    }
-    videoEvents.forEach(key => {
-      const fn = (...args) => this.__dispatcher.bus.trigger(key, ...args);
-      this.videoEventHandlerList.push(fn);
-      addEvent(this.videoElement, key, fn);
-    });
+    this.installVideo(videoElement);
     domEvents.forEach(key => {
       const fn = this._getEventHandler(key, {penetrate: true});
       this.videoDomEventHandlerList.push(fn);
       addEvent(this.videoElement, key, fn);
-      const cfn = (...args) => this.__dispatcher.bus.triggerSync('c_' + key, ...args);
-      this.containerDomEventHandlerList.push(cfn);
-      addEvent(this.container, key, cfn);
-      const wfn = (...args) => this.__dispatcher.bus.triggerSync('w_' + key, ...args);
-      this.wrapperDomEventHandlerList.push(wfn);
-      addEvent(this.wrapper, key, wfn);
     });
+  }
+  installVideo (videoElement: HTMLVideoElement): HTMLVideoElement {
+    this.__videoExtendedNodes.push(videoElement);
+    setAttr(videoElement, 'tabindex', -1);
+    this._autoFocusToVideo(videoElement);
+    if(!isElement(this.container)) {
+      // create container
+      if(videoElement.parentElement &&
+        isElement(videoElement.parentElement) &&
+        videoElement.parentElement !== this.wrapper
+      ) {
+        this.container = videoElement.parentElement;
+      } else {
+        this.container = document.createElement('container');
+        $(this.container).append(videoElement);
+      }
+    } else {
+      $(this.container).append(videoElement);
+    }
+    // check container.position
+    if(this.container.parentElement !== this.wrapper) {
+      $(this.wrapper).append(this.container);
+    }
+    videoEvents.forEach(key => {
+      const fn = (...args) => this.__dispatcher.bus.trigger(key, ...args);
+      this.videoEventHandlerList.push(fn);
+      addEvent(videoElement, key, fn);
+    });
+    domEvents.forEach(key => {
+      const fn = this._getEventHandler(key, {penetrate: true});
+      this.videoDomEventHandlerList.push(fn);
+      addEvent(videoElement, key, fn);
+    });
+    this.videoElement = videoElement;
+    return videoElement;
+  }
+  removeVideo (): HTMLVideoElement {
+    const videoElement = this.videoElement;
+    this._autoFocusToVideo(this.videoElement, false);
+    videoEvents.forEach((key, index) => {
+      removeEvent(this.videoElement, key, this.videoEventHandlerList[index]);
+    });
+    domEvents.forEach((key, index) => {
+      removeEvent(this.videoElement, key, this.videoDomEventHandlerList[index]);
+    });
+    delete this.videoElement;
+    return videoElement;
   }
   /**
    * <pre>
@@ -298,18 +320,13 @@ export default class Dom {
    * function called when we distory
    */
   destroy () {
-    this._autoFocusToVideo(this.videoElement, false);
-    videoEvents.forEach((key, index) => {
-      removeEvent(this.videoElement, key, this.videoEventHandlerList[index]);
-    });
+    this.removeVideo();
     domEvents.forEach((key, index) => {
-      removeEvent(this.videoElement, key, this.videoDomEventHandlerList[index]);
       removeEvent(this.container, key, this.containerDomEventHandlerList[index]);
       removeEvent(this.wrapper, key, this.wrapperDomEventHandlerList[index]);
     });
     this.wrapper.innerHTML = this.originHTML;
     delete this.wrapper;
-    delete this.videoElement;
     delete this.plugins;
   }
   _autoFocusToVideo (element: Element, remove: boolean = false): void {
