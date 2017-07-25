@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.1.2
+ * chimee v0.1.3
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -16,6 +16,7 @@ var _Object$getPrototypeOf = _interopDefault(require('babel-runtime/core-js/obje
 var _classCallCheck = _interopDefault(require('babel-runtime/helpers/classCallCheck'));
 var _createClass = _interopDefault(require('babel-runtime/helpers/createClass'));
 var _possibleConstructorReturn = _interopDefault(require('babel-runtime/helpers/possibleConstructorReturn'));
+var _get = _interopDefault(require('babel-runtime/helpers/get'));
 var _inherits = _interopDefault(require('babel-runtime/helpers/inherits'));
 var _Promise = _interopDefault(require('babel-runtime/core-js/promise'));
 var chimeeHelper = require('chimee-helper');
@@ -23,6 +24,9 @@ var Kernel = _interopDefault(require('chimee-kernel'));
 var _Map = _interopDefault(require('babel-runtime/core-js/map'));
 var _Object$keys = _interopDefault(require('babel-runtime/core-js/object/keys'));
 var toxicDecorators = require('toxic-decorators');
+var _JSON$stringify = _interopDefault(require('babel-runtime/core-js/json/stringify'));
+var _defineProperty = _interopDefault(require('babel-runtime/helpers/defineProperty'));
+var _typeof = _interopDefault(require('babel-runtime/helpers/typeof'));
 
 var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting'];
 var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'ended', 'networkState', 'paused', 'readyState', 'seekable', 'sinkId', 'controlsList'];
@@ -489,6 +493,8 @@ function attrAndStyleCheck() {
 var VideoWrapper = function () {
   function VideoWrapper() {
     _classCallCheck(this, VideoWrapper);
+
+    this.__unwatchHandlers = [];
   }
 
   _createClass(VideoWrapper, [{
@@ -569,6 +575,70 @@ var VideoWrapper = function () {
           enumerable: false,
           writable: true
         });
+      });
+    }
+  }, {
+    key: '$watch',
+    value: function $watch(key, handler) {
+      var _this3 = this;
+
+      var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+          deep = _ref.deep,
+          _ref$diff = _ref.diff,
+          diff = _ref$diff === undefined ? true : _ref$diff,
+          other = _ref.other,
+          _ref$proxy = _ref.proxy,
+          proxy = _ref$proxy === undefined ? false : _ref$proxy;
+
+      if (!chimeeHelper.isString(key) && !chimeeHelper.isArray(key)) throw new TypeError('$watch only accept string and Array<string> as key to find the target to spy on, but not ' + key + ', whose type is ' + (typeof key === 'undefined' ? 'undefined' : _typeof(key)));
+      var watching = true;
+      var watcher = function watcher() {
+        if (watching) chimeeHelper.bind(handler, this).apply(undefined, arguments);
+      };
+      var unwatcher = function unwatcher() {
+        watching = false;
+        var index = _this3.__unwatchHandlers.indexOf(unwatcher);
+        if (index > -1) _this3.__unwatchHandlers.splice(index, 1);
+      };
+      var keys = chimeeHelper.isString(key) ? key.split('.') : key;
+      var property = keys.pop();
+      var videoConfig = this.__dispatcher.videoConfig;
+      var target = keys.length === 0 && !other && videoConfig._realDomAttr.indexOf(property) > -1 ? videoConfig : chimeeHelper.getDeepProperty(other || this, keys, { throwError: true });
+      toxicDecorators.applyDecorators(target, _defineProperty({}, property, toxicDecorators.watch(watcher, { deep: deep, diff: diff, proxy: proxy })), { self: true });
+      this.__unwatchHandlers.push(unwatcher);
+      return unwatcher;
+    }
+  }, {
+    key: '$set',
+    value: function $set(obj, property, value) {
+      if (!chimeeHelper.isObject(obj) && !chimeeHelper.isArray(obj)) throw new TypeError('$set only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
+      // $FlowFixMe: we have custom this function
+      if (!chimeeHelper.isFunction(obj.__set)) {
+        chimeeHelper.Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $set.');
+        // $FlowFixMe: we support computed string on array here
+        obj[property] = value;
+        return;
+      }
+      obj.__set(property, value);
+    }
+  }, {
+    key: '$del',
+    value: function $del(obj, property) {
+      if (!chimeeHelper.isObject(obj) && !chimeeHelper.isArray(obj)) throw new TypeError('$del only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
+      // $FlowFixMe: we have custom this function
+      if (!chimeeHelper.isFunction(obj.__del)) {
+        chimeeHelper.Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $del.');
+        // $FlowFixMe: we support computed string on array here
+        delete obj[property];
+        return;
+      }
+      obj.__del(property);
+    }
+  }, {
+    key: '__destroy',
+    value: function __destroy() {
+      this.__unwatchHandlers.forEach(function (unwatcher) {
+        return unwatcher();
       });
     }
   }, {
@@ -695,7 +765,7 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec2$2 = toxicDecorator
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.1.2';
+    _this.VERSION = '0.1.3';
     _this.__operable = true;
     _this.__events = {};
     _this.__level = 0;
@@ -1032,6 +1102,7 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec2$2 = toxicDecorator
       var _this3 = this;
 
       chimeeHelper.isFunction(this.destroy) && this.destroy();
+      _get(Plugin.prototype.__proto__ || _Object$getPrototypeOf(Plugin.prototype), '__destroy', this).call(this);
       _Object$keys(this.__events).forEach(function (key) {
         if (!chimeeHelper.isArray(_this3.__events[key])) return;
         _this3.__events[key].forEach(function (fn) {
@@ -1673,17 +1744,17 @@ function accessorVideoAttribute(attribute) {
     isBoolean: false
   },
       _set = _ref.set,
-      _get = _ref.get,
+      _get$$1 = _ref.get,
       isBoolean$$1 = _ref.isBoolean;
 
   return toxicDecorators.accessor({
     get: function get(value) {
-      return this.dispatcher.videoConfigReady && this.inited ? this.videoElement[_get] : value;
+      return this.dispatcher.videoConfigReady && this.inited ? this.videoElement[_get$$1] : value;
     },
     set: function set(value) {
       if (!this.dispatcher.videoConfigReady) return value;
-      value = isBoolean$$1 ? value ? '' : undefined : value;
-      this.dispatcher.dom.setAttr('video', _set, value);
+      var val = isBoolean$$1 ? value ? '' : undefined : value;
+      this.dispatcher.dom.setAttr('video', _set, val);
       return value;
     }
   });
@@ -1697,8 +1768,8 @@ function accessorCustomAttribute(attribute, isBoolean$$1) {
     },
     set: function set(value) {
       if (!this.dispatcher.videoConfigReady) return value;
-      if (isBoolean$$1) value = value || undefined;
-      this.dispatcher.dom.setAttr('video', attribute, value);
+      var val = isBoolean$$1 ? value || undefined : value;
+      this.dispatcher.dom.setAttr('video', attribute, val);
       return value;
     }
   });
@@ -1742,10 +1813,10 @@ var accessorMap = {
     set: function set(value) {
       if (!this.dispatcher.videoConfigReady) return value;
       this.videoElement.playsInline = value;
-      value = value ? '' : undefined;
-      this.dispatcher.dom.setAttr('video', 'playsinline', value);
-      this.dispatcher.dom.setAttr('video', 'webkit-playsinline', value);
-      this.dispatcher.dom.setAttr('video', 'x5-video-player-type', value === '' ? 'h5' : undefined);
+      var val = value ? '' : undefined;
+      this.dispatcher.dom.setAttr('video', 'playsinline', val);
+      this.dispatcher.dom.setAttr('video', 'webkit-playsinline', val);
+      this.dispatcher.dom.setAttr('video', 'x5-video-player-type', value ? 'h5' : undefined);
       return value;
     }
   }), toxicDecorators.alwaysBoolean()],
@@ -2450,6 +2521,7 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec2 = toxicDecorators.al
   _createClass(Chimee, [{
     key: 'destroy',
     value: function destroy() {
+      _get(Chimee.prototype.__proto__ || _Object$getPrototypeOf(Chimee.prototype), '__destroy', this).call(this);
       this.__dispatcher.destroy();
       this.destroyed = true;
     }
@@ -2610,7 +2682,7 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec2 = toxicDecorators.al
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.1.2';
+    return '0.1.3';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
