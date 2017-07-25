@@ -28,4 +28,4 @@ Field | Type | Description
 `src?` | `string` | video source
 `type` | `string` | `'vod'` or `'live'`，set video is a live stream or vod
 `box` | `string` | Indicates stream box `'flv'` or `'hls'` or `'native'`
-`preset?`| `object`| set kernel decoder，example: import chimeeKernelFlv for 'chimee-kernel-flv'; { 'flv': chimeeKernelFlv}
+`preset?`| `object`| set kernel decoder，example: `import chimeeKernelFlv for 'chimee-kernel-flv'; preset:{'flv': chimeeKernelFlv}`
