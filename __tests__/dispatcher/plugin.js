@@ -848,4 +848,118 @@ describe('dispatcher/plugin => $watch', () => {
     player.normalWatch.__unwatchHandlers.pop();
     player.normalWatch.unwatch();
   });
+  describe('deep watch', () => {
+    let player;
+    beforeAll(() => {
+      const deepWatch = {
+        name: 'deepWatch',
+        data: {
+          test: {
+            foo: 1
+          },
+          arr: [1, 2, 3]
+        },
+        create () {
+          this.$watch('test', fn, {deep: true});
+          this.$watch('arr', fn, {deep: true});
+        }
+      };
+      Chimee.install(deepWatch);
+    });
+    beforeEach(() => {
+      player = new Chimee({
+        wrapper,
+        plugin: ['deepWatch']
+      });
+    });
+
+    test('$set object', () => {
+      player.deepWatch.$set(player.deepWatch.test, 'bar', 2);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).lastCalledWith(player.deepWatch.test, player.deepWatch.test);
+      expect(player.deepWatch.test).toEqual({foo: 1, bar: 2});
+    });
+
+    test('$set object exist', () => {
+      player.deepWatch.$set(player.deepWatch.test, 'foo', 2);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).lastCalledWith(player.deepWatch.test, player.deepWatch.test);
+      expect(player.deepWatch.test).toEqual({foo: 2});
+    });
+    
+    test('$del object', () => {
+      player.deepWatch.$del(player.deepWatch.test, 'foo');
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).lastCalledWith(player.deepWatch.test, player.deepWatch.test);
+      expect(player.deepWatch.test).toEqual({});
+    });
+
+    test('$del object did not exist', () => {
+      player.deepWatch.$del(player.deepWatch.test, 'bar');
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).lastCalledWith(player.deepWatch.test, player.deepWatch.test);
+      expect(player.deepWatch.test).toEqual({foo: 1});
+    });
+
+    test('$set array', () => {
+      player.deepWatch.$set(player.deepWatch.arr, 3, 4);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).lastCalledWith(player.deepWatch.arr, player.deepWatch.arr);
+      expect(player.deepWatch.arr).toEqual([1, 2, 3, 4]);
+    });
+
+    test('$del array', () => {
+      player.deepWatch.$del(player.deepWatch.arr, 2);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).lastCalledWith(player.deepWatch.arr, player.deepWatch.arr);
+      expect(player.deepWatch.arr).toEqual([1, 2, undefined]);
+    });
+
+    test('destroy watcher', () => {
+      expect(() => player.deepWatch.$destroy()).not.toThrow();
+    });
+  });
+
+  describe('without deep watch', () => {
+    let player;
+    beforeAll(() => {
+      const withoutDeepWatch = {
+        name: 'withoutDeepWatch',
+        data: {
+          test: {
+            foo: 1
+          },
+          arr: [1, 2, 3]
+        },
+        create () {
+          this.$watch('test', fn);
+          this.$watch('arr', fn);
+        }
+      };
+      Chimee.install(withoutDeepWatch);
+    });
+    beforeEach(() => {
+      player = new Chimee({
+        wrapper,
+        plugin: ['withoutDeepWatch']
+      });
+      Log.data.warn = [];
+    });
+    test('$set', () => {
+      player.$set(player.withoutDeepWatch.test, 'foo', 2);
+      expect(player.withoutDeepWatch.test.foo).toBe(2);
+      expect(Log.data.warn).toEqual([['chimee', '{"foo":1} has not been deep watch. There is no need to use $set.']]);
+    });
+    test('$del', () => {
+      player.$del(player.withoutDeepWatch.test, 'foo');
+      expect(player.withoutDeepWatch.test.foo).toBe();
+      expect(Log.data.warn).toEqual([['chimee', '{"foo":1} has not been deep watch. There is no need to use $del.']]);
+    });
+    test('$set only support array and object', () => {
+      expect(() => player.$set(1, '123', 2)).toThrow();
+    });
+    test('$del only support array and object', () => {
+      expect(() => player.$del(1, '123')).toThrow();
+    });
+  });
 });
