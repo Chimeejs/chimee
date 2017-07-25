@@ -3221,7 +3221,7 @@ var NodeWrap = function () {
 var defaultConfig = {
   type: 'vod',
   autoPlay: false,
-  box: 'mp4',
+  box: 'native',
   lockInternalProperty: false,
   debug: true
 };
@@ -3308,30 +3308,29 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
-var Mp4 = function (_CustEvent) {
-    inherits(Mp4, _CustEvent);
+var Native = function (_CustEvent) {
+    inherits(Native, _CustEvent);
 
     /**
-     * Creates an instance of Mp4.
+     * Creates an instance of Native.
      * @param {any} videodom video dom对象
      * @param {any} config 配置
-     *
-     * @memberof Mp4
+     * @memberof Native
      */
-    function Mp4(videodom, config) {
-        classCallCheck$1(this, Mp4);
+    function Native(videodom, config) {
+        classCallCheck$1(this, Native);
 
-        var _this2 = possibleConstructorReturn(this, (Mp4.__proto__ || Object.getPrototypeOf(Mp4)).call(this));
+        var _this2 = possibleConstructorReturn(this, (Native.__proto__ || Object.getPrototypeOf(Native)).call(this));
 
         _this2.video = videodom;
-        _this2.box = 'mp4';
+        _this2.box = 'Native';
         _this2.config = defaultConfig;
         deepAssign(_this2.config, config);
         _this2.bindEvents();
         return _this2;
     }
 
-    createClass$1(Mp4, [{
+    createClass$1(Native, [{
         key: 'internalPropertyHandle',
         value: function internalPropertyHandle() {
             if (!Object.getOwnPropertyDescriptor) {
@@ -3404,7 +3403,7 @@ var Mp4 = function (_CustEvent) {
             this.currentTimeLock = false;
         }
     }]);
-    return Mp4;
+    return Native;
 }(CustEvent);
 
 var MSEController = function (_CustEvent) {
@@ -3644,6 +3643,14 @@ var MSEController = function (_CustEvent) {
     }
 
     /**
+     * seek
+     */
+
+  }, {
+    key: 'seek',
+    value: function seek() {}
+
+    /**
      * 销毁
      */
 
@@ -3740,6 +3747,7 @@ var FetchLoader = function (_CustEvent) {
 
 		var _this = possibleConstructorReturn(this, (FetchLoader.__proto__ || Object.getPrototypeOf(FetchLoader)).call(this));
 
+		_this.tag = 'fetch';
 		_this.fetching = false;
 		_this.config = config;
 		_this.range = {
@@ -3813,7 +3821,7 @@ var FetchLoader = function (_CustEvent) {
 			// ReadableStreamReader
 			return reader.read().then(function (result) {
 				if (result.done) {
-					Log.verbose('play end');
+					Log.verbose(_this3.tag, 'play end');
 					// trigger complete
 				} else {
 					if (_this3.requestAbort === true) {
@@ -8536,12 +8544,6 @@ var defaultConfig$1 = {
   autoCleanupMinBackwardDuration: 30
 };
 
-/**
- * flv 控制层
- * @export
- * @class mp4
- */
-
 var Flv = function (_CustEvent) {
   inherits(Flv, _CustEvent);
 
@@ -8709,7 +8711,8 @@ var Flv = function (_CustEvent) {
       this.currentTimeLock = true;
       this.timer = null;
 
-      var currentTime = seconds ? seconds : this.video.currentTime;
+      var currentTime = seconds && !isNaN(seconds) ? seconds : this.video.currentTime;
+
       if (this.requestSetTime) {
         this.requestSetTime = false;
         this.currentTimeLock = false;
@@ -25290,7 +25293,7 @@ var Kernel = function (_CustEvent) {
   * 创建核心解码器
   * @param {any} wrap 父层容器
   * @param {any} option 整合参数
-  * @\ kernel
+  * @class kernel
   */
 	function Kernel(videoElement, config) {
 		classCallCheck$1(this, Kernel);
@@ -25339,10 +25342,10 @@ var Kernel = function (_CustEvent) {
 		value: function selectKernel() {
 			var config = this.config;
 
-			var box = config.box ? config.box : config.src.indexOf('.flv') !== -1 ? 'flv' : config.src.indexOf('.m3u8') !== -1 ? 'hls' : 'mp4';
+			var box = config.box ? config.box : config.src.indexOf('.flv') !== -1 ? 'flv' : config.src.indexOf('.m3u8') !== -1 ? 'hls' : 'native';
 
-			if (box === 'mp4') {
-				return new Mp4(this.video, config);
+			if (box === 'native') {
+				return new Native(this.video, config);
 			} else if (box === 'flv') {
 				return new Flv(this.video, config);
 			} else if (box === 'hls') {

@@ -1,198 +1,92 @@
-import { Log } from 'chimee-helper';
-import { CustEvent } from 'chimee-helper';
-import { isNumber } from 'chimee-helper';
-import Mp4 from './mp4/index';
-import Flv from './flv/index';
-import Hls from './hls/index';
+import HlsCore from 'hls.js';
+import {CustEvent} from 'chimee-helper';
+import defaultConfig from './config';
+import {deepAssign} from 'chimee-helper';
 
-export default class Kernel extends CustEvent {
-	/**
-	 * 创建核心解码器
-	 * @param {any} wrap 父层容器
-	 * @param {any} option 整合参数
-	 * @\ kernel
-	 */
-	constructor (videoElement, config) {
-		super();
-		this.tag = 'kernel';
-		this.config = config;
-		this.video = videoElement;
-		this.videokernel = this.selectKernel();
-		this.bindEvents(this.videokernel, this.video);
-		this.timer = null;
-	}
+export default class Hls extends CustEvent {
+	constructor (videodom, config) {
+    super();
+    this.tag = 'HLS-player';
+    this.video = videodom;
+    this.box = 'hls';
+    this.config = defaultConfig;
+    deepAssign(this.config, config);
+    this.hls = new HlsCore();
+    this.bindEvents(this.hls);
+    this.attachMedia();
+  }
 
-	/**
-	 * 绑定事件
-	 * @memberof kernel
-	 */
-	bindEvents (videokernel, video) {
-		if (videokernel) {
-			videokernel.on('mediaInfo', (mediaInfo) => {
-				this.emit('mediaInfo', mediaInfo);
-			});
+  internalPropertyHandle () {
+    if(!Object.getOwnPropertyDescriptor) {
+      return;
+    }
+    const _this = this;
+    const time = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');
 
-			video.addEventListener('canplay', ()=> {
-				clearTimeout(this.timer);
-				this.timer = null;
-			});
+    Object.defineProperty(this.video, 'currentTime', {
+    	get: ()=> {
+		    return time.get.call(_this.video);
+		  },
+      set: (t)=> {
+        if(!_this.currentTimeLock) {
+          throw new Error('can not set currentTime by youself');
+        } else {
+          return time.set.call(_this.video, t);
+        }
+      }
+    });
+  }
 
-		}
-	}
+  bindEvents (hlsKernel) {
+    if(hlsKernel) {
+      hlsKernel.on(HlsCore.Events.ERROR, (event, data) => {
+        // this.emit(this.tag, data);
+      });
 
-	/**
-	 * 选择解码器
-	 * @memberof kernel
-	 */
-	selectKernel () {
-		const config = this.config;
+      hlsKernel.on(HlsCore.Events.LEVEL, (event, data) => {
 
-		const box = config.box
-			? config.box
-			: config.src.indexOf('.flv') !== -1
-				? 'flv'
-				: config.src.indexOf('.m3u8') !== -1
-					? 'hls'
-					: 'mp4';
+      });
+    }
+    if(this.video && this.config.lockInternalProperty) {
+      this.video.addEventListener('canplay', () => {
+        this.internalPropertyHandle();
+      });
+    }
+  }
 
-		if (box === 'mp4') {
-			return new Mp4(this.video, config);
-		} else if (box === 'flv') {
-			return new Flv(this.video, config);
-		} else if (box === 'hls') {
-			return new Hls(this.video, config);
-		} else {
-			Log.error(this.tag, 'not mactch any player, please check your config');
-			return null;
-		}
-	}
+  load () {
+  	this.hls.loadSource(this.config.src);
+  }
 
-	attachMedia () {
-		if (this.videokernel) {
-			this.videokernel.attachMedia();
-		} else {
-			Log.error(this.tag, 'video player is not already, must init player');
-		}
-	}
+  attachMedia () {
+  	this.hls.attachMedia(this.video);
+  }
 
-	/**
-	 * 启动加载
-	 * @param {string} src 媒体资源地址
-	 * @memberof kernel
-	 */
-	load (src) {
-		this.config.src = src || this.config.src;
-		if (this.videokernel && this.config.src) {
-			this.videokernel.load(src);
-			if(!this.timer) {
-				this.timer = setTimeout(()=>{
-				this.timer = null;
-				this.pause();
-				this.refresh();
-				}, 1000);
-			}
-		} else {
-			Log.error(this.tag, 'video player is not already, must init player');
-		}
-	}
-	/**
-	 * 销毁kernel
-	 * @memberof kernel
-	 */
-	destroy () {
-		if (this.videokernel) {
-			this.videokernel.destroy();
-		} else {
-			Log.error(this.tag, 'player is not exit');
-		}
-	}
-	/**
-	 * to play
-	 * @memberof kernel
-	 */
-	play () {
-		if (this.videokernel) {
-			this.videokernel.play();
-		} else {
-			Log.error(this.tag, 'video player is not already, must init player');
-		}
-	}
-	/**
-	 * pause
-	 * @memberof kernel
-	 */
-	pause () {
-		if (this.videokernel && this.config.src) {
-			this.videokernel.pause();
-		} else {
-			Log.error(this.tag, 'video player is not already, must init player');
-		}
-	}
-	/**
-	 * get video currentTime
-	 * @memberof kernel
-	 */
-	get currentTime () {
-		if (this.videokernel) {
-			return this.video.currentTime;
-		}
-		return 0;
-	}
-	/**
-	 * seek to a point
-	 * @memberof kernel
-	 */
-	seek (seconds) {
-		if (!isNumber(seconds)) {
-			Log.error(this.tag, 'seek params must be a number');
-			return;
-		}
-		return this.videokernel.seek(seconds);
-	}
+  play () {
+  	return this.video.play();
+  }
 
-	refresh () {
-		this.videokernel.refresh();
-	}
-	/**
-	 * get video duration
-	 * @memberof kernel
-	 */
-	get duration () {
-		return this.video.duration;
-	}
-	/**
-	 * get video volume
-	 * @memberof kernel
-	 */
-	get volume () {
-		return this.video.volume;
-	}
-	 /**
-	 * set video volume
-	 * @memberof kernel
-	 */
-	set volume (value) {
-		this.video.volume = value;
-	}
-	/**
-	 * get video muted
-	 * @memberof kernel
-	 */
-	get muted () {
-		return this.video.muted;
-	}
-	/**
-	 * set video muted
-	 * @memberof kernel
-	 */
-	set muted (muted) {
-		this.video.muted = muted;
-	}
-	 /**
-	 * get video buffer
-	 * @memberof kernel
-	 */
-	get buffered () {
-		return this.video.buffered;
-	}
+  destroy () {
+  	return this.hls.destroy();
+  }
+
+  seek (seconds) {
+  	this.currentTimeLock = true;
+    // throttle(this._seek.bind(this, seconds), 200, {leading: false});
+    this._seek(seconds);
+  	this.currentTimeLock = false;
+  }
+
+  _seek (seconds) {
+   this.video.currentTime = seconds;
+  }
+
+  pause () {
+    return this.video.pause();
+  }
+
+  refresh () {
+    this.hls.stopLoad();
+    this.hls.loadSource(this.config.src);
+  }
 }
