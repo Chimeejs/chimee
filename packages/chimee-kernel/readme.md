@@ -6,24 +6,26 @@ npm install --save chimee-kernel
 ```
 ## Usage
 ```
+<video></video>
+
 import kernel from '/src/kernel/kernel'
-//参数1是video dom
-//参数2是config
+
 var Kernel=new kernel(document.querySelector('video'),{
-    src:'http://xxx/xxx.mp4',
-    type:'mp4'
+    src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL2791e64b69ea0bea234c284c694986aa.flv',
+    type: 'vod',
+    box: 'flv'
 });
 
-//这个方法是重新设置config  这个暂时不支持
-//这里面暂时是全部的参数
-Kernel.setConfig({
-    src:'http://xxx/xxx.mp4',
-    isLive:false,
-    autoPlay:false,
-    type:'mp4'
-})
-
-//视频加载
+//load source
 Kernel.load()
 
 ```
+
+Config:
+
+Field | Type | Description
+---|---|---
+`src?` | `string` | video source
+`type` | `string` | `'vod'` or `'live'`，set video is a live stream or vod
+`box` | `string` | Indicates stream box `'flv'` or `'hls'` or `'native'`
+`preset?`| `object`| set kernel decoder，example: import chimeeKernelFlv for 'chimee-kernel-flv'; { 'flv': chimeeKernelFlv}
