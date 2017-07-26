@@ -386,13 +386,13 @@ chimee.load();
 
 ### width
 
-- 类型：`number | void`
+- 类型：`number | string | void`
 - 含义：宽度
 - 默认：`undefined`
 
 ### height
 
-- 类型：`number | void`
+- 类型：`number | string | void`
 - 含义：高度
 - 默认：`undefined`
 
