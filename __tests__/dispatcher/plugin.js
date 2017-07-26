@@ -801,7 +801,6 @@ describe('dispatcher/plugin => $watch', () => {
       if(['src'].indexOf(key) > -1) return;
       if(isBoolean(player[key])) {
         player[key] = !player[key];
-        // console.warn(key, index, player[key]);
         expect(fn).toHaveBeenCalledTimes(++index);
         expect(fn).lastCalledWith(player[key], !player[key]);
       }

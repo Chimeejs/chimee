@@ -293,25 +293,71 @@ describe('Chimee', () => {
       expect(player.preload).toBe('auto');
       expect(videoElement.preload).toBe('auto');
     });
-    test('width', () => {
-      player.width = 100;
-      expect(player.width).toBe(100);
-      expect(videoElement.width).toBe(100);
-      videoElement.width = 10;
-      expect(player.width).toBe(10);
-      expect(videoElement.width).toBe(10);
-      player.__dispatcher.videoConfigReady = false;
-      player.width = 20;
-      expect(player.width).toBe(20);
-      expect(videoElement.width).toBe(10);
+    describe('width', () => {
+      test('player set', () => {
+        player.width = 100;
+        expect(player.width).toBe(100);
+        expect(videoElement.width).toBe(100);
+      });
+      test('video set', () => {
+        videoElement.width = 10;
+        expect(player.width).toBe(10);
+        expect(videoElement.width).toBe(10);
+      });
+      test('if videoConfig is not ready', () => {
+        player.__dispatcher.videoConfigReady = false;
+        player.preload = 'metadata';
+        expect(player.preload).toBe('metadata');
+        expect(videoElement.preload).toBe('auto');
+      });
+      test('set percentage', () => {
+        player.width = '50%';
+        expect(player.width).toBe('50%');
+        expect(videoElement.width).toBe(50);
+      });
+      test('set pixel', () => {
+        player.width = '50px';
+        expect(player.width).toBe('50px');
+        expect(videoElement.width).toBe(50);
+      });
+      test('sth wrong', () => {
+        player.width = 'n%';
+        expect(player.width).toBe(undefined);
+        expect(videoElement.width).toBe(0);
+      });
     });
-    test('height', () => {
-      player.height = 100;
-      expect(player.height).toBe(100);
-      expect(videoElement.height).toBe(100);
-      videoElement.height = 10;
-      expect(player.height).toBe(10);
-      expect(videoElement.height).toBe(10);
+    describe('height', () => {
+      test('player set', () => {
+        player.height = 100;
+        expect(player.height).toBe(100);
+        expect(videoElement.height).toBe(100);
+      });
+      test('video set', () => {
+        videoElement.height = 10;
+        expect(player.height).toBe(10);
+        expect(videoElement.height).toBe(10);
+      });
+      test('if videoConfig is not ready', () => {
+        player.__dispatcher.videoConfigReady = false;
+        player.height = 20;
+        expect(player.height).toBe(20);
+        expect(videoElement.height).toBe(10);
+      });
+      test('set percentage', () => {
+        player.height = '50%';
+        expect(player.height).toBe('50%');
+        expect(videoElement.height).toBe(50);
+      });
+      test('set pixel', () => {
+        player.height = '50px';
+        expect(player.height).toBe('50px');
+        expect(videoElement.height).toBe(50);
+      });
+      test('sth wrong', () => {
+        player.height = 'n%';
+        expect(player.height).toBe(undefined);
+        expect(videoElement.height).toBe(0);
+      });
     });
     test('crossorigin', () => {
       expect(player.crossOrigin).toBe('');
