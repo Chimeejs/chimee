@@ -19,10 +19,7 @@
     // 在插件创建的阶段，我们为插件绑定事件。
     create () {
       this.$dom.addEventListener('click', this.changeVideoStatus);
-      this.$watch('src', function (newVal, oldVal) {
-        console.log(newVal, oldVal);
-      }, {diff: false});
-      this.$watch('defaultMuted', function (newVal, oldVal) {
+      this.$watch('width', function (newVal, oldVal) {
         console.log(newVal, oldVal);
       }, {diff: false});
     },

@@ -1,10 +1,7 @@
 // @flow
 import {alwaysString, initString, initArray, accessor, alwaysBoolean, frozen, alwaysNumber, nonenumerable, lock, applyDecorators, configurable} from 'toxic-decorators';
-import {isNumber, isString, deepAssign, isObject} from 'chimee-helper';
+import {isNumber, isString, deepAssign, isObject, isNumeric} from 'chimee-helper';
 
-function numberOrVoid (value: any): number | void {
-  return isNumber(value) ? value : undefined;
-}
 function stringOrVoid (value: any): string | void {
   return isString(value) ? value : undefined;
 }
@@ -13,12 +10,12 @@ function accessorVideoProperty (property: string): Function {
   return accessor({
     get (value) {
       return (this.dispatcher.videoConfigReady && this.inited)
-        ? this.videoElement[property]
+        ? this.dom.videoElement[property]
         : value;
     },
     set (value) {
       if(!this.dispatcher.videoConfigReady) return value;
-      this.videoElement[property] = value;
+      this.dom.videoElement[property] = value;
       return value;
     }
   });
@@ -35,7 +32,7 @@ function accessorVideoAttribute (attribute: string | {set: string, get: string, 
   return accessor({
     get (value) {
       return (this.dispatcher.videoConfigReady && this.inited)
-        ? this.videoElement[get]
+        ? this.dom.videoElement[get]
         : value;
     },
     set (value) {
@@ -45,7 +42,7 @@ function accessorVideoAttribute (attribute: string | {set: string, get: string, 
           ? ''
           : undefined
         : value;
-      this.dispatcher.dom.setAttr('video', set, val);
+      this.dom.setAttr('video', set, val);
       return value;
     }
   });
@@ -54,7 +51,7 @@ function accessorVideoAttribute (attribute: string | {set: string, get: string, 
 function accessorCustomAttribute (attribute: string, isBoolean?: boolean): Function {
   return accessor({
     get (value) {
-      const attrValue = this.dispatcher.dom.getAttr('video', attribute);
+      const attrValue = this.dom.getAttr('video', attribute);
       return (this.dispatcher.videoConfigReady && this.inited)
         ? isBoolean
           ? !!attrValue
@@ -66,8 +63,31 @@ function accessorCustomAttribute (attribute: string, isBoolean?: boolean): Funct
       const val = isBoolean
         ? value || undefined
         : value;
-      this.dispatcher.dom.setAttr('video', attribute, val);
+      this.dom.setAttr('video', attribute, val);
       return value;
+    }
+  });
+}
+
+function accessorWidthAndHeight (property: string): Function {
+  return accessor({
+    get (value) {
+      if(!this.dispatcher.videoConfigReady) return value;
+      const attr = this.dom.getAttr('video', property);
+      const prop = this.dom.videoElement[property];
+      if(isNumeric(attr) && isNumber(prop)) return prop;
+      return attr || undefined;
+    },
+    set (value) {
+      if(!this.dispatcher.videoConfigReady) return value;
+      let val;
+      if(value === undefined || isNumber(value)) {
+        val = value;
+      } else if(isString(value) && !Number.isNaN(parseFloat(value))) {
+        val = value;
+      }
+      this.dom.setAttr('video', property, val);
+      return val;
     }
   });
 }
@@ -105,12 +125,10 @@ const accessorMap = {
     accessorVideoProperty('controls')
   ],
   width: [
-    accessor({set: numberOrVoid}),
-    accessorVideoAttribute('width')
+    accessorWidthAndHeight('width')
   ],
   height: [
-    accessor({set: numberOrVoid}),
-    accessorVideoAttribute('height')
+    accessorWidthAndHeight('height')
   ],
   crossOrigin: [
     accessor({set: stringOrVoid}),
@@ -139,7 +157,7 @@ const accessorMap = {
   playsInline: [
     accessor({
       get (value) {
-        const playsInline = this.videoElement.playsInline;
+        const playsInline = this.dom.videoElement.playsInline;
         return (this.dispatcher.videoConfigReady && this.inited)
           ? playsInline === undefined
             ? value
@@ -148,11 +166,11 @@ const accessorMap = {
       },
       set (value) {
         if(!this.dispatcher.videoConfigReady) return value;
-        this.videoElement.playsInline = value;
+        this.dom.videoElement.playsInline = value;
         const val = value ? '' : undefined;
-        this.dispatcher.dom.setAttr('video', 'playsinline', val);
-        this.dispatcher.dom.setAttr('video', 'webkit-playsinline', val);
-        this.dispatcher.dom.setAttr('video', 'x5-video-player-type', value ? 'h5' : undefined);
+        this.dom.setAttr('video', 'playsinline', val);
+        this.dom.setAttr('video', 'webkit-playsinline', val);
+        this.dom.setAttr('video', 'x5-video-player-type', value ? 'h5' : undefined);
         return value;
       }
     }),
@@ -190,7 +208,7 @@ const accessorMap = {
 
 export default class VideoConfig {
   dispatcher: Dispatcher;
-  videoElement: HTMLVideoElement;
+  dom: Dom;
   inited: boolean;
 
   @nonenumerable
@@ -273,8 +291,8 @@ export default class VideoConfig {
       writable: false,
       configurable: false
     });
-    Object.defineProperty(this, 'videoElement', {
-      value: dispatcher.dom.videoElement,
+    Object.defineProperty(this, 'dom', {
+      value: dispatcher.dom,
       enumerable: false,
       writable: false,
       configurable: false
