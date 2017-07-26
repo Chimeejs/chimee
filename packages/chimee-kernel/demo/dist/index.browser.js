@@ -3823,7 +3823,7 @@ var FetchLoader = function (_CustEvent) {
 			var reqHeaders = new Headers();
 			var r = range || { from: 0, to: -1 };
 
-			if (this.config.type === 'vod') {
+			if (!this.config.isLive) {
 				this.range.from = r.from;
 				this.range.to = r.to;
 				var headers = handleRange(r).headers;
@@ -4140,7 +4140,7 @@ var MozChunkLoader = function (_CustEvent) {
       xhr.onprogress = this.onProgress.bind(this);
       xhr.onload = this.onLoadEnd.bind(this);
       xhr.onerror = this.onXhrError.bind(this);
-      if (this.config.type === 'vod') {
+      if (!this.config.isLive) {
         var r = range || { from: 0, to: -1 };
         this.range.from = r.from;
         this.range.to = r.to;
@@ -8413,6 +8413,9 @@ var Transmuxer = function (_CustEvent) {
         this.CPU.onMediaSegment = this.onRemuxerMediaSegmentArrival.bind(this);
         this.CPU.onError = this.onCPUError.bind(this);
         this.CPU.onMediaInfo = this.onMediaInfo.bind(this);
+        this.CPU.on('error', function (handle) {
+          console.log(handle);
+        });
       }
       if (keyframePoint) {
         this.keyframePoint = true;
@@ -8626,7 +8629,7 @@ var Transmuxer = function (_CustEvent) {
 }(CustEvent);
 
 var defaultConfig = {
-  type: 'vod',
+  isLive: false,
   autoPlay: false,
   box: 'flv',
   prestrain: 30,
@@ -8705,7 +8708,7 @@ var Flv = function (_CustEvent) {
 
       if (this.video) {
         this.video.addEventListener('canplay', function () {
-          if (_this3.config.type === 'live') {
+          if (_this3.config.isLive) {
             _this3.video.play();
           }
           if (_this3.config.lockInternalProperty) {

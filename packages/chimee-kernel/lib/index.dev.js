@@ -1449,15 +1449,15 @@ exports.default = function (arr) {
 var _toConsumableArray = unwrapExports(toConsumableArray);
 
 /**
- * toxic-utils v0.1.3
+ * toxic-utils v0.1.5
  * (c) 2017 toxic-johann
  * Released under MIT
  */
 
 /**
- * 生成深度遍历函数的处理器，常用于生成深度拷贝等
- * @param  {Function} fn 遍历到深度变量的时候的操作
- * @return {Function}     可用的操作函数
+ * the handler to generate an deep traversal handler
+ * @param  {Function} fn the function you wanna run when you reach in the deep property
+ * @return {Function}    the handler
  */
 function genTraversalHandler(fn) {
   function recursiveFn(source, target, key) {
@@ -2322,7 +2322,7 @@ var CustEvent = function () {
 }();
 
 /**
- * chimee-helper-dom v0.1.1
+ * chimee-helper-dom v0.1.2
  * (c) 2017 huzunjie
  * Released under MIT
  */
@@ -2574,7 +2574,7 @@ var CustEvent$1 = function () {
 }();
 
 /**
- * chimee-helper-utils v0.1.1
+ * chimee-helper-utils v0.1.3
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -2755,7 +2755,7 @@ function addDelegate(el, selector, type, handler) {
 
 
   var handlerWrap = function handlerWrap(e) {
-    var targetEls = findParents(e.srcElement, el, true);
+    var targetEls = findParents(e.target || e.srcElement, el, true);
     var targetEl = query(selector, el, true).find(function (seEl) {
       return targetEls.find(function (tgEl) {
         return seEl === tgEl;
@@ -3243,7 +3243,7 @@ var NodeWrap = function () {
 }();
 
 /**
- * chimee-helper v0.1.10
+ * chimee-helper v0.1.15
  * (c) 2017 toxic-johann
  * Released under MIT
  */
