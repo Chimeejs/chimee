@@ -737,7 +737,7 @@ describe('dispatcher/plugin', () => {
 
   test('$pluginOrder', () => {
     dispatcher.order = ['a', 'b', 'c'];
-    const plugin = new Plugin({id: 'p',}, dispatcher);
+    const plugin = new Plugin({id: 'p'}, dispatcher);
     expect(plugin.$pluginOrder).toBe(dispatcher.order);
   });
 
@@ -885,7 +885,7 @@ describe('dispatcher/plugin => $watch', () => {
       expect(fn).lastCalledWith(player.deepWatch.test, player.deepWatch.test);
       expect(player.deepWatch.test).toEqual({foo: 2});
     });
-    
+
     test('$del object', () => {
       player.deepWatch.$del(player.deepWatch.test, 'foo');
       expect(fn).toHaveBeenCalledTimes(1);
