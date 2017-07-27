@@ -97,6 +97,15 @@ const accessorMap = {
     alwaysString(),
     accessor({
       set (val: string) {
+        // must check val !== this.src here
+        // as we will set config.src in the video
+        // the may cause dead lock
+        if(this.dispatcher.readySync && this.autoload && val !== this.src) this.needToLoadSrc = true;
+        return val;
+      }
+    }),
+    accessor({
+      set (val: string) {
         if(this.needToLoadSrc) {
           // unlock it at first, to avoid deadlock
           this.needToLoadSrc = false;
@@ -104,16 +113,7 @@ const accessorMap = {
         }
         return val;
       }
-    }, {preSet: false}),
-    accessor({
-      set (val: string) {
-        // must check val !== this.src here
-        // as we will set config.src in the video
-        // the may cause dead lock
-        if(this.dispatcher.readySync && this.autoload && val !== this.src) this.needToLoadSrc = true;
-        return val;
-      }
-    })
+    }, {preSet: false})
   ],
   autoload: alwaysBoolean(),
   autoplay: [
@@ -213,6 +213,9 @@ export default class VideoConfig {
 
   @nonenumerable
   needToLoadSrc = false;
+
+  @nonenumerable
+  changeWatchable = true;
 
   @nonenumerable
   inited = false;

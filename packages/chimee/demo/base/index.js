@@ -19,7 +19,7 @@
     // 在插件创建的阶段，我们为插件绑定事件。
     create () {
       this.$dom.addEventListener('click', this.changeVideoStatus);
-      this.$watch('width', function (newVal, oldVal) {
+      this.$watch('controls', function (newVal, oldVal) {
         console.log(newVal, oldVal);
       }, {diff: false});
     },
@@ -40,10 +40,14 @@
   const player = new Chimee({
     // 播放地址
     src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+    // src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
+    // src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/79_3041054cc65-ae8c-4b63-8937-5ccb05f79720.m3u8',
     // dom容器
     wrapper: '#wrapper',
     plugin: ['controller'],
-    volume: 0.1
+    volume: 0.1,
+    autoplay: true,
+    controls: true
   });
   window.player = player;
 })(window.Chimee);

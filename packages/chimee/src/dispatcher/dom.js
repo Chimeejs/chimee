@@ -127,7 +127,12 @@ export default class Dom {
         $(this.container).append(videoElement);
       }
     } else {
-      $(this.container).append(videoElement);
+      const container = this.container;
+      if(container.childNodes.length === 0) {
+        container.appendChild(videoElement);
+      } else {
+        container.insertBefore(videoElement, container.childNodes[0]);
+      }
     }
     // check container.position
     if(this.container.parentElement !== this.wrapper) {
@@ -155,6 +160,7 @@ export default class Dom {
     domEvents.forEach((key, index) => {
       removeEvent(this.videoElement, key, this.videoDomEventHandlerList[index]);
     });
+    $(videoElement).remove();
     delete this.videoElement;
     return videoElement;
   }

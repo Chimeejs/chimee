@@ -2,6 +2,7 @@
 import {bind, isString, getDeepProperty, isArray, isObject, isFunction, Log} from 'chimee-helper';
 import {videoReadOnlyProperties, videoMethods, kernelMethods, domMethods} from 'helper/const';
 import {accessor, nonenumerable, applyDecorators, watch} from 'toxic-decorators';
+import VideoConfig from 'dispatcher/video-config';
 export default class VideoWrapper {
   __id: string;
   __dispatcher: Dispatcher;
@@ -37,9 +38,11 @@ export default class VideoWrapper {
       props[key] = [
         accessor({
           get () {
+            // $FlowFixMe: support computed key here
             return videoConfig[key];
           },
           set (value) {
+            // $FlowFixMe: support computed key here
             videoConfig[key] = value;
             return value;
           }
@@ -95,7 +98,7 @@ export default class VideoWrapper {
     if(!isString(key) && !isArray(key)) throw new TypeError(`$watch only accept string and Array<string> as key to find the target to spy on, but not ${key}, whose type is ${typeof key}`);
     let watching = true;
     const watcher = function (...args) {
-      if(watching) bind(handler, this)(...args);
+      if(watching && (!(this instanceof VideoConfig) || this.dispatcher.changeWatchable)) bind(handler, this)(...args);
     };
     const unwatcher = () => {
       watching = false;

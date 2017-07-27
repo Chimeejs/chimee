@@ -1,11 +1,11 @@
 // @flow
-import {isString, camelize, deepAssign, isObject, isEmpty, isArray, isFunction, transObjectAttrIntoArray, isPromise, Log} from 'chimee-helper';
+import {isString, camelize, deepAssign, isObject, isEmpty, isArray, isFunction, transObjectAttrIntoArray, isPromise, Log, runRejectableQueue, addEvent, removeEvent, isError, deepClone} from 'chimee-helper';
 import Kernel from 'chimee-kernel';
 import Bus from './bus';
 import Plugin from './plugin';
 import Dom from './dom';
 import VideoConfig from './video-config';
-import {before} from 'toxic-decorators';
+import {before, applyDecorators, accessor} from 'toxic-decorators';
 const pluginConfigSet: PluginConfigSet = {};
 function convertNameIntoId (name: string): string {
   if(!isString(name)) throw new Error("Plugin's name must be a string");
@@ -41,6 +41,7 @@ export default class Dispatcher {
   videoConfig: VideoConfig;
   videoConfigReady: boolean;
   zIndexMap: Object;
+  changeWatchable: boolean;
   /**
    * all plugins instance set
    * @type {Object}
@@ -68,6 +69,7 @@ export default class Dispatcher {
     inner: [],
     outer: []
   };
+  changeWatchable = true;
   /**
    * @param  {UserConfig} config UserConfig for whole Chimee player
    * @param  {Chimee} vm referrence of outer class
@@ -185,6 +187,148 @@ export default class Dispatcher {
   }
   throwError (error: Error | string) {
     this.vm.__throwError(error);
+  }
+  silentLoad (src: string, option: {
+    duration?: number,
+    repeatTimes?: number,
+    increment?: number,
+    bias?: number,
+    abort?: boolean,
+    omit?: boolean,
+    immediate?: boolean,
+    type?: string,
+    box?: string,
+    runtimeOrder?: Array<string>
+  } = {}) {
+    const {
+      duration = 3,
+      bias = 0,
+      repeatTimes = 0,
+      increment = 0,
+      omit = false,
+      type = this.videoConfig.type,
+      box = this.videoConfig.box,
+      runtimeOrder = this.videoConfig.runtimeOrder
+    } = option;
+    // form the base config for kernel
+    // it should be the same as the config now
+    const config = {type, box, runtimeOrder, src};
+    // build tasks accroding repeat times
+    const tasks = new Array(repeatTimes + 1).fill(1).map((value, index) => {
+      return () => {
+        return new Promise((resolve, reject) => {
+          // if abort, give up and reject
+          if(option.abort) reject({error: true, message: 'user abort the mission'});
+          const video = document.createElement('video');
+          const idealTime = this.kernel.currentTime + duration + increment * index;
+          video.muted = true;
+          let newVideoReady = false;
+          // bind time update on old video
+          // when we bump into the switch point and ready
+          // we switch
+          const oldVideoSpyer = evt => {
+            const currentTime = this.kernel.currentTime;
+            if(currentTime >= idealTime || idealTime - currentTime <= bias) {
+              removeEvent(this.dom.videoElement, 'timeupdate', oldVideoSpyer);
+              if(!newVideoReady) {
+                kernel.destroy();
+                return resolve();
+              }
+              return reject({
+                error: false,
+                video,
+                kernel
+              });
+            }
+          };
+          addEvent(video, 'canplay', evt => {
+            newVideoReady = true;
+            // you can set it immediately run by yourself
+            if(option.immediate) {
+              return reject({
+                error: false,
+                video,
+                kernel
+              });
+            }
+          }, true);
+          addEvent(this.dom.videoElement, 'timeupdate', oldVideoSpyer);
+          const kernel = new Kernel(video, config);
+          kernel.load();
+          kernel.seek(idealTime);
+        });
+      };
+    });
+    return runRejectableQueue(tasks)
+    .then(() => {
+      const message = `The silentLoad for ${src} timed out. Please set a longer duration or check your network`;
+      if(!omit) Log.warn(message);
+      return Promise.reject(new Error(message));
+    }, data => {
+      if(isError(data)) {
+        this.throwError(data);
+        return Promise.reject(data);
+      }
+      if(data.error) {
+        if(!omit) Log.warn(data.message);
+        return Promise.reject(new Error(data.message));
+      }
+      const {video, kernel} = data;
+      if(option.abort) {
+        kernel.destroy();
+        return Promise.reject(new Error('user abort the mission'));
+      }
+      const paused = this.dom.videoElement.paused;
+      this.switchKernel({video, kernel, config});
+      if(!paused) this.dom.videoElement.play();
+    });
+  }
+  switchKernel ({video, kernel, config}: {
+    video: HTMLVideoElement,
+    kernel: Kernel,
+    config: {
+      src: string,
+      type: string,
+      box: string,
+      runtimeOrder: Array<string>
+    }
+  }) {
+    const oldKernel = this.kernel;
+    oldKernel.destroy();
+    const originVideoConfig = deepClone(this.videoConfig);
+    this.dom.removeVideo();
+    this.dom.installVideo(video);
+    // as we will reset the currentVideoConfig on the new video
+    // it will trigger the watch function as they maybe differnet
+    // so we need to stop them
+    this.videoConfig.changeWatchable = false;
+    this.videoConfig.autoload = false;
+    this.videoConfig.src = config.src;
+    this.videoConfig._realDomAttr.forEach(key => {
+      // $FlowFixMe: support computed key here
+      if(key !== 'src') this.videoConfig[key] = originVideoConfig[key];
+    });
+    this.videoConfig.changeWatchable = true;
+    // bind the new config in new kernel to the videoConfig
+    applyDecorators(config, {
+      src: accessor({
+        get: value => {
+          return this.videoConfig.src;
+        },
+        set: value => {
+          this.videoConfig.src = value;
+          return value;
+        }
+      })
+    }, {self: true});
+    // the kernel's inner config would not be change according what we do
+    // so we have to load that
+    // applyDecorators(kernel.__proto__, {
+    //   load: before(src => {
+    //     return [src || this.videoConfig.src];
+    //   })
+    // }, {self: true});
+    this.kernel = kernel;
   }
   /**
    * destroy function called when dispatcher destroyed
