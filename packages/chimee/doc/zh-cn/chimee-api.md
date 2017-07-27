@@ -50,12 +50,12 @@ const chimee = new Chimee({
 - 注意事项
   - 必选项
 
-### type
+### isLive
 
-- 类型：`string`
+- 类型：`boolean`
 - 含义：播放类型
-- 可选：`vod`（点播）和 `live`（直播）
-- 默认：`vod`
+- 可选：`false`（点播）和 `true`（直播）
+- 默认：`false`
 
 ### box
 
@@ -328,11 +328,11 @@ chimee.src = 'http://cdn.toxicjohann.com/lostStar.mp4';
 chimee.load();
 ```
 
-### \* type
+### \* isLive
 
-- 类型：`string`
+- 类型：`boolean`
 - 含义：播放类型
-- 可选：`vod`（点播）和 `live`（直播）
+- 可选：`false`（点播）和 `true`（直播）
 - 只读属性
 
 ### \* box
