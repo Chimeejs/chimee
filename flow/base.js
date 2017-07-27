@@ -61,7 +61,7 @@ declare type PluginConfigSet = {
 declare type UserConfig = {
   src?: string,
   box?: string,
-  type?: string,
+  isLive?: boolean,
   wrapper: string | Element,
   plugin?: Array<string | UserPluginConfig>,
   autoplay?: boolean,

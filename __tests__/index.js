@@ -59,7 +59,7 @@ describe('Chimee', () => {
           // 直播:live 点播：vod
           type: 'vod',
           // 编解码容器
-          box: 'mp4',
+          box: 'native',
           // dom容器
           wrapper: 'body',
           plugin: [],
@@ -185,9 +185,9 @@ describe('Chimee', () => {
         // 播放地址
         src: 'http://cdn.toxicjohann.com/lostStar.mp4',
         // 直播:live 点播：vod
-        type: 'vod',
+        isLive: false,
         // 编解码容器
-        box: 'mp4',
+        box: 'native',
         // dom容器
         wrapper: 'body',
         plugin: [],
@@ -504,7 +504,7 @@ describe('Chimee', () => {
           // 直播:live 点播：vod
           type: 'vod',
           // 编解码容器
-          box: 'mp4',
+          box: 'native',
           // dom容器
           wrapper: 'body',
           plugin: ['autoloadtest'],
@@ -541,7 +541,7 @@ describe('Chimee', () => {
         // 直播:live 点播：vod
         type: 'vod',
         // 编解码容器
-        box: 'mp4',
+        box: 'native',
         // dom容器
         wrapper: 'body',
         plugin: [],

@@ -196,7 +196,7 @@ export default class Dispatcher {
     abort?: boolean,
     omit?: boolean,
     immediate?: boolean,
-    type?: string,
+    isLive?: boolean,
     box?: string,
     runtimeOrder?: Array<string>
   } = {}) {
@@ -206,13 +206,13 @@ export default class Dispatcher {
       repeatTimes = 0,
       increment = 0,
       omit = false,
-      type = this.videoConfig.type,
+      isLive = this.videoConfig.isLive,
       box = this.videoConfig.box,
       runtimeOrder = this.videoConfig.runtimeOrder
     } = option;
     // form the base config for kernel
     // it should be the same as the config now
-    const config = {type, box, runtimeOrder, src};
+    const config = {isLive, box, runtimeOrder, src};
     // build tasks accroding repeat times
     const tasks = new Array(repeatTimes + 1).fill(1).map((value, index) => {
       return () => {
@@ -288,7 +288,7 @@ export default class Dispatcher {
     kernel: Kernel,
     config: {
       src: string,
-      type: string,
+      isLive: boolean,
       box: string,
       runtimeOrder: Array<string>
     }
