@@ -61,8 +61,8 @@ const chimee = new Chimee({
 
 - 类型：`string`
 - 含义：视频编码
-- 可选：`flv`、`mp4`和`hls`
-- 默认：会根据视频地址分配正确的编码方式，若无法从视频地址中获取所需的编码，则默认分配为`mp4`。
+- 可选：`flv`、`native`和`hls`
+- 默认：会根据视频地址分配正确的编码方式，若无法从视频地址中获取所需的编码，则默认分配为`native`。
 
 ### runtimeOrder
 
@@ -339,7 +339,7 @@ chimee.load();
 
 - 类型：`string`
 - 含义：视频编码
-- 可选：`flv`、`mp4`和`hls`
+- 可选：`flv`、`native`和`hls`
 - 只读属性
 
 ### \* runtimeOrder
