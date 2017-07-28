@@ -285,6 +285,7 @@ export default class Dispatcher {
       const paused = this.dom.videoElement.paused;
       this.switchKernel({video, kernel, config});
       if(!paused) this.dom.videoElement.play();
+      return Promise.resolve();
     });
   }
   switchKernel ({video, kernel, config}: {
