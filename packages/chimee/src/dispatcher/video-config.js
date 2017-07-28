@@ -234,6 +234,8 @@ export default class VideoConfig {
   @configurable
   runtimeOrder = ['html5', 'flash'];
 
+  preset = {};
+
   autoload = true;
 
   autoplay = false;

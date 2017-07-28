@@ -82,5 +82,9 @@ declare type UserConfig = {
   playbackRate?: number,
   defaultPlaybackRate?: number,
   disableRemotePlayback?: boolean,
-  defaultMuted?: boolean
+  defaultMuted?: boolean,
+  preset?: {
+    flv?: Function,
+    hls?: Function
+  }
 }
