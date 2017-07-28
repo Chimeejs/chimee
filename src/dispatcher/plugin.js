@@ -243,7 +243,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
         });
     return this.readySync || this.ready;
   }
-  
+
   /**
    * set the plugin to be the top of all plugins
    */
