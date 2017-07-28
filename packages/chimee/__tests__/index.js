@@ -611,9 +611,17 @@ describe('isFullScreen and fullScreenElement', () => {
   test('wrapper', () => {
     const target = player.__dispatcher.dom.wrapper;
     document.fullscreenElement = target;
+    const fn1 = jest.fn();
+    player.$watch('isFullScreen', fn1);
+    const fn2 = jest.fn();
+    player.$watch('fullScreenElement', fn2);
     document.dispatchEvent(new Event('fullscreenchange'));
     expect(player.isFullScreen).toBe(true);
     expect(player.__dispatcher.dom[player.fullScreenElement]).toBe(target);
+    expect(fn1).toHaveBeenCalledTimes(1);
+    expect(fn2).toHaveBeenCalledTimes(1);
+    expect(fn1).lastCalledWith(true, false);
+    expect(fn2).lastCalledWith('wrapper', undefined);
   });
   test('container', () => {
     const target = player.__dispatcher.dom.container;

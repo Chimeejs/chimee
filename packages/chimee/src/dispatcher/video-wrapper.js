@@ -120,7 +120,9 @@ export default @autobindClass() class VideoWrapper {
       videoConfig._realDomAttr.indexOf(property) > -1
     )
       ? videoConfig
-      : getDeepProperty(other || this, keys, {throwError: true});
+      : ['isFullScreen', 'fullScreenElement'].indexOf(property) > -1
+        ? this.__dispatcher.dom
+        : getDeepProperty(other || this, keys, {throwError: true});
     applyDecorators(target, {
       [property]: watch(watcher, {deep, diff, proxy})
     }, {self: true});
