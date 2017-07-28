@@ -70,7 +70,7 @@ export const domEvents = [
   'msfullscreenchange',
   'contextmenu'
 ];
-export const noTriggerEvents = [
+export const selfProcessorEvents = [
   'silentLoad'
 ];
 export const kernelMethods = [
@@ -78,9 +78,6 @@ export const kernelMethods = [
   'pause',
   'load',
   'seek'
-];
-export const dispatcherMethods = [
-  'silentLoad'
 ];
 export const kernelEvents = [
   'mediaInfo'

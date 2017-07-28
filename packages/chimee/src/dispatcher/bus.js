@@ -1,6 +1,6 @@
 // @flow
 import {isEmpty, isArray, runRejectableQueue, runStoppableQueue, camelize, bind, isError, isVoid, isFunction, deepClone, Log} from 'chimee-helper';
-import {videoEvents, kernelMethods, domEvents, domMethods, dispatcherMethods, noTriggerEvents} from 'helper/const';
+import {videoEvents, kernelMethods, domEvents, domMethods, selfProcessorEvents} from 'helper/const';
 const secondaryReg = /^(before|after|_)/;
 /**
  * <pre>
@@ -119,7 +119,10 @@ export default class Bus {
     }
     const beforeQueue = this._getEventQueue(event.before, this.__dispatcher.order);
     return runRejectableQueue(beforeQueue, ...args)
-    .then(() => this._eventProcessor(key, {sync: false}, ...args))
+    .then(() => {
+      if(selfProcessorEvents.indexOf(key) > -1) return;
+      return this._eventProcessor(key, {sync: false}, ...args);
+    })
     .catch(error => {
       if(isError(error)) this.__dispatcher.throwError(error);
       return Promise.reject(error);
@@ -142,7 +145,7 @@ export default class Bus {
       return this._eventProcessor(key, {sync: true}, ...args);
     }
     const beforeQueue = this._getEventQueue(event.before, this.__dispatcher.order);
-    return runStoppableQueue(beforeQueue, ...args) && this._eventProcessor(key, {sync: true}, ...args);
+    return runStoppableQueue(beforeQueue, ...args) && selfProcessorEvents.indexOf(key) < 0 && this._eventProcessor(key, {sync: true}, ...args);
   }
   /**
    * [Can only be called in dispatcher]trigger an event, which will run main -> after -> side effect period
@@ -324,16 +327,10 @@ export default class Bus {
   _eventProcessor (key: string, {sync}: {sync: boolean}, ...args: any) {
     const isKernelMethod: boolean = kernelMethods.indexOf(key) > -1;
     const isDomMethod: boolean = domMethods.indexOf(key) > -1;
-    const isDispatcherMethod: boolean = dispatcherMethods.indexOf(key) > -1;
-    if(isKernelMethod || isDomMethod || isDispatcherMethod) {
-      if(isDispatcherMethod) {
-        this.__dispatcher[key](...args);
-      } else {
-        this.__dispatcher[isKernelMethod ? 'kernel' : 'dom'][key](...args);
-      }
+    if(isKernelMethod || isDomMethod) {
+      this.__dispatcher[isKernelMethod ? 'kernel' : 'dom'][key](...args);
       if(videoEvents.indexOf(key) > -1 ||
-        domEvents.indexOf(key) > -1 ||
-        noTriggerEvents.indexOf(key) > -1) return true;
+        domEvents.indexOf(key) > -1) return true;
     }
     // $FlowFixMe: flow do not support computed sytax on classs, but it's ok here
     return this[sync ? 'triggerSync' : 'trigger'](key, ...args);

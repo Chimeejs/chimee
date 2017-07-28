@@ -151,9 +151,14 @@ export default @autobindClass() class VideoWrapper {
     obj.__del(property);
   }
 
+  @alias('silentLoad')
   $silentLoad (...args: Array<*>) {
-
-    this.__dispatcher.silentLoad(...args);
+    return this.__dispatcher.bus.emit('silentLoad')
+    .then(() => {
+      return this.__dispatcher.silentLoad(...args);
+    }).then(result => {
+      this.__dispatcher.bus.trigger('silentLoad', result);
+    });
   }
 
   /**
