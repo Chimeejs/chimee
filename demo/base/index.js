@@ -45,6 +45,10 @@
     // dom容器
     wrapper: '#wrapper',
     plugin: ['controller'],
+    preset: {
+      flv: window.chimeeKernelFlv,
+      hls: window.chimeeKernelHls
+    },
     volume: 0.1,
     autoplay: true,
     controls: true
