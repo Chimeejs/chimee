@@ -198,7 +198,6 @@ export default class Dispatcher {
     immediate?: boolean,
     isLive?: boolean,
     box?: string,
-    runtimeOrder?: Array<string>,
     preset?: Object
   } = {}) {
     const {
@@ -209,12 +208,11 @@ export default class Dispatcher {
       omit = false,
       isLive = this.videoConfig.isLive,
       box = this.videoConfig.box,
-      runtimeOrder = this.videoConfig.runtimeOrder,
       preset = this.videoConfig.preset
     } = option;
     // form the base config for kernel
     // it should be the same as the config now
-    const config = {isLive, box, runtimeOrder, src, preset};
+    const config = {isLive, box, src, preset};
     // build tasks accroding repeat times
     const tasks = new Array(repeatTimes + 1).fill(1).map((value, index) => {
       return () => {
@@ -266,15 +264,14 @@ export default class Dispatcher {
     return runRejectableQueue(tasks)
     .then(() => {
       const message = `The silentLoad for ${src} timed out. Please set a longer duration or check your network`;
-      if(!omit) Log.warn(message);
+      if(!omit) Log.warn("chimee's silentLoad", message);
       return Promise.reject(new Error(message));
-    }, data => {
+    }).catch(data => {
       if(isError(data)) {
-        this.throwError(data);
         return Promise.reject(data);
       }
       if(data.error) {
-        if(!omit) Log.warn(data.message);
+        if(!omit) Log.warn("chimee's silentLoad", data.message);
         return Promise.reject(new Error(data.message));
       }
       const {video, kernel} = data;
@@ -295,7 +292,7 @@ export default class Dispatcher {
       src: string,
       isLive: boolean,
       box: string,
-      runtimeOrder: Array<string>
+      preset: Object
     }
   }) {
     const oldKernel = this.kernel;
