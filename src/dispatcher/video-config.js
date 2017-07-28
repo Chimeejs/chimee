@@ -1,5 +1,5 @@
 // @flow
-import {alwaysString, initString, initArray, accessor, alwaysBoolean, frozen, alwaysNumber, nonenumerable, lock, applyDecorators, configurable, initBoolean} from 'toxic-decorators';
+import {alwaysString, initString, accessor, alwaysBoolean, frozen, alwaysNumber, nonenumerable, lock, applyDecorators, configurable, initBoolean} from 'toxic-decorators';
 import {isNumber, isString, deepAssign, isObject, isNumeric} from 'chimee-helper';
 
 function stringOrVoid (value: any): string | void {
@@ -230,10 +230,6 @@ export default class VideoConfig {
   @configurable
   box = '';
 
-  @initArray()
-  @configurable
-  runtimeOrder = ['html5', 'flash'];
-
   preset = {};
 
   autoload = true;
@@ -275,7 +271,7 @@ export default class VideoConfig {
   volume = 1;
 
   @frozen
-  _kernelProperty = ['isLive', 'box', 'runtimeOrder'];
+  _kernelProperty = ['isLive', 'box', 'preset'];
 
   @frozen
   _realDomAttr = ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
@@ -284,7 +280,7 @@ export default class VideoConfig {
     applyDecorators(this, {
       isLive: lock,
       box: lock,
-      runtimeOrder: lock
+      preset: lock
     }, {self: true});
   }
 

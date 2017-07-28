@@ -115,6 +115,7 @@ export default class Bus {
     }
     const event = this.events[key];
     if(isEmpty(event)) {
+      if(selfProcessorEvents.indexOf(key) > -1) return Promise.resolve();
       return this._eventProcessor(key, {sync: false}, ...args);
     }
     const beforeQueue = this._getEventQueue(event.before, this.__dispatcher.order);
