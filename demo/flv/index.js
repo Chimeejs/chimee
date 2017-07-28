@@ -5,7 +5,7 @@ window.player = new window.Chimee({
       flv: window.chimeeKernelFlv
     },
     // 编解码容器
-    box: 'flv', // flv hls mp4
+    box: 'flv', // flv hls native
     // dom容器
     wrapper: '#wrapper',
     width: '100%',
