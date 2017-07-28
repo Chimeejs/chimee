@@ -171,7 +171,6 @@ const player = new Chimee({
     'postman',
     'interceptor'
   ],
-  runtimeOrder: ['html5', 'flash'],
   autoplay: false,
   controls: true,
 });

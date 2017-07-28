@@ -8,8 +8,6 @@ window.player = new window.Chimee({
     box: 'flv', // flv hls mp4
     // dom容器
     wrapper: '#wrapper',
-    // video
-    runtimeOrder: ['html5', 'flash'],
     width: '100%',
     height: '100%',
     autoplay: true,
