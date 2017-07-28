@@ -24,6 +24,8 @@ export default class Dom {
   container: Element;
   originHTML: string;
   plugins: {[string]: Element};
+  isFullScreen: boolean | string;
+  fullScreenElement: HTMLElement | string | void;
   __dispatcher: Dispatcher;
   __domEventHandlerList: {|[string]: Array<Function>|};
   __mouseInVideo: boolean;
@@ -80,6 +82,8 @@ export default class Dom {
    */
   __mouseInVideo = false;
   __videoExtendedNodes = [];
+  isFullScreen = false;
+  fullScreenElement = undefined;
   constructor (wrapper: string | Element, dispatcher: Dispatcher) {
     this.__dispatcher = dispatcher;
     if(!isElement(wrapper) && !isString(wrapper)) throw new TypeError('Illegal wrapper');
@@ -110,6 +114,7 @@ export default class Dom {
       this.videoDomEventHandlerList.push(fn);
       addEvent(this.videoElement, key, fn);
     });
+    this._bindFullScreen();
   }
   installVideo (videoElement: HTMLVideoElement): HTMLVideoElement {
     this.__videoExtendedNodes.push(videoElement);
@@ -331,6 +336,7 @@ export default class Dom {
       removeEvent(this.container, key, this.containerDomEventHandlerList[index]);
       removeEvent(this.wrapper, key, this.wrapperDomEventHandlerList[index]);
     });
+    this._bindFullScreen(true);
     this.wrapper.innerHTML = this.originHTML;
     delete this.wrapper;
     delete this.plugins;
@@ -345,6 +351,43 @@ export default class Dom {
     const y = window.scrollY;
     isFunction(this.videoElement.focus) && this.videoElement.focus();
     window.scrollTo(x, y);
+  }
+  @autobind
+  _fullScreenMonitor () {
+    const element = [
+      'fullscreenElement',
+      'webkitFullscreenElement',
+      'mozFullScreenElement',
+      'msFullscreenElement'
+    ].reduce((element, key) => {
+      // $FlowFixMe: support computed element on document
+      return element || document[key];
+    }, null);
+    if(!element || (!isPosterityNode(this.wrapper, element) && element !== this.wrapper)) {
+      this.isFullScreen = false;
+      this.fullScreenElement = undefined;
+      return;
+    }
+    this.isFullScreen = true;
+    this.fullScreenElement = this.wrapper === element
+      ? 'wrapper'
+      : this.container === element
+        ? 'container'
+        : this.videoElement === element
+          ? 'video'
+          : element;
+  }
+  _bindFullScreen (remove?: boolean) {
+    if(!remove) this._fullScreenMonitor();
+    [
+      'webkitfullscreenchange',
+      'mozfullscreenchange',
+      'msfullscreenchange',
+      'fullscreenchange'
+    ].forEach(key => {
+      // $FlowFixMe: support computed element on document
+      document[(remove ? 'remove' : 'add') + 'EventListener'](key, this._fullScreenMonitor);
+    });
   }
   /**
    * get the event handler for dom to bind
