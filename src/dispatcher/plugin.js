@@ -1,8 +1,6 @@
 // @flow
-import {isError, isString, isFunction, isEmpty, isObject, isBoolean, isInteger, isPromise, deepAssign, bind, isArray, Log} from 'chimee-helper';
-import {before, accessor, applyDecorators, frozen, autobindClass, nonenumerable, nonextendable} from 'toxic-decorators';
-import {eventBinderCheck, attrAndStyleCheck} from 'helper/checker';
-import {domEvents} from 'helper/const';
+import {isError, isString, isFunction, isEmpty, isObject, isBoolean, isInteger, isPromise, deepAssign, bind, Log} from 'chimee-helper';
+import {accessor, applyDecorators, frozen, autobindClass} from 'toxic-decorators';
 import VideoWrapper from 'dispatcher/video-wrapper';
 
 /**
@@ -24,7 +22,6 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   readySync: boolean;
   destroyed: boolean;
   $dom: HTMLElement;
-  __events: PluginEvents;
   $level: number;
   __level: number;
   $operable: boolean;
@@ -39,7 +36,6 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   destroyed = false;
   VERSION = process.env.PLAYER_VERSION;
   __operable = true;
-  __events = {};
   __level = 0;
   /**
    * <pre>
@@ -247,37 +243,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
         });
     return this.readySync || this.ready;
   }
-  /**
-   * set style
-   * @param {string} element optional, default to be video, you can choose from video | container | wrapper
-   * @param {string} attribute the atrribue name
-   * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
-   */
-  @before(attrAndStyleCheck)
-  $css (method: string, ...args: Array<any>): string {
-    return this.__dispatcher.dom[method + 'Style'](...args);
-  }
-   /**
-   * set attr
-   * @param {string} element optional, default to be video, you can choose from video | container | wrapper
-   * @param {string} attribute the atrribue name
-   * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
-   */
-  @before(attrAndStyleCheck)
-  $attr (method: string, ...args: Array<any>): string {
-    if(method === 'set' && /video/.test(args[0])) {
-      if(!this.__dispatcher.videoConfigReady) {
-        Log.warn('plugin', `Plugin ${this.__id} is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger`);
-        return args[2];
-      }
-      if(this.$videoConfig._realDomAttr.indexOf(args[1]) > -1) {
-        const [, key, val] = args;
-        this.$videoConfig[key] = val;
-        return val;
-      }
-    }
-    return this.__dispatcher.dom[method + 'Attr'](...args);
-  }
+
   /**
    * call fullscreen api on some specific element
    * @param {boolean} flag true means fullscreen and means exit fullscreen
@@ -293,63 +259,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
     const topLevel = this.__dispatcher._getTopLevel(this.$inner);
     this.$level = topLevel + 1;
   }
-  /**
-   * bind event handler through this function
-   * @param  {string} key event's name
-   * @param  {Function} fn event's handler
-   */
-  @before(eventBinderCheck)
-  $on (key: string, fn: Function) {
-    this.__dispatcher.bus.on(this.__id, key, fn);
-    // set on __events as mark so that i can destroy it when i destroy
-    this.__addEvents(key, fn);
-  }
-  /**
-   * remove event handler through this function
-   * @param  {string} key event's name
-   * @param  {Function} fn event's handler
-   */
-  @before(eventBinderCheck)
-  $off (key: string, fn: Function) {
-    this.__dispatcher.bus.off(this.__id, key, fn);
-    this.__removeEvents(key, fn);
-  }
-  /**
-   * bind one time event handler
-   * @param {string} key event's name
-   * @param {Function} fn event's handler
-   */
-  @before(eventBinderCheck)
-  $once (key: string, fn: Function) {
-    const self = this;
-    const boundFn = function (...args) {
-      bind(fn, this)(...args);
-      self.__removeEvents(key, boundFn);
-    };
-    self.__addEvents(key, boundFn);
-    this.__dispatcher.bus.once(this.__id, key, boundFn);
-  }
-  /**
-   * emit an event
-   * @param  {string}    key event's name
-   * @param  {...args} args
-   */
-  $emit (key: string, ...args: any) {
-    if(!isString(key)) throw new TypeError('$emit key parameter must be String');
-    if(domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
-      Log.warn('plugin', `You are using $emit to emit ${key} event. As $emit is wrapped in Promise. It make you can't use event.preventDefault and event.stopPropagation. So we advice you to use $emitSync`);
-    }
-    this.__dispatcher.bus.emit(key, ...args);
-  }
-  /**
-   * emit a sync event
-   * @param  {string}    key event's name
-   * @param  {...args} args
-   */
-  $emitSync (key: string, ...args: any) {
-    if(!isString(key)) throw new TypeError('$emitSync key parameter must be String');
-    return this.__dispatcher.bus.emitSync(key, ...args);
-  }
+
   $throwError (error: Error | string) {
     this.__dispatcher.throwError(error);
   }
@@ -360,26 +270,10 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   $destroy () {
     isFunction(this.destroy) && this.destroy();
     super.__destroy();
-    Object.keys(this.__events)
-    .forEach(key => {
-      if(!isArray(this.__events[key])) return;
-      this.__events[key].forEach(fn => this.$off(key, fn));
-    });
-    delete this.__events;
     this.__dispatcher.dom.removePlugin(this.__id);
     delete this.__dispatcher;
     delete this.$dom;
     this.destroyed = true;
-  }
-  @nonenumerable
-  @nonextendable
-  get $plugins (): plugins {
-    return this.__dispatcher.plugins;
-  }
-  @nonenumerable
-  @nonextendable
-  get $pluginOrder (): Array<string> {
-    return this.__dispatcher.order;
   }
   /**
    * to tell us if the plugin can be operable, can be dynamic change
@@ -404,16 +298,5 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   }
   get $level (): number {
     return this.__level;
-  }
-  __addEvents (key: string, fn: Function) {
-    this.__events[key] = this.__events[key] || [];
-    this.__events[key].push(fn);
-  }
-  __removeEvents (key: string, fn: Function) {
-    if(isEmpty(this.__events[key])) return;
-    const index = this.__events[key].indexOf(fn);
-    if(index < 0) return;
-    this.__events[key].splice(index, 1);
-    if(isEmpty(this.__events[key])) delete this.__events[key];
   }
 };

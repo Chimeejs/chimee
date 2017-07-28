@@ -1,12 +1,15 @@
 // @flow
-import {bind, isString, getDeepProperty, isArray, isObject, isFunction, Log} from 'chimee-helper';
-import {videoReadOnlyProperties, videoMethods, kernelMethods, domMethods} from 'helper/const';
-import {accessor, nonenumerable, applyDecorators, watch} from 'toxic-decorators';
+import {bind, isString, getDeepProperty, isArray, isObject, isFunction, Log, isEmpty} from 'chimee-helper';
+import {videoReadOnlyProperties, videoMethods, kernelMethods, domMethods, domEvents} from 'helper/const';
+import {attrAndStyleCheck, eventBinderCheck} from 'helper/checker';
+import {accessor, nonenumerable, applyDecorators, watch, alias, before, nonextendable, autobindClass} from 'toxic-decorators';
 import VideoConfig from 'dispatcher/video-config';
-export default class VideoWrapper {
+export default @autobindClass() class VideoWrapper {
   __id: string;
   __dispatcher: Dispatcher;
   __unwatchHandlers: Array<Function>;
+  __events: PluginEvents;
+  __events = {};
   __unwatchHandlers = [];
   __wrapAsVideo (videoConfig: VideoConfig) {
     // bind video read only properties on instance, so that you can get info like buffered
@@ -148,7 +151,143 @@ export default class VideoWrapper {
     obj.__del(property);
   }
 
+  $silentLoad (...args: Array<*>) {
+
+    this.__dispatcher.silentLoad(...args);
+  }
+
+  /**
+   * emit an event
+   * @param  {string}    key event's name
+   * @param  {...args} args
+   */
+  @alias('emit')
+  $emit (key: string, ...args: any) {
+    if(!isString(key)) throw new TypeError('emit key parameter must be String');
+    if(domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
+      Log.warn('plugin', `You are try to emit ${key} event. As emit is wrapped in Promise. It make you can't use event.preventDefault and event.stopPropagation. So we advice you to use emitSync`);
+    }
+    this.__dispatcher.bus.emit(key, ...args);
+  }
+
+  /**
+   * emit a sync event
+   * @param  {string}    key event's name
+   * @param  {...args} args
+   */
+  @alias('emitSync')
+  $emitSync (key: string, ...args: any) {
+    if(!isString(key)) throw new TypeError('emitSync key parameter must be String');
+    return this.__dispatcher.bus.emitSync(key, ...args);
+  }
+
+  /**
+   * bind event handler through this function
+   * @param  {string} key event's name
+   * @param  {Function} fn event's handler
+   */
+  @alias('on')
+  @alias('addEventListener')
+  @before(eventBinderCheck)
+  $on (key: string, fn: Function) {
+    this.__dispatcher.bus.on(this.__id, key, fn);
+    // set on __events as mark so that i can destroy it when i destroy
+    this.__addEvents(key, fn);
+  }
+  /**
+   * remove event handler through this function
+   * @param  {string} key event's name
+   * @param  {Function} fn event's handler
+   */
+  @alias('off')
+  @alias('removeEventListener')
+  @before(eventBinderCheck)
+  $off (key: string, fn: Function) {
+    this.__dispatcher.bus.off(this.__id, key, fn);
+    this.__removeEvents(key, fn);
+  }
+  /**
+   * bind one time event handler
+   * @param {string} key event's name
+   * @param {Function} fn event's handler
+   */
+  @alias('once')
+  @before(eventBinderCheck)
+  $once (key: string, fn: Function) {
+    const self = this;
+    const boundFn = function (...args) {
+      bind(fn, this)(...args);
+      self.__removeEvents(key, boundFn);
+    };
+    self.__addEvents(key, boundFn);
+    this.__dispatcher.bus.once(this.__id, key, boundFn);
+  }
+
+  /**
+   * set style
+   * @param {string} element optional, default to be video, you can choose from video | container | wrapper
+   * @param {string} attribute the atrribue name
+   * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
+   */
+  @alias('css')
+  @before(attrAndStyleCheck)
+  $css (method: string, ...args: Array<any>): string {
+    return this.__dispatcher.dom[method + 'Style'](...args);
+  }
+
+  /**
+   * set attr
+   * @param {string} element optional, default to be video, you can choose from video | container | wrapper
+   * @param {string} attribute the atrribue nameß
+   * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
+   */
+  @alias('attr')
+  @before(attrAndStyleCheck)
+  $attr (method: string, ...args: Array<any>): string {
+    if(method === 'set' && /video/.test(args[0])) {
+      if(!this.__dispatcher.videoConfigReady) {
+        Log.warn('chimee', `${this.__id} is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger`);
+        return args[2];
+      }
+      if(this.__dispatcher.videoConfig._realDomAttr.indexOf(args[1]) > -1) {
+        const [, key, val] = args;
+        this.__dispatcher.videoConfig[key] = val;
+        return val;
+      }
+    }
+    return this.__dispatcher.dom[method + 'Attr'](...args);
+  }
+
+  @nonenumerable
+  @nonextendable
+  get $plugins (): plugins {
+    return this.__dispatcher.plugins;
+  }
+  @nonenumerable
+  @nonextendable
+  get $pluginOrder (): Array<string> {
+    return this.__dispatcher.order;
+  }
+
+  __addEvents (key: string, fn: Function) {
+    this.__events[key] = this.__events[key] || [];
+    this.__events[key].push(fn);
+  }
+  __removeEvents (key: string, fn: Function) {
+    if(isEmpty(this.__events[key])) return;
+    const index = this.__events[key].indexOf(fn);
+    if(index < 0) return;
+    this.__events[key].splice(index, 1);
+    if(isEmpty(this.__events[key])) delete this.__events[key];
+  }
+
   __destroy () {
     this.__unwatchHandlers.forEach(unwatcher => unwatcher());
+    Object.keys(this.__events)
+    .forEach(key => {
+      if(!isArray(this.__events[key])) return;
+      this.__events[key].forEach(fn => this.$off(key, fn));
+    });
+    delete this.__events;
   }
 }
