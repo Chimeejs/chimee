@@ -11,6 +11,8 @@ Chimee 本质上是对原生 video 元素的一个封装。因此在许多用法
 * [video元素相关属性](#video元素相关属性)
 * [事件监听相关方法](#事件监听相关方法)
 * [数据监听相关方法](#数据监听相关方法)
+* [全屏相关方法](#全屏相关方法)
+* [全屏相关属性](#全屏相关属性)
 * [插件操作](#插件操作)
 
 ## 生成实例
@@ -259,45 +261,6 @@ chimee.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
 ### focus
 
 自动聚焦到 `video` 元素上。
-
-### \* fullscreen
-
-- 类型：`Function`
-- 参数：
-  - flag
-    - 类型：`boolean`
-    - 含义是否需要全屏，`true`为全屏，`false`为退出全屏。
-    - 默认：`true`
-  - target
-    - 类型：`string`
-    - 全屏的对象，可选`video`、`container`和`wrapper`
-    - 默认：`container`
-
-全屏和退出全屏的相关操作。
-
-> 关于全屏对象的设置可到[Chimee 插件 API 介绍中的 fullscreen 部分](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)了解更多
-
-### requestFullScreen
-
-- 类型：`Function`
-- 参数：
-  - target
-    - 类型：`string`
-    - 全屏的对象，可选`video`、`container`和`wrapper`
-    - 默认：`container
-
-进入全屏
-
-### exitFullScreen
-
-- 类型：`Function`
-- 参数：
-  - target
-    - 类型：`string`
-    - 全屏的对象，可选`video`、`container`和`wrapper`
-    - 默认：`container
-
-退出全屏
 
 ### canPlayType
 
@@ -711,6 +674,68 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 - property
   - `string`
   - 属性名
+
+## 全屏相关方法
+
+### \* $fullScreen
+
+- 别名：`fullScreen`
+- 类型：`Function`
+- 参数：
+  - flag
+    - 类型：`boolean`
+    - 含义是否需要全屏，`true`为全屏，`false`为退出全屏。
+    - 默认：`true`
+  - target
+    - 类型：`string`
+    - 全屏的对象，可选`video`、`container`和`wrapper`
+    - 默认：`container`
+
+全屏和退出全屏的相关操作。
+
+> 关于全屏对象的设置可到[Chimee 插件 API 介绍中的 fullscreen 部分](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)了解更多
+
+### requestFullScreen
+
+- 类型：`Function`
+- 参数：
+  - target
+    - 类型：`string`
+    - 全屏的对象，可选`video`、`container`和`wrapper`
+    - 默认：`container
+
+进入全屏
+
+### exitFullScreen
+
+- 类型：`Function`
+- 参数：
+  - target
+    - 类型：`string`
+    - 全屏的对象，可选`video`、`container`和`wrapper`
+    - 默认：`container
+
+退出全屏
+
+## 全屏相关属性
+
+### isFullScreen
+
+* 类型：`boolean`
+* 含义：是否全屏
+
+若实例中的任意一个子节点全屏，则返回 `true`。 
+
+### fullScreenElement
+
+* 类型：`HTMLElement | string | void`
+* 含义：现在全屏的对象
+
+如果全屏的是 `container`、`wrapper`、`video` 三者之一，则直接返回字符串。
+
+否则返回正在全屏的对象。
+
+若无全屏则为 `undefined`
 
 ## 插件操作
 
