@@ -76,6 +76,9 @@ export const kernelMethods = [
   'load',
   'seek'
 ];
+export const dispatcherMethods = [
+  'silentLoad'
+];
 export const kernelEvents = [
   'mediaInfo'
 ];

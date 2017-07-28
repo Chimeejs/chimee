@@ -254,10 +254,12 @@ export default class Dispatcher {
               });
             }
           }, true);
+          addEvent(video, 'loadedmetadata', evt => {
+            kernel.seek(idealTime);
+          }, true);
           addEvent(this.dom.videoElement, 'timeupdate', oldVideoSpyer);
           const kernel = new Kernel(video, config);
           kernel.load();
-          kernel.seek(idealTime);
         });
       };
     });
