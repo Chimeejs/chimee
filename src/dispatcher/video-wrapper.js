@@ -69,6 +69,7 @@ export default @autobindClass() class VideoWrapper {
       });
     });
     domMethods.forEach(key => {
+      if(key === 'fullScreen') return;
       Object.defineProperty(this, key, {
         value (...args: any) {
           return this.__dispatcher.dom[key](...args);
@@ -159,6 +160,19 @@ export default @autobindClass() class VideoWrapper {
     }).then(result => {
       this.__dispatcher.bus.trigger('silentLoad', result);
     });
+  }
+
+  /**
+   * call fullscreen api on some specific element
+   * @param {boolean} flag true means fullscreen and means exit fullscreen
+   * @param {string} element the element you want to fullscreen, default it's container, you can choose from video | container | wrapper
+   */
+  @alias('fullScreen')
+  $fullScreen (flag: boolean = true, element: string = 'container'): boolean {
+    if(!this.__dispatcher.bus.emitSync('fullScreen', flag, element)) return false;
+    const result = this.__dispatcher.dom.fullScreen(flag, element);
+    this.__dispatcher.bus.triggerSync('fullScreen', flag, element);
+    return result;
   }
 
   /**

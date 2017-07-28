@@ -71,7 +71,8 @@ export const domEvents = [
   'contextmenu'
 ];
 export const selfProcessorEvents = [
-  'silentLoad'
+  'silentLoad',
+  'fullScreen'
 ];
 export const kernelMethods = [
   'play',

@@ -243,15 +243,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
         });
     return this.readySync || this.ready;
   }
-
-  /**
-   * call fullscreen api on some specific element
-   * @param {boolean} flag true means fullscreen and means exit fullscreen
-   * @param {string} element the element you want to fullscreen, default it's container, you can choose from video | container | wrapper
-   */
-  $fullScreen (flag: boolean = true, element: string = 'container'): boolean {
-    return this.__dispatcher.dom.fullScreen(flag, element);
-  }
+  
   /**
    * set the plugin to be the top of all plugins
    */
