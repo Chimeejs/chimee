@@ -64,12 +64,27 @@ const chimee = new Chimee({
 - 可选：`flv`、`native`和`hls`
 - 默认：会根据视频地址分配正确的编码方式，若无法从视频地址中获取所需的编码，则默认分配为`native`。
 
-### runtimeOrder
+### \* preset
+- 类型: `Object`
+- 含义: 播放器核心解码器。因为体积问题，chimee 默认仅支持原生播放器，如果需要支持其余解码方式请引入相应的解码器。
+- 默认: `{}`
 
-- 类型：`Array<string>`
-- 含义：播放器类型优先级，如`['html5', 'flash']`意味着优先使用 html5 播放器，在 html5 播放器无法兼容的情况下使用 flash 播放器。
-- 可选：`html5`和`flash` 
-- 默认：`['html5', 'flash']`
+```javascript
+import Flv from 'chimee-kernel-flv';
+const player = new Chimee({
+  src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
+  preset: {
+    flv: Flv
+  },
+  // 编解码容器
+  box: 'flv', // flv hls mp4
+  // dom容器
+  wrapper: '#wrapper',
+  // video
+  autoplay: true,
+  controls: true
+})
+```
 
 ### plugin
 
@@ -342,11 +357,27 @@ chimee.load();
 - 可选：`flv`、`native`和`hls`
 - 只读属性
 
-### \* runtimeOrder
+### \* preset
+- 类型: `Object`
+- 含义: 播放器核心解码器。因为体积问题，chimee 默认仅支持原生播放器，如果需要支持其余解码方式请引入相应的解码器。
+- 默认: `{}`
 
-- 类型：`Array<string>`
-- 含义：播放器类型优先级，如`['html5', 'flash']`意味着优先使用 html5 播放器，在 html5 播放器无法兼容的情况下使用 flash 播放器。
-- 只读属性
+```javascript
+import Flv from 'chimee-kernel-flv';
+const player = new Chimee({
+  src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
+  preset: {
+    flv: Flv
+  },
+  // 编解码容器
+  box: 'flv', // flv hls mp4
+  // dom容器
+  wrapper: '#wrapper',
+  // video
+  autoplay: true,
+  controls: true
+})
+```
 
 ### buffered
 
