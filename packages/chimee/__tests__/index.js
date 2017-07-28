@@ -577,4 +577,24 @@ describe('Chimee', () => {
       expect(player.attr('video', 'data-controls')).toBe('true');
     });
   });
+  test('focus', () => {
+    const player = new Chimee(document.createElement('div'));
+    expect(() => player.focus()).not.toThrow();
+  });
+  test('stop fullscreen', () => {
+    const plugin = {
+      name: 'stopFullScreen',
+      events: {
+        beforeFullScreen () {
+          return false;
+        }
+      }
+    };
+    Chimee.install(plugin);
+    const player = new Chimee({
+      wrapper: document.createElement('div'),
+      plugin: ['stopFullScreen']
+    });
+    expect(player.fullScreen()).toBe(false);
+  });
 });

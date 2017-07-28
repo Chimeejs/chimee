@@ -143,10 +143,11 @@ export default class Bus {
     }
     const event = this.events[key];
     if(isEmpty(event)) {
+      if(selfProcessorEvents.indexOf(key) > -1) return true;
       return this._eventProcessor(key, {sync: true}, ...args);
     }
     const beforeQueue = this._getEventQueue(event.before, this.__dispatcher.order);
-    return runStoppableQueue(beforeQueue, ...args) && selfProcessorEvents.indexOf(key) < 0 && this._eventProcessor(key, {sync: true}, ...args);
+    return runStoppableQueue(beforeQueue, ...args) && (selfProcessorEvents.indexOf(key) > -1 || this._eventProcessor(key, {sync: true}, ...args));
   }
   /**
    * [Can only be called in dispatcher]trigger an event, which will run main -> after -> side effect period
