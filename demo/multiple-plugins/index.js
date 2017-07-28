@@ -148,7 +148,6 @@ const player = new Chimee({
     },
     'loader'
   ],
-  runtimeOrder: ['html5', 'flash'],
   autoplay: false,
   controls: true
 });

@@ -188,7 +188,6 @@ document.getElementById('create').addEventListener('click', function () {
       },
       'outer'
     ],
-    runtimeOrder: ['html5', 'flash'],
     autoplay: false,
     controls: true
   });

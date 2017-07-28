@@ -38,8 +38,6 @@ const player = new Chimee({
   // dom容器
   wrapper: '#wrapper',
   plugin: ['controller'],
-  // video
-  runtimeOrder: ['html5', 'flash'],
   autoplay: false,
   controls: true
 });

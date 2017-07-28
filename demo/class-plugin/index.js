@@ -35,8 +35,6 @@
     // dom容器
     wrapper: '#wrapper',
     plugin: ['controller'],
-    // video
-    runtimeOrder: ['html5', 'flash'],
     volume: 0.1,
     autoplay: true,
     controls: true
