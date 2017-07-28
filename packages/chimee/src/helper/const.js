@@ -70,6 +70,9 @@ export const domEvents = [
   'msfullscreenchange',
   'contextmenu'
 ];
+export const noTriggerEvents = [
+  'silentLoad'
+];
 export const kernelMethods = [
   'play',
   'pause',

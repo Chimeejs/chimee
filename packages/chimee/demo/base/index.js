@@ -51,7 +51,7 @@
       hls: window.chimeeKernelHls
     },
     volume: 0.1,
-    autoplay: true,
+    // autoplay: true,
     controls: true
   });
   window.player = player;

@@ -1,4 +1,4 @@
-import type Plugin from 'dispatcher/index';
+import type Plugin from 'dispatcher/plugin';
 import type Dispatcher from 'dispatcher/index';
 import type Bus from 'dispatcher/bus';
 import type Dom from 'dispatcher/dom';

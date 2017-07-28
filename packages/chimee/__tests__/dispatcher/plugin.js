@@ -329,7 +329,7 @@ describe('dispatcher/plugin', () => {
     const pluginE = new Plugin({
       id: 'e'
     }, dispatcher);
-    expect(() => pluginE.$emit()).toThrow('$emit key parameter must be String');
+    expect(() => pluginE.$emit()).toThrow('emit key parameter must be String');
     pluginE.$emit('click');
     pluginE.$emit('xx_click');
     pluginE.$destroy();
@@ -339,7 +339,7 @@ describe('dispatcher/plugin', () => {
     const pluginE = new Plugin({
       id: 'e'
     }, dispatcher);
-    expect(() => pluginE.$emitSync()).toThrow('$emitSync key parameter must be String');
+    expect(() => pluginE.$emitSync()).toThrow('emitSync key parameter must be String');
     expect(pluginE.$emitSync('hello')).toBe(true);
     pluginE.$destroy();
   });
@@ -542,8 +542,8 @@ describe('dispatcher/plugin', () => {
     test('$attr on video property', () => {
       plugin.$attr('video', 'controls', true);
       expect(plugin.$attr('video', 'controls')).toBe(null);
-      expect(Log.data.warn[0]).toEqual([ 'plugin',
-          'Plugin normal is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger' ]);
+      expect(Log.data.warn[0]).toEqual([ 'chimee',
+          'normal is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger' ]);
       dispatcher.videoConfigReady = true;
       plugin.$attr('video', 'controls', true);
       expect(plugin.$attr('video', 'controls')).toBe('');
