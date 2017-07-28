@@ -288,6 +288,14 @@ export default @autobindClass() class VideoWrapper {
     return this.__dispatcher.order;
   }
 
+  get isFullScreen (): boolean | string {
+    return this.__dispatcher.dom.isFullScreen;
+  }
+
+  get fullScreenElement (): HTMLElement | string | void {
+    return this.__dispatcher.dom.fullScreenElement;
+  }
+
   __addEvents (key: string, fn: Function) {
     this.__events[key] = this.__events[key] || [];
     this.__events[key].push(fn);

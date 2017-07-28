@@ -598,3 +598,46 @@ describe('Chimee', () => {
     expect(player.fullScreen()).toBe(false);
   });
 });
+
+describe('isFullScreen and fullScreenElement', () => {
+  let player;
+  beforeEach(() => {
+    player = new Chimee(document.createElement('div'));
+  });
+  test('default to be false', () => {
+    expect(player.isFullScreen).toBe(false);
+    expect(player.fullScreenElement).toBe();
+  });
+  test('wrapper', () => {
+    const target = player.__dispatcher.dom.wrapper;
+    document.fullscreenElement = target;
+    document.dispatchEvent(new Event('fullscreenchange'));
+    expect(player.isFullScreen).toBe(true);
+    expect(player.__dispatcher.dom[player.fullScreenElement]).toBe(target);
+  });
+  test('container', () => {
+    const target = player.__dispatcher.dom.container;
+    document.fullscreenElement = target;
+    document.dispatchEvent(new Event('fullscreenchange'));
+    expect(player.isFullScreen).toBe(true);
+    expect(player.__dispatcher.dom[player.fullScreenElement]).toBe(target);
+  });
+  test('video', () => {
+    const target = player.__dispatcher.dom.videoElement;
+    document.fullscreenElement = target;
+    document.dispatchEvent(new Event('fullscreenchange'));
+    expect(player.isFullScreen).toBe(true);
+    expect(player.__dispatcher.dom[player.fullScreenElement + 'Element']).toBe(target);
+  });
+  test('plugin', () => {
+    const player = new Chimee({
+      wrapper: document.createElement('div'),
+      plugin: ['stopFullScreen']
+    });
+    const target = player.stopFullScreen.$dom;
+    document.fullscreenElement = target;
+    document.dispatchEvent(new Event('fullscreenchange'));
+    expect(player.isFullScreen).toBe(true);
+    expect(player.fullScreenElement).toBe(target);
+  });
+});
