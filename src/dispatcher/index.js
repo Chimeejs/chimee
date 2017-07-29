@@ -194,7 +194,6 @@ export default class Dispatcher {
     increment?: number,
     bias?: number,
     abort?: boolean,
-    omit?: boolean,
     immediate?: boolean,
     isLive?: boolean,
     box?: string,
@@ -205,7 +204,6 @@ export default class Dispatcher {
       bias = 0,
       repeatTimes = 0,
       increment = 0,
-      omit = false,
       isLive = this.videoConfig.isLive,
       box = this.videoConfig.box,
       preset = this.videoConfig.preset
@@ -226,11 +224,18 @@ export default class Dispatcher {
           // bind time update on old video
           // when we bump into the switch point and ready
           // we switch
-          const oldVideoSpyer = evt => {
+          const oldVideoTimeupdate = evt => {
             const currentTime = this.kernel.currentTime;
-            if(currentTime >= idealTime || idealTime - currentTime <= bias) {
-              removeEvent(this.dom.videoElement, 'timeupdate', oldVideoSpyer);
+            if((bias <= 0 && currentTime >= idealTime) ||
+              (bias > 0 &&
+                ((Math.abs(idealTime - currentTime) <= bias && newVideoReady) ||
+                (currentTime - idealTime) > bias))
+             ) {
+              removeEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
               if(!newVideoReady) {
+                removeEvent(video, 'canplay', videoCanplay);
+                removeEvent(video, 'loadedmetadata', videoLoadedmetadata);
+                removeEvent(video, 'error', videoError);
                 kernel.destroy();
                 return resolve();
               }
@@ -241,7 +246,7 @@ export default class Dispatcher {
               });
             }
           };
-          addEvent(video, 'canplay', evt => {
+          const videoCanplay = evt => {
             newVideoReady = true;
             // you can set it immediately run by yourself
             if(option.immediate) {
@@ -251,11 +256,27 @@ export default class Dispatcher {
                 kernel
               });
             }
-          }, true);
-          addEvent(video, 'loadedmetadata', evt => {
+          };
+          const videoLoadedmetadata = evt => {
             kernel.seek(idealTime);
-          }, true);
-          addEvent(this.dom.videoElement, 'timeupdate', oldVideoSpyer);
+          };
+          const videoError = evt => {
+            removeEvent(video, 'canplay', videoCanplay, true);
+            removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
+            removeEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+            const error = !isEmpty(video.error)
+              ? new Error(video.error.message)
+              : new Error('unknow video error');
+            Log.error("chimee's silentload", error.message);
+            kernel.destroy();
+            return index === repeatTimes
+              ? reject(error)
+              : resolve(error);
+          };
+          addEvent(video, 'canplay', videoCanplay, true);
+          addEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
+          addEvent(video, 'error', videoError, true);
+          addEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
           const kernel = new Kernel(video, config);
           kernel.load();
         });
@@ -264,14 +285,14 @@ export default class Dispatcher {
     return runRejectableQueue(tasks)
     .then(() => {
       const message = `The silentLoad for ${src} timed out. Please set a longer duration or check your network`;
-      if(!omit) Log.warn("chimee's silentLoad", message);
+      Log.warn("chimee's silentLoad", message);
       return Promise.reject(new Error(message));
     }).catch(data => {
       if(isError(data)) {
         return Promise.reject(data);
       }
       if(data.error) {
-        if(!omit) Log.warn("chimee's silentLoad", data.message);
+        Log.warn("chimee's silentLoad", data.message);
         return Promise.reject(new Error(data.message));
       }
       const {video, kernel} = data;
