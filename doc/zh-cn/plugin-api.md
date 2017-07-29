@@ -765,7 +765,11 @@ const player = new Chimee({
 - 类型：`boolean`
 - 默认：`false`
 
-> 还有更多属性可以直接获取。如果你需要的属性没有暴露，可以通过 [issue](https://github.com/Chimeejs/chimee/issues) 向我们反映。
+> 还有更多属性可以直接获取，如下
+>
+> buffered, currentSrc, duration, error, ended, networkState, paused, readyState, seekable, sinkId, controlsList, tabIndex, dataset, offsetHeight, offsetLeft, offsetParent, offsetTop, offsetWidth
+>
+> 如果你需要的属性没有暴露，可以通过 [issue](https://github.com/Chimeejs/chimee/issues) 向我们反映。
 
 ##$attr
 
