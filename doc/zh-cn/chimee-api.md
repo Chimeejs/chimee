@@ -206,12 +206,25 @@ const chimee = new Chimee({
   - 类型：`string`
   - 含义：视频地址
   - 可选项
+- option
+  - 类型：`Object`
+  - 当你需要播放不同格式的视频流的时候，你需要使用不同的编码器。因此你需要告知我们你需要使用不同的编码器。此时我们会为你生成新的编码器并切换视频。
+    - isLive
+      - 类型：`boolean`
+      - 是否是直播
+    - box
+      - 类型：`string`
+      - 编码器类型：`native`、`flv`、`hls`
+    - preset
+      - 类型：`Object`
+      - 新的编码器
 
 load 方法会将地址设置到 video 元素上。之后才能进行相应的播放。我们可以利用`load`完成如下需求。
 
 如一开始未设地址，利用 load 添加地址。
 
 ```javascript
+import Chimee from 'chimee';
 const chimee = new Chimee('#wrapper');
 chimee.load('http://cdn.toxicjohann.com/lostStar.mp4');
 ```
@@ -219,6 +232,7 @@ chimee.load('http://cdn.toxicjohann.com/lostStar.mp4');
 或已设地址，利用 load 附着到 video 上。
 
 ```javascript
+import Chimee from 'chimee';
 const chimee = new Chimee({
   wrapper: '#wrapper',
   src:'http://cdn.toxicjohann.com/lostStar.mp4'
@@ -229,10 +243,30 @@ chimee.load();
 又或者运行时更换地址。
 
 ```javascript
+import Chimee from 'chimee';
 const chimee = new Chimee('#wrapper');
 chimee.load('http://cdn.toxicjohann.com/lostStar.mp4');
 .....
 chimee.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
+```
+
+甚至是播放不同类型的视频。
+
+```javascript
+import Chimee from 'chimee';
+import ChimeeKernelFlv from 'chimee-kernel-flv';
+const chimee = new Chimee({
+  wrapper: '#wrapper',
+  src:'http://cdn.toxicjohann.com/lostStar.mp4',
+  autoplay: true
+});
+...
+chimee.load('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv', {
+  box: 'flv',
+  preset: {
+    flv: ChimeeKernelFlv
+  }
+})
 ```
 
 > load 方法会触发 load 系列事件，你可以通过插件 `beforeLoad` 阻截或挂起事件，也可以通过`load`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。

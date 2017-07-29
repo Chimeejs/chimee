@@ -409,34 +409,40 @@ level 值可以由用户设置、插件默认设置或插件内部通过 `$level
 
 #### load
 
-- 类型：`Function`
-- 参数
-  - src
-    - 类型：`string`
-    - 含义：视频地址
-    - 可选项
+**参数**
+- src
+  - 类型：`string`
+  - 含义：视频地址
+  - 可选项
+- option
+  - 类型：`Object`
+  - 当你需要播放不同格式的视频流的时候，你需要使用不同的编码器。因此你需要告知我们你需要使用不同的编码器。此时我们会为你生成新的编码器并切换视频。
+    - isLive
+      - 类型：`boolean`
+      - 是否是直播
+    - box
+      - 类型：`string`
+      - 编码器类型：`native`、`flv`、`hls`
+    - preset
+      - 类型：`Object`
+      - 新的编码器
 
 load 方法会将地址设置到 video 元素上。之后才能进行相应的播放。
 
 #### play
 
-- 类型：`Function`
-
 播放视频的函数。
 
 #### pause
-
-- 类型：`Function`
 
 暂停视频播放的函数
 
 #### seek
 
-- 类型：`Function`
-- 参数：
-  - second
-    - 类型：`number`
-    - 含义：设置播放时间位置
+**参数**
+- second
+  - 类型：`number`
+  - 含义：设置播放时间位置
 
 `seek`函数本质等同于设置 video 上的 `currentTime`。一般用于快进后退。在 chimee 上也可以直接设置 `currentTime`，并不一定需要运用此函数。
 
