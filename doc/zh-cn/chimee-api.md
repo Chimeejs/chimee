@@ -201,12 +201,11 @@ const chimee = new Chimee({
 
 ### load
 
-- 类型：`Function`
-- 参数
-  - src
-    - 类型：`string`
-    - 含义：视频地址
-    - 可选项
+**参数**
+- src
+  - 类型：`string`
+  - 含义：视频地址
+  - 可选项
 
 load 方法会将地址设置到 video 元素上。之后才能进行相应的播放。我们可以利用`load`完成如下需求。
 
@@ -236,27 +235,30 @@ chimee.load('http://cdn.toxicjohann.com/lostStar.mp4');
 chimee.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
 ```
 
-### play
+> load 方法会触发 load 系列事件，你可以通过插件 `beforeLoad` 阻截或挂起事件，也可以通过`load`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
 
-- 类型：`Function`
+### play
 
 播放视频的函数。
 
-### pause
+> play 方法会触发 play 系列事件，你可以通过插件 `beforePlay` 阻截或挂起事件，也可以通过`play`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
 
-- 类型：`Function`
+### pause
 
 暂停视频播放的函数
 
+> pause 方法会触发 pause 系列事件，你可以通过插件 `beforePasue` 阻截或挂起事件，也可以通过`pause`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
+
 ### seek
 
-- 类型：`Function`
-- 参数：
-  - second
-    - 类型：`number`
-    - 含义：设置播放时间位置
+**参数**
+- second
+  - 类型：`number`
+  - 含义：设置播放时间位置
 
 `seek`函数本质等同于设置 video 上的 `currentTime`。一般用于快进后退。在 chimee 上也可以直接设置 `currentTime`，并不一定需要运用此函数。
+
+> seek 方法会触发 seek 系列事件，你可以通过插件 `beforeSeek` 阻截事件，也可以通过`seek`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
 
 ### focus
 
@@ -264,17 +266,136 @@ chimee.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
 
 ### canPlayType
 
-- 类型：`Function`
-- 参数：
-  - mediaType
-    - 类型：`string`
-    - 媒体 MIME 种类的字符串
-- 返回
-  - result
-    - 类型：`string`
-    - `'probably'`: The specified media type appears to be playable.
-    - `'maybe'`: Cannot tell if the media type is playable without playing it.
-    - `''` (empty string): The specified media type definitely cannot be played.
+**参数**
+- mediaType
+  - 类型：`string`
+  - 媒体 MIME 种类的字符串
+
+**返回**
+- result
+  - 类型：`string`
+  - `'probably'`: The specified media type appears to be playable.
+  - `'maybe'`: Cannot tell if the media type is playable without playing it.
+  - `''` (empty string): The specified media type definitely cannot be played.
+
+### \* $silentLoad
+
+静默加载视频。视频在规定时间内加载成功，则无缝切换视频源，多用于清晰度切换。
+
+若视频加载失败可进行重试。
+
+无缝切换的本质是，在后台打开一个新视频源并加载到约定时间，当主视频播放到约定时间后进行切换。
+
+**参数**
+
+* src
+  * 类型：`string`
+  * 播放地址
+* option
+  * 类型：`Object`
+  * duration
+    * 类型：`number`
+    * 默认：3
+    * 单次视频加载的时长
+    * 若在规定的时间段内加载不成功，则放弃此次任务。
+    * 单位为秒，对应于主视频的播放时间，也就是说若主视频暂停播放，则时间停滞，但加载仍继续。
+  * bias
+    * 类型：`number`
+    * 默认：0
+    * 偏差区间，单位为秒
+    * 若该值小于等于0，则在主视频播放到或超过约定时间点直接切换，若新视频加载失败，则放弃此次切换。
+    * 若该值大于0，则当主视频播放到约定时间偏差区间里，一旦视频加载成功就切换。若超出偏差空间，则放弃此次切换。
+  * repeatTimes
+    * 类型：`number`
+    * 默认：0
+    * 重复次数
+    * 若加载视频失败，则自动重新加载，直至重复次数耗尽。默认不重复加载。
+  * increment
+    * 类型：`number`
+    * 默认：0
+    * 每次重复时递增的时间，单位为秒
+    * 一般而言加载失败都是因为超时加载失败，故每次重复的时候应相应延长加载时间。每次重复加载都会相应叠加该值对应的时间。
+  * isLive
+    * 类型：`boolean`
+    * 默认：原主视频设定
+    * 是否是直播
+  * box
+    * 类型：`boolean`
+    * 默认：原主视频设定
+    * 编解码容器
+  * preset
+    * 类型：`Object`
+    * 默认：原主视频设定
+    * 预设的解码器
+  * abort
+    * 类型：`Object`
+    * 默认：`false`
+    * 是否放弃本次加载，当该值为 `true` 时，将放弃本次视频加载。
+  * immediate
+    * 类型：`Object`
+    * 默认：`false`
+    * 新视频加载成功后是否立即切换无需等待到约定时间。
+
+我们可以利用 `$silentLoad` 完成以下需求。
+
+1. 无缝切换同种视频
+
+```javascript
+import Chimee from 'chimee';
+const player = new Chimee({
+  src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+  wrapper: '#wrapper',
+  autoplay: true
+});
+player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
+```
+
+2. 多次尝试切换
+
+```javascript
+import Chimee from 'chimee';
+const player = new Chimee({
+  src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+  wrapper: '#wrapper',
+  autoplay: true
+});
+player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', {repeatTimes: 5, increment: 2});
+```
+
+在上例中，若加载失败将会重试多达四次。每次尝试时间分别是3、5、7、9、11秒。
+
+3. 切换不同种类的视频
+
+```javascript
+import Chimee from 'chimee';
+import chimeeKernelFlv from 'chimee-kernel-flv';
+const player = new Chimee({
+  src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+  wrapper: '#wrapper',
+  autoplay: true
+});
+player.$silentLoad('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv', {
+  box: 'flv',
+  preset: {
+    flv: chimeeKernelFlv
+  }
+});
+```
+
+4. 加载途中放弃
+
+```javascript
+import Chimee from 'chimee';
+const player = new Chimee({
+  src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+  wrapper: '#wrapper',
+  autoplay: true
+});
+const option = {};
+player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', option);
+...
+option.abort = true;
+```
 
 ## video元素相关属性
 
