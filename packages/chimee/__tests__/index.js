@@ -648,4 +648,20 @@ describe('isFullScreen and fullScreenElement', () => {
     expect(player.isFullScreen).toBe(true);
     expect(player.fullScreenElement).toBe(target);
   });
+
+  describe('$video, $container and $wrapper', () => {
+    const wrapper = document.createElement('div');
+    player = new Chimee(wrapper);
+    const container = wrapper.childNodes[0];
+    const video = container.childNodes[0];
+    const elements = [video, container, wrapper];
+    ['video', 'container', 'wrapper'].forEach((key, index) => {
+      test('key', () => {Log.data.warn = []
+        Log.data.warn = [];
+        expect(player['$' + key]).toEqual(elements[index]);
+        expect(Log.data.warn.length).toBe(1);
+        Log.data.warn = [];
+      });
+    });
+  });
 });
