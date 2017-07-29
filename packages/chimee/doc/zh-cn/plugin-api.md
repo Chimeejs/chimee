@@ -765,6 +765,8 @@ const player = new Chimee({
 - 类型：`boolean`
 - 默认：`false`
 
+> 还有更多属性可以直接获取。如果你需要的属性没有暴露，可以通过 [issue](https://github.com/Chimeejs/chimee/issues) 向我们反映。
+
 ##$attr
 
 $attr 允许我们操作 video, container, wrapper 的属性。
@@ -1152,6 +1154,21 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 - 类型：`HTMLElement`
 - 含义：插件所拥有的 dom 节点
+
+### $wrapper
+
+* 类型：`HTMLElement`
+* 不建议使用，wrapper 对应的 DOM 节点
+
+### $container
+
+- 类型：`HTMLElement`
+- 不建议使用，container 对应的 DOM 节点
+
+### $video
+
+- 类型：`HTMLVideoElement`
+- 不建议使用，video 对应的 DOM 节点
 
 ### $level
 
