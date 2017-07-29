@@ -656,7 +656,7 @@ describe('isFullScreen and fullScreenElement', () => {
     const video = container.childNodes[0];
     const elements = [video, container, wrapper];
     ['video', 'container', 'wrapper'].forEach((key, index) => {
-      test('key', () => {Log.data.warn = []
+      test('key', () => {
         Log.data.warn = [];
         expect(player['$' + key]).toEqual(elements[index]);
         expect(Log.data.warn.length).toBe(1);
