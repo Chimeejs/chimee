@@ -1,7 +1,7 @@
 import Bus from 'dispatcher/bus';
 import {Log} from 'chimee-helper';
 describe('bus', () => {
-  let loadCount = 0;
+  let seekCount = 0;
   let playCount = 0;
   const dispatcher = {
     dom: {
@@ -14,8 +14,8 @@ describe('bus', () => {
       play () {
         playCount++;
       },
-      load () {
-        loadCount++;
+      seek () {
+        seekCount++;
       }
     },
     plugins: {
@@ -24,6 +24,7 @@ describe('bus', () => {
       c: {id: 'c'}
     },
     order: ['a', 'b', 'c'],
+    seek () {},
     throwError (error) {
       throw error;
     }
@@ -397,7 +398,7 @@ describe('bus', () => {
             b: [fn]
           }
         },
-        load: {
+        seek: {
           main: {
             c: [fn]
           }
@@ -421,9 +422,9 @@ describe('bus', () => {
       expect(result).toEqual(['b']);
     });
     test('kernel event', async () => {
-      await expect(bus._eventProcessor('load', {sync: false})).resolves.toBe(true);
+      await expect(bus._eventProcessor('seek', {sync: false})).resolves.toBe(true);
       expect(result).toEqual(['c']);
-      expect(loadCount).toBe(1);
+      expect(seekCount).toBe(1);
     });
     test('kernel event and then trigger', async () => {
       await expect(bus._eventProcessor('play', {sync: false})).toBe(true);
@@ -460,8 +461,8 @@ describe('bus', () => {
       ]);
     });
     test('successful run', async () => {
-      await expect(bus.emit('load')).resolves.toBe(true);
-      expect(loadCount).toBe(2);
+      await expect(bus.emit('seek')).resolves.toBe(true);
+      expect(seekCount).toBe(2);
     });
     test('stop run', async () => {
       await expect(bus.emit('pause')).rejects.toBe('stop');
@@ -493,10 +494,10 @@ describe('bus', () => {
         ['bus', 'Secondary Event could not be emit']
       ]);
     });
-    test('successful run', () => {
-      expect(bus.emitSync('load')).toBe(true);
-      expect(loadCount).toBe(3);
-    });
+    // test('successful run', () => {
+    //   expect(bus.emitSync('seek')).toBe(true);
+    //   expect(seekCount).toBe(3);
+    // });
     test('stop run', () => {
       expect(bus.emitSync('pause')).toBe(false);
       expect(bus.emitSync('run')).toBe(true);

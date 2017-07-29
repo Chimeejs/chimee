@@ -157,6 +157,13 @@ export default @autobindClass() class VideoWrapper {
     obj.__del(property);
   }
 
+  load (...args: Array<*>) {
+    return new Promise((resolve, reject) => {
+      this.__dispatcher.bus.once(this.__id, '_load', resolve);
+      this.__dispatcher.bus.emit('load', ...args);
+    });
+  }
+
   @alias('silentLoad')
   $silentLoad (...args: Array<*>) {
     return this.__dispatcher.bus.emit('silentLoad')
