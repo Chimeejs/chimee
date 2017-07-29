@@ -85,8 +85,10 @@ export const selfProcessorEvents = [
 export const kernelMethods = [
   'play',
   'pause',
-  'load',
   'seek'
+];
+export const dispatcherMethods = [
+  'load'
 ];
 export const kernelEvents = [
   'mediaInfo'

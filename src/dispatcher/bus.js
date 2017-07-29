@@ -1,6 +1,6 @@
 // @flow
 import {isEmpty, isArray, runRejectableQueue, runStoppableQueue, camelize, bind, isError, isVoid, isFunction, deepClone, Log} from 'chimee-helper';
-import {videoEvents, kernelMethods, domEvents, domMethods, selfProcessorEvents} from 'helper/const';
+import {videoEvents, kernelMethods, domEvents, domMethods, selfProcessorEvents, dispatcherMethods} from 'helper/const';
 const secondaryReg = /^(before|after|_)/;
 /**
  * <pre>
@@ -329,8 +329,13 @@ export default class Bus {
   _eventProcessor (key: string, {sync}: {sync: boolean}, ...args: any) {
     const isKernelMethod: boolean = kernelMethods.indexOf(key) > -1;
     const isDomMethod: boolean = domMethods.indexOf(key) > -1;
-    if(isKernelMethod || isDomMethod) {
-      this.__dispatcher[isKernelMethod ? 'kernel' : 'dom'][key](...args);
+    const isDispatcherMethod: boolean = dispatcherMethods.indexOf(key) > -1;
+    if(isKernelMethod || isDomMethod || isDispatcherMethod) {
+      if(isDispatcherMethod) {
+        this.__dispatcher[key](...args);
+      } else {
+        this.__dispatcher[isKernelMethod ? 'kernel' : 'dom'][key](...args);
+      }
       if(videoEvents.indexOf(key) > -1 ||
         domEvents.indexOf(key) > -1) return true;
     }

@@ -306,6 +306,25 @@ export default class Dispatcher {
       return Promise.resolve();
     });
   }
+  load (src: string, option: {
+    isLive?: boolean,
+    box?: string,
+    preset?: Object
+  } = {}) {
+    if(!isEmpty(option)) {
+      const videoConfig = this.videoConfig;
+      const {
+        isLive = videoConfig.isLive,
+        box = videoConfig.box,
+        preset = videoConfig.preset
+      } = option;
+      const video = document.createElement('video');
+      const config = {isLive, box, preset, src};
+      const kernel = new Kernel(video, config);
+      this.switchKernel({video, kernel, config});
+    }
+    this.kernel.load(src);
+  }
   switchKernel ({video, kernel, config}: {
     video: HTMLVideoElement,
     kernel: Kernel,
