@@ -4,6 +4,9 @@ import {videoReadOnlyProperties, videoMethods, kernelMethods, domMethods, domEve
 import {attrAndStyleCheck, eventBinderCheck} from 'helper/checker';
 import {accessor, nonenumerable, applyDecorators, watch, alias, before, nonextendable, autobindClass} from 'toxic-decorators';
 import VideoConfig from 'dispatcher/video-config';
+function propertyAccessibilityWarn (property) {
+  Log.warn('chimee', `You are trying to obtain ${property}, we will return you the DOM node. It's not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues`);
+}
 export default @autobindClass() class VideoWrapper {
   __id: string;
   __dispatcher: Dispatcher;
@@ -288,6 +291,21 @@ export default @autobindClass() class VideoWrapper {
   @nonextendable
   get $pluginOrder (): Array<string> {
     return this.__dispatcher.order;
+  }
+  @nonenumerable
+  get $wrapper (): HTMLElement {
+    propertyAccessibilityWarn('wrapper');
+    return this.__dispatcher.dom.wrapper;
+  }
+  @nonenumerable
+  get $container (): HTMLElement {
+    propertyAccessibilityWarn('container');
+    return this.__dispatcher.dom.container;
+  }
+  @nonenumerable
+  get $video (): HTMLElement {
+    propertyAccessibilityWarn('video');
+    return this.__dispatcher.dom.videoElement;
   }
 
   get isFullScreen (): boolean | string {
