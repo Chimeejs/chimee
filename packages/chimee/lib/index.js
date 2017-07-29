@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.1.3
+ * chimee v0.2.0
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -11,7 +11,6 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var _Object$defineProperty = _interopDefault(require('babel-runtime/core-js/object/define-property'));
 var _Object$getOwnPropertyDescriptor = _interopDefault(require('babel-runtime/core-js/object/get-own-property-descriptor'));
-var _toConsumableArray = _interopDefault(require('babel-runtime/helpers/toConsumableArray'));
 var _Object$getPrototypeOf = _interopDefault(require('babel-runtime/core-js/object/get-prototype-of'));
 var _classCallCheck = _interopDefault(require('babel-runtime/helpers/classCallCheck'));
 var _createClass = _interopDefault(require('babel-runtime/helpers/createClass'));
@@ -22,16 +21,20 @@ var _Promise = _interopDefault(require('babel-runtime/core-js/promise'));
 var chimeeHelper = require('chimee-helper');
 var Kernel = _interopDefault(require('chimee-kernel'));
 var _Map = _interopDefault(require('babel-runtime/core-js/map'));
+var _toConsumableArray = _interopDefault(require('babel-runtime/helpers/toConsumableArray'));
 var _Object$keys = _interopDefault(require('babel-runtime/core-js/object/keys'));
 var toxicDecorators = require('toxic-decorators');
 var _JSON$stringify = _interopDefault(require('babel-runtime/core-js/json/stringify'));
 var _defineProperty = _interopDefault(require('babel-runtime/helpers/defineProperty'));
 var _typeof = _interopDefault(require('babel-runtime/helpers/typeof'));
+var _Number$isNaN = _interopDefault(require('babel-runtime/core-js/number/is-nan'));
 
 var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting'];
-var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'ended', 'networkState', 'paused', 'readyState', 'seekable', 'sinkId', 'controlsList'];
+var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'error', 'ended', 'networkState', 'paused', 'readyState', 'seekable', 'sinkId', 'controlsList', 'tabIndex', 'dataset', 'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth'];
 var domEvents = ['beforeinput', 'blur', 'click', 'compositionend', 'compositionstart', 'compositionupdate', 'dblclick', 'focus', 'focusin', 'focusout', 'input', 'keydown', 'keypress', 'keyup', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll', 'select', 'wheel', 'fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'msfullscreenchange', 'contextmenu'];
-var kernelMethods = ['play', 'pause', 'load', 'seek'];
+var selfProcessorEvents = ['silentLoad', 'fullScreen'];
+var kernelMethods = ['play', 'pause', 'seek'];
+var dispatcherMethods = ['load'];
 
 var domMethods = ['focus', 'fullScreen', 'requestFullScreen', 'exitFullScreen'];
 var videoMethods = ['canPlayType', 'captureStream', 'setSinkId'];
@@ -163,10 +166,12 @@ var Bus = function () {
       }
       var event = this.events[key];
       if (chimeeHelper.isEmpty(event)) {
+        if (selfProcessorEvents.indexOf(key) > -1) return _Promise.resolve();
         return this._eventProcessor.apply(this, [key, { sync: false }].concat(_toConsumableArray(args)));
       }
       var beforeQueue = this._getEventQueue(event.before, this.__dispatcher.order);
       return chimeeHelper.runRejectableQueue.apply(undefined, [beforeQueue].concat(_toConsumableArray(args))).then(function () {
+        if (selfProcessorEvents.indexOf(key) > -1) return;
         return _this._eventProcessor.apply(_this, [key, { sync: false }].concat(_toConsumableArray(args)));
       }).catch(function (error) {
         if (chimeeHelper.isError(error)) _this.__dispatcher.throwError(error);
@@ -195,10 +200,11 @@ var Bus = function () {
       }
 
       if (chimeeHelper.isEmpty(event)) {
+        if (selfProcessorEvents.indexOf(key) > -1) return true;
         return this._eventProcessor.apply(this, [key, { sync: true }].concat(_toConsumableArray(args)));
       }
       var beforeQueue = this._getEventQueue(event.before, this.__dispatcher.order);
-      return chimeeHelper.runStoppableQueue.apply(undefined, [beforeQueue].concat(_toConsumableArray(args))) && this._eventProcessor.apply(this, [key, { sync: true }].concat(_toConsumableArray(args)));
+      return chimeeHelper.runStoppableQueue.apply(undefined, [beforeQueue].concat(_toConsumableArray(args))) && (selfProcessorEvents.indexOf(key) > -1 || this._eventProcessor.apply(this, [key, { sync: true }].concat(_toConsumableArray(args))));
     }
     /**
      * [Can only be called in dispatcher]trigger an event, which will run main -> after -> side effect period
@@ -419,15 +425,22 @@ var Bus = function () {
 
       var isKernelMethod = kernelMethods.indexOf(key) > -1;
       var isDomMethod = domMethods.indexOf(key) > -1;
+      var isDispatcherMethod = dispatcherMethods.indexOf(key) > -1;
 
       for (var _len5 = arguments.length, args = Array(_len5 > 2 ? _len5 - 2 : 0), _key5 = 2; _key5 < _len5; _key5++) {
         args[_key5 - 2] = arguments[_key5];
       }
 
-      if (isKernelMethod || isDomMethod) {
-        var _dispatcher;
+      if (isKernelMethod || isDomMethod || isDispatcherMethod) {
+        if (isDispatcherMethod) {
+          var _dispatcher;
 
-        (_dispatcher = this.__dispatcher[isKernelMethod ? 'kernel' : 'dom'])[key].apply(_dispatcher, _toConsumableArray(args));
+          (_dispatcher = this.__dispatcher)[key].apply(_dispatcher, _toConsumableArray(args));
+        } else {
+          var _dispatcher2;
+
+          (_dispatcher2 = this.__dispatcher[isKernelMethod ? 'kernel' : 'dom'])[key].apply(_dispatcher2, _toConsumableArray(args));
+        }
         if (videoEvents.indexOf(key) > -1 || domEvents.indexOf(key) > -1) return true;
       }
       // $FlowFixMe: flow do not support computed sytax on classs, but it's ok here
@@ -490,10 +503,381 @@ function attrAndStyleCheck() {
   return ['get', 'container'].concat(args);
 }
 
-var VideoWrapper = function () {
+var _dec$4;
+var _dec2$2;
+var _class$4;
+var _descriptor$1;
+var _descriptor2$1;
+var _descriptor3$1;
+var _descriptor4;
+var _descriptor5;
+var _descriptor6;
+var _descriptor7;
+
+function _initDefineProp$1(target, property, descriptor, context) {
+  if (!descriptor) return;
+
+  _Object$defineProperty(target, property, {
+    enumerable: descriptor.enumerable,
+    configurable: descriptor.configurable,
+    writable: descriptor.writable,
+    value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
+  });
+}
+
+function _applyDecoratedDescriptor$3(target, property, decorators, descriptor, context) {
+  var desc = {};
+  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+    desc[key] = descriptor[key];
+  });
+  desc.enumerable = !!desc.enumerable;
+  desc.configurable = !!desc.configurable;
+
+  if ('value' in desc || desc.initializer) {
+    desc.writable = true;
+  }
+
+  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+    return decorator(target, property, desc) || desc;
+  }, desc);
+
+  if (context && desc.initializer !== void 0) {
+    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+    desc.initializer = undefined;
+  }
+
+  if (desc.initializer === void 0) {
+    Object['define' + 'Property'](target, property, desc);
+    desc = null;
+  }
+
+  return desc;
+}
+
+function stringOrVoid(value) {
+  return chimeeHelper.isString(value) ? value : undefined;
+}
+
+function accessorVideoProperty(property) {
+  return toxicDecorators.accessor({
+    get: function get(value) {
+      return this.dispatcher.videoConfigReady && this.inited ? this.dom.videoElement[property] : value;
+    },
+    set: function set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      this.dom.videoElement[property] = value;
+      return value;
+    }
+  });
+}
+
+function accessorVideoAttribute(attribute) {
+  var _ref = chimeeHelper.isObject(attribute) ? attribute : {
+    set: attribute,
+    get: attribute,
+    isBoolean: false
+  },
+      _set = _ref.set,
+      _get$$1 = _ref.get,
+      isBoolean$$1 = _ref.isBoolean;
+
+  return toxicDecorators.accessor({
+    get: function get(value) {
+      return this.dispatcher.videoConfigReady && this.inited ? this.dom.videoElement[_get$$1] : value;
+    },
+    set: function set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      var val = isBoolean$$1 ? value ? '' : undefined : value;
+      this.dom.setAttr('video', _set, val);
+      return value;
+    }
+  });
+}
+
+function accessorCustomAttribute(attribute, isBoolean$$1) {
+  return toxicDecorators.accessor({
+    get: function get(value) {
+      var attrValue = this.dom.getAttr('video', attribute);
+      return this.dispatcher.videoConfigReady && this.inited ? isBoolean$$1 ? !!attrValue : attrValue : value;
+    },
+    set: function set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      var val = isBoolean$$1 ? value || undefined : value;
+      this.dom.setAttr('video', attribute, val);
+      return value;
+    }
+  });
+}
+
+function accessorWidthAndHeight(property) {
+  return toxicDecorators.accessor({
+    get: function get(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      var attr = this.dom.getAttr('video', property);
+      var prop = this.dom.videoElement[property];
+      if (chimeeHelper.isNumeric(attr) && chimeeHelper.isNumber(prop)) return prop;
+      return attr || undefined;
+    },
+    set: function set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      var val = void 0;
+      if (value === undefined || chimeeHelper.isNumber(value)) {
+        val = value;
+      } else if (chimeeHelper.isString(value) && !_Number$isNaN(parseFloat(value))) {
+        val = value;
+      }
+      this.dom.setAttr('video', property, val);
+      return val;
+    }
+  });
+}
+
+var accessorMap = {
+  src: [toxicDecorators.alwaysString(), toxicDecorators.accessor({
+    set: function set(val) {
+      // must check val !== this.src here
+      // as we will set config.src in the video
+      // the may cause dead lock
+      if (this.dispatcher.readySync && this.autoload && val !== this.src) this.needToLoadSrc = true;
+      return val;
+    }
+  }), toxicDecorators.accessor({
+    set: function set(val) {
+      if (this.needToLoadSrc) {
+        // unlock it at first, to avoid deadlock
+        this.needToLoadSrc = false;
+        this.dispatcher.bus.emit('load', val);
+      }
+      return val;
+    }
+  }, { preSet: false })],
+  autoload: toxicDecorators.alwaysBoolean(),
+  autoplay: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('autoplay')],
+  controls: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('controls')],
+  width: [accessorWidthAndHeight('width')],
+  height: [accessorWidthAndHeight('height')],
+  crossOrigin: [toxicDecorators.accessor({ set: stringOrVoid }), accessorVideoAttribute({ set: 'crossorigin', get: 'crossOrigin' })],
+  loop: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('loop')],
+  defaultMuted: [toxicDecorators.alwaysBoolean(), accessorVideoAttribute({ get: 'defaultMuted', set: 'muted', isBoolean: true })],
+  muted: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('muted')],
+  preload: [toxicDecorators.accessor({ set: stringOrVoid }), accessorVideoAttribute('preload')],
+  poster: [toxicDecorators.accessor({ set: stringOrVoid }), accessorVideoAttribute('poster')],
+  playsInline: [toxicDecorators.accessor({
+    get: function get(value) {
+      var playsInline = this.dom.videoElement.playsInline;
+      return this.dispatcher.videoConfigReady && this.inited ? playsInline === undefined ? value : playsInline : value;
+    },
+    set: function set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      this.dom.videoElement.playsInline = value;
+      var val = value ? '' : undefined;
+      this.dom.setAttr('video', 'playsinline', val);
+      this.dom.setAttr('video', 'webkit-playsinline', val);
+      this.dom.setAttr('video', 'x5-video-player-type', value ? 'h5' : undefined);
+      return value;
+    }
+  }), toxicDecorators.alwaysBoolean()],
+  x5VideoPlayerFullScreen: [toxicDecorators.accessor({
+    set: function set(value) {
+      return !!value;
+    },
+    get: function get(value) {
+      return !!value;
+    }
+  }), accessorCustomAttribute('x5-video-player-fullscreen', true)],
+  x5VideoOrientation: [toxicDecorators.accessor({ set: stringOrVoid }), accessorCustomAttribute('x5-video-orientation')],
+  xWebkitAirplay: [toxicDecorators.accessor({
+    set: function set(value) {
+      return !!value;
+    },
+    get: function get(value) {
+      return !!value;
+    }
+  }), accessorCustomAttribute('x-webkit-airplay', true)],
+  playbackRate: [toxicDecorators.alwaysNumber(1), accessorVideoProperty('playbackRate')],
+  defaultPlaybackRate: [accessorVideoProperty('defaultPlaybackRate'), toxicDecorators.alwaysNumber(1)],
+  disableRemotePlayback: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('disableRemotePlayback')],
+  volume: [toxicDecorators.alwaysNumber(1), accessorVideoProperty('volume')]
+};
+
+var VideoConfig = (_dec$4 = toxicDecorators.initBoolean(), _dec2$2 = toxicDecorators.initString(function (str) {
+  return str.toLocaleLowerCase();
+}), (_class$4 = function () {
+  _createClass(VideoConfig, [{
+    key: 'lockKernelProperty',
+    value: function lockKernelProperty() {
+      toxicDecorators.applyDecorators(this, {
+        isLive: toxicDecorators.lock,
+        box: toxicDecorators.lock,
+        preset: toxicDecorators.lock
+      }, { self: true });
+    }
+  }]);
+
+  function VideoConfig(dispatcher, config) {
+    _classCallCheck(this, VideoConfig);
+
+    _initDefineProp$1(this, 'needToLoadSrc', _descriptor$1, this);
+
+    _initDefineProp$1(this, 'changeWatchable', _descriptor2$1, this);
+
+    _initDefineProp$1(this, 'inited', _descriptor3$1, this);
+
+    this.src = '';
+
+    _initDefineProp$1(this, 'isLive', _descriptor4, this);
+
+    _initDefineProp$1(this, 'box', _descriptor5, this);
+
+    this.preset = {};
+    this.autoload = true;
+    this.autoplay = false;
+    this.controls = false;
+    this.width = undefined;
+    this.height = undefined;
+    this.crossOrigin = undefined;
+    this.loop = false;
+    this.defaultMuted = false;
+    this.muted = false;
+    this.preload = 'auto';
+    this.poster = undefined;
+    this.playsInline = false;
+    this.x5VideoPlayerFullScreen = false;
+    this.x5VideoOrientation = undefined;
+    this.xWebkitAirplay = false;
+    this.playbackRate = 1;
+    this.defaultPlaybackRate = 1;
+    this.disableRemotePlayback = false;
+    this.volume = 1;
+
+    _initDefineProp$1(this, '_kernelProperty', _descriptor6, this);
+
+    _initDefineProp$1(this, '_realDomAttr', _descriptor7, this);
+
+    toxicDecorators.applyDecorators(this, accessorMap, { self: true });
+    Object.defineProperty(this, 'dispatcher', {
+      value: dispatcher,
+      enumerable: false,
+      writable: false,
+      configurable: false
+    });
+    Object.defineProperty(this, 'dom', {
+      value: dispatcher.dom,
+      enumerable: false,
+      writable: false,
+      configurable: false
+    });
+    chimeeHelper.deepAssign(this, config);
+  }
+
+  _createClass(VideoConfig, [{
+    key: 'init',
+    value: function init() {
+      var _this = this;
+
+      this._realDomAttr.forEach(function (key) {
+        // $FlowFixMe: we have check the computed here
+        _this[key] = _this[key];
+      });
+      this.inited = true;
+    }
+  }]);
+
+  return VideoConfig;
+}(), (_descriptor$1 = _applyDecoratedDescriptor$3(_class$4.prototype, 'needToLoadSrc', [toxicDecorators.nonenumerable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return false;
+  }
+}), _descriptor2$1 = _applyDecoratedDescriptor$3(_class$4.prototype, 'changeWatchable', [toxicDecorators.nonenumerable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return true;
+  }
+}), _descriptor3$1 = _applyDecoratedDescriptor$3(_class$4.prototype, 'inited', [toxicDecorators.nonenumerable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return false;
+  }
+}), _descriptor4 = _applyDecoratedDescriptor$3(_class$4.prototype, 'isLive', [_dec$4, toxicDecorators.configurable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return false;
+  }
+}), _descriptor5 = _applyDecoratedDescriptor$3(_class$4.prototype, 'box', [_dec2$2, toxicDecorators.configurable], {
+  enumerable: true,
+  initializer: function initializer() {
+    return '';
+  }
+}), _descriptor6 = _applyDecoratedDescriptor$3(_class$4.prototype, '_kernelProperty', [toxicDecorators.frozen], {
+  enumerable: true,
+  initializer: function initializer() {
+    return ['isLive', 'box', 'preset'];
+  }
+}), _descriptor7 = _applyDecoratedDescriptor$3(_class$4.prototype, '_realDomAttr', [toxicDecorators.frozen], {
+  enumerable: true,
+  initializer: function initializer() {
+    return ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
+  }
+})), _class$4));
+
+var _dec$3;
+var _dec2$1;
+var _dec3$1;
+var _dec4$1;
+var _dec5$1;
+var _dec6;
+var _dec7;
+var _dec8;
+var _dec9;
+var _dec10;
+var _dec11;
+var _dec12;
+var _dec13;
+var _dec14;
+var _dec15;
+var _dec16;
+var _dec17;
+var _class$3;
+var _class2$1;
+
+function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, context) {
+  var desc = {};
+  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+    desc[key] = descriptor[key];
+  });
+  desc.enumerable = !!desc.enumerable;
+  desc.configurable = !!desc.configurable;
+
+  if ('value' in desc || desc.initializer) {
+    desc.writable = true;
+  }
+
+  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+    return decorator(target, property, desc) || desc;
+  }, desc);
+
+  if (context && desc.initializer !== void 0) {
+    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+    desc.initializer = undefined;
+  }
+
+  if (desc.initializer === void 0) {
+    Object['define' + 'Property'](target, property, desc);
+    desc = null;
+  }
+
+  return desc;
+}
+
+function propertyAccessibilityWarn(property) {
+  chimeeHelper.Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
+}
+var VideoWrapper = (_dec$3 = toxicDecorators.autobindClass(), _dec2$1 = toxicDecorators.alias('silentLoad'), _dec3$1 = toxicDecorators.alias('fullScreen'), _dec4$1 = toxicDecorators.alias('emit'), _dec5$1 = toxicDecorators.alias('emitSync'), _dec6 = toxicDecorators.alias('on'), _dec7 = toxicDecorators.alias('addEventListener'), _dec8 = toxicDecorators.before(eventBinderCheck), _dec9 = toxicDecorators.alias('off'), _dec10 = toxicDecorators.alias('removeEventListener'), _dec11 = toxicDecorators.before(eventBinderCheck), _dec12 = toxicDecorators.alias('once'), _dec13 = toxicDecorators.before(eventBinderCheck), _dec14 = toxicDecorators.alias('css'), _dec15 = toxicDecorators.before(attrAndStyleCheck), _dec16 = toxicDecorators.alias('attr'), _dec17 = toxicDecorators.before(attrAndStyleCheck), _dec$3(_class$3 = (_class2$1 = function () {
   function VideoWrapper() {
     _classCallCheck(this, VideoWrapper);
 
+    this.__events = {};
     this.__unwatchHandlers = [];
   }
 
@@ -531,9 +915,11 @@ var VideoWrapper = function () {
       var props = videoConfig._realDomAttr.concat(videoConfig._kernelProperty).reduce(function (props, key) {
         props[key] = [toxicDecorators.accessor({
           get: function get() {
+            // $FlowFixMe: support computed key here
             return videoConfig[key];
           },
           set: function set(value) {
+            // $FlowFixMe: support computed key here
             videoConfig[key] = value;
             return value;
           }
@@ -564,6 +950,7 @@ var VideoWrapper = function () {
         });
       });
       domMethods.forEach(function (key) {
+        if (key === 'fullScreen') return;
         _Object$defineProperty(_this, key, {
           value: function value() {
             var _dispatcher$dom;
@@ -593,7 +980,7 @@ var VideoWrapper = function () {
       if (!chimeeHelper.isString(key) && !chimeeHelper.isArray(key)) throw new TypeError('$watch only accept string and Array<string> as key to find the target to spy on, but not ' + key + ', whose type is ' + (typeof key === 'undefined' ? 'undefined' : _typeof(key)));
       var watching = true;
       var watcher = function watcher() {
-        if (watching) chimeeHelper.bind(handler, this).apply(undefined, arguments);
+        if (watching && (!(this instanceof VideoConfig) || this.dispatcher.changeWatchable)) chimeeHelper.bind(handler, this).apply(undefined, arguments);
       };
       var unwatcher = function unwatcher() {
         watching = false;
@@ -603,7 +990,7 @@ var VideoWrapper = function () {
       var keys = chimeeHelper.isString(key) ? key.split('.') : key;
       var property = keys.pop();
       var videoConfig = this.__dispatcher.videoConfig;
-      var target = keys.length === 0 && !other && videoConfig._realDomAttr.indexOf(property) > -1 ? videoConfig : chimeeHelper.getDeepProperty(other || this, keys, { throwError: true });
+      var target = keys.length === 0 && !other && videoConfig._realDomAttr.indexOf(property) > -1 ? videoConfig : ['isFullScreen', 'fullScreenElement'].indexOf(property) > -1 ? this.__dispatcher.dom : chimeeHelper.getDeepProperty(other || this, keys, { throwError: true });
       toxicDecorators.applyDecorators(target, _defineProperty({}, property, toxicDecorators.watch(watcher, { deep: deep, diff: diff, proxy: proxy })), { self: true });
       this.__unwatchHandlers.push(unwatcher);
       return unwatcher;
@@ -635,11 +1022,223 @@ var VideoWrapper = function () {
       obj.__del(property);
     }
   }, {
+    key: 'load',
+    value: function load() {
+      var _this4 = this;
+
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      return new _Promise(function (resolve, reject) {
+        var _dispatcher$bus2;
+
+        _this4.__dispatcher.bus.once(_this4.__id, '_load', resolve);
+        (_dispatcher$bus2 = _this4.__dispatcher.bus).emit.apply(_dispatcher$bus2, ['load'].concat(args));
+      });
+    }
+  }, {
+    key: '$silentLoad',
+    value: function $silentLoad() {
+      var _this5 = this;
+
+      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+
+      return this.__dispatcher.bus.emit('silentLoad').then(function () {
+        var _dispatcher;
+
+        return (_dispatcher = _this5.__dispatcher).silentLoad.apply(_dispatcher, args);
+      }).then(function (result) {
+        _this5.__dispatcher.bus.trigger('silentLoad', result);
+      });
+    }
+
+    /**
+     * call fullscreen api on some specific element
+     * @param {boolean} flag true means fullscreen and means exit fullscreen
+     * @param {string} element the element you want to fullscreen, default it's container, you can choose from video | container | wrapper
+     */
+
+  }, {
+    key: '$fullScreen',
+    value: function $fullScreen() {
+      var flag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+      var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'container';
+
+      if (!this.__dispatcher.bus.emitSync('fullScreen', flag, element)) return false;
+      var result = this.__dispatcher.dom.fullScreen(flag, element);
+      this.__dispatcher.bus.triggerSync('fullScreen', flag, element);
+      return result;
+    }
+
+    /**
+     * emit an event
+     * @param  {string}    key event's name
+     * @param  {...args} args
+     */
+
+  }, {
+    key: '$emit',
+    value: function $emit(key) {
+      var _dispatcher$bus3;
+
+      if (!chimeeHelper.isString(key)) throw new TypeError('emit key parameter must be String');
+      if (domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
+        chimeeHelper.Log.warn('plugin', 'You are try to emit ' + key + ' event. As emit is wrapped in Promise. It make you can\'t use event.preventDefault and event.stopPropagation. So we advice you to use emitSync');
+      }
+
+      for (var _len4 = arguments.length, args = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+        args[_key4 - 1] = arguments[_key4];
+      }
+
+      (_dispatcher$bus3 = this.__dispatcher.bus).emit.apply(_dispatcher$bus3, [key].concat(_toConsumableArray(args)));
+    }
+
+    /**
+     * emit a sync event
+     * @param  {string}    key event's name
+     * @param  {...args} args
+     */
+
+  }, {
+    key: '$emitSync',
+    value: function $emitSync(key) {
+      var _dispatcher$bus4;
+
+      if (!chimeeHelper.isString(key)) throw new TypeError('emitSync key parameter must be String');
+
+      for (var _len5 = arguments.length, args = Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
+        args[_key5 - 1] = arguments[_key5];
+      }
+
+      return (_dispatcher$bus4 = this.__dispatcher.bus).emitSync.apply(_dispatcher$bus4, [key].concat(_toConsumableArray(args)));
+    }
+
+    /**
+     * bind event handler through this function
+     * @param  {string} key event's name
+     * @param  {Function} fn event's handler
+     */
+
+  }, {
+    key: '$on',
+    value: function $on(key, fn) {
+      this.__dispatcher.bus.on(this.__id, key, fn);
+      // set on __events as mark so that i can destroy it when i destroy
+      this.__addEvents(key, fn);
+    }
+    /**
+     * remove event handler through this function
+     * @param  {string} key event's name
+     * @param  {Function} fn event's handler
+     */
+
+  }, {
+    key: '$off',
+    value: function $off(key, fn) {
+      this.__dispatcher.bus.off(this.__id, key, fn);
+      this.__removeEvents(key, fn);
+    }
+    /**
+     * bind one time event handler
+     * @param {string} key event's name
+     * @param {Function} fn event's handler
+     */
+
+  }, {
+    key: '$once',
+    value: function $once(key, fn) {
+      var self = this;
+      var boundFn = function boundFn() {
+        chimeeHelper.bind(fn, this).apply(undefined, arguments);
+        self.__removeEvents(key, boundFn);
+      };
+      self.__addEvents(key, boundFn);
+      this.__dispatcher.bus.once(this.__id, key, boundFn);
+    }
+
+    /**
+     * set style
+     * @param {string} element optional, default to be video, you can choose from video | container | wrapper
+     * @param {string} attribute the atrribue name
+     * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
+     */
+
+  }, {
+    key: '$css',
+    value: function $css(method) {
+      var _dispatcher$dom2;
+
+      for (var _len6 = arguments.length, args = Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
+        args[_key6 - 1] = arguments[_key6];
+      }
+
+      return (_dispatcher$dom2 = this.__dispatcher.dom)[method + 'Style'].apply(_dispatcher$dom2, args);
+    }
+
+    /**
+     * set attr
+     * @param {string} element optional, default to be video, you can choose from video | container | wrapper
+     * @param {string} attribute the atrribue nameß
+     * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
+     */
+
+  }, {
+    key: '$attr',
+    value: function $attr(method) {
+      var _dispatcher$dom3;
+
+      for (var _len7 = arguments.length, args = Array(_len7 > 1 ? _len7 - 1 : 0), _key7 = 1; _key7 < _len7; _key7++) {
+        args[_key7 - 1] = arguments[_key7];
+      }
+
+      if (method === 'set' && /video/.test(args[0])) {
+        if (!this.__dispatcher.videoConfigReady) {
+          chimeeHelper.Log.warn('chimee', this.__id + ' is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger');
+          return args[2];
+        }
+        if (this.__dispatcher.videoConfig._realDomAttr.indexOf(args[1]) > -1) {
+          var key = args[1],
+              val = args[2];
+
+          this.__dispatcher.videoConfig[key] = val;
+          return val;
+        }
+      }
+      return (_dispatcher$dom3 = this.__dispatcher.dom)[method + 'Attr'].apply(_dispatcher$dom3, args);
+    }
+  }, {
+    key: '__addEvents',
+    value: function __addEvents(key, fn) {
+      this.__events[key] = this.__events[key] || [];
+      this.__events[key].push(fn);
+    }
+  }, {
+    key: '__removeEvents',
+    value: function __removeEvents(key, fn) {
+      if (chimeeHelper.isEmpty(this.__events[key])) return;
+      var index = this.__events[key].indexOf(fn);
+      if (index < 0) return;
+      this.__events[key].splice(index, 1);
+      if (chimeeHelper.isEmpty(this.__events[key])) delete this.__events[key];
+    }
+  }, {
     key: '__destroy',
     value: function __destroy() {
+      var _this6 = this;
+
       this.__unwatchHandlers.forEach(function (unwatcher) {
         return unwatcher();
       });
+      _Object$keys(this.__events).forEach(function (key) {
+        if (!chimeeHelper.isArray(_this6.__events[key])) return;
+        _this6.__events[key].forEach(function (fn) {
+          return _this6.$off(key, fn);
+        });
+      });
+      delete this.__events;
     }
   }, {
     key: 'currentTime',
@@ -649,48 +1248,51 @@ var VideoWrapper = function () {
     set: function set(second) {
       this.__dispatcher.bus.emitSync('seek', second);
     }
+  }, {
+    key: '$plugins',
+    get: function get() {
+      return this.__dispatcher.plugins;
+    }
+  }, {
+    key: '$pluginOrder',
+    get: function get() {
+      return this.__dispatcher.order;
+    }
+  }, {
+    key: '$wrapper',
+    get: function get() {
+      propertyAccessibilityWarn('wrapper');
+      return this.__dispatcher.dom.wrapper;
+    }
+  }, {
+    key: '$container',
+    get: function get() {
+      propertyAccessibilityWarn('container');
+      return this.__dispatcher.dom.container;
+    }
+  }, {
+    key: '$video',
+    get: function get() {
+      propertyAccessibilityWarn('video');
+      return this.__dispatcher.dom.videoElement;
+    }
+  }, {
+    key: 'isFullScreen',
+    get: function get() {
+      return this.__dispatcher.dom.isFullScreen;
+    }
+  }, {
+    key: 'fullScreenElement',
+    get: function get() {
+      return this.__dispatcher.dom.fullScreenElement;
+    }
   }]);
 
   return VideoWrapper;
-}();
+}(), (_applyDecoratedDescriptor$2(_class2$1.prototype, '$silentLoad', [_dec2$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$silentLoad'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$fullScreen', [_dec3$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$fullScreen'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$emit', [_dec4$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emit'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$emitSync', [_dec5$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emitSync'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$on', [_dec6, _dec7, _dec8], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$on'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$off', [_dec9, _dec10, _dec11], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$off'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$once', [_dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$once'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$css', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$css'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$attr', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$attr'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$plugins', [toxicDecorators.nonenumerable, toxicDecorators.nonextendable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$plugins'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$pluginOrder', [toxicDecorators.nonenumerable, toxicDecorators.nonextendable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$pluginOrder'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$wrapper', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$wrapper'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$container', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$container'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$video', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$video'), _class2$1.prototype)), _class2$1)) || _class$3);
 
 var _dec$2;
-var _dec2$2;
-var _dec3$2;
-var _dec4$2;
-var _dec5$2;
-var _dec6$1;
 var _class$2;
-var _class2$1;
-
-function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, context) {
-  var desc = {};
-  Object['ke' + 'ys'](descriptor).forEach(function (key) {
-    desc[key] = descriptor[key];
-  });
-  desc.enumerable = !!desc.enumerable;
-  desc.configurable = !!desc.configurable;
-
-  if ('value' in desc || desc.initializer) {
-    desc.writable = true;
-  }
-
-  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
-    return decorator(target, property, desc) || desc;
-  }, desc);
-
-  if (context && desc.initializer !== void 0) {
-    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
-    desc.initializer = undefined;
-  }
-
-  if (desc.initializer === void 0) {
-    Object['define' + 'Property'](target, property, desc);
-    desc = null;
-  }
-
-  return desc;
-}
 
 /**
  * <pre>
@@ -699,7 +1301,7 @@ function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, c
  * Developer can do most of things base on this plugin
  * </pre>
  */
-var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec2$2 = toxicDecorators.before(attrAndStyleCheck), _dec3$2 = toxicDecorators.before(attrAndStyleCheck), _dec4$2 = toxicDecorators.before(eventBinderCheck), _dec5$2 = toxicDecorators.before(eventBinderCheck), _dec6$1 = toxicDecorators.before(eventBinderCheck), _dec$2(_class$2 = (_class2$1 = function (_VideoWrapper) {
+var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec$2(_class$2 = function (_VideoWrapper) {
   _inherits(Plugin, _VideoWrapper);
 
   /**
@@ -765,9 +1367,8 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec2$2 = toxicDecorator
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.1.3';
+    _this.VERSION = '0.2.0';
     _this.__operable = true;
-    _this.__events = {};
     _this.__level = 0;
 
     if (chimeeHelper.isEmpty(dispatcher)) {
@@ -930,69 +1531,7 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec2$2 = toxicDecorator
       });
       return this.readySync || this.ready;
     }
-    /**
-     * set style
-     * @param {string} element optional, default to be video, you can choose from video | container | wrapper
-     * @param {string} attribute the atrribue name
-     * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
-     */
 
-  }, {
-    key: '$css',
-    value: function $css(method) {
-      var _dispatcher$dom;
-
-      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
-      }
-
-      return (_dispatcher$dom = this.__dispatcher.dom)[method + 'Style'].apply(_dispatcher$dom, args);
-    }
-    /**
-    * set attr
-    * @param {string} element optional, default to be video, you can choose from video | container | wrapper
-    * @param {string} attribute the atrribue name
-    * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
-    */
-
-  }, {
-    key: '$attr',
-    value: function $attr(method) {
-      var _dispatcher$dom2;
-
-      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-        args[_key2 - 1] = arguments[_key2];
-      }
-
-      if (method === 'set' && /video/.test(args[0])) {
-        if (!this.__dispatcher.videoConfigReady) {
-          chimeeHelper.Log.warn('plugin', 'Plugin ' + this.__id + ' is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger');
-          return args[2];
-        }
-        if (this.$videoConfig._realDomAttr.indexOf(args[1]) > -1) {
-          var key = args[1],
-              val = args[2];
-
-          this.$videoConfig[key] = val;
-          return val;
-        }
-      }
-      return (_dispatcher$dom2 = this.__dispatcher.dom)[method + 'Attr'].apply(_dispatcher$dom2, args);
-    }
-    /**
-     * call fullscreen api on some specific element
-     * @param {boolean} flag true means fullscreen and means exit fullscreen
-     * @param {string} element the element you want to fullscreen, default it's container, you can choose from video | container | wrapper
-     */
-
-  }, {
-    key: '$fullScreen',
-    value: function $fullScreen() {
-      var flag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-      var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'container';
-
-      return this.__dispatcher.dom.fullScreen(flag, element);
-    }
     /**
      * set the plugin to be the top of all plugins
      */
@@ -1002,89 +1541,6 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec2$2 = toxicDecorator
     value: function $bumpToTop() {
       var topLevel = this.__dispatcher._getTopLevel(this.$inner);
       this.$level = topLevel + 1;
-    }
-    /**
-     * bind event handler through this function
-     * @param  {string} key event's name
-     * @param  {Function} fn event's handler
-     */
-
-  }, {
-    key: '$on',
-    value: function $on(key, fn) {
-      this.__dispatcher.bus.on(this.__id, key, fn);
-      // set on __events as mark so that i can destroy it when i destroy
-      this.__addEvents(key, fn);
-    }
-    /**
-     * remove event handler through this function
-     * @param  {string} key event's name
-     * @param  {Function} fn event's handler
-     */
-
-  }, {
-    key: '$off',
-    value: function $off(key, fn) {
-      this.__dispatcher.bus.off(this.__id, key, fn);
-      this.__removeEvents(key, fn);
-    }
-    /**
-     * bind one time event handler
-     * @param {string} key event's name
-     * @param {Function} fn event's handler
-     */
-
-  }, {
-    key: '$once',
-    value: function $once(key, fn) {
-      var self = this;
-      var boundFn = function boundFn() {
-        chimeeHelper.bind(fn, this).apply(undefined, arguments);
-        self.__removeEvents(key, boundFn);
-      };
-      self.__addEvents(key, boundFn);
-      this.__dispatcher.bus.once(this.__id, key, boundFn);
-    }
-    /**
-     * emit an event
-     * @param  {string}    key event's name
-     * @param  {...args} args
-     */
-
-  }, {
-    key: '$emit',
-    value: function $emit(key) {
-      var _dispatcher$bus;
-
-      if (!chimeeHelper.isString(key)) throw new TypeError('$emit key parameter must be String');
-      if (domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
-        chimeeHelper.Log.warn('plugin', 'You are using $emit to emit ' + key + ' event. As $emit is wrapped in Promise. It make you can\'t use event.preventDefault and event.stopPropagation. So we advice you to use $emitSync');
-      }
-
-      for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-        args[_key3 - 1] = arguments[_key3];
-      }
-
-      (_dispatcher$bus = this.__dispatcher.bus).emit.apply(_dispatcher$bus, [key].concat(_toConsumableArray(args)));
-    }
-    /**
-     * emit a sync event
-     * @param  {string}    key event's name
-     * @param  {...args} args
-     */
-
-  }, {
-    key: '$emitSync',
-    value: function $emitSync(key) {
-      var _dispatcher$bus2;
-
-      if (!chimeeHelper.isString(key)) throw new TypeError('$emitSync key parameter must be String');
-
-      for (var _len4 = arguments.length, args = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
-        args[_key4 - 1] = arguments[_key4];
-      }
-
-      return (_dispatcher$bus2 = this.__dispatcher.bus).emitSync.apply(_dispatcher$bus2, [key].concat(_toConsumableArray(args)));
     }
   }, {
     key: '$throwError',
@@ -1099,46 +1555,12 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec2$2 = toxicDecorator
   }, {
     key: '$destroy',
     value: function $destroy() {
-      var _this3 = this;
-
       chimeeHelper.isFunction(this.destroy) && this.destroy();
       _get(Plugin.prototype.__proto__ || _Object$getPrototypeOf(Plugin.prototype), '__destroy', this).call(this);
-      _Object$keys(this.__events).forEach(function (key) {
-        if (!chimeeHelper.isArray(_this3.__events[key])) return;
-        _this3.__events[key].forEach(function (fn) {
-          return _this3.$off(key, fn);
-        });
-      });
-      delete this.__events;
       this.__dispatcher.dom.removePlugin(this.__id);
       delete this.__dispatcher;
       delete this.$dom;
       this.destroyed = true;
-    }
-  }, {
-    key: '__addEvents',
-    value: function __addEvents(key, fn) {
-      this.__events[key] = this.__events[key] || [];
-      this.__events[key].push(fn);
-    }
-  }, {
-    key: '__removeEvents',
-    value: function __removeEvents(key, fn) {
-      if (chimeeHelper.isEmpty(this.__events[key])) return;
-      var index = this.__events[key].indexOf(fn);
-      if (index < 0) return;
-      this.__events[key].splice(index, 1);
-      if (chimeeHelper.isEmpty(this.__events[key])) delete this.__events[key];
-    }
-  }, {
-    key: '$plugins',
-    get: function get() {
-      return this.__dispatcher.plugins;
-    }
-  }, {
-    key: '$pluginOrder',
-    get: function get() {
-      return this.__dispatcher.order;
     }
     /**
      * to tell us if the plugin can be operable, can be dynamic change
@@ -1173,17 +1595,17 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec2$2 = toxicDecorator
   }]);
 
   return Plugin;
-}(VideoWrapper), (_applyDecoratedDescriptor$2(_class2$1.prototype, '$css', [_dec2$2], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$css'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$attr', [_dec3$2], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$attr'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$on', [_dec4$2], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$on'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$off', [_dec5$2], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$off'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$once', [_dec6$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$once'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$plugins', [toxicDecorators.nonenumerable, toxicDecorators.nonextendable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$plugins'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$pluginOrder', [toxicDecorators.nonenumerable, toxicDecorators.nonextendable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$pluginOrder'), _class2$1.prototype)), _class2$1)) || _class$2);
+}(VideoWrapper)) || _class$2);
 
-var _dec$3;
+var _dec$5;
 var _dec2$3;
-var _dec3$3;
-var _dec4$3;
-var _dec5$3;
-var _dec6$2;
-var _class$3;
+var _dec3$2;
+var _dec4$2;
+var _dec5$2;
+var _dec6$1;
+var _class$5;
 
-function _applyDecoratedDescriptor$3(target, property, decorators, descriptor, context) {
+function _applyDecoratedDescriptor$4(target, property, decorators, descriptor, context) {
   var desc = {};
   Object['ke' + 'ys'](descriptor).forEach(function (key) {
     desc[key] = descriptor[key];
@@ -1233,7 +1655,7 @@ function attrOperationCheck(target, attr, val) {
  * It take charge of dom management of Dispatcher.
  * </pre>
  */
-var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), _dec2$3 = toxicDecorators.before(attrOperationCheck, targetCheck), _dec3$3 = toxicDecorators.before(attrOperationCheck, targetCheck), _dec4$3 = toxicDecorators.before(attrOperationCheck, targetCheck), _dec5$3 = toxicDecorators.before(attrOperationCheck, targetCheck), _dec6$2 = toxicDecorators.before(targetCheck), (_class$3 = function () {
+var Dom = (_dec$5 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), _dec2$3 = toxicDecorators.before(attrOperationCheck, targetCheck), _dec3$2 = toxicDecorators.before(attrOperationCheck, targetCheck), _dec4$2 = toxicDecorators.before(attrOperationCheck, targetCheck), _dec5$2 = toxicDecorators.before(attrOperationCheck, targetCheck), _dec6$1 = toxicDecorators.before(targetCheck), (_class$5 = function () {
   /**
    * to mark is the mouse in the video area
    * @type {boolean}
@@ -1270,6 +1692,8 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
     this.__domEventHandlerList = {};
     this.__mouseInVideo = false;
     this.__videoExtendedNodes = [];
+    this.isFullScreen = false;
+    this.fullScreenElement = undefined;
 
     this.__dispatcher = dispatcher;
     if (!chimeeHelper.isElement(wrapper) && !chimeeHelper.isString(wrapper)) throw new TypeError('Illegal wrapper');
@@ -1294,77 +1718,14 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
      * referrence of video's dom element
      * @type {Element}
      */
-    this.videoElement = videoElement;
-    this.__videoExtendedNodes.push(videoElement);
-    this.setAttr('videoElement', 'tabindex', -1);
-    this._autoFocusToVideo(this.videoElement);
-    // create container
-    if (this.videoElement.parentElement && chimeeHelper.isElement(this.videoElement.parentElement) && this.videoElement.parentElement !== this.wrapper) {
-      this.container = this.videoElement.parentElement;
-    } else {
-      this.container = document.createElement('container');
-      chimeeHelper.$(this.container).append(this.videoElement);
-    }
-    // check container.position
-    if (this.container.parentElement !== this.wrapper) {
-      $wrapper.append(this.container);
-    }
-    videoEvents.forEach(function (key) {
-      var fn = function fn() {
-        var _dispatcher$bus;
-
-        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-          args[_key2] = arguments[_key2];
-        }
-
-        return (_dispatcher$bus = _this.__dispatcher.bus).trigger.apply(_dispatcher$bus, [key].concat(args));
-      };
-      _this.videoEventHandlerList.push(fn);
-      chimeeHelper.addEvent(_this.videoElement, key, fn);
-    });
+    this.installVideo(videoElement);
     domEvents.forEach(function (key) {
       var fn = _this._getEventHandler(key, { penetrate: true });
       _this.videoDomEventHandlerList.push(fn);
       chimeeHelper.addEvent(_this.videoElement, key, fn);
-      var cfn = function cfn() {
-        var _dispatcher$bus2;
-
-        for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-          args[_key3] = arguments[_key3];
-        }
-
-        return (_dispatcher$bus2 = _this.__dispatcher.bus).triggerSync.apply(_dispatcher$bus2, ['c_' + key].concat(args));
-      };
-      _this.containerDomEventHandlerList.push(cfn);
-      chimeeHelper.addEvent(_this.container, key, cfn);
-      var wfn = function wfn() {
-        var _dispatcher$bus3;
-
-        for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-          args[_key4] = arguments[_key4];
-        }
-
-        return (_dispatcher$bus3 = _this.__dispatcher.bus).triggerSync.apply(_dispatcher$bus3, ['w_' + key].concat(args));
-      };
-      _this.wrapperDomEventHandlerList.push(wfn);
-      chimeeHelper.addEvent(_this.wrapper, key, wfn);
     });
+    this._bindFullScreen();
   }
-  /**
-   * <pre>
-   * each plugin has its own dom node, this function will create one or them.
-   * we support multiple kind of el
-   * 1. Element, we will append this dom node on wrapper straight
-   * 2. HTMLString, we will create dom based on this HTMLString and append it on wrapper
-   * 3. string, we will transfer this string into hypen string, then we create a custom elment called by this and bind it on wrapper
-   * 4. nothing, we will create a div and bind it on the wrapper
-   * </pre>
-   * @param  {string} id plugin's id
-   * @param  {string|Element} el(optional) the el can be custom dom element or html string to insert
-   * @param  {boolean} inner if it's true, we will put it into conatiner, else we would put it into outer
-   * @return {Node}
-   */
-
   /**
    * Object to store different plugin's dom event handlers
    * @type {Object}
@@ -1395,9 +1756,90 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
 
 
   _createClass(Dom, [{
+    key: 'installVideo',
+    value: function installVideo(videoElement) {
+      var _this2 = this;
+
+      this.__videoExtendedNodes.push(videoElement);
+      chimeeHelper.setAttr(videoElement, 'tabindex', -1);
+      this._autoFocusToVideo(videoElement);
+      if (!chimeeHelper.isElement(this.container)) {
+        // create container
+        if (videoElement.parentElement && chimeeHelper.isElement(videoElement.parentElement) && videoElement.parentElement !== this.wrapper) {
+          this.container = videoElement.parentElement;
+        } else {
+          this.container = document.createElement('container');
+          chimeeHelper.$(this.container).append(videoElement);
+        }
+      } else {
+        var container = this.container;
+        if (container.childNodes.length === 0) {
+          container.appendChild(videoElement);
+        } else {
+          container.insertBefore(videoElement, container.childNodes[0]);
+        }
+      }
+      // check container.position
+      if (this.container.parentElement !== this.wrapper) {
+        chimeeHelper.$(this.wrapper).append(this.container);
+      }
+      videoEvents.forEach(function (key) {
+        var fn = function fn() {
+          var _dispatcher$bus;
+
+          for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+            args[_key2] = arguments[_key2];
+          }
+
+          return (_dispatcher$bus = _this2.__dispatcher.bus).trigger.apply(_dispatcher$bus, [key].concat(args));
+        };
+        _this2.videoEventHandlerList.push(fn);
+        chimeeHelper.addEvent(videoElement, key, fn);
+      });
+      domEvents.forEach(function (key) {
+        var fn = _this2._getEventHandler(key, { penetrate: true });
+        _this2.videoDomEventHandlerList.push(fn);
+        chimeeHelper.addEvent(videoElement, key, fn);
+      });
+      this.videoElement = videoElement;
+      return videoElement;
+    }
+  }, {
+    key: 'removeVideo',
+    value: function removeVideo() {
+      var _this3 = this;
+
+      var videoElement = this.videoElement;
+      this._autoFocusToVideo(this.videoElement, false);
+      videoEvents.forEach(function (key, index) {
+        chimeeHelper.removeEvent(_this3.videoElement, key, _this3.videoEventHandlerList[index]);
+      });
+      domEvents.forEach(function (key, index) {
+        chimeeHelper.removeEvent(_this3.videoElement, key, _this3.videoDomEventHandlerList[index]);
+      });
+      chimeeHelper.$(videoElement).remove();
+      delete this.videoElement;
+      return videoElement;
+    }
+    /**
+     * <pre>
+     * each plugin has its own dom node, this function will create one or them.
+     * we support multiple kind of el
+     * 1. Element, we will append this dom node on wrapper straight
+     * 2. HTMLString, we will create dom based on this HTMLString and append it on wrapper
+     * 3. string, we will transfer this string into hypen string, then we create a custom elment called by this and bind it on wrapper
+     * 4. nothing, we will create a div and bind it on the wrapper
+     * </pre>
+     * @param  {string} id plugin's id
+     * @param  {string|Element} el(optional) the el can be custom dom element or html string to insert
+     * @param  {boolean} inner if it's true, we will put it into conatiner, else we would put it into outer
+     * @return {Node}
+     */
+
+  }, {
     key: 'insertPlugin',
     value: function insertPlugin(id, el) {
-      var _this2 = this;
+      var _this4 = this;
 
       var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
@@ -1439,9 +1881,9 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       if (penetrate) {
         this.__domEventHandlerList[id] = this.__domEventHandlerList[id] || [];
         domEvents.forEach(function (key) {
-          var fn = _this2._getEventHandler(key, { penetrate: penetrate });
+          var fn = _this4._getEventHandler(key, { penetrate: penetrate });
           chimeeHelper.addEvent(node, key, fn);
-          _this2.__domEventHandlerList[id].push(fn);
+          _this4.__domEventHandlerList[id].push(fn);
         });
         this.__videoExtendedNodes.push(node);
       }
@@ -1460,7 +1902,7 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
   }, {
     key: 'removePlugin',
     value: function removePlugin(id) {
-      var _this3 = this;
+      var _this5 = this;
 
       if (!chimeeHelper.isString(id)) return;
       var dom = this.plugins[id];
@@ -1470,7 +1912,7 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       }
       if (!chimeeHelper.isEmpty(this.__domEventHandlerList[id])) {
         domEvents.forEach(function (key, index) {
-          chimeeHelper.removeEvent(_this3.plugins[id], key, _this3.__domEventHandlerList[id][index]);
+          chimeeHelper.removeEvent(_this5.plugins[id], key, _this5.__domEventHandlerList[id][index]);
         });
         delete this.__domEventHandlerList[id];
       }
@@ -1484,11 +1926,11 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
   }, {
     key: 'setPluginsZIndex',
     value: function setPluginsZIndex(plugins) {
-      var _this4 = this;
+      var _this6 = this;
 
       // $FlowFixMe: there are videoElment and container here
       plugins.forEach(function (key, index) {
-        return chimeeHelper.setStyle(key.match(/^(videoElement|container)$/) ? _this4[key] : _this4.plugins[key], 'z-index', ++index);
+        return chimeeHelper.setStyle(key.match(/^(videoElement|container)$/) ? _this6[key] : _this6.plugins[key], 'z-index', ++index);
       });
     }
     /**
@@ -1556,8 +1998,8 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       var request = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
       var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'container';
 
-      for (var _len5 = arguments.length, args = Array(_len5 > 2 ? _len5 - 2 : 0), _key5 = 2; _key5 < _len5; _key5++) {
-        args[_key5 - 2] = arguments[_key5];
+      for (var _len3 = arguments.length, args = Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
+        args[_key3 - 2] = arguments[_key3];
       }
 
       return request ? this.requestFullScreen.apply(this, [target].concat(_toConsumableArray(args))) : this.exitFullScreen.apply(this, _toConsumableArray(args));
@@ -1574,20 +2016,16 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
   }, {
     key: 'destroy',
     value: function destroy() {
-      var _this5 = this;
+      var _this7 = this;
 
-      this._autoFocusToVideo(this.videoElement, false);
-      videoEvents.forEach(function (key, index) {
-        chimeeHelper.removeEvent(_this5.videoElement, key, _this5.videoEventHandlerList[index]);
-      });
+      this.removeVideo();
       domEvents.forEach(function (key, index) {
-        chimeeHelper.removeEvent(_this5.videoElement, key, _this5.videoDomEventHandlerList[index]);
-        chimeeHelper.removeEvent(_this5.container, key, _this5.containerDomEventHandlerList[index]);
-        chimeeHelper.removeEvent(_this5.wrapper, key, _this5.wrapperDomEventHandlerList[index]);
+        chimeeHelper.removeEvent(_this7.container, key, _this7.containerDomEventHandlerList[index]);
+        chimeeHelper.removeEvent(_this7.wrapper, key, _this7.wrapperDomEventHandlerList[index]);
       });
+      this._bindFullScreen(true);
       this.wrapper.innerHTML = this.originHTML;
       delete this.wrapper;
-      delete this.videoElement;
       delete this.plugins;
     }
   }, {
@@ -1606,6 +2044,32 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       chimeeHelper.isFunction(this.videoElement.focus) && this.videoElement.focus();
       window.scrollTo(x, y);
     }
+  }, {
+    key: '_fullScreenMonitor',
+    value: function _fullScreenMonitor() {
+      var element = ['fullscreenElement', 'webkitFullscreenElement', 'mozFullScreenElement', 'msFullscreenElement'].reduce(function (element, key) {
+        // $FlowFixMe: support computed element on document
+        return element || document[key];
+      }, null);
+      if (!element || !chimeeHelper.isPosterityNode(this.wrapper, element) && element !== this.wrapper) {
+        this.isFullScreen = false;
+        this.fullScreenElement = undefined;
+        return;
+      }
+      this.isFullScreen = true;
+      this.fullScreenElement = this.wrapper === element ? 'wrapper' : this.container === element ? 'container' : this.videoElement === element ? 'video' : element;
+    }
+  }, {
+    key: '_bindFullScreen',
+    value: function _bindFullScreen(remove) {
+      var _this8 = this;
+
+      if (!remove) this._fullScreenMonitor();
+      ['webkitfullscreenchange', 'mozfullscreenchange', 'msfullscreenchange', 'fullscreenchange'].forEach(function (key) {
+        // $FlowFixMe: support computed element on document
+        document[(remove ? 'remove' : 'add') + 'EventListener'](key, _this8._fullScreenMonitor);
+      });
+    }
     /**
      * get the event handler for dom to bind
      */
@@ -1613,30 +2077,30 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
   }, {
     key: '_getEventHandler',
     value: function _getEventHandler(key, _ref) {
-      var _this6 = this;
+      var _this9 = this;
 
       var penetrate = _ref.penetrate;
 
       if (!penetrate || ['mouseenter', 'mouseleave'].indexOf(key) < 0) {
         return function () {
-          var _dispatcher$bus4;
+          var _dispatcher$bus2;
 
-          for (var _len6 = arguments.length, args = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
-            args[_key6] = arguments[_key6];
+          for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+            args[_key4] = arguments[_key4];
           }
 
-          (_dispatcher$bus4 = _this6.__dispatcher.bus).triggerSync.apply(_dispatcher$bus4, [key].concat(args));
+          (_dispatcher$bus2 = _this9.__dispatcher.bus).triggerSync.apply(_dispatcher$bus2, [key].concat(args));
         };
       }
       var insideVideo = function insideVideo(node) {
-        return _this6.__videoExtendedNodes.indexOf(node) > -1 || _this6.__videoExtendedNodes.reduce(function (flag, video) {
+        return _this9.__videoExtendedNodes.indexOf(node) > -1 || _this9.__videoExtendedNodes.reduce(function (flag, video) {
           if (flag) return flag;
           return chimeeHelper.isPosterityNode(video, node);
         }, false);
       };
       return function () {
-        for (var _len7 = arguments.length, args = Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
-          args[_key7] = arguments[_key7];
+        for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+          args[_key5] = arguments[_key5];
         }
 
         var _args$ = args[0],
@@ -1646,328 +2110,30 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
             type = _args$.type;
 
         var to = toElement || relatedTarget;
-        if (_this6.__mouseInVideo && type === 'mouseleave' && !insideVideo(to)) {
-          var _dispatcher$bus5;
+        if (_this9.__mouseInVideo && type === 'mouseleave' && !insideVideo(to)) {
+          var _dispatcher$bus3;
 
-          _this6.__mouseInVideo = false;
-          return (_dispatcher$bus5 = _this6.__dispatcher.bus).triggerSync.apply(_dispatcher$bus5, ['mouseleave'].concat(args));
+          _this9.__mouseInVideo = false;
+          return (_dispatcher$bus3 = _this9.__dispatcher.bus).triggerSync.apply(_dispatcher$bus3, ['mouseleave'].concat(args));
         }
-        if (!_this6.__mouseInVideo && type === 'mouseenter' && insideVideo(currentTarget)) {
-          var _dispatcher$bus6;
+        if (!_this9.__mouseInVideo && type === 'mouseenter' && insideVideo(currentTarget)) {
+          var _dispatcher$bus4;
 
-          _this6.__mouseInVideo = true;
-          return (_dispatcher$bus6 = _this6.__dispatcher.bus).triggerSync.apply(_dispatcher$bus6, ['mouseenter'].concat(args));
+          _this9.__mouseInVideo = true;
+          return (_dispatcher$bus4 = _this9.__dispatcher.bus).triggerSync.apply(_dispatcher$bus4, ['mouseenter'].concat(args));
         }
       };
     }
   }]);
 
   return Dom;
-}(), (_applyDecoratedDescriptor$3(_class$3.prototype, 'setAttr', [_dec$3, _dec2$3], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'setAttr'), _class$3.prototype), _applyDecoratedDescriptor$3(_class$3.prototype, 'getAttr', [_dec3$3], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'getAttr'), _class$3.prototype), _applyDecoratedDescriptor$3(_class$3.prototype, 'setStyle', [_dec4$3], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'setStyle'), _class$3.prototype), _applyDecoratedDescriptor$3(_class$3.prototype, 'getStyle', [_dec5$3], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'getStyle'), _class$3.prototype), _applyDecoratedDescriptor$3(_class$3.prototype, 'requestFullScreen', [_dec6$2], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'requestFullScreen'), _class$3.prototype), _applyDecoratedDescriptor$3(_class$3.prototype, '_focusToVideo', [toxicDecorators.autobind], _Object$getOwnPropertyDescriptor(_class$3.prototype, '_focusToVideo'), _class$3.prototype)), _class$3));
-
-var _dec$4;
-var _dec2$4;
-var _dec3$4;
-var _class$4;
-var _descriptor$1;
-var _descriptor2$1;
-var _descriptor3$1;
-var _descriptor4;
-var _descriptor5;
-var _descriptor6;
-var _descriptor7;
-
-function _initDefineProp$1(target, property, descriptor, context) {
-  if (!descriptor) return;
-
-  _Object$defineProperty(target, property, {
-    enumerable: descriptor.enumerable,
-    configurable: descriptor.configurable,
-    writable: descriptor.writable,
-    value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
-  });
-}
-
-function _applyDecoratedDescriptor$4(target, property, decorators, descriptor, context) {
-  var desc = {};
-  Object['ke' + 'ys'](descriptor).forEach(function (key) {
-    desc[key] = descriptor[key];
-  });
-  desc.enumerable = !!desc.enumerable;
-  desc.configurable = !!desc.configurable;
-
-  if ('value' in desc || desc.initializer) {
-    desc.writable = true;
-  }
-
-  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
-    return decorator(target, property, desc) || desc;
-  }, desc);
-
-  if (context && desc.initializer !== void 0) {
-    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
-    desc.initializer = undefined;
-  }
-
-  if (desc.initializer === void 0) {
-    Object['define' + 'Property'](target, property, desc);
-    desc = null;
-  }
-
-  return desc;
-}
-
-function numberOrVoid(value) {
-  return chimeeHelper.isNumber(value) ? value : undefined;
-}
-function stringOrVoid(value) {
-  return chimeeHelper.isString(value) ? value : undefined;
-}
-
-function accessorVideoProperty(property) {
-  return toxicDecorators.accessor({
-    get: function get(value) {
-      return this.dispatcher.videoConfigReady && this.inited ? this.videoElement[property] : value;
-    },
-    set: function set(value) {
-      if (!this.dispatcher.videoConfigReady) return value;
-      this.videoElement[property] = value;
-      return value;
-    }
-  });
-}
-
-function accessorVideoAttribute(attribute) {
-  var _ref = chimeeHelper.isObject(attribute) ? attribute : {
-    set: attribute,
-    get: attribute,
-    isBoolean: false
-  },
-      _set = _ref.set,
-      _get$$1 = _ref.get,
-      isBoolean$$1 = _ref.isBoolean;
-
-  return toxicDecorators.accessor({
-    get: function get(value) {
-      return this.dispatcher.videoConfigReady && this.inited ? this.videoElement[_get$$1] : value;
-    },
-    set: function set(value) {
-      if (!this.dispatcher.videoConfigReady) return value;
-      var val = isBoolean$$1 ? value ? '' : undefined : value;
-      this.dispatcher.dom.setAttr('video', _set, val);
-      return value;
-    }
-  });
-}
-
-function accessorCustomAttribute(attribute, isBoolean$$1) {
-  return toxicDecorators.accessor({
-    get: function get(value) {
-      var attrValue = this.dispatcher.dom.getAttr('video', attribute);
-      return this.dispatcher.videoConfigReady && this.inited ? isBoolean$$1 ? !!attrValue : attrValue : value;
-    },
-    set: function set(value) {
-      if (!this.dispatcher.videoConfigReady) return value;
-      var val = isBoolean$$1 ? value || undefined : value;
-      this.dispatcher.dom.setAttr('video', attribute, val);
-      return value;
-    }
-  });
-}
-
-var accessorMap = {
-  src: [toxicDecorators.alwaysString(), toxicDecorators.accessor({
-    set: function set(val) {
-      if (this.needToLoadSrc) {
-        // unlock it at first, to avoid deadlock
-        this.needToLoadSrc = false;
-        this.dispatcher.bus.emit('load', val);
-      }
-      return val;
-    }
-  }, { preSet: false }), toxicDecorators.accessor({
-    set: function set(val) {
-      // must check val !== this.src here
-      // as we will set config.src in the video
-      // the may cause dead lock
-      if (this.dispatcher.readySync && this.autoload && val !== this.src) this.needToLoadSrc = true;
-      return val;
-    }
-  })],
-  autoload: toxicDecorators.alwaysBoolean(),
-  autoplay: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('autoplay')],
-  controls: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('controls')],
-  width: [toxicDecorators.accessor({ set: numberOrVoid }), accessorVideoAttribute('width')],
-  height: [toxicDecorators.accessor({ set: numberOrVoid }), accessorVideoAttribute('height')],
-  crossOrigin: [toxicDecorators.accessor({ set: stringOrVoid }), accessorVideoAttribute({ set: 'crossorigin', get: 'crossOrigin' })],
-  loop: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('loop')],
-  defaultMuted: [toxicDecorators.alwaysBoolean(), accessorVideoAttribute({ get: 'defaultMuted', set: 'muted', isBoolean: true })],
-  muted: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('muted')],
-  preload: [toxicDecorators.accessor({ set: stringOrVoid }), accessorVideoAttribute('preload')],
-  poster: [toxicDecorators.accessor({ set: stringOrVoid }), accessorVideoAttribute('poster')],
-  playsInline: [toxicDecorators.accessor({
-    get: function get(value) {
-      var playsInline = this.videoElement.playsInline;
-      return this.dispatcher.videoConfigReady && this.inited ? playsInline === undefined ? value : playsInline : value;
-    },
-    set: function set(value) {
-      if (!this.dispatcher.videoConfigReady) return value;
-      this.videoElement.playsInline = value;
-      var val = value ? '' : undefined;
-      this.dispatcher.dom.setAttr('video', 'playsinline', val);
-      this.dispatcher.dom.setAttr('video', 'webkit-playsinline', val);
-      this.dispatcher.dom.setAttr('video', 'x5-video-player-type', value ? 'h5' : undefined);
-      return value;
-    }
-  }), toxicDecorators.alwaysBoolean()],
-  x5VideoPlayerFullScreen: [toxicDecorators.accessor({
-    set: function set(value) {
-      return !!value;
-    },
-    get: function get(value) {
-      return !!value;
-    }
-  }), accessorCustomAttribute('x5-video-player-fullscreen', true)],
-  x5VideoOrientation: [toxicDecorators.accessor({ set: stringOrVoid }), accessorCustomAttribute('x5-video-orientation')],
-  xWebkitAirplay: [toxicDecorators.accessor({
-    set: function set(value) {
-      return !!value;
-    },
-    get: function get(value) {
-      return !!value;
-    }
-  }), accessorCustomAttribute('x-webkit-airplay', true)],
-  playbackRate: [toxicDecorators.alwaysNumber(1), accessorVideoProperty('playbackRate')],
-  defaultPlaybackRate: [accessorVideoProperty('defaultPlaybackRate'), toxicDecorators.alwaysNumber(1)],
-  disableRemotePlayback: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('disableRemotePlayback')],
-  volume: [toxicDecorators.alwaysNumber(1), accessorVideoProperty('volume')]
-};
-
-var VideoConfig = (_dec$4 = toxicDecorators.initString(), _dec2$4 = toxicDecorators.initString(function (str) {
-  return str.toLocaleLowerCase();
-}), _dec3$4 = toxicDecorators.initArray(), (_class$4 = function () {
-  _createClass(VideoConfig, [{
-    key: 'lockKernelProperty',
-    value: function lockKernelProperty() {
-      toxicDecorators.applyDecorators(this, {
-        type: toxicDecorators.lock,
-        box: toxicDecorators.lock,
-        runtimeOrder: toxicDecorators.lock
-      }, { self: true });
-    }
-  }]);
-
-  function VideoConfig(dispatcher, config) {
-    _classCallCheck(this, VideoConfig);
-
-    _initDefineProp$1(this, 'needToLoadSrc', _descriptor$1, this);
-
-    _initDefineProp$1(this, 'inited', _descriptor2$1, this);
-
-    this.src = '';
-
-    _initDefineProp$1(this, 'type', _descriptor3$1, this);
-
-    _initDefineProp$1(this, 'box', _descriptor4, this);
-
-    _initDefineProp$1(this, 'runtimeOrder', _descriptor5, this);
-
-    this.autoload = true;
-    this.autoplay = false;
-    this.controls = false;
-    this.width = undefined;
-    this.height = undefined;
-    this.crossOrigin = undefined;
-    this.loop = false;
-    this.defaultMuted = false;
-    this.muted = false;
-    this.preload = 'auto';
-    this.poster = undefined;
-    this.playsInline = false;
-    this.x5VideoPlayerFullScreen = false;
-    this.x5VideoOrientation = undefined;
-    this.xWebkitAirplay = false;
-    this.playbackRate = 1;
-    this.defaultPlaybackRate = 1;
-    this.disableRemotePlayback = false;
-    this.volume = 1;
-
-    _initDefineProp$1(this, '_kernelProperty', _descriptor6, this);
-
-    _initDefineProp$1(this, '_realDomAttr', _descriptor7, this);
-
-    toxicDecorators.applyDecorators(this, accessorMap, { self: true });
-    Object.defineProperty(this, 'dispatcher', {
-      value: dispatcher,
-      enumerable: false,
-      writable: false,
-      configurable: false
-    });
-    Object.defineProperty(this, 'videoElement', {
-      value: dispatcher.dom.videoElement,
-      enumerable: false,
-      writable: false,
-      configurable: false
-    });
-    chimeeHelper.deepAssign(this, config);
-  }
-
-  _createClass(VideoConfig, [{
-    key: 'init',
-    value: function init() {
-      var _this = this;
-
-      this._realDomAttr.forEach(function (key) {
-        // $FlowFixMe: we have check the computed here
-        _this[key] = _this[key];
-      });
-      this.inited = true;
-    }
-  }]);
-
-  return VideoConfig;
-}(), (_descriptor$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'needToLoadSrc', [toxicDecorators.nonenumerable], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor2$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'inited', [toxicDecorators.nonenumerable], {
-  enumerable: true,
-  initializer: function initializer() {
-    return false;
-  }
-}), _descriptor3$1 = _applyDecoratedDescriptor$4(_class$4.prototype, 'type', [_dec$4, toxicDecorators.configurable], {
-  enumerable: true,
-  initializer: function initializer() {
-    return 'vod';
-  }
-}), _descriptor4 = _applyDecoratedDescriptor$4(_class$4.prototype, 'box', [_dec2$4, toxicDecorators.configurable], {
-  enumerable: true,
-  initializer: function initializer() {
-    return '';
-  }
-}), _descriptor5 = _applyDecoratedDescriptor$4(_class$4.prototype, 'runtimeOrder', [_dec3$4, toxicDecorators.configurable], {
-  enumerable: true,
-  initializer: function initializer() {
-    return ['html5', 'flash'];
-  }
-}), _descriptor6 = _applyDecoratedDescriptor$4(_class$4.prototype, '_kernelProperty', [toxicDecorators.frozen], {
-  enumerable: true,
-  initializer: function initializer() {
-    return ['type', 'box', 'runtimeOrder'];
-  }
-}), _descriptor7 = _applyDecoratedDescriptor$4(_class$4.prototype, '_realDomAttr', [toxicDecorators.frozen], {
-  enumerable: true,
-  initializer: function initializer() {
-    return ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
-  }
-})), _class$4));
+}(), (_applyDecoratedDescriptor$4(_class$5.prototype, 'setAttr', [_dec$5, _dec2$3], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'setAttr'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'getAttr', [_dec3$2], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'getAttr'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'setStyle', [_dec4$2], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'setStyle'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'getStyle', [_dec5$2], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'getStyle'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'requestFullScreen', [_dec6$1], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'requestFullScreen'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, '_focusToVideo', [toxicDecorators.autobind], _Object$getOwnPropertyDescriptor(_class$5.prototype, '_focusToVideo'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, '_fullScreenMonitor', [toxicDecorators.autobind], _Object$getOwnPropertyDescriptor(_class$5.prototype, '_fullScreenMonitor'), _class$5.prototype)), _class$5));
 
 var _dec$1;
-var _dec2$1;
-var _dec3$1;
-var _dec4$1;
-var _dec5$1;
+var _dec2;
+var _dec3;
+var _dec4;
+var _dec5;
 var _class$1;
 
 function _applyDecoratedDescriptor$1(target, property, decorators, descriptor, context) {
@@ -2023,7 +2189,7 @@ function checkPluginConfig(config) {
  * It also offer a bridge to let user handle video kernel.
  * </pre>
  */
-var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2$1 = toxicDecorators.before(checkPluginConfig), _dec3$1 = toxicDecorators.before(convertNameIntoId), _dec4$1 = toxicDecorators.before(convertNameIntoId), _dec5$1 = toxicDecorators.before(convertNameIntoId), (_class$1 = function () {
+var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = toxicDecorators.before(checkPluginConfig), _dec3 = toxicDecorators.before(convertNameIntoId), _dec4 = toxicDecorators.before(convertNameIntoId), _dec5 = toxicDecorators.before(convertNameIntoId), (_class$1 = function () {
   /**
    * @param  {UserConfig} config UserConfig for whole Chimee player
    * @param  {Chimee} vm referrence of outer class
@@ -2031,15 +2197,15 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2$1 = 
    */
 
   /**
-   * the synchronous ready flag
-   * @type {boolean}
-   * @member readySync
+   * the z-index map of the dom, it contain some important infomation
+   * @type {Object}
+   * @member zIndexMap
    */
 
   /**
-   * all plugins instance set
-   * @type {Object}
-   * @member plugins
+   * plugin's order
+   * @type {Array<string>}
+   * @member order
    */
   function Dispatcher(config, vm) {
     var _this = this;
@@ -2053,6 +2219,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2$1 = 
       inner: [],
       outer: []
     };
+    this.changeWatchable = true;
 
     if (!chimeeHelper.isObject(config)) throw new TypeError('UserConfig must be an Object');
     /**
@@ -2113,15 +2280,15 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2$1 = 
    */
 
   /**
-   * the z-index map of the dom, it contain some important infomation
-   * @type {Object}
-   * @member zIndexMap
+   * the synchronous ready flag
+   * @type {boolean}
+   * @member readySync
    */
 
   /**
-   * plugin's order
-   * @type {Array<string>}
-   * @member order
+   * all plugins instance set
+   * @type {Object}
+   * @member plugins
    */
 
 
@@ -2187,6 +2354,186 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2$1 = 
     value: function throwError(error) {
       this.vm.__throwError(error);
     }
+  }, {
+    key: 'silentLoad',
+    value: function silentLoad(src) {
+      var _this2 = this;
+
+      var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var _option$duration = option.duration,
+          duration = _option$duration === undefined ? 3 : _option$duration,
+          _option$bias = option.bias,
+          bias = _option$bias === undefined ? 0 : _option$bias,
+          _option$repeatTimes = option.repeatTimes,
+          repeatTimes = _option$repeatTimes === undefined ? 0 : _option$repeatTimes,
+          _option$increment = option.increment,
+          increment = _option$increment === undefined ? 0 : _option$increment,
+          _option$isLive = option.isLive,
+          isLive = _option$isLive === undefined ? this.videoConfig.isLive : _option$isLive,
+          _option$box = option.box,
+          box = _option$box === undefined ? this.videoConfig.box : _option$box,
+          _option$preset = option.preset,
+          preset = _option$preset === undefined ? this.videoConfig.preset : _option$preset;
+      // form the base config for kernel
+      // it should be the same as the config now
+
+      var config = { isLive: isLive, box: box, src: src, preset: preset };
+      // build tasks accroding repeat times
+      var tasks = new Array(repeatTimes + 1).fill(1).map(function (value, index) {
+        return function () {
+          return new _Promise(function (resolve, reject) {
+            // if abort, give up and reject
+            if (option.abort) reject({ error: true, message: 'user abort the mission' });
+            var video = document.createElement('video');
+            var idealTime = _this2.kernel.currentTime + duration + increment * index;
+            video.muted = true;
+            var newVideoReady = false;
+            // bind time update on old video
+            // when we bump into the switch point and ready
+            // we switch
+            var oldVideoTimeupdate = function oldVideoTimeupdate(evt) {
+              var currentTime = _this2.kernel.currentTime;
+              if (bias <= 0 && currentTime >= idealTime || bias > 0 && (Math.abs(idealTime - currentTime) <= bias && newVideoReady || currentTime - idealTime > bias)) {
+                chimeeHelper.removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+                if (!newVideoReady) {
+                  chimeeHelper.removeEvent(video, 'canplay', videoCanplay);
+                  chimeeHelper.removeEvent(video, 'loadedmetadata', videoLoadedmetadata);
+                  chimeeHelper.removeEvent(video, 'error', videoError);
+                  kernel.destroy();
+                  return resolve();
+                }
+                return reject({
+                  error: false,
+                  video: video,
+                  kernel: kernel
+                });
+              }
+            };
+            var videoCanplay = function videoCanplay(evt) {
+              newVideoReady = true;
+              // you can set it immediately run by yourself
+              if (option.immediate) {
+                return reject({
+                  error: false,
+                  video: video,
+                  kernel: kernel
+                });
+              }
+            };
+            var videoLoadedmetadata = function videoLoadedmetadata(evt) {
+              kernel.seek(idealTime);
+            };
+            var videoError = function videoError(evt) {
+              chimeeHelper.removeEvent(video, 'canplay', videoCanplay, true);
+              chimeeHelper.removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
+              chimeeHelper.removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+              var error = !chimeeHelper.isEmpty(video.error) ? new Error(video.error.message) : new Error('unknow video error');
+              chimeeHelper.Log.error("chimee's silentload", error.message);
+              kernel.destroy();
+              return index === repeatTimes ? reject(error) : resolve(error);
+            };
+            chimeeHelper.addEvent(video, 'canplay', videoCanplay, true);
+            chimeeHelper.addEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
+            chimeeHelper.addEvent(video, 'error', videoError, true);
+            chimeeHelper.addEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+            var kernel = new Kernel(video, config);
+            kernel.load();
+          });
+        };
+      });
+      return chimeeHelper.runRejectableQueue(tasks).then(function () {
+        var message = 'The silentLoad for ' + src + ' timed out. Please set a longer duration or check your network';
+        chimeeHelper.Log.warn("chimee's silentLoad", message);
+        return _Promise.reject(new Error(message));
+      }).catch(function (data) {
+        if (chimeeHelper.isError(data)) {
+          return _Promise.reject(data);
+        }
+        if (data.error) {
+          chimeeHelper.Log.warn("chimee's silentLoad", data.message);
+          return _Promise.reject(new Error(data.message));
+        }
+        var video = data.video,
+            kernel = data.kernel;
+
+        if (option.abort) {
+          kernel.destroy();
+          return _Promise.reject(new Error('user abort the mission'));
+        }
+        var paused = _this2.dom.videoElement.paused;
+        _this2.switchKernel({ video: video, kernel: kernel, config: config });
+        if (!paused) _this2.dom.videoElement.play();
+        return _Promise.resolve();
+      });
+    }
+  }, {
+    key: 'load',
+    value: function load(src) {
+      var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      if (!chimeeHelper.isEmpty(option)) {
+        var videoConfig = this.videoConfig;
+
+        var _option$isLive2 = option.isLive,
+            _isLive = _option$isLive2 === undefined ? videoConfig.isLive : _option$isLive2,
+            _option$box2 = option.box,
+            _box = _option$box2 === undefined ? videoConfig.box : _option$box2,
+            _option$preset2 = option.preset,
+            _preset = _option$preset2 === undefined ? videoConfig.preset : _option$preset2;
+
+        var video = document.createElement('video');
+        var config = { isLive: _isLive, box: _box, preset: _preset, src: src };
+        var _kernel = new Kernel(video, config);
+        this.switchKernel({ video: video, kernel: _kernel, config: config });
+      }
+      this.kernel.load(src);
+    }
+  }, {
+    key: 'switchKernel',
+    value: function switchKernel(_ref) {
+      var _this3 = this;
+
+      var video = _ref.video,
+          kernel = _ref.kernel,
+          config = _ref.config;
+
+      var oldKernel = this.kernel;
+      oldKernel.destroy();
+      var originVideoConfig = chimeeHelper.deepClone(this.videoConfig);
+      this.dom.removeVideo();
+      this.dom.installVideo(video);
+      // as we will reset the currentVideoConfig on the new video
+      // it will trigger the watch function as they maybe differnet
+      // so we need to stop them
+      this.videoConfig.changeWatchable = false;
+      this.videoConfig.autoload = false;
+      this.videoConfig.src = config.src;
+      this.videoConfig._realDomAttr.forEach(function (key) {
+        // $FlowFixMe: support computed key here
+        if (key !== 'src') _this3.videoConfig[key] = originVideoConfig[key];
+      });
+      this.videoConfig.changeWatchable = true;
+      // bind the new config in new kernel to the videoConfig
+      toxicDecorators.applyDecorators(config, {
+        src: toxicDecorators.accessor({
+          get: function get(value) {
+            return _this3.videoConfig.src;
+          },
+          set: function set(value) {
+            _this3.videoConfig.src = value;
+            return value;
+          }
+        })
+      }, { self: true });
+      // the kernel's inner config would not be change according what we do
+      // so we have to load that
+      // applyDecorators(kernel.__proto__, {
+      //   load: before(src => {
+      //     return [src || this.videoConfig.src];
+      //   })
+      // }, {self: true});
+      this.kernel = kernel;
+    }
     /**
      * destroy function called when dispatcher destroyed
      */
@@ -2216,7 +2563,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2$1 = 
   }, {
     key: '_initUserPlugin',
     value: function _initUserPlugin() {
-      var _this2 = this;
+      var _this4 = this;
 
       var configs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
@@ -2225,7 +2572,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2$1 = 
         configs = [];
       }
       return configs.map(function (config) {
-        return _this2.use(config);
+        return _this4.use(config);
       });
     }
     /**
@@ -2235,10 +2582,10 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2$1 = 
   }, {
     key: '_sortZIndex',
     value: function _sortZIndex() {
-      var _this3 = this;
+      var _this5 = this;
 
       var _order$reduce = this.order.reduce(function (levelSet, key) {
-        var plugin = _this3.plugins[key];
+        var plugin = _this5.plugins[key];
         if (chimeeHelper.isEmpty(plugin)) return levelSet;
         var set = levelSet[plugin.$inner ? 'inner' : 'outer'];
         var level = plugin.$level;
@@ -2319,9 +2666,9 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2$1 = 
   }]);
 
   return Dispatcher;
-}(), (_applyDecoratedDescriptor$1(_class$1.prototype, 'unuse', [_dec$1], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'unuse'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1, 'install', [_dec2$1], _Object$getOwnPropertyDescriptor(_class$1, 'install'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'hasInstalled', [_dec3$1], _Object$getOwnPropertyDescriptor(_class$1, 'hasInstalled'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'uninstall', [_dec4$1], _Object$getOwnPropertyDescriptor(_class$1, 'uninstall'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'getPluginConfig', [_dec5$1], _Object$getOwnPropertyDescriptor(_class$1, 'getPluginConfig'), _class$1)), _class$1));
+}(), (_applyDecoratedDescriptor$1(_class$1.prototype, 'unuse', [_dec$1], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'unuse'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1, 'install', [_dec2], _Object$getOwnPropertyDescriptor(_class$1, 'install'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'hasInstalled', [_dec3], _Object$getOwnPropertyDescriptor(_class$1, 'hasInstalled'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'uninstall', [_dec4], _Object$getOwnPropertyDescriptor(_class$1, 'uninstall'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'getPluginConfig', [_dec5], _Object$getOwnPropertyDescriptor(_class$1, 'getPluginConfig'), _class$1)), _class$1));
 
-var _class$5;
+var _class$6;
 var _descriptor$2;
 
 function _initDefineProp$2(target, property, descriptor, context) {
@@ -2364,7 +2711,7 @@ function _applyDecoratedDescriptor$5(target, property, decorators, descriptor, c
   return desc;
 }
 
-var GlobalConfig = (_class$5 = function () {
+var GlobalConfig = (_class$6 = function () {
   _createClass(GlobalConfig, [{
     key: 'silent',
     get: function get() {
@@ -2415,21 +2762,14 @@ var GlobalConfig = (_class$5 = function () {
   }
 
   return GlobalConfig;
-}(), (_descriptor$2 = _applyDecoratedDescriptor$5(_class$5.prototype, '_silent', [toxicDecorators.nonenumerable], {
+}(), (_descriptor$2 = _applyDecoratedDescriptor$5(_class$6.prototype, '_silent', [toxicDecorators.nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-})), _class$5);
+})), _class$6);
 
 var _dec;
-var _dec2;
-var _dec3;
-var _dec4;
-var _dec5;
-var _dec6;
-var _dec7;
-var _dec8;
 var _class;
 var _class2;
 var _descriptor;
@@ -2484,7 +2824,7 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
   return desc;
 }
 
-var Chimee = (_dec = toxicDecorators.autobindClass(), _dec2 = toxicDecorators.alias('addEventListener'), _dec3 = toxicDecorators.before(eventBinderCheck), _dec4 = toxicDecorators.before(eventBinderCheck), _dec5 = toxicDecorators.alias('removeEventListener'), _dec6 = toxicDecorators.before(eventBinderCheck), _dec7 = toxicDecorators.before(attrAndStyleCheck), _dec8 = toxicDecorators.before(attrAndStyleCheck), _dec(_class = (_class2 = (_temp = _class3 = function (_VideoWrapper) {
+var Chimee = (_dec = toxicDecorators.autobindClass(), _dec(_class = (_class2 = (_temp = _class3 = function (_VideoWrapper) {
   _inherits(Chimee, _VideoWrapper);
 
   function Chimee(config) {
@@ -2535,133 +2875,6 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec2 = toxicDecorators.al
     value: function unuse(name) {
       this.__dispatcher.unuse(name);
     }
-    /**
-     * bind event handler through this function
-     * @param  {string} key event's name
-     * @param  {Function} fn event's handler
-     */
-
-  }, {
-    key: 'on',
-    value: function on(key, fn) {
-      this.__dispatcher.bus.on('_vm', key, fn);
-      return this;
-    }
-    /**
-     * remove event handler through this function
-     * @param  {string} key event's name
-     * @param  {Function} fn event's handler
-     */
-
-  }, {
-    key: 'off',
-    value: function off(key, fn) {
-      return this.__dispatcher.bus.off('_vm', key, fn);
-    }
-    /**
-     * bind one time event handler
-     * @param {string} key event's name
-     * @param {Function} fn event's handler
-     */
-
-  }, {
-    key: 'once',
-    value: function once(key, fn) {
-      return this.__dispatcher.bus.once('_vm', key, fn);
-    }
-    /**
-     * emit an event
-     * @param  {string}    key event's name
-     * @param  {...args} args
-     */
-
-  }, {
-    key: 'emit',
-    value: function emit(key) {
-      var _dispatcher$bus;
-
-      if (!chimeeHelper.isString(key)) throw new TypeError('emit key parameter must be String');
-      if (domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
-        chimeeHelper.Log.warn('plugin', 'You are using emit to emit ' + key + ' event. As emit is wrapped in Promise. It make you can\'t use event.preventDefault and event.stopPropagation. So we advice you to use emitSync');
-      }
-
-      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        args[_key - 1] = arguments[_key];
-      }
-
-      return (_dispatcher$bus = this.__dispatcher.bus).emit.apply(_dispatcher$bus, [key].concat(_toConsumableArray(args)));
-    }
-    /**
-     * emit a sync event
-     * @param  {string}    key event's name
-     * @param  {...args} args
-     */
-
-  }, {
-    key: 'emitSync',
-    value: function emitSync(key) {
-      var _dispatcher$bus2;
-
-      if (!chimeeHelper.isString(key)) throw new TypeError('emitSync key parameter must be String');
-
-      for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-        args[_key2 - 1] = arguments[_key2];
-      }
-
-      return (_dispatcher$bus2 = this.__dispatcher.bus).emitSync.apply(_dispatcher$bus2, [key].concat(_toConsumableArray(args)));
-    }
-    /**
-     * set style
-     * @param {string} element optional, default to be video, you can choose from video | container | wrapper
-     * @param {string} attribute the atrribue name
-     * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
-     */
-
-  }, {
-    key: 'css',
-    value: function css(method) {
-      var _dispatcher$dom;
-
-      for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-        args[_key3 - 1] = arguments[_key3];
-      }
-
-      // $FlowFixMe: we support this here
-      return (_dispatcher$dom = this.__dispatcher.dom)[method + 'Style'].apply(_dispatcher$dom, args);
-    }
-    /**
-    * set attr
-    * @param {string} element optional, default to be video, you can choose from video | container | wrapper
-    * @param {string} attribute the atrribue nameß
-    * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
-    */
-
-  }, {
-    key: 'attr',
-    value: function attr(method) {
-      var _dispatcher$dom2;
-
-      for (var _len4 = arguments.length, args = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
-        args[_key4 - 1] = arguments[_key4];
-      }
-
-      if (method === 'set' && /video/.test(args[0])) {
-        if (!this.__dispatcher.videoConfigReady) {
-          chimeeHelper.Log.warn('plugin', 'You are tring to set attribute on video before video inited. Please wait until the inited event has benn trigger');
-          return args[2];
-        }
-        if (this.__dispatcher.videoConfig._realDomAttr.indexOf(args[1]) > -1) {
-          var key = args[1],
-              val = args[2];
-          // $FlowFixMe: we have check the computed key
-
-          this.__dispatcher.videoConfig[key] = val;
-          return val;
-        }
-      }
-      // $FlowFixMe: we support this here
-      return (_dispatcher$dom2 = this.__dispatcher.dom)[method + 'Attr'].apply(_dispatcher$dom2, args);
-    }
   }, {
     key: '__throwError',
     value: function __throwError(error) {
@@ -2682,7 +2895,7 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec2 = toxicDecorators.al
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.1.3';
+    return '0.2.0';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
@@ -2733,6 +2946,6 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec2 = toxicDecorators.al
   initializer: function initializer() {
     return _init6;
   }
-}), _class2), _applyDecoratedDescriptor(_class2.prototype, 'on', [_dec2, _dec3], _Object$getOwnPropertyDescriptor(_class2.prototype, 'on'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'off', [_dec4, _dec5], _Object$getOwnPropertyDescriptor(_class2.prototype, 'off'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'once', [_dec6], _Object$getOwnPropertyDescriptor(_class2.prototype, 'once'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'css', [_dec7], _Object$getOwnPropertyDescriptor(_class2.prototype, 'css'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'attr', [_dec8], _Object$getOwnPropertyDescriptor(_class2.prototype, 'attr'), _class2.prototype)), _class2)) || _class);
+}), _class2)), _class2)) || _class);
 
 module.exports = Chimee;
