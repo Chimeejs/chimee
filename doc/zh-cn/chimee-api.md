@@ -814,7 +814,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 全屏和退出全屏的相关操作。
 
-> 关于全屏对象的设置可到[Chimee 插件 API 介绍中的 fullscreen 部分](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)了解更多
+> 关于全屏对象的设置可到[Chimee 插件 API 介绍中的插件位置部分](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E6%8F%92%E4%BB%B6%E4%BD%8D%E7%BD%AE)了解更多
 
 ### requestFullScreen
 
@@ -823,7 +823,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
   - target
     - 类型：`string`
     - 全屏的对象，可选`video`、`container`和`wrapper`
-    - 默认：`container
+    - 默认：`container`
 
 进入全屏
 
@@ -834,7 +834,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
   - target
     - 类型：`string`
     - 全屏的对象，可选`video`、`container`和`wrapper`
-    - 默认：`container
+    - 默认：`container`
 
 退出全屏
 
@@ -844,6 +844,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 * 类型：`boolean`
 * 含义：是否全屏
+* 可使用 `$watch` 监听
 
 若实例中的任意一个子节点全屏，则返回 `true`。 
 
@@ -851,6 +852,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 * 类型：`HTMLElement | string | void`
 * 含义：现在全屏的对象
+* 可使用 `$watch` 监听
 
 如果全屏的是 `container`、`wrapper`、`video` 三者之一，则直接返回字符串。
 
