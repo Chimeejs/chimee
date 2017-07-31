@@ -292,6 +292,9 @@ describe('Chimee', () => {
       player.preload = 'auto';
       expect(player.preload).toBe('auto');
       expect(videoElement.preload).toBe('auto');
+      player.preload = null;
+      expect(player.preload).toBe('');
+      expect(videoElement.preload).toBe('');
     });
     describe('width', () => {
       test('player set', () => {

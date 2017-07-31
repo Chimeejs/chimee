@@ -232,10 +232,10 @@ export default class Dispatcher {
                 (currentTime - idealTime) > bias))
              ) {
               removeEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+              removeEvent(video, 'error', videoError, true);
               if(!newVideoReady) {
-                removeEvent(video, 'canplay', videoCanplay);
-                removeEvent(video, 'loadedmetadata', videoLoadedmetadata);
-                removeEvent(video, 'error', videoError);
+                removeEvent(video, 'canplay', videoCanplay, true);
+                removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
                 kernel.destroy();
                 return resolve();
               }
@@ -250,6 +250,8 @@ export default class Dispatcher {
             newVideoReady = true;
             // you can set it immediately run by yourself
             if(option.immediate) {
+              removeEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+              removeEvent(video, 'error', videoError, true);
               return reject({
                 error: false,
                 video,
@@ -336,7 +338,6 @@ export default class Dispatcher {
     }
   }) {
     const oldKernel = this.kernel;
-    oldKernel.destroy();
     const originVideoConfig = deepClone(this.videoConfig);
     this.dom.removeVideo();
     this.dom.installVideo(video);
@@ -371,6 +372,7 @@ export default class Dispatcher {
     //   })
     // }, {self: true});
     this.kernel = kernel;
+    oldKernel.destroy();
   }
   /**
    * destroy function called when dispatcher destroyed

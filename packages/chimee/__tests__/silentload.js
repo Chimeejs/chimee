@@ -187,6 +187,18 @@ describe('$silentLoad', () => {
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
     expect(Log.data.error).toEqual([["chimee's silentload", 'MEDIA_ELEMENT_ERROR: Format error']]);
   });
+  test('error remove', async () => {
+    const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', {immediate: true});
+    await Promise.resolve();
+    // simulate metadata loaded finished
+    video.dispatchEvent(new Event('loadedmetadata'));
+    // simulate canplayable
+    video.dispatchEvent(new Event('canplay'));
+    oldVideo.dispatchEvent(new Event('timeupdate'));
+    await expect(result).resolves.toBe();
+    video.dispatchEvent(new Event('error'));
+    expect(Log.data.error).toEqual([]);
+  });
 });
 
 describe('load', () => {
