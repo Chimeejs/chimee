@@ -41,7 +41,9 @@ function accessorVideoAttribute (attribute: string | {set: string, get: string, 
         ? value
           ? ''
           : undefined
-        : value;
+        : value === null
+          ? undefined
+          : value;
       this.dom.setAttr('video', set, val);
       return value;
     }
@@ -62,7 +64,9 @@ function accessorCustomAttribute (attribute: string, isBoolean?: boolean): Funct
       if(!this.dispatcher.videoConfigReady) return value;
       const val = isBoolean
         ? value || undefined
-        : value;
+        : value === null
+          ? undefined
+          : value;
       this.dom.setAttr('video', attribute, val);
       return value;
     }
