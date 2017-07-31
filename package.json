@@ -71,6 +71,7 @@
     "rollup-plugin-replace": "^1.1.1",
     "rollup-plugin-serve": "^0.4.0",
     "rollup-plugin-uglify": "^2.0.1",
+    "rollup-plugin-visualizer": "^0.3.1",
     "rollup-watch": "^4.3.1"
   },
   "jest": {
