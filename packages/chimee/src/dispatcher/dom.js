@@ -110,9 +110,12 @@ export default class Dom {
      */
     this.installVideo(videoElement);
     domEvents.forEach(key => {
-      const fn = this._getEventHandler(key, {penetrate: true});
-      this.videoDomEventHandlerList.push(fn);
-      addEvent(this.videoElement, key, fn);
+      const cfn = (...args) => this.__dispatcher.bus.triggerSync('c_' + key, ...args);
+      this.containerDomEventHandlerList.push(cfn);
+      addEvent(this.container, key, cfn);
+      const wfn = (...args) => this.__dispatcher.bus.triggerSync('w_' + key, ...args);
+      this.wrapperDomEventHandlerList.push(wfn);
+      addEvent(this.wrapper, key, wfn);
     });
     this._bindFullScreen();
   }

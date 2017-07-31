@@ -33,6 +33,12 @@
       },
       c_contextmenu (evt) {
         console.log(evt);
+      },
+      c_click (evt) {
+        console.warn(evt);
+      },
+      click (evt) {
+        console.log(evt);
       }
     }
   };
