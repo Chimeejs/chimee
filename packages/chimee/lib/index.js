@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.2.0
+ * chimee v0.2.1
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -1367,7 +1367,7 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec$2(_class$2 = functi
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.2.0';
+    _this.VERSION = '0.2.1';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -1720,9 +1720,28 @@ var Dom = (_dec$5 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
      */
     this.installVideo(videoElement);
     domEvents.forEach(function (key) {
-      var fn = _this._getEventHandler(key, { penetrate: true });
-      _this.videoDomEventHandlerList.push(fn);
-      chimeeHelper.addEvent(_this.videoElement, key, fn);
+      var cfn = function cfn() {
+        var _dispatcher$bus;
+
+        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+
+        return (_dispatcher$bus = _this.__dispatcher.bus).triggerSync.apply(_dispatcher$bus, ['c_' + key].concat(args));
+      };
+      _this.containerDomEventHandlerList.push(cfn);
+      chimeeHelper.addEvent(_this.container, key, cfn);
+      var wfn = function wfn() {
+        var _dispatcher$bus2;
+
+        for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+          args[_key3] = arguments[_key3];
+        }
+
+        return (_dispatcher$bus2 = _this.__dispatcher.bus).triggerSync.apply(_dispatcher$bus2, ['w_' + key].concat(args));
+      };
+      _this.wrapperDomEventHandlerList.push(wfn);
+      chimeeHelper.addEvent(_this.wrapper, key, wfn);
     });
     this._bindFullScreen();
   }
@@ -1785,13 +1804,13 @@ var Dom = (_dec$5 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       }
       videoEvents.forEach(function (key) {
         var fn = function fn() {
-          var _dispatcher$bus;
+          var _dispatcher$bus3;
 
-          for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-            args[_key2] = arguments[_key2];
+          for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+            args[_key4] = arguments[_key4];
           }
 
-          return (_dispatcher$bus = _this2.__dispatcher.bus).trigger.apply(_dispatcher$bus, [key].concat(args));
+          return (_dispatcher$bus3 = _this2.__dispatcher.bus).trigger.apply(_dispatcher$bus3, [key].concat(args));
         };
         _this2.videoEventHandlerList.push(fn);
         chimeeHelper.addEvent(videoElement, key, fn);
@@ -1998,8 +2017,8 @@ var Dom = (_dec$5 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       var request = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
       var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'container';
 
-      for (var _len3 = arguments.length, args = Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
-        args[_key3 - 2] = arguments[_key3];
+      for (var _len5 = arguments.length, args = Array(_len5 > 2 ? _len5 - 2 : 0), _key5 = 2; _key5 < _len5; _key5++) {
+        args[_key5 - 2] = arguments[_key5];
       }
 
       return request ? this.requestFullScreen.apply(this, [target].concat(_toConsumableArray(args))) : this.exitFullScreen.apply(this, _toConsumableArray(args));
@@ -2083,13 +2102,13 @@ var Dom = (_dec$5 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
 
       if (!penetrate || ['mouseenter', 'mouseleave'].indexOf(key) < 0) {
         return function () {
-          var _dispatcher$bus2;
+          var _dispatcher$bus4;
 
-          for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-            args[_key4] = arguments[_key4];
+          for (var _len6 = arguments.length, args = Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+            args[_key6] = arguments[_key6];
           }
 
-          (_dispatcher$bus2 = _this9.__dispatcher.bus).triggerSync.apply(_dispatcher$bus2, [key].concat(args));
+          (_dispatcher$bus4 = _this9.__dispatcher.bus).triggerSync.apply(_dispatcher$bus4, [key].concat(args));
         };
       }
       var insideVideo = function insideVideo(node) {
@@ -2099,8 +2118,8 @@ var Dom = (_dec$5 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
         }, false);
       };
       return function () {
-        for (var _len5 = arguments.length, args = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-          args[_key5] = arguments[_key5];
+        for (var _len7 = arguments.length, args = Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
+          args[_key7] = arguments[_key7];
         }
 
         var _args$ = args[0],
@@ -2111,16 +2130,16 @@ var Dom = (_dec$5 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
 
         var to = toElement || relatedTarget;
         if (_this9.__mouseInVideo && type === 'mouseleave' && !insideVideo(to)) {
-          var _dispatcher$bus3;
+          var _dispatcher$bus5;
 
           _this9.__mouseInVideo = false;
-          return (_dispatcher$bus3 = _this9.__dispatcher.bus).triggerSync.apply(_dispatcher$bus3, ['mouseleave'].concat(args));
+          return (_dispatcher$bus5 = _this9.__dispatcher.bus).triggerSync.apply(_dispatcher$bus5, ['mouseleave'].concat(args));
         }
         if (!_this9.__mouseInVideo && type === 'mouseenter' && insideVideo(currentTarget)) {
-          var _dispatcher$bus4;
+          var _dispatcher$bus6;
 
           _this9.__mouseInVideo = true;
-          return (_dispatcher$bus4 = _this9.__dispatcher.bus).triggerSync.apply(_dispatcher$bus4, ['mouseenter'].concat(args));
+          return (_dispatcher$bus6 = _this9.__dispatcher.bus).triggerSync.apply(_dispatcher$bus6, ['mouseenter'].concat(args));
         }
       };
     }
@@ -2895,7 +2914,7 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec(_class = (_class2 = (
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.2.0';
+    return '0.2.1';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
