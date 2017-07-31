@@ -81,6 +81,25 @@ const chimee = new Chimee({
 });
 ```
 
+如果需要播放 `flv` 或者 `hls` 格式，请传入解码器，具体参数请查阅[此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md#-preset)。
+
+```javascript
+import Chimee from 'chimee';
+import flv from 'chimee-kernel-flv';
+import hls from 'chimee-kernel-hls';
+const chimee = new Chimee({
+  wrapper: '#wrapper',
+  src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+  controls: true,
+  autoplay: true,
+  preset: {
+    flv,
+    hls
+  }
+});
+chimee.play();
+```
+
 如果你想了解更多，请点击[此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md)。
 
 在没有配置任何皮肤插件的时候，chimee 会使用浏览器原生的皮肤。你可以尝试使用我们的皮肤插件。

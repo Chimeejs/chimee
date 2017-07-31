@@ -86,6 +86,25 @@ const chimee = new Chimee({
 // play!!
 ```
 
+If you need to play video in flv or hls. You should add preset.
+
+```javascript
+import Chimee from 'chimee';
+import flv from 'chimee-kernel-flv';
+import hls from 'chimee-kernel-hls';
+const chimee = new Chimee({
+  wrapper: '#wrapper',
+  src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+  controls: true,
+  autoplay: true,
+  preset: {
+    flv,
+    hls
+  }
+});
+chimee.play();
+```
+
 If you want to know more about chimee, please click [here](https://github.com/Chimeejs/chimee/blob/master/doc/en/chimee-api.md).
 
 Chimee will use the original skin of browser if you do not use any plugin. You may want to try our UI plugin.
