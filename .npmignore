@@ -8,5 +8,6 @@ doc/
 flow/
 node_modules/
 tool/
+bundle-size/
 .babelrc
 .flowconfig

@@ -11,6 +11,7 @@ import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
+import visualizer from 'rollup-plugin-visualizer';
 const babelConfig = {
   common: {
     presets: [
@@ -83,6 +84,9 @@ export default function (mode) {
       commonjs(),
       replace({
         'process.env.PLAYER_VERSION': `'${version}'`
+      }),
+      visualizer({
+        filename: `bundle-size/${mode}.html`
       })
     ]
   };
