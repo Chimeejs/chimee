@@ -1,6 +1,6 @@
 {
   "name": "chimee-kernel-hls",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "kernel-hls of chimee",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
