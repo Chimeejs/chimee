@@ -19726,8 +19726,7 @@ var Hls = function (_CustEvent) {
     _this2.tag = 'HLS-player';
     _this2.video = videodom;
     _this2.box = 'hls';
-    _this2.config = defaultConfig;
-    deepAssign(_this2.config, config);
+    _this2.config = deepAssign({}, config, defaultConfig);
     _this2.hls = new HlsCore();
     _this2.bindEvents(_this2.hls);
     _this2.attachMedia();
