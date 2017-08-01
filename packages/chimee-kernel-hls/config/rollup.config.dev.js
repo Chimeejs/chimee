@@ -17,5 +17,5 @@ config.plugins.push(
 export default Object.assign(config, {
   format: 'umd',
   dest: 'lib/index.dev.js',
-  moduleName: 'chimeeKernel'
+  moduleName: 'chimeeKernelHls'
 });

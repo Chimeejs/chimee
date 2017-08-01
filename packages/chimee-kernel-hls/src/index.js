@@ -9,8 +9,7 @@ export default class Hls extends CustEvent {
     this.tag = 'HLS-player';
     this.video = videodom;
     this.box = 'hls';
-    this.config = defaultConfig;
-    deepAssign(this.config, config);
+    this.config = deepAssign({}, config, defaultConfig);
     this.hls = new HlsCore();
     this.bindEvents(this.hls);
     this.attachMedia();
