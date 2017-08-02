@@ -14,7 +14,7 @@ function convertNameIntoId (name: string): string {
 function checkPluginConfig (config: any) {
   if(isFunction(config)) {
     if(!(config.prototype instanceof Plugin)) {
-      throw new TypeError('If you pass a function as plugin config, this class must extends from Chimee.plugin');
+      throw new TypeError(`Your are trying to install plugin ${config.name}, but it's not extends from Chimee.plugin.`);
     }
     return;
   }

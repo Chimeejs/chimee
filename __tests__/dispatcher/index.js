@@ -35,7 +35,7 @@ describe('dispatcher', () => {
     expect(() => Dispatcher.install({})).toThrow("plugin's config must be an Object");
     expect(() => Dispatcher.install({name: ''})).toThrow('plugin must have a legal name');
     expect(() => Dispatcher.install({name: 1})).toThrow('plugin must have a legal name');
-    expect(() => Dispatcher.install(class Illegal {})).toThrow('If you pass a function as plugin config, this class must extends from Chimee.plugin');
+    expect(() => Dispatcher.install(class Illegal {})).toThrow("Your are trying to install plugin Illegal, but it's not extends from Chimee.plugin.");
     expect(Dispatcher.install(normalInstall)).toBe('normalInstall');
     expect(Dispatcher.install(NormalFunctionInstall)).toBe('normalFunctionInstall');
     expect(Dispatcher.install(GrandSon)).toBe('grandSon');
