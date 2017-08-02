@@ -1,7 +1,7 @@
 {
   "name": "chimee",
   "version": "0.2.4",
-  "description": "a video-player aims to bing wonderful experience on browser",
+  "description": "a video-player aims to bring wonderful experience on browser",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
   "jsnext:main": "lib/index.mjs",
