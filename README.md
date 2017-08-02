@@ -116,7 +116,7 @@ Chimee.install(ui);
 const chimee = new Chimee({
   wrapper: '#wrapper',
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
-  plugins: [ui.name],
+  plugin: [ui.name],
   controls: false,
   autoplay: true
 });
