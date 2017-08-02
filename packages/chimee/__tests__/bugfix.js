@@ -24,3 +24,17 @@ test('redudant event bind on video', () => {
   player.__dispatcher.dom.wrapper.dispatchEvent(new Event('click'));
   expect(wfn).toHaveBeenCalledTimes(1);
 });
+
+test('non extendable should not be set on dispatcher.plugins', () => {
+  const plugin = {
+    name: 'nonextendablePlugins',
+    create () {
+      expect(this.$plugins).not.toBe();
+    }
+  };
+  Chimee.install(plugin);
+  expect(() => new Chimee({
+    wrapper: document.createElement('div'),
+    plugin: ['nonextendablePlugins']
+  })).not.toThrow();
+});
