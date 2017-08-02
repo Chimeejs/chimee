@@ -10,8 +10,8 @@ const player = new window.Chimee({
     preset: {
       hls: window.chimeeKernelHls
     },
-    // autoplay: true,
+    autoplay: true,
     controls: true
   });
   window.player = player;
-  player.play();
+  // player.play();
