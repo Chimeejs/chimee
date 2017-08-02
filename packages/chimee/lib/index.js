@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.2.3
+ * chimee v0.2.4
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -1289,7 +1289,7 @@ var VideoWrapper = (_dec$3 = toxicDecorators.autobindClass(), _dec2$1 = toxicDec
   }]);
 
   return VideoWrapper;
-}(), (_applyDecoratedDescriptor$2(_class2$1.prototype, '$silentLoad', [_dec2$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$silentLoad'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$fullScreen', [_dec3$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$fullScreen'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$emit', [_dec4$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emit'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$emitSync', [_dec5$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emitSync'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$on', [_dec6, _dec7, _dec8], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$on'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$off', [_dec9, _dec10, _dec11], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$off'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$once', [_dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$once'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$css', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$css'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$attr', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$attr'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$plugins', [toxicDecorators.nonenumerable, toxicDecorators.nonextendable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$plugins'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$pluginOrder', [toxicDecorators.nonenumerable, toxicDecorators.nonextendable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$pluginOrder'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$wrapper', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$wrapper'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$container', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$container'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$video', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$video'), _class2$1.prototype)), _class2$1)) || _class$3);
+}(), (_applyDecoratedDescriptor$2(_class2$1.prototype, '$silentLoad', [_dec2$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$silentLoad'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$fullScreen', [_dec3$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$fullScreen'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$emit', [_dec4$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emit'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$emitSync', [_dec5$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emitSync'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$on', [_dec6, _dec7, _dec8], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$on'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$off', [_dec9, _dec10, _dec11], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$off'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$once', [_dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$once'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$css', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$css'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$attr', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$attr'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$plugins', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$plugins'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$pluginOrder', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$pluginOrder'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$wrapper', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$wrapper'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$container', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$container'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$video', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$video'), _class2$1.prototype)), _class2$1)) || _class$3);
 
 var _dec$2;
 var _class$2;
@@ -1367,7 +1367,7 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec$2(_class$2 = functi
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.2.3';
+    _this.VERSION = '0.2.4';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -2924,7 +2924,7 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec(_class = (_class2 = (
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.2.3';
+    return '0.2.4';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
