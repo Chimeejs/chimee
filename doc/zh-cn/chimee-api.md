@@ -103,11 +103,11 @@ Chimee.install(ui);
 
 const chimee = new Chimee({
   wrapper: '#wrapper',
-  plugins: [ui.name]
+  plugin: [ui.name]
 });
 ```
 
-有的时候，我们希望给插件传入一些参数，我们可以在 plugins 中传入一个对象，该对象中必须要包含一个 name 属性。
+有的时候，我们希望给插件传入一些参数，我们可以在 plugin 中传入一个对象，该对象中必须要包含一个 name 属性。
 
 ```javascript
 import ui from 'chimee-plugin-ui';
@@ -116,7 +116,7 @@ Chimee.install(ui);
 
 const chimee = new Chimee({
   wrapper: '#wrapper',
-  plugins: [{
+  plugin: [{
     name: ui.name,
     theme: 'dark'
   }]
@@ -132,14 +132,14 @@ Chimee.install(ui);
 
 const chimee = new Chimee({
   wrapper: '#wrapper',
-  plugins: [{
+  plugin: [{
     name: ui.name,
     alias: 'myui'
   }]
 });
 ```
 
-插件间具有优先级关系，在 plugins 数组中，插件的优先级由高到低排列。
+插件间具有优先级关系，在 plugin 数组中，插件的优先级由高到低排列。
 
 优先级高的插件将在事件处理机制中优先获得事件，因此可以阻截后方插件获取事件。
 
