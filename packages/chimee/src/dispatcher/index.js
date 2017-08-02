@@ -303,9 +303,17 @@ export default class Dispatcher {
         return Promise.reject(new Error('user abort the mission'));
       }
       const paused = this.dom.videoElement.paused;
-      this.switchKernel({video, kernel, config});
-      if(!paused) this.dom.videoElement.play();
-      return Promise.resolve();
+      if(paused) {
+        this.switchKernel({video, kernel, config});
+        return Promise.resolve();
+      }
+      return new Promise(resolve => {
+        addEvent(video, 'play', evt => {
+          this.switchKernel({video, kernel, config});
+          resolve();
+        }, true);
+        video.play();
+      });
     });
   }
   load (src: string, option: {

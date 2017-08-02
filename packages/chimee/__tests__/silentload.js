@@ -86,6 +86,11 @@ describe('$silentLoad', () => {
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', option);
     Object.defineProperty(oldVideo, 'paused', {value: false});
     await Promise.resolve();
+    Object.defineProperty(video, 'play', {value () {
+      Promise.resolve().then(() => {
+        video.dispatchEvent(new Event('play'));
+      });
+    }});
     // simulate timeupdate beforechange
     oldVideo.dispatchEvent(new Event('timeupdate'));
     // simulate metadata loaded finished
@@ -198,6 +203,24 @@ describe('$silentLoad', () => {
     await expect(result).resolves.toBe();
     video.dispatchEvent(new Event('error'));
     expect(Log.data.error).toEqual([]);
+  });
+  test('should not trigger play when we silentLoad', async () => {
+    const fn = jest.fn();
+    player.$on('play', fn);
+    Object.defineProperty(oldVideo, 'paused', {value: false});
+    const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', {immediate: true});
+    await Promise.resolve();
+    Object.defineProperty(video, 'play', {value () {
+      Promise.resolve().then(() => {
+        video.dispatchEvent(new Event('play'));
+      });
+    }});
+    // simulate metadata loaded finished
+    video.dispatchEvent(new Event('loadedmetadata'));
+    // simulate canplayable
+    video.dispatchEvent(new Event('canplay'));
+    await expect(result).resolves.toBe();
+    expect(fn).toHaveBeenCalledTimes(0);
   });
 });
 
