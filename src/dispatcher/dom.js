@@ -189,7 +189,8 @@ export default class Dom {
   insertPlugin (id: string, el?: string | Element, option: {inner?: boolean, penetrate?: boolean, autoFocus?: boolean, className?: string | Array<string>} = {}) {
     if(!isString(id)) throw new TypeError('insertPlugin id parameter must be string');
     if(isElement(this.plugins[id])) {
-      Log.warn('Dispatcher.dom', `Plugin ${id} have already had a dom node. Now it will be replaced`);
+      /* istanbul ignore else  */
+      if(process.env.NODE_ENV !== 'production') Log.warn('Dispatcher.dom', `Plugin ${id} have already had a dom node. Now it will be replaced`);
       this.removePlugin(id);
     }
     if(isString(el)) {

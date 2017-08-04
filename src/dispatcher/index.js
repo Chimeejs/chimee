@@ -293,14 +293,20 @@ export default class Dispatcher {
     return runRejectableQueue(tasks)
     .then(() => {
       const message = `The silentLoad for ${src} timed out. Please set a longer duration or check your network`;
-      Log.warn("chimee's silentLoad", message);
+      /* istanbul ignore else  */
+      if(process.env.NODE_ENV !== 'production') {
+        Log.warn("chimee's silentLoad", message);
+      }
       return Promise.reject(new Error(message));
     }).catch(data => {
       if(isError(data)) {
         return Promise.reject(data);
       }
       if(data.error) {
-        Log.warn("chimee's silentLoad", data.message);
+        /* istanbul ignore else  */
+        if(process.env.NODE_ENV !== 'production') {
+          Log.warn("chimee's silentLoad", data.message);
+        }
         return Promise.reject(new Error(data.message));
       }
       const {video, kernel} = data;
@@ -412,7 +418,8 @@ export default class Dispatcher {
    */
   _initUserPlugin (configs: Array<string | PluginOption> = []) {
     if(!isArray(configs)) {
-      Log.warn('Dispatcher', `UserConfig.plugin can only by an Array, but not "${configs}" in ${typeof configs}`);
+      /* istanbul ignore else  */
+      if(process.env.NODE_ENV !== 'production') Log.warn('Dispatcher', `UserConfig.plugin can only by an Array, but not "${configs}" in ${typeof configs}`);
       configs = [];
     }
     return configs.map(config => this.use(config));
@@ -463,7 +470,8 @@ export default class Dispatcher {
     const {name} = config;
     const id = camelize(name);
     if(!isEmpty(pluginConfigSet[id])) {
-      Log.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
+      /* istanbul ignore else  */
+      if(process.env.NODE_ENV !== 'production') Log.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
     }
     const pluginConfig = isFunction(config)
       ? config

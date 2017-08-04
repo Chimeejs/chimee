@@ -110,7 +110,8 @@ export default class Bus {
    */
   emit (key: string, ...args: any) {
     if(key.match(secondaryReg)) {
-      Log.warn('bus', 'Secondary Event could not be emit');
+      /* istanbul ignore else  */
+      if(process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
       return;
     }
     const event = this.events[key];
@@ -138,7 +139,8 @@ export default class Bus {
    */
   emitSync (key: string, ...args: any) {
     if(key.match(secondaryReg)) {
-      Log.warn('bus', 'Secondary Event could not be emit');
+      /* istanbul ignore else  */
+      if(process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
       return false;
     }
     const event = this.events[key];
@@ -157,7 +159,8 @@ export default class Bus {
    */
   trigger (key: string, ...args: any) {
     if(key.match(secondaryReg)) {
-      Log.warn('bus', 'Secondary Event could not be emit');
+      /* istanbul ignore else  */
+      if(process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
       return;
     }
     const event = this.events[key];
@@ -186,7 +189,8 @@ export default class Bus {
    */
   triggerSync (key: string, ...args: any) {
     if(key.match(secondaryReg)) {
-      Log.warn('bus', 'Secondary Event could not be emit');
+      /* istanbul ignore else  */
+      if(process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
       return false;
     }
     const event = this.events[key];
