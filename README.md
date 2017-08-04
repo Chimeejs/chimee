@@ -107,6 +107,27 @@ chimee.play();
 
 If you want to know more about chimee, please click [here](https://github.com/Chimeejs/chimee/blob/master/doc/en/chimee-api.md).
 
+What's more, if you use chimes directly, it's better to add this style in your page.
+
+```css
+container {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: #000;
+}
+video:focus,
+video:active {
+  outline: none;
+}
+```
+
 Chimee will use the original skin of browser if you do not use any plugin. You may want to try our UI plugin.
 
 ```javascript

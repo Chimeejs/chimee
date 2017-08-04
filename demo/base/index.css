@@ -33,6 +33,10 @@ video {
   display: block;
   background-color: #000;
 }
+video:focus,
+video:active {
+  outline: none;
+}
 button {
   color: #fff;
   background-color: #3F4F68;
