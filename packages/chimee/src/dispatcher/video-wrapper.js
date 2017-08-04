@@ -5,7 +5,8 @@ import {attrAndStyleCheck, eventBinderCheck} from 'helper/checker';
 import {accessor, nonenumerable, applyDecorators, watch, alias, before, autobindClass} from 'toxic-decorators';
 import VideoConfig from 'dispatcher/video-config';
 function propertyAccessibilityWarn (property) {
-  Log.warn('chimee', `You are trying to obtain ${property}, we will return you the DOM node. It's not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues`);
+  /* istanbul ignore else  */
+  if(process.env.NODE_ENV !== 'production') Log.warn('chimee', `You are trying to obtain ${property}, we will return you the DOM node. It's not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues`);
 }
 export default @autobindClass() class VideoWrapper {
   __id: string;
@@ -137,7 +138,8 @@ export default @autobindClass() class VideoWrapper {
     if(!isObject(obj) && !isArray(obj)) throw new TypeError(`$set only support Array or Object, but not ${obj}, whose type is ${typeof obj}`);
     // $FlowFixMe: we have custom this function
     if(!isFunction(obj.__set)) {
-      Log.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $set.`);
+      /* istanbul ignore else  */
+      if(process.env.NODE_ENV !== 'production') Log.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $set.`);
       // $FlowFixMe: we support computed string on array here
       obj[property] = value;
       return;
@@ -149,7 +151,8 @@ export default @autobindClass() class VideoWrapper {
     if(!isObject(obj) && !isArray(obj)) throw new TypeError(`$del only support Array or Object, but not ${obj}, whose type is ${typeof obj}`);
     // $FlowFixMe: we have custom this function
     if(!isFunction(obj.__del)) {
-      Log.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $del.`);
+      /* istanbul ignore else  */
+      if(process.env.NODE_ENV !== 'production') Log.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $del.`);
       // $FlowFixMe: we support computed string on array here
       delete obj[property];
       return;
@@ -195,7 +198,8 @@ export default @autobindClass() class VideoWrapper {
   @alias('emit')
   $emit (key: string, ...args: any) {
     if(!isString(key)) throw new TypeError('emit key parameter must be String');
-    if(domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
+    /* istanbul ignore else  */
+    if(process.env.NODE_ENV !== 'production' && domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
       Log.warn('plugin', `You are try to emit ${key} event. As emit is wrapped in Promise. It make you can't use event.preventDefault and event.stopPropagation. So we advice you to use emitSync`);
     }
     this.__dispatcher.bus.emit(key, ...args);
@@ -277,7 +281,8 @@ export default @autobindClass() class VideoWrapper {
   $attr (method: string, ...args: Array<any>): string {
     if(method === 'set' && /video/.test(args[0])) {
       if(!this.__dispatcher.videoConfigReady) {
-        Log.warn('chimee', `${this.__id} is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger`);
+        /* istanbul ignore else  */
+        if(process.env.NODE_ENV !== 'production') Log.warn('chimee', `${this.__id} is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger`);
         return args[2];
       }
       if(this.__dispatcher.videoConfig._realDomAttr.indexOf(args[1]) > -1) {

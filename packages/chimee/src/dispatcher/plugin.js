@@ -85,7 +85,8 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   }: PluginConfig = {}, dispatcher: Dispatcher, option: PluginOption = {name}) {
     super();
     if(isEmpty(dispatcher)) {
-      Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
+      /* istanbul ignore else  */
+      if(process.env.NODE_ENV !== 'production') Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
       throw new TypeError('lack of dispatcher');
     }
     if(!isString(id)) {
@@ -144,7 +145,8 @@ export default @autobindClass() class Plugin extends VideoWrapper {
           props[key] = accessor(val);
           return props;
         }
-        Log.warn('Dispatcher.plugin', `Wrong computed member '${key}' defination in Plugin ${name}`);
+        /* istanbul ignore else  */
+        if(process.env.NODE_ENV !== 'production') Log.warn('Dispatcher.plugin', `Wrong computed member '${key}' defination in Plugin ${name}`);
         return props;
       }, {});
       applyDecorators(this, props, {self: true});
