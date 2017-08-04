@@ -130,7 +130,7 @@ describe('dispatcher', () => {
       wrapper: document.createElement('div')
     }, {});
     dispatcher._initUserPlugin('not a array');
-    expect(Log.data.warn[1]).toEqual(['Dispatcher', 'UserConfig.plugin can only by an Array']);
+    expect(Log.data.warn[1]).toEqual(['Dispatcher', 'UserConfig.plugin can only by an Array, but not "not a array" in string']);
     dispatcher.destroy();
   });
 

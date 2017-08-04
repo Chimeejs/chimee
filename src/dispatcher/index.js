@@ -8,7 +8,7 @@ import VideoConfig from './video-config';
 import {before, applyDecorators, accessor} from 'toxic-decorators';
 const pluginConfigSet: PluginConfigSet = {};
 function convertNameIntoId (name: string): string {
-  if(!isString(name)) throw new Error("Plugin's name must be a string");
+  if(!isString(name)) throw new Error(`Plugin's name must be a string, but not "${name}" in ${typeof name}`);
   return camelize(name);
 }
 function checkPluginConfig (config: any) {
@@ -18,9 +18,9 @@ function checkPluginConfig (config: any) {
     }
     return;
   }
-  if(!isObject(config) || isEmpty(config)) throw new TypeError("plugin's config must be an Object");
+  if(!isObject(config) || isEmpty(config)) throw new TypeError(`plugin's config must be an Object, but not "${config}" in ${typeof config}`);
   const {name} = config;
-  if(!isString(name) || name.length < 1) throw new TypeError('plugin must have a legal name');
+  if(!isString(name) || name.length < 1) throw new TypeError(`plugin must have a legal namea, but not "${name}" in ${typeof name}`);
 }
 /**
  * <pre>
@@ -76,7 +76,7 @@ export default class Dispatcher {
    * @return {Dispatcher}
    */
   constructor (config: UserConfig, vm: Chimee) {
-    if(!isObject(config)) throw new TypeError('UserConfig must be an Object');
+    if(!isObject(config)) throw new TypeError(`UserConfig must be an Object, but not "${config}" in ${typeof config}`);
     /**
      * dom Manager
      * @type {Dom}
@@ -406,7 +406,7 @@ export default class Dispatcher {
    */
   _initUserPlugin (configs: Array<string | PluginOption> = []) {
     if(!isArray(configs)) {
-      Log.warn('Dispatcher', 'UserConfig.plugin can only by an Array');
+      Log.warn('Dispatcher', `UserConfig.plugin can only by an Array, but not "${configs}" in ${typeof configs}`);
       configs = [];
     }
     return configs.map(config => this.use(config));
