@@ -99,6 +99,12 @@ export default class Dispatcher {
     this.videoConfigReady = false;
     // create the videoconfig
     this.videoConfig = new VideoConfig(this, config);
+    // support both plugin and plugins here as people often cofuse both
+    // $FlowFixMe: we support plugins here, which should be illegal
+    if(isArray(config.plugins) && !isArray(config.plugin)) {
+      config.plugin = config.plugins;
+      delete config.plugins;
+    }
     this._initUserPlugin(config.plugin);
     this.order.forEach(key => this.plugins[key].__init(this.videoConfig));
     this.videoConfig.lockKernelProperty();

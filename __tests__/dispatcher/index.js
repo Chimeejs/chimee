@@ -193,6 +193,13 @@ describe('dispatcher', () => {
       expect(dispatcher.readySync).toBe(true);
       dispatcher.destroy();
     });
+    test('support plugins too', () => {
+      const dispatcher = new Dispatcher({
+        wrapper: document.createElement('div'),
+        plugins: ['normalInstall']
+      }, {});
+      expect(dispatcher.plugins.normalInstall.__id).toBe('normalInstall');
+    });
   });
 
   describe('_getTopLevel', () => {
