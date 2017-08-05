@@ -1,7 +1,7 @@
 // @flow
 import {isString} from 'toxic-predicate-functions';
 function formatter (tag: string, msg?: string): string {
-  if(!isString(tag)) throw new TypeError("Log's method only acccept string as argument");
+  if(!isString(tag)) throw new TypeError(`Log's method only acccept string as argument, but not ${tag} in ${typeof tag}`);
   if(!isString(msg)) return `[${Log.GLOBAL_TAG}] > ${tag}`;
   tag = Log.FORCE_GLOBAL_TAG
     ? Log.GLOBAL_TAG
