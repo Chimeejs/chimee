@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.2.4
+ * chimee v0.2.5
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -1321,7 +1321,7 @@ var _invoke = function(fn, args, that){
   } return              fn.apply(that, args);
 };
 
-var process$1            = _global.process;
+var process$2            = _global.process;
 var setTask            = _global.setImmediate;
 var clearTask          = _global.clearImmediate;
 var MessageChannel     = _global.MessageChannel;
@@ -1357,9 +1357,9 @@ if(!setTask || !clearTask){
     delete queue[id];
   };
   // Node.js 0.8-
-  if(_cof(process$1) == 'process'){
+  if(_cof(process$2) == 'process'){
     defer = function(id){
-      process$1.nextTick(_ctx(run, id, 1));
+      process$2.nextTick(_ctx(run, id, 1));
     };
   // Browsers with MessageChannel, includes WebWorkers
   } else if(MessageChannel){
@@ -1396,16 +1396,16 @@ var _task = {
 
 var macrotask = _task.set;
 var Observer  = _global.MutationObserver || _global.WebKitMutationObserver;
-var process$2   = _global.process;
+var process$3   = _global.process;
 var Promise   = _global.Promise;
-var isNode$1    = _cof(process$2) == 'process';
+var isNode$1    = _cof(process$3) == 'process';
 
 var _microtask = function(){
   var head, last, notify;
 
   var flush = function(){
     var parent, fn;
-    if(isNode$1 && (parent = process$2.domain))parent.exit();
+    if(isNode$1 && (parent = process$3.domain))parent.exit();
     while(head){
       fn   = head.fn;
       head = head.next;
@@ -1423,7 +1423,7 @@ var _microtask = function(){
   // Node.js
   if(isNode$1){
     notify = function(){
-      process$2.nextTick(flush);
+      process$3.nextTick(flush);
     };
   // browsers with MutationObserver
   } else if(Observer){
@@ -1505,10 +1505,10 @@ var task               = _task.set;
 var microtask          = _microtask();
 var PROMISE            = 'Promise';
 var TypeError$1          = _global.TypeError;
-var process            = _global.process;
+var process$1            = _global.process;
 var $Promise           = _global[PROMISE];
-var process            = _global.process;
-var isNode             = _classof(process) == 'process';
+var process$1            = _global.process;
+var isNode             = _classof(process$1) == 'process';
 var empty              = function(){ /* empty */ };
 var Internal;
 var GenericPromiseCapability;
@@ -1604,7 +1604,7 @@ var onUnhandled = function(promise){
     if(isUnhandled(promise)){
       abrupt = perform(function(){
         if(isNode){
-          process.emit('unhandledRejection', value, promise);
+          process$1.emit('unhandledRejection', value, promise);
         } else if(handler = _global.onunhandledrejection){
           handler({promise: promise, reason: value});
         } else if((console = _global.console) && console.error){
@@ -1631,7 +1631,7 @@ var onHandleUnhandled = function(promise){
   task.call(_global, function(){
     var handler;
     if(isNode){
-      process.emit('rejectionHandled', promise);
+      process$1.emit('rejectionHandled', promise);
     } else if(handler = _global.onrejectionhandled){
       handler({promise: promise, reason: promise._v});
     }
@@ -1702,7 +1702,7 @@ if(!USE_NATIVE$1){
       var reaction    = newPromiseCapability(_speciesConstructor(this, $Promise));
       reaction.ok     = typeof onFulfilled == 'function' ? onFulfilled : true;
       reaction.fail   = typeof onRejected == 'function' && onRejected;
-      reaction.domain = isNode ? process.domain : undefined;
+      reaction.domain = isNode ? process$1.domain : undefined;
       this._c.push(reaction);
       if(this._a)this._a.push(reaction);
       if(this._s)notify(this, false);
@@ -4457,7 +4457,8 @@ var Bus = function () {
       }
 
       if (key.match(secondaryReg)) {
-        Log.warn('bus', 'Secondary Event could not be emit');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
         return;
       }
       var event = this.events[key];
@@ -4486,7 +4487,8 @@ var Bus = function () {
     key: 'emitSync',
     value: function emitSync(key) {
       if (key.match(secondaryReg)) {
-        Log.warn('bus', 'Secondary Event could not be emit');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
         return false;
       }
       var event = this.events[key];
@@ -4519,7 +4521,8 @@ var Bus = function () {
       }
 
       if (key.match(secondaryReg)) {
-        Log.warn('bus', 'Secondary Event could not be emit');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
         return;
       }
       var event = this.events[key];
@@ -4548,7 +4551,8 @@ var Bus = function () {
     key: 'triggerSync',
     value: function triggerSync(key) {
       if (key.match(secondaryReg)) {
-        Log.warn('bus', 'Secondary Event could not be emit');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
         return false;
       }
       var event = this.events[key];
@@ -5091,7 +5095,7 @@ module.exports = { "default": preventExtensions$2, __esModule: true };
 });
 
 /**
- * toxic-decorators v0.3.6
+ * toxic-decorators v0.3.7
  * (c) 2017 toxic-johann
  * Released under GPL-3.0
  */
@@ -5192,13 +5196,10 @@ function compressOneArgFnArray(fns) {
  * @param {anything} args
  */
 function warn() {
-  var _console2, _console3;
+  var _console, _console2;
 
-  var _console = console,
-      warn = _console.warn;
-
-  if (isFunction(warn)) return (_console2 = console).warn.apply(_console2, arguments);
-  (_console3 = console).log.apply(_console3, arguments);
+  if (isFunction(console.warn)) return (_console = console).warn.apply(_console, arguments);
+  (_console2 = console).log.apply(_console2, arguments);
 }
 
 function getOwnKeysFn() {
@@ -5230,9 +5231,9 @@ function compressMultipleDecorators() {
     fns[_key] = arguments[_key];
   }
 
-  var fnOnlyErrorMsg = 'compressMultipleDecorators only accept function';
+  if (!fns.length) throw new TypeError('You must pass in decorators in compressMultipleDecorators');
   fns.forEach(function (fn) {
-    if (!isFunction(fns[0])) throw new TypeError(fnOnlyErrorMsg);
+    if (!isFunction(fn)) throw new TypeError('Decorators must be a function, but not "' + fn + '" in ' + (typeof fn === 'undefined' ? 'undefined' : _typeof(fn)));
   });
   if (fns.length === 1) return fns[0];
   return function (obj, prop, descirptor) {
@@ -5264,10 +5265,6 @@ function accessor() {
         configurable = _ref3$configurable === undefined ? true : _ref3$configurable,
         _ref3$enumerable = _ref3.enumerable,
         enumerable = _ref3$enumerable === undefined ? true : _ref3$enumerable;
-    // const configurable = descriptor ? descriptor.configurable : true;
-    // const enumerable = descriptor ? descriptor.enumerable : true;
-    // const writable = descriptor ? descriptor.w : true;
-
 
     var hasGet = isFunction(get);
     var hasSet = isFunction(set);
@@ -5285,10 +5282,10 @@ function accessor() {
 
       var hasOriginGet = isFunction(originGet);
       var hasOriginSet = isFunction(originSet);
-      if (!hasOriginGet && hasGet) {
+      if (process.env.NODE_ENV !== 'production' && !hasOriginGet && hasGet) {
         warn('You are trying to set getter via @accessor on ' + prop + ' without getter. That\'s not a good idea.');
       }
-      if (!hasOriginSet && hasSet) {
+      if (process.env.NODE_ENV !== 'production' && !hasOriginSet && hasSet) {
         warn('You are trying to set setter via @accessor on  ' + prop + ' without setter. That\'s not a good idea.');
       }
       var getter = hasOriginGet || hasGet ? function () {
@@ -5385,21 +5382,19 @@ function before() {
 
   if (fns.length === 0) throw new Error("@before accept at least one parameter. If you don't need to preprocess before your function, do not add @before decorators");
   if (fns.length > 2 && isDescriptor(fns[2])) {
-    throw new Error('You may use @before straightly, @before return decorators, you need to call it');
+    throw new Error('You may use @before straightly, @before return decorators, you should call it before you set it as decorator.');
   }
   for (var i = fns.length - 1; i > -1; i--) {
     if (!isFunction(fns[i])) throw new TypeError('@before only accept function parameter');
   }
   return function (obj, prop, descriptor) {
-    if (descriptor === undefined) {
-      throw new Error('@before must used on descriptor, are you using it on undefined property?');
-    }
-    var fn = descriptor.value,
-        configurable = descriptor.configurable,
-        enumerable = descriptor.enumerable,
-        writable = descriptor.writable;
+    var _ref = descriptor || {},
+        fn = _ref.value,
+        configurable = _ref.configurable,
+        enumerable = _ref.enumerable,
+        writable = _ref.writable;
 
-    if (!isFunction(fn)) throw new TypeError('@before can only be used on function');
+    if (!isFunction(fn)) throw new TypeError('@before can only be used on function, please check the property "' + prop + '" is a method or not.');
     var handler = function handler() {
       var _this = this;
 
@@ -5504,9 +5499,10 @@ function setAlias(root, prop, _ref, obj, key, _ref2) {
   var originDesc = getOwnPropertyDescriptor$1$1(obj, key);
   if (originDesc !== undefined) {
     if (omit) return;
-    if (!force) throw new Error("@alias can't set alias on an existing attribute");
+    // TODO: we should add an github link here
+    if (!force) throw new Error('"' + prop + '" is an existing property, if you want to override it, please set "force" true in @alias option.');
     if (!originDesc.configurable) {
-      throw new Error("You are tring to set alias on an existing attribute which its configurable is false. That's impossible. Please check if you have set @frozen on it.");
+      throw new Error('property "' + prop + '" is unconfigurable.');
     }
   }
   defineProperty$4(obj, key, {
@@ -5684,14 +5680,13 @@ function getBoundSuper(obj, fn) {
  */
 function autobind(obj, prop, descriptor) {
   if (arguments.length === 1) return autobindClass()(obj);
-  if (!isDescriptor(descriptor)) {
-    throw new Error('@autobind must used on descriptor, are you using it on undefined property?');
-  }
-  var fn = descriptor.value,
-      configurable = descriptor.configurable;
+
+  var _ref = descriptor || {},
+      fn = _ref.value,
+      configurable = _ref.configurable;
 
   if (!isFunction(fn)) {
-    throw new TypeError('@autobind can only be used on functions, not: ' + fn + ')');
+    throw new TypeError('@autobind can only be used on functions, not "' + fn + '" in ' + (typeof fn === 'undefined' ? 'undefined' : _typeof(fn)) + ' on property "' + prop + '"');
   }
   var constructor = obj.constructor;
 
@@ -5750,7 +5745,8 @@ var defineProperty$2$1 = _Object$defineProperty;
 
 function frozen(obj, prop, descriptor) {
   if (descriptor === undefined) {
-    warn('You are using @frozen on an undefined property. This property will become a frozen undefined forever, which is meaningless');
+    /* istanbul ignore else  */
+    if (process.env.NODE_ENV !== 'production') warn('You are using @frozen on an undefined property. This property will become a frozen undefined forever, which is meaningless');
     return {
       value: undefined,
       writable: false,
@@ -5765,7 +5761,8 @@ function frozen(obj, prop, descriptor) {
 
     descriptor.set = undefined;
     if (!isFunction(_get)) {
-      warn('You are using @frozen on one accessor descriptor without getter. This property will become a frozen undefined finally.Which maybe meaningless.');
+      /* istanbul ignore else  */
+      if (process.env.NODE_ENV !== 'production') warn('You are using @frozen on one accessor descriptor without getter. This property will become a frozen undefined finally.Which maybe meaningless.');
       return;
     }
     return {
@@ -5799,13 +5796,11 @@ function waituntil(key) {
 
   if (!isFunction(key) && !isPromise(key) && !isString(key)) throw new TypeError('@waitUntil only accept Function, Promise or String');
   return function (obj, prop, descriptor) {
-    if (descriptor === undefined) {
-      throw new Error('@waituntil must used on descriptor, are you using it on undefined property?');
-    }
-    var _value = descriptor.value,
-        configurable = descriptor.configurable;
+    var _ref2 = descriptor || {},
+        _value = _ref2.value,
+        configurable = _ref2.configurable;
 
-    if (!isFunction(_value)) throw new TypeError('@waituntil can only be used on function, but not ' + _value);
+    if (!isFunction(_value)) throw new TypeError('@waituntil can only be used on function, but not ' + _value + ' on property "' + prop + '"');
     var binded = false;
     var waitingQueue = [];
     var canIRun = isPromise(key) ? function () {
@@ -5891,7 +5886,8 @@ var defineProperty$5 = _Object$defineProperty;
 
 function lock(obj, prop, descriptor) {
   if (descriptor === undefined) {
-    warn('You are using @lock on an undefined property. This property will become a lock undefined forever, which is meaningless');
+    /* istanbul ignore else  */
+    if (process.env.NODE_ENV !== 'production') warn('You are using @lock on an undefined property "' + prop + '". This property will become a lock undefined forever, which is meaningless.');
     return {
       value: undefined,
       writable: false,
@@ -5982,7 +5978,8 @@ function applyDecorators(Class, props) {
     try {
       handler = compressMultipleDecorators.apply(undefined, _toConsumableArray(decorators));
     } catch (err) {
-      warn(err && err.message);
+      /* istanbul ignore else  */
+      if (process.env.NODE_ENV !== 'production') warn(err && err.message);
       throw new Error('The decorators set on props must be Function or Array of Function');
     }
     var descriptor = getOwnPropertyDescriptor$3$1(prototype, key);
@@ -6140,10 +6137,6 @@ function deepObserve(value, hook, _ref2) {
     };
   }), nonenumerable]), _defineProperty$1(_operateProps2, operationPrefix + 'del', [initialize(function (method) {
     return function (property) {
-      if (getOwnKeys(value).indexOf(property) === -1) {
-        var _props3 = getPropertyDecorators([property]);
-        applyDecorators(value, _props3, { self: true, omit: true });
-      }
       if (isFunction(method)) {
         bind(method, _this)(property);
       } else {
@@ -6174,9 +6167,10 @@ function watch() {
 
   var proxy = option.proxy;
 
-  if (!Proxy) {
+  if (typeof Proxy !== 'function') {
     proxy = false;
-    warn('You browser do not support Proxy, we will change back into observe mode.');
+    /* istanbul ignore else  */
+    if (process.env.NODE_ENV !== 'production') warn('You browser do not support Proxy, we will fall back into observe mode.');
   }
   if (!args.length) throw new TypeError('You must pass a function or a string to find the hanlder function.');
   if (other !== undefined && isPrimitive(other)) throw new TypeError('If you want us to trigger function on the other instance, you must pass in a legal instance');
@@ -6753,7 +6747,8 @@ function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, c
 }
 
 function propertyAccessibilityWarn(property) {
-  Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
+  /* istanbul ignore else  */
+  if (process.env.NODE_ENV !== 'production') Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
 }
 var VideoWrapper = (_dec$3 = autobindClass(), _dec2$1 = alias('silentLoad'), _dec3$1 = alias('fullScreen'), _dec4$1 = alias('emit'), _dec5$1 = alias('emitSync'), _dec6 = alias('on'), _dec7 = alias('addEventListener'), _dec8 = before(eventBinderCheck), _dec9 = alias('off'), _dec10 = alias('removeEventListener'), _dec11 = before(eventBinderCheck), _dec12 = alias('once'), _dec13 = before(eventBinderCheck), _dec14 = alias('css'), _dec15 = before(attrAndStyleCheck), _dec16 = alias('attr'), _dec17 = before(attrAndStyleCheck), _dec$3(_class$3 = (_class2$1 = function () {
   function VideoWrapper() {
@@ -6883,7 +6878,8 @@ var VideoWrapper = (_dec$3 = autobindClass(), _dec2$1 = alias('silentLoad'), _de
       if (!isObject$1(obj) && !isArray$1(obj)) throw new TypeError('$set only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
       // $FlowFixMe: we have custom this function
       if (!isFunction(obj.__set)) {
-        Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $set.');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $set.');
         // $FlowFixMe: we support computed string on array here
         obj[property] = value;
         return;
@@ -6896,7 +6892,8 @@ var VideoWrapper = (_dec$3 = autobindClass(), _dec2$1 = alias('silentLoad'), _de
       if (!isObject$1(obj) && !isArray$1(obj)) throw new TypeError('$del only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
       // $FlowFixMe: we have custom this function
       if (!isFunction(obj.__del)) {
-        Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $del.');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $del.');
         // $FlowFixMe: we support computed string on array here
         delete obj[property];
         return;
@@ -6967,7 +6964,8 @@ var VideoWrapper = (_dec$3 = autobindClass(), _dec2$1 = alias('silentLoad'), _de
       var _dispatcher$bus3;
 
       if (!isString(key)) throw new TypeError('emit key parameter must be String');
-      if (domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
+      /* istanbul ignore else  */
+      if (process.env.NODE_ENV !== 'production' && domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
         Log.warn('plugin', 'You are try to emit ' + key + ' event. As emit is wrapped in Promise. It make you can\'t use event.preventDefault and event.stopPropagation. So we advice you to use emitSync');
       }
 
@@ -7078,7 +7076,8 @@ var VideoWrapper = (_dec$3 = autobindClass(), _dec2$1 = alias('silentLoad'), _de
 
       if (method === 'set' && /video/.test(args[0])) {
         if (!this.__dispatcher.videoConfigReady) {
-          Log.warn('chimee', this.__id + ' is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger');
+          /* istanbul ignore else  */
+          if (process.env.NODE_ENV !== 'production') Log.warn('chimee', this.__id + ' is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger');
           return args[2];
         }
         if (this.__dispatcher.videoConfig._realDomAttr.indexOf(args[1]) > -1) {
@@ -7249,12 +7248,13 @@ var Plugin = (_dec$2 = autobindClass(), _dec$2(_class$2 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.2.4';
+    _this.VERSION = '0.2.5';
     _this.__operable = true;
     _this.__level = 0;
 
     if (isEmpty(dispatcher)) {
-      Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
+      /* istanbul ignore else  */
+      if (process.env.NODE_ENV !== 'production') Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
       throw new TypeError('lack of dispatcher');
     }
     if (!isString(id)) {
@@ -7311,7 +7311,8 @@ var Plugin = (_dec$2 = autobindClass(), _dec$2(_class$2 = function (_VideoWrappe
           props[key] = accessor(val);
           return props;
         }
-        Log.warn('Dispatcher.plugin', 'Wrong computed member \'' + key + '\' defination in Plugin ' + name);
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') Log.warn('Dispatcher.plugin', 'Wrong computed member \'' + key + '\' defination in Plugin ' + name);
         return props;
       }, {});
       applyDecorators(_this, props, { self: true });
@@ -7746,7 +7747,8 @@ var Dom = (_dec$5 = waituntil('__dispatcher.videoConfigReady'), _dec2$3 = before
 
       if (!isString(id)) throw new TypeError('insertPlugin id parameter must be string');
       if (isElement(this.plugins[id])) {
-        Log.warn('Dispatcher.dom', 'Plugin ' + id + ' have already had a dom node. Now it will be replaced');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') Log.warn('Dispatcher.dom', 'Plugin ' + id + ' have already had a dom node. Now it will be replaced');
         this.removePlugin(id);
       }
       if (isString(el)) {
@@ -8068,7 +8070,7 @@ function _applyDecoratedDescriptor$1(target, property, decorators, descriptor, c
 
 var pluginConfigSet = {};
 function convertNameIntoId(name) {
-  if (!isString(name)) throw new Error("Plugin's name must be a string");
+  if (!isString(name)) throw new Error('Plugin\'s name must be a string, but not "' + name + '" in ' + (typeof name === 'undefined' ? 'undefined' : _typeof(name)));
   return camelize(name);
 }
 function checkPluginConfig(config) {
@@ -8078,10 +8080,10 @@ function checkPluginConfig(config) {
     }
     return;
   }
-  if (!isObject$1(config) || isEmpty(config)) throw new TypeError("plugin's config must be an Object");
+  if (!isObject$1(config) || isEmpty(config)) throw new TypeError('plugin\'s config must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
   var name = config.name;
 
-  if (!isString(name) || name.length < 1) throw new TypeError('plugin must have a legal name');
+  if (!isString(name) || name.length < 1) throw new TypeError('plugin must have a legal namea, but not "' + name + '" in ' + (typeof name === 'undefined' ? 'undefined' : _typeof(name)));
 }
 /**
  * <pre>
@@ -8122,7 +8124,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
     };
     this.changeWatchable = true;
 
-    if (!isObject$1(config)) throw new TypeError('UserConfig must be an Object');
+    if (!isObject$1(config)) throw new TypeError('UserConfig must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
     /**
      * dom Manager
      * @type {Dom}
@@ -8145,6 +8147,12 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
     this.videoConfigReady = false;
     // create the videoconfig
     this.videoConfig = new VideoConfig(this, config);
+    // support both plugin and plugins here as people often cofuse both
+    // $FlowFixMe: we support plugins here, which should be illegal
+    if (isArray$1(config.plugins) && !isArray$1(config.plugin)) {
+      config.plugin = config.plugins;
+      delete config.plugins;
+    }
     this._initUserPlugin(config.plugin);
     this.order.forEach(function (key) {
       return _this.plugins[key].__init(_this.videoConfig);
@@ -8346,14 +8354,20 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
       });
       return runRejectableQueue(tasks).then(function () {
         var message = 'The silentLoad for ' + src + ' timed out. Please set a longer duration or check your network';
-        Log.warn("chimee's silentLoad", message);
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') {
+          Log.warn("chimee's silentLoad", message);
+        }
         return _Promise.reject(new Error(message));
       }).catch(function (data) {
         if (isError(data)) {
           return _Promise.reject(data);
         }
         if (data.error) {
-          Log.warn("chimee's silentLoad", data.message);
+          /* istanbul ignore else  */
+          if (process.env.NODE_ENV !== 'production') {
+            Log.warn("chimee's silentLoad", data.message);
+          }
           return _Promise.reject(new Error(data.message));
         }
         var video = data.video,
@@ -8479,7 +8493,8 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
       var configs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
       if (!isArray$1(configs)) {
-        Log.warn('Dispatcher', 'UserConfig.plugin can only by an Array');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') Log.warn('Dispatcher', 'UserConfig.plugin can only by an Array, but not "' + configs + '" in ' + (typeof configs === 'undefined' ? 'undefined' : _typeof(configs)));
         configs = [];
       }
       return configs.map(function (config) {
@@ -8548,7 +8563,8 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
 
       var id = camelize(name);
       if (!isEmpty(pluginConfigSet[id])) {
-        Log.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') Log.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
       }
       var pluginConfig = isFunction(config) ? config : deepAssign({ id: id }, config);
       pluginConfigSet[id] = pluginConfig;
@@ -8806,7 +8822,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.2.4';
+    return '0.2.5';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,

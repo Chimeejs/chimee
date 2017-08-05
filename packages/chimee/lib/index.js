@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.2.4
+ * chimee v0.2.5
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -18,6 +18,7 @@ var _possibleConstructorReturn = _interopDefault(require('babel-runtime/helpers/
 var _get = _interopDefault(require('babel-runtime/helpers/get'));
 var _inherits = _interopDefault(require('babel-runtime/helpers/inherits'));
 var _Promise = _interopDefault(require('babel-runtime/core-js/promise'));
+var _typeof = _interopDefault(require('babel-runtime/helpers/typeof'));
 var chimeeHelper = require('chimee-helper');
 var Kernel = _interopDefault(require('chimee-kernel'));
 var _Map = _interopDefault(require('babel-runtime/core-js/map'));
@@ -26,7 +27,6 @@ var _Object$keys = _interopDefault(require('babel-runtime/core-js/object/keys'))
 var toxicDecorators = require('toxic-decorators');
 var _JSON$stringify = _interopDefault(require('babel-runtime/core-js/json/stringify'));
 var _defineProperty = _interopDefault(require('babel-runtime/helpers/defineProperty'));
-var _typeof = _interopDefault(require('babel-runtime/helpers/typeof'));
 var _Number$isNaN = _interopDefault(require('babel-runtime/core-js/number/is-nan'));
 
 var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting'];
@@ -161,7 +161,8 @@ var Bus = function () {
       }
 
       if (key.match(secondaryReg)) {
-        chimeeHelper.Log.warn('bus', 'Secondary Event could not be emit');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('bus', 'Secondary Event could not be emit');
         return;
       }
       var event = this.events[key];
@@ -190,7 +191,8 @@ var Bus = function () {
     key: 'emitSync',
     value: function emitSync(key) {
       if (key.match(secondaryReg)) {
-        chimeeHelper.Log.warn('bus', 'Secondary Event could not be emit');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('bus', 'Secondary Event could not be emit');
         return false;
       }
       var event = this.events[key];
@@ -223,7 +225,8 @@ var Bus = function () {
       }
 
       if (key.match(secondaryReg)) {
-        chimeeHelper.Log.warn('bus', 'Secondary Event could not be emit');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('bus', 'Secondary Event could not be emit');
         return;
       }
       var event = this.events[key];
@@ -252,7 +255,8 @@ var Bus = function () {
     key: 'triggerSync',
     value: function triggerSync(key) {
       if (key.match(secondaryReg)) {
-        chimeeHelper.Log.warn('bus', 'Secondary Event could not be emit');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('bus', 'Secondary Event could not be emit');
         return false;
       }
       var event = this.events[key];
@@ -871,7 +875,8 @@ function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, c
 }
 
 function propertyAccessibilityWarn(property) {
-  chimeeHelper.Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
+  /* istanbul ignore else  */
+  if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
 }
 var VideoWrapper = (_dec$3 = toxicDecorators.autobindClass(), _dec2$1 = toxicDecorators.alias('silentLoad'), _dec3$1 = toxicDecorators.alias('fullScreen'), _dec4$1 = toxicDecorators.alias('emit'), _dec5$1 = toxicDecorators.alias('emitSync'), _dec6 = toxicDecorators.alias('on'), _dec7 = toxicDecorators.alias('addEventListener'), _dec8 = toxicDecorators.before(eventBinderCheck), _dec9 = toxicDecorators.alias('off'), _dec10 = toxicDecorators.alias('removeEventListener'), _dec11 = toxicDecorators.before(eventBinderCheck), _dec12 = toxicDecorators.alias('once'), _dec13 = toxicDecorators.before(eventBinderCheck), _dec14 = toxicDecorators.alias('css'), _dec15 = toxicDecorators.before(attrAndStyleCheck), _dec16 = toxicDecorators.alias('attr'), _dec17 = toxicDecorators.before(attrAndStyleCheck), _dec$3(_class$3 = (_class2$1 = function () {
   function VideoWrapper() {
@@ -1001,7 +1006,8 @@ var VideoWrapper = (_dec$3 = toxicDecorators.autobindClass(), _dec2$1 = toxicDec
       if (!chimeeHelper.isObject(obj) && !chimeeHelper.isArray(obj)) throw new TypeError('$set only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
       // $FlowFixMe: we have custom this function
       if (!chimeeHelper.isFunction(obj.__set)) {
-        chimeeHelper.Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $set.');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $set.');
         // $FlowFixMe: we support computed string on array here
         obj[property] = value;
         return;
@@ -1014,7 +1020,8 @@ var VideoWrapper = (_dec$3 = toxicDecorators.autobindClass(), _dec2$1 = toxicDec
       if (!chimeeHelper.isObject(obj) && !chimeeHelper.isArray(obj)) throw new TypeError('$del only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
       // $FlowFixMe: we have custom this function
       if (!chimeeHelper.isFunction(obj.__del)) {
-        chimeeHelper.Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $del.');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $del.');
         // $FlowFixMe: we support computed string on array here
         delete obj[property];
         return;
@@ -1085,7 +1092,8 @@ var VideoWrapper = (_dec$3 = toxicDecorators.autobindClass(), _dec2$1 = toxicDec
       var _dispatcher$bus3;
 
       if (!chimeeHelper.isString(key)) throw new TypeError('emit key parameter must be String');
-      if (domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
+      /* istanbul ignore else  */
+      if (process.env.NODE_ENV !== 'production' && domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
         chimeeHelper.Log.warn('plugin', 'You are try to emit ' + key + ' event. As emit is wrapped in Promise. It make you can\'t use event.preventDefault and event.stopPropagation. So we advice you to use emitSync');
       }
 
@@ -1196,7 +1204,8 @@ var VideoWrapper = (_dec$3 = toxicDecorators.autobindClass(), _dec2$1 = toxicDec
 
       if (method === 'set' && /video/.test(args[0])) {
         if (!this.__dispatcher.videoConfigReady) {
-          chimeeHelper.Log.warn('chimee', this.__id + ' is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger');
+          /* istanbul ignore else  */
+          if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('chimee', this.__id + ' is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger');
           return args[2];
         }
         if (this.__dispatcher.videoConfig._realDomAttr.indexOf(args[1]) > -1) {
@@ -1367,12 +1376,13 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec$2(_class$2 = functi
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.2.4';
+    _this.VERSION = '0.2.5';
     _this.__operable = true;
     _this.__level = 0;
 
     if (chimeeHelper.isEmpty(dispatcher)) {
-      chimeeHelper.Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
+      /* istanbul ignore else  */
+      if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
       throw new TypeError('lack of dispatcher');
     }
     if (!chimeeHelper.isString(id)) {
@@ -1429,7 +1439,8 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec$2(_class$2 = functi
           props[key] = toxicDecorators.accessor(val);
           return props;
         }
-        chimeeHelper.Log.warn('Dispatcher.plugin', 'Wrong computed member \'' + key + '\' defination in Plugin ' + name);
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('Dispatcher.plugin', 'Wrong computed member \'' + key + '\' defination in Plugin ' + name);
         return props;
       }, {});
       toxicDecorators.applyDecorators(_this, props, { self: true });
@@ -1864,7 +1875,8 @@ var Dom = (_dec$5 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
 
       if (!chimeeHelper.isString(id)) throw new TypeError('insertPlugin id parameter must be string');
       if (chimeeHelper.isElement(this.plugins[id])) {
-        chimeeHelper.Log.warn('Dispatcher.dom', 'Plugin ' + id + ' have already had a dom node. Now it will be replaced');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('Dispatcher.dom', 'Plugin ' + id + ' have already had a dom node. Now it will be replaced');
         this.removePlugin(id);
       }
       if (chimeeHelper.isString(el)) {
@@ -2186,7 +2198,7 @@ function _applyDecoratedDescriptor$1(target, property, decorators, descriptor, c
 
 var pluginConfigSet = {};
 function convertNameIntoId(name) {
-  if (!chimeeHelper.isString(name)) throw new Error("Plugin's name must be a string");
+  if (!chimeeHelper.isString(name)) throw new Error('Plugin\'s name must be a string, but not "' + name + '" in ' + (typeof name === 'undefined' ? 'undefined' : _typeof(name)));
   return chimeeHelper.camelize(name);
 }
 function checkPluginConfig(config) {
@@ -2196,10 +2208,10 @@ function checkPluginConfig(config) {
     }
     return;
   }
-  if (!chimeeHelper.isObject(config) || chimeeHelper.isEmpty(config)) throw new TypeError("plugin's config must be an Object");
+  if (!chimeeHelper.isObject(config) || chimeeHelper.isEmpty(config)) throw new TypeError('plugin\'s config must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
   var name = config.name;
 
-  if (!chimeeHelper.isString(name) || name.length < 1) throw new TypeError('plugin must have a legal name');
+  if (!chimeeHelper.isString(name) || name.length < 1) throw new TypeError('plugin must have a legal namea, but not "' + name + '" in ' + (typeof name === 'undefined' ? 'undefined' : _typeof(name)));
 }
 /**
  * <pre>
@@ -2240,7 +2252,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
     };
     this.changeWatchable = true;
 
-    if (!chimeeHelper.isObject(config)) throw new TypeError('UserConfig must be an Object');
+    if (!chimeeHelper.isObject(config)) throw new TypeError('UserConfig must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
     /**
      * dom Manager
      * @type {Dom}
@@ -2263,6 +2275,12 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
     this.videoConfigReady = false;
     // create the videoconfig
     this.videoConfig = new VideoConfig(this, config);
+    // support both plugin and plugins here as people often cofuse both
+    // $FlowFixMe: we support plugins here, which should be illegal
+    if (chimeeHelper.isArray(config.plugins) && !chimeeHelper.isArray(config.plugin)) {
+      config.plugin = config.plugins;
+      delete config.plugins;
+    }
     this._initUserPlugin(config.plugin);
     this.order.forEach(function (key) {
       return _this.plugins[key].__init(_this.videoConfig);
@@ -2464,14 +2482,20 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
       });
       return chimeeHelper.runRejectableQueue(tasks).then(function () {
         var message = 'The silentLoad for ' + src + ' timed out. Please set a longer duration or check your network';
-        chimeeHelper.Log.warn("chimee's silentLoad", message);
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') {
+          chimeeHelper.Log.warn("chimee's silentLoad", message);
+        }
         return _Promise.reject(new Error(message));
       }).catch(function (data) {
         if (chimeeHelper.isError(data)) {
           return _Promise.reject(data);
         }
         if (data.error) {
-          chimeeHelper.Log.warn("chimee's silentLoad", data.message);
+          /* istanbul ignore else  */
+          if (process.env.NODE_ENV !== 'production') {
+            chimeeHelper.Log.warn("chimee's silentLoad", data.message);
+          }
           return _Promise.reject(new Error(data.message));
         }
         var video = data.video,
@@ -2597,7 +2621,8 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
       var configs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
       if (!chimeeHelper.isArray(configs)) {
-        chimeeHelper.Log.warn('Dispatcher', 'UserConfig.plugin can only by an Array');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('Dispatcher', 'UserConfig.plugin can only by an Array, but not "' + configs + '" in ' + (typeof configs === 'undefined' ? 'undefined' : _typeof(configs)));
         configs = [];
       }
       return configs.map(function (config) {
@@ -2666,7 +2691,8 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
 
       var id = chimeeHelper.camelize(name);
       if (!chimeeHelper.isEmpty(pluginConfigSet[id])) {
-        chimeeHelper.Log.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
       }
       var pluginConfig = chimeeHelper.isFunction(config) ? config : chimeeHelper.deepAssign({ id: id }, config);
       pluginConfigSet[id] = pluginConfig;
@@ -2924,7 +2950,7 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec(_class = (_class2 = (
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.2.4';
+    return '0.2.5';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
