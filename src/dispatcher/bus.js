@@ -1,7 +1,16 @@
 // @flow
 import {isEmpty, isArray, runRejectableQueue, runStoppableQueue, camelize, bind, isError, isVoid, isFunction, deepClone, Log} from 'chimee-helper';
 import {videoEvents, kernelMethods, domEvents, domMethods, selfProcessorEvents, dispatcherMethods} from 'helper/const';
+import {runnable} from 'toxic-decorators';
 const secondaryReg = /^(before|after|_)/;
+function secondaryChecker (key) {
+  if(key.match(secondaryReg)) {
+    /* istanbul ignore else  */
+    if(process.env.NODE_ENV !== 'production') Log.warn('bus', `Secondary Event "${key}" could not be call straightly by API.`);
+    return false;
+  }
+  return true;
+}
 /**
  * <pre>
  * event Bus class. Bus take charge of commuication between plugins and user.
@@ -108,12 +117,8 @@ export default class Bus {
    * @param  {anything} args other argument will be passed into handler
    * @return {Promise}  this promise maybe useful if the event would not trigger kernel event. In that will you can know if it runs successful. But you can know if the event been stopped by the promise.
    */
+  @runnable(secondaryChecker)
   emit (key: string, ...args: any) {
-    if(key.match(secondaryReg)) {
-      /* istanbul ignore else  */
-      if(process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
-      return;
-    }
     const event = this.events[key];
     if(isEmpty(event)) {
       if(selfProcessorEvents.indexOf(key) > -1) return Promise.resolve();
@@ -137,12 +142,8 @@ export default class Bus {
    * @param  {anything} args other argument will be passed into handler
    * @return {Promise}  this promise maybe useful if the event would not trigger kernel event. In that will you can know if it runs successful. But you can know if the event been stopped by the promise.
    */
+  @runnable(secondaryChecker, {backup () {return false;}})
   emitSync (key: string, ...args: any) {
-    if(key.match(secondaryReg)) {
-      /* istanbul ignore else  */
-      if(process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
-      return false;
-    }
     const event = this.events[key];
     if(isEmpty(event)) {
       if(selfProcessorEvents.indexOf(key) > -1) return true;
@@ -157,12 +158,8 @@ export default class Bus {
    * @param  {anything} args
    * @return {Promise|undefined}    you can know if event trigger finished~ However, if it's unlegal
    */
+  @runnable(secondaryChecker)
   trigger (key: string, ...args: any) {
-    if(key.match(secondaryReg)) {
-      /* istanbul ignore else  */
-      if(process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
-      return;
-    }
     const event = this.events[key];
     if(isEmpty(event)) {
       return Promise.resolve(true);
@@ -187,12 +184,8 @@ export default class Bus {
    * @param  {anything} args
    * @return {boolean}    you can know if event trigger finished~ However, if it's unlegal
    */
+  @runnable(secondaryChecker, {backup () {return false;}})
   triggerSync (key: string, ...args: any) {
-    if(key.match(secondaryReg)) {
-      /* istanbul ignore else  */
-      if(process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
-      return false;
-    }
     const event = this.events[key];
     if(isEmpty(event)) {
       return true;

@@ -299,7 +299,7 @@ describe('bus', () => {
     test('secondary event trigger', async () => {
       await expect(bus.trigger('beforePlay')).toBe();
       expect(Log.data.warn).toEqual([
-        ['bus', 'Secondary Event could not be emit']
+        ['bus', 'Secondary Event "beforePlay" could not be call straightly by API.']
       ]);
       expect(result).toEqual([]);
     });
@@ -363,7 +363,7 @@ describe('bus', () => {
     test('secondary event trigger', () => {
       expect(bus.triggerSync('beforePlay')).toBe(false);
       expect(Log.data.warn).toEqual([
-        ['bus', 'Secondary Event could not be emit']
+        ['bus', 'Secondary Event "beforePlay" could not be call straightly by API.']
       ]);
     });
     test('trigger null event', () => {
@@ -457,7 +457,7 @@ describe('bus', () => {
     test('secondary emit', () => {
       expect(bus.emit('beforePlay')).toBe(undefined);
       expect(Log.data.warn).toEqual([
-        ['bus', 'Secondary Event could not be emit']
+        ['bus', 'Secondary Event "beforePlay" could not be call straightly by API.']
       ]);
     });
     test('successful run', async () => {
@@ -491,7 +491,7 @@ describe('bus', () => {
     test('secondary emit', () => {
       expect(bus.emitSync('beforePlay')).toBe(false);
       expect(Log.data.warn).toEqual([
-        ['bus', 'Secondary Event could not be emit']
+        ['bus', 'Secondary Event "beforePlay" could not be call straightly by API.']
       ]);
     });
     // test('successful run', () => {
