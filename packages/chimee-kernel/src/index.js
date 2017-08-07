@@ -80,7 +80,7 @@ export default class Kernel extends CustEvent {
 	load (src) {
 		this.config.src = src || this.config.src;
 		if (this.videokernel && this.config.src) {
-			this.videokernel.load(src);
+			this.videokernel.load(this.config.src);
 			if(!this.timer) {
 				this.timer = setTimeout(()=>{
 					this.timer = null;
