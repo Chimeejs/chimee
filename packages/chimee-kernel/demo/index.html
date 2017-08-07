@@ -12,16 +12,14 @@
 	// mp4 http://cdn.toxicjohann.com/lostStar.mp4
 	// hls http://yunxianchang.live.ujne7.com/vod-system-bj/44_176_20170224113626af3a75cd-3508-4bc3-b51f-366fca3c7e39.m3u8
 	// flv直播 http://pf.live.360vcloud.net/live_customers3/6818c55761856069a0ce
+	// flv直播 http://flv.jia.360.cn/live_jia_public/_LC_RE_non_3605375765815007736131516144_BX.flv
 	// flv点播 http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv
 	// flv点播 http://yunxianchang.live.ujne7.com/vod-system-bj/TL2791e64b69ea0bea234c284c694986aa.flv
-
-	var Kernel = new chimeeKernel(document.querySelector('#player'),{
-	   src: 'hhttp://flv.jia.360.cn/live_jia_public/_LC_RE_non_3605375765815007736131516144_BX.flv',
-	   box: 'flv',
-	   isLive: true,
-	   preset: {
-	   	'flv': chimeeKernelFlv
-	   }
+	var player = document.querySelector('#player');
+	var Kernel = new chimeeKernel(player,{
+	   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+	   box: 'native',
+	   isLive: false
 	});
 
 	Kernel.load();

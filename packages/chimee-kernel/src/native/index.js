@@ -76,6 +76,10 @@ export default class Native extends CustEvent {
         return this.video.pause();
     }
 
+    refresh () {
+        this.video.src = this.config.src;
+    }
+
     attachMedia () {
 
     }

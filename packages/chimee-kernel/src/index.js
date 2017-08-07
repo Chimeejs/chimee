@@ -83,9 +83,9 @@ export default class Kernel extends CustEvent {
 			this.videokernel.load(src);
 			if(!this.timer) {
 				this.timer = setTimeout(()=>{
-				this.timer = null;
-				this.pause();
-				this.refresh();
+					this.timer = null;
+					this.pause();
+					this.refresh();
 				}, 1000);
 			}
 		} else {
@@ -99,6 +99,8 @@ export default class Kernel extends CustEvent {
 	destroy () {
 		if (this.videokernel) {
 			this.videokernel.destroy();
+			clearTimeout(this.timer);
+			this.timer = null;
 		} else {
 			Log.error(this.tag, 'player is not exit');
 		}

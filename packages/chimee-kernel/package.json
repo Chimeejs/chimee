@@ -51,8 +51,6 @@
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-serve": "^0.4.0",
     "rollup-plugin-uglify": "^2.0.1",
-    "rollup-watch": "^4.3.1",
-    "chimee-kernel-hls": "https://github.com/Chimeejs/chimee-kernel-hls.git",
-    "chimee-kernel-flv": "https://github.com/Chimeejs/chimee-kernel-flv.git"
+    "rollup-watch": "^4.3.1"
   }
 }

@@ -3414,6 +3414,11 @@ var Native = function (_CustEvent) {
             return this.video.pause();
         }
     }, {
+        key: 'refresh',
+        value: function refresh() {
+            this.video.src = this.config.src;
+        }
+    }, {
         key: 'attachMedia',
         value: function attachMedia() {}
     }, {
@@ -3541,6 +3546,8 @@ var Kernel = function (_CustEvent) {
 		value: function destroy() {
 			if (this.videokernel) {
 				this.videokernel.destroy();
+				clearTimeout(this.timer);
+				this.timer = null;
 			} else {
 				Log.error(this.tag, 'player is not exit');
 			}
