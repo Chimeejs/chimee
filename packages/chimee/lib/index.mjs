@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.2.5
+ * chimee v0.2.6
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -19,8 +19,8 @@ import { $, Log, addClassName, addEvent, bind, camelize, deepAssign, deepClone, 
 import Kernel from 'chimee-kernel';
 import _Map from 'babel-runtime/core-js/map';
 import _toConsumableArray from 'babel-runtime/helpers/toConsumableArray';
+import { accessor, alias, alwaysBoolean, alwaysNumber, alwaysString, applyDecorators, autobind, autobindClass, before, configurable, frozen, initBoolean, initString, lock, nonenumerable, runnable, waituntil, watch } from 'toxic-decorators';
 import _Object$keys from 'babel-runtime/core-js/object/keys';
-import { accessor, alias, alwaysBoolean, alwaysNumber, alwaysString, applyDecorators, autobind, autobindClass, before, configurable, frozen, initBoolean, initString, lock, nonenumerable, waituntil, watch } from 'toxic-decorators';
 import _JSON$stringify from 'babel-runtime/core-js/json/stringify';
 import _defineProperty from 'babel-runtime/helpers/defineProperty';
 import _Number$isNaN from 'babel-runtime/core-js/number/is-nan';
@@ -35,7 +35,50 @@ var dispatcherMethods = ['load'];
 var domMethods = ['focus', 'fullScreen', 'requestFullScreen', 'exitFullScreen'];
 var videoMethods = ['canPlayType', 'captureStream', 'setSinkId'];
 
+var _dec$2;
+var _dec2$1;
+var _dec3$1;
+var _dec4$1;
+var _class$2;
+
+function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, context) {
+  var desc = {};
+  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+    desc[key] = descriptor[key];
+  });
+  desc.enumerable = !!desc.enumerable;
+  desc.configurable = !!desc.configurable;
+
+  if ('value' in desc || desc.initializer) {
+    desc.writable = true;
+  }
+
+  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+    return decorator(target, property, desc) || desc;
+  }, desc);
+
+  if (context && desc.initializer !== void 0) {
+    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+    desc.initializer = undefined;
+  }
+
+  if (desc.initializer === void 0) {
+    Object['define' + 'Property'](target, property, desc);
+    desc = null;
+  }
+
+  return desc;
+}
+
 var secondaryReg = /^(before|after|_)/;
+function secondaryChecker(key) {
+  if (key.match(secondaryReg)) {
+    /* istanbul ignore else  */
+    if (process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event "' + key + '" could not be call straightly by API.');
+    return false;
+  }
+  return true;
+}
 /**
  * <pre>
  * event Bus class. Bus take charge of commuication between plugins and user.
@@ -51,8 +94,15 @@ var secondaryReg = /^(before|after|_)/;
  * side effect(_): This events will always trigger once we bump into trigger period. So that you can know if the events been blocked. But it's not advice to listen on this effect.
  * </pre>
  */
-
-var Bus = function () {
+var Bus = (_dec$2 = runnable(secondaryChecker), _dec2$1 = runnable(secondaryChecker, {
+  backup: function backup() {
+    return false;
+  }
+}), _dec3$1 = runnable(secondaryChecker), _dec4$1 = runnable(secondaryChecker, {
+  backup: function backup() {
+    return false;
+  }
+}), (_class$2 = function () {
   /**
    * @param {Dispatcheer} dispatcher bus rely on dispatcher, so you mush pass dispatcher at first when you generate Bus.
    * @return {Bus}
@@ -156,11 +206,6 @@ var Bus = function () {
         args[_key - 1] = arguments[_key];
       }
 
-      if (key.match(secondaryReg)) {
-        /* istanbul ignore else  */
-        if (process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
-        return;
-      }
       var event = this.events[key];
       if (isEmpty(event)) {
         if (selfProcessorEvents.indexOf(key) > -1) return _Promise.resolve();
@@ -186,11 +231,6 @@ var Bus = function () {
   }, {
     key: 'emitSync',
     value: function emitSync(key) {
-      if (key.match(secondaryReg)) {
-        /* istanbul ignore else  */
-        if (process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
-        return false;
-      }
       var event = this.events[key];
 
       for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
@@ -220,11 +260,6 @@ var Bus = function () {
         args[_key3 - 1] = arguments[_key3];
       }
 
-      if (key.match(secondaryReg)) {
-        /* istanbul ignore else  */
-        if (process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
-        return;
-      }
       var event = this.events[key];
       if (isEmpty(event)) {
         return _Promise.resolve(true);
@@ -250,11 +285,6 @@ var Bus = function () {
   }, {
     key: 'triggerSync',
     value: function triggerSync(key) {
-      if (key.match(secondaryReg)) {
-        /* istanbul ignore else  */
-        if (process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event could not be emit');
-        return false;
-      }
       var event = this.events[key];
       if (isEmpty(event)) {
         return true;
@@ -472,7 +502,7 @@ var Bus = function () {
   }]);
 
   return Bus;
-}();
+}(), (_applyDecoratedDescriptor$2(_class$2.prototype, 'emit', [_dec$2], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'emit'), _class$2.prototype), _applyDecoratedDescriptor$2(_class$2.prototype, 'emitSync', [_dec2$1], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'emitSync'), _class$2.prototype), _applyDecoratedDescriptor$2(_class$2.prototype, 'trigger', [_dec3$1], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'trigger'), _class$2.prototype), _applyDecoratedDescriptor$2(_class$2.prototype, 'triggerSync', [_dec4$1], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'triggerSync'), _class$2.prototype)), _class$2));
 
 /**
  * checker for on, off, once function
@@ -503,9 +533,9 @@ function attrAndStyleCheck() {
   return ['get', 'container'].concat(args);
 }
 
-var _dec$4;
-var _dec2$2;
-var _class$4;
+var _dec$5;
+var _dec2$3;
+var _class$5;
 var _descriptor$1;
 var _descriptor2$1;
 var _descriptor3$1;
@@ -525,7 +555,7 @@ function _initDefineProp$1(target, property, descriptor, context) {
   });
 }
 
-function _applyDecoratedDescriptor$3(target, property, decorators, descriptor, context) {
+function _applyDecoratedDescriptor$4(target, property, decorators, descriptor, context) {
   var desc = {};
   Object['ke' + 'ys'](descriptor).forEach(function (key) {
     desc[key] = descriptor[key];
@@ -700,9 +730,9 @@ var accessorMap = {
   volume: [alwaysNumber(1), accessorVideoProperty('volume')]
 };
 
-var VideoConfig = (_dec$4 = initBoolean(), _dec2$2 = initString(function (str) {
+var VideoConfig = (_dec$5 = initBoolean(), _dec2$3 = initString(function (str) {
   return str.toLocaleLowerCase();
-}), (_class$4 = function () {
+}), (_class$5 = function () {
   _createClass(VideoConfig, [{
     key: 'lockKernelProperty',
     value: function lockKernelProperty() {
@@ -784,47 +814,47 @@ var VideoConfig = (_dec$4 = initBoolean(), _dec2$2 = initString(function (str) {
   }]);
 
   return VideoConfig;
-}(), (_descriptor$1 = _applyDecoratedDescriptor$3(_class$4.prototype, 'needToLoadSrc', [nonenumerable], {
+}(), (_descriptor$1 = _applyDecoratedDescriptor$4(_class$5.prototype, 'needToLoadSrc', [nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor2$1 = _applyDecoratedDescriptor$3(_class$4.prototype, 'changeWatchable', [nonenumerable], {
+}), _descriptor2$1 = _applyDecoratedDescriptor$4(_class$5.prototype, 'changeWatchable', [nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return true;
   }
-}), _descriptor3$1 = _applyDecoratedDescriptor$3(_class$4.prototype, 'inited', [nonenumerable], {
+}), _descriptor3$1 = _applyDecoratedDescriptor$4(_class$5.prototype, 'inited', [nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor4 = _applyDecoratedDescriptor$3(_class$4.prototype, 'isLive', [_dec$4, configurable], {
+}), _descriptor4 = _applyDecoratedDescriptor$4(_class$5.prototype, 'isLive', [_dec$5, configurable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor5 = _applyDecoratedDescriptor$3(_class$4.prototype, 'box', [_dec2$2, configurable], {
+}), _descriptor5 = _applyDecoratedDescriptor$4(_class$5.prototype, 'box', [_dec2$3, configurable], {
   enumerable: true,
   initializer: function initializer() {
     return '';
   }
-}), _descriptor6 = _applyDecoratedDescriptor$3(_class$4.prototype, '_kernelProperty', [frozen], {
+}), _descriptor6 = _applyDecoratedDescriptor$4(_class$5.prototype, '_kernelProperty', [frozen], {
   enumerable: true,
   initializer: function initializer() {
     return ['isLive', 'box', 'preset'];
   }
-}), _descriptor7 = _applyDecoratedDescriptor$3(_class$4.prototype, '_realDomAttr', [frozen], {
+}), _descriptor7 = _applyDecoratedDescriptor$4(_class$5.prototype, '_realDomAttr', [frozen], {
   enumerable: true,
   initializer: function initializer() {
     return ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
   }
-})), _class$4));
+})), _class$5));
 
-var _dec$3;
-var _dec2$1;
-var _dec3$1;
-var _dec4$1;
+var _dec$4;
+var _dec2$2;
+var _dec3$2;
+var _dec4$2;
 var _dec5$1;
 var _dec6;
 var _dec7;
@@ -838,10 +868,10 @@ var _dec14;
 var _dec15;
 var _dec16;
 var _dec17;
-var _class$3;
+var _class$4;
 var _class2$1;
 
-function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, context) {
+function _applyDecoratedDescriptor$3(target, property, decorators, descriptor, context) {
   var desc = {};
   Object['ke' + 'ys'](descriptor).forEach(function (key) {
     desc[key] = descriptor[key];
@@ -874,7 +904,7 @@ function propertyAccessibilityWarn(property) {
   /* istanbul ignore else  */
   if (process.env.NODE_ENV !== 'production') Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
 }
-var VideoWrapper = (_dec$3 = autobindClass(), _dec2$1 = alias('silentLoad'), _dec3$1 = alias('fullScreen'), _dec4$1 = alias('emit'), _dec5$1 = alias('emitSync'), _dec6 = alias('on'), _dec7 = alias('addEventListener'), _dec8 = before(eventBinderCheck), _dec9 = alias('off'), _dec10 = alias('removeEventListener'), _dec11 = before(eventBinderCheck), _dec12 = alias('once'), _dec13 = before(eventBinderCheck), _dec14 = alias('css'), _dec15 = before(attrAndStyleCheck), _dec16 = alias('attr'), _dec17 = before(attrAndStyleCheck), _dec$3(_class$3 = (_class2$1 = function () {
+var VideoWrapper = (_dec$4 = autobindClass(), _dec2$2 = alias('silentLoad'), _dec3$2 = alias('fullScreen'), _dec4$2 = alias('emit'), _dec5$1 = alias('emitSync'), _dec6 = alias('on'), _dec7 = alias('addEventListener'), _dec8 = before(eventBinderCheck), _dec9 = alias('off'), _dec10 = alias('removeEventListener'), _dec11 = before(eventBinderCheck), _dec12 = alias('once'), _dec13 = before(eventBinderCheck), _dec14 = alias('css'), _dec15 = before(attrAndStyleCheck), _dec16 = alias('attr'), _dec17 = before(attrAndStyleCheck), _dec$4(_class$4 = (_class2$1 = function () {
   function VideoWrapper() {
     _classCallCheck(this, VideoWrapper);
 
@@ -1294,10 +1324,10 @@ var VideoWrapper = (_dec$3 = autobindClass(), _dec2$1 = alias('silentLoad'), _de
   }]);
 
   return VideoWrapper;
-}(), (_applyDecoratedDescriptor$2(_class2$1.prototype, '$silentLoad', [_dec2$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$silentLoad'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$fullScreen', [_dec3$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$fullScreen'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$emit', [_dec4$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emit'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$emitSync', [_dec5$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emitSync'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$on', [_dec6, _dec7, _dec8], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$on'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$off', [_dec9, _dec10, _dec11], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$off'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$once', [_dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$once'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$css', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$css'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$attr', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$attr'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$plugins'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$pluginOrder'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$wrapper'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$container'), _class2$1.prototype), _applyDecoratedDescriptor$2(_class2$1.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$video'), _class2$1.prototype)), _class2$1)) || _class$3);
+}(), (_applyDecoratedDescriptor$3(_class2$1.prototype, '$silentLoad', [_dec2$2], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$silentLoad'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$fullScreen', [_dec3$2], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$fullScreen'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$emit', [_dec4$2], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emit'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$emitSync', [_dec5$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emitSync'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$on', [_dec6, _dec7, _dec8], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$on'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$off', [_dec9, _dec10, _dec11], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$off'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$once', [_dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$once'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$css', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$css'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$attr', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$attr'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$plugins'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$pluginOrder'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$wrapper'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$container'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$video'), _class2$1.prototype)), _class2$1)) || _class$4);
 
-var _dec$2;
-var _class$2;
+var _dec$3;
+var _class$3;
 
 /**
  * <pre>
@@ -1306,7 +1336,7 @@ var _class$2;
  * Developer can do most of things base on this plugin
  * </pre>
  */
-var Plugin = (_dec$2 = autobindClass(), _dec$2(_class$2 = function (_VideoWrapper) {
+var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrapper) {
   _inherits(Plugin, _VideoWrapper);
 
   /**
@@ -1372,7 +1402,7 @@ var Plugin = (_dec$2 = autobindClass(), _dec$2(_class$2 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.2.5';
+    _this.VERSION = '0.2.6';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -1602,17 +1632,17 @@ var Plugin = (_dec$2 = autobindClass(), _dec$2(_class$2 = function (_VideoWrappe
   }]);
 
   return Plugin;
-}(VideoWrapper)) || _class$2);
+}(VideoWrapper)) || _class$3);
 
-var _dec$5;
-var _dec2$3;
-var _dec3$2;
-var _dec4$2;
+var _dec$6;
+var _dec2$4;
+var _dec3$3;
+var _dec4$3;
 var _dec5$2;
 var _dec6$1;
-var _class$5;
+var _class$6;
 
-function _applyDecoratedDescriptor$4(target, property, decorators, descriptor, context) {
+function _applyDecoratedDescriptor$5(target, property, decorators, descriptor, context) {
   var desc = {};
   Object['ke' + 'ys'](descriptor).forEach(function (key) {
     desc[key] = descriptor[key];
@@ -1643,7 +1673,7 @@ function _applyDecoratedDescriptor$4(target, property, decorators, descriptor, c
 
 function targetCheck(target) {
   if (target === 'video') target = 'videoElement';
-  if (!isElement(this[target])) throw new TypeError('Your target ' + target + ' is not a legal HTMLElement');
+  if (!isElement(this[target])) throw new TypeError('Your target "' + target + '" is not a legal HTMLElement');
 
   for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     args[_key - 1] = arguments[_key];
@@ -1652,8 +1682,8 @@ function targetCheck(target) {
   return [target].concat(args);
 }
 function attrOperationCheck(target, attr, val) {
-  if (!isString(attr)) throw new TypeError("to handle dom's attribute or style, your attr parameter must be string");
-  if (!isString(target)) throw new TypeError("to handle dom's attribute or style, your target parameter must be string");
+  if (!isString(attr)) throw new TypeError('to handle dom\'s attribute or style, your attr parameter must be string, but not ' + attr + ' in ' + (typeof attr === 'undefined' ? 'undefined' : _typeof(attr)));
+  if (!isString(target)) throw new TypeError('to handle dom\'s attribute or style, your target parameter must be string, , but not ' + target + ' in ' + (typeof target === 'undefined' ? 'undefined' : _typeof(target)));
   return [target, attr, val];
 }
 /**
@@ -1662,7 +1692,7 @@ function attrOperationCheck(target, attr, val) {
  * It take charge of dom management of Dispatcher.
  * </pre>
  */
-var Dom = (_dec$5 = waituntil('__dispatcher.videoConfigReady'), _dec2$3 = before(attrOperationCheck, targetCheck), _dec3$2 = before(attrOperationCheck, targetCheck), _dec4$2 = before(attrOperationCheck, targetCheck), _dec5$2 = before(attrOperationCheck, targetCheck), _dec6$1 = before(targetCheck), (_class$5 = function () {
+var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before(attrOperationCheck, targetCheck), _dec3$3 = before(attrOperationCheck, targetCheck), _dec4$3 = before(attrOperationCheck, targetCheck), _dec5$2 = before(attrOperationCheck, targetCheck), _dec6$1 = before(targetCheck), (_class$6 = function () {
   /**
    * to mark is the mouse in the video area
    * @type {boolean}
@@ -1703,7 +1733,7 @@ var Dom = (_dec$5 = waituntil('__dispatcher.videoConfigReady'), _dec2$3 = before
     this.fullScreenElement = undefined;
 
     this.__dispatcher = dispatcher;
-    if (!isElement(wrapper) && !isString(wrapper)) throw new TypeError('Illegal wrapper');
+    if (!isElement(wrapper) && !isString(wrapper)) throw new TypeError('Wrapper can only be string or HTMLElement, but not ' + (typeof wrapper === 'undefined' ? 'undefined' : _typeof(wrapper)));
     var $wrapper = $(wrapper);
     if ($wrapper.length === 0) {
       throw new TypeError('Can not get dom node accroding wrapper. Please check your wrapper');
@@ -2154,7 +2184,7 @@ var Dom = (_dec$5 = waituntil('__dispatcher.videoConfigReady'), _dec2$3 = before
   }]);
 
   return Dom;
-}(), (_applyDecoratedDescriptor$4(_class$5.prototype, 'setAttr', [_dec$5, _dec2$3], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'setAttr'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'getAttr', [_dec3$2], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'getAttr'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'setStyle', [_dec4$2], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'setStyle'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'getStyle', [_dec5$2], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'getStyle'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'requestFullScreen', [_dec6$1], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'requestFullScreen'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, '_focusToVideo', [autobind], _Object$getOwnPropertyDescriptor(_class$5.prototype, '_focusToVideo'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, '_fullScreenMonitor', [autobind], _Object$getOwnPropertyDescriptor(_class$5.prototype, '_fullScreenMonitor'), _class$5.prototype)), _class$5));
+}(), (_applyDecoratedDescriptor$5(_class$6.prototype, 'setAttr', [_dec$6, _dec2$4], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'setAttr'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'getAttr', [_dec3$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'getAttr'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'setStyle', [_dec4$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'setStyle'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'getStyle', [_dec5$2], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'getStyle'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'requestFullScreen', [_dec6$1], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'requestFullScreen'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, '_focusToVideo', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, '_focusToVideo'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, '_fullScreenMonitor', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, '_fullScreenMonitor'), _class$6.prototype)), _class$6));
 
 var _dec$1;
 var _dec2;
@@ -2719,7 +2749,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
   return Dispatcher;
 }(), (_applyDecoratedDescriptor$1(_class$1.prototype, 'unuse', [_dec$1], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'unuse'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1, 'install', [_dec2], _Object$getOwnPropertyDescriptor(_class$1, 'install'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'hasInstalled', [_dec3], _Object$getOwnPropertyDescriptor(_class$1, 'hasInstalled'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'uninstall', [_dec4], _Object$getOwnPropertyDescriptor(_class$1, 'uninstall'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'getPluginConfig', [_dec5], _Object$getOwnPropertyDescriptor(_class$1, 'getPluginConfig'), _class$1)), _class$1));
 
-var _class$6;
+var _class$7;
 var _descriptor$2;
 
 function _initDefineProp$2(target, property, descriptor, context) {
@@ -2733,7 +2763,7 @@ function _initDefineProp$2(target, property, descriptor, context) {
   });
 }
 
-function _applyDecoratedDescriptor$5(target, property, decorators, descriptor, context) {
+function _applyDecoratedDescriptor$6(target, property, decorators, descriptor, context) {
   var desc = {};
   Object['ke' + 'ys'](descriptor).forEach(function (key) {
     desc[key] = descriptor[key];
@@ -2762,7 +2792,7 @@ function _applyDecoratedDescriptor$5(target, property, decorators, descriptor, c
   return desc;
 }
 
-var GlobalConfig = (_class$6 = function () {
+var GlobalConfig = (_class$7 = function () {
   _createClass(GlobalConfig, [{
     key: 'silent',
     get: function get() {
@@ -2813,12 +2843,12 @@ var GlobalConfig = (_class$6 = function () {
   }
 
   return GlobalConfig;
-}(), (_descriptor$2 = _applyDecoratedDescriptor$5(_class$6.prototype, '_silent', [nonenumerable], {
+}(), (_descriptor$2 = _applyDecoratedDescriptor$6(_class$7.prototype, '_silent', [nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-})), _class$6);
+})), _class$7);
 
 var _dec;
 var _class;
@@ -2946,7 +2976,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.2.5';
+    return '0.2.6';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,
