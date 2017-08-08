@@ -2,7 +2,7 @@ import Dom from 'dispatcher/dom';
 import {Log} from 'chimee-helper';
 describe('dispatcher/dom', () => {
   test('dom needs wrapper and dispatcher if you pass in illegal desipatcher, it should throw error', () => {
-    expect(() => new Dom()).toThrow('Illegal wrapper');
+    expect(() => new Dom()).toThrow('Wrapper can only be string or HTMLElement, but not undefined');
     expect(() => new Dom('hello')).toThrow('Can not get dom node accroding wrapper. Please check your wrapper');
   });
   describe('wrapper can be string, indicate elment in document', () => {
@@ -221,7 +221,7 @@ describe('_getEventHanlder', () => {
     expect(dom.container.style.zIndex).toBe('10');
     expect(() => dom.setStyle('WHAT')).toThrow("to handle dom's attribute or style, your attr parameter must be string");
     expect(() => dom.setStyle(1, 'hahahah')).toThrow("to handle dom's attribute or style, your target parameter must be string");
-    expect(() => dom.setStyle('what', 'z-index')).toThrow('Your target what is not a legal HTMLElement');
+    expect(() => dom.setStyle('what', 'z-index')).toThrow('Your target "what" is not a legal HTMLElement');
     dom.destroy();
   });
 });
