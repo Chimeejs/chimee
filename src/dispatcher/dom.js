@@ -4,12 +4,12 @@ import {videoEvents, domEvents} from 'helper/const';
 import {autobind, before, waituntil} from 'toxic-decorators';
 function targetCheck (target: string, ...args) {
   if(target === 'video') target = 'videoElement';
-  if(!isElement(this[target])) throw new TypeError('Your target ' + target + ' is not a legal HTMLElement');
+  if(!isElement(this[target])) throw new TypeError(`Your target "${target}" is not a legal HTMLElement`);
   return [target, ...args];
 }
 function attrOperationCheck (target: string, attr: string, val: any): Array<any> {
-  if(!isString(attr)) throw new TypeError("to handle dom's attribute or style, your attr parameter must be string");
-  if(!isString(target)) throw new TypeError("to handle dom's attribute or style, your target parameter must be string");
+  if(!isString(attr)) throw new TypeError(`to handle dom's attribute or style, your attr parameter must be string, but not ${attr} in ${typeof attr}`);
+  if(!isString(target)) throw new TypeError(`to handle dom's attribute or style, your target parameter must be string, , but not ${target} in ${typeof target}`);
   return [target, attr, val];
 }
 /**
@@ -86,7 +86,7 @@ export default class Dom {
   fullScreenElement = undefined;
   constructor (wrapper: string | Element, dispatcher: Dispatcher) {
     this.__dispatcher = dispatcher;
-    if(!isElement(wrapper) && !isString(wrapper)) throw new TypeError('Illegal wrapper');
+    if(!isElement(wrapper) && !isString(wrapper)) throw new TypeError(`Wrapper can only be string or HTMLElement, but not ${typeof wrapper}`);
     const $wrapper = $(wrapper);
     if($wrapper.length === 0) {
       throw new TypeError('Can not get dom node accroding wrapper. Please check your wrapper');
