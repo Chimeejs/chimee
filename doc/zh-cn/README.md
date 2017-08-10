@@ -163,6 +163,64 @@ const chimee = new ChimeePlayer({
 6. [如何编写一个UI插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-ui-plugin.md)
 7. [如何编写一个弹窗插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-popup-plugin.md)
 
+## 不同的构建版本
+
+你会发现我们有四种构建的版本。
+
+| 名称               | 种类       | 用处                                   | 是否需要定义环境             |
+| ---------------- | -------- | ------------------------------------ | -------------------- |
+| index.js         | commonjs | Common js, 常用于 Webpack 1.            | 是                    |
+| index.mjs        | esmodule | in es module, 常用于 webpack 2 和 rollup | 是                    |
+| index.browser.js | umd      | 常直接用于浏览器                             | 否，构建为 development 环境 |
+| index.min.js     | umd      | 常直接用于浏览器                             | 否，构建为 production 环境  |
+
+## Development vs. Production
+
+开发环境/生产环境模式是硬编码的 UMD 构建：开发环境下不压缩代码，生产环境下压缩代码。
+
+CommonJS 和 ES Module 构建是用于打包工具的，因此我们不提供压缩后的版本。你有必要在打最终包的时候压缩它们。
+
+CommonJS 和 ES Module 构建同时保留里原始的 `process.env.NODE_ENV` 检测，以决定它们应该运行在什么模式下。你应该使用适当的打包工具配置来替换它们的环境变量以便控制 Vue 所运行的模式。把 `process.env.NODE_ENV` 替换为字符串字面量同样可以让 UglifyJS 之类的压缩工具完全丢掉仅供开发环境的代码段，减少最终的文件尺寸。
+
+#### Webpack
+
+使用 Webpack 的 [DefinePlugin](https://webpack.js.org/plugins/define-plugin/):
+
+```
+var webpack = require('webpack')
+
+module.exports = {
+  // ...
+  plugins: [
+    // ...
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
+    })
+  ]
+}
+```
+
+#### Rollup
+
+使用 [rollup-plugin-replace](https://github.com/rollup/rollup-plugin-replace):
+
+```
+const replace = require('rollup-plugin-replace')
+
+rollup({
+  // ...
+  plugins: [
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    })
+  ]
+}).then(...)
+```
+
+#### Browserify
+
 ## 贡献
 
 克隆本项目
