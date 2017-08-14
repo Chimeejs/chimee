@@ -1,6 +1,6 @@
 
 /**
- * chimee-helper-log v0.1.1
+ * chimee-helper-log v0.1.2
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -11,10 +11,11 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var _classCallCheck = _interopDefault(require('babel-runtime/helpers/classCallCheck'));
 var _createClass = _interopDefault(require('babel-runtime/helpers/createClass'));
+var _typeof = _interopDefault(require('babel-runtime/helpers/typeof'));
 var toxicPredicateFunctions = require('toxic-predicate-functions');
 
 function formatter(tag, msg) {
-  if (!toxicPredicateFunctions.isString(tag)) throw new TypeError("Log's method only acccept string as argument");
+  if (!toxicPredicateFunctions.isString(tag)) throw new TypeError('Log\'s method only acccept string as argument, but not ' + tag + ' in ' + (typeof tag === 'undefined' ? 'undefined' : _typeof(tag)));
   if (!toxicPredicateFunctions.isString(msg)) return '[' + Log.GLOBAL_TAG + '] > ' + tag;
   tag = Log.FORCE_GLOBAL_TAG ? Log.GLOBAL_TAG : tag || Log.GLOBAL_TAG;
   return '[' + tag + '] > ' + msg;
