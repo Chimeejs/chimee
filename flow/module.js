@@ -111,4 +111,17 @@ declare module 'chimee-helper' {
     static debug (tag: string, msg?: string): void;
     static verbose (tag: string, msg?: string): void;
   }
+
+  
+  declare export class UAParser {
+    getBrowser (): Object;
+    getDevice (): Object;
+    getEngine (): Object;
+    getOS (): Object;
+    getCPU (): Object;
+    getResult (): Object;
+    getUA (): Object;
+    setUA (): Object;
+  }
+
 }
