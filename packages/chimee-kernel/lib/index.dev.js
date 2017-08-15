@@ -5,6 +5,10 @@ document.write('<script src="http://' + (location.host || 'localhost').split(':'
 	(global.chimeeKernel = factory());
 }(this, (function () { 'use strict';
 
+var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+
+
 function unwrapExports (x) {
 	return x && x.__esModule ? x['default'] : x;
 }
@@ -44,8 +48,6 @@ var _aFunction = function(it){
   return it;
 };
 
-// optional / simple context binding
-
 var _ctx = function(fn, that, length){
   _aFunction(fn);
   if(that === undefined)return fn;
@@ -82,7 +84,6 @@ var _fails = function(exec){
   }
 };
 
-// Thank's IE8 for his funny defineProperty
 var _descriptors = !_fails(function(){
   return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
@@ -97,10 +98,6 @@ var _ie8DomDefine = !_descriptors && !_fails(function(){
   return Object.defineProperty(_domCreate('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
 
-// 7.1.1 ToPrimitive(input [, PreferredType])
-
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
 var _toPrimitive = function(it, S){
   if(!_isObject(it))return it;
   var fn, val;
@@ -202,16 +199,15 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library` 
 var _export = $export;
 
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 _export(_export.S + _export.F * !_descriptors, 'Object', {defineProperty: _objectDp.f});
 
 var $Object = _core.Object;
-var defineProperty$1 = function defineProperty(it, key, desc){
+var defineProperty$2 = function defineProperty(it, key, desc){
   return $Object.defineProperty(it, key, desc);
 };
 
 var defineProperty = createCommonjsModule(function (module) {
-module.exports = { "default": defineProperty$1, __esModule: true };
+module.exports = { "default": defineProperty$2, __esModule: true };
 });
 
 var createClass = createCommonjsModule(function (module, exports) {
@@ -259,8 +255,6 @@ var _defined = function(it){
   return it;
 };
 
-// true  -> String#at
-// false -> String#codePointAt
 var _stringAt = function(TO_STRING){
   return function(that, pos){
     var s = String(_defined(that))
@@ -292,19 +286,14 @@ var _cof = function(it){
   return toString.call(it).slice(8, -1);
 };
 
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-
 var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function(it){
   return _cof(it) == 'String' ? it.split('') : Object(it);
 };
-
-// to indexed object, toObject with fallback for non-array-like ES3 strings
 
 var _toIobject = function(it){
   return _iobject(_defined(it));
 };
 
-// 7.1.15 ToLength
 var min       = Math.min;
 var _toLength = function(it){
   return it > 0 ? min(_toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
@@ -316,9 +305,6 @@ var _toIndex = function(index, length){
   index = _toInteger(index);
   return index < 0 ? max(index + length, 0) : min$1(index, length);
 };
-
-// false -> Array#indexOf
-// true  -> Array#includes
 
 var _arrayIncludes = function(IS_INCLUDES){
   return function($this, el, fromIndex){
@@ -375,9 +361,6 @@ var _enumBugKeys = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
 
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-
-
 var _objectKeys = Object.keys || function keys(O){
   return _objectKeysInternal(O, _enumBugKeys);
 };
@@ -394,7 +377,6 @@ var _objectDps = _descriptors ? Object.defineProperties : function definePropert
 
 var _html = _global.document && document.documentElement;
 
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var IE_PROTO    = _sharedKey('IE_PROTO');
 var Empty       = function(){ /* empty */ };
 var PROTOTYPE$1   = 'prototype';
@@ -463,13 +445,10 @@ var _iterCreate = function(Constructor, NAME, next){
   _setToStringTag(Constructor, NAME + ' Iterator');
 };
 
-// 7.1.13 ToObject(argument)
-
 var _toObject = function(it){
   return Object(_defined(it));
 };
 
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var IE_PROTO$2    = _sharedKey('IE_PROTO');
 var ObjectProto = Object.prototype;
 
@@ -565,10 +544,6 @@ var _iterStep = function(done, value){
   return {value: value, done: !!done};
 };
 
-// 22.1.3.4 Array.prototype.entries()
-// 22.1.3.13 Array.prototype.keys()
-// 22.1.3.29 Array.prototype.values()
-// 22.1.3.30 Array.prototype[@@iterator]()
 var es6_array_iterator = _iterDefine(Array, 'Array', function(iterated, kind){
   this._t = _toIobject(iterated); // target
   this._i = 0;                   // next index
@@ -670,10 +645,10 @@ var meta = module.exports = {
 };
 });
 
-var defineProperty$3 = _objectDp.f;
+var defineProperty$4 = _objectDp.f;
 var _wksDefine = function(name){
   var $Symbol = _core.Symbol || (_core.Symbol = _library ? {} : _global.Symbol || {});
-  if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty$3($Symbol, name, {value: _wksExt.f(name)});
+  if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty$4($Symbol, name, {value: _wksExt.f(name)});
 };
 
 var _keyof = function(object, el){
@@ -697,8 +672,6 @@ var _objectPie = {
 	f: f$3
 };
 
-// all enumerable object keys, includes symbols
-
 var _enumKeys = function(it){
   var result     = _objectKeys(it)
     , getSymbols = _objectGops.f;
@@ -711,13 +684,10 @@ var _enumKeys = function(it){
   } return result;
 };
 
-// 7.2.2 IsArray(argument)
-
 var _isArray = Array.isArray || function isArray(arg){
   return _cof(arg) == 'Array';
 };
 
-// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 var hiddenKeys = _enumBugKeys.concat('length', 'prototype');
 
 var f$5 = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
@@ -728,7 +698,6 @@ var _objectGopn = {
 	f: f$5
 };
 
-// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 var gOPN$1      = _objectGopn.f;
 var toString$1  = {}.toString;
 
@@ -766,7 +735,6 @@ var _objectGopd = {
 	f: f$6
 };
 
-// ECMAScript 6 symbols shim
 var META           = _meta.KEY;
 var gOPD           = _objectGopd.f;
 var dP$2             = _objectDp.f;
@@ -1013,17 +981,12 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 
 var _typeof = unwrapExports(_typeof_1);
 
-// most Object methods by ES6 should accept primitives
-
 var _objectSap = function(KEY, exec){
   var fn  = (_core.Object || {})[KEY] || Object[KEY]
     , exp = {};
   exp[KEY] = exec(fn);
   _export(_export.S + _export.F * _fails(function(){ fn(1); }), 'Object', exp);
 };
-
-// 19.1.2.14 Object.keys(O)
-
 
 _objectSap('keys', function(){
   return function keys(it){
@@ -1037,14 +1000,10 @@ var keys = createCommonjsModule(function (module) {
 module.exports = { "default": keys$1, __esModule: true };
 });
 
-// 20.1.2.3 Number.isInteger(number)
 var floor$1    = Math.floor;
 var _isInteger = function isInteger(it){
   return !_isObject(it) && isFinite(it) && floor$1(it) === it;
 };
-
-// 20.1.2.3 Number.isInteger(number)
-
 
 _export(_export.S, 'Number', {isInteger: _isInteger});
 
@@ -1093,7 +1052,6 @@ var _parseFloat$3 = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function p
   return result === 0 && string.charAt(0) == '-' ? -0 : result;
 } : $parseFloat;
 
-// 20.1.2.12 Number.parseFloat(string)
 _export(_export.S + _export.F * (Number.parseFloat != _parseFloat$3), 'Number', {parseFloat: _parseFloat$3});
 
 var _parseFloat$1 = parseFloat;
@@ -1108,11 +1066,6 @@ module.exports = { "default": _parseFloat$1, __esModule: true };
  * Released under MIT
  */
 
-/**
- * is void element or not ? Means it will return true when val is undefined or null
- * @param  {Anything}  obj
- * @return {Boolean}   return true when val is undefined or null
- */
 function isVoid(obj) {
   return obj === undefined || obj === null;
 }
@@ -1121,7 +1074,7 @@ function isVoid(obj) {
  * @param {Anything} arr
  * @return {Boolean} true when it is a boolean
  */
-function isArray(arr) {
+function isArray$1(arr) {
   return Array.isArray(arr);
 }
 
@@ -1141,7 +1094,7 @@ function isFunction(obj) {
  */
 function isObject$1(obj) {
   // incase of arrow function and array
-  return Object(obj) === obj && String(obj) === '[object Object]' && !isFunction(obj) && !isArray(obj);
+  return Object(obj) === obj && String(obj) === '[object Object]' && !isFunction(obj) && !isArray$1(obj);
 }
 /**
  * to tell you if it's a real number
@@ -1152,8 +1105,8 @@ function isNumber(obj) {
   return typeof obj === 'number';
 }
 /**
- * 判断是否是string
- * @param  {Anything}  str [description]
+ * to tell you if the val can be transfer into data
+ * @param  {Anything}  obj [description]
  * @return {Boolean}     [description]
  */
 function isString(str) {
@@ -1168,22 +1121,27 @@ function isBoolean(bool) {
   return typeof bool === 'boolean';
 }
 /**
- * is Primitive type or not, whick means it will return true when data is number/string/boolean/undefined/null
- * @param  {Anyting}  val
- * @return {Boolean}  true when type is number/string/boolean/undefined/null
+ * is a promise or not
+ * @param {Anything} obj
+ * @return {boolean}
  */
 function isPrimitive(val) {
   return isVoid(val) || isBoolean(val) || isString(val) || isNumber(val);
 }
+/**
+ * 判断是否为url且必须要带有协议头
+ * @param  {Anything}  str [description]
+ * @return {Boolean}     [description]
+ */
 
 /**
- * chimee-helper-log v0.1.1
+ * chimee-helper-log v0.1.2
  * (c) 2017 toxic-johann
  * Released under MIT
  */
 
 function formatter(tag, msg) {
-  if (!isString(tag)) throw new TypeError("Log's method only acccept string as argument");
+  if (!isString(tag)) throw new TypeError('Log\'s method only acccept string as argument, but not ' + tag + ' in ' + (typeof tag === 'undefined' ? 'undefined' : _typeof(tag)));
   if (!isString(msg)) return '[' + Log.GLOBAL_TAG + '] > ' + tag;
   tag = Log.FORCE_GLOBAL_TAG ? Log.GLOBAL_TAG : tag || Log.GLOBAL_TAG;
   return '[' + tag + '] > ' + msg;
@@ -1309,7 +1267,1041 @@ Log.ENABLE_WARN = true;
 Log.ENABLE_DEBUG = true;
 Log.ENABLE_VERBOSE = true;
 
-// call something on iterator step with safe closing on error
+var uaParser = createCommonjsModule(function (module, exports) {
+/**
+ * UAParser.js v0.7.14
+ * Lightweight JavaScript-based User-Agent string parser
+ * https://github.com/faisalman/ua-parser-js
+ *
+ * Copyright © 2012-2016 Faisal Salman <fyzlman@gmail.com>
+ * Dual licensed under GPLv2 & MIT
+ */
+
+(function (window, undefined) {
+
+    'use strict';
+
+    //////////////
+    // Constants
+    /////////////
+
+
+    var LIBVERSION  = '0.7.14',
+        EMPTY       = '',
+        UNKNOWN     = '?',
+        FUNC_TYPE   = 'function',
+        UNDEF_TYPE  = 'undefined',
+        OBJ_TYPE    = 'object',
+        STR_TYPE    = 'string',
+        MAJOR       = 'major', // deprecated
+        MODEL       = 'model',
+        NAME        = 'name',
+        TYPE        = 'type',
+        VENDOR      = 'vendor',
+        VERSION     = 'version',
+        ARCHITECTURE= 'architecture',
+        CONSOLE     = 'console',
+        MOBILE      = 'mobile',
+        TABLET      = 'tablet',
+        SMARTTV     = 'smarttv',
+        WEARABLE    = 'wearable',
+        EMBEDDED    = 'embedded';
+
+
+    ///////////
+    // Helper
+    //////////
+
+
+    var util = {
+        extend : function (regexes, extensions) {
+            var margedRegexes = {};
+            for (var i in regexes) {
+                if (extensions[i] && extensions[i].length % 2 === 0) {
+                    margedRegexes[i] = extensions[i].concat(regexes[i]);
+                } else {
+                    margedRegexes[i] = regexes[i];
+                }
+            }
+            return margedRegexes;
+        },
+        has : function (str1, str2) {
+          if (typeof str1 === "string") {
+            return str2.toLowerCase().indexOf(str1.toLowerCase()) !== -1;
+          } else {
+            return false;
+          }
+        },
+        lowerize : function (str) {
+            return str.toLowerCase();
+        },
+        major : function (version) {
+            return typeof(version) === STR_TYPE ? version.replace(/[^\d\.]/g,'').split(".")[0] : undefined;
+        },
+        trim : function (str) {
+          return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+        }
+    };
+
+
+    ///////////////
+    // Map helper
+    //////////////
+
+
+    var mapper = {
+
+        rgx : function (ua, arrays) {
+
+            //var result = {},
+            var i = 0, j, k, p, q, matches, match;//, args = arguments;
+
+            /*// construct object barebones
+            for (p = 0; p < args[1].length; p++) {
+                q = args[1][p];
+                result[typeof q === OBJ_TYPE ? q[0] : q] = undefined;
+            }*/
+
+            // loop through all regexes maps
+            while (i < arrays.length && !matches) {
+
+                var regex = arrays[i],       // even sequence (0,2,4,..)
+                    props = arrays[i + 1];   // odd sequence (1,3,5,..)
+                j = k = 0;
+
+                // try matching uastring with regexes
+                while (j < regex.length && !matches) {
+
+                    matches = regex[j++].exec(ua);
+
+                    if (!!matches) {
+                        for (p = 0; p < props.length; p++) {
+                            match = matches[++k];
+                            q = props[p];
+                            // check if given property is actually array
+                            if (typeof q === OBJ_TYPE && q.length > 0) {
+                                if (q.length == 2) {
+                                    if (typeof q[1] == FUNC_TYPE) {
+                                        // assign modified match
+                                        this[q[0]] = q[1].call(this, match);
+                                    } else {
+                                        // assign given value, ignore regex match
+                                        this[q[0]] = q[1];
+                                    }
+                                } else if (q.length == 3) {
+                                    // check whether function or regex
+                                    if (typeof q[1] === FUNC_TYPE && !(q[1].exec && q[1].test)) {
+                                        // call function (usually string mapper)
+                                        this[q[0]] = match ? q[1].call(this, match, q[2]) : undefined;
+                                    } else {
+                                        // sanitize match using given regex
+                                        this[q[0]] = match ? match.replace(q[1], q[2]) : undefined;
+                                    }
+                                } else if (q.length == 4) {
+                                        this[q[0]] = match ? q[3].call(this, match.replace(q[1], q[2])) : undefined;
+                                }
+                            } else {
+                                this[q] = match ? match : undefined;
+                            }
+                        }
+                    }
+                }
+                i += 2;
+            }
+            //console.log(this);
+            //return this;
+        },
+
+        str : function (str, map) {
+
+            for (var i in map) {
+                // check if array
+                if (typeof map[i] === OBJ_TYPE && map[i].length > 0) {
+                    for (var j = 0; j < map[i].length; j++) {
+                        if (util.has(map[i][j], str)) {
+                            return (i === UNKNOWN) ? undefined : i;
+                        }
+                    }
+                } else if (util.has(map[i], str)) {
+                    return (i === UNKNOWN) ? undefined : i;
+                }
+            }
+            return str;
+        }
+    };
+
+
+    ///////////////
+    // String map
+    //////////////
+
+
+    var maps = {
+
+        browser : {
+            oldsafari : {
+                version : {
+                    '1.0'   : '/8',
+                    '1.2'   : '/1',
+                    '1.3'   : '/3',
+                    '2.0'   : '/412',
+                    '2.0.2' : '/416',
+                    '2.0.3' : '/417',
+                    '2.0.4' : '/419',
+                    '?'     : '/'
+                }
+            }
+        },
+
+        device : {
+            amazon : {
+                model : {
+                    'Fire Phone' : ['SD', 'KF']
+                }
+            },
+            sprint : {
+                model : {
+                    'Evo Shift 4G' : '7373KT'
+                },
+                vendor : {
+                    'HTC'       : 'APA',
+                    'Sprint'    : 'Sprint'
+                }
+            }
+        },
+
+        os : {
+            windows : {
+                version : {
+                    'ME'        : '4.90',
+                    'NT 3.11'   : 'NT3.51',
+                    'NT 4.0'    : 'NT4.0',
+                    '2000'      : 'NT 5.0',
+                    'XP'        : ['NT 5.1', 'NT 5.2'],
+                    'Vista'     : 'NT 6.0',
+                    '7'         : 'NT 6.1',
+                    '8'         : 'NT 6.2',
+                    '8.1'       : 'NT 6.3',
+                    '10'        : ['NT 6.4', 'NT 10.0'],
+                    'RT'        : 'ARM'
+                }
+            }
+        }
+    };
+
+
+    //////////////
+    // Regex map
+    /////////////
+
+
+    var regexes = {
+
+        browser : [[
+
+            // Presto based
+            /(opera\smini)\/([\w\.-]+)/i,                                       // Opera Mini
+            /(opera\s[mobiletab]+).+version\/([\w\.-]+)/i,                      // Opera Mobi/Tablet
+            /(opera).+version\/([\w\.]+)/i,                                     // Opera > 9.80
+            /(opera)[\/\s]+([\w\.]+)/i                                          // Opera < 9.80
+            ], [NAME, VERSION], [
+
+            /(opios)[\/\s]+([\w\.]+)/i                                          // Opera mini on iphone >= 8.0
+            ], [[NAME, 'Opera Mini'], VERSION], [
+
+            /\s(opr)\/([\w\.]+)/i                                               // Opera Webkit
+            ], [[NAME, 'Opera'], VERSION], [
+
+            // Mixed
+            /(kindle)\/([\w\.]+)/i,                                             // Kindle
+            /(lunascape|maxthon|netfront|jasmine|blazer)[\/\s]?([\w\.]+)*/i,
+                                                                                // Lunascape/Maxthon/Netfront/Jasmine/Blazer
+
+            // Trident based
+            /(avant\s|iemobile|slim|baidu)(?:browser)?[\/\s]?([\w\.]*)/i,
+                                                                                // Avant/IEMobile/SlimBrowser/Baidu
+            /(?:ms|\()(ie)\s([\w\.]+)/i,                                        // Internet Explorer
+
+            // Webkit/KHTML based
+            /(rekonq)\/([\w\.]+)*/i,                                            // Rekonq
+            /(chromium|flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt|iron|vivaldi|iridium|phantomjs|bowser)\/([\w\.-]+)/i
+                                                                                // Chromium/Flock/RockMelt/Midori/Epiphany/Silk/Skyfire/Bolt/Iron/Iridium/PhantomJS/Bowser
+            ], [NAME, VERSION], [
+
+            /(trident).+rv[:\s]([\w\.]+).+like\sgecko/i                         // IE11
+            ], [[NAME, 'IE'], VERSION], [
+
+            /(edge)\/((\d+)?[\w\.]+)/i                                          // Microsoft Edge
+            ], [NAME, VERSION], [
+
+            /(yabrowser)\/([\w\.]+)/i                                           // Yandex
+            ], [[NAME, 'Yandex'], VERSION], [
+
+            /(puffin)\/([\w\.]+)/i                                              // Puffin
+            ], [[NAME, 'Puffin'], VERSION], [
+
+            /((?:[\s\/])uc?\s?browser|(?:juc.+)ucweb)[\/\s]?([\w\.]+)/i
+                                                                                // UCBrowser
+            ], [[NAME, 'UCBrowser'], VERSION], [
+
+            /(comodo_dragon)\/([\w\.]+)/i                                       // Comodo Dragon
+            ], [[NAME, /_/g, ' '], VERSION], [
+
+            /(micromessenger)\/([\w\.]+)/i                                      // WeChat
+            ], [[NAME, 'WeChat'], VERSION], [
+
+            /(QQ)\/([\d\.]+)/i                                                  // QQ, aka ShouQ
+            ], [NAME, VERSION], [
+
+            /m?(qqbrowser)[\/\s]?([\w\.]+)/i                                    // QQBrowser
+            ], [NAME, VERSION], [
+
+            /xiaomi\/miuibrowser\/([\w\.]+)/i                                   // MIUI Browser
+            ], [VERSION, [NAME, 'MIUI Browser']], [
+
+            /;fbav\/([\w\.]+);/i                                                // Facebook App for iOS & Android
+            ], [VERSION, [NAME, 'Facebook']], [
+
+            /(headlesschrome) ([\w\.]+)/i                                       // Chrome Headless
+            ], [VERSION, [NAME, 'Chrome Headless']], [
+
+            /\swv\).+(chrome)\/([\w\.]+)/i                                      // Chrome WebView
+            ], [[NAME, /(.+)/, '$1 WebView'], VERSION], [
+
+            /((?:oculus|samsung)browser)\/([\w\.]+)/i
+            ], [[NAME, /(.+(?:g|us))(.+)/, '$1 $2'], VERSION], [                // Oculus / Samsung Browser
+
+            /android.+version\/([\w\.]+)\s+(?:mobile\s?safari|safari)*/i        // Android Browser
+            ], [VERSION, [NAME, 'Android Browser']], [
+
+            /(chrome|omniweb|arora|[tizenoka]{5}\s?browser)\/v?([\w\.]+)/i
+                                                                                // Chrome/OmniWeb/Arora/Tizen/Nokia
+            ], [NAME, VERSION], [
+
+            /(dolfin)\/([\w\.]+)/i                                              // Dolphin
+            ], [[NAME, 'Dolphin'], VERSION], [
+
+            /((?:android.+)crmo|crios)\/([\w\.]+)/i                             // Chrome for Android/iOS
+            ], [[NAME, 'Chrome'], VERSION], [
+
+            /(coast)\/([\w\.]+)/i                                               // Opera Coast
+            ], [[NAME, 'Opera Coast'], VERSION], [
+
+            /fxios\/([\w\.-]+)/i                                                // Firefox for iOS
+            ], [VERSION, [NAME, 'Firefox']], [
+
+            /version\/([\w\.]+).+?mobile\/\w+\s(safari)/i                       // Mobile Safari
+            ], [VERSION, [NAME, 'Mobile Safari']], [
+
+            /version\/([\w\.]+).+?(mobile\s?safari|safari)/i                    // Safari & Safari Mobile
+            ], [VERSION, NAME], [
+
+            /webkit.+?(mobile\s?safari|safari)(\/[\w\.]+)/i                     // Safari < 3.0
+            ], [NAME, [VERSION, mapper.str, maps.browser.oldsafari.version]], [
+
+            /(konqueror)\/([\w\.]+)/i,                                          // Konqueror
+            /(webkit|khtml)\/([\w\.]+)/i
+            ], [NAME, VERSION], [
+
+            // Gecko based
+            /(navigator|netscape)\/([\w\.-]+)/i                                 // Netscape
+            ], [[NAME, 'Netscape'], VERSION], [
+            /(swiftfox)/i,                                                      // Swiftfox
+            /(icedragon|iceweasel|camino|chimera|fennec|maemo\sbrowser|minimo|conkeror)[\/\s]?([\w\.\+]+)/i,
+                                                                                // IceDragon/Iceweasel/Camino/Chimera/Fennec/Maemo/Minimo/Conkeror
+            /(firefox|seamonkey|k-meleon|icecat|iceape|firebird|phoenix)\/([\w\.-]+)/i,
+                                                                                // Firefox/SeaMonkey/K-Meleon/IceCat/IceApe/Firebird/Phoenix
+            /(mozilla)\/([\w\.]+).+rv\:.+gecko\/\d+/i,                          // Mozilla
+
+            // Other
+            /(polaris|lynx|dillo|icab|doris|amaya|w3m|netsurf|sleipnir)[\/\s]?([\w\.]+)/i,
+                                                                                // Polaris/Lynx/Dillo/iCab/Doris/Amaya/w3m/NetSurf/Sleipnir
+            /(links)\s\(([\w\.]+)/i,                                            // Links
+            /(gobrowser)\/?([\w\.]+)*/i,                                        // GoBrowser
+            /(ice\s?browser)\/v?([\w\._]+)/i,                                   // ICE Browser
+            /(mosaic)[\/\s]([\w\.]+)/i                                          // Mosaic
+            ], [NAME, VERSION]
+
+            /* /////////////////////
+            // Media players BEGIN
+            ////////////////////////
+
+            , [
+
+            /(apple(?:coremedia|))\/((\d+)[\w\._]+)/i,                          // Generic Apple CoreMedia
+            /(coremedia) v((\d+)[\w\._]+)/i
+            ], [NAME, VERSION], [
+
+            /(aqualung|lyssna|bsplayer)\/((\d+)?[\w\.-]+)/i                     // Aqualung/Lyssna/BSPlayer
+            ], [NAME, VERSION], [
+
+            /(ares|ossproxy)\s((\d+)[\w\.-]+)/i                                 // Ares/OSSProxy
+            ], [NAME, VERSION], [
+
+            /(audacious|audimusicstream|amarok|bass|core|dalvik|gnomemplayer|music on console|nsplayer|psp-internetradioplayer|videos)\/((\d+)[\w\.-]+)/i,
+                                                                                // Audacious/AudiMusicStream/Amarok/BASS/OpenCORE/Dalvik/GnomeMplayer/MoC
+                                                                                // NSPlayer/PSP-InternetRadioPlayer/Videos
+            /(clementine|music player daemon)\s((\d+)[\w\.-]+)/i,               // Clementine/MPD
+            /(lg player|nexplayer)\s((\d+)[\d\.]+)/i,
+            /player\/(nexplayer|lg player)\s((\d+)[\w\.-]+)/i                   // NexPlayer/LG Player
+            ], [NAME, VERSION], [
+            /(nexplayer)\s((\d+)[\w\.-]+)/i                                     // Nexplayer
+            ], [NAME, VERSION], [
+
+            /(flrp)\/((\d+)[\w\.-]+)/i                                          // Flip Player
+            ], [[NAME, 'Flip Player'], VERSION], [
+
+            /(fstream|nativehost|queryseekspider|ia-archiver|facebookexternalhit)/i
+                                                                                // FStream/NativeHost/QuerySeekSpider/IA Archiver/facebookexternalhit
+            ], [NAME], [
+
+            /(gstreamer) souphttpsrc (?:\([^\)]+\)){0,1} libsoup\/((\d+)[\w\.-]+)/i
+                                                                                // Gstreamer
+            ], [NAME, VERSION], [
+
+            /(htc streaming player)\s[\w_]+\s\/\s((\d+)[\d\.]+)/i,              // HTC Streaming Player
+            /(java|python-urllib|python-requests|wget|libcurl)\/((\d+)[\w\.-_]+)/i,
+                                                                                // Java/urllib/requests/wget/cURL
+            /(lavf)((\d+)[\d\.]+)/i                                             // Lavf (FFMPEG)
+            ], [NAME, VERSION], [
+
+            /(htc_one_s)\/((\d+)[\d\.]+)/i                                      // HTC One S
+            ], [[NAME, /_/g, ' '], VERSION], [
+
+            /(mplayer)(?:\s|\/)(?:(?:sherpya-){0,1}svn)(?:-|\s)(r\d+(?:-\d+[\w\.-]+){0,1})/i
+                                                                                // MPlayer SVN
+            ], [NAME, VERSION], [
+
+            /(mplayer)(?:\s|\/|[unkow-]+)((\d+)[\w\.-]+)/i                      // MPlayer
+            ], [NAME, VERSION], [
+
+            /(mplayer)/i,                                                       // MPlayer (no other info)
+            /(yourmuze)/i,                                                      // YourMuze
+            /(media player classic|nero showtime)/i                             // Media Player Classic/Nero ShowTime
+            ], [NAME], [
+
+            /(nero (?:home|scout))\/((\d+)[\w\.-]+)/i                           // Nero Home/Nero Scout
+            ], [NAME, VERSION], [
+
+            /(nokia\d+)\/((\d+)[\w\.-]+)/i                                      // Nokia
+            ], [NAME, VERSION], [
+
+            /\s(songbird)\/((\d+)[\w\.-]+)/i                                    // Songbird/Philips-Songbird
+            ], [NAME, VERSION], [
+
+            /(winamp)3 version ((\d+)[\w\.-]+)/i,                               // Winamp
+            /(winamp)\s((\d+)[\w\.-]+)/i,
+            /(winamp)mpeg\/((\d+)[\w\.-]+)/i
+            ], [NAME, VERSION], [
+
+            /(ocms-bot|tapinradio|tunein radio|unknown|winamp|inlight radio)/i  // OCMS-bot/tap in radio/tunein/unknown/winamp (no other info)
+                                                                                // inlight radio
+            ], [NAME], [
+
+            /(quicktime|rma|radioapp|radioclientapplication|soundtap|totem|stagefright|streamium)\/((\d+)[\w\.-]+)/i
+                                                                                // QuickTime/RealMedia/RadioApp/RadioClientApplication/
+                                                                                // SoundTap/Totem/Stagefright/Streamium
+            ], [NAME, VERSION], [
+
+            /(smp)((\d+)[\d\.]+)/i                                              // SMP
+            ], [NAME, VERSION], [
+
+            /(vlc) media player - version ((\d+)[\w\.]+)/i,                     // VLC Videolan
+            /(vlc)\/((\d+)[\w\.-]+)/i,
+            /(xbmc|gvfs|xine|xmms|irapp)\/((\d+)[\w\.-]+)/i,                    // XBMC/gvfs/Xine/XMMS/irapp
+            /(foobar2000)\/((\d+)[\d\.]+)/i,                                    // Foobar2000
+            /(itunes)\/((\d+)[\d\.]+)/i                                         // iTunes
+            ], [NAME, VERSION], [
+
+            /(wmplayer)\/((\d+)[\w\.-]+)/i,                                     // Windows Media Player
+            /(windows-media-player)\/((\d+)[\w\.-]+)/i
+            ], [[NAME, /-/g, ' '], VERSION], [
+
+            /windows\/((\d+)[\w\.-]+) upnp\/[\d\.]+ dlnadoc\/[\d\.]+ (home media server)/i
+                                                                                // Windows Media Server
+            ], [VERSION, [NAME, 'Windows']], [
+
+            /(com\.riseupradioalarm)\/((\d+)[\d\.]*)/i                          // RiseUP Radio Alarm
+            ], [NAME, VERSION], [
+
+            /(rad.io)\s((\d+)[\d\.]+)/i,                                        // Rad.io
+            /(radio.(?:de|at|fr))\s((\d+)[\d\.]+)/i
+            ], [[NAME, 'rad.io'], VERSION]
+
+            //////////////////////
+            // Media players END
+            ////////////////////*/
+
+        ],
+
+        cpu : [[
+
+            /(?:(amd|x(?:(?:86|64)[_-])?|wow|win)64)[;\)]/i                     // AMD64
+            ], [[ARCHITECTURE, 'amd64']], [
+
+            /(ia32(?=;))/i                                                      // IA32 (quicktime)
+            ], [[ARCHITECTURE, util.lowerize]], [
+
+            /((?:i[346]|x)86)[;\)]/i                                            // IA32
+            ], [[ARCHITECTURE, 'ia32']], [
+
+            // PocketPC mistakenly identified as PowerPC
+            /windows\s(ce|mobile);\sppc;/i
+            ], [[ARCHITECTURE, 'arm']], [
+
+            /((?:ppc|powerpc)(?:64)?)(?:\smac|;|\))/i                           // PowerPC
+            ], [[ARCHITECTURE, /ower/, '', util.lowerize]], [
+
+            /(sun4\w)[;\)]/i                                                    // SPARC
+            ], [[ARCHITECTURE, 'sparc']], [
+
+            /((?:avr32|ia64(?=;))|68k(?=\))|arm(?:64|(?=v\d+;))|(?=atmel\s)avr|(?:irix|mips|sparc)(?:64)?(?=;)|pa-risc)/i
+                                                                                // IA64, 68K, ARM/64, AVR/32, IRIX/64, MIPS/64, SPARC/64, PA-RISC
+            ], [[ARCHITECTURE, util.lowerize]]
+        ],
+
+        device : [[
+
+            /\((ipad|playbook);[\w\s\);-]+(rim|apple)/i                         // iPad/PlayBook
+            ], [MODEL, VENDOR, [TYPE, TABLET]], [
+
+            /applecoremedia\/[\w\.]+ \((ipad)/                                  // iPad
+            ], [MODEL, [VENDOR, 'Apple'], [TYPE, TABLET]], [
+
+            /(apple\s{0,1}tv)/i                                                 // Apple TV
+            ], [[MODEL, 'Apple TV'], [VENDOR, 'Apple']], [
+
+            /(archos)\s(gamepad2?)/i,                                           // Archos
+            /(hp).+(touchpad)/i,                                                // HP TouchPad
+            /(hp).+(tablet)/i,                                                  // HP Tablet
+            /(kindle)\/([\w\.]+)/i,                                             // Kindle
+            /\s(nook)[\w\s]+build\/(\w+)/i,                                     // Nook
+            /(dell)\s(strea[kpr\s\d]*[\dko])/i                                  // Dell Streak
+            ], [VENDOR, MODEL, [TYPE, TABLET]], [
+
+            /(kf[A-z]+)\sbuild\/[\w\.]+.*silk\//i                               // Kindle Fire HD
+            ], [MODEL, [VENDOR, 'Amazon'], [TYPE, TABLET]], [
+            /(sd|kf)[0349hijorstuw]+\sbuild\/[\w\.]+.*silk\//i                  // Fire Phone
+            ], [[MODEL, mapper.str, maps.device.amazon.model], [VENDOR, 'Amazon'], [TYPE, MOBILE]], [
+
+            /\((ip[honed|\s\w*]+);.+(apple)/i                                   // iPod/iPhone
+            ], [MODEL, VENDOR, [TYPE, MOBILE]], [
+            /\((ip[honed|\s\w*]+);/i                                            // iPod/iPhone
+            ], [MODEL, [VENDOR, 'Apple'], [TYPE, MOBILE]], [
+
+            /(blackberry)[\s-]?(\w+)/i,                                         // BlackBerry
+            /(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|meizu|motorola|polytron)[\s_-]?([\w-]+)*/i,
+                                                                                // BenQ/Palm/Sony-Ericsson/Acer/Asus/Dell/Meizu/Motorola/Polytron
+            /(hp)\s([\w\s]+\w)/i,                                               // HP iPAQ
+            /(asus)-?(\w+)/i                                                    // Asus
+            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+            /\(bb10;\s(\w+)/i                                                   // BlackBerry 10
+            ], [MODEL, [VENDOR, 'BlackBerry'], [TYPE, MOBILE]], [
+                                                                                // Asus Tablets
+            /android.+(transfo[prime\s]{4,10}\s\w+|eeepc|slider\s\w+|nexus 7|padfone)/i
+            ], [MODEL, [VENDOR, 'Asus'], [TYPE, TABLET]], [
+
+            /(sony)\s(tablet\s[ps])\sbuild\//i,                                  // Sony
+            /(sony)?(?:sgp.+)\sbuild\//i
+            ], [[VENDOR, 'Sony'], [MODEL, 'Xperia Tablet'], [TYPE, TABLET]], [
+            /android.+\s([c-g]\d{4}|so[-l]\w+)\sbuild\//i
+            ], [MODEL, [VENDOR, 'Sony'], [TYPE, MOBILE]], [
+
+            /\s(ouya)\s/i,                                                      // Ouya
+            /(nintendo)\s([wids3u]+)/i                                          // Nintendo
+            ], [VENDOR, MODEL, [TYPE, CONSOLE]], [
+
+            /android.+;\s(shield)\sbuild/i                                      // Nvidia
+            ], [MODEL, [VENDOR, 'Nvidia'], [TYPE, CONSOLE]], [
+
+            /(playstation\s[34portablevi]+)/i                                   // Playstation
+            ], [MODEL, [VENDOR, 'Sony'], [TYPE, CONSOLE]], [
+
+            /(sprint\s(\w+))/i                                                  // Sprint Phones
+            ], [[VENDOR, mapper.str, maps.device.sprint.vendor], [MODEL, mapper.str, maps.device.sprint.model], [TYPE, MOBILE]], [
+
+            /(lenovo)\s?(S(?:5000|6000)+(?:[-][\w+]))/i                         // Lenovo tablets
+            ], [VENDOR, MODEL, [TYPE, TABLET]], [
+
+            /(htc)[;_\s-]+([\w\s]+(?=\))|\w+)*/i,                               // HTC
+            /(zte)-(\w+)*/i,                                                    // ZTE
+            /(alcatel|geeksphone|lenovo|nexian|panasonic|(?=;\s)sony)[_\s-]?([\w-]+)*/i
+                                                                                // Alcatel/GeeksPhone/Lenovo/Nexian/Panasonic/Sony
+            ], [VENDOR, [MODEL, /_/g, ' '], [TYPE, MOBILE]], [
+
+            /(nexus\s9)/i                                                       // HTC Nexus 9
+            ], [MODEL, [VENDOR, 'HTC'], [TYPE, TABLET]], [
+
+            /d\/huawei([\w\s-]+)[;\)]/i,
+            /(nexus\s6p)/i                                                      // Huawei
+            ], [MODEL, [VENDOR, 'Huawei'], [TYPE, MOBILE]], [
+
+            /(microsoft);\s(lumia[\s\w]+)/i                                     // Microsoft Lumia
+            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+
+            /[\s\(;](xbox(?:\sone)?)[\s\);]/i                                   // Microsoft Xbox
+            ], [MODEL, [VENDOR, 'Microsoft'], [TYPE, CONSOLE]], [
+            /(kin\.[onetw]{3})/i                                                // Microsoft Kin
+            ], [[MODEL, /\./g, ' '], [VENDOR, 'Microsoft'], [TYPE, MOBILE]], [
+
+                                                                                // Motorola
+            /\s(milestone|droid(?:[2-4x]|\s(?:bionic|x2|pro|razr))?(:?\s4g)?)[\w\s]+build\//i,
+            /mot[\s-]?(\w+)*/i,
+            /(XT\d{3,4}) build\//i,
+            /(nexus\s6)/i
+            ], [MODEL, [VENDOR, 'Motorola'], [TYPE, MOBILE]], [
+            /android.+\s(mz60\d|xoom[\s2]{0,2})\sbuild\//i
+            ], [MODEL, [VENDOR, 'Motorola'], [TYPE, TABLET]], [
+
+            /hbbtv\/\d+\.\d+\.\d+\s+\([\w\s]*;\s*(\w[^;]*);([^;]*)/i            // HbbTV devices
+            ], [[VENDOR, util.trim], [MODEL, util.trim], [TYPE, SMARTTV]], [
+
+            /hbbtv.+maple;(\d+)/i
+            ], [[MODEL, /^/, 'SmartTV'], [VENDOR, 'Samsung'], [TYPE, SMARTTV]], [
+
+            /\(dtv[\);].+(aquos)/i                                              // Sharp
+            ], [MODEL, [VENDOR, 'Sharp'], [TYPE, SMARTTV]], [
+
+            /android.+((sch-i[89]0\d|shw-m380s|gt-p\d{4}|gt-n\d+|sgh-t8[56]9|nexus 10))/i,
+            /((SM-T\w+))/i
+            ], [[VENDOR, 'Samsung'], MODEL, [TYPE, TABLET]], [                  // Samsung
+            /smart-tv.+(samsung)/i
+            ], [VENDOR, [TYPE, SMARTTV], MODEL], [
+            /((s[cgp]h-\w+|gt-\w+|galaxy\snexus|sm-\w[\w\d]+))/i,
+            /(sam[sung]*)[\s-]*(\w+-?[\w-]*)*/i,
+            /sec-((sgh\w+))/i
+            ], [[VENDOR, 'Samsung'], MODEL, [TYPE, MOBILE]], [
+
+            /sie-(\w+)*/i                                                       // Siemens
+            ], [MODEL, [VENDOR, 'Siemens'], [TYPE, MOBILE]], [
+
+            /(maemo|nokia).*(n900|lumia\s\d+)/i,                                // Nokia
+            /(nokia)[\s_-]?([\w-]+)*/i
+            ], [[VENDOR, 'Nokia'], MODEL, [TYPE, MOBILE]], [
+
+            /android\s3\.[\s\w;-]{10}(a\d{3})/i                                 // Acer
+            ], [MODEL, [VENDOR, 'Acer'], [TYPE, TABLET]], [
+
+            /android.+([vl]k\-?\d{3})\s+build/i                                 // LG Tablet
+            ], [MODEL, [VENDOR, 'LG'], [TYPE, TABLET]], [
+            /android\s3\.[\s\w;-]{10}(lg?)-([06cv9]{3,4})/i                     // LG Tablet
+            ], [[VENDOR, 'LG'], MODEL, [TYPE, TABLET]], [
+            /(lg) netcast\.tv/i                                                 // LG SmartTV
+            ], [VENDOR, MODEL, [TYPE, SMARTTV]], [
+            /(nexus\s[45])/i,                                                   // LG
+            /lg[e;\s\/-]+(\w+)*/i,
+            /android.+lg(\-?[\d\w]+)\s+build/i
+            ], [MODEL, [VENDOR, 'LG'], [TYPE, MOBILE]], [
+
+            /android.+(ideatab[a-z0-9\-\s]+)/i                                  // Lenovo
+            ], [MODEL, [VENDOR, 'Lenovo'], [TYPE, TABLET]], [
+
+            /linux;.+((jolla));/i                                               // Jolla
+            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+
+            /((pebble))app\/[\d\.]+\s/i                                         // Pebble
+            ], [VENDOR, MODEL, [TYPE, WEARABLE]], [
+
+            /android.+;\s(oppo)\s?([\w\s]+)\sbuild/i                            // OPPO
+            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+
+            /crkey/i                                                            // Google Chromecast
+            ], [[MODEL, 'Chromecast'], [VENDOR, 'Google']], [
+
+            /android.+;\s(glass)\s\d/i                                          // Google Glass
+            ], [MODEL, [VENDOR, 'Google'], [TYPE, WEARABLE]], [
+
+            /android.+;\s(pixel c)\s/i                                          // Google Pixel C
+            ], [MODEL, [VENDOR, 'Google'], [TYPE, TABLET]], [
+
+            /android.+;\s(pixel xl|pixel)\s/i                                   // Google Pixel
+            ], [MODEL, [VENDOR, 'Google'], [TYPE, MOBILE]], [
+
+            /android.+(\w+)\s+build\/hm\1/i,                                    // Xiaomi Hongmi 'numeric' models
+            /android.+(hm[\s\-_]*note?[\s_]*(?:\d\w)?)\s+build/i,               // Xiaomi Hongmi
+            /android.+(mi[\s\-_]*(?:one|one[\s_]plus|note lte)?[\s_]*(?:\d\w)?)\s+build/i    // Xiaomi Mi
+            ], [[MODEL, /_/g, ' '], [VENDOR, 'Xiaomi'], [TYPE, MOBILE]], [
+
+            /android.+;\s(m[1-5]\snote)\sbuild/i                                // Meizu Tablet
+            ], [MODEL, [VENDOR, 'Meizu'], [TYPE, TABLET]], [
+
+            /android.+a000(1)\s+build/i                                         // OnePlus
+            ], [MODEL, [VENDOR, 'OnePlus'], [TYPE, MOBILE]], [
+
+            /android.+[;\/]\s*(RCT[\d\w]+)\s+build/i                            // RCA Tablets
+            ], [MODEL, [VENDOR, 'RCA'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(Venue[\d\s]*)\s+build/i                          // Dell Venue Tablets
+            ], [MODEL, [VENDOR, 'Dell'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(Q[T|M][\d\w]+)\s+build/i                         // Verizon Tablet
+            ], [MODEL, [VENDOR, 'Verizon'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s+(Barnes[&\s]+Noble\s+|BN[RT])(V?.*)\s+build/i     // Barnes & Noble Tablet
+            ], [[VENDOR, 'Barnes & Noble'], MODEL, [TYPE, TABLET]], [
+
+            /android.+[;\/]\s+(TM\d{3}.*\b)\s+build/i                           // Barnes & Noble Tablet
+            ], [MODEL, [VENDOR, 'NuVision'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(zte)?.+(k\d{2})\s+build/i                        // ZTE K Series Tablet
+            ], [[VENDOR, 'ZTE'], MODEL, [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(gen\d{3})\s+build.*49h/i                         // Swiss GEN Mobile
+            ], [MODEL, [VENDOR, 'Swiss'], [TYPE, MOBILE]], [
+
+            /android.+[;\/]\s*(zur\d{3})\s+build/i                              // Swiss ZUR Tablet
+            ], [MODEL, [VENDOR, 'Swiss'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*((Zeki)?TB.*\b)\s+build/i                         // Zeki Tablets
+            ], [MODEL, [VENDOR, 'Zeki'], [TYPE, TABLET]], [
+
+            /(android).+[;\/]\s+([YR]\d{2}x?.*)\s+build/i,
+            /android.+[;\/]\s+(Dragon[\-\s]+Touch\s+|DT)(.+)\s+build/i          // Dragon Touch Tablet
+            ], [[VENDOR, 'Dragon Touch'], MODEL, [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(NS-?.+)\s+build/i                                // Insignia Tablets
+            ], [MODEL, [VENDOR, 'Insignia'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*((NX|Next)-?.+)\s+build/i                         // NextBook Tablets
+            ], [MODEL, [VENDOR, 'NextBook'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(Xtreme\_?)?(V(1[045]|2[015]|30|40|60|7[05]|90))\s+build/i
+            ], [[VENDOR, 'Voice'], MODEL, [TYPE, MOBILE]], [                    // Voice Xtreme Phones
+
+            /android.+[;\/]\s*(LVTEL\-?)?(V1[12])\s+build/i                     // LvTel Phones
+            ], [[VENDOR, 'LvTel'], MODEL, [TYPE, MOBILE]], [
+
+            /android.+[;\/]\s*(V(100MD|700NA|7011|917G).*\b)\s+build/i          // Envizen Tablets
+            ], [MODEL, [VENDOR, 'Envizen'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(Le[\s\-]+Pan)[\s\-]+(.*\b)\s+build/i             // Le Pan Tablets
+            ], [VENDOR, MODEL, [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(Trio[\s\-]*.*)\s+build/i                         // MachSpeed Tablets
+            ], [MODEL, [VENDOR, 'MachSpeed'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(Trinity)[\-\s]*(T\d{3})\s+build/i                // Trinity Tablets
+            ], [VENDOR, MODEL, [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*TU_(1491)\s+build/i                               // Rotor Tablets
+            ], [MODEL, [VENDOR, 'Rotor'], [TYPE, TABLET]], [
+
+            /android.+(KS(.+))\s+build/i                                        // Amazon Kindle Tablets
+            ], [MODEL, [VENDOR, 'Amazon'], [TYPE, TABLET]], [
+
+            /android.+(Gigaset)[\s\-]+(Q.+)\s+build/i                           // Gigaset Tablets
+            ], [VENDOR, MODEL, [TYPE, TABLET]], [
+
+            /\s(tablet|tab)[;\/]/i,                                             // Unidentifiable Tablet
+            /\s(mobile)(?:[;\/]|\ssafari)/i                                     // Unidentifiable Mobile
+            ], [[TYPE, util.lowerize], VENDOR, MODEL], [
+
+            /(android.+)[;\/].+build/i                                          // Generic Android Device
+            ], [MODEL, [VENDOR, 'Generic']]
+
+
+        /*//////////////////////////
+            // TODO: move to string map
+            ////////////////////////////
+
+            /(C6603)/i                                                          // Sony Xperia Z C6603
+            ], [[MODEL, 'Xperia Z C6603'], [VENDOR, 'Sony'], [TYPE, MOBILE]], [
+            /(C6903)/i                                                          // Sony Xperia Z 1
+            ], [[MODEL, 'Xperia Z 1'], [VENDOR, 'Sony'], [TYPE, MOBILE]], [
+
+            /(SM-G900[F|H])/i                                                   // Samsung Galaxy S5
+            ], [[MODEL, 'Galaxy S5'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
+            /(SM-G7102)/i                                                       // Samsung Galaxy Grand 2
+            ], [[MODEL, 'Galaxy Grand 2'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
+            /(SM-G530H)/i                                                       // Samsung Galaxy Grand Prime
+            ], [[MODEL, 'Galaxy Grand Prime'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
+            /(SM-G313HZ)/i                                                      // Samsung Galaxy V
+            ], [[MODEL, 'Galaxy V'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
+            /(SM-T805)/i                                                        // Samsung Galaxy Tab S 10.5
+            ], [[MODEL, 'Galaxy Tab S 10.5'], [VENDOR, 'Samsung'], [TYPE, TABLET]], [
+            /(SM-G800F)/i                                                       // Samsung Galaxy S5 Mini
+            ], [[MODEL, 'Galaxy S5 Mini'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
+            /(SM-T311)/i                                                        // Samsung Galaxy Tab 3 8.0
+            ], [[MODEL, 'Galaxy Tab 3 8.0'], [VENDOR, 'Samsung'], [TYPE, TABLET]], [
+
+            /(T3C)/i                                                            // Advan Vandroid T3C
+            ], [MODEL, [VENDOR, 'Advan'], [TYPE, TABLET]], [
+            /(ADVAN T1J\+)/i                                                    // Advan Vandroid T1J+
+            ], [[MODEL, 'Vandroid T1J+'], [VENDOR, 'Advan'], [TYPE, TABLET]], [
+            /(ADVAN S4A)/i                                                      // Advan Vandroid S4A
+            ], [[MODEL, 'Vandroid S4A'], [VENDOR, 'Advan'], [TYPE, MOBILE]], [
+
+            /(V972M)/i                                                          // ZTE V972M
+            ], [MODEL, [VENDOR, 'ZTE'], [TYPE, MOBILE]], [
+
+            /(i-mobile)\s(IQ\s[\d\.]+)/i                                        // i-mobile IQ
+            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+            /(IQ6.3)/i                                                          // i-mobile IQ IQ 6.3
+            ], [[MODEL, 'IQ 6.3'], [VENDOR, 'i-mobile'], [TYPE, MOBILE]], [
+            /(i-mobile)\s(i-style\s[\d\.]+)/i                                   // i-mobile i-STYLE
+            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+            /(i-STYLE2.1)/i                                                     // i-mobile i-STYLE 2.1
+            ], [[MODEL, 'i-STYLE 2.1'], [VENDOR, 'i-mobile'], [TYPE, MOBILE]], [
+
+            /(mobiistar touch LAI 512)/i                                        // mobiistar touch LAI 512
+            ], [[MODEL, 'Touch LAI 512'], [VENDOR, 'mobiistar'], [TYPE, MOBILE]], [
+
+            /////////////
+            // END TODO
+            ///////////*/
+
+        ],
+
+        engine : [[
+
+            /windows.+\sedge\/([\w\.]+)/i                                       // EdgeHTML
+            ], [VERSION, [NAME, 'EdgeHTML']], [
+
+            /(presto)\/([\w\.]+)/i,                                             // Presto
+            /(webkit|trident|netfront|netsurf|amaya|lynx|w3m)\/([\w\.]+)/i,     // WebKit/Trident/NetFront/NetSurf/Amaya/Lynx/w3m
+            /(khtml|tasman|links)[\/\s]\(?([\w\.]+)/i,                          // KHTML/Tasman/Links
+            /(icab)[\/\s]([23]\.[\d\.]+)/i                                      // iCab
+            ], [NAME, VERSION], [
+
+            /rv\:([\w\.]+).*(gecko)/i                                           // Gecko
+            ], [VERSION, NAME]
+        ],
+
+        os : [[
+
+            // Windows based
+            /microsoft\s(windows)\s(vista|xp)/i                                 // Windows (iTunes)
+            ], [NAME, VERSION], [
+            /(windows)\snt\s6\.2;\s(arm)/i,                                     // Windows RT
+            /(windows\sphone(?:\sos)*)[\s\/]?([\d\.\s]+\w)*/i,                  // Windows Phone
+            /(windows\smobile|windows)[\s\/]?([ntce\d\.\s]+\w)/i
+            ], [NAME, [VERSION, mapper.str, maps.os.windows.version]], [
+            /(win(?=3|9|n)|win\s9x\s)([nt\d\.]+)/i
+            ], [[NAME, 'Windows'], [VERSION, mapper.str, maps.os.windows.version]], [
+
+            // Mobile/Embedded OS
+            /\((bb)(10);/i                                                      // BlackBerry 10
+            ], [[NAME, 'BlackBerry'], VERSION], [
+            /(blackberry)\w*\/?([\w\.]+)*/i,                                    // Blackberry
+            /(tizen)[\/\s]([\w\.]+)/i,                                          // Tizen
+            /(android|webos|palm\sos|qnx|bada|rim\stablet\sos|meego|contiki)[\/\s-]?([\w\.]+)*/i,
+                                                                                // Android/WebOS/Palm/QNX/Bada/RIM/MeeGo/Contiki
+            /linux;.+(sailfish);/i                                              // Sailfish OS
+            ], [NAME, VERSION], [
+            /(symbian\s?os|symbos|s60(?=;))[\/\s-]?([\w\.]+)*/i                 // Symbian
+            ], [[NAME, 'Symbian'], VERSION], [
+            /\((series40);/i                                                    // Series 40
+            ], [NAME], [
+            /mozilla.+\(mobile;.+gecko.+firefox/i                               // Firefox OS
+            ], [[NAME, 'Firefox OS'], VERSION], [
+
+            // Console
+            /(nintendo|playstation)\s([wids34portablevu]+)/i,                   // Nintendo/Playstation
+
+            // GNU/Linux based
+            /(mint)[\/\s\(]?(\w+)*/i,                                           // Mint
+            /(mageia|vectorlinux)[;\s]/i,                                       // Mageia/VectorLinux
+            /(joli|[kxln]?ubuntu|debian|[open]*suse|gentoo|(?=\s)arch|slackware|fedora|mandriva|centos|pclinuxos|redhat|zenwalk|linpus)[\/\s-]?(?!chrom)([\w\.-]+)*/i,
+                                                                                // Joli/Ubuntu/Debian/SUSE/Gentoo/Arch/Slackware
+                                                                                // Fedora/Mandriva/CentOS/PCLinuxOS/RedHat/Zenwalk/Linpus
+            /(hurd|linux)\s?([\w\.]+)*/i,                                       // Hurd/Linux
+            /(gnu)\s?([\w\.]+)*/i                                               // GNU
+            ], [NAME, VERSION], [
+
+            /(cros)\s[\w]+\s([\w\.]+\w)/i                                       // Chromium OS
+            ], [[NAME, 'Chromium OS'], VERSION],[
+
+            // Solaris
+            /(sunos)\s?([\w\.]+\d)*/i                                           // Solaris
+            ], [[NAME, 'Solaris'], VERSION], [
+
+            // BSD based
+            /\s([frentopc-]{0,4}bsd|dragonfly)\s?([\w\.]+)*/i                   // FreeBSD/NetBSD/OpenBSD/PC-BSD/DragonFly
+            ], [NAME, VERSION],[
+
+            /(haiku)\s(\w+)/i                                                  // Haiku
+            ], [NAME, VERSION],[
+
+            /cfnetwork\/.+darwin/i,
+            /ip[honead]+(?:.*os\s([\w]+)*\slike\smac|;\sopera)/i                // iOS
+            ], [[VERSION, /_/g, '.'], [NAME, 'iOS']], [
+
+            /(mac\sos\sx)\s?([\w\s\.]+\w)*/i,
+            /(macintosh|mac(?=_powerpc)\s)/i                                    // Mac OS
+            ], [[NAME, 'Mac OS'], [VERSION, /_/g, '.']], [
+
+            // Other
+            /((?:open)?solaris)[\/\s-]?([\w\.]+)*/i,                            // Solaris
+            /(aix)\s((\d)(?=\.|\)|\s)[\w\.]*)*/i,                               // AIX
+            /(plan\s9|minix|beos|os\/2|amigaos|morphos|risc\sos|openvms)/i,
+                                                                                // Plan9/Minix/BeOS/OS2/AmigaOS/MorphOS/RISCOS/OpenVMS
+            /(unix)\s?([\w\.]+)*/i                                              // UNIX
+            ], [NAME, VERSION]
+        ]
+    };
+
+
+    /////////////////
+    // Constructor
+    ////////////////
+
+    var Browser = function (name, version) {
+        this[NAME] = name;
+        this[VERSION] = version;
+    };
+    var CPU = function (arch) {
+        this[ARCHITECTURE] = arch;
+    };
+    var Device = function (vendor, model, type) {
+        this[VENDOR] = vendor;
+        this[MODEL] = model;
+        this[TYPE] = type;
+    };
+    var Engine = Browser;
+    var OS = Browser;
+
+    var UAParser = function (uastring, extensions) {
+
+        if (typeof uastring === 'object') {
+            extensions = uastring;
+            uastring = undefined;
+        }
+
+        if (!(this instanceof UAParser)) {
+            return new UAParser(uastring, extensions).getResult();
+        }
+
+        var ua = uastring || ((window && window.navigator && window.navigator.userAgent) ? window.navigator.userAgent : EMPTY);
+        var rgxmap = extensions ? util.extend(regexes, extensions) : regexes;
+        var browser = new Browser();
+        var cpu = new CPU();
+        var device = new Device();
+        var engine = new Engine();
+        var os = new OS();
+
+        this.getBrowser = function () {
+            mapper.rgx.call(browser, ua, rgxmap.browser);
+            browser.major = util.major(browser.version); // deprecated
+            return browser;
+        };
+        this.getCPU = function () {
+            mapper.rgx.call(cpu, ua, rgxmap.cpu);
+            return cpu;
+        };
+        this.getDevice = function () {
+            mapper.rgx.call(device, ua, rgxmap.device);
+            return device;
+        };
+        this.getEngine = function () {
+            mapper.rgx.call(engine, ua, rgxmap.engine);
+            return engine;
+        };
+        this.getOS = function () {
+            mapper.rgx.call(os, ua, rgxmap.os);
+            return os;
+        };
+        this.getResult = function () {
+            return {
+                ua      : this.getUA(),
+                browser : this.getBrowser(),
+                engine  : this.getEngine(),
+                os      : this.getOS(),
+                device  : this.getDevice(),
+                cpu     : this.getCPU()
+            };
+        };
+        this.getUA = function () {
+            return ua;
+        };
+        this.setUA = function (uastring) {
+            ua = uastring;
+            browser = new Browser();
+            cpu = new CPU();
+            device = new Device();
+            engine = new Engine();
+            os = new OS();
+            return this;
+        };
+        return this;
+    };
+
+    UAParser.VERSION = LIBVERSION;
+    UAParser.BROWSER = {
+        NAME    : NAME,
+        MAJOR   : MAJOR, // deprecated
+        VERSION : VERSION
+    };
+    UAParser.CPU = {
+        ARCHITECTURE : ARCHITECTURE
+    };
+    UAParser.DEVICE = {
+        MODEL   : MODEL,
+        VENDOR  : VENDOR,
+        TYPE    : TYPE,
+        CONSOLE : CONSOLE,
+        MOBILE  : MOBILE,
+        SMARTTV : SMARTTV,
+        TABLET  : TABLET,
+        WEARABLE: WEARABLE,
+        EMBEDDED: EMBEDDED
+    };
+    UAParser.ENGINE = {
+        NAME    : NAME,
+        VERSION : VERSION
+    };
+    UAParser.OS = {
+        NAME    : NAME,
+        VERSION : VERSION
+    };
+    //UAParser.Utils = util;
+
+    ///////////
+    // Export
+    //////////
+
+
+    // check js environment
+    if ('object' !== UNDEF_TYPE) {
+        // nodejs env
+        if ('object' !== UNDEF_TYPE && module.exports) {
+            exports = module.exports = UAParser;
+        }
+        exports.UAParser = UAParser;
+    } else {
+        // requirejs env (optional)
+        if (typeof(undefined) === FUNC_TYPE && undefined.amd) {
+            undefined(function () {
+                return UAParser;
+            });
+        } else if (window) {
+            // browser env
+            window.UAParser = UAParser;
+        }
+    }
+
+    // jQuery/Zepto specific (optional)
+    // Note:
+    //   In AMD env the global scope should be kept clean, but jQuery is an exception.
+    //   jQuery always exports to global scope, unless jQuery.noConflict(true) is used,
+    //   and we should catch that.
+    var $ = window && (window.jQuery || window.Zepto);
+    if (typeof $ !== UNDEF_TYPE) {
+        var parser = new UAParser();
+        $.ua = parser.getResult();
+        $.ua.get = function () {
+            return parser.getUA();
+        };
+        $.ua.set = function (uastring) {
+            parser.setUA(uastring);
+            var result = parser.getResult();
+            for (var prop in result) {
+                $.ua[prop] = result[prop];
+            }
+        };
+    }
+
+})(typeof window === 'object' ? window : commonjsGlobal);
+});
 
 var _iterCall = function(iterator, fn, value, entries){
   try {
@@ -1322,7 +2314,6 @@ var _iterCall = function(iterator, fn, value, entries){
   }
 };
 
-// check on default Array iterator
 var ITERATOR$1   = _wks('iterator');
 var ArrayProto = Array.prototype;
 
@@ -1335,7 +2326,6 @@ var _createProperty = function(object, index, value){
   else object[index] = value;
 };
 
-// getting tag from 19.1.3.6 Object.prototype.toString()
 var TAG$1 = _wks('toStringTag');
 var ARG = _cof(function(){ return arguments; }()) == 'Arguments';
 
@@ -1454,14 +2444,9 @@ var _toConsumableArray = unwrapExports(toConsumableArray);
  * Released under MIT
  */
 
-/**
- * the handler to generate an deep traversal handler
- * @param  {Function} fn the function you wanna run when you reach in the deep property
- * @return {Function}    the handler
- */
 function genTraversalHandler(fn) {
   function recursiveFn(source, target, key) {
-    if (isArray(source) || isObject$1(source)) {
+    if (isArray$1(source) || isObject$1(source)) {
       target = target || (isObject$1(source) ? {} : []);
       for (var _key in source) {
         target[_key] = recursiveFn(source[_key], target[_key], _key);
@@ -1476,9 +2461,9 @@ var _deepAssign = genTraversalHandler(function (val) {
   return val;
 });
 /**
- * merge multiple objects
- * @param  {...Object} args [description]
- * @return {merge-object}         [description]
+ * deeply clone an object
+ * @param  {Array|Object} source if you pass in other type, it will throw an error
+ * @return {clone-target}        the new Object
  */
 function deepAssign() {
   for (var _len = arguments.length, args = Array(_len), _key2 = 0; _key2 < _len; _key2++) {
@@ -1499,6 +2484,12 @@ function deepAssign() {
   });
   return target;
 }
+
+/**
+ * camelize any string, e.g hello world -> helloWorld
+ * @param  {string} str only accept string!
+ * @return {string}     camelize string
+ */
 
 var _anInstance = function(it, Constructor, name, forbiddenField){
   if(!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)){
@@ -1528,7 +2519,6 @@ exports.BREAK  = BREAK;
 exports.RETURN = RETURN;
 });
 
-// 7.3.20 SpeciesConstructor(O, defaultConstructor)
 var SPECIES   = _wks('species');
 var _speciesConstructor = function(O, D){
   var C = _anObject(O).constructor, S;
@@ -2008,19 +2998,18 @@ module.exports = { "default": promise$1, __esModule: true };
 });
 
 /**
- * chimee-helper-utils v0.1.3
+ * chimee-helper-utils v0.2.0
  * (c) 2017 toxic-johann
  * Released under MIT
  */
 
-// **********************  judgement   ************************
-/**
- * check if the code running in browser environment (not include worker env)
- * @returns {Boolean}
- */
 var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
 
-// 19.1.2.1 Object.assign(target, source, ...)
+// **********************  对象操作  ************************
+/**
+ * 转变一个类数组对象为数组
+ */
+
 var $assign  = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
@@ -2048,9 +3037,6 @@ var _objectAssign = !$assign || _fails(function(){
   } return T;
 } : $assign;
 
-// 19.1.3.1 Object.assign(target, source)
-
-
 _export(_export.S + _export.F, 'Object', {assign: _objectAssign});
 
 var assign$1 = _core.Object.assign;
@@ -2061,7 +3047,6 @@ module.exports = { "default": assign$1, __esModule: true };
 
 var _Object$assign = unwrapExports(assign);
 
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 _export(_export.S, 'Object', {create: _objectCreate});
 
 var $Object$1 = _core.Object;
@@ -2081,19 +3066,6 @@ var _Object$create = unwrapExports(create);
  * Released under MIT
  */
 
-/**
-* @module event
-* @author huzunjie
-* @description 自定义事件基础类
-*/
-
-/* 缓存事件监听方法及包装，内部数据格式：
- * targetIndex_<type:'click|mouseup|done'>: [ [
- *   function(){ ... handler ... },
- *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
- *   isOnce
- * ]]
- */
 var _evtListenerCache = _Object$create(null);
 _evtListenerCache.count = 0;
 
@@ -2327,25 +3299,6 @@ var CustEvent = function () {
  * Released under MIT
  */
 
-/**
- * chimee-helper-events v0.1.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-/**
-* @module event
-* @author huzunjie
-* @description 自定义事件基础类
-*/
-
-/* 缓存事件监听方法及包装，内部数据格式：
- * targetIndex_<type:'click|mouseup|done'>: [ [
- *   function(){ ... handler ... },
- *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
- *   isOnce
- * ]]
- */
 var _evtListenerCache$1 = _Object$create(null);
 _evtListenerCache$1.count = 0;
 
@@ -2893,7 +3846,7 @@ var NodeWrap = function () {
     if (selector && selector.constructor === NodeList) {
       /* 支持直接传入NodeList来构建包装器 */
       elsArr = makeArray$1(selector);
-    } else if (isArray(selector)) {
+    } else if (isArray$1(selector)) {
       /* 支持直接传入Node数组来构建包装器 */
       elsArr = selector;
     } else if (isString(selector)) {
@@ -3243,7 +4196,7 @@ var NodeWrap = function () {
 }();
 
 /**
- * chimee-helper v0.1.15
+ * chimee-helper v0.2.2
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -3253,7 +4206,8 @@ var defaultConfig = {
   autoPlay: false,
   box: 'native',
   lockInternalProperty: false,
-  debug: true
+  debug: true,
+  reloadTime: 1500
 };
 
 var classCallCheck$1 = function (instance, Constructor) {
@@ -3321,13 +4275,6 @@ var possibleConstructorReturn = function (self, call) {
 
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
-
-/**
- * mp4解码器
- *
- * @export
- * @class Native
- */
 
 var Native = function (_CustEvent) {
     inherits(Native, _CustEvent);
@@ -3432,6 +4379,10 @@ var Native = function (_CustEvent) {
     return Native;
 }(CustEvent);
 
+var defaultConfig$1 = {
+  reloadTime: 1500
+};
+
 var Kernel = function (_CustEvent) {
 	inherits(Kernel, _CustEvent);
 
@@ -3447,7 +4398,7 @@ var Kernel = function (_CustEvent) {
 		var _this = possibleConstructorReturn(this, (Kernel.__proto__ || Object.getPrototypeOf(Kernel)).call(this));
 
 		_this.tag = 'kernel';
-		_this.config = config;
+		_this.config = deepAssign({}, defaultConfig$1, config);
 		_this.video = videoElement;
 		_this.videokernel = _this.selectKernel();
 		_this.bindEvents(_this.videokernel, _this.video);
@@ -3523,14 +4474,15 @@ var Kernel = function (_CustEvent) {
 			var _this3 = this;
 
 			this.config.src = src || this.config.src;
+			console.log(this.config.reloadTime);
 			if (this.videokernel && this.config.src) {
-				this.videokernel.load(src);
+				this.videokernel.load(this.config.src);
 				if (!this.timer) {
 					this.timer = setTimeout(function () {
 						_this3.timer = null;
 						_this3.pause();
 						_this3.refresh();
-					}, 1000);
+					}, this.config.reloadTime);
 				}
 			} else {
 				Log.error(this.tag, 'video player is not already, must init player');

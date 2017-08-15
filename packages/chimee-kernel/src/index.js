@@ -1,7 +1,8 @@
 import { Log } from 'chimee-helper';
 import { CustEvent } from 'chimee-helper';
-import { isNumber } from 'chimee-helper';
+import { isNumber, deepAssign } from 'chimee-helper';
 import Native from './native/index';
+import defaultConfig from './config';
 
 export default class Kernel extends CustEvent {
 	/**
@@ -13,7 +14,7 @@ export default class Kernel extends CustEvent {
 	constructor (videoElement, config) {
 		super();
 		this.tag = 'kernel';
-		this.config = config;
+		this.config = deepAssign({}, defaultConfig, config);
 		this.video = videoElement;
 		this.videokernel = this.selectKernel();
 		this.bindEvents(this.videokernel, this.video);
@@ -79,6 +80,7 @@ export default class Kernel extends CustEvent {
 	 */
 	load (src) {
 		this.config.src = src || this.config.src;
+		console.log(this.config.reloadTime)
 		if (this.videokernel && this.config.src) {
 			this.videokernel.load(this.config.src);
 			if(!this.timer) {
@@ -86,7 +88,7 @@ export default class Kernel extends CustEvent {
 					this.timer = null;
 					this.pause();
 					this.refresh();
-				}, 1000);
+				}, this.config.reloadTime);
 			}
 		} else {
 			Log.error(this.tag, 'video player is not already, must init player');

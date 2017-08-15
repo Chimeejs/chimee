@@ -3,5 +3,6 @@ export default {
   autoPlay: false,
   box: 'native',
   lockInternalProperty: false,
-  debug: true
+  debug: true,
+  reloadTime: 1500
 };

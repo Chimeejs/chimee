@@ -58,3 +58,5 @@ typings/
 .env
 
 package-lock.json
+
+demo/dist/*
