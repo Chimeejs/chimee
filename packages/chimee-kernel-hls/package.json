@@ -32,8 +32,9 @@
   "homepage": "https://github.com/Chimeejs/chimee-kernel-hls#readme",
   "dependencies": {
     "babel-runtime": "^6.23.0",
-    "chimee-helper": "^0.1.10",
-    "hls.js": "^0.7.10"
+    "chimee-helper": "^0.2.2",
+    "hls.js": "^0.7.10",
+    "rollup-plugin-replace": "^1.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

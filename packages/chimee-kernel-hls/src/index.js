@@ -4,12 +4,21 @@ import defaultConfig from './config';
 import {deepAssign} from 'chimee-helper';
 
 export default class Hls extends CustEvent {
+
+  static isSupport () {
+    return HlsCore.isSupported();
+  }
+
+  static get version() {
+    return __VERSION__;
+  }
+
 	constructor (videodom, config) {
     super();
     this.tag = 'HLS-player';
     this.video = videodom;
     this.box = 'hls';
-    this.config = deepAssign({}, config, defaultConfig);
+    this.config = deepAssign({}, defaultConfig, config);
     this.hls = new HlsCore();
     this.bindEvents(this.hls);
     this.attachMedia();

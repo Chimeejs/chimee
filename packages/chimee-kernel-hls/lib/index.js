@@ -5,8 +5,8 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var _Object$getOwnPropertyDescriptor = _interopDefault(require('babel-runtime/core-js/object/get-own-property-descriptor'));
 var _Object$getPrototypeOf = _interopDefault(require('babel-runtime/core-js/object/get-prototype-of'));
 var _classCallCheck = _interopDefault(require('babel-runtime/helpers/classCallCheck'));
-var _createClass = _interopDefault(require('babel-runtime/helpers/createClass'));
 var _possibleConstructorReturn = _interopDefault(require('babel-runtime/helpers/possibleConstructorReturn'));
+var _createClass = _interopDefault(require('babel-runtime/helpers/createClass'));
 var _inherits = _interopDefault(require('babel-runtime/helpers/inherits'));
 var HlsCore = _interopDefault(require('hls.js'));
 var chimeeHelper = require('chimee-helper');
@@ -23,6 +23,18 @@ var defaultConfig = {
 var Hls = function (_CustEvent) {
   _inherits(Hls, _CustEvent);
 
+  _createClass(Hls, null, [{
+    key: 'isSupport',
+    value: function isSupport() {
+      return HlsCore.isSupported();
+    }
+  }, {
+    key: 'version',
+    get: function get() {
+      return '1.0.5';
+    }
+  }]);
+
   function Hls(videodom, config) {
     _classCallCheck(this, Hls);
 
@@ -31,7 +43,7 @@ var Hls = function (_CustEvent) {
     _this2.tag = 'HLS-player';
     _this2.video = videodom;
     _this2.box = 'hls';
-    _this2.config = chimeeHelper.deepAssign({}, config, defaultConfig);
+    _this2.config = chimeeHelper.deepAssign({}, defaultConfig, config);
     _this2.hls = new HlsCore();
     _this2.bindEvents(_this2.hls);
     _this2.attachMedia();

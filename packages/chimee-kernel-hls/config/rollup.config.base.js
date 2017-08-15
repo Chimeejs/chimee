@@ -1,6 +1,8 @@
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import replace from 'rollup-plugin-replace';
+
 const {version, name, author, license, dependencies} = require('../package.json');
 const babelConfig = {
   common: {
@@ -52,7 +54,10 @@ export default function (mode) {
     plugins: [
       babel(babelConfig[mode]),
       resolve(),
-      commonjs()
+      commonjs(),
+      replace({
+        '__VERSION__': `'${version}'`
+      })
     ]
   };
 };
