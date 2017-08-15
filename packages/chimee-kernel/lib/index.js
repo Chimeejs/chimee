@@ -15,7 +15,8 @@ var defaultConfig = {
   autoPlay: false,
   box: 'native',
   lockInternalProperty: false,
-  debug: true
+  debug: true,
+  reloadTime: 1500
 };
 
 /**
@@ -110,6 +111,11 @@ var Native = function (_CustEvent) {
             return this.video.pause();
         }
     }, {
+        key: 'refresh',
+        value: function refresh() {
+            this.video.src = this.config.src;
+        }
+    }, {
         key: 'attachMedia',
         value: function attachMedia() {}
     }, {
@@ -123,6 +129,10 @@ var Native = function (_CustEvent) {
 
     return Native;
 }(chimeeHelper.CustEvent);
+
+var defaultConfig$1 = {
+  reloadTime: 1500
+};
 
 var Kernel = function (_CustEvent) {
 	_inherits(Kernel, _CustEvent);
@@ -139,7 +149,7 @@ var Kernel = function (_CustEvent) {
 		var _this = _possibleConstructorReturn(this, (Kernel.__proto__ || _Object$getPrototypeOf(Kernel)).call(this));
 
 		_this.tag = 'kernel';
-		_this.config = config;
+		_this.config = chimeeHelper.deepAssign({}, defaultConfig$1, config);
 		_this.video = videoElement;
 		_this.videokernel = _this.selectKernel();
 		_this.bindEvents(_this.videokernel, _this.video);
@@ -215,14 +225,15 @@ var Kernel = function (_CustEvent) {
 			var _this3 = this;
 
 			this.config.src = src || this.config.src;
+			console.log(this.config.reloadTime);
 			if (this.videokernel && this.config.src) {
-				this.videokernel.load(src);
+				this.videokernel.load(this.config.src);
 				if (!this.timer) {
 					this.timer = setTimeout(function () {
 						_this3.timer = null;
 						_this3.pause();
 						_this3.refresh();
-					}, 1000);
+					}, this.config.reloadTime);
 				}
 			} else {
 				chimeeHelper.Log.error(this.tag, 'video player is not already, must init player');
@@ -238,6 +249,8 @@ var Kernel = function (_CustEvent) {
 		value: function destroy() {
 			if (this.videokernel) {
 				this.videokernel.destroy();
+				clearTimeout(this.timer);
+				this.timer = null;
 			} else {
 				chimeeHelper.Log.error(this.tag, 'player is not exit');
 			}
