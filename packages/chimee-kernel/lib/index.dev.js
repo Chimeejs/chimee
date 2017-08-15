@@ -4474,7 +4474,6 @@ var Kernel = function (_CustEvent) {
 			var _this3 = this;
 
 			this.config.src = src || this.config.src;
-			console.log(this.config.reloadTime);
 			if (this.videokernel && this.config.src) {
 				this.videokernel.load(this.config.src);
 				if (!this.timer) {
