@@ -14,6 +14,7 @@ declare module 'chimee-helper' {
   declare export function bind (fn: Function, context: any): Function;
   declare export function getDeepProperty (obj: any, keys: string | Array<string>, option?: {throwError?: boolean, backup?: any}): any;
 
+  declare export function defined (val: any): boolean %checks(typeof val !== 'undefined');
   declare export function isVoid (val: void | null): true;
   declare export function isVoid (val: any): false;
   declare export function isArray (val: any): boolean %checks(Array.isArray(val));
@@ -74,7 +75,7 @@ declare module 'chimee-helper' {
   declare export function query (selector: string, container?: Node, toArray: boolean): Array<Node>;
   declare export function removeEl (el: Node): void;
   declare export function findParents (el: Node, endEl?: Node, haveEl: boolean, haveEndEl: boolean): Array<Node>;
-  declare export function $ (selector: string | Node, container?: Node): NodeWrap;
+
   declare export class NodeWrap {
     each (...args: Array<Function>): NodeWrap;
     push (...args: Array<Node>): NodeWrap;
@@ -96,6 +97,7 @@ declare module 'chimee-helper' {
     undelegate (selector: string, type: string, handler: Function, capture: boolean): NodeWrap;
     remove (): NodeWrap;
   }
+  declare export function $ (selector: string | Node, container?: Node): NodeWrap;
 
   declare export class Log {
     static GLOBAL_TAG: string;

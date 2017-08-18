@@ -192,6 +192,7 @@ describe('_getEventHanlder', () => {
   });
   test('fullscreen should work', () => {
     const node = document.createElement('div');
+    document.body.appendChild(node);
     const dom = new Dom(node, {videoConfigReady: true});
     dom.container.mozRequestFullScreen = () => {};
     dom.fullScreen(true);
@@ -200,6 +201,7 @@ describe('_getEventHanlder', () => {
     dom.fullScreen();
     delete document.mozCancelFullScreen;
     dom.destroy();
+    node.parentNode.removeChild(node);
   });
 
   test('focus', () => {

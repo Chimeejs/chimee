@@ -42,7 +42,6 @@
   "homepage": "https://github.com/Chimeejs/chimee#readme",
   "dependencies": {
     "babel-runtime": "^6.25.0",
-    "chimee-helper": "^0.2.2",
     "chimee-kernel": "^1.0.5",
     "toxic-decorators": "^0.3.8"
   },
@@ -56,12 +55,13 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-latest": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "chimee-helper": "^0.2.3",
     "chimee-kernel-flv": "^1.0.6",
     "chimee-kernel-hls": "^1.0.6",
     "eslint": "^4.4.1",
     "eslint-plugin-flowtype": "^2.35.0",
     "eslint-plugin-jest": "^20.0.3",
-    "flow-bin": "^0.53.0",
+    "flow-bin": "^0.53.1",
     "husky": "^0.14.3",
     "jest": "^20.0.4",
     "rollup": "^0.47.6",
