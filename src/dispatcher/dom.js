@@ -1,6 +1,7 @@
 // @flow
 import {isArray, isElement, isString, isHTMLString, hypenate, isFunction, isEmpty, isPosterityNode, isObject, isBoolean, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log} from 'chimee-helper';
 import {videoEvents, domEvents} from 'helper/const';
+import fullscreen from 'helper/fullscreen';
 import {autobind, before, waituntil} from 'toxic-decorators';
 function targetCheck (target: string, ...args) {
   if(target === 'video') target = 'videoElement';
@@ -30,58 +31,56 @@ export default class Dom {
   __domEventHandlerList: {|[string]: Array<Function>|};
   __mouseInVideo: boolean;
   __videoExtendedNodes: Array<Node>;
-  /**
-   * @param  {string|Element} wrapper the wrapper of Chimee. All dom including videoElement will build in it.
-   * @return {Dom}
-   */
+  __fullScreenInfo: {
+    documentOverflow: string,
+    htmlOverflow: string
+  };
   /**
    * all plugin's dom element set
-   * @type {Object}
-   * @member plugins
    */
   plugins = {};
   /**
    * the html to restore when we are destroyed
-   * @type {HTMLString}
    */
   originHTML = '';
   /**
    * Array to store all video event handler
-   * @type {Array}
-   * @member videoEventHandlerList
    */
   videoEventHandlerList = [];
   /**
    * Array to store all video dom event handler
-   * @type {Array}
-   * @member videoDomEventHandlerList
    */
   videoDomEventHandlerList = [];
   /**
    * Array to store all container dom event handler
-   * @type {Array}
-   * @member containerDomEventHandlerList
    */
   containerDomEventHandlerList = [];
   /**
    * Array to store all video dom event handler
-   * @type {Array}
-   * @member wrapperDomEventHandlerList
    */
   wrapperDomEventHandlerList = [];
   /**
    * Object to store different plugin's dom event handlers
-   * @type {Object}
-   * @member __domEventHandlerList
    */
   __domEventHandlerList = {};
   /**
    * to mark is the mouse in the video area
-   * @type {boolean}
-   * @member __mouseInVideo
    */
   __mouseInVideo = false;
+  /**
+   * collection of video extension nodes
+   * some nodes can be regarded as part of video (such as penetrate element)
+   * so we store them here
+   */
   __videoExtendedNodes = [];
+  /**
+   * when browser do not support native fullscreen method
+   * we have to polyfill by CSS, we need to stroe something here
+   */
+  __fullScreenInfo = {
+    documentOverflow: '',
+    htmlOverflow: ''
+  };
   isFullScreen = false;
   fullScreenElement = undefined;
   constructor (wrapper: string | Element, dispatcher: Dispatcher) {
@@ -93,20 +92,20 @@ export default class Dom {
     }
     /**
      * the referrence of the dom wrapper of whole Chimee
-     * @type {Element}
      */
+    // $FlowFixMe: support computed key on nodewrap
     this.wrapper = $wrapper[0];
     this.originHTML = this.wrapper.innerHTML;
     // if we find video element inside wrapper
     // we use it
     // or we create a video element by ourself.
+    // $FlowFixMe: support computed key on nodewrap
     let videoElement = $wrapper.find('video')[0];
     if(!videoElement) {
       videoElement = document.createElement('video');
     }
     /**
      * referrence of video's dom element
-     * @type {Element}
      */
     this.installVideo(videoElement);
     domEvents.forEach(key => {
@@ -173,20 +172,14 @@ export default class Dom {
     return videoElement;
   }
   /**
-   * <pre>
    * each plugin has its own dom node, this function will create one or them.
    * we support multiple kind of el
    * 1. Element, we will append this dom node on wrapper straight
    * 2. HTMLString, we will create dom based on this HTMLString and append it on wrapper
    * 3. string, we will transfer this string into hypen string, then we create a custom elment called by this and bind it on wrapper
    * 4. nothing, we will create a div and bind it on the wrapper
-   * </pre>
-   * @param  {string} id plugin's id
-   * @param  {string|Element} el(optional) the el can be custom dom element or html string to insert
-   * @param  {boolean} inner if it's true, we will put it into conatiner, else we would put it into outer
-   * @return {Node}
    */
-  insertPlugin (id: string, el?: string | Element, option: {inner?: boolean, penetrate?: boolean, autoFocus?: boolean, className?: string | Array<string>} = {}) {
+  insertPlugin (id: string, el?: string | Element | Object, option: {inner?: boolean, penetrate?: boolean, autoFocus?: boolean, className?: string | Array<string>} = {}) {
     if(!isString(id)) throw new TypeError('insertPlugin id parameter must be string');
     if(isElement(this.plugins[id])) {
       /* istanbul ignore else  */
@@ -202,6 +195,7 @@ export default class Dom {
         el = document.createElement(hypenate(el));
       }
     } else if(isObject(el)) {
+      // $FlowFixMe: we have check el's type here and make sure it's an object
       option = el;
     }
     const {inner, penetrate, autoFocus} = option;
@@ -236,7 +230,6 @@ export default class Dom {
   }
   /**
    * remove plugin's dom
-   * @param  {string} id
    */
   removePlugin (id: string) {
     if(!isString(id)) return;
@@ -255,7 +248,6 @@ export default class Dom {
   }
   /**
    * Set zIndex for a plugins list
-   * @param {Array<string>} plugins
    */
   setPluginsZIndex (plugins: Array<string>): void {
     // $FlowFixMe: there are videoElment and container here
@@ -290,38 +282,11 @@ export default class Dom {
   }
   @before(targetCheck)
   requestFullScreen (target: string) {
-    const methods = [
-      'requestFullscreen',
-      'mozRequestFullScreen',
-      'webkitRequestFullscreen',
-      'msRequestFullscreen'
-    ];
-    for(let i = 0, len = methods.length; i < len; i++) {
-      // $FlowFixMe: flow do not support computed property/element on document, which is silly here.
-      if(isFunction(this[target][methods[i]])) {
-        // $FlowFixMe: flow do not support computed property/element on document, which is silly here.
-        this[target][methods[i]]();
-        return true;
-      }
-    }
-    return false;
+    // $FlowFixMe: flow do not support computed property/element on document, which is silly here.
+    return fullscreen.open(this[target]);
   }
   exitFullScreen (): boolean {
-    const methods = [
-      'exitFullscreen',
-      'msExitFullscreen',
-      'mozCancelFullScreen',
-      'webkitExitFullscreen'
-    ];
-    for(let i = 0, len = methods.length; i < len; i++) {
-      // $FlowFixMe: flow do not support computed property/element on document, which is silly here.
-      if(isFunction(document[methods[i]])) {
-        // $FlowFixMe: flow do not support computed property/element on document, which is silly here.
-        document[methods[i]]();
-        return true;
-      }
-    }
-    return false;
+    return fullscreen.exit();
   }
   fullScreen (request: boolean = true, target: string = 'container', ...args: any): boolean {
     return request

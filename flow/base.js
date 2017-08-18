@@ -63,7 +63,7 @@ declare type UserConfig = {
   box?: string,
   isLive?: boolean,
   wrapper: string | Element,
-  plugin?: Array<string | UserPluginConfig>,
+  plugin?: Array<string | PluginOption>,
   autoplay?: boolean,
   autoload?: boolean,
   controls?: boolean,

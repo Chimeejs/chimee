@@ -604,8 +604,14 @@ describe('Chimee', () => {
 
 describe('isFullScreen and fullScreenElement', () => {
   let player;
+  let wrapper;
   beforeEach(() => {
-    player = new Chimee(document.createElement('div'));
+    wrapper = document.createElement('div');
+    document.body.appendChild(wrapper);
+    player = new Chimee(wrapper);
+  });
+  afterEach(() => {
+    wrapper.parentNode.removeChild(wrapper);
   });
   test('default to be false', () => {
     expect(player.isFullScreen).toBe(false);

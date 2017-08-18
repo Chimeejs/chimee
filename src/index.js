@@ -53,6 +53,7 @@ export default class Chimee extends VideoWrapper {
     } else {
       throw new Error('You must pass in an Object containing wrapper or string or element to new a Chimee');
     }
+    // $FlowFixMe: we have check wrapper here
     this.__dispatcher = new Dispatcher(config, this);
     this.__dispatcher.kernel.on('error', this.__throwError);
     this.ready = this.__dispatcher.ready;

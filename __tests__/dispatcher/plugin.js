@@ -7,8 +7,10 @@ import VideoConfig from 'dispatcher/video-config';
 import Chimee from 'index';
 describe('dispatcher/plugin', () => {
   let dispatcher;
+  let wrapper;
   beforeEach(() => {
-    const node = document.createElement('div');
+    wrapper = document.createElement('div');
+    document.body.appendChild(wrapper);
     dispatcher = {
       _sortZIndex: jest.fn(),
       kernel: {
@@ -21,11 +23,14 @@ describe('dispatcher/plugin', () => {
         throw error;
       }
     };
-    dispatcher.dom = new Dom(node, dispatcher);
+    dispatcher.dom = new Dom(wrapper, dispatcher);
     dispatcher.videoConfig = new VideoConfig(dispatcher, {})
     dispatcher.bus = new Bus(dispatcher);
     Log.data.error = [];
     Log.data.warn = [];
+  });
+  afterEach(() => {
+    wrapper.parentNode.removeChild(wrapper);
   });
 
   test('illegal constructor', () => {

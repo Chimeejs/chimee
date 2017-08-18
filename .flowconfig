@@ -6,7 +6,6 @@
 .*/src/.*
 [libs]
 flow
-./node_modules/chimee-helper/lib/index.flow.js
 [options]
 unsafe.enable_getters_and_setters=true
 module.name_mapper='^helper/\(.*\)$' -> '<PROJECT_ROOT>/src/helper/\1'
