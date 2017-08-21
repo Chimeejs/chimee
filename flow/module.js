@@ -71,7 +71,7 @@ declare module 'chimee-helper' {
   declare export function addDelegate (el: Node, selector: string, type: string, handler: Function, capture: boolean): void; 
   declare export function removeDelegate (el: Node, selector: string, type: string, handler: Function, capture: boolean): void;
   declare export function getStyle (el: Node, key: string): string;
-  declare export function setStyle (el: Node, key: string, val: string | number): void;
+  declare export function setStyle (el: Node, key: string | Object, val?: string | number): void;
   declare export function query (selector: string, container?: Node, toArray: boolean): Array<Node>;
   declare export function removeEl (el: Node): void;
   declare export function findParents (el: Node, endEl?: Node, haveEl: boolean, haveEndEl: boolean): Array<Node>;
