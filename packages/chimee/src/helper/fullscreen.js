@@ -1,11 +1,20 @@
 // @flow
-import {defined, isElement, isPosterityNode, isObject, isString} from 'chimee-helper';
+import {defined, isElement, isPosterityNode, isObject, isString, setStyle} from 'chimee-helper';
 const VENDOR_PREFIXES = ['', 'o', 'ms', 'moz', 'webkit', 'webkitCurrent'];
 const SYNONYMS = [
   ['', ''], // empty
   ['exit', 'cancel'], // firefox & old webkits expect cancelFullScreen instead of exitFullscreen
   ['screen', 'Screen'] // firefox expects FullScreen instead of Fullscreen
 ];
+const DESKTOP_FULLSCREEN_STYLE = {
+  position: 'fixed',
+  zIndex: '2147483647',
+  left: 0,
+  top: 0,
+  right: 0,
+  bottom: 0,
+  overflow: 'hidden'
+};
 
 function native (target: HTMLElement | string | Object | null, name?: string | Object, option?: {keyOnly?: boolean} = {}) {
   if(isObject(name)) {
@@ -34,9 +43,12 @@ function native (target: HTMLElement | string | Object | null, name?: string | O
 
 const fullscreenEnabled = native('fullscreenEnabled');
 class FullScreen {
-  _fullscreenElement: Element | null;
+  _fullscreenElement: HTMLElement | null;
   _openKey: string;
   _exitKey: string;
+  _savedStyles: Object;
+  _bodyOverflow: string;
+  _htmlOverflow: string;
   isFullScreen: boolean;
   isNativelySupport: boolean;
 
@@ -72,14 +84,29 @@ class FullScreen {
       if(!force) return false;
       this.exit();
     }
-
     if(this.isNativelySupport) {
-      console.log(element, this._openKey);
       // $FlowFixMe: support computed key on HTMLElment here
       element[this._openKey]();
       return true;
     }
-    return false;
+    this._savedStyles = Object.keys(DESKTOP_FULLSCREEN_STYLE)
+    .reduce((styles, key) => {
+      // $FlowFixMe: support string here
+      styles[key] = element.style[key];
+      return styles;
+    }, {});
+    setStyle(element, DESKTOP_FULLSCREEN_STYLE);
+    if(document.body) {
+      this._bodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+    }
+    if(document.documentElement) {
+      this._htmlOverflow = document.documentElement.style.overflow;
+      document.documentElement.style.overflow = 'hidden';
+    }
+    this._fullscreenElement = element;
+    this._dispatchEvent(element);
+    return true;
   }
 
   exit () {
@@ -89,7 +116,22 @@ class FullScreen {
       document[this._exitKey]();
       return true;
     }
-    return false;
+    const element = this._fullscreenElement;
+    if(!isElement(element)) return false;
+    setStyle(element, this._savedStyles);
+    if(document.body) document.body.style.overflow = this._bodyOverflow;
+    if(document.documentElement) document.documentElement.style.overflow = this._htmlOverflow;
+    this._fullscreenElement = null;
+    this._savedStyles = {};
+    this._dispatchEvent(element);
+    return true;
+  }
+
+  _dispatchEvent (element: Element) {
+    element.dispatchEvent(new Event('fullscreenchange', {
+      bubbles: true,
+      cancelable: true
+    }));
   }
 }
 

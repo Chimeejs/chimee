@@ -69,3 +69,11 @@ player.$on('play', evt => {
   console.warn(evt, 'srth');
 });
 window.player = player;
+['fullscreenchange',
+'webkitfullscreenchange',
+'mozfullscreenchange',
+'msfullscreenchange'].forEach(key => {
+  console.log(key);
+  document.addEventListener(key, evt => console.log(key, evt));
+});
+
