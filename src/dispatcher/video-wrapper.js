@@ -183,6 +183,8 @@ export default @autobindClass() class VideoWrapper {
    * @param {string} element the element you want to fullscreen, default it's container, you can choose from video | container | wrapper
    */
   @alias('fullScreen')
+  @alias('$fullscreen')
+  @alias('fullscreen')
   $fullScreen (flag: boolean = true, element: string = 'container'): boolean {
     if(!this.__dispatcher.bus.emitSync('fullScreen', flag, element)) return false;
     const result = this.__dispatcher.dom.fullScreen(flag, element);

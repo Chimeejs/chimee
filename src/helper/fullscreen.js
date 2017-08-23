@@ -1,5 +1,5 @@
 // @flow
-import {defined, isElement, isPosterityNode, isObject, isString, setStyle} from 'chimee-helper';
+import {defined, isElement, isPosterityNode, isObject, isString, setStyle, isFunction} from 'chimee-helper';
 const VENDOR_PREFIXES = ['', 'o', 'ms', 'moz', 'webkit', 'webkitCurrent'];
 const SYNONYMS = [
   ['', ''], // empty
@@ -40,7 +40,6 @@ function native (target: HTMLElement | string | Object | null, name?: string | O
   }
   return keyOnly ? '' : undefined;
 }
-
 const fullscreenEnabled = native('fullscreenEnabled');
 class FullScreen {
   _fullscreenElement: HTMLElement | null;
@@ -51,6 +50,7 @@ class FullScreen {
   _htmlOverflow: string;
   isFullScreen: boolean;
   isNativelySupport: boolean;
+  isIE: boolean;
 
   _fullscreenElement = null;
   isNativelySupport = defined(native('fullscreenElement')) &&
@@ -128,10 +128,38 @@ class FullScreen {
   }
 
   _dispatchEvent (element: Element) {
-    element.dispatchEvent(new Event('fullscreenchange', {
-      bubbles: true,
-      cancelable: true
-    }));
+    let event;
+    const eventName = 'fullscreenchange';
+    if (isFunction(Event)) {
+      event = new Event('fullscreenchange', {
+        bubbles: true,
+        cancelable: true
+      });
+    } else if(document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+    } else if(document.createEventObject) {
+      // $FlowFixMe: IE < 9
+      event = document.createEventObject();
+      event.eventType = eventName;
+      event.eventName = eventName;
+    }
+    if(!isObject(event)) throw new Error("We can't create an object on this browser, please report to author");
+    if(element.dispatchEvent) {
+      element.dispatchEvent(event);
+    // $FlowFixMe: IE < 9
+    } else if(element.fireEvent) {
+      // $FlowFixMe: IE < 9
+      element.fireEvent('on' + event.eventType, event);// can trigger only real event (e.g. 'click')
+    // $FlowFixMe: support computed key
+    } else if(element[eventName]) {
+      // $FlowFixMe: support computed key
+      element[eventName]();
+    // $FlowFixMe: support computed key
+    } else if(element['on' + eventName]) {
+      // $FlowFixMe: support computed key
+      element['on' + eventName]();
+    }
   }
 }
 
