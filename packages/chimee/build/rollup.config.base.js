@@ -68,7 +68,7 @@ const babelConfig = {
 const externalRegExp = new RegExp(Object.keys(dependencies).join('|'));
 export default function (mode) {
   return {
-    entry: 'src/index.js',
+    input: 'src/index.js',
     banner,
     external (id) {
       return !/min|umd|iife/.test(mode) && externalRegExp.test(id);
