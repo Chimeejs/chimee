@@ -351,20 +351,17 @@ export default class Dom {
             : element;
     }
     if(isEvent(evt) && original !== this.isFullScreen) {
-      console.log('what');
       this.__dispatcher.bus.triggerSync('fullscreenchange', evt);
     }
   }
   _bindFullScreen (remove?: boolean) {
     if(!remove) this._fullScreenMonitor();
-    console.log('waaldsfjlasdkjf');
     [
       'webkitfullscreenchange',
       'mozfullscreenchange',
       'msfullscreenchange',
       'fullscreenchange'
     ].forEach(key => {
-      console.log('????');
       // $FlowFixMe: support computed element on document
       document[(remove ? 'remove' : 'add') + 'EventListener'](key, this._fullScreenMonitor);
     });
