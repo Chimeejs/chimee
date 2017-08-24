@@ -1,7 +1,7 @@
 // @flow
 import {isArray, isElement, isString, isHTMLString, hypenate, isFunction, isEmpty, isPosterityNode, isObject, isBoolean, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log} from 'chimee-helper';
 import {videoEvents, domEvents} from 'helper/const';
-import fullscreen from 'helper/fullscreen';
+import fullscreen from 'es-fullscreen';
 import {autobind, before, waituntil} from 'toxic-decorators';
 function targetCheck (target: string, ...args) {
   if(target === 'video') target = 'videoElement';

@@ -5,6 +5,24 @@ declare module 'chimee-kernel' {
   declare module.exports: any;
 }
 
+declare module 'es-fullscreen' {
+  declare module.exports: {
+    _fullscreenElement: HTMLElement | null;
+    _openKey: string;
+    _exitKey: string;
+    _savedStyles: Object;
+    _bodyOverflow: string;
+    _htmlOverflow: string;
+    isFullScreen: boolean;
+    isNativelySupport: boolean;
+    fullscreenElement: Element | null;
+    isFullScreen: boolean;
+    open (element: Element, option?: {force: boolean}): boolean;
+    exit (): boolean;
+    _dispatchEvent (element: Element): void;
+  }
+}
+
 declare module 'chimee-helper' {
   declare export function genTraversalHandler (fn: Function): Function;
   declare export function deepClone<T: Object | Array<any>> (source: T): T;
