@@ -1,5 +1,5 @@
 // @flow
-import {isArray, isElement, isString, isHTMLString, hypenate, isFunction, isEmpty, isPosterityNode, isObject, isBoolean, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log} from 'chimee-helper';
+import {isArray, isElement, isString, isHTMLString, hypenate, isFunction, isEmpty, isPosterityNode, isObject, isBoolean, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log, isEvent} from 'chimee-helper';
 import {videoEvents, domEvents} from 'helper/const';
 import fullscreen from 'es-fullscreen';
 import {autobind, before, waituntil} from 'toxic-decorators';
@@ -35,6 +35,10 @@ export default class Dom {
     documentOverflow: string,
     htmlOverflow: string
   };
+  videoEventHandlerList: Array<Function>;
+  videoDomEventHandlerList: Array<Function>;
+  containerDomEventHandlerList: Array<Function>;
+  wrapperDomEventHandlerList: Array<Function>;
   /**
    * all plugin's dom element set
    */
@@ -322,7 +326,7 @@ export default class Dom {
     window.scrollTo(x, y);
   }
   @autobind
-  _fullScreenMonitor () {
+  _fullScreenMonitor (evt?: Event) {
     const element = [
       'fullscreenElement',
       'webkitFullscreenElement',
@@ -332,28 +336,35 @@ export default class Dom {
       // $FlowFixMe: support computed element on document
       return element || document[key];
     }, null);
+    const original = this.isFullScreen;
     if(!element || (!isPosterityNode(this.wrapper, element) && element !== this.wrapper)) {
       this.isFullScreen = false;
       this.fullScreenElement = undefined;
-      return;
+    } else {
+      this.isFullScreen = true;
+      this.fullScreenElement = this.wrapper === element
+        ? 'wrapper'
+        : this.container === element
+          ? 'container'
+          : this.videoElement === element
+            ? 'video'
+            : element;
     }
-    this.isFullScreen = true;
-    this.fullScreenElement = this.wrapper === element
-      ? 'wrapper'
-      : this.container === element
-        ? 'container'
-        : this.videoElement === element
-          ? 'video'
-          : element;
+    if(isEvent(evt) && original !== this.isFullScreen) {
+      console.log('what');
+      this.__dispatcher.bus.triggerSync('fullscreenchange', evt);
+    }
   }
   _bindFullScreen (remove?: boolean) {
     if(!remove) this._fullScreenMonitor();
+    console.log('waaldsfjlasdkjf');
     [
       'webkitfullscreenchange',
       'mozfullscreenchange',
       'msfullscreenchange',
       'fullscreenchange'
     ].forEach(key => {
+      console.log('????');
       // $FlowFixMe: support computed element on document
       document[(remove ? 'remove' : 'add') + 'EventListener'](key, this._fullScreenMonitor);
     });

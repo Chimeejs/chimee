@@ -36,7 +36,6 @@ var _fails = function (exec) {
   }
 };
 
-// Thank's IE8 for his funny defineProperty
 var _descriptors = !_fails(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
@@ -66,10 +65,6 @@ var _ie8DomDefine = !_descriptors && !_fails(function () {
   return Object.defineProperty(_domCreate('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
-// 7.1.1 ToPrimitive(input [, PreferredType])
-
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
 var _toPrimitive = function (it, S) {
   if (!_isObject(it)) return it;
   var fn, val;
@@ -154,8 +149,6 @@ var _aFunction = function (it) {
   if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
-
-// optional / simple context binding
 
 var _ctx = function (fn, that, length) {
   _aFunction(fn);
@@ -319,9 +312,6 @@ var _cof = function (it) {
   return toString.call(it).slice(8, -1);
 };
 
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-
-// eslint-disable-next-line no-prototype-builtins
 var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return _cof(it) == 'String' ? it.split('') : Object(it);
 };
@@ -331,9 +321,6 @@ var _defined = function (it) {
   if (it == undefined) throw TypeError("Can't call method on  " + it);
   return it;
 };
-
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-
 
 var _toIobject = function (it) {
   return _iobject(_defined(it));
@@ -346,8 +333,6 @@ var _toInteger = function (it) {
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
 
-// 7.1.15 ToLength
-
 var min = Math.min;
 var _toLength = function (it) {
   return it > 0 ? min(_toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
@@ -359,11 +344,6 @@ var _toAbsoluteIndex = function (index, length) {
   index = _toInteger(index);
   return index < 0 ? max(index + length, 0) : min$1(index, length);
 };
-
-// false -> Array#indexOf
-// true  -> Array#includes
-
-
 
 var _arrayIncludes = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
@@ -411,10 +391,6 @@ var _enumBugKeys = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
 
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-
-
-
 var _objectKeys = Object.keys || function keys(O) {
   return _objectKeysInternal(O, _enumBugKeys);
 };
@@ -440,10 +416,6 @@ var _objectPie = {
 	f: f$3
 };
 
-// all enumerable object keys, includes symbols
-
-
-
 var _enumKeys = function (it) {
   var result = _objectKeys(it);
   var getSymbols = _objectGops.f;
@@ -455,8 +427,6 @@ var _enumKeys = function (it) {
     while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
   } return result;
 };
-
-// 7.2.2 IsArray(argument)
 
 var _isArray = Array.isArray || function isArray(arg) {
   return _cof(arg) == 'Array';
@@ -474,10 +444,6 @@ var _objectDps = _descriptors ? Object.defineProperties : function definePropert
 
 var document$2 = _global.document;
 var _html = document$2 && document$2.documentElement;
-
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-
-
 
 var IE_PROTO$1 = _sharedKey('IE_PROTO');
 var Empty = function () { /* empty */ };
@@ -517,8 +483,6 @@ var _objectCreate = Object.create || function create(O, Properties) {
   return Properties === undefined ? result : _objectDps(result, Properties);
 };
 
-// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-
 var hiddenKeys = _enumBugKeys.concat('length', 'prototype');
 
 var f$5 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
@@ -528,8 +492,6 @@ var f$5 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 var _objectGopn = {
 	f: f$5
 };
-
-// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 
 var gOPN$1 = _objectGopn.f;
 var toString$1 = {}.toString;
@@ -567,12 +529,6 @@ var f$6 = _descriptors ? gOPD$1 : function getOwnPropertyDescriptor(O, P) {
 var _objectGopd = {
 	f: f$6
 };
-
-// ECMAScript 6 symbols shim
-
-
-
-
 
 var META = _meta.KEY;
 
@@ -803,18 +759,11 @@ _setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 _setToStringTag(_global.JSON, 'JSON', true);
 
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 _export(_export.S, 'Object', { create: _objectCreate });
 
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 _export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
 
-// 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
 _export(_export.S + _export.F * !_descriptors, 'Object', { defineProperties: _objectDps });
-
-// most Object methods by ES6 should accept primitives
-
-
 
 var _objectSap = function (KEY, exec) {
   var fn = (_core.Object || {})[KEY] || Object[KEY];
@@ -822,8 +771,6 @@ var _objectSap = function (KEY, exec) {
   exp[KEY] = exec(fn);
   _export(_export.S + _export.F * _fails(function () { fn(1); }), 'Object', exp);
 };
-
-// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
 
 var $getOwnPropertyDescriptor$1 = _objectGopd.f;
 
@@ -833,14 +780,9 @@ _objectSap('getOwnPropertyDescriptor', function () {
   };
 });
 
-// 7.1.13 ToObject(argument)
-
 var _toObject = function (it) {
   return Object(_defined(it));
 };
-
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-
 
 var IE_PROTO$2 = _sharedKey('IE_PROTO');
 var ObjectProto$1 = Object.prototype;
@@ -853,19 +795,11 @@ var _objectGpo = Object.getPrototypeOf || function (O) {
   } return O instanceof Object ? ObjectProto$1 : null;
 };
 
-// 19.1.2.9 Object.getPrototypeOf(O)
-
-
-
 _objectSap('getPrototypeOf', function () {
   return function getPrototypeOf$$1(it) {
     return _objectGpo(_toObject(it));
   };
 });
-
-// 19.1.2.14 Object.keys(O)
-
-
 
 _objectSap('keys', function () {
   return function keys(it) {
@@ -873,12 +807,9 @@ _objectSap('keys', function () {
   };
 });
 
-// 19.1.2.7 Object.getOwnPropertyNames(O)
 _objectSap('getOwnPropertyNames', function () {
   return _objectGopnExt.f;
 });
-
-// 19.1.2.5 Object.freeze(O)
 
 var meta = _meta.onFreeze;
 
@@ -888,8 +819,6 @@ _objectSap('freeze', function ($freeze) {
   };
 });
 
-// 19.1.2.17 Object.seal(O)
-
 var meta$1 = _meta.onFreeze;
 
 _objectSap('seal', function ($seal) {
@@ -897,8 +826,6 @@ _objectSap('seal', function ($seal) {
     return $seal && _isObject(it) ? $seal(meta$1(it)) : it;
   };
 });
-
-// 19.1.2.15 Object.preventExtensions(O)
 
 var meta$2 = _meta.onFreeze;
 
@@ -908,17 +835,11 @@ _objectSap('preventExtensions', function ($preventExtensions) {
   };
 });
 
-// 19.1.2.12 Object.isFrozen(O)
-
-
 _objectSap('isFrozen', function ($isFrozen) {
   return function isFrozen(it) {
     return _isObject(it) ? $isFrozen ? $isFrozen(it) : false : true;
   };
 });
-
-// 19.1.2.13 Object.isSealed(O)
-
 
 _objectSap('isSealed', function ($isSealed) {
   return function isSealed(it) {
@@ -926,20 +847,11 @@ _objectSap('isSealed', function ($isSealed) {
   };
 });
 
-// 19.1.2.11 Object.isExtensible(O)
-
-
 _objectSap('isExtensible', function ($isExtensible) {
   return function isExtensible(it) {
     return _isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
   };
 });
-
-// 19.1.2.1 Object.assign(target, source, ...)
-
-
-
-
 
 var $assign = Object.assign;
 
@@ -969,9 +881,6 @@ var _objectAssign = !$assign || _fails(function () {
   } return T;
 } : $assign;
 
-// 19.1.3.1 Object.assign(target, source)
-
-
 _export(_export.S + _export.F, 'Object', { assign: _objectAssign });
 
 // 7.2.9 SameValue(x, y)
@@ -980,13 +889,7 @@ var _sameValue = Object.is || function is(x, y) {
   return x === y ? x !== 0 || 1 / x === 1 / y : x != x && y != y;
 };
 
-// 19.1.3.10 Object.is(value1, value2)
-
 _export(_export.S, 'Object', { is: _sameValue });
-
-// Works with __proto__ only. Old v8 can't work with null proto objects.
-/* eslint-disable no-proto */
-
 
 var check = function (O, proto) {
   _anObject(O);
@@ -1010,11 +913,7 @@ var _setProto = {
   check: check
 };
 
-// 19.1.3.19 Object.setPrototypeOf(O, proto)
-
 _export(_export.S, 'Object', { setPrototypeOf: _setProto.set });
-
-// getting tag from 19.1.3.6 Object.prototype.toString()
 
 var TAG$1 = _wks('toStringTag');
 // ES3 wrong here
@@ -1037,8 +936,6 @@ var _classof = function (it) {
     // ES3 arguments fallback
     : (B = _cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
 };
-
-// 19.1.3.6 Object.prototype.toString()
 
 var test = {};
 test[_wks('toStringTag')] = 'z';
@@ -1086,9 +983,6 @@ var _bind = Function.bind || function bind(that /* , ...args */) {
   if (_isObject(fn.prototype)) bound.prototype = fn.prototype;
   return bound;
 };
-
-// 19.2.3.2 / 15.3.4.5 Function.prototype.bind(thisArg, args...)
-
 
 _export(_export.P, 'Function', { bind: _bind });
 
@@ -1160,7 +1054,6 @@ var _parseInt = $parseInt(_stringWs + '08') !== 8 || $parseInt(_stringWs + '0x16
   return $parseInt(string, (radix >>> 0) || (hex.test(string) ? 16 : 10));
 } : $parseInt;
 
-// 18.2.5 parseInt(string, radix)
 _export(_export.G + _export.F * (parseInt != _parseInt), { parseInt: _parseInt });
 
 var $parseFloat = _global.parseFloat;
@@ -1172,7 +1065,6 @@ var _parseFloat = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function par
   return result === 0 && string.charAt(0) == '-' ? -0 : result;
 } : $parseFloat;
 
-// 18.2.4 parseFloat(string)
 _export(_export.G + _export.F * (parseFloat != _parseFloat), { parseFloat: _parseFloat });
 
 var setPrototypeOf = _setProto.set;
@@ -1386,12 +1278,7 @@ _export(_export.P + _export.F * (_fails(function () {
   }
 });
 
-// 20.1.2.1 Number.EPSILON
-
-
 _export(_export.S, 'Number', { EPSILON: Math.pow(2, -52) });
-
-// 20.1.2.2 Number.isFinite(number)
 
 var _isFinite = _global.isFinite;
 
@@ -1401,20 +1288,12 @@ _export(_export.S, 'Number', {
   }
 });
 
-// 20.1.2.3 Number.isInteger(number)
-
 var floor$2 = Math.floor;
 var _isInteger = function isInteger(it) {
   return !_isObject(it) && isFinite(it) && floor$2(it) === it;
 };
 
-// 20.1.2.3 Number.isInteger(number)
-
-
 _export(_export.S, 'Number', { isInteger: _isInteger });
-
-// 20.1.2.4 Number.isNaN(number)
-
 
 _export(_export.S, 'Number', {
   isNaN: function isNaN(number) {
@@ -1422,9 +1301,6 @@ _export(_export.S, 'Number', {
     return number != number;
   }
 });
-
-// 20.1.2.5 Number.isSafeInteger(number)
-
 
 var abs = Math.abs;
 
@@ -1434,29 +1310,18 @@ _export(_export.S, 'Number', {
   }
 });
 
-// 20.1.2.6 Number.MAX_SAFE_INTEGER
-
-
 _export(_export.S, 'Number', { MAX_SAFE_INTEGER: 0x1fffffffffffff });
-
-// 20.1.2.10 Number.MIN_SAFE_INTEGER
-
 
 _export(_export.S, 'Number', { MIN_SAFE_INTEGER: -0x1fffffffffffff });
 
-// 20.1.2.12 Number.parseFloat(string)
 _export(_export.S + _export.F * (Number.parseFloat != _parseFloat), 'Number', { parseFloat: _parseFloat });
 
-// 20.1.2.13 Number.parseInt(string, radix)
 _export(_export.S + _export.F * (Number.parseInt != _parseInt), 'Number', { parseInt: _parseInt });
 
 // 20.2.2.20 Math.log1p(x)
 var _mathLog1p = Math.log1p || function log1p(x) {
   return (x = +x) > -1e-8 && x < 1e-8 ? x - x * x / 2 : Math.log(1 + x);
 };
-
-// 20.2.2.3 Math.acosh(x)
-
 
 var sqrt = Math.sqrt;
 var $acosh = Math.acosh;
@@ -1474,8 +1339,6 @@ _export(_export.S + _export.F * !($acosh
   }
 });
 
-// 20.2.2.5 Math.asinh(x)
-
 var $asinh = Math.asinh;
 
 function asinh(x) {
@@ -1484,8 +1347,6 @@ function asinh(x) {
 
 // Tor Browser bug: Math.asinh(0) -> -0
 _export(_export.S + _export.F * !($asinh && 1 / $asinh(0) > 0), 'Math', { asinh: asinh });
-
-// 20.2.2.7 Math.atanh(x)
 
 var $atanh = Math.atanh;
 
@@ -1502,26 +1363,17 @@ var _mathSign = Math.sign || function sign(x) {
   return (x = +x) == 0 || x != x ? x : x < 0 ? -1 : 1;
 };
 
-// 20.2.2.9 Math.cbrt(x)
-
-
-
 _export(_export.S, 'Math', {
   cbrt: function cbrt(x) {
     return _mathSign(x = +x) * Math.pow(Math.abs(x), 1 / 3);
   }
 });
 
-// 20.2.2.11 Math.clz32(x)
-
-
 _export(_export.S, 'Math', {
   clz32: function clz32(x) {
     return (x >>>= 0) ? 31 - Math.floor(Math.log(x + 0.5) * Math.LOG2E) : 32;
   }
 });
-
-// 20.2.2.12 Math.cosh(x)
 
 var exp = Math.exp;
 
@@ -1542,13 +1394,7 @@ var _mathExpm1 = (!$expm1
   return (x = +x) == 0 ? x : x > -1e-6 && x < 1e-6 ? x + x * x / 2 : Math.exp(x) - 1;
 } : $expm1;
 
-// 20.2.2.14 Math.expm1(x)
-
-
-
 _export(_export.S + _export.F * (_mathExpm1 != Math.expm1), 'Math', { expm1: _mathExpm1 });
-
-// 20.2.2.16 Math.fround(x)
 
 var pow$1 = Math.pow;
 var EPSILON = pow$1(2, -52);
@@ -1572,12 +1418,7 @@ var _mathFround = Math.fround || function fround(x) {
   return $sign * result;
 };
 
-// 20.2.2.16 Math.fround(x)
-
-
 _export(_export.S, 'Math', { fround: _mathFround });
-
-// 20.2.2.17 Math.hypot([value1[, value2[, … ]]])
 
 var abs$1 = Math.abs;
 
@@ -1603,8 +1444,6 @@ _export(_export.S, 'Math', {
   }
 });
 
-// 20.2.2.18 Math.imul(x, y)
-
 var $imul = Math.imul;
 
 // some WebKit versions fails with big numbers, some has wrong arity
@@ -1621,22 +1460,13 @@ _export(_export.S + _export.F * _fails(function () {
   }
 });
 
-// 20.2.2.21 Math.log10(x)
-
-
 _export(_export.S, 'Math', {
   log10: function log10(x) {
     return Math.log(x) * Math.LOG10E;
   }
 });
 
-// 20.2.2.20 Math.log1p(x)
-
-
 _export(_export.S, 'Math', { log1p: _mathLog1p });
-
-// 20.2.2.22 Math.log2(x)
-
 
 _export(_export.S, 'Math', {
   log2: function log2(x) {
@@ -1644,13 +1474,7 @@ _export(_export.S, 'Math', {
   }
 });
 
-// 20.2.2.28 Math.sign(x)
-
-
 _export(_export.S, 'Math', { sign: _mathSign });
-
-// 20.2.2.30 Math.sinh(x)
-
 
 var exp$1 = Math.exp;
 
@@ -1665,9 +1489,6 @@ _export(_export.S + _export.F * _fails(function () {
   }
 });
 
-// 20.2.2.33 Math.tanh(x)
-
-
 var exp$2 = Math.exp;
 
 _export(_export.S, 'Math', {
@@ -1677,9 +1498,6 @@ _export(_export.S, 'Math', {
     return a == Infinity ? 1 : b == Infinity ? -1 : (a - b) / (exp$2(x) + exp$2(-x));
   }
 });
-
-// 20.2.2.34 Math.trunc(x)
-
 
 _export(_export.S, 'Math', {
   trunc: function trunc(it) {
@@ -1724,15 +1542,12 @@ _export(_export.S, 'String', {
   }
 });
 
-// 21.1.3.25 String.prototype.trim()
 _stringTrim('trim', function ($trim) {
   return function trim() {
     return $trim(this, 3);
   };
 });
 
-// true  -> String#at
-// false -> String#codePointAt
 var _stringAt = function (TO_STRING) {
   return function (that, pos) {
     var s = String(_defined(that));
@@ -1845,18 +1660,11 @@ _export(_export.P, 'String', {
   }
 });
 
-// 7.2.8 IsRegExp(argument)
-
-
 var MATCH = _wks('match');
 var _isRegexp = function (it) {
   var isRegExp;
   return _isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : _cof(it) == 'RegExp');
 };
-
-// helper for String#{startsWith, endsWith, includes}
-
-
 
 var _stringContext = function (that, searchString, NAME) {
   if (_isRegexp(searchString)) throw TypeError('String#' + NAME + " doesn't accept regex!");
@@ -1937,99 +1745,83 @@ var _stringHtml = function (NAME, exec) {
   }), 'String', O);
 };
 
-// B.2.3.2 String.prototype.anchor(name)
 _stringHtml('anchor', function (createHTML) {
   return function anchor(name) {
     return createHTML(this, 'a', 'name', name);
   };
 });
 
-// B.2.3.3 String.prototype.big()
 _stringHtml('big', function (createHTML) {
   return function big() {
     return createHTML(this, 'big', '', '');
   };
 });
 
-// B.2.3.4 String.prototype.blink()
 _stringHtml('blink', function (createHTML) {
   return function blink() {
     return createHTML(this, 'blink', '', '');
   };
 });
 
-// B.2.3.5 String.prototype.bold()
 _stringHtml('bold', function (createHTML) {
   return function bold() {
     return createHTML(this, 'b', '', '');
   };
 });
 
-// B.2.3.6 String.prototype.fixed()
 _stringHtml('fixed', function (createHTML) {
   return function fixed() {
     return createHTML(this, 'tt', '', '');
   };
 });
 
-// B.2.3.7 String.prototype.fontcolor(color)
 _stringHtml('fontcolor', function (createHTML) {
   return function fontcolor(color) {
     return createHTML(this, 'font', 'color', color);
   };
 });
 
-// B.2.3.8 String.prototype.fontsize(size)
 _stringHtml('fontsize', function (createHTML) {
   return function fontsize(size) {
     return createHTML(this, 'font', 'size', size);
   };
 });
 
-// B.2.3.9 String.prototype.italics()
 _stringHtml('italics', function (createHTML) {
   return function italics() {
     return createHTML(this, 'i', '', '');
   };
 });
 
-// B.2.3.10 String.prototype.link(url)
 _stringHtml('link', function (createHTML) {
   return function link(url) {
     return createHTML(this, 'a', 'href', url);
   };
 });
 
-// B.2.3.11 String.prototype.small()
 _stringHtml('small', function (createHTML) {
   return function small() {
     return createHTML(this, 'small', '', '');
   };
 });
 
-// B.2.3.12 String.prototype.strike()
 _stringHtml('strike', function (createHTML) {
   return function strike() {
     return createHTML(this, 'strike', '', '');
   };
 });
 
-// B.2.3.13 String.prototype.sub()
 _stringHtml('sub', function (createHTML) {
   return function sub() {
     return createHTML(this, 'sub', '', '');
   };
 });
 
-// B.2.3.14 String.prototype.sup()
 _stringHtml('sup', function (createHTML) {
   return function sup() {
     return createHTML(this, 'sup', '', '');
   };
 });
-
-// 20.3.3.1 / 15.9.4.4 Date.now()
-
 
 _export(_export.S, 'Date', { now: function () { return new Date().getTime(); } });
 
@@ -2044,8 +1836,6 @@ _export(_export.P + _export.F * _fails(function () {
     return typeof pv == 'number' && !isFinite(pv) ? null : O.toISOString();
   }
 });
-
-// 20.3.4.36 / 15.9.5.43 Date.prototype.toISOString()
 
 var getTime = Date.prototype.getTime;
 var $toISOString = Date.prototype.toISOString;
@@ -2071,11 +1861,6 @@ var _dateToIsoString = (_fails(function () {
     ':' + lz(d.getUTCSeconds()) + '.' + (m > 99 ? m : '0' + lz(m)) + 'Z';
 } : $toISOString;
 
-// 20.3.4.36 / 15.9.5.43 Date.prototype.toISOString()
-
-
-
-// PhantomJS / old WebKit has a broken implementations
 _export(_export.P + _export.F * (Date.prototype.toISOString !== _dateToIsoString), 'Date', {
   toISOString: _dateToIsoString
 });
@@ -2105,12 +1890,7 @@ var proto$1 = Date.prototype;
 
 if (!(TO_PRIMITIVE$1 in proto$1)) _hide(proto$1, TO_PRIMITIVE$1, _dateToPrimitive);
 
-// 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
-
-
 _export(_export.S, 'Array', { isArray: _isArray });
-
-// call something on iterator step with safe closing on error
 
 var _iterCall = function (iterator, fn, value, entries) {
   try {
@@ -2122,8 +1902,6 @@ var _iterCall = function (iterator, fn, value, entries) {
     throw e;
   }
 };
-
-// check on default Array iterator
 
 var ITERATOR$1 = _wks('iterator');
 var ArrayProto = Array.prototype;
@@ -2196,7 +1974,6 @@ _export(_export.S + _export.F * !_iterDetect(function (iter) { Array.from(iter);
   }
 });
 
-// WebKit Array.of isn't generic
 _export(_export.S + _export.F * _fails(function () {
   function F() { /* empty */ }
   return !(Array.of.call(F) instanceof F);
@@ -2218,9 +1995,6 @@ var _strictMethod = function (method, arg) {
     arg ? method.call(null, function () { /* empty */ }, 1) : method.call(null);
   });
 };
-
-// 22.1.3.13 Array.prototype.join(separator)
-
 
 var arrayJoin = [].join;
 
@@ -2288,24 +2062,9 @@ var _arraySpeciesConstructor = function (original) {
   } return C === undefined ? Array : C;
 };
 
-// 9.4.2.3 ArraySpeciesCreate(originalArray, length)
-
-
 var _arraySpeciesCreate = function (original, length) {
   return new (_arraySpeciesConstructor(original))(length);
 };
-
-// 0 -> Array#forEach
-// 1 -> Array#map
-// 2 -> Array#filter
-// 3 -> Array#some
-// 4 -> Array#every
-// 5 -> Array#find
-// 6 -> Array#findIndex
-
-
-
-
 
 var _arrayMethods = function (TYPE, $create) {
   var IS_MAP = TYPE == 1;
@@ -2477,16 +2236,12 @@ var _arrayCopyWithin = [].copyWithin || function copyWithin(target /* = 0 */, st
   } return O;
 };
 
-// 22.1.3.31 Array.prototype[@@unscopables]
 var UNSCOPABLES = _wks('unscopables');
 var ArrayProto$1 = Array.prototype;
 if (ArrayProto$1[UNSCOPABLES] == undefined) _hide(ArrayProto$1, UNSCOPABLES, {});
 var _addToUnscopables = function (key) {
   ArrayProto$1[UNSCOPABLES][key] = true;
 };
-
-// 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
-
 
 _export(_export.P, 'Array', { copyWithin: _arrayCopyWithin });
 
@@ -2503,14 +2258,9 @@ var _arrayFill = function fill(value /* , start = 0, end = @length */) {
   return O;
 };
 
-// 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
-
-
 _export(_export.P, 'Array', { fill: _arrayFill });
 
 _addToUnscopables('fill');
-
-// 22.1.3.8 Array.prototype.find(predicate, thisArg = undefined)
 
 var $find = _arrayMethods(5);
 var KEY = 'find';
@@ -2523,8 +2273,6 @@ _export(_export.P + _export.F * forced, 'Array', {
   }
 });
 _addToUnscopables(KEY);
-
-// 22.1.3.9 Array.prototype.findIndex(predicate, thisArg = undefined)
 
 var $find$1 = _arrayMethods(6);
 var KEY$1 = 'findIndex';
@@ -2554,10 +2302,6 @@ var _iterStep = function (done, value) {
   return { value: value, done: !!done };
 };
 
-// 22.1.3.4 Array.prototype.entries()
-// 22.1.3.13 Array.prototype.keys()
-// 22.1.3.29 Array.prototype.values()
-// 22.1.3.30 Array.prototype[@@iterator]()
 var es6_array_iterator = _iterDefine(Array, 'Array', function (iterated, kind) {
   this._t = _toIobject(iterated); // target
   this._i = 0;                   // next index
@@ -2582,8 +2326,6 @@ _iterators.Arguments = _iterators.Array;
 _addToUnscopables('keys');
 _addToUnscopables('values');
 _addToUnscopables('entries');
-
-// 21.2.5.3 get RegExp.prototype.flags
 
 var _flags = function () {
   var that = _anObject(this);
@@ -2638,7 +2380,6 @@ if (_descriptors && (!CORRECT_NEW || _fails(function () {
 
 _setSpecies('RegExp');
 
-// 21.2.5.3 get RegExp.prototype.flags()
 if (_descriptors && /./g.flags != 'g') _objectDp.f(RegExp.prototype, 'flags', {
   configurable: true,
   get: _flags
@@ -2687,7 +2428,6 @@ var _fixReWks = function (KEY, length, exec) {
   }
 };
 
-// @@match logic
 _fixReWks('match', 1, function (defined, MATCH, $match) {
   // 21.1.3.11 String.prototype.match(regexp)
   return [function match(regexp) {
@@ -2698,7 +2438,6 @@ _fixReWks('match', 1, function (defined, MATCH, $match) {
   }, $match];
 });
 
-// @@replace logic
 _fixReWks('replace', 2, function (defined, REPLACE, $replace) {
   // 21.1.3.14 String.prototype.replace(searchValue, replaceValue)
   return [function replace(searchValue, replaceValue) {
@@ -2711,7 +2450,6 @@ _fixReWks('replace', 2, function (defined, REPLACE, $replace) {
   }, $replace];
 });
 
-// @@search logic
 _fixReWks('search', 1, function (defined, SEARCH, $search) {
   // 21.1.3.15 String.prototype.search(regexp)
   return [function search(regexp) {
@@ -2722,7 +2460,6 @@ _fixReWks('search', 1, function (defined, SEARCH, $search) {
   }, $search];
 });
 
-// @@split logic
 _fixReWks('split', 2, function (defined, SPLIT, $split) {
   'use strict';
   var isRegExp = _isRegexp;
@@ -2821,9 +2558,6 @@ var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) 
 exports.BREAK = BREAK;
 exports.RETURN = RETURN;
 });
-
-// 7.3.20 SpeciesConstructor(O, defaultConstructor)
-
 
 var SPECIES$2 = _wks('species');
 var _speciesConstructor = function (O, D) {
@@ -2981,9 +2715,6 @@ var _microtask = function () {
     } last = task;
   };
 };
-
-// 25.4.1.5 NewPromiseCapability(C)
-
 
 function PromiseCapability(C) {
   var resolve, reject;
@@ -3738,9 +3469,6 @@ var _typed = {
   TYPED: TYPED,
   VIEW: VIEW$1
 };
-
-// https://tc39.github.io/ecma262/#sec-toindex
-
 
 var _toIndex = function (it) {
   if (it === undefined) return 0;
@@ -4609,10 +4337,6 @@ _typedArray('Float64', 8, function (init) {
   };
 });
 
-// 26.1.1 Reflect.apply(target, thisArgument, argumentsList)
-
-
-
 var rApply = (_global.Reflect || {}).apply;
 var fApply = Function.apply;
 // MS Edge argumentsList argument is optional
@@ -4625,14 +4349,6 @@ _export(_export.S + _export.F * !_fails(function () {
     return rApply ? rApply(T, thisArgument, L) : fApply.call(T, thisArgument, L);
   }
 });
-
-// 26.1.2 Reflect.construct(target, argumentsList [, newTarget])
-
-
-
-
-
-
 
 var rConstruct = (_global.Reflect || {}).construct;
 
@@ -4674,13 +4390,6 @@ _export(_export.S + _export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
   }
 });
 
-// 26.1.3 Reflect.defineProperty(target, propertyKey, attributes)
-
-
-
-
-
-// MS Edge has broken Reflect.defineProperty - throwing instead of returning false
 _export(_export.S + _export.F * _fails(function () {
   // eslint-disable-next-line no-undef
   Reflect.defineProperty(_objectDp.f({}, 1, { value: 1 }), 1, { value: 2 });
@@ -4698,8 +4407,6 @@ _export(_export.S + _export.F * _fails(function () {
   }
 });
 
-// 26.1.4 Reflect.deleteProperty(target, propertyKey)
-
 var gOPD$3 = _objectGopd.f;
 
 
@@ -4709,9 +4416,6 @@ _export(_export.S, 'Reflect', {
     return desc && !desc.configurable ? false : delete target[propertyKey];
   }
 });
-
-// 26.1.5 Reflect.enumerate(target)
-
 
 var Enumerate = function (iterated) {
   this._t = _anObject(iterated); // target
@@ -4736,14 +4440,6 @@ _export(_export.S, 'Reflect', {
   }
 });
 
-// 26.1.6 Reflect.get(target, propertyKey [, receiver])
-
-
-
-
-
-
-
 function get(target, propertyKey /* , receiver */) {
   var receiver = arguments.length < 3 ? target : arguments[2];
   var desc, proto;
@@ -4758,21 +4454,11 @@ function get(target, propertyKey /* , receiver */) {
 
 _export(_export.S, 'Reflect', { get: get });
 
-// 26.1.7 Reflect.getOwnPropertyDescriptor(target, propertyKey)
-
-
-
-
 _export(_export.S, 'Reflect', {
   getOwnPropertyDescriptor: function getOwnPropertyDescriptor(target, propertyKey) {
     return _objectGopd.f(_anObject(target), propertyKey);
   }
 });
-
-// 26.1.8 Reflect.getPrototypeOf(target)
-
-
-
 
 _export(_export.S, 'Reflect', {
   getPrototypeOf: function getPrototypeOf(target) {
@@ -4780,17 +4466,11 @@ _export(_export.S, 'Reflect', {
   }
 });
 
-// 26.1.9 Reflect.has(target, propertyKey)
-
-
 _export(_export.S, 'Reflect', {
   has: function has(target, propertyKey) {
     return propertyKey in target;
   }
 });
-
-// 26.1.10 Reflect.isExtensible(target)
-
 
 var $isExtensible = Object.isExtensible;
 
@@ -4801,10 +4481,6 @@ _export(_export.S, 'Reflect', {
   }
 });
 
-// all object keys, includes non-enumerable and symbols
-
-
-
 var Reflect$1 = _global.Reflect;
 var _ownKeys = Reflect$1 && Reflect$1.ownKeys || function ownKeys(it) {
   var keys = _objectGopn.f(_anObject(it));
@@ -4812,13 +4488,7 @@ var _ownKeys = Reflect$1 && Reflect$1.ownKeys || function ownKeys(it) {
   return getSymbols ? keys.concat(getSymbols(it)) : keys;
 };
 
-// 26.1.11 Reflect.ownKeys(target)
-
-
 _export(_export.S, 'Reflect', { ownKeys: _ownKeys });
-
-// 26.1.12 Reflect.preventExtensions(target)
-
 
 var $preventExtensions = Object.preventExtensions;
 
@@ -4833,16 +4503,6 @@ _export(_export.S, 'Reflect', {
     }
   }
 });
-
-// 26.1.13 Reflect.set(target, propertyKey, V [, receiver])
-
-
-
-
-
-
-
-
 
 function set(target, propertyKey, V /* , receiver */) {
   var receiver = arguments.length < 4 ? target : arguments[3];
@@ -4866,10 +4526,6 @@ function set(target, propertyKey, V /* , receiver */) {
 
 _export(_export.S, 'Reflect', { set: set });
 
-// 26.1.14 Reflect.setPrototypeOf(target, proto)
-
-
-
 if (_setProto) _export(_export.S, 'Reflect', {
   setPrototypeOf: function setPrototypeOf(target, proto) {
     _setProto.check(target, proto);
@@ -4882,8 +4538,6 @@ if (_setProto) _export(_export.S, 'Reflect', {
   }
 });
 
-// https://github.com/tc39/Array.prototype.includes
-
 var $includes = _arrayIncludes(true);
 
 _export(_export.P, 'Array', {
@@ -4893,11 +4547,6 @@ _export(_export.P, 'Array', {
 });
 
 _addToUnscopables('includes');
-
-// https://tc39.github.io/proposal-flatMap/#sec-FlattenIntoArray
-
-
-
 
 var IS_CONCAT_SPREADABLE = _wks('isConcatSpreadable');
 
@@ -4933,14 +4582,6 @@ function flattenIntoArray(target, original, source, sourceLen, start, depth, map
 
 var _flattenIntoArray = flattenIntoArray;
 
-// https://tc39.github.io/proposal-flatMap/#sec-Array.prototype.flatMap
-
-
-
-
-
-
-
 _export(_export.P, 'Array', {
   flatMap: function flatMap(callbackfn /* , thisArg */) {
     var O = _toObject(this);
@@ -4955,14 +4596,6 @@ _export(_export.P, 'Array', {
 
 _addToUnscopables('flatMap');
 
-// https://tc39.github.io/proposal-flatMap/#sec-Array.prototype.flatten
-
-
-
-
-
-
-
 _export(_export.P, 'Array', {
   flatten: function flatten(/* depthArg = 1 */) {
     var depthArg = arguments[0];
@@ -4976,8 +4609,6 @@ _export(_export.P, 'Array', {
 
 _addToUnscopables('flatten');
 
-// https://github.com/mathiasbynens/String.prototype.at
-
 var $at$2 = _stringAt(true);
 
 _export(_export.P, 'String', {
@@ -4985,11 +4616,6 @@ _export(_export.P, 'String', {
     return $at$2(this, pos);
   }
 });
-
-// https://github.com/tc39/proposal-string-pad-start-end
-
-
-
 
 var _stringPad = function (that, maxLength, fillString, left) {
   var S = String(_defined(that));
@@ -5003,19 +4629,11 @@ var _stringPad = function (that, maxLength, fillString, left) {
   return left ? stringFiller + S : S + stringFiller;
 };
 
-// https://github.com/tc39/proposal-string-pad-start-end
-
-
-
 _export(_export.P, 'String', {
   padStart: function padStart(maxLength /* , fillString = ' ' */) {
     return _stringPad(this, maxLength, arguments.length > 1 ? arguments[1] : undefined, true);
   }
 });
-
-// https://github.com/tc39/proposal-string-pad-start-end
-
-
 
 _export(_export.P, 'String', {
   padEnd: function padEnd(maxLength /* , fillString = ' ' */) {
@@ -5023,25 +4641,17 @@ _export(_export.P, 'String', {
   }
 });
 
-// https://github.com/sebmarkbage/ecmascript-string-left-right-trim
 _stringTrim('trimLeft', function ($trim) {
   return function trimLeft() {
     return $trim(this, 1);
   };
 }, 'trimStart');
 
-// https://github.com/sebmarkbage/ecmascript-string-left-right-trim
 _stringTrim('trimRight', function ($trim) {
   return function trimRight() {
     return $trim(this, 2);
   };
 }, 'trimEnd');
-
-// https://tc39.github.io/String.prototype.matchAll/
-
-
-
-
 
 var RegExpProto = RegExp.prototype;
 
@@ -5070,13 +4680,6 @@ _export(_export.P, 'String', {
 _wksDefine('asyncIterator');
 
 _wksDefine('observable');
-
-// https://github.com/tc39/proposal-object-getownpropertydescriptors
-
-
-
-
-
 
 _export(_export.S, 'Object', {
   getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object) {
@@ -5109,8 +4712,6 @@ var _objectToArray = function (isEntries) {
   };
 };
 
-// https://github.com/tc39/proposal-object-values-entries
-
 var $values = _objectToArray(false);
 
 _export(_export.S, 'Object', {
@@ -5118,8 +4719,6 @@ _export(_export.S, 'Object', {
     return $values(it);
   }
 });
-
-// https://github.com/tc39/proposal-object-values-entries
 
 var $entries = _objectToArray(true);
 
@@ -5129,7 +4728,6 @@ _export(_export.S, 'Object', {
   }
 });
 
-// Forced replacement prototype accessors methods
 var _objectForcedPam = _library || !_fails(function () {
   var K = Math.random();
   // In FF throws only define methods
@@ -5138,14 +4736,12 @@ var _objectForcedPam = _library || !_fails(function () {
   delete _global[K];
 });
 
-// B.2.2.2 Object.prototype.__defineGetter__(P, getter)
 _descriptors && _export(_export.P + _objectForcedPam, 'Object', {
   __defineGetter__: function __defineGetter__(P, getter) {
     _objectDp.f(_toObject(this), P, { get: _aFunction(getter), enumerable: true, configurable: true });
   }
 });
 
-// B.2.2.3 Object.prototype.__defineSetter__(P, setter)
 _descriptors && _export(_export.P + _objectForcedPam, 'Object', {
   __defineSetter__: function __defineSetter__(P, setter) {
     _objectDp.f(_toObject(this), P, { set: _aFunction(setter), enumerable: true, configurable: true });
@@ -5186,9 +4782,6 @@ var _arrayFromIterable = function (iter, ITERATOR) {
   return result;
 };
 
-// https://github.com/DavidBruant/Map-Set.prototype.toJSON
-
-
 var _collectionToJson = function (NAME) {
   return function toJSON() {
     if (_classof(this) != NAME) throw TypeError(NAME + "#toJSON isn't generic");
@@ -5196,18 +4789,9 @@ var _collectionToJson = function (NAME) {
   };
 };
 
-// https://github.com/DavidBruant/Map-Set.prototype.toJSON
-
-
 _export(_export.P + _export.R, 'Map', { toJSON: _collectionToJson('Map') });
 
-// https://github.com/DavidBruant/Map-Set.prototype.toJSON
-
-
 _export(_export.P + _export.R, 'Set', { toJSON: _collectionToJson('Set') });
-
-// https://tc39.github.io/proposal-setmap-offrom/
-
 
 var _setCollectionOf = function (COLLECTION) {
   _export(_export.S, COLLECTION, { of: function of() {
@@ -5218,23 +4802,13 @@ var _setCollectionOf = function (COLLECTION) {
   } });
 };
 
-// https://tc39.github.io/proposal-setmap-offrom/#sec-map.of
 _setCollectionOf('Map');
 
-// https://tc39.github.io/proposal-setmap-offrom/#sec-set.of
 _setCollectionOf('Set');
 
-// https://tc39.github.io/proposal-setmap-offrom/#sec-weakmap.of
 _setCollectionOf('WeakMap');
 
-// https://tc39.github.io/proposal-setmap-offrom/#sec-weakset.of
 _setCollectionOf('WeakSet');
-
-// https://tc39.github.io/proposal-setmap-offrom/
-
-
-
-
 
 var _setCollectionFrom = function (COLLECTION) {
   _export(_export.S, COLLECTION, { from: function from(source /* , mapFn, thisArg */) {
@@ -5258,31 +4832,17 @@ var _setCollectionFrom = function (COLLECTION) {
   } });
 };
 
-// https://tc39.github.io/proposal-setmap-offrom/#sec-map.from
 _setCollectionFrom('Map');
 
-// https://tc39.github.io/proposal-setmap-offrom/#sec-set.from
 _setCollectionFrom('Set');
 
-// https://tc39.github.io/proposal-setmap-offrom/#sec-weakmap.from
 _setCollectionFrom('WeakMap');
 
-// https://tc39.github.io/proposal-setmap-offrom/#sec-weakset.from
 _setCollectionFrom('WeakSet');
-
-// https://github.com/tc39/proposal-global
-
 
 _export(_export.G, { global: _global });
 
-// https://github.com/tc39/proposal-global
-
-
 _export(_export.S, 'System', { global: _global });
-
-// https://github.com/ljharb/proposal-is-error
-
-
 
 _export(_export.S, 'Error', {
   isError: function isError(it) {
@@ -5290,21 +4850,13 @@ _export(_export.S, 'Error', {
   }
 });
 
-// https://rwaldron.github.io/proposal-math-extensions/
-
-
 _export(_export.S, 'Math', {
   clamp: function clamp(x, lower, upper) {
     return Math.min(upper, Math.max(lower, x));
   }
 });
 
-// https://rwaldron.github.io/proposal-math-extensions/
-
-
 _export(_export.S, 'Math', { DEG_PER_RAD: Math.PI / 180 });
-
-// https://rwaldron.github.io/proposal-math-extensions/
 
 var RAD_PER_DEG = 180 / Math.PI;
 
@@ -5333,19 +4885,11 @@ var _mathScale = Math.scale || function scale(x, inLow, inHigh, outLow, outHigh)
   return (x - inLow) * (outHigh - outLow) / (inHigh - inLow) + outLow;
 };
 
-// https://rwaldron.github.io/proposal-math-extensions/
-
-
-
-
 _export(_export.S, 'Math', {
   fscale: function fscale(x, inLow, inHigh, outLow, outHigh) {
     return _mathFround(_mathScale(x, inLow, inHigh, outLow, outHigh));
   }
 });
-
-// https://gist.github.com/BrendanEich/4294d5c212a6d2254703
-
 
 _export(_export.S, 'Math', {
   iaddh: function iaddh(x0, x1, y0, y1) {
@@ -5356,9 +4900,6 @@ _export(_export.S, 'Math', {
   }
 });
 
-// https://gist.github.com/BrendanEich/4294d5c212a6d2254703
-
-
 _export(_export.S, 'Math', {
   isubh: function isubh(x0, x1, y0, y1) {
     var $x0 = x0 >>> 0;
@@ -5367,9 +4908,6 @@ _export(_export.S, 'Math', {
     return $x1 - (y1 >>> 0) - ((~$x0 & $y0 | ~($x0 ^ $y0) & $x0 - $y0 >>> 0) >>> 31) | 0;
   }
 });
-
-// https://gist.github.com/BrendanEich/4294d5c212a6d2254703
-
 
 _export(_export.S, 'Math', {
   imulh: function imulh(u, v) {
@@ -5385,12 +4923,7 @@ _export(_export.S, 'Math', {
   }
 });
 
-// https://rwaldron.github.io/proposal-math-extensions/
-
-
 _export(_export.S, 'Math', { RAD_PER_DEG: 180 / Math.PI });
-
-// https://rwaldron.github.io/proposal-math-extensions/
 
 var DEG_PER_RAD = Math.PI / 180;
 
@@ -5400,13 +4933,7 @@ _export(_export.S, 'Math', {
   }
 });
 
-// https://rwaldron.github.io/proposal-math-extensions/
-
-
 _export(_export.S, 'Math', { scale: _mathScale });
-
-// https://gist.github.com/BrendanEich/4294d5c212a6d2254703
-
 
 _export(_export.S, 'Math', {
   umulh: function umulh(u, v) {
@@ -5421,9 +4948,6 @@ _export(_export.S, 'Math', {
     return u1 * v1 + (t >>> 16) + ((u0 * v1 >>> 0) + (t & UINT16) >>> 16);
   }
 });
-
-// http://jfbastien.github.io/papers/Math.signbit.html
-
 
 _export(_export.S, 'Math', { signbit: function signbit(x) {
   // eslint-disable-next-line no-self-compare
@@ -5442,11 +4966,6 @@ _export(_export.P + _export.R, 'Promise', { 'finally': function (onFinally) {
     } : onFinally
   );
 } });
-
-// https://github.com/tc39/proposal-promise-try
-
-
-
 
 _export(_export.S, 'Promise', { 'try': function (callbackfn) {
   var promiseCapability = _newPromiseCapability.f(this);
@@ -5606,8 +5125,6 @@ _metadata.exp({ metadata: function metadata(metadataKey, metadataValue) {
   };
 } });
 
-// https://github.com/rwaldron/tc39-notes/blob/master/es6/2014-09/sept-25.md#510-globalasap-for-enqueuing-a-microtask
-
 var microtask$1 = _microtask();
 var process$3 = _global.process;
 var isNode$2 = _cof(process$3) == 'process';
@@ -5618,10 +5135,6 @@ _export(_export.G, {
     microtask$1(domain ? domain.bind(fn) : fn);
   }
 });
-
-// https://github.com/zenparsing/es-observable
-
-
 
 var microtask$2 = _microtask();
 var OBSERVABLE = _wks('observable');
@@ -5841,11 +5354,6 @@ var _partial = function (/* ...pargs */) {
     return _invoke(fn, args, that);
   };
 };
-
-// ie9- setTimeout & setInterval additional parameters fix
-
-
-
 
 var navigator = _global.navigator;
 var MSIE = !!navigator && /MSIE .\./.test(navigator.userAgent); // <- dirty ie9- check
@@ -6669,8 +6177,6 @@ var _replacer = function (regExp, replace) {
   };
 };
 
-// https://github.com/benjamingr/RexExp.escape
-
 var $re = _replacer(/[\\^$*+?.()|[\]{}]/g, '\\$&');
 
 _export(_export.S, 'RegExp', { escape: function escape(it) { return $re(it); } });
@@ -6772,6 +6278,9 @@ window.player = player;
   document.addEventListener(key, function (evt) {
     return console.log(key, evt);
   });
+});
+player.on('fullscreenchange', function (evt) {
+  console.log('wowo, fullscreen', evt);
 });
 
 })));
