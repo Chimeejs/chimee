@@ -7,7 +7,9 @@ config.plugins.unshift(replace({
   'process.env.NODE_ENV': '"development"'
 }));
 export default Object.assign(config, {
-  format: 'umd',
-  dest: 'lib/index.browser.js',
-  moduleName: camelize(name, true)
+  output: {
+    format: 'umd',
+    file: 'lib/index.browser.js'
+  },
+  name: camelize(name, true)
 });
