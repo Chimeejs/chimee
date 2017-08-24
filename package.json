@@ -59,6 +59,7 @@
     "chimee-helper": "^0.2.3",
     "chimee-kernel-flv": "^1.0.6",
     "chimee-kernel-hls": "^1.0.6",
+    "es-fullscreen": "^0.1.1",
     "eslint": "^4.4.1",
     "eslint-plugin-flowtype": "^2.35.0",
     "eslint-plugin-jest": "^20.0.3",
