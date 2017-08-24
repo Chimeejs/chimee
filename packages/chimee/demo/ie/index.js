@@ -76,4 +76,7 @@ window.player = player;
   console.log(key);
   document.addEventListener(key, evt => console.log(key, evt));
 });
+player.on('fullscreenchange', evt => {
+  console.log('wowo, fullscreen', evt);
+});
 

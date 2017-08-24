@@ -76,6 +76,7 @@ export const domEvents = [
   'webkitfullscreenchange',
   'mozfullscreenchange',
   'msfullscreenchange',
+  'MSFullscreenChange',
   'contextmenu'
 ];
 export const selfProcessorEvents = [
