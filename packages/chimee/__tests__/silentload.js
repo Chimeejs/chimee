@@ -264,6 +264,18 @@ describe('load', () => {
     expect(player.$video).toBe(video);
     expect(player.__dispatcher.kernel).not.toBe(oldKernel);
   });
+  test('load with different box', async () => {
+    player.load('http://yunxianchang.live.ujne7.com/vod-system-bj/79_3041054cc65-ae8c-4b63-8937-5ccb05f79720.m3u8', {
+      box: 'hls',
+      preset: {
+        hls: ChimeeKernelHls
+      }
+    });
+    await Promise.resolve();
+    expect(player.$video).not.toBe(oldVideo);
+    expect(player.$video).toBe(video);
+    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+  });
   test('load with different preset', async () => {
     player.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', {
       preset: {

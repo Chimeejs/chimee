@@ -5,7 +5,7 @@ import Bus from './bus';
 import Plugin from './plugin';
 import Dom from './dom';
 import VideoConfig from './video-config';
-import {before, applyDecorators, accessor} from 'toxic-decorators';
+import {before} from 'toxic-decorators';
 const pluginConfigSet: PluginConfigSet = {};
 function convertNameIntoId (name: string): string {
   if(!isString(name)) throw new Error(`Plugin's name must be a string, but not "${name}" in ${typeof name}`);
@@ -345,7 +345,11 @@ export default class Dispatcher {
       const kernel = new Kernel(video, config);
       this.switchKernel({video, kernel, config});
     }
-    this.kernel.load(src);
+    const originAutoLoad = this.videoConfig.autoload;
+    this._changeUnwatchable(this.videoConfig, 'autoload', false);
+    this.videoConfig.src = src || this.videoConfig.src;
+    this.kernel.load(this.videoConfig.src);
+    this._changeUnwatchable(this.videoConfig, 'autoload', originAutoLoad);
   }
   switchKernel ({video, kernel, config}: {
     video: HTMLVideoElement,
@@ -373,17 +377,17 @@ export default class Dispatcher {
     });
     this.videoConfig.changeWatchable = true;
     // bind the new config in new kernel to the videoConfig
-    applyDecorators(config, {
-      src: accessor({
-        get: value => {
-          return this.videoConfig.src;
-        },
-        set: value => {
-          this.videoConfig.src = value;
-          return value;
-        }
-      })
-    }, {self: true});
+    // applyDecorators(config, {
+    //   src: accessor({
+    //     get: value => {
+    //       return this.videoConfig.src;
+    //     },
+    //     set: value => {
+    //       this.videoConfig.src = value;
+    //       return value;
+    //     }
+    //   })
+    // }, {self: true});
     // the kernel's inner config would not be change according what we do
     // so we have to load that
     // applyDecorators(kernel.__proto__, {
@@ -459,6 +463,11 @@ export default class Dispatcher {
   }
   _autoloadVideoSrcAtFirst () {
     if(this.videoConfig.autoload) this.bus.emit('load', this.videoConfig.src);
+  }
+  _changeUnwatchable (object: Object, property: string, value: any) {
+    this.changeWatchable = false;
+    object[property] = value;
+    this.changeWatchable = true;
   }
   /**
    * static method to install plugin
