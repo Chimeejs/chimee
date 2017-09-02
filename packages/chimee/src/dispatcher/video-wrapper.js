@@ -160,7 +160,7 @@ export default @autobindClass() class VideoWrapper {
     obj.__del(property);
   }
 
-  load (...args: Array<*>) {
+  load (...args: Array<*>): Promise<*> {
     return new Promise((resolve, reject) => {
       this.__dispatcher.bus.once(this.__id, '_load', resolve);
       this.__dispatcher.bus.emit('load', ...args);
