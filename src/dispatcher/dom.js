@@ -1,7 +1,7 @@
 // @flow
 import {isArray, isElement, isString, isHTMLString, hypenate, isFunction, isEmpty, isPosterityNode, isObject, isBoolean, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log, isEvent} from 'chimee-helper';
 import {videoEvents, domEvents} from 'helper/const';
-import fullscreen from 'es-fullscreen';
+import esFullscreen from 'es-fullscreen';
 import {autobind, before, waituntil} from 'toxic-decorators';
 function targetCheck (target: string, ...args) {
   if(target === 'video') target = 'videoElement';
@@ -113,10 +113,10 @@ export default class Dom {
      */
     this.installVideo(videoElement);
     domEvents.forEach(key => {
-      const cfn = (...args) => this.__dispatcher.bus.triggerSync('c_' + key, ...args);
+      const cfn = (...args: any) => this.__dispatcher.bus.triggerSync('c_' + key, ...args);
       this.containerDomEventHandlerList.push(cfn);
       addEvent(this.container, key, cfn);
-      const wfn = (...args) => this.__dispatcher.bus.triggerSync('w_' + key, ...args);
+      const wfn = (...args: any) => this.__dispatcher.bus.triggerSync('w_' + key, ...args);
       this.wrapperDomEventHandlerList.push(wfn);
       addEvent(this.wrapper, key, wfn);
     });
@@ -150,7 +150,7 @@ export default class Dom {
       $(this.wrapper).append(this.container);
     }
     videoEvents.forEach(key => {
-      const fn = (...args) => this.__dispatcher.bus.trigger(key, ...args);
+      const fn = (...args: any) => this.__dispatcher.bus.trigger(key, ...args);
       this.videoEventHandlerList.push(fn);
       addEvent(videoElement, key, fn);
     });
@@ -287,10 +287,10 @@ export default class Dom {
   @before(targetCheck)
   requestFullScreen (target: string) {
     // $FlowFixMe: flow do not support computed property/element on document, which is silly here.
-    return fullscreen.open(this[target]);
+    return esFullscreen.open(this[target]);
   }
   exitFullScreen (): boolean {
-    return fullscreen.exit();
+    return esFullscreen.exit();
   }
   fullScreen (request: boolean = true, target: string = 'container', ...args: any): boolean {
     return request

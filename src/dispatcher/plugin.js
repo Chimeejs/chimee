@@ -223,7 +223,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   /**
    * call for inited lifecycle hook, which just to tell the plugin we have inited.
    */
-  __inited () {
+  __inited (): Promise<*> | boolean {
     let result;
     try {
       result = isFunction(this.inited) && this.inited();
