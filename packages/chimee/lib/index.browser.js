@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.2.8
+ * chimee v0.3.0
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -550,6 +550,7 @@ var _setToStringTag = function(it, tag, stat){
   if(it && !_has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 };
 
+'use strict';
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
@@ -560,6 +561,7 @@ var _iterCreate = function(Constructor, NAME, next){
   _setToStringTag(Constructor, NAME + ' Iterator');
 };
 
+'use strict';
 var ITERATOR       = _wks('iterator');
 var BUGGY          = !([].keys && 'next' in [].keys());
 var FF_ITERATOR    = '@@iterator';
@@ -621,6 +623,7 @@ var _iterDefine = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
   return methods;
 };
 
+'use strict';
 var $at  = _stringAt(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
@@ -643,6 +646,9 @@ var _addToUnscopables = function(){ /* empty */ };
 var _iterStep = function(done, value){
   return {value: value, done: !!done};
 };
+
+'use strict';
+
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
@@ -694,6 +700,8 @@ var iterator$2 = _wksExt.f('iterator');
 var iterator = createCommonjsModule(function (module) {
 module.exports = { "default": iterator$2, __esModule: true };
 });
+
+unwrapExports(iterator);
 
 var _meta = createCommonjsModule(function (module) {
 var META     = _uid('meta')
@@ -824,6 +832,7 @@ var _objectGopnExt = {
 	f: f$5
 };
 
+'use strict';
 // ECMAScript 6 symbols shim
 var META           = _meta.KEY;
 var gOPD$2           = _objectGopd.f;
@@ -1045,6 +1054,8 @@ var symbol = createCommonjsModule(function (module) {
 module.exports = { "default": symbol$2, __esModule: true };
 });
 
+unwrapExports(symbol);
+
 var _typeof_1 = createCommonjsModule(function (module, exports) {
 "use strict";
 
@@ -1170,6 +1181,8 @@ var setPrototypeOf$2 = _core.Object.setPrototypeOf;
 var setPrototypeOf = createCommonjsModule(function (module) {
 module.exports = { "default": setPrototypeOf$2, __esModule: true };
 });
+
+unwrapExports(setPrototypeOf);
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 _export(_export.S, 'Object', {create: _objectCreate});
@@ -1473,6 +1486,7 @@ var _redefineAll = function(target, src, safe){
   } return target;
 };
 
+'use strict';
 var SPECIES$1     = _wks('species');
 
 var _setSpecies = function(KEY){
@@ -1489,7 +1503,7 @@ var SAFE_CLOSING = false;
 try {
   var riter = [7][ITERATOR$3]();
   riter['return'] = function(){ SAFE_CLOSING = true; };
-  Array.from(riter, function(){ throw 2; });
+  
 } catch(e){ /* empty */ }
 
 var _iterDetect = function(exec, skipClosing){
@@ -1505,6 +1519,7 @@ var _iterDetect = function(exec, skipClosing){
   return safe;
 };
 
+'use strict';
 var task               = _task.set;
 var microtask          = _microtask();
 var PROMISE            = 'Promise';
@@ -1838,6 +1853,8 @@ var isInteger$1 = createCommonjsModule(function (module) {
 module.exports = { "default": isInteger$2, __esModule: true };
 });
 
+var _Number$isInteger = unwrapExports(isInteger$1);
+
 var _stringWs = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
   '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
 
@@ -1885,6 +1902,8 @@ var _parseFloat$1 = parseFloat;
 var _parseFloat = createCommonjsModule(function (module) {
 module.exports = { "default": _parseFloat$1, __esModule: true };
 });
+
+var _Number$parseFloat = unwrapExports(_parseFloat);
 
 /**
  * toxic-predicate-functions v0.1.2
@@ -3137,12 +3156,18 @@ var uaParser = createCommonjsModule(function (module, exports) {
 })(typeof window === 'object' ? window : commonjsGlobal);
 });
 
+'use strict';
+
+
 var _createProperty = function(object, index, value){
   if(index in object)_objectDp.f(object, index, _propertyDesc(0, value));
   else object[index] = value;
 };
 
-_export(_export.S + _export.F * !_iterDetect(function(iter){ Array.from(iter); }), 'Array', {
+'use strict';
+
+
+_export(_export.S + _export.F * !_iterDetect(function(iter){  }), 'Array', {
   // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
   from: function from(arrayLike/*, mapfn = undefined, thisArg = undefined*/){
     var O       = _toObject(arrayLike)
@@ -3347,58 +3372,6 @@ function getDeepProperty(obj, keys) {
   return target;
 }
 
-var iterator$4 = createCommonjsModule(function (module) {
-module.exports = { "default": iterator$2, __esModule: true };
-});
-
-var symbol$4 = createCommonjsModule(function (module) {
-module.exports = { "default": symbol$2, __esModule: true };
-});
-
-var _typeof_1$1 = createCommonjsModule(function (module, exports) {
-"use strict";
-
-exports.__esModule = true;
-
-
-
-var _iterator2 = _interopRequireDefault(iterator$4);
-
-
-
-var _symbol2 = _interopRequireDefault(symbol$4);
-
-var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.default) === "symbol" ? function (obj) {
-  return typeof obj === "undefined" ? "undefined" : _typeof(obj);
-} : function (obj) {
-  return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
-};
-});
-
-var _typeof$1 = unwrapExports(_typeof_1$1);
-
-var keys$3 = createCommonjsModule(function (module) {
-module.exports = { "default": keys$1, __esModule: true };
-});
-
-var _Object$keys$1 = unwrapExports(keys$3);
-
-var isInteger$5 = createCommonjsModule(function (module) {
-module.exports = { "default": isInteger$2, __esModule: true };
-});
-
-var _Number$isInteger$1 = unwrapExports(isInteger$5);
-
-var _parseFloat$5 = createCommonjsModule(function (module) {
-module.exports = { "default": _parseFloat$1, __esModule: true };
-});
-
-var _Number$parseFloat$1 = unwrapExports(_parseFloat$5);
-
 /**
  * toxic-predicate-functions v0.1.4
  * (c) 2017 toxic-johann
@@ -3442,13 +3415,13 @@ function isNumber$1(obj) {
  * to tell you if the val can be transfer into number
  */
 function isNumeric$1(obj) {
-  return !isArray$2(obj) && obj - _Number$parseFloat$1(obj) + 1 >= 0;
+  return !isArray$2(obj) && obj - _Number$parseFloat(obj) + 1 >= 0;
 }
 /**
  * is it an interget or not
  */
 function isInteger$4(num) {
-  return _Number$isInteger$1(num);
+  return _Number$isInteger(num);
 }
 
 /**
@@ -3458,7 +3431,7 @@ function isEmpty$1(obj) {
   if (isArray$2(obj)) {
     return obj.length === 0;
   } else if (isObject$2(obj)) {
-    return _Object$keys$1(obj).length === 0;
+    return _Object$keys(obj).length === 0;
   } else {
     return !obj;
   }
@@ -3485,19 +3458,19 @@ function isBoolean$1(bool) {
  * is a promise or not
  */
 function isPromise$1(obj) {
-  return !!obj && ((typeof obj === 'undefined' ? 'undefined' : _typeof$1(obj)) === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+  return !!obj && ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
 }
 /**
  * to test if a HTML node
  */
 function isNode$3(obj) {
-  return !!((typeof Node === 'undefined' ? 'undefined' : _typeof$1(Node)) === 'object' ? obj instanceof Node : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof$1(obj)) === 'object' && typeof obj.nodeType === 'number' && typeof obj.nodeName === 'string');
+  return !!((typeof Node === 'undefined' ? 'undefined' : _typeof(Node)) === 'object' ? obj instanceof Node : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && typeof obj.nodeType === 'number' && typeof obj.nodeName === 'string');
 }
 /**
  * to test if a HTML element
  */
 function isElement$1(obj) {
-  return !!((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof$1(HTMLElement)) === 'object' ? obj instanceof HTMLElement : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof$1(obj)) === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string');
+  return !!((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? obj instanceof HTMLElement : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string');
 }
 /**
  * check if node B is node A's posterrity or not
@@ -3605,6 +3578,7 @@ function runStoppableQueue(queue) {
   return step(0);
 }
 
+'use strict';
 // 19.1.2.1 Object.assign(target, source, ...)
 var $assign  = Object.assign;
 
@@ -5184,6 +5158,7 @@ var Kernel = function (_CustEvent) {
 	return Kernel;
 }(CustEvent);
 
+'use strict';
 var dP$2          = _objectDp.f;
 var fastKey     = _meta.fastKey;
 var SIZE        = _descriptors ? '_s' : 'size';
@@ -5379,6 +5354,7 @@ var _arrayMethods = function(TYPE, $create){
   };
 };
 
+'use strict';
 var dP$3             = _objectDp.f;
 var each           = _arrayMethods(0);
 
@@ -5427,6 +5403,9 @@ var _collection = function(NAME, wrapper, methods, common, IS_MAP, IS_WEAK){
   return C;
 };
 
+'use strict';
+
+
 // 23.1 Map Objects
 var es6_map = _collection('Map', function(get){
   return function Map(){ return get(this, arguments.length > 0 ? arguments[0] : undefined); };
@@ -5472,12 +5451,12 @@ var _Map = unwrapExports(map);
 
 var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting'];
 var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'error', 'ended', 'networkState', 'paused', 'readyState', 'seekable', 'sinkId', 'controlsList', 'tabIndex', 'dataset', 'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth'];
-var domEvents = ['beforeinput', 'blur', 'click', 'compositionend', 'compositionstart', 'compositionupdate', 'dblclick', 'focus', 'focusin', 'focusout', 'input', 'keydown', 'keypress', 'keyup', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll', 'select', 'wheel', 'fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'msfullscreenchange', 'MSFullscreenChange', 'contextmenu'];
-var selfProcessorEvents = ['silentLoad', 'fullScreen'];
+var domEvents = ['beforeinput', 'blur', 'click', 'compositionend', 'compositionstart', 'compositionupdate', 'dblclick', 'focus', 'focusin', 'focusout', 'input', 'keydown', 'keypress', 'keyup', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll', 'select', 'wheel', 'fullscreenchange', 'contextmenu'];
+var selfProcessorEvents = ['silentLoad', 'fullscreen'];
 var kernelMethods = ['play', 'pause', 'seek'];
 var dispatcherMethods = ['load'];
 
-var domMethods = ['focus', 'fullScreen', 'requestFullScreen', 'exitFullScreen'];
+var domMethods = ['focus', 'fullscreen', 'requestFullscreen', 'exitFullscreen'];
 var videoMethods = ['canPlayType', 'captureStream', 'setSinkId'];
 
 // all object keys, includes non-enumerable and symbols
@@ -5550,6 +5529,8 @@ var isIterable = createCommonjsModule(function (module) {
 module.exports = { "default": isIterable$2, __esModule: true };
 });
 
+unwrapExports(isIterable);
+
 var core_getIterator = _core.getIterator = function(it){
   var iterFn = core_getIteratorMethod(it);
   if(typeof iterFn != 'function')throw TypeError(it + ' is not iterable!');
@@ -5561,6 +5542,8 @@ var getIterator$2 = core_getIterator;
 var getIterator = createCommonjsModule(function (module) {
 module.exports = { "default": getIterator$2, __esModule: true };
 });
+
+unwrapExports(getIterator);
 
 var slicedToArray = createCommonjsModule(function (module, exports) {
 "use strict";
@@ -5618,6 +5601,7 @@ exports.default = function () {
 
 var _slicedToArray = unwrapExports(slicedToArray);
 
+'use strict';
 var getWeak           = _meta.getWeak;
 var arrayFind         = _arrayMethods(5);
 var arrayFindIndex    = _arrayMethods(6);
@@ -5799,6 +5783,8 @@ var preventExtensions$2 = _core.Object.preventExtensions;
 var preventExtensions$1 = createCommonjsModule(function (module) {
 module.exports = { "default": preventExtensions$2, __esModule: true };
 });
+
+unwrapExports(preventExtensions$1);
 
 /**
  * toxic-decorators v0.3.8
@@ -6113,6 +6099,37 @@ function before() {
         : [result];
       }, args);
       return bind(fn, this).apply(undefined, _toConsumableArray(paras));
+    };
+    return {
+      value: handler,
+      configurable: configurable,
+      enumerable: enumerable,
+      writable: writable
+    };
+  };
+}
+
+function after() {
+  for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
+    fns[_key] = arguments[_key];
+  }
+
+  if (fns.length === 0) throw new Error("@after accept at least one parameter. If you don't need to preprocess after your function, do not add @after decorators");
+  if (fns.length > 2 && isDescriptor(fns[2])) {
+    throw new Error('You may have used @after straightly. @after return decorators. You should call it before you use it as decorators');
+  }
+  var fn = compressOneArgFnArray(fns, '@after only accept function parameter');
+  return function (obj, prop, descriptor) {
+    var _ref = descriptor || {},
+        value = _ref.value,
+        configurable = _ref.configurable,
+        enumerable = _ref.enumerable,
+        writable = _ref.writable;
+
+    if (!isFunction(value)) throw new TypeError('@after can only be used on function, please checkout your property "' + prop + '" is a method or not.');
+    var handler = function handler() {
+      var ret = bind(value, this).apply(undefined, arguments);
+      return bind(fn, this)(ret);
     };
     return {
       value: handler,
@@ -7064,6 +7081,42 @@ function number$1() {
   return accessor({ set: args, get: args });
 }
 
+var before$1 = classify(before, {
+  requirement: function requirement(obj, prop, desc) {
+    // $FlowFixMe: it's data descriptor now
+    return isDataDescriptor(desc) && isFunction(desc.value);
+  },
+
+  customArgs: true
+});
+
+var after$1 = classify(after, {
+  requirement: function requirement(obj, prop, desc) {
+    // $FlowFixMe: it's data descriptor now
+    return isDataDescriptor(desc) && isFunction(desc.value);
+  },
+
+  customArgs: true
+});
+
+var runnable$1 = classify(runnable, {
+  requirement: function requirement(obj, prop, desc) {
+    // $FlowFixMe: it's data descriptor now
+    return isDataDescriptor(desc) && isFunction(desc.value);
+  },
+
+  customArgs: true
+});
+
+var waituntil$1 = classify(waituntil, {
+  requirement: function requirement(obj, prop, desc) {
+    // $FlowFixMe: it's data descriptor now
+    return isDataDescriptor(desc) && isFunction(desc.value);
+  },
+
+  customArgs: true
+});
+
 var _dec$2;
 var _dec2$1;
 var _dec3$1;
@@ -7238,6 +7291,7 @@ var Bus = (_dec$2 = runnable(secondaryChecker), _dec2$1 = runnable(secondaryChec
       var event = this.events[key];
       if (isEmpty$1(event)) {
         if (selfProcessorEvents.indexOf(key) > -1) return _Promise.resolve();
+        // $FlowFixMe: conditional return here
         return this._eventProcessor.apply(this, [key, { sync: false }].concat(_toConsumableArray(args)));
       }
       var beforeQueue = this._getEventQueue(event.before, this.__dispatcher.order);
@@ -7268,10 +7322,13 @@ var Bus = (_dec$2 = runnable(secondaryChecker), _dec2$1 = runnable(secondaryChec
 
       if (isEmpty$1(event)) {
         if (selfProcessorEvents.indexOf(key) > -1) return true;
+        // $FlowFixMe: conditional return here
         return this._eventProcessor.apply(this, [key, { sync: true }].concat(_toConsumableArray(args)));
       }
       var beforeQueue = this._getEventQueue(event.before, this.__dispatcher.order);
-      return runStoppableQueue.apply(undefined, [beforeQueue].concat(_toConsumableArray(args))) && (selfProcessorEvents.indexOf(key) > -1 || this._eventProcessor.apply(this, [key, { sync: true }].concat(_toConsumableArray(args))));
+      return runStoppableQueue.apply(undefined, [beforeQueue].concat(_toConsumableArray(args))) && (selfProcessorEvents.indexOf(key) > -1 ||
+      // $FlowFixMe: conditional return here
+      this._eventProcessor.apply(this, [key, { sync: true }].concat(_toConsumableArray(args))));
     }
     /**
      * [Can only be called in dispatcher]trigger an event, which will run main -> after -> side effect period
@@ -7520,7 +7577,7 @@ var Bus = (_dec$2 = runnable(secondaryChecker), _dec2$1 = runnable(secondaryChec
 
       var event = this.events[key];
       if (isEmpty$1(event)) {
-        return;
+        return false;
       }
       var queue = this._getEventQueue(event['_'], order);
       queue.forEach(function (run) {
@@ -7764,7 +7821,7 @@ var accessorMap = {
       return value;
     }
   }), boolean$1()],
-  x5VideoPlayerFullScreen: [accessor({
+  x5VideoPlayerFullscreen: [accessor({
     set: function set(value) {
       return !!value;
     },
@@ -7829,7 +7886,7 @@ var VideoConfig = (_dec$5 = boolean(), _dec2$3 = string(function (str) {
     this.preload = 'auto';
     this.poster = undefined;
     this.playsInline = false;
-    this.x5VideoPlayerFullScreen = false;
+    this.x5VideoPlayerFullscreen = false;
     this.x5VideoOrientation = undefined;
     this.xWebkitAirplay = false;
     this.playbackRate = 1;
@@ -7904,7 +7961,7 @@ var VideoConfig = (_dec$5 = boolean(), _dec2$3 = string(function (str) {
 }), _descriptor7 = _applyDecoratedDescriptor$4(_class$5.prototype, '_realDomAttr', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
+    return ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
   }
 })), _class$5));
 
@@ -7963,7 +8020,7 @@ function propertyAccessibilityWarn(property) {
   /* istanbul ignore else  */
   Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
 }
-var VideoWrapper = (_dec$4 = autobindClass(), _dec2$2 = alias('silentLoad'), _dec3$2 = alias('fullScreen'), _dec4$2 = alias('$fullscreen'), _dec5$1 = alias('fullscreen'), _dec6 = alias('emit'), _dec7 = alias('emitSync'), _dec8 = alias('on'), _dec9 = alias('addEventListener'), _dec10 = before(eventBinderCheck), _dec11 = alias('off'), _dec12 = alias('removeEventListener'), _dec13 = before(eventBinderCheck), _dec14 = alias('once'), _dec15 = before(eventBinderCheck), _dec16 = alias('css'), _dec17 = before(attrAndStyleCheck), _dec18 = alias('attr'), _dec19 = before(attrAndStyleCheck), _dec$4(_class$4 = (_class2$1 = function () {
+var VideoWrapper = (_dec$4 = autobindClass(), _dec2$2 = alias('silentLoad'), _dec3$2 = alias('fullScreen'), _dec4$2 = alias('$fullScreen'), _dec5$1 = alias('fullscreen'), _dec6 = alias('emit'), _dec7 = alias('emitSync'), _dec8 = alias('on'), _dec9 = alias('addEventListener'), _dec10 = before(eventBinderCheck), _dec11 = alias('off'), _dec12 = alias('removeEventListener'), _dec13 = before(eventBinderCheck), _dec14 = alias('once'), _dec15 = before(eventBinderCheck), _dec16 = alias('css'), _dec17 = before(attrAndStyleCheck), _dec18 = alias('attr'), _dec19 = before(attrAndStyleCheck), _dec$4(_class$4 = (_class2$1 = function () {
   function VideoWrapper() {
     _classCallCheck(this, VideoWrapper);
 
@@ -8040,7 +8097,7 @@ var VideoWrapper = (_dec$4 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
         });
       });
       domMethods.forEach(function (key) {
-        if (key === 'fullScreen') return;
+        if (key === 'fullscreen') return;
         _Object$defineProperty(_this, key, {
           value: function value() {
             var _dispatcher$dom;
@@ -8080,7 +8137,7 @@ var VideoWrapper = (_dec$4 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
       var keys$$1 = isString$1(key) ? key.split('.') : key;
       var property = keys$$1.pop();
       var videoConfig = this.__dispatcher.videoConfig;
-      var target = keys$$1.length === 0 && !other && videoConfig._realDomAttr.indexOf(property) > -1 ? videoConfig : ['isFullScreen', 'fullScreenElement'].indexOf(property) > -1 ? this.__dispatcher.dom : getDeepProperty(other || this, keys$$1, { throwError: true });
+      var target = keys$$1.length === 0 && !other && videoConfig._realDomAttr.indexOf(property) > -1 ? videoConfig : ['isFullscreen', 'fullscreenElement'].indexOf(property) > -1 ? this.__dispatcher.dom : getDeepProperty(other || this, keys$$1, { throwError: true });
       applyDecorators(target, _defineProperty$1({}, property, watch(watcher, { deep: deep, diff: diff, proxy: proxy })), { self: true });
       this.__unwatchHandlers.push(unwatcher);
       return unwatcher;
@@ -8154,14 +8211,14 @@ var VideoWrapper = (_dec$4 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
      */
 
   }, {
-    key: '$fullScreen',
-    value: function $fullScreen() {
+    key: '$fullscreen',
+    value: function $fullscreen() {
       var flag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
       var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'container';
 
-      if (!this.__dispatcher.bus.emitSync('fullScreen', flag, element)) return false;
-      var result = this.__dispatcher.dom.fullScreen(flag, element);
-      this.__dispatcher.bus.triggerSync('fullScreen', flag, element);
+      if (!this.__dispatcher.bus.emitSync('fullscreen', flag, element)) return false;
+      var result = this.__dispatcher.dom.fullscreen(flag, element);
+      this.__dispatcher.bus.triggerSync('fullscreen', flag, element);
       return result;
     }
 
@@ -8371,19 +8428,19 @@ var VideoWrapper = (_dec$4 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
       return this.__dispatcher.dom.videoElement;
     }
   }, {
-    key: 'isFullScreen',
+    key: 'isFullscreen',
     get: function get() {
-      return this.__dispatcher.dom.isFullScreen;
+      return this.__dispatcher.dom.isFullscreen;
     }
   }, {
-    key: 'fullScreenElement',
+    key: 'fullscreenElement',
     get: function get() {
-      return this.__dispatcher.dom.fullScreenElement;
+      return this.__dispatcher.dom.fullscreenElement;
     }
   }]);
 
   return VideoWrapper;
-}(), (_applyDecoratedDescriptor$3(_class2$1.prototype, '$silentLoad', [_dec2$2], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$silentLoad'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$fullScreen', [_dec3$2, _dec4$2, _dec5$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$fullScreen'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emit'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emitSync'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$on'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$off'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$once'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$css'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$attr'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$plugins'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$pluginOrder'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$wrapper'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$container'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$video'), _class2$1.prototype)), _class2$1)) || _class$4);
+}(), (_applyDecoratedDescriptor$3(_class2$1.prototype, '$silentLoad', [_dec2$2], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$silentLoad'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$fullscreen', [_dec3$2, _dec4$2, _dec5$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$fullscreen'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emit'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emitSync'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$on'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$off'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$once'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$css'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$attr'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$plugins'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$pluginOrder'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$wrapper'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$container'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$video'), _class2$1.prototype)), _class2$1)) || _class$4);
 
 var _dec$3;
 var _class$3;
@@ -8461,7 +8518,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.2.8';
+    _this.VERSION = '0.3.0';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -8693,104 +8750,6 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
   return Plugin;
 }(VideoWrapper)) || _class$3);
 
-var keys$4 = createCommonjsModule(function (module) {
-module.exports = { "default": keys$1, __esModule: true };
-});
-
-var _Object$keys$2 = unwrapExports(keys$4);
-
-var classCallCheck$1 = createCommonjsModule(function (module, exports) {
-"use strict";
-
-exports.__esModule = true;
-
-exports.default = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-});
-
-var _classCallCheck$1 = unwrapExports(classCallCheck$1);
-
-var defineProperty$6$1 = createCommonjsModule(function (module) {
-module.exports = { "default": defineProperty$1, __esModule: true };
-});
-
-var createClass$1 = createCommonjsModule(function (module, exports) {
-"use strict";
-
-exports.__esModule = true;
-
-
-
-var _defineProperty2 = _interopRequireDefault(defineProperty$6$1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
-    }
-  }
-
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-}();
-});
-
-var _createClass$1 = unwrapExports(createClass$1);
-
-var iterator$6 = createCommonjsModule(function (module) {
-module.exports = { "default": iterator$2, __esModule: true };
-});
-
-var symbol$6 = createCommonjsModule(function (module) {
-module.exports = { "default": symbol$2, __esModule: true };
-});
-
-var _typeof_1$2 = createCommonjsModule(function (module, exports) {
-"use strict";
-
-exports.__esModule = true;
-
-
-
-var _iterator2 = _interopRequireDefault(iterator$6);
-
-
-
-var _symbol2 = _interopRequireDefault(symbol$6);
-
-var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.default) === "symbol" ? function (obj) {
-  return typeof obj === "undefined" ? "undefined" : _typeof(obj);
-} : function (obj) {
-  return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
-};
-});
-
-var _typeof$2 = unwrapExports(_typeof_1$2);
-
-var isInteger$7 = createCommonjsModule(function (module) {
-module.exports = { "default": isInteger$2, __esModule: true };
-});
-
-var _parseFloat$6 = createCommonjsModule(function (module) {
-module.exports = { "default": _parseFloat$1, __esModule: true };
-});
-
 /**
  * toxic-predicate-functions v0.1.4
  * (c) 2017 toxic-johann
@@ -8825,6 +8784,12 @@ function isObject$3(obj) {
   return Object(obj) === obj && String(obj) === '[object Object]' && !isFunction$2(obj) && !isArray$3(obj);
 }
 /**
+ * is it an event or not
+ */
+function isEvent$2(obj) {
+  return obj instanceof Event || (obj && obj.originalEvent) instanceof Event;
+}
+/**
  * is it a string
  */
 function isString$2(str) {
@@ -8834,13 +8799,13 @@ function isString$2(str) {
  * to test if a HTML node
  */
 function isNode$4(obj) {
-  return !!((typeof Node === 'undefined' ? 'undefined' : _typeof$2(Node)) === 'object' ? obj instanceof Node : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof$2(obj)) === 'object' && typeof obj.nodeType === 'number' && typeof obj.nodeName === 'string');
+  return !!((typeof Node === 'undefined' ? 'undefined' : _typeof(Node)) === 'object' ? obj instanceof Node : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && typeof obj.nodeType === 'number' && typeof obj.nodeName === 'string');
 }
 /**
  * to test if a HTML element
  */
 function isElement$2(obj) {
-  return !!((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof$2(HTMLElement)) === 'object' ? obj instanceof HTMLElement : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof$2(obj)) === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string');
+  return !!((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? obj instanceof HTMLElement : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string');
 }
 /**
  * check if node B is node A's posterrity or not
@@ -8859,16 +8824,18 @@ function isPosterityNode$2(parent, child) {
 }
 
 /**
- * es-fullscreen v0.1.3
+ * es-fullscreen v0.2.1
  * (c) 2017 toxic-johann
  * Released under MIT
  */
 
 var VENDOR_PREFIXES = ['', 'o', 'ms', 'moz', 'webkit', 'webkitCurrent'];
+
 var SYNONYMS = [['', ''], // empty
 ['exit', 'cancel'], // firefox & old webkits expect cancelFullScreen instead of exitFullscreen
 ['screen', 'Screen'] // firefox expects FullScreen instead of Fullscreen
 ];
+
 var DESKTOP_FULLSCREEN_STYLE = {
   position: 'fixed',
   zIndex: '2147483647',
@@ -8876,8 +8843,15 @@ var DESKTOP_FULLSCREEN_STYLE = {
   top: 0,
   right: 0,
   bottom: 0,
-  overflow: 'hidden'
+  overflow: 'hidden',
+  width: '100%',
+  height: '100%'
 };
+
+var FULLSCREEN_CHANGE = ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'];
+
+var FULLSCREEN_ERROR = ['fullscreenerror', 'webkitfullscreenerror', 'mozfullscreenerror', 'MSFullscreenError'];
+
 function setStyle$1(el, key, val) {
   if (isObject$3(key)) {
     for (var k in key) {
@@ -8901,11 +8875,10 @@ function native(target, name) {
   if (!isElement$2(target)) {
     target = document;
   }
-  if (!isString$2(name)) throw new Error('You must pass in a string as name, but not ' + (typeof name === 'undefined' ? 'undefined' : _typeof$2(name)));
-
-  var _ref = option || {},
-      _ref$keyOnly = _ref.keyOnly,
-      keyOnly = _ref$keyOnly === undefined ? false : _ref$keyOnly;
+  if (!isString$2(name)) throw new Error('You must pass in a string as name, but not ' + (typeof name === 'undefined' ? 'undefined' : _typeof(name)) + '.');
+  var _option = option,
+      _option$keyOnly = _option.keyOnly,
+      keyOnly = _option$keyOnly === undefined ? false : _option$keyOnly;
 
   for (var i = 0; i < SYNONYMS.length; i++) {
     name = name.replace(SYNONYMS[i][0], SYNONYMS[i][1]);
@@ -8917,11 +8890,92 @@ function native(target, name) {
   }
   return keyOnly ? '' : undefined;
 }
+
+function dispatchEvent(element, name) {
+  var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+      _ref$bubbles = _ref.bubbles,
+      bubbles = _ref$bubbles === undefined ? true : _ref$bubbles,
+      _ref$cancelable = _ref.cancelable,
+      cancelable = _ref$cancelable === undefined ? true : _ref$cancelable;
+
+  var event = void 0;
+  /* istanbul ignore else  */
+  if (isFunction$2(Event)) {
+    event = new Event(name, {
+      bubbles: bubbles,
+      cancelable: cancelable
+    });
+  } else if (document.createEvent) {
+    event = document.createEvent('HTMLEvents');
+    event.initEvent(name, true, true);
+  } else if (document.createEventObject) {
+    // $FlowFixMe: IE < 9
+    event = document.createEventObject();
+    event.eventType = name;
+    event.eventName = name;
+  }
+  /* istanbul ignore next  */
+  if (!isObject$3(event) && !isEvent$2(event)) throw new Error("We can't create an object on this browser, please report to author");
+  /* istanbul ignore else  */
+  if (element.dispatchEvent) {
+    element.dispatchEvent(event);
+    // $FlowFixMe: IE < 9
+  } else if (element.fireEvent) {
+    // $FlowFixMe: IE < 9
+    element.fireEvent('on' + event.eventType, event); // can trigger only real event (e.g. 'click')
+    // $FlowFixMe: support computed key
+  } else if (element[name]) {
+    // $FlowFixMe: support computed key
+    element[name]();
+    // $FlowFixMe: support computed key
+  } else if (element['on' + name]) {
+    // $FlowFixMe: support computed key
+    element['on' + name]();
+  }
+}
+
+var _dec$7;
+var _dec2$5;
+var _dec3$4;
+var _dec4$4;
+var _dec5$3;
+var _class$7;
+var _class2$2;
+
+function _applyDecoratedDescriptor$6(target, property, decorators, descriptor, context) {
+  var desc = {};
+  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+    desc[key] = descriptor[key];
+  });
+  desc.enumerable = !!desc.enumerable;
+  desc.configurable = !!desc.configurable;
+
+  if ('value' in desc || desc.initializer) {
+    desc.writable = true;
+  }
+
+  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+    return decorator(target, property, desc) || desc;
+  }, desc);
+
+  if (context && desc.initializer !== void 0) {
+    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+    desc.initializer = undefined;
+  }
+
+  if (desc.initializer === void 0) {
+    Object['define' + 'Property'](target, property, desc);
+    desc = null;
+  }
+
+  return desc;
+}
+
 var fullscreenEnabled = native('fullscreenEnabled');
 
-var FullScreen = function () {
-  function FullScreen() {
-    _classCallCheck$1(this, FullScreen);
+var ESFullScreen = (_dec$7 = autobindClass(), _dec2$5 = alias('requestFullscreen'), _dec3$4 = alias('exitFullscreen'), _dec4$4 = alias('addEventListener'), _dec5$3 = alias('removeEventListener'), _dec$7(_class$7 = (_class2$2 = function () {
+  function ESFullScreen() {
+    _classCallCheck(this, ESFullScreen);
 
     this._fullscreenElement = null;
     this.isNativelySupport = defined$2(native('fullscreenElement')) && (!defined$2(fullscreenEnabled) || fullscreenEnabled === true);
@@ -8929,98 +8983,104 @@ var FullScreen = function () {
     this._exitKey = native('exitFullscreen', { keyOnly: true });
   }
 
-  _createClass$1(FullScreen, [{
+  _createClass(ESFullScreen, [{
     key: 'open',
     value: function open(element) {
-      var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-          _ref2$force = _ref2.force,
-          force = _ref2$force === undefined ? false : _ref2$force;
+      var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+          _ref$force = _ref.force,
+          force = _ref$force === undefined ? false : _ref$force;
 
-      if (!isElement$2(element)) throw new Error('You should passed in a legal element to requestFullScreen, but not ' + (typeof element === 'undefined' ? 'undefined' : _typeof$2(element)) + '.');
-      if (!isPosterityNode$2(document, element)) throw new Error('You must pass in a HTML element in document.');
-
+      /* istanbul ignore else  */
+      {
+        if (!isElement$2(element)) throw new Error('You should passed in a legal element to requestFullScreen, but not ' + (typeof element === 'undefined' ? 'undefined' : _typeof(element)) + '.');
+        if (!isPosterityNode$2(document, element)) throw new Error('You must pass in a HTML element in document.');
+      }
       var originElement = this.fullscreenElement;
       if (originElement && originElement !== element) {
-        if (!force) return false;
+        if (!force) {
+          dispatchEvent(document, 'fullscreenerror');
+          return false;
+        }
         this.exit();
       }
+
       if (this.isNativelySupport) {
         // $FlowFixMe: support computed key on HTMLElment here
         element[this._openKey]();
         return true;
       }
-      this._savedStyles = _Object$keys$2(DESKTOP_FULLSCREEN_STYLE).reduce(function (styles, key) {
+      this._savedStyles = _Object$keys(DESKTOP_FULLSCREEN_STYLE).reduce(function (styles, key) {
         // $FlowFixMe: support string here
         styles[key] = element.style[key];
         return styles;
       }, {});
       setStyle$1(element, DESKTOP_FULLSCREEN_STYLE);
+
+      /* istanbul ignore else  */
       if (document.body) {
         this._bodyOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
       }
+      /* istanbul ignore else  */
       if (document.documentElement) {
         this._htmlOverflow = document.documentElement.style.overflow;
         document.documentElement.style.overflow = 'hidden';
       }
+
       this._fullscreenElement = element;
-      this._dispatchEvent(element);
+      dispatchEvent(element, 'fullscreenchange');
       return true;
     }
   }, {
     key: 'exit',
     value: function exit() {
-      if (!this.isFullScreen) return false;
+      if (!this.isFullscreen) return false;
       if (this.isNativelySupport) {
         // $FlowFixMe: support document computed key here
         document[this._exitKey]();
         return true;
       }
+      // $FlowFixMe: element is an Elment here
       var element = this._fullscreenElement;
-      if (!isElement$2(element)) return false;
       setStyle$1(element, this._savedStyles);
+      /* istanbul ignore else  */
       if (document.body) document.body.style.overflow = this._bodyOverflow;
+      /* istanbul ignore else  */
       if (document.documentElement) document.documentElement.style.overflow = this._htmlOverflow;
+
       this._fullscreenElement = null;
       this._savedStyles = {};
-      this._dispatchEvent(element);
+      dispatchEvent(element, 'fullscreenchange');
       return true;
     }
   }, {
-    key: '_dispatchEvent',
-    value: function _dispatchEvent(element) {
-      var event = void 0;
-      var eventName = 'fullscreenchange';
-      if (isFunction$2(Event)) {
-        event = new Event('fullscreenchange', {
-          bubbles: true,
-          cancelable: true
-        });
-      } else if (document.createEvent) {
-        event = document.createEvent('HTMLEvents');
-        event.initEvent(eventName, true, true);
-      } else if (document.createEventObject) {
-        // $FlowFixMe: IE < 9
-        event = document.createEventObject();
-        event.eventType = eventName;
-        event.eventName = eventName;
+    key: 'on',
+    value: function on(name, fn) {
+      var element = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : document;
+
+      this._handleEvent(element, 'addEventListener', name, fn);
+    }
+  }, {
+    key: 'off',
+    value: function off(name, fn) {
+      var element = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : document;
+
+      this._handleEvent(element, 'removeEventListener', name, fn);
+    }
+  }, {
+    key: '_handleEvent',
+    value: function _handleEvent(element, behavior, name, fn) {
+      /* istanbul ignore else  */
+      {
+        if (name !== 'fullscreenchange' && name !== 'fullscreenerror') throw new Error(this.constructor.name + ' only handle "fullscreenchange" and "fullscreenerror" event, but not ' + name + '. Pleas pass in an right event name.');
+        if (!isFunction$2(fn)) throw new Error('You must pass in an legal function, but not ' + (typeof fn === 'undefined' ? 'undefined' : _typeof(fn)) + '.');
+        if (!isElement$2(element) && element !== document) throw new Error('You should passed in a legal element, but not ' + (typeof element === 'undefined' ? 'undefined' : _typeof(element)) + '.');
       }
-      if (!isObject$3(event)) throw new Error("We can't create an object on this browser, please report to author");
-      if (element.dispatchEvent) {
-        element.dispatchEvent(event);
-        // $FlowFixMe: IE < 9
-      } else if (element.fireEvent) {
-        // $FlowFixMe: IE < 9
-        element.fireEvent('on' + event.eventType, event); // can trigger only real event (e.g. 'click')
-        // $FlowFixMe: support computed key
-      } else if (element[eventName]) {
-        // $FlowFixMe: support computed key
-        element[eventName]();
-        // $FlowFixMe: support computed key
-      } else if (element['on' + eventName]) {
-        // $FlowFixMe: support computed key
-        element['on' + eventName]();
-      }
+      var names = name === 'fullscreenchange' ? FULLSCREEN_CHANGE : FULLSCREEN_ERROR;
+      names.forEach(function (name) {
+        // $FlowFixMe: support computed attribute here
+        element[behavior](name, fn);
+      });
     }
   }, {
     key: 'fullscreenElement',
@@ -9032,16 +9092,17 @@ var FullScreen = function () {
       return element || this._fullscreenElement;
     }
   }, {
-    key: 'isFullScreen',
+    key: 'isFullscreen',
     get: function get() {
       return isElement$2(this.fullscreenElement);
     }
   }]);
 
-  return FullScreen;
-}();
+  return ESFullScreen;
+}(), (_applyDecoratedDescriptor$6(_class2$2.prototype, 'open', [_dec2$5], _Object$getOwnPropertyDescriptor(_class2$2.prototype, 'open'), _class2$2.prototype), _applyDecoratedDescriptor$6(_class2$2.prototype, 'exit', [_dec3$4], _Object$getOwnPropertyDescriptor(_class2$2.prototype, 'exit'), _class2$2.prototype), _applyDecoratedDescriptor$6(_class2$2.prototype, 'on', [_dec4$4], _Object$getOwnPropertyDescriptor(_class2$2.prototype, 'on'), _class2$2.prototype), _applyDecoratedDescriptor$6(_class2$2.prototype, 'off', [_dec5$3], _Object$getOwnPropertyDescriptor(_class2$2.prototype, 'off'), _class2$2.prototype)), _class2$2)) || _class$7);
 
-var index = new FullScreen();
+
+var index = new ESFullScreen();
 
 var _dec$6;
 var _dec2$4;
@@ -9103,25 +9164,19 @@ function attrOperationCheck(target, attr, val) {
  */
 var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before(attrOperationCheck, targetCheck), _dec3$3 = before(attrOperationCheck, targetCheck), _dec4$3 = before(attrOperationCheck, targetCheck), _dec5$2 = before(attrOperationCheck, targetCheck), _dec6$1 = before(targetCheck), (_class$6 = function () {
   /**
-   * collection of video extension nodes
-   * some nodes can be regarded as part of video (such as penetrate element)
-   * so we store them here
+   * to mark is the mouse in the video area
    */
 
   /**
-   * Object to store different plugin's dom event handlers
+   * Array to store all video dom event handler
    */
 
   /**
-   * Array to store all container dom event handler
+   * Array to store all video dom event handler
    */
 
   /**
-   * Array to store all video event handler
-   */
-
-  /**
-   * all plugin's dom element set
+   * the html to restore when we are destroyed
    */
   function Dom(wrapper, dispatcher) {
     var _this = this;
@@ -9137,12 +9192,8 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
     this.__domEventHandlerList = {};
     this.__mouseInVideo = false;
     this.__videoExtendedNodes = [];
-    this.__fullScreenInfo = {
-      documentOverflow: '',
-      htmlOverflow: ''
-    };
-    this.isFullScreen = false;
-    this.fullScreenElement = undefined;
+    this.isFullscreen = false;
+    this.fullscreenElement = undefined;
 
     this.__dispatcher = dispatcher;
     if (!isElement$1(wrapper) && !isString$1(wrapper)) throw new TypeError('Wrapper can only be string or HTMLElement, but not ' + (typeof wrapper === 'undefined' ? 'undefined' : _typeof(wrapper)));
@@ -9176,7 +9227,7 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
           args[_key2] = arguments[_key2];
         }
 
-        return (_dispatcher$bus = _this.__dispatcher.bus).triggerSync.apply(_dispatcher$bus, ['c_' + key].concat(args));
+        return (_dispatcher$bus = _this.__dispatcher.bus).triggerSync.apply(_dispatcher$bus, ['c_' + key].concat(_toConsumableArray(args)));
       };
       _this.containerDomEventHandlerList.push(cfn);
       addEvent(_this.container, key, cfn);
@@ -9187,32 +9238,34 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
           args[_key3] = arguments[_key3];
         }
 
-        return (_dispatcher$bus2 = _this.__dispatcher.bus).triggerSync.apply(_dispatcher$bus2, ['w_' + key].concat(args));
+        return (_dispatcher$bus2 = _this.__dispatcher.bus).triggerSync.apply(_dispatcher$bus2, ['w_' + key].concat(_toConsumableArray(args)));
       };
       _this.wrapperDomEventHandlerList.push(wfn);
       addEvent(_this.wrapper, key, wfn);
     });
-    this._bindFullScreen();
+    this._fullscreenMonitor();
+    index.on('fullscreenchange', this._fullscreenMonitor);
   }
   /**
-   * when browser do not support native fullscreen method
-   * we have to polyfill by CSS, we need to stroe something here
+   * collection of video extension nodes
+   * some nodes can be regarded as part of video (such as penetrate element)
+   * so we store them here
    */
 
   /**
-   * to mark is the mouse in the video area
+   * Object to store different plugin's dom event handlers
    */
 
   /**
-   * Array to store all video dom event handler
+   * Array to store all container dom event handler
    */
 
   /**
-   * Array to store all video dom event handler
+   * Array to store all video event handler
    */
 
   /**
-   * the html to restore when we are destroyed
+   * all plugin's dom element set
    */
 
 
@@ -9252,7 +9305,7 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
             args[_key4] = arguments[_key4];
           }
 
-          return (_dispatcher$bus3 = _this2.__dispatcher.bus).trigger.apply(_dispatcher$bus3, [key].concat(args));
+          return (_dispatcher$bus3 = _this2.__dispatcher.bus).trigger.apply(_dispatcher$bus3, [key].concat(_toConsumableArray(args)));
         };
         _this2.videoEventHandlerList.push(fn);
         addEvent(videoElement, key, fn);
@@ -9420,19 +9473,19 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
       return getStyle(this[target], attr);
     }
   }, {
-    key: 'requestFullScreen',
-    value: function requestFullScreen(target) {
+    key: 'requestFullscreen',
+    value: function requestFullscreen(target) {
       // $FlowFixMe: flow do not support computed property/element on document, which is silly here.
       return index.open(this[target]);
     }
   }, {
-    key: 'exitFullScreen',
-    value: function exitFullScreen() {
+    key: 'exitFullscreen',
+    value: function exitFullscreen() {
       return index.exit();
     }
   }, {
-    key: 'fullScreen',
-    value: function fullScreen() {
+    key: 'fullscreen',
+    value: function fullscreen() {
       var request = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
       var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'container';
 
@@ -9440,7 +9493,7 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
         args[_key5 - 2] = arguments[_key5];
       }
 
-      return request ? this.requestFullScreen.apply(this, [target].concat(_toConsumableArray(args))) : this.exitFullScreen.apply(this, _toConsumableArray(args));
+      return request ? this.requestFullscreen.apply(this, [target].concat(_toConsumableArray(args))) : this.exitFullscreen.apply(this, _toConsumableArray(args));
     }
   }, {
     key: 'focus',
@@ -9461,7 +9514,7 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
         removeEvent(_this7.container, key, _this7.containerDomEventHandlerList[index$$1]);
         removeEvent(_this7.wrapper, key, _this7.wrapperDomEventHandlerList[index$$1]);
       });
-      this._bindFullScreen(true);
+      index.off('fullscreenchange', this._fullscreenMonitor);
       this.wrapper.innerHTML = this.originHTML;
       delete this.wrapper;
       delete this.plugins;
@@ -9483,34 +9536,20 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
       window.scrollTo(x, y);
     }
   }, {
-    key: '_fullScreenMonitor',
-    value: function _fullScreenMonitor(evt) {
-      var element = ['fullscreenElement', 'webkitFullscreenElement', 'mozFullScreenElement', 'msFullscreenElement'].reduce(function (element, key) {
-        // $FlowFixMe: support computed element on document
-        return element || document[key];
-      }, null);
-      var original = this.isFullScreen;
+    key: '_fullscreenMonitor',
+    value: function _fullscreenMonitor(evt) {
+      var element = index.fullscreenElement;
+      var original = this.isFullscreen;
       if (!element || !isPosterityNode$1(this.wrapper, element) && element !== this.wrapper) {
-        this.isFullScreen = false;
-        this.fullScreenElement = undefined;
+        this.isFullscreen = false;
+        this.fullscreenElement = undefined;
       } else {
-        this.isFullScreen = true;
-        this.fullScreenElement = this.wrapper === element ? 'wrapper' : this.container === element ? 'container' : this.videoElement === element ? 'video' : element;
+        this.isFullscreen = true;
+        this.fullscreenElement = this.wrapper === element ? 'wrapper' : this.container === element ? 'container' : this.videoElement === element ? 'video' : element;
       }
-      if (isEvent$1(evt) && original !== this.isFullScreen) {
+      if (isEvent$1(evt) && original !== this.isFullscreen) {
         this.__dispatcher.bus.triggerSync('fullscreenchange', evt);
       }
-    }
-  }, {
-    key: '_bindFullScreen',
-    value: function _bindFullScreen(remove) {
-      var _this8 = this;
-
-      if (!remove) this._fullScreenMonitor();
-      ['webkitfullscreenchange', 'mozfullscreenchange', 'msfullscreenchange', 'fullscreenchange'].forEach(function (key) {
-        // $FlowFixMe: support computed element on document
-        document[(remove ? 'remove' : 'add') + 'EventListener'](key, _this8._fullScreenMonitor);
-      });
     }
     /**
      * get the event handler for dom to bind
@@ -9519,7 +9558,7 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
   }, {
     key: '_getEventHandler',
     value: function _getEventHandler(key, _ref) {
-      var _this9 = this;
+      var _this8 = this;
 
       var penetrate = _ref.penetrate;
 
@@ -9531,11 +9570,11 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
             args[_key6] = arguments[_key6];
           }
 
-          (_dispatcher$bus4 = _this9.__dispatcher.bus).triggerSync.apply(_dispatcher$bus4, [key].concat(args));
+          (_dispatcher$bus4 = _this8.__dispatcher.bus).triggerSync.apply(_dispatcher$bus4, [key].concat(args));
         };
       }
       var insideVideo = function insideVideo(node) {
-        return _this9.__videoExtendedNodes.indexOf(node) > -1 || _this9.__videoExtendedNodes.reduce(function (flag, video) {
+        return _this8.__videoExtendedNodes.indexOf(node) > -1 || _this8.__videoExtendedNodes.reduce(function (flag, video) {
           if (flag) return flag;
           return isPosterityNode$1(video, node);
         }, false);
@@ -9552,24 +9591,24 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
             type = _args$.type;
 
         var to = toElement || relatedTarget;
-        if (_this9.__mouseInVideo && type === 'mouseleave' && !insideVideo(to)) {
+        if (_this8.__mouseInVideo && type === 'mouseleave' && !insideVideo(to)) {
           var _dispatcher$bus5;
 
-          _this9.__mouseInVideo = false;
-          return (_dispatcher$bus5 = _this9.__dispatcher.bus).triggerSync.apply(_dispatcher$bus5, ['mouseleave'].concat(args));
+          _this8.__mouseInVideo = false;
+          return (_dispatcher$bus5 = _this8.__dispatcher.bus).triggerSync.apply(_dispatcher$bus5, ['mouseleave'].concat(args));
         }
-        if (!_this9.__mouseInVideo && type === 'mouseenter' && insideVideo(currentTarget)) {
+        if (!_this8.__mouseInVideo && type === 'mouseenter' && insideVideo(currentTarget)) {
           var _dispatcher$bus6;
 
-          _this9.__mouseInVideo = true;
-          return (_dispatcher$bus6 = _this9.__dispatcher.bus).triggerSync.apply(_dispatcher$bus6, ['mouseenter'].concat(args));
+          _this8.__mouseInVideo = true;
+          return (_dispatcher$bus6 = _this8.__dispatcher.bus).triggerSync.apply(_dispatcher$bus6, ['mouseenter'].concat(args));
         }
       };
     }
   }]);
 
   return Dom;
-}(), (_applyDecoratedDescriptor$5(_class$6.prototype, 'setAttr', [_dec$6, _dec2$4], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'setAttr'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'getAttr', [_dec3$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'getAttr'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'setStyle', [_dec4$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'setStyle'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'getStyle', [_dec5$2], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'getStyle'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'requestFullScreen', [_dec6$1], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'requestFullScreen'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, '_focusToVideo', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, '_focusToVideo'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, '_fullScreenMonitor', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, '_fullScreenMonitor'), _class$6.prototype)), _class$6));
+}(), (_applyDecoratedDescriptor$5(_class$6.prototype, 'setAttr', [_dec$6, _dec2$4], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'setAttr'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'getAttr', [_dec3$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'getAttr'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'setStyle', [_dec4$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'setStyle'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'getStyle', [_dec5$2], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'getStyle'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'requestFullscreen', [_dec6$1], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'requestFullscreen'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, '_focusToVideo', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, '_focusToVideo'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, '_fullscreenMonitor', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, '_fullscreenMonitor'), _class$6.prototype)), _class$6));
 
 var _dec$1;
 var _dec2;
@@ -10145,7 +10184,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
   return Dispatcher;
 }(), (_applyDecoratedDescriptor$1(_class$1.prototype, 'unuse', [_dec$1], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'unuse'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1, 'install', [_dec2], _Object$getOwnPropertyDescriptor(_class$1, 'install'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'hasInstalled', [_dec3], _Object$getOwnPropertyDescriptor(_class$1, 'hasInstalled'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'uninstall', [_dec4], _Object$getOwnPropertyDescriptor(_class$1, 'uninstall'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'getPluginConfig', [_dec5], _Object$getOwnPropertyDescriptor(_class$1, 'getPluginConfig'), _class$1)), _class$1));
 
-var _class$7;
+var _class$8;
 var _descriptor$2;
 
 function _initDefineProp$2(target, property, descriptor, context) {
@@ -10159,7 +10198,7 @@ function _initDefineProp$2(target, property, descriptor, context) {
   });
 }
 
-function _applyDecoratedDescriptor$6(target, property, decorators, descriptor, context) {
+function _applyDecoratedDescriptor$7(target, property, decorators, descriptor, context) {
   var desc = {};
   Object['ke' + 'ys'](descriptor).forEach(function (key) {
     desc[key] = descriptor[key];
@@ -10188,7 +10227,7 @@ function _applyDecoratedDescriptor$6(target, property, decorators, descriptor, c
   return desc;
 }
 
-var GlobalConfig = (_class$7 = function () {
+var GlobalConfig = (_class$8 = function () {
   _createClass(GlobalConfig, [{
     key: 'silent',
     get: function get() {
@@ -10239,12 +10278,12 @@ var GlobalConfig = (_class$7 = function () {
   }
 
   return GlobalConfig;
-}(), (_descriptor$2 = _applyDecoratedDescriptor$6(_class$7.prototype, '_silent', [nonenumerable], {
+}(), (_descriptor$2 = _applyDecoratedDescriptor$7(_class$8.prototype, '_silent', [nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-})), _class$7);
+})), _class$8);
 
 var _dec;
 var _class;
@@ -10373,7 +10412,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.2.8';
+    return '0.3.0';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,
