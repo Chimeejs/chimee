@@ -659,6 +659,19 @@ describe('isFullscreen and fullscreenElement', () => {
     document.body.removeChild(wrapper);
   });
 
+  test('fullscreen event and fullscreenchange event', () => {
+    const fn = jest.fn();
+    const changeFn = jest.fn();
+    player.on('fullscreen', fn);
+    player.on('fullscreenchange', changeFn);
+    player.fullscreen();
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(changeFn).toHaveBeenCalledTimes(1);
+    player.fullscreen(false);
+    expect(fn).toHaveBeenCalledTimes(2);
+    expect(changeFn).toHaveBeenCalledTimes(2);
+  });
+
   describe('$video, $container and $wrapper', () => {
     const wrapper = document.createElement('div');
     player = new Chimee(wrapper);

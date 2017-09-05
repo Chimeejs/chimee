@@ -73,10 +73,6 @@ export const domEvents = [
   'select',
   'wheel',
   'fullscreenchange',
-  'webkitfullscreenchange',
-  'mozfullscreenchange',
-  'msfullscreenchange',
-  'MSFullscreenChange',
   'contextmenu'
 ];
 export const selfProcessorEvents = [
