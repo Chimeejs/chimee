@@ -73,7 +73,7 @@ export default @autobindClass() class VideoWrapper {
       });
     });
     domMethods.forEach(key => {
-      if(key === 'fullScreen') return;
+      if(key === 'fullscreen') return;
       Object.defineProperty(this, key, {
         value (...args: any) {
           return this.__dispatcher.dom[key](...args);
@@ -124,7 +124,7 @@ export default @autobindClass() class VideoWrapper {
       videoConfig._realDomAttr.indexOf(property) > -1
     )
       ? videoConfig
-      : ['isFullScreen', 'fullScreenElement'].indexOf(property) > -1
+      : ['isFullscreen', 'fullscreenElement'].indexOf(property) > -1
         ? this.__dispatcher.dom
         : getDeepProperty(other || this, keys, {throwError: true});
     applyDecorators(target, {
@@ -183,12 +183,12 @@ export default @autobindClass() class VideoWrapper {
    * @param {string} element the element you want to fullscreen, default it's container, you can choose from video | container | wrapper
    */
   @alias('fullScreen')
-  @alias('$fullscreen')
+  @alias('$fullScreen')
   @alias('fullscreen')
-  $fullScreen (flag: boolean = true, element: string = 'container'): boolean {
-    if(!this.__dispatcher.bus.emitSync('fullScreen', flag, element)) return false;
-    const result = this.__dispatcher.dom.fullScreen(flag, element);
-    this.__dispatcher.bus.triggerSync('fullScreen', flag, element);
+  $fullscreen (flag: boolean = true, element: string = 'container'): boolean {
+    if(!this.__dispatcher.bus.emitSync('fullscreen', flag, element)) return false;
+    const result = this.__dispatcher.dom.fullscreen(flag, element);
+    this.__dispatcher.bus.triggerSync('fullscreen', flag, element);
     return result;
   }
 
@@ -320,12 +320,12 @@ export default @autobindClass() class VideoWrapper {
     return this.__dispatcher.dom.videoElement;
   }
 
-  get isFullScreen (): boolean | string {
-    return this.__dispatcher.dom.isFullScreen;
+  get isFullscreen (): boolean | string {
+    return this.__dispatcher.dom.isFullscreen;
   }
 
-  get fullScreenElement (): HTMLElement | string | void {
-    return this.__dispatcher.dom.fullScreenElement;
+  get fullscreenElement (): HTMLElement | string | void {
+    return this.__dispatcher.dom.fullscreenElement;
   }
 
   __addEvents (key: string, fn: Function) {

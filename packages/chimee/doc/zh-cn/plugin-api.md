@@ -467,7 +467,7 @@ load 方法会将地址设置到 video 元素上。之后才能进行相应的�
 
 > 关于全屏对象的设置可到插件介绍部分了解更多
 
-#### requestFullScreen
+#### requestFullscreen
 
 - 类型：`Function`
 - 参数：
@@ -478,7 +478,7 @@ load 方法会将地址设置到 video 元素上。之后才能进行相应的�
 
 进入全屏
 
-#### exitFullScreen
+#### exitFullscreen
 
 - 类型：`Function`
 - 参数：
@@ -736,7 +736,7 @@ const player = new Chimee({
 - 含义：是否内连播放，会添加相应的兼容属性，详细见上方 video 属性
 - 默认：`false`
 
-### x5VideoPlayerFullScreen
+### x5VideoPlayerFullscreen
 
 - 类型：`boolean`
 - 含义：`x5-video-player-fullscreen`
@@ -932,9 +932,9 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 ## 全屏相关方法
 
-### * $fullScreen
+### * $fullscreen
 
-- 别名：`fullScreen`
+- 别名：`fullscreen`
 - 类型：`Function`
 - 参数：
   - flag
@@ -950,7 +950,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 > 关于全屏对象的设置可到[Chimee 插件 API 介绍中的插件位置部分](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E6%8F%92%E4%BB%B6%E4%BD%8D%E7%BD%AE)了解更多
 
-### requestFullScreen
+### requestFullscreen
 
 - 类型：`Function`
 - 参数：
@@ -961,7 +961,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 进入全屏
 
-### exitFullScreen
+### exitFullscreen
 
 - 类型：`Function`
 - 参数：
@@ -974,7 +974,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 ## 全屏相关属性
 
-### isFullScreen
+### isFullscreen
 
 - 类型：`boolean`
 - 含义：是否全屏
@@ -982,7 +982,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 若实例中的任意一个子节点全屏，则返回 `true`。 
 
-### fullScreenElement
+### fullscreenElement
 
 - 类型：`HTMLElement | string | void`
 - 含义：现在全屏的对象
@@ -1218,7 +1218,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 | poster                  | 封面                             | string           | ''        |                                          |
 | playsInline             | 是否内联                           | boolean          | false     | 我们会为此添加 `playsinle="true" webkit-playsinline="true" x5-video-player-type="h5"` |
 | xWebkitAirplay          | 是否添加 `x-webkit-airplay`        | boolean          | false     |                                          |
-| x5VideoPlayerFullScreen | 是否添加`x5-video-play-fullscreen` | boolean          | false     |                                          |
+| x5VideoPlayerFullscreen | 是否添加`x5-video-play-fullscreen` | boolean          | false     |                                          |
 | x5VideoOrientation      | ` x5-video-orientation`        | string \| void   | undefined | 可选 landscape 和 portrait                  |
 | playbackRate            | 回放速率                           | number           | 1         | 大于1加速，小于1减速                              |
 | defaultPlaybackRate     | 默认回放速率                         | number           | 1         | 大于1加速，小于1减速                              |

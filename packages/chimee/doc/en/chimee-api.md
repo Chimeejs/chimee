@@ -124,7 +124,7 @@ chimee.load();
 | poster                  | 封面                             | string         | ''        |                                          |
 | playsinline             | 是否内联                           | boolean        | false     | 我们会为此添加 `playsinle="true" webkit-playsinline="true" x5-video-player-type="h5"` |
 | xWebkitAirplay          | 是否添加 `x-webkit-airplay`        | boolean        | false     |                                          |
-| x5VideoPlayerFullScreen | 是否添加`x5-video-play-fullscreen` | boolean        | false     |                                          |
+| x5VideoPlayerFullscreen | 是否添加`x5-video-play-fullscreen` | boolean        | false     |                                          |
 | x5VideoOrientation      | ` x5-video-orientation`        | string \| void | undefined | 可选 landscape 和 portrait                  |
 | playbackRate            | 回放速率                           | number         | 1         | 大于1加速，小于1减速                              |
 | defaultPlaybackRate     | 默认回放速率                         | number         | 1         | 大于1加速，小于1减速                              |
@@ -237,7 +237,7 @@ chimee.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
 
 > 关于全屏对象的设置可到[Chimee 插件 API 介绍中的 fullscreen 部分](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)了解更多
 
-### requestFullScreen
+### requestFullscreen
 
 - type: `Function`
 - arguments: 
@@ -248,7 +248,7 @@ chimee.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
 
 进入全屏
 
-### exitFullScreen
+### exitFullscreen
 
 - type: `Function`
 - arguments: 
@@ -413,7 +413,7 @@ chimee.load();
 - mean: 是否内连播放，会添加相应的兼容属性，详细见上方 video 属性
 - default: `false`
 
-### x5VideoPlayerFullScreen
+### x5VideoPlayerFullscreen
 
 - type: `boolean`
 - mean: `x5-video-player-fullscreen`

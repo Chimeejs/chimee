@@ -81,7 +81,7 @@ export const domEvents = [
 ];
 export const selfProcessorEvents = [
   'silentLoad',
-  'fullScreen'
+  'fullscreen'
 ];
 export const kernelMethods = [
   'play',
@@ -96,9 +96,9 @@ export const kernelEvents = [
 ];
 export const domMethods = [
   'focus',
-  'fullScreen',
-  'requestFullScreen',
-  'exitFullScreen'
+  'fullscreen',
+  'requestFullscreen',
+  'exitFullscreen'
 ];
 export const videoMethods = [
   'canPlayType',

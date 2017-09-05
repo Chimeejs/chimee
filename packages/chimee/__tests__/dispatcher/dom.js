@@ -194,12 +194,12 @@ describe('_getEventHanlder', () => {
     const node = document.createElement('div');
     document.body.appendChild(node);
     const dom = new Dom(node, {videoConfigReady: true});
-    dom.container.mozRequestFullScreen = () => {};
-    dom.fullScreen(true);
-    document.mozCancelFullScreen = () => {};
-    dom.fullScreen(false, 'container');
-    dom.fullScreen();
-    delete document.mozCancelFullScreen;
+    dom.container.mozRequestFullscreen = () => {};
+    dom.fullscreen(true);
+    document.mozCancelFullscreen = () => {};
+    dom.fullscreen(false, 'container');
+    dom.fullscreen();
+    delete document.mozCancelFullscreen;
     dom.destroy();
     node.parentNode.removeChild(node);
   });

@@ -18,7 +18,13 @@ declare module 'es-fullscreen' {
     fullscreenElement: Element | null;
     isFullScreen: boolean;
     open (element: Element, option?: {force: boolean}): boolean;
+    requestFullscreen (element: Element, option?: {force: boolean}): boolean;
     exit (): boolean;
+    exitFullscreen (): boolean;
+    on (name: string, fn: Function, element?: Element | Document): void;
+    addEventListener (name: string, fn: Function, element?: Element | Document): void;
+    off (name: string, fn: Function, element?: Element | Document): void;
+    removeEventListener (name: string, fn: Function, element?: Element | Document): void;
     _dispatchEvent (element: Element): void;
   }
 }

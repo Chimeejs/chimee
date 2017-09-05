@@ -1,6 +1,7 @@
 import Chimee from 'index';
 import {Log, getAttr, setAttr} from 'chimee-helper';
 import {videoReadOnlyProperties} from 'helper/const';
+import esFullscreen from 'es-fullscreen';
 
 describe('Chimee', () => {
   const normalInstall = {
@@ -408,15 +409,15 @@ describe('Chimee', () => {
       videoElement.playsInline = undefined;
       expect(player.playsInline).toBe(false);
     });
-    test('x5VideoPlayerFullScreen', () => {
-      expect(player.x5VideoPlayerFullScreen).toBe(false);
+    test('x5VideoPlayerFullscreen', () => {
+      expect(player.x5VideoPlayerFullscreen).toBe(false);
       expect(getAttr(videoElement, 'x5-video-player-fullscreen')).toBe(null);
-      player.x5VideoPlayerFullScreen = true;
-      expect(player.x5VideoPlayerFullScreen).toBe(true);
+      player.x5VideoPlayerFullscreen = true;
+      expect(player.x5VideoPlayerFullscreen).toBe(true);
       expect(getAttr(videoElement, 'x5-video-player-fullscreen')).toBe('true');
       player.__dispatcher.videoConfigReady = false;
-      player.x5VideoPlayerFullScreen = false;
-      expect(player.x5VideoPlayerFullScreen).toBe(false);
+      player.x5VideoPlayerFullscreen = false;
+      expect(player.x5VideoPlayerFullscreen).toBe(false);
       expect(getAttr(videoElement, 'x5-video-player-fullscreen')).toBe('true');
     });
     test('xWebkitAirplay', () => {
@@ -586,9 +587,9 @@ describe('Chimee', () => {
   });
   test('stop fullscreen', () => {
     const plugin = {
-      name: 'stopFullScreen',
+      name: 'stopFullscreen',
       events: {
-        beforeFullScreen () {
+        beforeFullscreen () {
           return false;
         }
       }
@@ -596,13 +597,13 @@ describe('Chimee', () => {
     Chimee.install(plugin);
     const player = new Chimee({
       wrapper: document.createElement('div'),
-      plugin: ['stopFullScreen']
+      plugin: ['stopFullscreen']
     });
-    expect(player.fullScreen()).toBe(false);
+    expect(player.fullscreen()).toBe(false);
   });
 });
 
-describe('isFullScreen and fullScreenElement', () => {
+describe('isFullscreen and fullscreenElement', () => {
   let player;
   let wrapper;
   beforeEach(() => {
@@ -611,22 +612,22 @@ describe('isFullScreen and fullScreenElement', () => {
     player = new Chimee(wrapper);
   });
   afterEach(() => {
+    esFullscreen.exit();
     wrapper.parentNode.removeChild(wrapper);
   });
   test('default to be false', () => {
-    expect(player.isFullScreen).toBe(false);
-    expect(player.fullScreenElement).toBe();
+    expect(player.isFullscreen).toBe(false);
+    expect(player.fullscreenElement).toBe();
   });
   test('wrapper', () => {
     const target = player.__dispatcher.dom.wrapper;
-    document.fullscreenElement = target;
     const fn1 = jest.fn();
-    player.$watch('isFullScreen', fn1);
+    player.$watch('isFullscreen', fn1);
     const fn2 = jest.fn();
-    player.$watch('fullScreenElement', fn2);
-    document.dispatchEvent(new Event('fullscreenchange'));
-    expect(player.isFullScreen).toBe(true);
-    expect(player.__dispatcher.dom[player.fullScreenElement]).toBe(target);
+    player.$watch('fullscreenElement', fn2);
+    esFullscreen.open(target);
+    expect(player.isFullscreen).toBe(true);
+    expect(player.__dispatcher.dom[player.fullscreenElement]).toBe(target);
     expect(fn1).toHaveBeenCalledTimes(1);
     expect(fn2).toHaveBeenCalledTimes(1);
     expect(fn1).lastCalledWith(true, false);
@@ -634,28 +635,28 @@ describe('isFullScreen and fullScreenElement', () => {
   });
   test('container', () => {
     const target = player.__dispatcher.dom.container;
-    document.fullscreenElement = target;
-    document.dispatchEvent(new Event('fullscreenchange'));
-    expect(player.isFullScreen).toBe(true);
-    expect(player.__dispatcher.dom[player.fullScreenElement]).toBe(target);
+    esFullscreen.open(target);
+    expect(player.isFullscreen).toBe(true);
+    expect(player.__dispatcher.dom[player.fullscreenElement]).toBe(target);
   });
   test('video', () => {
     const target = player.__dispatcher.dom.videoElement;
-    document.fullscreenElement = target;
-    document.dispatchEvent(new Event('fullscreenchange'));
-    expect(player.isFullScreen).toBe(true);
-    expect(player.__dispatcher.dom[player.fullScreenElement + 'Element']).toBe(target);
+    esFullscreen.open(target);
+    expect(player.isFullscreen).toBe(true);
+    expect(player.__dispatcher.dom[player.fullscreenElement + 'Element']).toBe(target);
   });
   test('plugin', () => {
+    const wrapper = document.createElement('div');
     const player = new Chimee({
-      wrapper: document.createElement('div'),
-      plugin: ['stopFullScreen']
+      wrapper,
+      plugin: ['stopFullscreen']
     });
-    const target = player.stopFullScreen.$dom;
-    document.fullscreenElement = target;
-    document.dispatchEvent(new Event('fullscreenchange'));
-    expect(player.isFullScreen).toBe(true);
-    expect(player.fullScreenElement).toBe(target);
+    document.body.appendChild(wrapper);
+    const target = player.stopFullscreen.$dom;
+    esFullscreen.open(target);
+    expect(player.isFullscreen).toBe(true);
+    expect(player.fullscreenElement).toBe(target);
+    document.body.removeChild(wrapper);
   });
 
   describe('$video, $container and $wrapper', () => {
