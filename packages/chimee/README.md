@@ -105,7 +105,7 @@ const chimee = new Chimee({
 chimee.play();
 ```
 
-If you want to know more about chimee, please click [here](https://github.com/Chimeejs/chimee/blob/master/doc/en/chimee-api.md).
+If you want to know more about chimee, please click [here](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md).
 
 What's more, if you use chimes directly, it's better to add this style in your page.
 
@@ -143,7 +143,7 @@ const chimee = new Chimee({
 });
 ```
 
-If you want to know more about Chimee's plugin, please click [here](https://github.com/Chimeejs/chimee/blob/master/doc/en/plugin-api.md).
+If you want to know more about Chimee's plugin, please click [here](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md).
 
 If you don't want to care too much. And just need a useful video player. You can install chimes-player, which contain base ui and logger.
 
@@ -162,11 +162,11 @@ const chimee = new ChimeePlayer({
 
 > coming soon~
 
-1. [What is Chimee?](https://github.com/Chimeejs/chimee/blob/master/doc/en/chimee-api.md)
-2. [What is Chimee's plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/en/plugin-api.md)
-3. [How to write a plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/en/how-to-write-a-plugin.md)
-4. [How to write an advertising plugin](https://github.com/Chimeejs/chimee/blob/master/doc/en/how-to-write-an-ad-plugin.md)?
-5. [How to write a ui plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/en/how-to-write-a-ui-plugin.md)
+1. [What is Chimee?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md)
+2. [What is Chimee's plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)
+3. [How to write a plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-plugin.md)
+4. [How to write an advertising plugin](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-an-ad-plugin.md)?
+5. [How to write a ui plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-ui-plugin.md)
 
 ## Explanation of Different Build
 
