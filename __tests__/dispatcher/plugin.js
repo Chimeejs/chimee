@@ -480,9 +480,9 @@ describe('dispatcher/plugin', () => {
       expect(getAttr(dispatcher.dom.videoElement, 'webkit-playsinline')).toBe('');
       expect(getAttr(dispatcher.dom.videoElement, 'x5-video-player-type')).toBe('h5');
     });
-    test('x5VideoPlayerFullScreen', () => {
-      plugin.x5VideoPlayerFullScreen = true;
-      expect(plugin.x5VideoPlayerFullScreen).toBe(true);
+    test('x5VideoPlayerFullscreen', () => {
+      plugin.x5VideoPlayerFullscreen = true;
+      expect(plugin.x5VideoPlayerFullscreen).toBe(true);
       expect(getAttr(dispatcher.dom.videoElement, 'x5-video-player-fullscreen')).toBe('true');
     });
     test('xWebkitAirplay', () => {
@@ -505,21 +505,21 @@ describe('dispatcher/plugin', () => {
 
   test('$fullscreen', () => {
     const plugin = new Plugin({id: 'normal'}, dispatcher);
-    plugin.$fullScreen();
-    plugin.$fullScreen(true);
-    plugin.$fullScreen(false);
-    plugin.$fullScreen();
-    plugin.$fullScreen(false, 'container');
+    plugin.$fullscreen();
+    plugin.$fullscreen(true);
+    plugin.$fullscreen(false);
+    plugin.$fullscreen();
+    plugin.$fullscreen(false, 'container');
     plugin.$destroy();
   });
 
-  test('fullScreen', () => {
+  test('fullscreen', () => {
     const plugin = new Plugin({id: 'normal'}, dispatcher);
-    plugin.fullScreen();
-    plugin.fullScreen(true);
-    plugin.fullScreen(false);
-    plugin.fullScreen();
-    plugin.fullScreen(false, 'container');
+    plugin.fullscreen();
+    plugin.fullscreen(true);
+    plugin.fullscreen(false);
+    plugin.fullscreen();
+    plugin.fullscreen(false, 'container');
     plugin.$destroy();
   });
 

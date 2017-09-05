@@ -180,7 +180,7 @@ const accessorMap = {
     }),
     alwaysBoolean()
   ],
-  x5VideoPlayerFullScreen: [
+  x5VideoPlayerFullscreen: [
     accessor({set (value) {return !!value;}, get (value) {return !!value;}}),
     accessorCustomAttribute('x5-video-player-fullscreen', true)
   ],
@@ -260,7 +260,7 @@ export default class VideoConfig {
 
   playsInline = false;
 
-  x5VideoPlayerFullScreen = false;
+  x5VideoPlayerFullscreen = false;
 
   x5VideoOrientation = undefined;
 
@@ -278,7 +278,7 @@ export default class VideoConfig {
   _kernelProperty = ['isLive', 'box', 'preset'];
 
   @frozen
-  _realDomAttr = ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullScreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
+  _realDomAttr = ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
 
   lockKernelProperty () {
     applyDecorators(this, {
