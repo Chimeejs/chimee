@@ -102,7 +102,7 @@ chimee.play();
 
 如果你想了解更多，请点击[此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md)。
 
-如果你直接使用 chimee 的话，最好提那家以下样式。
+如果你直接使用 chimee 的话，最好添加以下样式。
 
 ```css
 container {
