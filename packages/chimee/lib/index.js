@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.3.0
+ * chimee v0.3.1
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -19,16 +19,2728 @@ var _get = _interopDefault(require('babel-runtime/helpers/get'));
 var _inherits = _interopDefault(require('babel-runtime/helpers/inherits'));
 var _Promise = _interopDefault(require('babel-runtime/core-js/promise'));
 var _typeof = _interopDefault(require('babel-runtime/helpers/typeof'));
-var chimeeHelper = require('chimee-helper');
+var _Object$keys = _interopDefault(require('babel-runtime/core-js/object/keys'));
+var _Number$isInteger = _interopDefault(require('babel-runtime/core-js/number/is-integer'));
+var _Number$parseFloat = _interopDefault(require('babel-runtime/core-js/number/parse-float'));
+var _toConsumableArray = _interopDefault(require('babel-runtime/helpers/toConsumableArray'));
+var _Array$from = _interopDefault(require('babel-runtime/core-js/array/from'));
+var _Object$assign = _interopDefault(require('babel-runtime/core-js/object/assign'));
+var _Object$create = _interopDefault(require('babel-runtime/core-js/object/create'));
 var Kernel = _interopDefault(require('chimee-kernel'));
 var _Map = _interopDefault(require('babel-runtime/core-js/map'));
-var _toConsumableArray = _interopDefault(require('babel-runtime/helpers/toConsumableArray'));
 var toxicDecorators = require('toxic-decorators');
-var _Object$keys = _interopDefault(require('babel-runtime/core-js/object/keys'));
 var _JSON$stringify = _interopDefault(require('babel-runtime/core-js/json/stringify'));
 var _defineProperty = _interopDefault(require('babel-runtime/helpers/defineProperty'));
 var _Number$isNaN = _interopDefault(require('babel-runtime/core-js/number/is-nan'));
 var esFullscreen = _interopDefault(require('es-fullscreen'));
+
+/**
+ * toxic-predicate-functions v0.1.4
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
+
+/**
+ * is void element or not ? Means it will return true when val is undefined or null
+ */
+function isVoid(obj) {
+  return obj === undefined || obj === null;
+}
+/**
+ * to check whether a variable is array
+ */
+function isArray(arr) {
+  return Array.isArray(arr);
+}
+
+/**
+ * is it a function or not
+ */
+function isFunction(obj) {
+  return typeof obj === 'function';
+}
+
+/**
+ * is it an object or not
+ */
+function isObject(obj) {
+  // incase of arrow function and array
+  return Object(obj) === obj && String(obj) === '[object Object]' && !isFunction(obj) && !isArray(obj);
+}
+/**
+ * to tell you if it's a real number
+ */
+function isNumber(obj) {
+  return typeof obj === 'number';
+}
+/**
+ * to tell you if the val can be transfer into number
+ */
+function isNumeric(obj) {
+  return !isArray(obj) && obj - _Number$parseFloat(obj) + 1 >= 0;
+}
+/**
+ * is it an interget or not
+ */
+function isInteger(num) {
+  return _Number$isInteger(num);
+}
+
+/**
+ * return true when the value is "", {}, [], 0, null, undefined, false.
+ */
+function isEmpty(obj) {
+  if (isArray(obj)) {
+    return obj.length === 0;
+  } else if (isObject(obj)) {
+    return _Object$keys(obj).length === 0;
+  } else {
+    return !obj;
+  }
+}
+/**
+ * is it an event or not
+ */
+function isEvent(obj) {
+  return obj instanceof Event || (obj && obj.originalEvent) instanceof Event;
+}
+/**
+ * is it a string
+ */
+function isString(str) {
+  return typeof str === 'string' || str instanceof String;
+}
+/**
+ * is Boolean or not
+ */
+function isBoolean(bool) {
+  return typeof bool === 'boolean';
+}
+/**
+ * is a promise or not
+ */
+function isPromise(obj) {
+  return !!obj && ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+}
+/**
+ * is Primitive type or not, whick means it will return true when data is number/string/boolean/undefined/null
+ */
+function isPrimitive(val) {
+  return isVoid(val) || isBoolean(val) || isString(val) || isNumber(val);
+}
+/**
+ * to test if a HTML node
+ */
+function isNode(obj) {
+  return !!((typeof Node === 'undefined' ? 'undefined' : _typeof(Node)) === 'object' ? obj instanceof Node : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && typeof obj.nodeType === 'number' && typeof obj.nodeName === 'string');
+}
+/**
+ * to test if a HTML element
+ */
+function isElement(obj) {
+  return !!((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? obj instanceof HTMLElement : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string');
+}
+/**
+ * check if node B is node A's posterrity or not
+ */
+function isPosterityNode(parent, child) {
+  if (!isNode(parent) || !isNode(child)) {
+    return false;
+  }
+  while (child.parentNode) {
+    child = child.parentNode;
+    if (child === parent) {
+      return true;
+    }
+  }
+  return false;
+}
+/**
+ * check if the string is an HTMLString
+ */
+function isHTMLString(str) {
+  return (/<[^>]+?>/.test(str)
+  );
+}
+/**
+ * check if is an error
+ */
+function isError(val) {
+  return val instanceof Error;
+}
+
+/**
+ * chimee-helper-log v0.1.2
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
+
+function formatter(tag, msg) {
+  if (!isString(tag)) throw new TypeError('Log\'s method only acccept string as argument, but not ' + tag + ' in ' + (typeof tag === 'undefined' ? 'undefined' : _typeof(tag)));
+  if (!isString(msg)) return '[' + Log.GLOBAL_TAG + '] > ' + tag;
+  tag = Log.FORCE_GLOBAL_TAG ? Log.GLOBAL_TAG : tag || Log.GLOBAL_TAG;
+  return '[' + tag + '] > ' + msg;
+}
+/**
+ * Log Object
+ */
+
+var Log = function () {
+  function Log() {
+    _classCallCheck(this, Log);
+  }
+
+  _createClass(Log, null, [{
+    key: 'error',
+
+    /**
+     * equal to console.error, output `[${tag}] > {$msg}`
+     * @param {string} tag optional, the header of log 
+     * @param {string} msg the message
+     */
+
+    /**
+     * @member {boolean}
+     */
+
+    /**
+     * @member {boolean}
+     */
+
+    /**
+     * @member {boolean}
+     */
+    value: function error(tag, msg) {
+      if (!Log.ENABLE_ERROR) {
+        return;
+      }
+
+      (console.error || console.warn || console.log)(formatter(tag, msg));
+    }
+    /**
+     * equal to console.info, output `[${tag}] > {$msg}`
+     * @param {string} tag optional, the header of log 
+     * @param {string} msg the message
+     */
+
+    /**
+     * @member {boolean}
+     */
+
+    /**
+     * @member {boolean}
+     */
+
+    /**
+     * @member {boolean}
+     */
+
+    /**
+     * @member {string}
+     */
+
+  }, {
+    key: 'info',
+    value: function info(tag, msg) {
+      if (!Log.ENABLE_INFO) {
+        return;
+      }
+      (console.info || console.log)(formatter(tag, msg));
+    }
+    /**
+     * equal to console.warn, output `[${tag}] > {$msg}`
+     * @param {string} tag optional, the header of log 
+     * @param {string} msg the message
+     */
+
+  }, {
+    key: 'warn',
+    value: function warn(tag, msg) {
+      if (!Log.ENABLE_WARN) {
+        return;
+      }
+      (console.warn || console.log)(formatter(tag, msg));
+    }
+    /**
+     * equal to console.debug, output `[${tag}] > {$msg}`
+     * @param {string} tag optional, the header of log 
+     * @param {string} msg the message
+     */
+
+  }, {
+    key: 'debug',
+    value: function debug(tag, msg) {
+      if (!Log.ENABLE_DEBUG) {
+        return;
+      }
+      (console.debug || console.log)(formatter(tag, msg));
+    }
+    /**
+     * equal to console.verbose, output `[${tag}] > {$msg}`
+     * @param {string} tag optional, the header of log 
+     * @param {string} msg the message
+     */
+
+  }, {
+    key: 'verbose',
+    value: function verbose(tag, msg) {
+      if (!Log.ENABLE_VERBOSE) {
+        return;
+      }
+      console.log(formatter(tag, msg));
+    }
+  }]);
+
+  return Log;
+}();
+
+Log.GLOBAL_TAG = 'chimee';
+Log.FORCE_GLOBAL_TAG = false;
+Log.ENABLE_ERROR = true;
+Log.ENABLE_INFO = true;
+Log.ENABLE_WARN = true;
+Log.ENABLE_DEBUG = true;
+Log.ENABLE_VERBOSE = true;
+
+var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+
+
+
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var uaParser = createCommonjsModule(function (module, exports) {
+/**
+ * UAParser.js v0.7.14
+ * Lightweight JavaScript-based User-Agent string parser
+ * https://github.com/faisalman/ua-parser-js
+ *
+ * Copyright © 2012-2016 Faisal Salman <fyzlman@gmail.com>
+ * Dual licensed under GPLv2 & MIT
+ */
+
+(function (window, undefined) {
+
+    'use strict';
+
+    //////////////
+    // Constants
+    /////////////
+
+
+    var LIBVERSION  = '0.7.14',
+        EMPTY       = '',
+        UNKNOWN     = '?',
+        FUNC_TYPE   = 'function',
+        UNDEF_TYPE  = 'undefined',
+        OBJ_TYPE    = 'object',
+        STR_TYPE    = 'string',
+        MAJOR       = 'major', // deprecated
+        MODEL       = 'model',
+        NAME        = 'name',
+        TYPE        = 'type',
+        VENDOR      = 'vendor',
+        VERSION     = 'version',
+        ARCHITECTURE= 'architecture',
+        CONSOLE     = 'console',
+        MOBILE      = 'mobile',
+        TABLET      = 'tablet',
+        SMARTTV     = 'smarttv',
+        WEARABLE    = 'wearable',
+        EMBEDDED    = 'embedded';
+
+
+    ///////////
+    // Helper
+    //////////
+
+
+    var util = {
+        extend : function (regexes, extensions) {
+            var margedRegexes = {};
+            for (var i in regexes) {
+                if (extensions[i] && extensions[i].length % 2 === 0) {
+                    margedRegexes[i] = extensions[i].concat(regexes[i]);
+                } else {
+                    margedRegexes[i] = regexes[i];
+                }
+            }
+            return margedRegexes;
+        },
+        has : function (str1, str2) {
+          if (typeof str1 === "string") {
+            return str2.toLowerCase().indexOf(str1.toLowerCase()) !== -1;
+          } else {
+            return false;
+          }
+        },
+        lowerize : function (str) {
+            return str.toLowerCase();
+        },
+        major : function (version) {
+            return typeof(version) === STR_TYPE ? version.replace(/[^\d\.]/g,'').split(".")[0] : undefined;
+        },
+        trim : function (str) {
+          return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+        }
+    };
+
+
+    ///////////////
+    // Map helper
+    //////////////
+
+
+    var mapper = {
+
+        rgx : function (ua, arrays) {
+
+            //var result = {},
+            var i = 0, j, k, p, q, matches, match;//, args = arguments;
+
+            /*// construct object barebones
+            for (p = 0; p < args[1].length; p++) {
+                q = args[1][p];
+                result[typeof q === OBJ_TYPE ? q[0] : q] = undefined;
+            }*/
+
+            // loop through all regexes maps
+            while (i < arrays.length && !matches) {
+
+                var regex = arrays[i],       // even sequence (0,2,4,..)
+                    props = arrays[i + 1];   // odd sequence (1,3,5,..)
+                j = k = 0;
+
+                // try matching uastring with regexes
+                while (j < regex.length && !matches) {
+
+                    matches = regex[j++].exec(ua);
+
+                    if (!!matches) {
+                        for (p = 0; p < props.length; p++) {
+                            match = matches[++k];
+                            q = props[p];
+                            // check if given property is actually array
+                            if (typeof q === OBJ_TYPE && q.length > 0) {
+                                if (q.length == 2) {
+                                    if (typeof q[1] == FUNC_TYPE) {
+                                        // assign modified match
+                                        this[q[0]] = q[1].call(this, match);
+                                    } else {
+                                        // assign given value, ignore regex match
+                                        this[q[0]] = q[1];
+                                    }
+                                } else if (q.length == 3) {
+                                    // check whether function or regex
+                                    if (typeof q[1] === FUNC_TYPE && !(q[1].exec && q[1].test)) {
+                                        // call function (usually string mapper)
+                                        this[q[0]] = match ? q[1].call(this, match, q[2]) : undefined;
+                                    } else {
+                                        // sanitize match using given regex
+                                        this[q[0]] = match ? match.replace(q[1], q[2]) : undefined;
+                                    }
+                                } else if (q.length == 4) {
+                                        this[q[0]] = match ? q[3].call(this, match.replace(q[1], q[2])) : undefined;
+                                }
+                            } else {
+                                this[q] = match ? match : undefined;
+                            }
+                        }
+                    }
+                }
+                i += 2;
+            }
+            //console.log(this);
+            //return this;
+        },
+
+        str : function (str, map) {
+
+            for (var i in map) {
+                // check if array
+                if (typeof map[i] === OBJ_TYPE && map[i].length > 0) {
+                    for (var j = 0; j < map[i].length; j++) {
+                        if (util.has(map[i][j], str)) {
+                            return (i === UNKNOWN) ? undefined : i;
+                        }
+                    }
+                } else if (util.has(map[i], str)) {
+                    return (i === UNKNOWN) ? undefined : i;
+                }
+            }
+            return str;
+        }
+    };
+
+
+    ///////////////
+    // String map
+    //////////////
+
+
+    var maps = {
+
+        browser : {
+            oldsafari : {
+                version : {
+                    '1.0'   : '/8',
+                    '1.2'   : '/1',
+                    '1.3'   : '/3',
+                    '2.0'   : '/412',
+                    '2.0.2' : '/416',
+                    '2.0.3' : '/417',
+                    '2.0.4' : '/419',
+                    '?'     : '/'
+                }
+            }
+        },
+
+        device : {
+            amazon : {
+                model : {
+                    'Fire Phone' : ['SD', 'KF']
+                }
+            },
+            sprint : {
+                model : {
+                    'Evo Shift 4G' : '7373KT'
+                },
+                vendor : {
+                    'HTC'       : 'APA',
+                    'Sprint'    : 'Sprint'
+                }
+            }
+        },
+
+        os : {
+            windows : {
+                version : {
+                    'ME'        : '4.90',
+                    'NT 3.11'   : 'NT3.51',
+                    'NT 4.0'    : 'NT4.0',
+                    '2000'      : 'NT 5.0',
+                    'XP'        : ['NT 5.1', 'NT 5.2'],
+                    'Vista'     : 'NT 6.0',
+                    '7'         : 'NT 6.1',
+                    '8'         : 'NT 6.2',
+                    '8.1'       : 'NT 6.3',
+                    '10'        : ['NT 6.4', 'NT 10.0'],
+                    'RT'        : 'ARM'
+                }
+            }
+        }
+    };
+
+
+    //////////////
+    // Regex map
+    /////////////
+
+
+    var regexes = {
+
+        browser : [[
+
+            // Presto based
+            /(opera\smini)\/([\w\.-]+)/i,                                       // Opera Mini
+            /(opera\s[mobiletab]+).+version\/([\w\.-]+)/i,                      // Opera Mobi/Tablet
+            /(opera).+version\/([\w\.]+)/i,                                     // Opera > 9.80
+            /(opera)[\/\s]+([\w\.]+)/i                                          // Opera < 9.80
+            ], [NAME, VERSION], [
+
+            /(opios)[\/\s]+([\w\.]+)/i                                          // Opera mini on iphone >= 8.0
+            ], [[NAME, 'Opera Mini'], VERSION], [
+
+            /\s(opr)\/([\w\.]+)/i                                               // Opera Webkit
+            ], [[NAME, 'Opera'], VERSION], [
+
+            // Mixed
+            /(kindle)\/([\w\.]+)/i,                                             // Kindle
+            /(lunascape|maxthon|netfront|jasmine|blazer)[\/\s]?([\w\.]+)*/i,
+                                                                                // Lunascape/Maxthon/Netfront/Jasmine/Blazer
+
+            // Trident based
+            /(avant\s|iemobile|slim|baidu)(?:browser)?[\/\s]?([\w\.]*)/i,
+                                                                                // Avant/IEMobile/SlimBrowser/Baidu
+            /(?:ms|\()(ie)\s([\w\.]+)/i,                                        // Internet Explorer
+
+            // Webkit/KHTML based
+            /(rekonq)\/([\w\.]+)*/i,                                            // Rekonq
+            /(chromium|flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt|iron|vivaldi|iridium|phantomjs|bowser)\/([\w\.-]+)/i
+                                                                                // Chromium/Flock/RockMelt/Midori/Epiphany/Silk/Skyfire/Bolt/Iron/Iridium/PhantomJS/Bowser
+            ], [NAME, VERSION], [
+
+            /(trident).+rv[:\s]([\w\.]+).+like\sgecko/i                         // IE11
+            ], [[NAME, 'IE'], VERSION], [
+
+            /(edge)\/((\d+)?[\w\.]+)/i                                          // Microsoft Edge
+            ], [NAME, VERSION], [
+
+            /(yabrowser)\/([\w\.]+)/i                                           // Yandex
+            ], [[NAME, 'Yandex'], VERSION], [
+
+            /(puffin)\/([\w\.]+)/i                                              // Puffin
+            ], [[NAME, 'Puffin'], VERSION], [
+
+            /((?:[\s\/])uc?\s?browser|(?:juc.+)ucweb)[\/\s]?([\w\.]+)/i
+                                                                                // UCBrowser
+            ], [[NAME, 'UCBrowser'], VERSION], [
+
+            /(comodo_dragon)\/([\w\.]+)/i                                       // Comodo Dragon
+            ], [[NAME, /_/g, ' '], VERSION], [
+
+            /(micromessenger)\/([\w\.]+)/i                                      // WeChat
+            ], [[NAME, 'WeChat'], VERSION], [
+
+            /(QQ)\/([\d\.]+)/i                                                  // QQ, aka ShouQ
+            ], [NAME, VERSION], [
+
+            /m?(qqbrowser)[\/\s]?([\w\.]+)/i                                    // QQBrowser
+            ], [NAME, VERSION], [
+
+            /xiaomi\/miuibrowser\/([\w\.]+)/i                                   // MIUI Browser
+            ], [VERSION, [NAME, 'MIUI Browser']], [
+
+            /;fbav\/([\w\.]+);/i                                                // Facebook App for iOS & Android
+            ], [VERSION, [NAME, 'Facebook']], [
+
+            /(headlesschrome) ([\w\.]+)/i                                       // Chrome Headless
+            ], [VERSION, [NAME, 'Chrome Headless']], [
+
+            /\swv\).+(chrome)\/([\w\.]+)/i                                      // Chrome WebView
+            ], [[NAME, /(.+)/, '$1 WebView'], VERSION], [
+
+            /((?:oculus|samsung)browser)\/([\w\.]+)/i
+            ], [[NAME, /(.+(?:g|us))(.+)/, '$1 $2'], VERSION], [                // Oculus / Samsung Browser
+
+            /android.+version\/([\w\.]+)\s+(?:mobile\s?safari|safari)*/i        // Android Browser
+            ], [VERSION, [NAME, 'Android Browser']], [
+
+            /(chrome|omniweb|arora|[tizenoka]{5}\s?browser)\/v?([\w\.]+)/i
+                                                                                // Chrome/OmniWeb/Arora/Tizen/Nokia
+            ], [NAME, VERSION], [
+
+            /(dolfin)\/([\w\.]+)/i                                              // Dolphin
+            ], [[NAME, 'Dolphin'], VERSION], [
+
+            /((?:android.+)crmo|crios)\/([\w\.]+)/i                             // Chrome for Android/iOS
+            ], [[NAME, 'Chrome'], VERSION], [
+
+            /(coast)\/([\w\.]+)/i                                               // Opera Coast
+            ], [[NAME, 'Opera Coast'], VERSION], [
+
+            /fxios\/([\w\.-]+)/i                                                // Firefox for iOS
+            ], [VERSION, [NAME, 'Firefox']], [
+
+            /version\/([\w\.]+).+?mobile\/\w+\s(safari)/i                       // Mobile Safari
+            ], [VERSION, [NAME, 'Mobile Safari']], [
+
+            /version\/([\w\.]+).+?(mobile\s?safari|safari)/i                    // Safari & Safari Mobile
+            ], [VERSION, NAME], [
+
+            /webkit.+?(mobile\s?safari|safari)(\/[\w\.]+)/i                     // Safari < 3.0
+            ], [NAME, [VERSION, mapper.str, maps.browser.oldsafari.version]], [
+
+            /(konqueror)\/([\w\.]+)/i,                                          // Konqueror
+            /(webkit|khtml)\/([\w\.]+)/i
+            ], [NAME, VERSION], [
+
+            // Gecko based
+            /(navigator|netscape)\/([\w\.-]+)/i                                 // Netscape
+            ], [[NAME, 'Netscape'], VERSION], [
+            /(swiftfox)/i,                                                      // Swiftfox
+            /(icedragon|iceweasel|camino|chimera|fennec|maemo\sbrowser|minimo|conkeror)[\/\s]?([\w\.\+]+)/i,
+                                                                                // IceDragon/Iceweasel/Camino/Chimera/Fennec/Maemo/Minimo/Conkeror
+            /(firefox|seamonkey|k-meleon|icecat|iceape|firebird|phoenix)\/([\w\.-]+)/i,
+                                                                                // Firefox/SeaMonkey/K-Meleon/IceCat/IceApe/Firebird/Phoenix
+            /(mozilla)\/([\w\.]+).+rv\:.+gecko\/\d+/i,                          // Mozilla
+
+            // Other
+            /(polaris|lynx|dillo|icab|doris|amaya|w3m|netsurf|sleipnir)[\/\s]?([\w\.]+)/i,
+                                                                                // Polaris/Lynx/Dillo/iCab/Doris/Amaya/w3m/NetSurf/Sleipnir
+            /(links)\s\(([\w\.]+)/i,                                            // Links
+            /(gobrowser)\/?([\w\.]+)*/i,                                        // GoBrowser
+            /(ice\s?browser)\/v?([\w\._]+)/i,                                   // ICE Browser
+            /(mosaic)[\/\s]([\w\.]+)/i                                          // Mosaic
+            ], [NAME, VERSION]
+
+            /* /////////////////////
+            // Media players BEGIN
+            ////////////////////////
+
+            , [
+
+            /(apple(?:coremedia|))\/((\d+)[\w\._]+)/i,                          // Generic Apple CoreMedia
+            /(coremedia) v((\d+)[\w\._]+)/i
+            ], [NAME, VERSION], [
+
+            /(aqualung|lyssna|bsplayer)\/((\d+)?[\w\.-]+)/i                     // Aqualung/Lyssna/BSPlayer
+            ], [NAME, VERSION], [
+
+            /(ares|ossproxy)\s((\d+)[\w\.-]+)/i                                 // Ares/OSSProxy
+            ], [NAME, VERSION], [
+
+            /(audacious|audimusicstream|amarok|bass|core|dalvik|gnomemplayer|music on console|nsplayer|psp-internetradioplayer|videos)\/((\d+)[\w\.-]+)/i,
+                                                                                // Audacious/AudiMusicStream/Amarok/BASS/OpenCORE/Dalvik/GnomeMplayer/MoC
+                                                                                // NSPlayer/PSP-InternetRadioPlayer/Videos
+            /(clementine|music player daemon)\s((\d+)[\w\.-]+)/i,               // Clementine/MPD
+            /(lg player|nexplayer)\s((\d+)[\d\.]+)/i,
+            /player\/(nexplayer|lg player)\s((\d+)[\w\.-]+)/i                   // NexPlayer/LG Player
+            ], [NAME, VERSION], [
+            /(nexplayer)\s((\d+)[\w\.-]+)/i                                     // Nexplayer
+            ], [NAME, VERSION], [
+
+            /(flrp)\/((\d+)[\w\.-]+)/i                                          // Flip Player
+            ], [[NAME, 'Flip Player'], VERSION], [
+
+            /(fstream|nativehost|queryseekspider|ia-archiver|facebookexternalhit)/i
+                                                                                // FStream/NativeHost/QuerySeekSpider/IA Archiver/facebookexternalhit
+            ], [NAME], [
+
+            /(gstreamer) souphttpsrc (?:\([^\)]+\)){0,1} libsoup\/((\d+)[\w\.-]+)/i
+                                                                                // Gstreamer
+            ], [NAME, VERSION], [
+
+            /(htc streaming player)\s[\w_]+\s\/\s((\d+)[\d\.]+)/i,              // HTC Streaming Player
+            /(java|python-urllib|python-requests|wget|libcurl)\/((\d+)[\w\.-_]+)/i,
+                                                                                // Java/urllib/requests/wget/cURL
+            /(lavf)((\d+)[\d\.]+)/i                                             // Lavf (FFMPEG)
+            ], [NAME, VERSION], [
+
+            /(htc_one_s)\/((\d+)[\d\.]+)/i                                      // HTC One S
+            ], [[NAME, /_/g, ' '], VERSION], [
+
+            /(mplayer)(?:\s|\/)(?:(?:sherpya-){0,1}svn)(?:-|\s)(r\d+(?:-\d+[\w\.-]+){0,1})/i
+                                                                                // MPlayer SVN
+            ], [NAME, VERSION], [
+
+            /(mplayer)(?:\s|\/|[unkow-]+)((\d+)[\w\.-]+)/i                      // MPlayer
+            ], [NAME, VERSION], [
+
+            /(mplayer)/i,                                                       // MPlayer (no other info)
+            /(yourmuze)/i,                                                      // YourMuze
+            /(media player classic|nero showtime)/i                             // Media Player Classic/Nero ShowTime
+            ], [NAME], [
+
+            /(nero (?:home|scout))\/((\d+)[\w\.-]+)/i                           // Nero Home/Nero Scout
+            ], [NAME, VERSION], [
+
+            /(nokia\d+)\/((\d+)[\w\.-]+)/i                                      // Nokia
+            ], [NAME, VERSION], [
+
+            /\s(songbird)\/((\d+)[\w\.-]+)/i                                    // Songbird/Philips-Songbird
+            ], [NAME, VERSION], [
+
+            /(winamp)3 version ((\d+)[\w\.-]+)/i,                               // Winamp
+            /(winamp)\s((\d+)[\w\.-]+)/i,
+            /(winamp)mpeg\/((\d+)[\w\.-]+)/i
+            ], [NAME, VERSION], [
+
+            /(ocms-bot|tapinradio|tunein radio|unknown|winamp|inlight radio)/i  // OCMS-bot/tap in radio/tunein/unknown/winamp (no other info)
+                                                                                // inlight radio
+            ], [NAME], [
+
+            /(quicktime|rma|radioapp|radioclientapplication|soundtap|totem|stagefright|streamium)\/((\d+)[\w\.-]+)/i
+                                                                                // QuickTime/RealMedia/RadioApp/RadioClientApplication/
+                                                                                // SoundTap/Totem/Stagefright/Streamium
+            ], [NAME, VERSION], [
+
+            /(smp)((\d+)[\d\.]+)/i                                              // SMP
+            ], [NAME, VERSION], [
+
+            /(vlc) media player - version ((\d+)[\w\.]+)/i,                     // VLC Videolan
+            /(vlc)\/((\d+)[\w\.-]+)/i,
+            /(xbmc|gvfs|xine|xmms|irapp)\/((\d+)[\w\.-]+)/i,                    // XBMC/gvfs/Xine/XMMS/irapp
+            /(foobar2000)\/((\d+)[\d\.]+)/i,                                    // Foobar2000
+            /(itunes)\/((\d+)[\d\.]+)/i                                         // iTunes
+            ], [NAME, VERSION], [
+
+            /(wmplayer)\/((\d+)[\w\.-]+)/i,                                     // Windows Media Player
+            /(windows-media-player)\/((\d+)[\w\.-]+)/i
+            ], [[NAME, /-/g, ' '], VERSION], [
+
+            /windows\/((\d+)[\w\.-]+) upnp\/[\d\.]+ dlnadoc\/[\d\.]+ (home media server)/i
+                                                                                // Windows Media Server
+            ], [VERSION, [NAME, 'Windows']], [
+
+            /(com\.riseupradioalarm)\/((\d+)[\d\.]*)/i                          // RiseUP Radio Alarm
+            ], [NAME, VERSION], [
+
+            /(rad.io)\s((\d+)[\d\.]+)/i,                                        // Rad.io
+            /(radio.(?:de|at|fr))\s((\d+)[\d\.]+)/i
+            ], [[NAME, 'rad.io'], VERSION]
+
+            //////////////////////
+            // Media players END
+            ////////////////////*/
+
+        ],
+
+        cpu : [[
+
+            /(?:(amd|x(?:(?:86|64)[_-])?|wow|win)64)[;\)]/i                     // AMD64
+            ], [[ARCHITECTURE, 'amd64']], [
+
+            /(ia32(?=;))/i                                                      // IA32 (quicktime)
+            ], [[ARCHITECTURE, util.lowerize]], [
+
+            /((?:i[346]|x)86)[;\)]/i                                            // IA32
+            ], [[ARCHITECTURE, 'ia32']], [
+
+            // PocketPC mistakenly identified as PowerPC
+            /windows\s(ce|mobile);\sppc;/i
+            ], [[ARCHITECTURE, 'arm']], [
+
+            /((?:ppc|powerpc)(?:64)?)(?:\smac|;|\))/i                           // PowerPC
+            ], [[ARCHITECTURE, /ower/, '', util.lowerize]], [
+
+            /(sun4\w)[;\)]/i                                                    // SPARC
+            ], [[ARCHITECTURE, 'sparc']], [
+
+            /((?:avr32|ia64(?=;))|68k(?=\))|arm(?:64|(?=v\d+;))|(?=atmel\s)avr|(?:irix|mips|sparc)(?:64)?(?=;)|pa-risc)/i
+                                                                                // IA64, 68K, ARM/64, AVR/32, IRIX/64, MIPS/64, SPARC/64, PA-RISC
+            ], [[ARCHITECTURE, util.lowerize]]
+        ],
+
+        device : [[
+
+            /\((ipad|playbook);[\w\s\);-]+(rim|apple)/i                         // iPad/PlayBook
+            ], [MODEL, VENDOR, [TYPE, TABLET]], [
+
+            /applecoremedia\/[\w\.]+ \((ipad)/                                  // iPad
+            ], [MODEL, [VENDOR, 'Apple'], [TYPE, TABLET]], [
+
+            /(apple\s{0,1}tv)/i                                                 // Apple TV
+            ], [[MODEL, 'Apple TV'], [VENDOR, 'Apple']], [
+
+            /(archos)\s(gamepad2?)/i,                                           // Archos
+            /(hp).+(touchpad)/i,                                                // HP TouchPad
+            /(hp).+(tablet)/i,                                                  // HP Tablet
+            /(kindle)\/([\w\.]+)/i,                                             // Kindle
+            /\s(nook)[\w\s]+build\/(\w+)/i,                                     // Nook
+            /(dell)\s(strea[kpr\s\d]*[\dko])/i                                  // Dell Streak
+            ], [VENDOR, MODEL, [TYPE, TABLET]], [
+
+            /(kf[A-z]+)\sbuild\/[\w\.]+.*silk\//i                               // Kindle Fire HD
+            ], [MODEL, [VENDOR, 'Amazon'], [TYPE, TABLET]], [
+            /(sd|kf)[0349hijorstuw]+\sbuild\/[\w\.]+.*silk\//i                  // Fire Phone
+            ], [[MODEL, mapper.str, maps.device.amazon.model], [VENDOR, 'Amazon'], [TYPE, MOBILE]], [
+
+            /\((ip[honed|\s\w*]+);.+(apple)/i                                   // iPod/iPhone
+            ], [MODEL, VENDOR, [TYPE, MOBILE]], [
+            /\((ip[honed|\s\w*]+);/i                                            // iPod/iPhone
+            ], [MODEL, [VENDOR, 'Apple'], [TYPE, MOBILE]], [
+
+            /(blackberry)[\s-]?(\w+)/i,                                         // BlackBerry
+            /(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|meizu|motorola|polytron)[\s_-]?([\w-]+)*/i,
+                                                                                // BenQ/Palm/Sony-Ericsson/Acer/Asus/Dell/Meizu/Motorola/Polytron
+            /(hp)\s([\w\s]+\w)/i,                                               // HP iPAQ
+            /(asus)-?(\w+)/i                                                    // Asus
+            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+            /\(bb10;\s(\w+)/i                                                   // BlackBerry 10
+            ], [MODEL, [VENDOR, 'BlackBerry'], [TYPE, MOBILE]], [
+                                                                                // Asus Tablets
+            /android.+(transfo[prime\s]{4,10}\s\w+|eeepc|slider\s\w+|nexus 7|padfone)/i
+            ], [MODEL, [VENDOR, 'Asus'], [TYPE, TABLET]], [
+
+            /(sony)\s(tablet\s[ps])\sbuild\//i,                                  // Sony
+            /(sony)?(?:sgp.+)\sbuild\//i
+            ], [[VENDOR, 'Sony'], [MODEL, 'Xperia Tablet'], [TYPE, TABLET]], [
+            /android.+\s([c-g]\d{4}|so[-l]\w+)\sbuild\//i
+            ], [MODEL, [VENDOR, 'Sony'], [TYPE, MOBILE]], [
+
+            /\s(ouya)\s/i,                                                      // Ouya
+            /(nintendo)\s([wids3u]+)/i                                          // Nintendo
+            ], [VENDOR, MODEL, [TYPE, CONSOLE]], [
+
+            /android.+;\s(shield)\sbuild/i                                      // Nvidia
+            ], [MODEL, [VENDOR, 'Nvidia'], [TYPE, CONSOLE]], [
+
+            /(playstation\s[34portablevi]+)/i                                   // Playstation
+            ], [MODEL, [VENDOR, 'Sony'], [TYPE, CONSOLE]], [
+
+            /(sprint\s(\w+))/i                                                  // Sprint Phones
+            ], [[VENDOR, mapper.str, maps.device.sprint.vendor], [MODEL, mapper.str, maps.device.sprint.model], [TYPE, MOBILE]], [
+
+            /(lenovo)\s?(S(?:5000|6000)+(?:[-][\w+]))/i                         // Lenovo tablets
+            ], [VENDOR, MODEL, [TYPE, TABLET]], [
+
+            /(htc)[;_\s-]+([\w\s]+(?=\))|\w+)*/i,                               // HTC
+            /(zte)-(\w+)*/i,                                                    // ZTE
+            /(alcatel|geeksphone|lenovo|nexian|panasonic|(?=;\s)sony)[_\s-]?([\w-]+)*/i
+                                                                                // Alcatel/GeeksPhone/Lenovo/Nexian/Panasonic/Sony
+            ], [VENDOR, [MODEL, /_/g, ' '], [TYPE, MOBILE]], [
+
+            /(nexus\s9)/i                                                       // HTC Nexus 9
+            ], [MODEL, [VENDOR, 'HTC'], [TYPE, TABLET]], [
+
+            /d\/huawei([\w\s-]+)[;\)]/i,
+            /(nexus\s6p)/i                                                      // Huawei
+            ], [MODEL, [VENDOR, 'Huawei'], [TYPE, MOBILE]], [
+
+            /(microsoft);\s(lumia[\s\w]+)/i                                     // Microsoft Lumia
+            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+
+            /[\s\(;](xbox(?:\sone)?)[\s\);]/i                                   // Microsoft Xbox
+            ], [MODEL, [VENDOR, 'Microsoft'], [TYPE, CONSOLE]], [
+            /(kin\.[onetw]{3})/i                                                // Microsoft Kin
+            ], [[MODEL, /\./g, ' '], [VENDOR, 'Microsoft'], [TYPE, MOBILE]], [
+
+                                                                                // Motorola
+            /\s(milestone|droid(?:[2-4x]|\s(?:bionic|x2|pro|razr))?(:?\s4g)?)[\w\s]+build\//i,
+            /mot[\s-]?(\w+)*/i,
+            /(XT\d{3,4}) build\//i,
+            /(nexus\s6)/i
+            ], [MODEL, [VENDOR, 'Motorola'], [TYPE, MOBILE]], [
+            /android.+\s(mz60\d|xoom[\s2]{0,2})\sbuild\//i
+            ], [MODEL, [VENDOR, 'Motorola'], [TYPE, TABLET]], [
+
+            /hbbtv\/\d+\.\d+\.\d+\s+\([\w\s]*;\s*(\w[^;]*);([^;]*)/i            // HbbTV devices
+            ], [[VENDOR, util.trim], [MODEL, util.trim], [TYPE, SMARTTV]], [
+
+            /hbbtv.+maple;(\d+)/i
+            ], [[MODEL, /^/, 'SmartTV'], [VENDOR, 'Samsung'], [TYPE, SMARTTV]], [
+
+            /\(dtv[\);].+(aquos)/i                                              // Sharp
+            ], [MODEL, [VENDOR, 'Sharp'], [TYPE, SMARTTV]], [
+
+            /android.+((sch-i[89]0\d|shw-m380s|gt-p\d{4}|gt-n\d+|sgh-t8[56]9|nexus 10))/i,
+            /((SM-T\w+))/i
+            ], [[VENDOR, 'Samsung'], MODEL, [TYPE, TABLET]], [                  // Samsung
+            /smart-tv.+(samsung)/i
+            ], [VENDOR, [TYPE, SMARTTV], MODEL], [
+            /((s[cgp]h-\w+|gt-\w+|galaxy\snexus|sm-\w[\w\d]+))/i,
+            /(sam[sung]*)[\s-]*(\w+-?[\w-]*)*/i,
+            /sec-((sgh\w+))/i
+            ], [[VENDOR, 'Samsung'], MODEL, [TYPE, MOBILE]], [
+
+            /sie-(\w+)*/i                                                       // Siemens
+            ], [MODEL, [VENDOR, 'Siemens'], [TYPE, MOBILE]], [
+
+            /(maemo|nokia).*(n900|lumia\s\d+)/i,                                // Nokia
+            /(nokia)[\s_-]?([\w-]+)*/i
+            ], [[VENDOR, 'Nokia'], MODEL, [TYPE, MOBILE]], [
+
+            /android\s3\.[\s\w;-]{10}(a\d{3})/i                                 // Acer
+            ], [MODEL, [VENDOR, 'Acer'], [TYPE, TABLET]], [
+
+            /android.+([vl]k\-?\d{3})\s+build/i                                 // LG Tablet
+            ], [MODEL, [VENDOR, 'LG'], [TYPE, TABLET]], [
+            /android\s3\.[\s\w;-]{10}(lg?)-([06cv9]{3,4})/i                     // LG Tablet
+            ], [[VENDOR, 'LG'], MODEL, [TYPE, TABLET]], [
+            /(lg) netcast\.tv/i                                                 // LG SmartTV
+            ], [VENDOR, MODEL, [TYPE, SMARTTV]], [
+            /(nexus\s[45])/i,                                                   // LG
+            /lg[e;\s\/-]+(\w+)*/i,
+            /android.+lg(\-?[\d\w]+)\s+build/i
+            ], [MODEL, [VENDOR, 'LG'], [TYPE, MOBILE]], [
+
+            /android.+(ideatab[a-z0-9\-\s]+)/i                                  // Lenovo
+            ], [MODEL, [VENDOR, 'Lenovo'], [TYPE, TABLET]], [
+
+            /linux;.+((jolla));/i                                               // Jolla
+            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+
+            /((pebble))app\/[\d\.]+\s/i                                         // Pebble
+            ], [VENDOR, MODEL, [TYPE, WEARABLE]], [
+
+            /android.+;\s(oppo)\s?([\w\s]+)\sbuild/i                            // OPPO
+            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+
+            /crkey/i                                                            // Google Chromecast
+            ], [[MODEL, 'Chromecast'], [VENDOR, 'Google']], [
+
+            /android.+;\s(glass)\s\d/i                                          // Google Glass
+            ], [MODEL, [VENDOR, 'Google'], [TYPE, WEARABLE]], [
+
+            /android.+;\s(pixel c)\s/i                                          // Google Pixel C
+            ], [MODEL, [VENDOR, 'Google'], [TYPE, TABLET]], [
+
+            /android.+;\s(pixel xl|pixel)\s/i                                   // Google Pixel
+            ], [MODEL, [VENDOR, 'Google'], [TYPE, MOBILE]], [
+
+            /android.+(\w+)\s+build\/hm\1/i,                                    // Xiaomi Hongmi 'numeric' models
+            /android.+(hm[\s\-_]*note?[\s_]*(?:\d\w)?)\s+build/i,               // Xiaomi Hongmi
+            /android.+(mi[\s\-_]*(?:one|one[\s_]plus|note lte)?[\s_]*(?:\d\w)?)\s+build/i    // Xiaomi Mi
+            ], [[MODEL, /_/g, ' '], [VENDOR, 'Xiaomi'], [TYPE, MOBILE]], [
+
+            /android.+;\s(m[1-5]\snote)\sbuild/i                                // Meizu Tablet
+            ], [MODEL, [VENDOR, 'Meizu'], [TYPE, TABLET]], [
+
+            /android.+a000(1)\s+build/i                                         // OnePlus
+            ], [MODEL, [VENDOR, 'OnePlus'], [TYPE, MOBILE]], [
+
+            /android.+[;\/]\s*(RCT[\d\w]+)\s+build/i                            // RCA Tablets
+            ], [MODEL, [VENDOR, 'RCA'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(Venue[\d\s]*)\s+build/i                          // Dell Venue Tablets
+            ], [MODEL, [VENDOR, 'Dell'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(Q[T|M][\d\w]+)\s+build/i                         // Verizon Tablet
+            ], [MODEL, [VENDOR, 'Verizon'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s+(Barnes[&\s]+Noble\s+|BN[RT])(V?.*)\s+build/i     // Barnes & Noble Tablet
+            ], [[VENDOR, 'Barnes & Noble'], MODEL, [TYPE, TABLET]], [
+
+            /android.+[;\/]\s+(TM\d{3}.*\b)\s+build/i                           // Barnes & Noble Tablet
+            ], [MODEL, [VENDOR, 'NuVision'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(zte)?.+(k\d{2})\s+build/i                        // ZTE K Series Tablet
+            ], [[VENDOR, 'ZTE'], MODEL, [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(gen\d{3})\s+build.*49h/i                         // Swiss GEN Mobile
+            ], [MODEL, [VENDOR, 'Swiss'], [TYPE, MOBILE]], [
+
+            /android.+[;\/]\s*(zur\d{3})\s+build/i                              // Swiss ZUR Tablet
+            ], [MODEL, [VENDOR, 'Swiss'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*((Zeki)?TB.*\b)\s+build/i                         // Zeki Tablets
+            ], [MODEL, [VENDOR, 'Zeki'], [TYPE, TABLET]], [
+
+            /(android).+[;\/]\s+([YR]\d{2}x?.*)\s+build/i,
+            /android.+[;\/]\s+(Dragon[\-\s]+Touch\s+|DT)(.+)\s+build/i          // Dragon Touch Tablet
+            ], [[VENDOR, 'Dragon Touch'], MODEL, [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(NS-?.+)\s+build/i                                // Insignia Tablets
+            ], [MODEL, [VENDOR, 'Insignia'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*((NX|Next)-?.+)\s+build/i                         // NextBook Tablets
+            ], [MODEL, [VENDOR, 'NextBook'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(Xtreme\_?)?(V(1[045]|2[015]|30|40|60|7[05]|90))\s+build/i
+            ], [[VENDOR, 'Voice'], MODEL, [TYPE, MOBILE]], [                    // Voice Xtreme Phones
+
+            /android.+[;\/]\s*(LVTEL\-?)?(V1[12])\s+build/i                     // LvTel Phones
+            ], [[VENDOR, 'LvTel'], MODEL, [TYPE, MOBILE]], [
+
+            /android.+[;\/]\s*(V(100MD|700NA|7011|917G).*\b)\s+build/i          // Envizen Tablets
+            ], [MODEL, [VENDOR, 'Envizen'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(Le[\s\-]+Pan)[\s\-]+(.*\b)\s+build/i             // Le Pan Tablets
+            ], [VENDOR, MODEL, [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(Trio[\s\-]*.*)\s+build/i                         // MachSpeed Tablets
+            ], [MODEL, [VENDOR, 'MachSpeed'], [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*(Trinity)[\-\s]*(T\d{3})\s+build/i                // Trinity Tablets
+            ], [VENDOR, MODEL, [TYPE, TABLET]], [
+
+            /android.+[;\/]\s*TU_(1491)\s+build/i                               // Rotor Tablets
+            ], [MODEL, [VENDOR, 'Rotor'], [TYPE, TABLET]], [
+
+            /android.+(KS(.+))\s+build/i                                        // Amazon Kindle Tablets
+            ], [MODEL, [VENDOR, 'Amazon'], [TYPE, TABLET]], [
+
+            /android.+(Gigaset)[\s\-]+(Q.+)\s+build/i                           // Gigaset Tablets
+            ], [VENDOR, MODEL, [TYPE, TABLET]], [
+
+            /\s(tablet|tab)[;\/]/i,                                             // Unidentifiable Tablet
+            /\s(mobile)(?:[;\/]|\ssafari)/i                                     // Unidentifiable Mobile
+            ], [[TYPE, util.lowerize], VENDOR, MODEL], [
+
+            /(android.+)[;\/].+build/i                                          // Generic Android Device
+            ], [MODEL, [VENDOR, 'Generic']]
+
+
+        /*//////////////////////////
+            // TODO: move to string map
+            ////////////////////////////
+
+            /(C6603)/i                                                          // Sony Xperia Z C6603
+            ], [[MODEL, 'Xperia Z C6603'], [VENDOR, 'Sony'], [TYPE, MOBILE]], [
+            /(C6903)/i                                                          // Sony Xperia Z 1
+            ], [[MODEL, 'Xperia Z 1'], [VENDOR, 'Sony'], [TYPE, MOBILE]], [
+
+            /(SM-G900[F|H])/i                                                   // Samsung Galaxy S5
+            ], [[MODEL, 'Galaxy S5'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
+            /(SM-G7102)/i                                                       // Samsung Galaxy Grand 2
+            ], [[MODEL, 'Galaxy Grand 2'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
+            /(SM-G530H)/i                                                       // Samsung Galaxy Grand Prime
+            ], [[MODEL, 'Galaxy Grand Prime'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
+            /(SM-G313HZ)/i                                                      // Samsung Galaxy V
+            ], [[MODEL, 'Galaxy V'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
+            /(SM-T805)/i                                                        // Samsung Galaxy Tab S 10.5
+            ], [[MODEL, 'Galaxy Tab S 10.5'], [VENDOR, 'Samsung'], [TYPE, TABLET]], [
+            /(SM-G800F)/i                                                       // Samsung Galaxy S5 Mini
+            ], [[MODEL, 'Galaxy S5 Mini'], [VENDOR, 'Samsung'], [TYPE, MOBILE]], [
+            /(SM-T311)/i                                                        // Samsung Galaxy Tab 3 8.0
+            ], [[MODEL, 'Galaxy Tab 3 8.0'], [VENDOR, 'Samsung'], [TYPE, TABLET]], [
+
+            /(T3C)/i                                                            // Advan Vandroid T3C
+            ], [MODEL, [VENDOR, 'Advan'], [TYPE, TABLET]], [
+            /(ADVAN T1J\+)/i                                                    // Advan Vandroid T1J+
+            ], [[MODEL, 'Vandroid T1J+'], [VENDOR, 'Advan'], [TYPE, TABLET]], [
+            /(ADVAN S4A)/i                                                      // Advan Vandroid S4A
+            ], [[MODEL, 'Vandroid S4A'], [VENDOR, 'Advan'], [TYPE, MOBILE]], [
+
+            /(V972M)/i                                                          // ZTE V972M
+            ], [MODEL, [VENDOR, 'ZTE'], [TYPE, MOBILE]], [
+
+            /(i-mobile)\s(IQ\s[\d\.]+)/i                                        // i-mobile IQ
+            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+            /(IQ6.3)/i                                                          // i-mobile IQ IQ 6.3
+            ], [[MODEL, 'IQ 6.3'], [VENDOR, 'i-mobile'], [TYPE, MOBILE]], [
+            /(i-mobile)\s(i-style\s[\d\.]+)/i                                   // i-mobile i-STYLE
+            ], [VENDOR, MODEL, [TYPE, MOBILE]], [
+            /(i-STYLE2.1)/i                                                     // i-mobile i-STYLE 2.1
+            ], [[MODEL, 'i-STYLE 2.1'], [VENDOR, 'i-mobile'], [TYPE, MOBILE]], [
+
+            /(mobiistar touch LAI 512)/i                                        // mobiistar touch LAI 512
+            ], [[MODEL, 'Touch LAI 512'], [VENDOR, 'mobiistar'], [TYPE, MOBILE]], [
+
+            /////////////
+            // END TODO
+            ///////////*/
+
+        ],
+
+        engine : [[
+
+            /windows.+\sedge\/([\w\.]+)/i                                       // EdgeHTML
+            ], [VERSION, [NAME, 'EdgeHTML']], [
+
+            /(presto)\/([\w\.]+)/i,                                             // Presto
+            /(webkit|trident|netfront|netsurf|amaya|lynx|w3m)\/([\w\.]+)/i,     // WebKit/Trident/NetFront/NetSurf/Amaya/Lynx/w3m
+            /(khtml|tasman|links)[\/\s]\(?([\w\.]+)/i,                          // KHTML/Tasman/Links
+            /(icab)[\/\s]([23]\.[\d\.]+)/i                                      // iCab
+            ], [NAME, VERSION], [
+
+            /rv\:([\w\.]+).*(gecko)/i                                           // Gecko
+            ], [VERSION, NAME]
+        ],
+
+        os : [[
+
+            // Windows based
+            /microsoft\s(windows)\s(vista|xp)/i                                 // Windows (iTunes)
+            ], [NAME, VERSION], [
+            /(windows)\snt\s6\.2;\s(arm)/i,                                     // Windows RT
+            /(windows\sphone(?:\sos)*)[\s\/]?([\d\.\s]+\w)*/i,                  // Windows Phone
+            /(windows\smobile|windows)[\s\/]?([ntce\d\.\s]+\w)/i
+            ], [NAME, [VERSION, mapper.str, maps.os.windows.version]], [
+            /(win(?=3|9|n)|win\s9x\s)([nt\d\.]+)/i
+            ], [[NAME, 'Windows'], [VERSION, mapper.str, maps.os.windows.version]], [
+
+            // Mobile/Embedded OS
+            /\((bb)(10);/i                                                      // BlackBerry 10
+            ], [[NAME, 'BlackBerry'], VERSION], [
+            /(blackberry)\w*\/?([\w\.]+)*/i,                                    // Blackberry
+            /(tizen)[\/\s]([\w\.]+)/i,                                          // Tizen
+            /(android|webos|palm\sos|qnx|bada|rim\stablet\sos|meego|contiki)[\/\s-]?([\w\.]+)*/i,
+                                                                                // Android/WebOS/Palm/QNX/Bada/RIM/MeeGo/Contiki
+            /linux;.+(sailfish);/i                                              // Sailfish OS
+            ], [NAME, VERSION], [
+            /(symbian\s?os|symbos|s60(?=;))[\/\s-]?([\w\.]+)*/i                 // Symbian
+            ], [[NAME, 'Symbian'], VERSION], [
+            /\((series40);/i                                                    // Series 40
+            ], [NAME], [
+            /mozilla.+\(mobile;.+gecko.+firefox/i                               // Firefox OS
+            ], [[NAME, 'Firefox OS'], VERSION], [
+
+            // Console
+            /(nintendo|playstation)\s([wids34portablevu]+)/i,                   // Nintendo/Playstation
+
+            // GNU/Linux based
+            /(mint)[\/\s\(]?(\w+)*/i,                                           // Mint
+            /(mageia|vectorlinux)[;\s]/i,                                       // Mageia/VectorLinux
+            /(joli|[kxln]?ubuntu|debian|[open]*suse|gentoo|(?=\s)arch|slackware|fedora|mandriva|centos|pclinuxos|redhat|zenwalk|linpus)[\/\s-]?(?!chrom)([\w\.-]+)*/i,
+                                                                                // Joli/Ubuntu/Debian/SUSE/Gentoo/Arch/Slackware
+                                                                                // Fedora/Mandriva/CentOS/PCLinuxOS/RedHat/Zenwalk/Linpus
+            /(hurd|linux)\s?([\w\.]+)*/i,                                       // Hurd/Linux
+            /(gnu)\s?([\w\.]+)*/i                                               // GNU
+            ], [NAME, VERSION], [
+
+            /(cros)\s[\w]+\s([\w\.]+\w)/i                                       // Chromium OS
+            ], [[NAME, 'Chromium OS'], VERSION],[
+
+            // Solaris
+            /(sunos)\s?([\w\.]+\d)*/i                                           // Solaris
+            ], [[NAME, 'Solaris'], VERSION], [
+
+            // BSD based
+            /\s([frentopc-]{0,4}bsd|dragonfly)\s?([\w\.]+)*/i                   // FreeBSD/NetBSD/OpenBSD/PC-BSD/DragonFly
+            ], [NAME, VERSION],[
+
+            /(haiku)\s(\w+)/i                                                  // Haiku
+            ], [NAME, VERSION],[
+
+            /cfnetwork\/.+darwin/i,
+            /ip[honead]+(?:.*os\s([\w]+)*\slike\smac|;\sopera)/i                // iOS
+            ], [[VERSION, /_/g, '.'], [NAME, 'iOS']], [
+
+            /(mac\sos\sx)\s?([\w\s\.]+\w)*/i,
+            /(macintosh|mac(?=_powerpc)\s)/i                                    // Mac OS
+            ], [[NAME, 'Mac OS'], [VERSION, /_/g, '.']], [
+
+            // Other
+            /((?:open)?solaris)[\/\s-]?([\w\.]+)*/i,                            // Solaris
+            /(aix)\s((\d)(?=\.|\)|\s)[\w\.]*)*/i,                               // AIX
+            /(plan\s9|minix|beos|os\/2|amigaos|morphos|risc\sos|openvms)/i,
+                                                                                // Plan9/Minix/BeOS/OS2/AmigaOS/MorphOS/RISCOS/OpenVMS
+            /(unix)\s?([\w\.]+)*/i                                              // UNIX
+            ], [NAME, VERSION]
+        ]
+    };
+
+
+    /////////////////
+    // Constructor
+    ////////////////
+
+    var Browser = function (name, version) {
+        this[NAME] = name;
+        this[VERSION] = version;
+    };
+    var CPU = function (arch) {
+        this[ARCHITECTURE] = arch;
+    };
+    var Device = function (vendor, model, type) {
+        this[VENDOR] = vendor;
+        this[MODEL] = model;
+        this[TYPE] = type;
+    };
+    var Engine = Browser;
+    var OS = Browser;
+
+    var UAParser = function (uastring, extensions) {
+
+        if (typeof uastring === 'object') {
+            extensions = uastring;
+            uastring = undefined;
+        }
+
+        if (!(this instanceof UAParser)) {
+            return new UAParser(uastring, extensions).getResult();
+        }
+
+        var ua = uastring || ((window && window.navigator && window.navigator.userAgent) ? window.navigator.userAgent : EMPTY);
+        var rgxmap = extensions ? util.extend(regexes, extensions) : regexes;
+        var browser = new Browser();
+        var cpu = new CPU();
+        var device = new Device();
+        var engine = new Engine();
+        var os = new OS();
+
+        this.getBrowser = function () {
+            mapper.rgx.call(browser, ua, rgxmap.browser);
+            browser.major = util.major(browser.version); // deprecated
+            return browser;
+        };
+        this.getCPU = function () {
+            mapper.rgx.call(cpu, ua, rgxmap.cpu);
+            return cpu;
+        };
+        this.getDevice = function () {
+            mapper.rgx.call(device, ua, rgxmap.device);
+            return device;
+        };
+        this.getEngine = function () {
+            mapper.rgx.call(engine, ua, rgxmap.engine);
+            return engine;
+        };
+        this.getOS = function () {
+            mapper.rgx.call(os, ua, rgxmap.os);
+            return os;
+        };
+        this.getResult = function () {
+            return {
+                ua      : this.getUA(),
+                browser : this.getBrowser(),
+                engine  : this.getEngine(),
+                os      : this.getOS(),
+                device  : this.getDevice(),
+                cpu     : this.getCPU()
+            };
+        };
+        this.getUA = function () {
+            return ua;
+        };
+        this.setUA = function (uastring) {
+            ua = uastring;
+            browser = new Browser();
+            cpu = new CPU();
+            device = new Device();
+            engine = new Engine();
+            os = new OS();
+            return this;
+        };
+        return this;
+    };
+
+    UAParser.VERSION = LIBVERSION;
+    UAParser.BROWSER = {
+        NAME    : NAME,
+        MAJOR   : MAJOR, // deprecated
+        VERSION : VERSION
+    };
+    UAParser.CPU = {
+        ARCHITECTURE : ARCHITECTURE
+    };
+    UAParser.DEVICE = {
+        MODEL   : MODEL,
+        VENDOR  : VENDOR,
+        TYPE    : TYPE,
+        CONSOLE : CONSOLE,
+        MOBILE  : MOBILE,
+        SMARTTV : SMARTTV,
+        TABLET  : TABLET,
+        WEARABLE: WEARABLE,
+        EMBEDDED: EMBEDDED
+    };
+    UAParser.ENGINE = {
+        NAME    : NAME,
+        VERSION : VERSION
+    };
+    UAParser.OS = {
+        NAME    : NAME,
+        VERSION : VERSION
+    };
+    //UAParser.Utils = util;
+
+    ///////////
+    // Export
+    //////////
+
+
+    // check js environment
+    if ('object' !== UNDEF_TYPE) {
+        // nodejs env
+        if ('object' !== UNDEF_TYPE && module.exports) {
+            exports = module.exports = UAParser;
+        }
+        exports.UAParser = UAParser;
+    } else {
+        // requirejs env (optional)
+        if (typeof(undefined) === FUNC_TYPE && undefined.amd) {
+            undefined(function () {
+                return UAParser;
+            });
+        } else if (window) {
+            // browser env
+            window.UAParser = UAParser;
+        }
+    }
+
+    // jQuery/Zepto specific (optional)
+    // Note:
+    //   In AMD env the global scope should be kept clean, but jQuery is an exception.
+    //   jQuery always exports to global scope, unless jQuery.noConflict(true) is used,
+    //   and we should catch that.
+    var $ = window && (window.jQuery || window.Zepto);
+    if (typeof $ !== UNDEF_TYPE) {
+        var parser = new UAParser();
+        $.ua = parser.getResult();
+        $.ua.get = function () {
+            return parser.getUA();
+        };
+        $.ua.set = function (uastring) {
+            parser.setUA(uastring);
+            var result = parser.getResult();
+            for (var prop in result) {
+                $.ua[prop] = result[prop];
+            }
+        };
+    }
+
+})(typeof window === 'object' ? window : commonjsGlobal);
+});
+
+/**
+ * toxic-utils v0.1.6
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
+
+/**
+ * the handler to generate an deep traversal handler
+ * @param  {Function} fn the function you wanna run when you reach in the deep property
+ * @return {Function}    the handler
+ */
+function genTraversalHandler(fn) {
+  function recursiveFn(source, target, key) {
+    if (isArray(source) || isObject(source)) {
+      target = isPrimitive(target) ? isObject(source) ? {} : [] : target;
+      for (var _key in source) {
+        // $FlowFixMe: support computed key here
+        target[_key] = recursiveFn(source[_key], target[_key], _key);
+      }
+      return target;
+    }
+    return fn(source, target, key);
+  }
+  return recursiveFn;
+}
+var _deepAssign = genTraversalHandler(function (val) {
+  return val;
+});
+/**
+ * deeply clone an object
+ * @param  {Array|Object} source if you pass in other type, it will throw an error
+ * @return {clone-target}        the new Object
+ */
+function deepClone(source) {
+  if (isPrimitive(source)) {
+    throw new TypeError('deepClone only accept non primitive type');
+  }
+  return _deepAssign(source);
+}
+/**
+ * merge multiple objects
+ * @param  {...Object} args [description]
+ * @return {merge-object}         [description]
+ */
+function deepAssign() {
+  for (var _len = arguments.length, args = Array(_len), _key2 = 0; _key2 < _len; _key2++) {
+    args[_key2] = arguments[_key2];
+  }
+
+  if (args.length < 2) {
+    throw new Error('deepAssign accept two and more argument');
+  }
+  for (var i = args.length - 1; i > -1; i--) {
+    if (isPrimitive(args[i])) {
+      throw new TypeError('deepAssign only accept non primitive type');
+    }
+  }
+  var target = args.shift();
+  args.forEach(function (source) {
+    return _deepAssign(source, target);
+  });
+  return target;
+}
+
+/**
+ * camelize any string, e.g hello world -> helloWorld
+ * @param  {string} str only accept string!
+ * @return {string}     camelize string
+ */
+function camelize(str, isBig) {
+  return str.replace(/(^|[^a-zA-Z]+)([a-zA-Z])/g, function (match, spilt, initials, index) {
+    return !isBig && index === 0 ? initials.toLowerCase() : initials.toUpperCase();
+  });
+}
+/**
+ * hypenate any string e.g hello world -> hello-world
+ * @param  {string} str only accept string
+ * @return {string}
+ */
+function hypenate(str) {
+  return camelize(str).replace(/([A-Z])/g, function (match) {
+    return '-' + match.toLowerCase();
+  });
+}
+
+/**
+ * bind the function with some context. we have some fallback strategy here
+ * @param {function} fn the function which we need to bind the context on
+ * @param {any} context the context object
+ */
+function bind(fn, context) {
+  if (fn.bind) {
+    return fn.bind(context);
+  } else if (fn.apply) {
+    return function __autobind__() {
+      for (var _len2 = arguments.length, args = Array(_len2), _key3 = 0; _key3 < _len2; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+
+      return fn.apply(context, args);
+    };
+  } else {
+    return function __autobind__() {
+      for (var _len3 = arguments.length, args = Array(_len3), _key4 = 0; _key4 < _len3; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+
+      return fn.call.apply(fn, [context].concat(_toConsumableArray(args)));
+    };
+  }
+}
+
+/**
+ * get an deep property
+ */
+function getDeepProperty(obj, keys) {
+  var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+      _ref$throwError = _ref.throwError,
+      throwError = _ref$throwError === undefined ? false : _ref$throwError,
+      backup = _ref.backup;
+
+  if (isString(keys)) {
+    keys = keys.split('.');
+  }
+  if (!isArray(keys)) {
+    throw new TypeError('keys of getDeepProperty must be string or Array<string>');
+  }
+  var read = [];
+  var target = obj;
+  for (var i = 0, len = keys.length; i < len; i++) {
+    var key = keys[i];
+    if (isVoid(target)) {
+      if (throwError) {
+        throw new Error('obj' + (read.length > 0 ? '.' + read.join('.') : ' itself') + ' is ' + target);
+      } else {
+        return backup;
+      }
+    }
+    target = target[key];
+    read.push(key);
+  }
+  return target;
+}
+
+/**
+ * chimee-helper-utils v0.2.0
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
+
+// **********************  judgement   ************************
+/**
+ * check if the code running in browser environment (not include worker env)
+ * @returns {Boolean}
+ */
+var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
+
+/**
+ * sort Object attributes by function
+ * and transfer them into array
+ * @param  {Object} obj Object form from numric
+ * @param  {Function} fn sort function
+ * @return {Array} the sorted attirbutes array
+ */
+function transObjectAttrIntoArray(obj) {
+  var fn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function (a, b) {
+    return +a - +b;
+  };
+
+  return _Object$keys(obj).sort(fn).reduce(function (order, key) {
+    return order.concat(obj[key]);
+  }, []);
+}
+/**
+ * run a queue one by one.If include function reject or return false it will stop
+ * @param  {Array} queue the queue which we want to run one by one
+ * @return {Promise}    tell us whether a queue run finished
+ */
+function runRejectableQueue(queue) {
+  for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    args[_key - 1] = arguments[_key];
+  }
+
+  return new _Promise(function (resolve, reject) {
+    var step = function step(index) {
+      if (index >= queue.length) {
+        resolve();
+        return;
+      }
+      var result = isFunction(queue[index]) ? queue[index].apply(queue, _toConsumableArray(args)) : queue[index];
+      if (result === false) return reject('stop');
+      return _Promise.resolve(result).then(function () {
+        return step(index + 1);
+      }).catch(function (err) {
+        return reject(err || 'stop');
+      });
+    };
+    step(0);
+  });
+}
+/**
+ * run a queue one by one.If include function return false it will stop
+ * @param  {Array} queue the queue which we want to run one by one
+ * @return {boolean} tell the user if the queue run finished
+ */
+function runStoppableQueue(queue) {
+  for (var _len2 = arguments.length, args = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+    args[_key2 - 1] = arguments[_key2];
+  }
+
+  var step = function step(index) {
+    if (index >= queue.length) {
+      return true;
+    }
+    var result = isFunction(queue[index]) ? queue[index].apply(queue, _toConsumableArray(args)) : queue[index];
+    if (result === false) return false;
+    return step(++index);
+  };
+  return step(0);
+}
+
+/**
+ * chimee-helper-events v0.1.0
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
+
+/**
+* @module event
+* @author huzunjie
+* @description 自定义事件基础类
+*/
+
+/* 缓存事件监听方法及包装，内部数据格式：
+ * targetIndex_<type:'click|mouseup|done'>: [ [
+ *   function(){ ... handler ... },
+ *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
+ *   isOnce
+ * ]]
+ */
+var _evtListenerCache = _Object$create(null);
+_evtListenerCache.count = 0;
+
+/**
+ * 得到某对象的某事件类型对应的监听队列数组
+ * @param  {Object}  target 发生事件的对象
+ * @param {String} type 事件类型(这里的时间类型不只是名称，还是缓存标识，可以通过添加后缀来区分)
+ * @return {Array}
+ */
+function getEvtTypeCache(target, type) {
+
+  var evtId = target.__evt_id;
+  if (!evtId) {
+
+    /* 设置__evt_id不可枚举 */
+    Object.defineProperty(target, '__evt_id', {
+      writable: true,
+      enumerable: false,
+      configurable: true
+    });
+
+    /* 空对象初始化绑定索引 */
+    evtId = target.__evt_id = ++_evtListenerCache.count;
+  }
+
+  var typeCacheKey = evtId + '_' + type;
+  var evtTypeCache = _evtListenerCache[typeCacheKey];
+  if (!evtTypeCache) {
+    evtTypeCache = _evtListenerCache[typeCacheKey] = [];
+  }
+
+  return evtTypeCache;
+}
+
+/**
+ * 触发事件监听方法
+ * @param  {Object}  target 发生事件的对象
+ * @param {String} type 事件类型
+ * @param {Object} eventObj 触发事件时要传回的event对象
+ * @return {undefined}
+ */
+function emitEventCache(target, type, eventObj) {
+  var evt = _Object$create(null);
+  evt.type = type;
+  evt.target = target;
+  if (eventObj) {
+    _Object$assign(evt, isObject(eventObj) ? eventObj : { data: eventObj });
+  }
+  getEvtTypeCache(target, type).forEach(function (item) {
+    (item[1] || item[0]).apply(target, [evt]);
+  });
+}
+
+/**
+ * 添加事件监听到缓存
+ * @param  {Object}  target 发生事件的对象
+ * @param {String} type 事件类型
+ * @param {Function} handler 监听函数
+ * @param {Boolean} isOnce 是否单次执行
+ * @param {Function} handlerWrap
+ * @return {undefined}
+ */
+function addEventCache(target, type, handler) {
+  var isOnce = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+  var handlerWrap = arguments[4];
+
+  if (isFunction(isOnce) && !handlerWrap) {
+    handlerWrap = isOnce;
+    isOnce = undefined;
+  }
+  var handlers = [handler, undefined, isOnce];
+  if (isOnce && !handlerWrap) {
+    handlerWrap = function handlerWrap() {
+      removeEventCache(target, type, handler, isOnce);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      handler.apply(target, args);
+    };
+  }
+  if (handlerWrap) {
+    handlers[1] = handlerWrap;
+  }
+  getEvtTypeCache(target, type).push(handlers);
+}
+
+/**
+ * 移除事件监听
+ * @param  {Object}  target 发生事件的对象
+ * @param {String} type 事件类型
+ * @param {Function} handler 监听函数
+ * @return {undefined}
+ */
+function removeEventCache(target, type, handler) {
+  var isOnce = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+  var typeCache = getEvtTypeCache(target, type);
+
+  if (handler || isOnce) {
+    /* 有指定 handler 则清除对应监听 */
+    var handlerId = -1;
+    var handlerWrap = void 0;
+    typeCache.find(function (item, i) {
+      if ((!handler || item[0] === handler) && (!isOnce || item[2])) {
+        handlerId = i;
+        handlerWrap = item[1];
+        return true;
+      }
+    });
+    if (handlerId !== -1) {
+      typeCache.splice(handlerId, 1);
+    }
+    return handlerWrap;
+  } else {
+    /* 未指定 handler 则清除type对应的所有监听 */
+    typeCache.length = 0;
+  }
+}
+
+/**
+ * @class CustEvent
+ * @description
+ * Event 自定义事件类
+ * 1. 可以使用不传参得到的实例作为eventBus使用
+ * 2. 可以通过指定target，用多个实例操作同一target对象的事件管理
+ * 3. 当设定target时，可以通过设置assign为true，来给target实现"on\once\off\emit"方法
+ * @param  {Object}  target 发生事件的对象（空则默认为event实例）
+ * @param  {Boolean}  assign 是否将"on\once\off\emit"方法实现到target对象上
+ * @return {event}
+ */
+var CustEvent = function () {
+  function CustEvent(target, assign) {
+    var _this = this;
+
+    _classCallCheck(this, CustEvent);
+
+    /* 设置__target不可枚举 */
+    Object.defineProperty(this, '__target', {
+      writable: true,
+      enumerable: false,
+      configurable: true
+    });
+    this.__target = this;
+
+    if (target) {
+
+      if ((typeof target === 'undefined' ? 'undefined' : _typeof(target)) !== 'object') {
+        throw new Error('CusEvent target are not object');
+      }
+      this.__target = target;
+
+      /* 为target实现on\once\off\emit */
+      if (assign) {
+        ['on', 'once', 'off', 'emit'].forEach(function (mth) {
+          target[mth] = _this[mth];
+        });
+      }
+    }
+  }
+
+  /**
+   * 添加事件监听
+   * @param {String} type 事件类型
+   * @param {Function} handler 监听函数
+   * @param {Boolean} isOnce 单次监听类型
+   * @return {event}
+   */
+
+
+  _createClass(CustEvent, [{
+    key: 'on',
+    value: function on(type, handler) {
+      var isOnce = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      addEventCache(this.__target, type, handler, isOnce);
+      return this;
+    }
+
+    /**
+     * 添加事件监听,并且只执行一次
+     * @param {String} type 事件类型
+     * @param {Function} handler 监听函数
+     * @return {event}
+     */
+
+  }, {
+    key: 'once',
+    value: function once(type, handler) {
+      return this.on(type, handler, true);
+    }
+
+    /**
+     * 移除事件监听
+     * @param {String} type 事件类型
+     * @param {Function} handler 监听函数(不指定handler则清除type对应的所有事件监听)
+     * @param {Boolean} isOnce 单次监听类型
+     * @return {event}
+     */
+
+  }, {
+    key: 'off',
+    value: function off(type, handler) {
+      var isOnce = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      removeEventCache(this.__target, type, handler, isOnce);
+      return this;
+    }
+
+    /**
+     * 触发事件监听函数
+     * @param {String} type 事件类型
+     * @return {event}
+     */
+
+  }, {
+    key: 'emit',
+    value: function emit(type, data) {
+      emitEventCache(this.__target, type, { data: data });
+      return this;
+    }
+  }]);
+
+  return CustEvent;
+}();
+
+/**
+ * chimee-helper-dom v0.1.2
+ * (c) 2017 huzunjie
+ * Released under MIT
+ */
+
+/**
+ * chimee-helper-events v0.1.0
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
+
+/**
+* @module event
+* @author huzunjie
+* @description 自定义事件基础类
+*/
+
+/* 缓存事件监听方法及包装，内部数据格式：
+ * targetIndex_<type:'click|mouseup|done'>: [ [
+ *   function(){ ... handler ... },
+ *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
+ *   isOnce
+ * ]]
+ */
+var _evtListenerCache$1 = _Object$create(null);
+_evtListenerCache$1.count = 0;
+
+/**
+ * 得到某对象的某事件类型对应的监听队列数组
+ * @param  {Object}  target 发生事件的对象
+ * @param {String} type 事件类型(这里的时间类型不只是名称，还是缓存标识，可以通过添加后缀来区分)
+ * @return {Array}
+ */
+function getEvtTypeCache$1(target, type) {
+
+  var evtId = target.__evt_id;
+  if (!evtId) {
+
+    /* 设置__evt_id不可枚举 */
+    Object.defineProperty(target, '__evt_id', {
+      writable: true,
+      enumerable: false,
+      configurable: true
+    });
+
+    /* 空对象初始化绑定索引 */
+    evtId = target.__evt_id = ++_evtListenerCache$1.count;
+  }
+
+  var typeCacheKey = evtId + '_' + type;
+  var evtTypeCache = _evtListenerCache$1[typeCacheKey];
+  if (!evtTypeCache) {
+    evtTypeCache = _evtListenerCache$1[typeCacheKey] = [];
+  }
+
+  return evtTypeCache;
+}
+
+/**
+ * 触发事件监听方法
+ * @param  {Object}  target 发生事件的对象
+ * @param {String} type 事件类型
+ * @param {Object} eventObj 触发事件时要传回的event对象
+ * @return {undefined}
+ */
+function emitEventCache$1(target, type, eventObj) {
+  var evt = _Object$create(null);
+  evt.type = type;
+  evt.target = target;
+  if (eventObj) {
+    _Object$assign(evt, isObject(eventObj) ? eventObj : { data: eventObj });
+  }
+  getEvtTypeCache$1(target, type).forEach(function (item) {
+    (item[1] || item[0]).apply(target, [evt]);
+  });
+}
+
+/**
+ * 添加事件监听到缓存
+ * @param  {Object}  target 发生事件的对象
+ * @param {String} type 事件类型
+ * @param {Function} handler 监听函数
+ * @param {Boolean} isOnce 是否单次执行
+ * @param {Function} handlerWrap
+ * @return {undefined}
+ */
+function addEventCache$1(target, type, handler) {
+  var isOnce = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+  var handlerWrap = arguments[4];
+
+  if (isFunction(isOnce) && !handlerWrap) {
+    handlerWrap = isOnce;
+    isOnce = undefined;
+  }
+  var handlers = [handler, undefined, isOnce];
+  if (isOnce && !handlerWrap) {
+    handlerWrap = function handlerWrap() {
+      removeEventCache$1(target, type, handler, isOnce);
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      handler.apply(target, args);
+    };
+  }
+  if (handlerWrap) {
+    handlers[1] = handlerWrap;
+  }
+  getEvtTypeCache$1(target, type).push(handlers);
+}
+
+/**
+ * 移除事件监听
+ * @param  {Object}  target 发生事件的对象
+ * @param {String} type 事件类型
+ * @param {Function} handler 监听函数
+ * @return {undefined}
+ */
+function removeEventCache$1(target, type, handler) {
+  var isOnce = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+  var typeCache = getEvtTypeCache$1(target, type);
+
+  if (handler || isOnce) {
+    /* 有指定 handler 则清除对应监听 */
+    var handlerId = -1;
+    var handlerWrap = void 0;
+    typeCache.find(function (item, i) {
+      if ((!handler || item[0] === handler) && (!isOnce || item[2])) {
+        handlerId = i;
+        handlerWrap = item[1];
+        return true;
+      }
+    });
+    if (handlerId !== -1) {
+      typeCache.splice(handlerId, 1);
+    }
+    return handlerWrap;
+  } else {
+    /* 未指定 handler 则清除type对应的所有监听 */
+    typeCache.length = 0;
+  }
+}
+
+/**
+ * @class CustEvent
+ * @description
+ * Event 自定义事件类
+ * 1. 可以使用不传参得到的实例作为eventBus使用
+ * 2. 可以通过指定target，用多个实例操作同一target对象的事件管理
+ * 3. 当设定target时，可以通过设置assign为true，来给target实现"on\once\off\emit"方法
+ * @param  {Object}  target 发生事件的对象（空则默认为event实例）
+ * @param  {Boolean}  assign 是否将"on\once\off\emit"方法实现到target对象上
+ * @return {event}
+ */
+var CustEvent$1 = function () {
+  function CustEvent(target, assign) {
+    var _this = this;
+
+    _classCallCheck(this, CustEvent);
+
+    /* 设置__target不可枚举 */
+    Object.defineProperty(this, '__target', {
+      writable: true,
+      enumerable: false,
+      configurable: true
+    });
+    this.__target = this;
+
+    if (target) {
+
+      if ((typeof target === 'undefined' ? 'undefined' : _typeof(target)) !== 'object') {
+        throw new Error('CusEvent target are not object');
+      }
+      this.__target = target;
+
+      /* 为target实现on\once\off\emit */
+      if (assign) {
+        ['on', 'once', 'off', 'emit'].forEach(function (mth) {
+          target[mth] = _this[mth];
+        });
+      }
+    }
+  }
+
+  /**
+   * 添加事件监听
+   * @param {String} type 事件类型
+   * @param {Function} handler 监听函数
+   * @param {Boolean} isOnce 单次监听类型
+   * @return {event}
+   */
+
+
+  _createClass(CustEvent, [{
+    key: 'on',
+    value: function on(type, handler) {
+      var isOnce = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      addEventCache$1(this.__target, type, handler, isOnce);
+      return this;
+    }
+
+    /**
+     * 添加事件监听,并且只执行一次
+     * @param {String} type 事件类型
+     * @param {Function} handler 监听函数
+     * @return {event}
+     */
+
+  }, {
+    key: 'once',
+    value: function once(type, handler) {
+      return this.on(type, handler, true);
+    }
+
+    /**
+     * 移除事件监听
+     * @param {String} type 事件类型
+     * @param {Function} handler 监听函数(不指定handler则清除type对应的所有事件监听)
+     * @param {Boolean} isOnce 单次监听类型
+     * @return {event}
+     */
+
+  }, {
+    key: 'off',
+    value: function off(type, handler) {
+      var isOnce = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      removeEventCache$1(this.__target, type, handler, isOnce);
+      return this;
+    }
+
+    /**
+     * 触发事件监听函数
+     * @param {String} type 事件类型
+     * @return {event}
+     */
+
+  }, {
+    key: 'emit',
+    value: function emit(type, data) {
+      emitEventCache$1(this.__target, type, { data: data });
+      return this;
+    }
+  }]);
+
+  return CustEvent;
+}();
+
+/**
+ * chimee-helper-utils v0.1.3
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
+
+// **********************  judgement   ************************
+/**
+ * check if the code running in browser environment (not include worker env)
+ * @returns {Boolean}
+ */
+var inBrowser$1 = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
+
+// **********************  对象操作  ************************
+/**
+ * 转变一个类数组对象为数组
+ */
+function makeArray$1(obj) {
+  return _Array$from(obj);
+}
+
+/**
+* @module dom
+* @author huzunjie
+* @description 一些常用的DOM判断及操作方法，可以使用dom.$('*')包装DOM，实现类jQuery的链式操作；当然这里的静态方法也可以直接使用。
+*/
+
+var _divEl = document.createElement('div');
+var _textAttrName = 'innerText';
+'textContent' in _divEl && (_textAttrName = 'textContent');
+var _arrPrototype = Array.prototype;
+
+/**
+ * 读取HTML元素属性值
+ * @param {HTMLElement} el 目标元素
+ * @param {String} attrName 目标属性名称
+ * @return {String}
+ */
+function getAttr(el, attrName) {
+  return el.getAttribute(attrName);
+}
+
+/**
+ * 设置HTML元素属性值
+ * @param {HTMLElement} el 目标元素
+ * @param {String} attrName 目标属性名称
+ * @param {String} attrVal 目标属性值
+ */
+function setAttr(el, attrName, attrVal) {
+  if (attrVal === undefined) {
+    el.removeAttribute(attrName);
+  } else {
+    el.setAttribute(attrName, attrVal);
+  }
+}
+
+/**
+ * 为HTML元素添加className
+ * @param {HTMLElement} el 目标元素
+ * @param {String} cls 要添加的className（多个以空格分割）
+ */
+function addClassName(el, cls) {
+  if (!cls || !(cls = cls.trim())) {
+    return;
+  }
+  var clsArr = cls.split(/\s+/);
+  if (el.classList) {
+    clsArr.forEach(function (c) {
+      return el.classList.add(c);
+    });
+  } else {
+    var curCls = ' ' + (el.className || '') + ' ';
+    clsArr.forEach(function (c) {
+      curCls.indexOf(' ' + c + ' ') === -1 && (curCls += ' ' + c);
+    });
+    el.className = curCls.trim();
+  }
+}
+
+/**
+ * 为HTML元素移除className
+ * @param {HTMLElement} el 目标元素
+ * @param {String} cls 要移除的className（多个以空格分割）
+ */
+function removeClassName(el, cls) {
+  if (!cls || !(cls = cls.trim())) {
+    return;
+  }
+
+  var clsArr = cls.split(/\s+/);
+  if (el.classList) {
+    clsArr.forEach(function (c) {
+      return el.classList.remove(c);
+    });
+  } else {
+    var curCls = ' ' + el.className + ' ';
+    clsArr.forEach(function (c) {
+      var tar = ' ' + c + ' ';
+      while (curCls.indexOf(tar) !== -1) {
+        curCls = curCls.replace(tar, ' ');
+      }
+    });
+    el.className = curCls.trim();
+  }
+}
+
+/**
+ * 检查HTML元素是否已设置className
+ * @param {HTMLElement} el 目标元素
+ * @param {String} className 要检查的className
+ * @return {Boolean}
+ */
+function hasClassName(el, className) {
+  return new RegExp('(?:^|\\s)' + className + '(?=\\s|$)').test(el.className);
+}
+
+/**
+ * 为HTML元素移除事件监听
+ * @param {HTMLElement} el 目标元素
+ * @param {String} type 事件名称
+ * @param {Function} handler 处理函数
+ * @param {Boolean} once 是否只监听一次
+ * @param {Boolean} capture 是否在捕获阶段的监听
+ */
+function removeEvent(el, type, handler) {
+  var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+  var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+
+  if (once) {
+    /* 尝试从缓存中读取包装后的方法 */
+    var handlerWrap = removeEventCache$1(el, type + '_once', handler);
+    if (handlerWrap) {
+      handler = handlerWrap;
+    }
+  }
+  el.removeEventListener(type, handler, capture);
+}
+
+/**
+ * 为HTML元素添加事件监听
+ * @param {HTMLElement} el 目标元素
+ * @param {String} type 事件名称
+ * @param {Function} handler 处理函数
+ * @param {Boolean} once 是否只监听一次
+ * @param {Boolean} capture 是否在捕获阶段监听
+ */
+function addEvent(el, type, handler) {
+  var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+  var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+
+  if (once) {
+    var oldHandler = handler;
+    handler = function () {
+      return function () {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        oldHandler.apply(this, args);
+        removeEvent(el, type, handler, once, capture);
+      };
+    }();
+    /* 将包装后的方法记录到缓存中 */
+    addEventCache$1(el, type + '_once', oldHandler, handler);
+  }
+
+  el.addEventListener(type, handler, capture);
+}
+
+/**
+ * 为HTML元素添加事件代理
+ * @param {HTMLElement} el 目标元素
+ * @param {String} selector 要被代理的元素
+ * @param {String} type 事件名称
+ * @param {Function} handler 处理函数
+ * @param {Boolean} capture 是否在捕获阶段监听
+ */
+function addDelegate(el, selector, type, handler) {
+  var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+
+
+  var handlerWrap = function handlerWrap(e) {
+    var targetEls = findParents(e.target || e.srcElement, el, true);
+    var targetEl = query(selector, el, true).find(function (seEl) {
+      return targetEls.find(function (tgEl) {
+        return seEl === tgEl;
+      });
+    });
+    targetEl && handler.apply(targetEl, arguments);
+  };
+  /* 将包装后的方法记录到缓存中 */
+  addEventCache$1(el, type + '_delegate_' + selector, handler, handlerWrap);
+  el.addEventListener(type, handlerWrap, capture);
+}
+
+/**
+ * 为HTML元素移除事件代理
+ * @param {HTMLElement} el 目标元素
+ * @param {String} selector 要被代理的元素
+ * @param {String} type 事件名称
+ * @param {Function} handler 处理函数
+ * @param {Boolean} capture 是否在捕获阶段监听
+ */
+function removeDelegate(el, selector, type, handler) {
+  var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+
+  /* 尝试从缓存中读取包装后的方法 */
+  var handlerWrap = removeEventCache$1(el, type + '_delegate_' + selector, handler);
+  handlerWrap && el.removeEventListener(type, handlerWrap, capture);
+}
+
+/**
+ * 读取HTML元素样式值
+ * @param {HTMLElement} el 目标元素
+ * @param {String} key 样式key
+ * @return {String}
+ */
+function getStyle(el, key) {
+  return (el.currentStyle || document.defaultView.getComputedStyle(el, null))[key] || el.style[key];
+}
+
+/**
+ * 设置HTML元素样式值
+ * @param {HTMLElement} el 目标元素
+ * @param {String} key 样式key
+ * @param {String} val 样式值
+ */
+function setStyle(el, key, val) {
+  if (isObject(key)) {
+    for (var k in key) {
+      setStyle(el, k, key[k]);
+    }
+  } else {
+    el.style[key] = val;
+  }
+}
+
+/**
+ * 根据选择器查询目标元素
+ * @param {String} selector 选择器,用于 querySelectorAll
+ * @param {HTMLElement} container 父容器
+ * @param {Boolean} toArray 强制输出为数组
+ * @return {NodeList|Array}
+ */
+function query(selector) {
+  var container = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
+  var toArray = arguments[2];
+
+  var retNodeList = container.querySelectorAll(selector);
+  return toArray ? _Array$from(retNodeList) : retNodeList;
+}
+
+/**
+ * 从DOM树中移除el
+ * @param {HTMLElement} el 目标元素
+ */
+function removeEl(el) {
+  el.parentNode.removeChild(el);
+}
+
+/**
+ * 查找元素的父节点们
+ * @param {HTMLElement} el 目标元素
+ * @param {HTMLElement} endEl 最大父容器（不指定则找到html）
+ * @param {Boolean} haveEl 包含当前元素
+ * @param {Boolean} haveEndEl 包含设定的最大父容器
+ */
+function findParents(el) {
+  var endEl = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var haveEl = arguments[2];
+  var haveEndEl = arguments[3];
+
+  var retEls = [];
+  if (haveEl) {
+    retEls.push(el);
+  }
+  while (el && el.parentNode !== endEl) {
+    el = el.parentNode;
+    el && retEls.push(el);
+  }
+  if (haveEndEl) {
+    retEls.push(endEl);
+  }
+  return retEls;
+}
+
+/**
+ * 根据选择器查询并得到目标元素的wrap包装器
+ * @param {String} selector 选择器,另外支持 HTMLString||NodeList||NodeArray||HTMLElement
+ * @param {HTMLElement} container 父容器
+ * @return {Object}
+ */
+function $(selector, container) {
+  return selector.constructor === NodeWrap ? selector : new NodeWrap(selector, container);
+}
+
+/**
+ * @class NodeWrap
+ * @description
+ * NodeWrap DOM包装器，用以实现基本的链式操作
+ * new dom.NodeWrap('*') 相当于 dom.$('*')
+ * 这里面用于DOM操作的属性方法都是基于上面静态方法实现，有需要可以随时修改补充
+ * @param {String} selector 选择器(兼容 String||HTMLString||NodeList||NodeArray||HTMLElement)
+ * @param {HTMLElement} container 父容器（默认为document）
+ */
+
+var NodeWrap = function () {
+  function NodeWrap(selector) {
+    var container = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
+
+    _classCallCheck(this, NodeWrap);
+
+    var _this = this;
+    _this.selector = selector;
+
+    /* String||NodeList||HTMLElement 识别处理 */
+    var elsArr = void 0;
+    if (selector && selector.constructor === NodeList) {
+      /* 支持直接传入NodeList来构建包装器 */
+      elsArr = makeArray$1(selector);
+    } else if (isArray(selector)) {
+      /* 支持直接传入Node数组来构建包装器 */
+      elsArr = selector;
+    } else if (isString(selector)) {
+      if (selector.indexOf('<') === 0) {
+        /* 支持直接传入HTML字符串来新建DOM并构建包装器 */
+        _divEl.innerHTML = selector;
+        elsArr = query('*', _divEl, true);
+      } else {
+        /* 支持直接传入字符串选择器来查找DOM并构建包装器 */
+        elsArr = query(selector, container, true);
+      }
+    } else {
+      /* 其他任意对象直接构建包装器 */
+      elsArr = [selector];
+    }
+    _Object$assign(_this, elsArr);
+
+    /* NodeWrap本意可以 extends Array省略构造方法中下面这部分代码，但目前编译不支持 */
+    _this.length = elsArr.length;
+  }
+
+  /**
+   * 循环遍历DOM集合
+   * @param {Function} fn 遍历函数 fn(item, i)
+   * @return {Object}
+   */
+
+
+  _createClass(NodeWrap, [{
+    key: 'each',
+    value: function each() {
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      _arrPrototype.forEach.apply(this, args);
+      return this;
+    }
+  }, {
+    key: 'push',
+
+
+    /**
+     * 添加元素到DOM集合
+     * @param {HTMLElement} el 要加入的元素
+     * @return {this}
+     */
+    value: function push() {
+      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+
+      _arrPrototype.push.apply(this, args);
+      return this;
+    }
+  }, {
+    key: 'splice',
+
+
+    /**
+     * 截取DOM集合片段，并得到新的包装器splice
+     * @param {Nubmer} start
+     * @param {Nubmer} count
+     * @return {NodeWrap} 新的DOM集合包装器
+     */
+    value: function splice() {
+      for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+
+      return $(_arrPrototype.splice.apply(this, args));
+    }
+  }, {
+    key: 'find',
+
+
+    /**
+     * 查找子元素
+     * @param {String} selector 选择器
+     * @return {NodeWrap} 新的DOM集合包装器
+     */
+    value: function find(selector) {
+      var childs = [];
+      this.each(function (el) {
+        childs = childs.concat(query(selector, el, true));
+      });
+      var childsWrap = $(childs);
+      childsWrap.parent = this;
+      childsWrap.selector = selector;
+      return childsWrap;
+    }
+
+    /**
+     * 添加子元素
+     * @param {HTMLElement} childEls 要添加的HTML元素
+     * @return {this}
+     */
+
+  }, {
+    key: 'append',
+    value: function append(childEls) {
+      var childsWrap = $(childEls);
+      var firstEl = this[0];
+      childsWrap.each(function (newEl) {
+        return firstEl.appendChild(newEl);
+      });
+      return this;
+    }
+
+    /**
+     * 将元素集合添加到指定容器
+     * @param {HTMLElement} parentEl 要添加到父容器
+     * @return {this}
+     */
+
+  }, {
+    key: 'appendTo',
+    value: function appendTo(parentEl) {
+      $(parentEl).append(this);
+      return this;
+    }
+
+    /**
+     * DOM集合text内容读写操作
+     * @param {String} val 文本内容（如果有设置该参数则执行写操作，否则执行读操作）
+     * @return {this}
+     */
+
+  }, {
+    key: 'text',
+    value: function text(val) {
+      if (arguments.length === 0) {
+        return this[0][_textAttrName];
+      }
+      return this.each(function (el) {
+        el[_textAttrName] = val;
+      });
+    }
+
+    /**
+     * DOM集合HTML内容读写操作
+     * @param {String} html html内容（如果有设置该参数则执行写操作，否则执行读操作）
+     * @return {this}
+     */
+
+  }, {
+    key: 'html',
+    value: function html(_html) {
+      if (arguments.length === 0) {
+        return this[0].innerHTML;
+      }
+      return this.each(function (el) {
+        el.innerHTML = _html;
+      });
+    }
+
+    /**
+     * DOM集合属性读写操作
+     * @param {String} name 属性名称
+     * @param {String} val 属性值（如果有设置该参数则执行写操作，否则执行读操作）
+     * @return {this}
+     */
+
+  }, {
+    key: 'attr',
+    value: function attr(name, val) {
+      if (arguments.length === 1) {
+        return getAttr(this[0], name);
+      }
+      return this.each(function (el) {
+        return setAttr(el, name, val);
+      });
+    }
+
+    /**
+     * DOM集合dataset读写操作
+     * @param {String} key 键名
+     * @param {Any} val 键值（如果有设置该参数则执行写操作，否则执行读操作）
+     * @return {this}
+     */
+
+  }, {
+    key: 'data',
+    value: function data(key, val) {
+      if (arguments.length === 0) {
+        return this[0].dataset || {};
+      }
+      if (arguments.length === 1) {
+        return (this[0].dataset || {})[key];
+      }
+      return this.each(function (el) {
+        (el.dataset || (el.dataset = {}))[key] = val;
+      });
+    }
+
+    /**
+     * DOM集合样式读写操作
+     * @param {String} key 样式key
+     * @param {String} val 样式值（如果有设置该参数则执行写操作，否则执行读操作）
+     * @return {this}
+     */
+
+  }, {
+    key: 'css',
+    value: function css(key, val) {
+      if (arguments.length === 1 && !isObject(key)) {
+        return getStyle(this[0], key);
+      }
+      return this.each(function (el) {
+        return setStyle(el, key, val);
+      });
+    }
+
+    /**
+     * 为DOM集合增加className
+     * @param {String} cls 要增加的className
+     * @return {this}
+     */
+
+  }, {
+    key: 'addClass',
+    value: function addClass(cls) {
+      return this.each(function (el) {
+        return addClassName(el, cls);
+      });
+    }
+
+    /**
+     * 移除当前DOM集合的className
+     * @param {String} cls 要移除的className
+     * @return {this}
+     */
+
+  }, {
+    key: 'removeClass',
+    value: function removeClass(cls) {
+      return this.each(function (el) {
+        return removeClassName(el, cls);
+      });
+    }
+
+    /**
+     * 检查索引0的DOM是否有className
+     * @param {String} cls 要检查的className
+     * @return {this}
+     */
+
+  }, {
+    key: 'hasClass',
+    value: function hasClass(cls) {
+      return hasClassName(this[0], cls);
+    }
+
+    /**
+     * 为DOM集合添加事件监听
+     * @param {String} type 事件名称
+     * @param {Function} handler 处理函数
+     * @param {Boolean} once 是否只监听一次
+     * @param {Boolean} capture 是否在捕获阶段监听
+     * @return {this}
+     */
+
+  }, {
+    key: 'on',
+    value: function on(type, handler) {
+      var once = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+      var capture = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+      return this.each(function (el) {
+        return addEvent(el, type, handler, once, capture);
+      });
+    }
+
+    /**
+     * 为DOM集合解除事件监听
+     * @param {String} type 事件名称
+     * @param {Function} handler 处理函数
+     * @param {Boolean} once 是否只监听一次
+     * @param {Boolean} capture 是否在捕获阶段监听
+     * @return {this}
+     */
+
+  }, {
+    key: 'off',
+    value: function off(type, handler) {
+      var once = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+      var capture = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+      return this.each(function (el) {
+        return removeEvent(el, type, handler, once, capture);
+      });
+    }
+
+    /**
+     * 为DOM集合绑定事件代理
+     * @param {String} selector 目标子元素选择器
+     * @param {String} type 事件名称
+     * @param {Function} handler 处理函数
+     * @param {Boolean} capture 是否在捕获阶段监听
+     * @return {this}
+     */
+
+  }, {
+    key: 'delegate',
+    value: function delegate(selector, type, handler) {
+      var capture = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+      return this.each(function (el) {
+        return addDelegate(el, selector, type, handler, capture);
+      });
+    }
+
+    /**
+     * 为DOM集合解绑事件代理
+     * @param {String} selector 目标子元素选择器
+     * @param {String} type 事件名称
+     * @param {Function} handler 处理函数
+     * @param {Boolean} capture 是否在捕获阶段监听
+     * @return {this}
+     */
+
+  }, {
+    key: 'undelegate',
+    value: function undelegate(selector, type, handler) {
+      var capture = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+      return this.each(function (el) {
+        return removeDelegate(el, selector, type, handler, capture);
+      });
+    }
+
+    /**
+     * 从DOM树中移除
+     * @return {this}
+     */
+
+  }, {
+    key: 'remove',
+    value: function remove() {
+      return this.each(function (el) {
+        return removeEl(el);
+      });
+    }
+  }]);
+
+  return NodeWrap;
+}();
+
+/**
+ * chimee-helper v0.2.5
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
 
 var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting'];
 var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'error', 'ended', 'networkState', 'paused', 'readyState', 'seekable', 'sinkId', 'controlsList', 'tabIndex', 'dataset', 'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth'];
@@ -79,7 +2791,7 @@ var secondaryReg = /^(before|after|_)/;
 function secondaryChecker(key) {
   if (key.match(secondaryReg)) {
     /* istanbul ignore else  */
-    if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('bus', 'Secondary Event "' + key + '" could not be call straightly by API.');
+    if (process.env.NODE_ENV !== 'production') Log.warn('bus', 'Secondary Event "' + key + '" could not be call straightly by API.');
     return false;
   }
   return true;
@@ -165,7 +2877,7 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
       var deleted = this._removeEvent(keys, fn);
       if (deleted) return;
       var handler = this._getHandlerFromOnceMap(keys, fn);
-      if (chimeeHelper.isFunction(handler)) {
+      if (isFunction(handler)) {
         this._removeEvent(keys, handler) && this._removeFromOnceMap(keys, fn, handler);
       }
     }
@@ -187,7 +2899,7 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
       var keys = [eventName, stage, id];
       var handler = function handler() {
         // keep the this so that it can run
-        chimeeHelper.bind(fn, this).apply(undefined, arguments);
+        bind(fn, this).apply(undefined, arguments);
         bus._removeEvent(keys, handler);
         bus._removeFromOnceMap(keys, fn, handler);
       };
@@ -212,17 +2924,17 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
       }
 
       var event = this.events[key];
-      if (chimeeHelper.isEmpty(event)) {
+      if (isEmpty(event)) {
         if (selfProcessorEvents.indexOf(key) > -1) return _Promise.resolve();
         // $FlowFixMe: conditional return here
         return this._eventProcessor.apply(this, [key, { sync: false }].concat(_toConsumableArray(args)));
       }
       var beforeQueue = this._getEventQueue(event.before, this.__dispatcher.order);
-      return chimeeHelper.runRejectableQueue.apply(undefined, [beforeQueue].concat(_toConsumableArray(args))).then(function () {
+      return runRejectableQueue.apply(undefined, [beforeQueue].concat(_toConsumableArray(args))).then(function () {
         if (selfProcessorEvents.indexOf(key) > -1) return;
         return _this._eventProcessor.apply(_this, [key, { sync: false }].concat(_toConsumableArray(args)));
       }).catch(function (error) {
-        if (chimeeHelper.isError(error)) _this.__dispatcher.throwError(error);
+        if (isError(error)) _this.__dispatcher.throwError(error);
         return _Promise.reject(error);
       });
     }
@@ -243,13 +2955,13 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
         args[_key2 - 1] = arguments[_key2];
       }
 
-      if (chimeeHelper.isEmpty(event)) {
+      if (isEmpty(event)) {
         if (selfProcessorEvents.indexOf(key) > -1) return true;
         // $FlowFixMe: conditional return here
         return this._eventProcessor.apply(this, [key, { sync: true }].concat(_toConsumableArray(args)));
       }
       var beforeQueue = this._getEventQueue(event.before, this.__dispatcher.order);
-      return chimeeHelper.runStoppableQueue.apply(undefined, [beforeQueue].concat(_toConsumableArray(args))) && (selfProcessorEvents.indexOf(key) > -1 ||
+      return runStoppableQueue.apply(undefined, [beforeQueue].concat(_toConsumableArray(args))) && (selfProcessorEvents.indexOf(key) > -1 ||
       // $FlowFixMe: conditional return here
       this._eventProcessor.apply(this, [key, { sync: true }].concat(_toConsumableArray(args))));
     }
@@ -270,17 +2982,17 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
       }
 
       var event = this.events[key];
-      if (chimeeHelper.isEmpty(event)) {
+      if (isEmpty(event)) {
         return _Promise.resolve(true);
       }
       var mainQueue = this._getEventQueue(event.main, this.__dispatcher.order);
-      return chimeeHelper.runRejectableQueue.apply(undefined, [mainQueue].concat(_toConsumableArray(args))).then(function () {
+      return runRejectableQueue.apply(undefined, [mainQueue].concat(_toConsumableArray(args))).then(function () {
         var afterQueue = _this2._getEventQueue(event.after, _this2.__dispatcher.order);
-        return chimeeHelper.runRejectableQueue.apply(undefined, [afterQueue].concat(_toConsumableArray(args)));
+        return runRejectableQueue.apply(undefined, [afterQueue].concat(_toConsumableArray(args)));
       }).then(function () {
         return _this2._runSideEffectEvent.apply(_this2, [key, _this2.__dispatcher.order].concat(_toConsumableArray(args)));
       }).catch(function (error) {
-        if (chimeeHelper.isError(error)) _this2.__dispatcher.throwError(error);
+        if (isError(error)) _this2.__dispatcher.throwError(error);
         return _this2._runSideEffectEvent.apply(_this2, [key, _this2.__dispatcher.order].concat(_toConsumableArray(args)));
       });
     }
@@ -295,7 +3007,7 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
     key: 'triggerSync',
     value: function triggerSync(key) {
       var event = this.events[key];
-      if (chimeeHelper.isEmpty(event)) {
+      if (isEmpty(event)) {
         return true;
       }
       var mainQueue = this._getEventQueue(event.main, this.__dispatcher.order);
@@ -305,7 +3017,7 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
         args[_key4 - 1] = arguments[_key4];
       }
 
-      var result = chimeeHelper.runStoppableQueue.apply(undefined, [mainQueue].concat(_toConsumableArray(args))) && chimeeHelper.runStoppableQueue.apply(undefined, [afterQueue].concat(_toConsumableArray(args)));
+      var result = runStoppableQueue.apply(undefined, [mainQueue].concat(_toConsumableArray(args))) && runStoppableQueue.apply(undefined, [afterQueue].concat(_toConsumableArray(args)));
       this._runSideEffectEvent.apply(this, [key, this.__dispatcher.order].concat(_toConsumableArray(args)));
       return result;
     }
@@ -329,7 +3041,7 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
   }, {
     key: '_addEvent',
     value: function _addEvent(keys, fn) {
-      keys = chimeeHelper.deepClone(keys);
+      keys = deepClone(keys);
       var id = keys.pop();
       var target = keys.reduce(function (target, key) {
         target[key] = target[key] || {};
@@ -349,13 +3061,13 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
   }, {
     key: '_removeEvent',
     value: function _removeEvent(keys, fn) {
-      keys = chimeeHelper.deepClone(keys);
+      keys = deepClone(keys);
       var id = keys.pop();
       var target = this.events;
       for (var i = 0, len = keys.length; i < len; i++) {
         var son = target[keys[i]];
         // if we can't find the event binder, just return
-        if (chimeeHelper.isEmpty(son)) return;
+        if (isEmpty(son)) return;
         target = son;
       }
       var queue = target[id] || [];
@@ -391,14 +3103,14 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
       var handlers = map.get(fn);
       var index = handlers.indexOf(handler);
       handlers.splice(index, 1);
-      if (chimeeHelper.isEmpty(handlers)) map.delete(fn);
+      if (isEmpty(handlers)) map.delete(fn);
     }
   }, {
     key: '_getHandlerFromOnceMap',
     value: function _getHandlerFromOnceMap(keys, fn) {
       var key = keys.join('-');
       var map = this.onceMap[key];
-      if (chimeeHelper.isVoid(map) || !map.has(fn)) return;
+      if (isVoid(map) || !map.has(fn)) return;
       var handlers = map.get(fn);
       return handlers[0];
     }
@@ -415,7 +3127,7 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
       var secondaryCheck = key.match(secondaryReg);
       var stage = secondaryCheck && secondaryCheck[0] || 'main';
       if (secondaryCheck) {
-        key = chimeeHelper.camelize(key.replace(secondaryReg, ''));
+        key = camelize(key.replace(secondaryReg, ''));
       }
       return { stage: stage, key: key };
     }
@@ -432,9 +3144,9 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
     value: function _getEventQueue(handlerSet, order) {
       var _this3 = this;
 
-      order = chimeeHelper.isArray(order) ? order.concat(['_vm']) : ['_vm'];
-      return chimeeHelper.isEmpty(handlerSet) ? [] : order.reduce(function (queue, id) {
-        if (chimeeHelper.isEmpty(handlerSet[id]) || !chimeeHelper.isArray(handlerSet[id]) ||
+      order = isArray(order) ? order.concat(['_vm']) : ['_vm'];
+      return isEmpty(handlerSet) ? [] : order.reduce(function (queue, id) {
+        if (isEmpty(handlerSet[id]) || !isArray(handlerSet[id]) ||
         // in case plugins is missed
         // _vm indicate the user. This is the function for user
         !_this3.__dispatcher.plugins[id] && id !== '_vm') {
@@ -442,7 +3154,7 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
         }
         return queue.concat(handlerSet[id].map(function (fn) {
           // bind context for plugin instance
-          return chimeeHelper.bind(fn, _this3.__dispatcher.plugins[id] || _this3.__dispatcher.vm);
+          return bind(fn, _this3.__dispatcher.plugins[id] || _this3.__dispatcher.vm);
         }));
       }, []);
     }
@@ -499,7 +3211,7 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
       }
 
       var event = this.events[key];
-      if (chimeeHelper.isEmpty(event)) {
+      if (isEmpty(event)) {
         return false;
       }
       var queue = this._getEventQueue(event['_'], order);
@@ -519,8 +3231,8 @@ var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicD
  * @param {Function} fn
  */
 function eventBinderCheck(key, fn) {
-  if (!chimeeHelper.isString(key)) throw new TypeError('key parameter must be String');
-  if (!chimeeHelper.isFunction(fn)) throw new TypeError('fn parameter must be Function');
+  if (!isString(key)) throw new TypeError('key parameter must be String');
+  if (!isFunction(fn)) throw new TypeError('fn parameter must be Function');
 }
 /**
  * checker for attr or css function
@@ -594,7 +3306,7 @@ function _applyDecoratedDescriptor$4(target, property, decorators, descriptor, c
 }
 
 function stringOrVoid(value) {
-  return chimeeHelper.isString(value) ? value : undefined;
+  return isString(value) ? value : undefined;
 }
 
 function accessorVideoProperty(property) {
@@ -611,14 +3323,14 @@ function accessorVideoProperty(property) {
 }
 
 function accessorVideoAttribute(attribute) {
-  var _ref = chimeeHelper.isObject(attribute) ? attribute : {
+  var _ref = isObject(attribute) ? attribute : {
     set: attribute,
     get: attribute,
     isBoolean: false
   },
       _set = _ref.set,
       _get$$1 = _ref.get,
-      isBoolean$$1 = _ref.isBoolean;
+      isBoolean = _ref.isBoolean;
 
   return toxicDecorators.accessor({
     get: function get(value) {
@@ -626,22 +3338,22 @@ function accessorVideoAttribute(attribute) {
     },
     set: function set(value) {
       if (!this.dispatcher.videoConfigReady) return value;
-      var val = isBoolean$$1 ? value ? '' : undefined : value === null ? undefined : value;
+      var val = isBoolean ? value ? '' : undefined : value === null ? undefined : value;
       this.dom.setAttr('video', _set, val);
       return value;
     }
   });
 }
 
-function accessorCustomAttribute(attribute, isBoolean$$1) {
+function accessorCustomAttribute(attribute, isBoolean) {
   return toxicDecorators.accessor({
     get: function get(value) {
       var attrValue = this.dom.getAttr('video', attribute);
-      return this.dispatcher.videoConfigReady && this.inited ? isBoolean$$1 ? !!attrValue : attrValue : value;
+      return this.dispatcher.videoConfigReady && this.inited ? isBoolean ? !!attrValue : attrValue : value;
     },
     set: function set(value) {
       if (!this.dispatcher.videoConfigReady) return value;
-      var val = isBoolean$$1 ? value || undefined : value === null ? undefined : value;
+      var val = isBoolean ? value || undefined : value === null ? undefined : value;
       this.dom.setAttr('video', attribute, val);
       return value;
     }
@@ -654,15 +3366,15 @@ function accessorWidthAndHeight(property) {
       if (!this.dispatcher.videoConfigReady) return value;
       var attr = this.dom.getAttr('video', property);
       var prop = this.dom.videoElement[property];
-      if (chimeeHelper.isNumeric(attr) && chimeeHelper.isNumber(prop)) return prop;
+      if (isNumeric(attr) && isNumber(prop)) return prop;
       return attr || undefined;
     },
     set: function set(value) {
       if (!this.dispatcher.videoConfigReady) return value;
       var val = void 0;
-      if (value === undefined || chimeeHelper.isNumber(value)) {
+      if (value === undefined || isNumber(value)) {
         val = value;
-      } else if (chimeeHelper.isString(value) && !_Number$isNaN(parseFloat(value))) {
+      } else if (isString(value) && !_Number$isNaN(parseFloat(value))) {
         val = value;
       }
       this.dom.setAttr('video', property, val);
@@ -806,7 +3518,7 @@ var VideoConfig = (_dec$5 = toxicDecorators.initBoolean(), _dec2$3 = toxicDecora
       writable: false,
       configurable: false
     });
-    chimeeHelper.deepAssign(this, config);
+    deepAssign(this, config);
   }
 
   _createClass(VideoConfig, [{
@@ -913,7 +3625,7 @@ function _applyDecoratedDescriptor$3(target, property, decorators, descriptor, c
 
 function propertyAccessibilityWarn(property) {
   /* istanbul ignore else  */
-  if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
+  if (process.env.NODE_ENV !== 'production') Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
 }
 var VideoWrapper = (_dec$4 = toxicDecorators.autobindClass(), _dec2$2 = toxicDecorators.alias('silentLoad'), _dec3$2 = toxicDecorators.alias('fullScreen'), _dec4$2 = toxicDecorators.alias('$fullScreen'), _dec5$1 = toxicDecorators.alias('fullscreen'), _dec6 = toxicDecorators.alias('emit'), _dec7 = toxicDecorators.alias('emitSync'), _dec8 = toxicDecorators.alias('on'), _dec9 = toxicDecorators.alias('addEventListener'), _dec10 = toxicDecorators.before(eventBinderCheck), _dec11 = toxicDecorators.alias('off'), _dec12 = toxicDecorators.alias('removeEventListener'), _dec13 = toxicDecorators.before(eventBinderCheck), _dec14 = toxicDecorators.alias('once'), _dec15 = toxicDecorators.before(eventBinderCheck), _dec16 = toxicDecorators.alias('css'), _dec17 = toxicDecorators.before(attrAndStyleCheck), _dec18 = toxicDecorators.alias('attr'), _dec19 = toxicDecorators.before(attrAndStyleCheck), _dec$4(_class$4 = (_class2$1 = function () {
   function VideoWrapper() {
@@ -945,7 +3657,7 @@ var VideoWrapper = (_dec$4 = toxicDecorators.autobindClass(), _dec2$2 = toxicDec
         _Object$defineProperty(_this, key, {
           get: function get() {
             var video = this.__dispatcher.dom.videoElement;
-            return chimeeHelper.bind(video[key], video);
+            return bind(video[key], video);
           },
 
           set: undefined,
@@ -1019,20 +3731,20 @@ var VideoWrapper = (_dec$4 = toxicDecorators.autobindClass(), _dec2$2 = toxicDec
           _ref$proxy = _ref.proxy,
           proxy = _ref$proxy === undefined ? false : _ref$proxy;
 
-      if (!chimeeHelper.isString(key) && !chimeeHelper.isArray(key)) throw new TypeError('$watch only accept string and Array<string> as key to find the target to spy on, but not ' + key + ', whose type is ' + (typeof key === 'undefined' ? 'undefined' : _typeof(key)));
+      if (!isString(key) && !isArray(key)) throw new TypeError('$watch only accept string and Array<string> as key to find the target to spy on, but not ' + key + ', whose type is ' + (typeof key === 'undefined' ? 'undefined' : _typeof(key)));
       var watching = true;
       var watcher = function watcher() {
-        if (watching && (!(this instanceof VideoConfig) || this.dispatcher.changeWatchable)) chimeeHelper.bind(handler, this).apply(undefined, arguments);
+        if (watching && (!(this instanceof VideoConfig) || this.dispatcher.changeWatchable)) bind(handler, this).apply(undefined, arguments);
       };
       var unwatcher = function unwatcher() {
         watching = false;
         var index = _this3.__unwatchHandlers.indexOf(unwatcher);
         if (index > -1) _this3.__unwatchHandlers.splice(index, 1);
       };
-      var keys = chimeeHelper.isString(key) ? key.split('.') : key;
+      var keys = isString(key) ? key.split('.') : key;
       var property = keys.pop();
       var videoConfig = this.__dispatcher.videoConfig;
-      var target = keys.length === 0 && !other && videoConfig._realDomAttr.indexOf(property) > -1 ? videoConfig : ['isFullscreen', 'fullscreenElement'].indexOf(property) > -1 ? this.__dispatcher.dom : chimeeHelper.getDeepProperty(other || this, keys, { throwError: true });
+      var target = keys.length === 0 && !other && videoConfig._realDomAttr.indexOf(property) > -1 ? videoConfig : ['isFullscreen', 'fullscreenElement'].indexOf(property) > -1 ? this.__dispatcher.dom : getDeepProperty(other || this, keys, { throwError: true });
       toxicDecorators.applyDecorators(target, _defineProperty({}, property, toxicDecorators.watch(watcher, { deep: deep, diff: diff, proxy: proxy })), { self: true });
       this.__unwatchHandlers.push(unwatcher);
       return unwatcher;
@@ -1040,11 +3752,11 @@ var VideoWrapper = (_dec$4 = toxicDecorators.autobindClass(), _dec2$2 = toxicDec
   }, {
     key: '$set',
     value: function $set(obj, property, value) {
-      if (!chimeeHelper.isObject(obj) && !chimeeHelper.isArray(obj)) throw new TypeError('$set only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
+      if (!isObject(obj) && !isArray(obj)) throw new TypeError('$set only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
       // $FlowFixMe: we have custom this function
-      if (!chimeeHelper.isFunction(obj.__set)) {
+      if (!isFunction(obj.__set)) {
         /* istanbul ignore else  */
-        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $set.');
+        if (process.env.NODE_ENV !== 'production') Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $set.');
         // $FlowFixMe: we support computed string on array here
         obj[property] = value;
         return;
@@ -1054,11 +3766,11 @@ var VideoWrapper = (_dec$4 = toxicDecorators.autobindClass(), _dec2$2 = toxicDec
   }, {
     key: '$del',
     value: function $del(obj, property) {
-      if (!chimeeHelper.isObject(obj) && !chimeeHelper.isArray(obj)) throw new TypeError('$del only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
+      if (!isObject(obj) && !isArray(obj)) throw new TypeError('$del only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
       // $FlowFixMe: we have custom this function
-      if (!chimeeHelper.isFunction(obj.__del)) {
+      if (!isFunction(obj.__del)) {
         /* istanbul ignore else  */
-        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $del.');
+        if (process.env.NODE_ENV !== 'production') Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $del.');
         // $FlowFixMe: we support computed string on array here
         delete obj[property];
         return;
@@ -1128,10 +3840,10 @@ var VideoWrapper = (_dec$4 = toxicDecorators.autobindClass(), _dec2$2 = toxicDec
     value: function $emit(key) {
       var _dispatcher$bus3;
 
-      if (!chimeeHelper.isString(key)) throw new TypeError('emit key parameter must be String');
+      if (!isString(key)) throw new TypeError('emit key parameter must be String');
       /* istanbul ignore else  */
       if (process.env.NODE_ENV !== 'production' && domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
-        chimeeHelper.Log.warn('plugin', 'You are try to emit ' + key + ' event. As emit is wrapped in Promise. It make you can\'t use event.preventDefault and event.stopPropagation. So we advice you to use emitSync');
+        Log.warn('plugin', 'You are try to emit ' + key + ' event. As emit is wrapped in Promise. It make you can\'t use event.preventDefault and event.stopPropagation. So we advice you to use emitSync');
       }
 
       for (var _len4 = arguments.length, args = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
@@ -1152,7 +3864,7 @@ var VideoWrapper = (_dec$4 = toxicDecorators.autobindClass(), _dec2$2 = toxicDec
     value: function $emitSync(key) {
       var _dispatcher$bus4;
 
-      if (!chimeeHelper.isString(key)) throw new TypeError('emitSync key parameter must be String');
+      if (!isString(key)) throw new TypeError('emitSync key parameter must be String');
 
       for (var _len5 = arguments.length, args = Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
         args[_key5 - 1] = arguments[_key5];
@@ -1197,7 +3909,7 @@ var VideoWrapper = (_dec$4 = toxicDecorators.autobindClass(), _dec2$2 = toxicDec
     value: function $once(key, fn) {
       var self = this;
       var boundFn = function boundFn() {
-        chimeeHelper.bind(fn, this).apply(undefined, arguments);
+        bind(fn, this).apply(undefined, arguments);
         self.__removeEvents(key, boundFn);
       };
       self.__addEvents(key, boundFn);
@@ -1242,7 +3954,7 @@ var VideoWrapper = (_dec$4 = toxicDecorators.autobindClass(), _dec2$2 = toxicDec
       if (method === 'set' && /video/.test(args[0])) {
         if (!this.__dispatcher.videoConfigReady) {
           /* istanbul ignore else  */
-          if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('chimee', this.__id + ' is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger');
+          if (process.env.NODE_ENV !== 'production') Log.warn('chimee', this.__id + ' is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger');
           return args[2];
         }
         if (this.__dispatcher.videoConfig._realDomAttr.indexOf(args[1]) > -1) {
@@ -1264,11 +3976,11 @@ var VideoWrapper = (_dec$4 = toxicDecorators.autobindClass(), _dec2$2 = toxicDec
   }, {
     key: '__removeEvents',
     value: function __removeEvents(key, fn) {
-      if (chimeeHelper.isEmpty(this.__events[key])) return;
+      if (isEmpty(this.__events[key])) return;
       var index = this.__events[key].indexOf(fn);
       if (index < 0) return;
       this.__events[key].splice(index, 1);
-      if (chimeeHelper.isEmpty(this.__events[key])) delete this.__events[key];
+      if (isEmpty(this.__events[key])) delete this.__events[key];
     }
   }, {
     key: '__destroy',
@@ -1279,7 +3991,7 @@ var VideoWrapper = (_dec$4 = toxicDecorators.autobindClass(), _dec2$2 = toxicDec
         return unwatcher();
       });
       _Object$keys(this.__events).forEach(function (key) {
-        if (!chimeeHelper.isArray(_this6.__events[key])) return;
+        if (!isArray(_this6.__events[key])) return;
         _this6.__events[key].forEach(function (fn) {
           return _this6.$off(key, fn);
         });
@@ -1413,16 +4125,16 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.3.0';
+    _this.VERSION = '0.3.1';
     _this.__operable = true;
     _this.__level = 0;
 
-    if (chimeeHelper.isEmpty(dispatcher)) {
+    if (isEmpty(dispatcher)) {
       /* istanbul ignore else  */
-      if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
+      if (process.env.NODE_ENV !== 'production') Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
       throw new TypeError('lack of dispatcher');
     }
-    if (!chimeeHelper.isString(id)) {
+    if (!isString(id)) {
       throw new TypeError('id of PluginConfig must be string');
     }
     _this.__id = id;
@@ -1431,7 +4143,7 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
     _this.__wrapAsVideo(_this.$videoConfig);
     _this.beforeCreate = _this.beforeCreate || beforeCreate;
     try {
-      chimeeHelper.isFunction(_this.beforeCreate) && _this.beforeCreate({
+      isFunction(_this.beforeCreate) && _this.beforeCreate({
         events: events,
         data: data,
         computed: computed,
@@ -1441,12 +4153,12 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
       _this.$throwError(error);
     }
     // bind plugin methods into instance
-    if (!chimeeHelper.isEmpty(methods) && chimeeHelper.isObject(methods)) {
+    if (!isEmpty(methods) && isObject(methods)) {
       _Object$keys(methods).forEach(function (key) {
         var fn = methods[key];
-        if (!chimeeHelper.isFunction(fn)) throw new TypeError('plugins methods must be Function');
+        if (!isFunction(fn)) throw new TypeError('plugins methods must be Function');
         _Object$defineProperty(_this, key, {
-          value: chimeeHelper.bind(fn, _this),
+          value: bind(fn, _this),
           writable: true,
           enumerable: false,
           configurable: true
@@ -1454,30 +4166,30 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
       });
     }
     // hook plugin events on bus
-    if (!chimeeHelper.isEmpty(events) && chimeeHelper.isObject(events)) {
+    if (!isEmpty(events) && isObject(events)) {
       _Object$keys(events).forEach(function (key) {
-        if (!chimeeHelper.isFunction(events[key])) throw new TypeError('plugins events hook must bind with Function');
+        if (!isFunction(events[key])) throw new TypeError('plugins events hook must bind with Function');
         _this.$on(key, events[key]);
       });
     }
     // bind data into plugin instance
-    if (!chimeeHelper.isEmpty(data) && chimeeHelper.isObject(data)) {
-      chimeeHelper.deepAssign(_this, data);
+    if (!isEmpty(data) && isObject(data)) {
+      deepAssign(_this, data);
     }
     // set the computed member by getter and setter
-    if (!chimeeHelper.isEmpty(computed) && chimeeHelper.isObject(computed)) {
+    if (!isEmpty(computed) && isObject(computed)) {
       var props = _Object$keys(computed).reduce(function (props, key) {
         var val = computed[key];
-        if (chimeeHelper.isFunction(val)) {
+        if (isFunction(val)) {
           props[key] = toxicDecorators.accessor({ get: val });
           return props;
         }
-        if (chimeeHelper.isObject(val) && (chimeeHelper.isFunction(val.get) || chimeeHelper.isFunction(val.set))) {
+        if (isObject(val) && (isFunction(val.get) || isFunction(val.set))) {
           props[key] = toxicDecorators.accessor(val);
           return props;
         }
         /* istanbul ignore else  */
-        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('Dispatcher.plugin', 'Wrong computed member \'' + key + '\' defination in Plugin ' + name);
+        if (process.env.NODE_ENV !== 'production') Log.warn('Dispatcher.plugin', 'Wrong computed member \'' + key + '\' defination in Plugin ' + name);
         return props;
       }, {});
       toxicDecorators.applyDecorators(_this, props, { self: true });
@@ -1523,15 +4235,15 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
      * to tell us if the plugin can be operable, can be dynamic change
      * @type {boolean}
      */
-    _this.$operable = chimeeHelper.isBoolean(option.operable) ? option.operable : operable;
-    _this.__level = chimeeHelper.isInteger(option.level) ? option.level : level;
+    _this.$operable = isBoolean(option.operable) ? option.operable : operable;
+    _this.__level = isInteger(option.level) ? option.level : level;
     /**
      * pluginOption, so it's easy for plugin developer to check the config
      * @type {Object}
      */
     _this.$config = option;
     try {
-      chimeeHelper.isFunction(_this.create) && _this.create();
+      isFunction(_this.create) && _this.create();
     } catch (error) {
       _this.$throwError(error);
     }
@@ -1547,7 +4259,7 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
     key: '__init',
     value: function __init(videoConfig) {
       try {
-        chimeeHelper.isFunction(this.init) && this.init(videoConfig);
+        isFunction(this.init) && this.init(videoConfig);
       } catch (error) {
         this.$throwError(error);
       }
@@ -1563,18 +4275,18 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
 
       var result = void 0;
       try {
-        result = chimeeHelper.isFunction(this.inited) && this.inited();
+        result = isFunction(this.inited) && this.inited();
       } catch (error) {
         this.$throwError(error);
       }
-      this.readySync = !chimeeHelper.isPromise(result);
+      this.readySync = !isPromise(result);
       this.ready = this.readySync ? _Promise.resolve()
       // $FlowFixMe: it's promise now
       : result.then(function (ret) {
         _this2.readySync = true;
         return ret;
       }).catch(function (error) {
-        if (chimeeHelper.isError(error)) return _this2.$throwError(error);
+        if (isError(error)) return _this2.$throwError(error);
         return _Promise.reject(error);
       });
       return this.readySync || this.ready;
@@ -1603,7 +4315,7 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
   }, {
     key: '$destroy',
     value: function $destroy() {
-      chimeeHelper.isFunction(this.destroy) && this.destroy();
+      isFunction(this.destroy) && this.destroy();
       _get(Plugin.prototype.__proto__ || _Object$getPrototypeOf(Plugin.prototype), '__destroy', this).call(this);
       this.__dispatcher.dom.removePlugin(this.__id);
       delete this.__dispatcher;
@@ -1618,7 +4330,7 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
   }, {
     key: '$operable',
     set: function set(val) {
-      if (!chimeeHelper.isBoolean(val)) return;
+      if (!isBoolean(val)) return;
       this.$dom.style.pointerEvents = val ? 'auto' : 'none';
       this.__operable = val;
     },
@@ -1633,7 +4345,7 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
   }, {
     key: '$level',
     set: function set(val) {
-      if (!chimeeHelper.isInteger(val)) return;
+      if (!isInteger(val)) return;
       this.__level = val;
       this.__dispatcher._sortZIndex();
     },
@@ -1684,7 +4396,7 @@ function _applyDecoratedDescriptor$5(target, property, decorators, descriptor, c
 
 function targetCheck(target) {
   if (target === 'video') target = 'videoElement';
-  if (!chimeeHelper.isElement(this[target])) throw new TypeError('Your target "' + target + '" is not a legal HTMLElement');
+  if (!isElement(this[target])) throw new TypeError('Your target "' + target + '" is not a legal HTMLElement');
 
   for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     args[_key - 1] = arguments[_key];
@@ -1693,8 +4405,8 @@ function targetCheck(target) {
   return [target].concat(args);
 }
 function attrOperationCheck(target, attr, val) {
-  if (!chimeeHelper.isString(attr)) throw new TypeError('to handle dom\'s attribute or style, your attr parameter must be string, but not ' + attr + ' in ' + (typeof attr === 'undefined' ? 'undefined' : _typeof(attr)));
-  if (!chimeeHelper.isString(target)) throw new TypeError('to handle dom\'s attribute or style, your target parameter must be string, , but not ' + target + ' in ' + (typeof target === 'undefined' ? 'undefined' : _typeof(target)));
+  if (!isString(attr)) throw new TypeError('to handle dom\'s attribute or style, your attr parameter must be string, but not ' + attr + ' in ' + (typeof attr === 'undefined' ? 'undefined' : _typeof(attr)));
+  if (!isString(target)) throw new TypeError('to handle dom\'s attribute or style, your target parameter must be string, , but not ' + target + ' in ' + (typeof target === 'undefined' ? 'undefined' : _typeof(target)));
   return [target, attr, val];
 }
 /**
@@ -1737,8 +4449,8 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
     this.fullscreenElement = undefined;
 
     this.__dispatcher = dispatcher;
-    if (!chimeeHelper.isElement(wrapper) && !chimeeHelper.isString(wrapper)) throw new TypeError('Wrapper can only be string or HTMLElement, but not ' + (typeof wrapper === 'undefined' ? 'undefined' : _typeof(wrapper)));
-    var $wrapper = chimeeHelper.$(wrapper);
+    if (!isElement(wrapper) && !isString(wrapper)) throw new TypeError('Wrapper can only be string or HTMLElement, but not ' + (typeof wrapper === 'undefined' ? 'undefined' : _typeof(wrapper)));
+    var $wrapper = $(wrapper);
     if ($wrapper.length === 0) {
       throw new TypeError('Can not get dom node accroding wrapper. Please check your wrapper');
     }
@@ -1771,7 +4483,7 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
         return (_dispatcher$bus = _this.__dispatcher.bus).triggerSync.apply(_dispatcher$bus, ['c_' + key].concat(_toConsumableArray(args)));
       };
       _this.containerDomEventHandlerList.push(cfn);
-      chimeeHelper.addEvent(_this.container, key, cfn);
+      addEvent(_this.container, key, cfn);
       var wfn = function wfn() {
         var _dispatcher$bus2;
 
@@ -1782,7 +4494,7 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
         return (_dispatcher$bus2 = _this.__dispatcher.bus).triggerSync.apply(_dispatcher$bus2, ['w_' + key].concat(_toConsumableArray(args)));
       };
       _this.wrapperDomEventHandlerList.push(wfn);
-      chimeeHelper.addEvent(_this.wrapper, key, wfn);
+      addEvent(_this.wrapper, key, wfn);
     });
     this._fullscreenMonitor();
     esFullscreen.on('fullscreenchange', this._fullscreenMonitor);
@@ -1816,15 +4528,15 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       var _this2 = this;
 
       this.__videoExtendedNodes.push(videoElement);
-      chimeeHelper.setAttr(videoElement, 'tabindex', -1);
+      setAttr(videoElement, 'tabindex', -1);
       this._autoFocusToVideo(videoElement);
-      if (!chimeeHelper.isElement(this.container)) {
+      if (!isElement(this.container)) {
         // create container
-        if (videoElement.parentElement && chimeeHelper.isElement(videoElement.parentElement) && videoElement.parentElement !== this.wrapper) {
+        if (videoElement.parentElement && isElement(videoElement.parentElement) && videoElement.parentElement !== this.wrapper) {
           this.container = videoElement.parentElement;
         } else {
           this.container = document.createElement('container');
-          chimeeHelper.$(this.container).append(videoElement);
+          $(this.container).append(videoElement);
         }
       } else {
         var container = this.container;
@@ -1836,7 +4548,7 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       }
       // check container.position
       if (this.container.parentElement !== this.wrapper) {
-        chimeeHelper.$(this.wrapper).append(this.container);
+        $(this.wrapper).append(this.container);
       }
       videoEvents.forEach(function (key) {
         var fn = function fn() {
@@ -1849,12 +4561,12 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
           return (_dispatcher$bus3 = _this2.__dispatcher.bus).trigger.apply(_dispatcher$bus3, [key].concat(_toConsumableArray(args)));
         };
         _this2.videoEventHandlerList.push(fn);
-        chimeeHelper.addEvent(videoElement, key, fn);
+        addEvent(videoElement, key, fn);
       });
       domEvents.forEach(function (key) {
         var fn = _this2._getEventHandler(key, { penetrate: true });
         _this2.videoDomEventHandlerList.push(fn);
-        chimeeHelper.addEvent(videoElement, key, fn);
+        addEvent(videoElement, key, fn);
       });
       this.videoElement = videoElement;
       return videoElement;
@@ -1867,12 +4579,12 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       var videoElement = this.videoElement;
       this._autoFocusToVideo(this.videoElement, false);
       videoEvents.forEach(function (key, index) {
-        chimeeHelper.removeEvent(_this3.videoElement, key, _this3.videoEventHandlerList[index]);
+        removeEvent(_this3.videoElement, key, _this3.videoEventHandlerList[index]);
       });
       domEvents.forEach(function (key, index) {
-        chimeeHelper.removeEvent(_this3.videoElement, key, _this3.videoDomEventHandlerList[index]);
+        removeEvent(_this3.videoElement, key, _this3.videoDomEventHandlerList[index]);
       });
-      chimeeHelper.$(videoElement).remove();
+      $(videoElement).remove();
       delete this.videoElement;
       return videoElement;
     }
@@ -1892,21 +4604,21 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
 
       var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-      if (!chimeeHelper.isString(id)) throw new TypeError('insertPlugin id parameter must be string');
-      if (chimeeHelper.isElement(this.plugins[id])) {
+      if (!isString(id)) throw new TypeError('insertPlugin id parameter must be string');
+      if (isElement(this.plugins[id])) {
         /* istanbul ignore else  */
-        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('Dispatcher.dom', 'Plugin ' + id + ' have already had a dom node. Now it will be replaced');
+        if (process.env.NODE_ENV !== 'production') Log.warn('Dispatcher.dom', 'Plugin ' + id + ' have already had a dom node. Now it will be replaced');
         this.removePlugin(id);
       }
-      if (chimeeHelper.isString(el)) {
-        if (chimeeHelper.isHTMLString(el)) {
+      if (isString(el)) {
+        if (isHTMLString(el)) {
           var outer = document.createElement('div');
           outer.innerHTML = el;
           el = outer.children[0];
         } else {
-          el = document.createElement(chimeeHelper.hypenate(el));
+          el = document.createElement(hypenate(el));
         }
-      } else if (chimeeHelper.isObject(el)) {
+      } else if (isObject(el)) {
         // $FlowFixMe: we have check el's type here and make sure it's an object
         option = el;
       }
@@ -1917,23 +4629,23 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       var _option2 = option,
           className = _option2.className;
 
-      var node = el && chimeeHelper.isElement(el) ? el : document.createElement('div');
-      if (chimeeHelper.isArray(className)) {
+      var node = el && isElement(el) ? el : document.createElement('div');
+      if (isArray(className)) {
         className = className.join(' ');
       }
-      if (chimeeHelper.isString(className)) {
-        chimeeHelper.addClassName(node, className);
+      if (isString(className)) {
+        addClassName(node, className);
       }
       this.plugins[id] = node;
       var outerElement = inner ? this.container : this.wrapper;
       var originElement = inner ? this.videoElement : this.container;
-      if (chimeeHelper.isBoolean(autoFocus) ? autoFocus : inner) this._autoFocusToVideo(node);
+      if (isBoolean(autoFocus) ? autoFocus : inner) this._autoFocusToVideo(node);
       // auto forward the event if this plugin can be penetrate
       if (penetrate) {
         this.__domEventHandlerList[id] = this.__domEventHandlerList[id] || [];
         domEvents.forEach(function (key) {
           var fn = _this4._getEventHandler(key, { penetrate: penetrate });
-          chimeeHelper.addEvent(node, key, fn);
+          addEvent(node, key, fn);
           _this4.__domEventHandlerList[id].push(fn);
         });
         this.__videoExtendedNodes.push(node);
@@ -1954,15 +4666,15 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
     value: function removePlugin(id) {
       var _this5 = this;
 
-      if (!chimeeHelper.isString(id)) return;
+      if (!isString(id)) return;
       var dom = this.plugins[id];
-      if (chimeeHelper.isElement(dom)) {
+      if (isElement(dom)) {
         dom.parentNode && dom.parentNode.removeChild(dom);
         this._autoFocusToVideo(dom, true);
       }
-      if (!chimeeHelper.isEmpty(this.__domEventHandlerList[id])) {
+      if (!isEmpty(this.__domEventHandlerList[id])) {
         domEvents.forEach(function (key, index) {
-          chimeeHelper.removeEvent(_this5.plugins[id], key, _this5.__domEventHandlerList[id][index]);
+          removeEvent(_this5.plugins[id], key, _this5.__domEventHandlerList[id][index]);
         });
         delete this.__domEventHandlerList[id];
       }
@@ -1979,7 +4691,7 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
 
       // $FlowFixMe: there are videoElment and container here
       plugins.forEach(function (key, index) {
-        return chimeeHelper.setStyle(key.match(/^(videoElement|container)$/) ? _this6[key] : _this6.plugins[key], 'z-index', ++index);
+        return setStyle(key.match(/^(videoElement|container)$/) ? _this6[key] : _this6.plugins[key], 'z-index', ++index);
       });
     }
     /**
@@ -1993,25 +4705,25 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
     key: 'setAttr',
     value: function setAttr$$1(target, attr, val) {
       // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
-      chimeeHelper.setAttr(this[target], attr, val);
+      setAttr(this[target], attr, val);
     }
   }, {
     key: 'getAttr',
     value: function getAttr$$1(target, attr) {
       // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
-      return chimeeHelper.getAttr(this[target], attr);
+      return getAttr(this[target], attr);
     }
   }, {
     key: 'setStyle',
     value: function setStyle$$1(target, attr, val) {
       // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
-      chimeeHelper.setStyle(this[target], attr, val);
+      setStyle(this[target], attr, val);
     }
   }, {
     key: 'getStyle',
     value: function getStyle$$1(target, attr) {
       // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
-      return chimeeHelper.getStyle(this[target], attr);
+      return getStyle(this[target], attr);
     }
   }, {
     key: 'requestFullscreen',
@@ -2052,8 +4764,8 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
 
       this.removeVideo();
       domEvents.forEach(function (key, index) {
-        chimeeHelper.removeEvent(_this7.container, key, _this7.containerDomEventHandlerList[index]);
-        chimeeHelper.removeEvent(_this7.wrapper, key, _this7.wrapperDomEventHandlerList[index]);
+        removeEvent(_this7.container, key, _this7.containerDomEventHandlerList[index]);
+        removeEvent(_this7.wrapper, key, _this7.wrapperDomEventHandlerList[index]);
       });
       esFullscreen.off('fullscreenchange', this._fullscreenMonitor);
       this.wrapper.innerHTML = this.originHTML;
@@ -2065,15 +4777,15 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
     value: function _autoFocusToVideo(element) {
       var remove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-      (remove ? chimeeHelper.removeEvent : chimeeHelper.addEvent)(element, 'mouseup', this._focusToVideo, false, true);
-      (remove ? chimeeHelper.removeEvent : chimeeHelper.addEvent)(element, 'touchend', this._focusToVideo, false, true);
+      (remove ? removeEvent : addEvent)(element, 'mouseup', this._focusToVideo, false, true);
+      (remove ? removeEvent : addEvent)(element, 'touchend', this._focusToVideo, false, true);
     }
   }, {
     key: '_focusToVideo',
     value: function _focusToVideo(evt) {
       var x = window.scrollX;
       var y = window.scrollY;
-      chimeeHelper.isFunction(this.videoElement.focus) && this.videoElement.focus();
+      isFunction(this.videoElement.focus) && this.videoElement.focus();
       window.scrollTo(x, y);
     }
   }, {
@@ -2081,14 +4793,14 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
     value: function _fullscreenMonitor(evt) {
       var element = esFullscreen.fullscreenElement;
       var original = this.isFullscreen;
-      if (!element || !chimeeHelper.isPosterityNode(this.wrapper, element) && element !== this.wrapper) {
+      if (!element || !isPosterityNode(this.wrapper, element) && element !== this.wrapper) {
         this.isFullscreen = false;
         this.fullscreenElement = undefined;
       } else {
         this.isFullscreen = true;
         this.fullscreenElement = this.wrapper === element ? 'wrapper' : this.container === element ? 'container' : this.videoElement === element ? 'video' : element;
       }
-      if (chimeeHelper.isEvent(evt) && original !== this.isFullscreen) {
+      if (isEvent(evt) && original !== this.isFullscreen) {
         this.__dispatcher.bus.triggerSync('fullscreenchange', evt);
       }
     }
@@ -2117,7 +4829,7 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       var insideVideo = function insideVideo(node) {
         return _this8.__videoExtendedNodes.indexOf(node) > -1 || _this8.__videoExtendedNodes.reduce(function (flag, video) {
           if (flag) return flag;
-          return chimeeHelper.isPosterityNode(video, node);
+          return isPosterityNode(video, node);
         }, false);
       };
       return function () {
@@ -2189,20 +4901,20 @@ function _applyDecoratedDescriptor$1(target, property, decorators, descriptor, c
 
 var pluginConfigSet = {};
 function convertNameIntoId(name) {
-  if (!chimeeHelper.isString(name)) throw new Error('Plugin\'s name must be a string, but not "' + name + '" in ' + (typeof name === 'undefined' ? 'undefined' : _typeof(name)));
-  return chimeeHelper.camelize(name);
+  if (!isString(name)) throw new Error('Plugin\'s name must be a string, but not "' + name + '" in ' + (typeof name === 'undefined' ? 'undefined' : _typeof(name)));
+  return camelize(name);
 }
 function checkPluginConfig(config) {
-  if (chimeeHelper.isFunction(config)) {
+  if (isFunction(config)) {
     if (!(config.prototype instanceof Plugin)) {
       throw new TypeError('Your are trying to install plugin ' + config.name + ', but it\'s not extends from Chimee.plugin.');
     }
     return;
   }
-  if (!chimeeHelper.isObject(config) || chimeeHelper.isEmpty(config)) throw new TypeError('plugin\'s config must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
+  if (!isObject(config) || isEmpty(config)) throw new TypeError('plugin\'s config must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
   var name = config.name;
 
-  if (!chimeeHelper.isString(name) || name.length < 1) throw new TypeError('plugin must have a legal namea, but not "' + name + '" in ' + (typeof name === 'undefined' ? 'undefined' : _typeof(name)));
+  if (!isString(name) || name.length < 1) throw new TypeError('plugin must have a legal namea, but not "' + name + '" in ' + (typeof name === 'undefined' ? 'undefined' : _typeof(name)));
 }
 /**
  * <pre>
@@ -2243,7 +4955,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
     };
     this.changeWatchable = true;
 
-    if (!chimeeHelper.isObject(config)) throw new TypeError('UserConfig must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
+    if (!isObject(config)) throw new TypeError('UserConfig must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
     /**
      * dom Manager
      * @type {Dom}
@@ -2268,7 +4980,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
     this.videoConfig = new VideoConfig(this, config);
     // support both plugin and plugins here as people often cofuse both
     // $FlowFixMe: we support plugins here, which should be illegal
-    if (chimeeHelper.isArray(config.plugins) && !chimeeHelper.isArray(config.plugin)) {
+    if (isArray(config.plugins) && !isArray(config.plugin)) {
       config.plugin = config.plugins;
       delete config.plugins;
     }
@@ -2288,7 +5000,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
     var asyncInitedTasks = [];
     this.order.forEach(function (key) {
       var ready = _this.plugins[key].__inited();
-      if (chimeeHelper.isPromise(ready)) {
+      if (isPromise(ready)) {
         asyncInitedTasks.push(ready);
       }
     });
@@ -2323,26 +5035,26 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
   _createClass(Dispatcher, [{
     key: 'use',
     value: function use(option) {
-      if (chimeeHelper.isString(option)) option = { name: option, alias: undefined };
-      if (!chimeeHelper.isObject(option) || chimeeHelper.isObject(option) && !chimeeHelper.isString(option.name)) {
+      if (isString(option)) option = { name: option, alias: undefined };
+      if (!isObject(option) || isObject(option) && !isString(option.name)) {
         throw new TypeError('pluginConfig do not match requirement');
       }
-      if (!chimeeHelper.isString(option.alias)) option.alias = undefined;
+      if (!isString(option.alias)) option.alias = undefined;
       var _option = option,
           name = _option.name,
           alias$$1 = _option.alias;
 
       option.name = alias$$1 || name;
       delete option.alias;
-      var key = chimeeHelper.camelize(name);
-      var id = chimeeHelper.camelize(alias$$1 || name);
+      var key = camelize(name);
+      var id = camelize(alias$$1 || name);
       var pluginOption = option;
       var pluginConfig = Dispatcher.getPluginConfig(key);
-      if (chimeeHelper.isEmpty(pluginConfig)) throw new TypeError('You have not installed plugin ' + key);
-      if (chimeeHelper.isObject(pluginConfig)) {
+      if (isEmpty(pluginConfig)) throw new TypeError('You have not installed plugin ' + key);
+      if (isObject(pluginConfig)) {
         pluginConfig.id = id;
       }
-      var plugin = chimeeHelper.isFunction(pluginConfig) ? new pluginConfig({ id: id }, this, pluginOption) // eslint-disable-line 
+      var plugin = isFunction(pluginConfig) ? new pluginConfig({ id: id }, this, pluginOption) // eslint-disable-line 
       : new Plugin(pluginConfig, this, pluginOption);
       this.plugins[id] = plugin;
       _Object$defineProperty(this.vm, id, {
@@ -2365,7 +5077,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
     key: 'unuse',
     value: function unuse(id) {
       var plugin = this.plugins[id];
-      if (!chimeeHelper.isObject(plugin) || !chimeeHelper.isFunction(plugin.$destroy)) {
+      if (!isObject(plugin) || !isFunction(plugin.$destroy)) {
         delete this.plugins[id];
         return;
       }
@@ -2422,11 +5134,11 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
             var oldVideoTimeupdate = function oldVideoTimeupdate(evt) {
               var currentTime = _this2.kernel.currentTime;
               if (bias <= 0 && currentTime >= idealTime || bias > 0 && (Math.abs(idealTime - currentTime) <= bias && newVideoReady || currentTime - idealTime > bias)) {
-                chimeeHelper.removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-                chimeeHelper.removeEvent(video, 'error', videoError, true);
+                removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+                removeEvent(video, 'error', videoError, true);
                 if (!newVideoReady) {
-                  chimeeHelper.removeEvent(video, 'canplay', videoCanplay, true);
-                  chimeeHelper.removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
+                  removeEvent(video, 'canplay', videoCanplay, true);
+                  removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
                   kernel.destroy();
                   return resolve();
                 }
@@ -2441,8 +5153,8 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
               newVideoReady = true;
               // you can set it immediately run by yourself
               if (option.immediate) {
-                chimeeHelper.removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-                chimeeHelper.removeEvent(video, 'error', videoError, true);
+                removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+                removeEvent(video, 'error', videoError, true);
                 return reject({
                   error: false,
                   video: video,
@@ -2454,38 +5166,38 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
               kernel.seek(idealTime);
             };
             var videoError = function videoError(evt) {
-              chimeeHelper.removeEvent(video, 'canplay', videoCanplay, true);
-              chimeeHelper.removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
-              chimeeHelper.removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-              var error = !chimeeHelper.isEmpty(video.error) ? new Error(video.error.message) : new Error('unknow video error');
-              chimeeHelper.Log.error("chimee's silentload", error.message);
+              removeEvent(video, 'canplay', videoCanplay, true);
+              removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
+              removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+              var error = !isEmpty(video.error) ? new Error(video.error.message) : new Error('unknow video error');
+              Log.error("chimee's silentload", error.message);
               kernel.destroy();
               return index === repeatTimes ? reject(error) : resolve(error);
             };
-            chimeeHelper.addEvent(video, 'canplay', videoCanplay, true);
-            chimeeHelper.addEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
-            chimeeHelper.addEvent(video, 'error', videoError, true);
-            chimeeHelper.addEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+            addEvent(video, 'canplay', videoCanplay, true);
+            addEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
+            addEvent(video, 'error', videoError, true);
+            addEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
             var kernel = new Kernel(video, config);
             kernel.load();
           });
         };
       });
-      return chimeeHelper.runRejectableQueue(tasks).then(function () {
+      return runRejectableQueue(tasks).then(function () {
         var message = 'The silentLoad for ' + src + ' timed out. Please set a longer duration or check your network';
         /* istanbul ignore else  */
         if (process.env.NODE_ENV !== 'production') {
-          chimeeHelper.Log.warn("chimee's silentLoad", message);
+          Log.warn("chimee's silentLoad", message);
         }
         return _Promise.reject(new Error(message));
       }).catch(function (data) {
-        if (chimeeHelper.isError(data)) {
+        if (isError(data)) {
           return _Promise.reject(data);
         }
         if (data.error) {
           /* istanbul ignore else  */
           if (process.env.NODE_ENV !== 'production') {
-            chimeeHelper.Log.warn("chimee's silentLoad", data.message);
+            Log.warn("chimee's silentLoad", data.message);
           }
           return _Promise.reject(new Error(data.message));
         }
@@ -2502,7 +5214,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
           return _Promise.resolve();
         }
         return new _Promise(function (resolve) {
-          chimeeHelper.addEvent(video, 'play', function (evt) {
+          addEvent(video, 'play', function (evt) {
             _this2.switchKernel({ video: video, kernel: kernel, config: config });
             resolve();
           }, true);
@@ -2515,7 +5227,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
     value: function load(src) {
       var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-      if (!chimeeHelper.isEmpty(option)) {
+      if (!isEmpty(option)) {
         var videoConfig = this.videoConfig;
 
         var _option$isLive2 = option.isLive,
@@ -2546,7 +5258,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
           config = _ref.config;
 
       var oldKernel = this.kernel;
-      var originVideoConfig = chimeeHelper.deepClone(this.videoConfig);
+      var originVideoConfig = deepClone(this.videoConfig);
       this.dom.removeVideo();
       this.dom.installVideo(video);
       // as we will reset the currentVideoConfig on the new video
@@ -2615,9 +5327,9 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
 
       var configs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-      if (!chimeeHelper.isArray(configs)) {
+      if (!isArray(configs)) {
         /* istanbul ignore else  */
-        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('Dispatcher', 'UserConfig.plugin can only by an Array, but not "' + configs + '" in ' + (typeof configs === 'undefined' ? 'undefined' : _typeof(configs)));
+        if (process.env.NODE_ENV !== 'production') Log.warn('Dispatcher', 'UserConfig.plugin can only by an Array, but not "' + configs + '" in ' + (typeof configs === 'undefined' ? 'undefined' : _typeof(configs)));
         configs = [];
       }
       return configs.map(function (config) {
@@ -2635,7 +5347,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
 
       var _order$reduce = this.order.reduce(function (levelSet, key) {
         var plugin = _this5.plugins[key];
-        if (chimeeHelper.isEmpty(plugin)) return levelSet;
+        if (isEmpty(plugin)) return levelSet;
         var set = levelSet[plugin.$inner ? 'inner' : 'outer'];
         var level = plugin.$level;
         set[level] = set[level] || [];
@@ -2649,8 +5361,8 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
       inner[0].unshift('videoElement');
       outer[0] = outer[0] || [];
       outer[0].unshift('container');
-      var innerOrderArr = chimeeHelper.transObjectAttrIntoArray(inner);
-      var outerOrderArr = chimeeHelper.transObjectAttrIntoArray(outer);
+      var innerOrderArr = transObjectAttrIntoArray(inner);
+      var outerOrderArr = transObjectAttrIntoArray(outer);
       this.dom.setPluginsZIndex(innerOrderArr);
       this.dom.setPluginsZIndex(outerOrderArr);
       this.zIndexMap.inner = innerOrderArr;
@@ -2666,7 +5378,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
     value: function _getTopLevel(inner) {
       var arr = this.zIndexMap[inner ? 'inner' : 'outer'];
       var plugin = this.plugins[arr[arr.length - 1]];
-      return chimeeHelper.isEmpty(plugin) ? 0 : plugin.$level;
+      return isEmpty(plugin) ? 0 : plugin.$level;
     }
   }, {
     key: '_autoloadVideoSrcAtFirst',
@@ -2691,19 +5403,19 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
     value: function install(config) {
       var name = config.name;
 
-      var id = chimeeHelper.camelize(name);
-      if (!chimeeHelper.isEmpty(pluginConfigSet[id])) {
+      var id = camelize(name);
+      if (!isEmpty(pluginConfigSet[id])) {
         /* istanbul ignore else  */
-        if (process.env.NODE_ENV !== 'production') chimeeHelper.Log.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
+        if (process.env.NODE_ENV !== 'production') Log.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
       }
-      var pluginConfig = chimeeHelper.isFunction(config) ? config : chimeeHelper.deepAssign({ id: id }, config);
+      var pluginConfig = isFunction(config) ? config : deepAssign({ id: id }, config);
       pluginConfigSet[id] = pluginConfig;
       return id;
     }
   }, {
     key: 'hasInstalled',
     value: function hasInstalled(id) {
-      return !chimeeHelper.isEmpty(pluginConfigSet[id]);
+      return !isEmpty(pluginConfigSet[id]);
     }
   }, {
     key: 'uninstall',
@@ -2804,11 +5516,11 @@ var GlobalConfig = (_class$7 = function () {
       props[key] = toxicDecorators.accessor({
         get: function get() {
           // $FlowFixMe: we have check the keys
-          return chimeeHelper.Log['ENABLE_' + key.toUpperCase()];
+          return Log['ENABLE_' + key.toUpperCase()];
         },
         set: function set(val) {
           // $FlowFixMe: we have check the keys
-          chimeeHelper.Log['ENABLE_' + key.toUpperCase()] = val;
+          Log['ENABLE_' + key.toUpperCase()] = val;
           if (val === true) this.silent = false;
           return val;
         }
@@ -2897,12 +5609,12 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec(_class = (_class2 = (
 
     _initDefineProp(_this, 'config', _descriptor3, _this);
 
-    if (chimeeHelper.isString(config) || chimeeHelper.isElement(config)) {
+    if (isString(config) || isElement(config)) {
       config = {
         wrapper: config,
         controls: true
       };
-    } else if (chimeeHelper.isObject(config)) {
+    } else if (isObject(config)) {
       if (!config.wrapper) throw new Error('You must pass in an legal object');
     } else {
       throw new Error('You must pass in an Object containing wrapper or string or element to new a Chimee');
@@ -2936,9 +5648,9 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec(_class = (_class2 = (
   }, {
     key: '__throwError',
     value: function __throwError(error) {
-      if (chimeeHelper.isString(error)) error = new Error(error);
+      if (isString(error)) error = new Error(error);
       var errorHandler = this.config.errorHandler || Chimee.config.errorHandler;
-      if (chimeeHelper.isFunction(errorHandler)) return errorHandler(error);
+      if (isFunction(errorHandler)) return errorHandler(error);
       if (Chimee.config.silent) return;
       throw error;
     }
@@ -2953,7 +5665,7 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec(_class = (_class2 = (
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.3.0';
+    return '0.3.1';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
