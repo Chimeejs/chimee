@@ -376,25 +376,6 @@ export default class Dispatcher {
       if(key !== 'src') this.videoConfig[key] = originVideoConfig[key];
     });
     this.videoConfig.changeWatchable = true;
-    // bind the new config in new kernel to the videoConfig
-    // applyDecorators(config, {
-    //   src: accessor({
-    //     get: value => {
-    //       return this.videoConfig.src;
-    //     },
-    //     set: value => {
-    //       this.videoConfig.src = value;
-    //       return value;
-    //     }
-    //   })
-    // }, {self: true});
-    // the kernel's inner config would not be change according what we do
-    // so we have to load that
-    // applyDecorators(kernel.__proto__, {
-    //   load: before(src => {
-    //     return [src || this.videoConfig.src];
-    //   })
-    // }, {self: true});
     this.kernel = kernel;
     oldKernel.destroy();
   }
