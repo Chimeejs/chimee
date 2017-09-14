@@ -31,7 +31,7 @@ var Hls = function (_CustEvent) {
   }, {
     key: 'version',
     get: function get() {
-      return '1.0.5';
+      return '1.0.6';
     }
   }]);
 

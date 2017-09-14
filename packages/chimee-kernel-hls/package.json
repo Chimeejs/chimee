@@ -1,6 +1,6 @@
 {
   "name": "chimee-kernel-hls",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "kernel-hls of chimee",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -33,7 +33,7 @@
   "dependencies": {
     "babel-runtime": "^6.23.0",
     "chimee-helper": "^0.2.2",
-    "hls.js": "^0.7.10",
+    "hls.js": "^0.8.2",
     "rollup-plugin-replace": "^1.1.1"
   },
   "devDependencies": {
