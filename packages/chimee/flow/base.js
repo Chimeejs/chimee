@@ -58,6 +58,10 @@ declare type PluginConfigSet = {
   [key: string]: PluginConfig | Function
 }
 
+declare type KernelsSet = {
+  [key: string]: Function
+}
+
 declare type UserConfig = {
   src?: string,
   box?: string,
@@ -83,6 +87,10 @@ declare type UserConfig = {
   defaultPlaybackRate?: number,
   disableRemotePlayback?: boolean,
   defaultMuted?: boolean,
+  kernels?: Array<string> | {
+    flv?: Function,
+    hls?: Function
+  },
   preset?: {
     flv?: Function,
     hls?: Function

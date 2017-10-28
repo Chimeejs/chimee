@@ -40,6 +40,12 @@ export default class Chimee extends VideoWrapper {
   @frozen
   static hasInstalled = Dispatcher.hasInstalled;
   @frozen
+  static installKernel = Dispatcher.installKernel;
+  @frozen
+  static uninstallKernel = Dispatcher.uninstallKernel;
+  @frozen
+  static hasInstalledKernel = Dispatcher.hasInstalledKernel;
+  @frozen
   static getPluginConfig = Dispatcher.getPluginConfig;
   constructor (config: UserConfig | string | Element) {
     super();

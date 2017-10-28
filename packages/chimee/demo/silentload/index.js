@@ -29,15 +29,16 @@ const hlsSwitch = {
 Chimee.install(nativeSwitch);
 Chimee.install(flvSwitch);
 Chimee.install(hlsSwitch);
+Chimee.installKernel({
+  flv: window.chimeeKernelFlv,
+  hls: window.chimeeKernelHls
+});
 const player = new Chimee({
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
   wrapper: '#wrapper',
   plugin: ['nativeSwitch', 'flvSwitch', 'hlsSwitch'],
-  preset: {
-    flv: window.chimeeKernelFlv,
-    hls: window.chimeeKernelHls
-  },
   volume: 0.1,
+  kernels: ['flv', 'hls'],
   autoplay: true,
   controls: true
 });
