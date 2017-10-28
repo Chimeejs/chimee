@@ -349,4 +349,4 @@ export default @autobindClass() class VideoWrapper {
     });
     delete this.__events;
   }
-}
+};

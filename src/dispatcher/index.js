@@ -7,6 +7,7 @@ import Dom from './dom';
 import VideoConfig from './video-config';
 import {before} from 'toxic-decorators';
 const pluginConfigSet: PluginConfigSet = {};
+const kernelsSet: KernelsSet = {};
 function convertNameIntoId (name: string): string {
   if(!isString(name)) throw new Error(`Plugin's name must be a string, but not "${name}" in ${typeof name}`);
   return camelize(name);
@@ -107,14 +108,13 @@ export default class Dispatcher {
     }
     this._initUserPlugin(config.plugin);
     this.order.forEach(key => this.plugins[key].__init(this.videoConfig));
-    this.videoConfig.lockKernelProperty();
     this.videoConfigReady = true;
     this.videoConfig.init();
     /**
      * video kernel
      * @type {Kernel}
      */
-    this.kernel = new Kernel(this.dom.videoElement, this.videoConfig);
+    this.kernel = this._createKernel(this.dom.videoElement, this.videoConfig);
     // trigger auto load event
     const asyncInitedTasks: Array<Promise<*>> = [];
     this.order.forEach(key => {
@@ -203,7 +203,7 @@ export default class Dispatcher {
     immediate?: boolean,
     isLive?: boolean,
     box?: string,
-    preset?: Object
+    kernels?: Object | Array<string>
   } = {}) {
     const {
       duration = 3,
@@ -212,11 +212,11 @@ export default class Dispatcher {
       increment = 0,
       isLive = this.videoConfig.isLive,
       box = this.videoConfig.box,
-      preset = this.videoConfig.preset
+      kernels = this.videoConfig.kernels
     } = option;
     // form the base config for kernel
     // it should be the same as the config now
-    const config = {isLive, box, src, preset};
+    const config = {isLive, box, src, kernels};
     // build tasks accroding repeat times
     const tasks = new Array(repeatTimes + 1).fill(1).map((value, index) => {
       return () => {
@@ -285,7 +285,7 @@ export default class Dispatcher {
           addEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
           addEvent(video, 'error', videoError, true);
           addEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-          const kernel = new Kernel(video, config);
+          const kernel = this._createKernel(video, config);
           kernel.load();
         });
       };
@@ -331,18 +331,20 @@ export default class Dispatcher {
   load (src: string, option: {
     isLive?: boolean,
     box?: string,
-    preset?: Object
+    preset?: Object,
+    kernels?: Object | Array<string>
   } = {}) {
     if(!isEmpty(option)) {
       const videoConfig = this.videoConfig;
       const {
         isLive = videoConfig.isLive,
         box = videoConfig.box,
-        preset = videoConfig.preset
+        preset = videoConfig.preset,
+        kernels = videoConfig.kernels
       } = option;
       const video = document.createElement('video');
-      const config = {isLive, box, preset, src};
-      const kernel = new Kernel(video, config);
+      const config = {isLive, box, preset, src, kernels};
+      const kernel = this._createKernel(video, config);
       this.switchKernel({video, kernel, config});
     }
     const originAutoLoad = this.videoConfig.autoload;
@@ -358,7 +360,7 @@ export default class Dispatcher {
       src: string,
       isLive: boolean,
       box: string,
-      preset: Object
+      kernels: Object | Array<string>
     }
   }) {
     const oldKernel = this.kernel;
@@ -450,6 +452,25 @@ export default class Dispatcher {
     object[property] = value;
     this.changeWatchable = true;
   }
+  _createKernel (video: HTMLVideoElement, config: Object) {
+    const { kernels, preset } = config;
+    /* istanbul ignore else  */
+    if(process.env.NODE_ENV !== 'production' && isEmpty(kernels) && !isEmpty(preset)) Log.warn('preset will be deprecated in next major version, please use kernels instead.');
+    const newPreset = isArray(kernels)
+      ? kernels.reduce((kernels, key) => {
+        if(!isFunction(kernelsSet[key])) {
+          Log.warn(`You have not installed kernel for ${key}.`);
+          return kernels;
+        }
+        kernels[key] = kernelsSet[key];
+        return kernels;
+      }, {})
+      : isObject(kernels)
+        ? kernels
+        : {};
+    config.preset = Object.assign(newPreset, config.preset);
+    return new Kernel(video, config);
+  }
   /**
    * static method to install plugin
    * we will store the plugin config
@@ -484,5 +505,24 @@ export default class Dispatcher {
   @before(convertNameIntoId)
   static getPluginConfig (id: string): PluginConfig | void | Function {
     return pluginConfigSet[id];
+  }
+
+  static installKernel (key: string | Object, value?: Function) {
+    const tasks = isObject(key)
+      ? Object.entries(key)
+      : [[key, value]];
+    tasks.forEach(([key, value]) => {
+      if(!isFunction(value)) throw new Error(`The kernel you install on ${key} must be a Function, but not ${typeof value}`);
+      if(isFunction(kernelsSet[key])) Log.warn(`You have alrady install a kenrle on ${key}, and now we will replace it`);
+      kernelsSet[key] = value;
+    });
+  }
+
+  static uninstallKernel (key: string) {
+    delete kernelsSet[key];
+  }
+
+  static hasInstalledKernel (key: string) {
+    return isFunction(kernelsSet[key]);
   }
 }

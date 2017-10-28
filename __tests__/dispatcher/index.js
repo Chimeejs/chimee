@@ -226,35 +226,4 @@ describe('dispatcher', () => {
     expect(fn).lastCalledWith(error);
   });
 
-  describe('different behavior in different lifecycle', () => {
-    test('lockKernelProperty', () => {
-      class LockKernelProperty extends Plugin {
-        beforeCreate () {
-          expect(this.box).toBe('');
-          this.box = 'flv';
-          expect(this.box).toBe('flv');
-        }
-        create () {
-          expect(this.box).toBe('flv');
-          this.box = 'hls';
-          expect(this.box).toBe('hls');
-        }
-        init () {
-          expect(this.box).toBe('hls');
-          this.box = 'mp4';
-          expect(this.box).toBe('mp4');
-        }
-        inited () {
-          expect(() => {this.box = 'hls';}).toThrow();
-        }
-      }
-      Dispatcher.install(LockKernelProperty);
-      expect(() => new Dispatcher({
-        wrapper: document.createElement('div'),
-        plugin: ['lockKernelProperty']
-      }, {
-        __throwError (error) {throw error;}
-      })).not.toThrow();
-    });
-  });
 });
