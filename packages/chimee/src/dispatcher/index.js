@@ -230,7 +230,7 @@ export default class Dispatcher {
           // bind time update on old video
           // when we bump into the switch point and ready
           // we switch
-          const oldVideoTimeupdate = evt => {
+          const oldVideoTimeupdate = () => {
             const currentTime = this.kernel.currentTime;
             if((bias <= 0 && currentTime >= idealTime) ||
               (bias > 0 &&
