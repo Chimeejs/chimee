@@ -214,6 +214,7 @@ export default class VideoConfig {
   dispatcher: Dispatcher;
   dom: Dom;
   inited: boolean;
+  kernels: void | Array<string> | Object;
 
   @nonenumerable
   needToLoadSrc = false;
@@ -235,8 +236,6 @@ export default class VideoConfig {
   box = '';
 
   preset = {};
-
-  kernels = {};
 
   autoload = true;
 
