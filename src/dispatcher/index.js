@@ -203,7 +203,7 @@ export default class Dispatcher {
     immediate?: boolean,
     isLive?: boolean,
     box?: string,
-    kernels?: Object | Array<string>
+    kernels?: Object | Array<string> | void
   } = {}) {
     const {
       duration = 3,
@@ -360,7 +360,7 @@ export default class Dispatcher {
       src: string,
       isLive: boolean,
       box: string,
-      kernels: Object | Array<string>
+      kernels: Object | Array<string> | void
     }
   }) {
     const oldKernel = this.kernel;
