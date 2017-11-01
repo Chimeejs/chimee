@@ -17,7 +17,7 @@ Chimee 本质上是对原生 video 元素的一个封装。因此在许多用法
 
 ## 生成实例
 
-我们直接调用`new`就可以生成一个 Chimee 实例。这个实例中我们需要使用者提供一个 dom 节点，我们称之为 wrapper。因此，在构造函数里我们接受三种参数——`string | HTMLElment | Object`。
+我们直接调用`new`就可以生成一个 Chimee 实例。这个实例中我们需要使用者提供一个 dom 节点，我们称之为 wrapper。因此，在构造函数里我们接受三种形式的参数——`string | HTMLElment | Object`。
 
 我们可以直接传入 wrapper 的选择器。
 
