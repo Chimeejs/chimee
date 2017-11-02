@@ -86,7 +86,7 @@ const chimee = new Chimee({
 // play!!
 ```
 
-If you need to play video in flv or hls. You should add preset.
+If you need to play video in flv or hls. You should add kernels.
 
 ```javascript
 import Chimee from 'chimee';
@@ -97,10 +97,28 @@ const chimee = new Chimee({
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
   controls: true,
   autoplay: true,
-  preset: {
+  kernels: {
     flv,
     hls
   }
+});
+chimee.play();
+```
+
+Or you can try installKernels, and then use it.
+
+```javascript
+import Chimee from 'chimee';
+import flv from 'chimee-kernel-flv';
+import hls from 'chimee-kernel-hls';
+Chimee.installKernel(flv);
+Chimee.installKernel(hls);
+const chimee = new Chimee({
+  wrapper: '#wrapper',
+  src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+  controls: true,
+  autoplay: true,
+  kernels: [ 'flv', 'hls' ],
 });
 chimee.play();
 ```
