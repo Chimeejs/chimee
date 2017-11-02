@@ -4203,11 +4203,8 @@ var NodeWrap = function () {
 
 var defaultConfig = {
   type: 'vod',
-  autoPlay: false,
   box: 'native',
-  lockInternalProperty: false,
-  debug: true,
-  reloadTime: 1500
+  lockInternalProperty: false
 };
 
 var classCallCheck$1 = function (instance, Constructor) {
@@ -4277,119 +4274,122 @@ var possibleConstructorReturn = function (self, call) {
 };
 
 var Native = function (_CustEvent) {
-    inherits(Native, _CustEvent);
+  inherits(Native, _CustEvent);
 
-    /**
-     * Creates an instance of Native.
-     * @param {any} videodom video dom对象
-     * @param {any} config 配置
-     * @memberof Native
-     */
-    function Native(videodom, config) {
-        classCallCheck$1(this, Native);
+  /**
+   * Creates an instance of Native.
+   * @param {any} videodom video dom
+   * @param {any} config 
+   * @memberof Native
+   */
+  function Native(videodom, config) {
+    classCallCheck$1(this, Native);
 
-        var _this2 = possibleConstructorReturn(this, (Native.__proto__ || Object.getPrototypeOf(Native)).call(this));
+    var _this2 = possibleConstructorReturn(this, (Native.__proto__ || Object.getPrototypeOf(Native)).call(this));
 
-        _this2.video = videodom;
-        _this2.box = 'Native';
-        _this2.config = defaultConfig;
-        deepAssign(_this2.config, config);
-        _this2.bindEvents();
-        return _this2;
+    _this2.video = videodom;
+    _this2.box = 'native';
+    _this2.config = defaultConfig;
+    deepAssign(_this2.config, config);
+    _this2.bindEvents();
+    return _this2;
+  }
+
+  createClass$1(Native, [{
+    key: 'internalPropertyHandle',
+    value: function internalPropertyHandle() {
+      if (!Object.getOwnPropertyDescriptor) {
+        return;
+      }
+      var _this = this;
+      var time = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');
+
+      Object.defineProperty(this.video, 'currentTime', {
+        get: function get$$1() {
+          return time.get.call(_this.video);
+        },
+        set: function set$$1(t) {
+          if (!_this.currentTimeLock) {
+            throw new Error('can not set currentTime by youself');
+          } else {
+            return time.set.call(_this.video, t);
+          }
+        }
+      });
     }
+  }, {
+    key: 'bindEvents',
+    value: function bindEvents() {
+      var _this3 = this;
 
-    createClass$1(Native, [{
-        key: 'internalPropertyHandle',
-        value: function internalPropertyHandle() {
-            if (!Object.getOwnPropertyDescriptor) {
-                return;
-            }
-            var _this = this;
-            var time = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');
-
-            Object.defineProperty(this.video, 'currentTime', {
-                get: function get$$1() {
-                    return time.get.call(_this.video);
-                },
-                set: function set$$1(t) {
-                    if (!_this.currentTimeLock) {
-                        throw new Error('can not set currentTime by youself');
-                    } else {
-                        return time.set.call(_this.video, t);
-                    }
-                }
-            });
-        }
-    }, {
-        key: 'bindEvents',
-        value: function bindEvents() {
-            var _this3 = this;
-
-            if (this.video && this.config.lockInternalProperty) {
-                this.video.addEventListener('canplay', function () {
-                    _this3.internalPropertyHandle();
-                });
-            }
-        }
-    }, {
-        key: 'load',
-        value: function load(src) {
-            this.config.src = src || this.config.src;
-            this.video.src = this.config.src;
-        }
-    }, {
-        key: 'unload',
-        value: function unload() {
-            this.video.src = '';
-            this.video.removeAttribute('src');
-        }
-    }, {
-        key: 'destroy',
-        value: function destroy() {
-            if (this.video) {
-                this.unload();
-            }
-        }
-    }, {
-        key: 'play',
-        value: function play() {
-            return this.video.play();
-        }
-    }, {
-        key: 'pause',
-        value: function pause() {
-            return this.video.pause();
-        }
-    }, {
-        key: 'refresh',
-        value: function refresh() {
-            this.video.src = this.config.src;
-        }
-    }, {
-        key: 'attachMedia',
-        value: function attachMedia() {}
-    }, {
-        key: 'seek',
-        value: function seek(seconds) {
-            this.currentTimeLock = true;
-            this.video.currentTime = seconds;
-            this.currentTimeLock = false;
-        }
-    }]);
-    return Native;
+      if (this.video && this.config.lockInternalProperty) {
+        this.video.addEventListener('canplay', function () {
+          _this3.internalPropertyHandle();
+        });
+      }
+    }
+  }, {
+    key: 'load',
+    value: function load(src) {
+      this.config.src = src || this.config.src;
+      this.video.src = this.config.src;
+    }
+  }, {
+    key: 'unload',
+    value: function unload() {
+      this.video.src = '';
+      this.video.removeAttribute('src');
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy() {
+      if (this.video) {
+        this.unload();
+      }
+    }
+  }, {
+    key: 'play',
+    value: function play() {
+      return this.video.play();
+    }
+  }, {
+    key: 'pause',
+    value: function pause() {
+      return this.video.pause();
+    }
+  }, {
+    key: 'refresh',
+    value: function refresh() {
+      this.video.src = this.config.src;
+    }
+  }, {
+    key: 'attachMedia',
+    value: function attachMedia() {}
+  }, {
+    key: 'seek',
+    value: function seek(seconds) {
+      this.currentTimeLock = true;
+      this.video.currentTime = seconds;
+      this.currentTimeLock = false;
+    }
+  }]);
+  return Native;
 }(CustEvent);
 
 var defaultConfig$1 = {
-  reloadTime: 1500
+  isLive: true, // vod or live
+  box: 'native', // box type : native mp4 hls flv
+  lockInternalProperty: false,
+  reloadTime: 1500 // video can't play when this time to reload
 };
 
 var Kernel = function (_CustEvent) {
 	inherits(Kernel, _CustEvent);
 
 	/**
-  * 创建核心解码器
-  * @param {any} wrap 父层容器
-  * @param {any} option 整合参数
+  * kernelWrapper
+  * @param {any} wrap videoElement
+  * @param {any} option
   * @class kernel
   */
 	function Kernel(videoElement, config) {
@@ -4407,7 +4407,7 @@ var Kernel = function (_CustEvent) {
 	}
 
 	/**
-  * 绑定事件
+  * bind events
   * @memberof kernel
   */
 
@@ -4430,7 +4430,7 @@ var Kernel = function (_CustEvent) {
 		}
 
 		/**
-   * 选择解码器
+   * select kernel
    * @memberof kernel
    */
 
@@ -4439,7 +4439,16 @@ var Kernel = function (_CustEvent) {
 		value: function selectKernel() {
 			var config = this.config;
 
-			var box = config.box ? config.box : config.src.indexOf('.flv') !== -1 ? 'flv' : config.src.indexOf('.m3u8') !== -1 ? 'hls' : 'native';
+			var box = config.box;
+			if (!box) {
+				if (config.src.indexOf('.flv') !== -1) {
+					box = 'flv';
+				} else if (config.src.indexOf('.m3u8') !== -1) {
+					box = 'hls';
+				} else if (config.src.indexOf('mp4') !== -1) {
+					box = 'mp4';
+				}
+			}
 
 			if (box === 'native') {
 				return new Native(this.video, config);
@@ -4447,24 +4456,31 @@ var Kernel = function (_CustEvent) {
 				return new config.preset[box](this.video, config);
 			} else if (box === 'hls') {
 				return new config.preset[box](this.video, config);
+			} else if (box === 'mp4') {
+				return new config.preset[box](this.video, config);
 			} else {
 				Log.error(this.tag, 'not mactch any player, please check your config');
 				return null;
 			}
 		}
+
+		/**
+   * select attachMedia
+   * @memberof kernel
+   */
+
 	}, {
 		key: 'attachMedia',
 		value: function attachMedia() {
 			if (this.videokernel) {
 				this.videokernel.attachMedia();
 			} else {
-				Log.error(this.tag, 'video player is not already, must init player');
+				Log.error(this.tag, 'videokernel is not already, must init player');
 			}
 		}
-
 		/**
-   * 启动加载
-   * @param {string} src 媒体资源地址
+   * load source
+   * @param {string} src 
    * @memberof kernel
    */
 
@@ -4484,11 +4500,11 @@ var Kernel = function (_CustEvent) {
 					}, this.config.reloadTime);
 				}
 			} else {
-				Log.error(this.tag, 'video player is not already, must init player');
+				Log.error(this.tag, 'videokernel is not already, must init player');
 			}
 		}
 		/**
-   * 销毁kernel
+   * destory kernel
    * @memberof kernel
    */
 
@@ -4500,7 +4516,7 @@ var Kernel = function (_CustEvent) {
 				clearTimeout(this.timer);
 				this.timer = null;
 			} else {
-				Log.error(this.tag, 'player is not exit');
+				Log.error(this.tag, 'videokernel is not exit');
 			}
 		}
 		/**
@@ -4514,7 +4530,7 @@ var Kernel = function (_CustEvent) {
 			if (this.videokernel) {
 				this.videokernel.play();
 			} else {
-				Log.error(this.tag, 'video player is not already, must init player');
+				Log.error(this.tag, 'videokernel is not already, must init player');
 			}
 		}
 		/**
@@ -4528,7 +4544,7 @@ var Kernel = function (_CustEvent) {
 			if (this.videokernel && this.config.src) {
 				this.videokernel.pause();
 			} else {
-				Log.error(this.tag, 'video player is not already, must init player');
+				Log.error(this.tag, 'videokernel is not already, must init player');
 			}
 		}
 		/**
@@ -4548,12 +4564,25 @@ var Kernel = function (_CustEvent) {
 				Log.error(this.tag, 'seek params must be a number');
 				return;
 			}
-			return this.videokernel.seek(seconds);
+			if (this.videokernel) {
+				return this.videokernel.seek(seconds);
+			} else {
+				Log.error(this.tag, 'videokernel is not already, must init player');
+			}
 		}
+		/**
+   * refresh kernel
+   * @memberof kernel
+   */
+
 	}, {
 		key: 'refresh',
 		value: function refresh() {
-			this.videokernel.refresh();
+			if (this.videokernel) {
+				this.videokernel.refresh();
+			} else {
+				Log.error(this.tag, 'videokernel is not already, must init player');
+			}
 		}
 		/**
    * get video duration

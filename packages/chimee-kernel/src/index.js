@@ -6,9 +6,9 @@ import defaultConfig from './config';
 
 export default class Kernel extends CustEvent {
 	/**
-	 * 创建核心解码器
-	 * @param {any} wrap 父层容器
-	 * @param {any} option 整合参数
+	 * kernelWrapper
+	 * @param {any} wrap videoElement
+	 * @param {any} option
 	 * @class kernel
 	 */
 	constructor (videoElement, config) {
@@ -22,7 +22,7 @@ export default class Kernel extends CustEvent {
 	}
 
 	/**
-	 * 绑定事件
+	 * bind events
 	 * @memberof kernel
 	 */
 	bindEvents (videokernel, video) {
@@ -39,19 +39,22 @@ export default class Kernel extends CustEvent {
 	}
 
 	/**
-	 * 选择解码器
+	 * select kernel
 	 * @memberof kernel
 	 */
 	selectKernel () {
 		const config = this.config;
 
-		const box = config.box
-			? config.box
-			: config.src.indexOf('.flv') !== -1
-				? 'flv'
-				: config.src.indexOf('.m3u8') !== -1
-					? 'hls'
-					: 'native';
+		let box = config.box;
+		if(!box) {
+			if(config.src.indexOf('.flv') !== -1) {
+				box = 'flv';
+			} else if(config.src.indexOf('.m3u8') !== -1) {
+				box = 'hls';
+			} else if(config.src.indexOf('mp4') !== -1) {
+				box = 'mp4';
+			}
+		}
 
 		if (box === 'native') {
 			return new Native(this.video, config);
@@ -59,23 +62,28 @@ export default class Kernel extends CustEvent {
 			return new config.preset[box](this.video, config);
 		} else if (box === 'hls') {
 			return new config.preset[box](this.video, config);
+		} else if(box === 'mp4') {
+			return new config.preset[box](this.video, config);
 		} else {
 			Log.error(this.tag, 'not mactch any player, please check your config');
 			return null;
 		}
 	}
 
+	/**
+	 * select attachMedia
+	 * @memberof kernel
+	 */
 	attachMedia () {
 		if (this.videokernel) {
 			this.videokernel.attachMedia();
 		} else {
-			Log.error(this.tag, 'video player is not already, must init player');
+			Log.error(this.tag, 'videokernel is not already, must init player');
 		}
 	}
-
 	/**
-	 * 启动加载
-	 * @param {string} src 媒体资源地址
+	 * load source
+	 * @param {string} src 
 	 * @memberof kernel
 	 */
 	load (src) {
@@ -90,11 +98,11 @@ export default class Kernel extends CustEvent {
 				}, this.config.reloadTime);
 			}
 		} else {
-			Log.error(this.tag, 'video player is not already, must init player');
+			Log.error(this.tag, 'videokernel is not already, must init player');
 		}
 	}
 	/**
-	 * 销毁kernel
+	 * destory kernel
 	 * @memberof kernel
 	 */
 	destroy () {
@@ -103,7 +111,7 @@ export default class Kernel extends CustEvent {
 			clearTimeout(this.timer);
 			this.timer = null;
 		} else {
-			Log.error(this.tag, 'player is not exit');
+			Log.error(this.tag, 'videokernel is not exit');
 		}
 	}
 	/**
@@ -114,7 +122,7 @@ export default class Kernel extends CustEvent {
 		if (this.videokernel) {
 			this.videokernel.play();
 		} else {
-			Log.error(this.tag, 'video player is not already, must init player');
+			Log.error(this.tag, 'videokernel is not already, must init player');
 		}
 	}
 	/**
@@ -125,7 +133,7 @@ export default class Kernel extends CustEvent {
 		if (this.videokernel && this.config.src) {
 			this.videokernel.pause();
 		} else {
-			Log.error(this.tag, 'video player is not already, must init player');
+			Log.error(this.tag, 'videokernel is not already, must init player');
 		}
 	}
 	/**
@@ -147,11 +155,22 @@ export default class Kernel extends CustEvent {
 			Log.error(this.tag, 'seek params must be a number');
 			return;
 		}
-		return this.videokernel.seek(seconds);
+		if(this.videokernel) {
+			return this.videokernel.seek(seconds);
+		} else {
+			Log.error(this.tag, 'videokernel is not already, must init player');
+		}
 	}
-
+	/**
+	 * refresh kernel
+	 * @memberof kernel
+	 */
 	refresh () {
-		this.videokernel.refresh();
+		if(this.videokernel) {
+			this.videokernel.refresh();
+		} else {
+			Log.error(this.tag, 'videokernel is not already, must init player');
+		}
 	}
 	/**
 	 * get video duration
