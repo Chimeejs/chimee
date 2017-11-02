@@ -66,7 +66,7 @@ const chimee = new Chimee({
 - 可选：`flv`、`native`和`hls`
 - 默认：会根据视频地址分配正确的编码方式，若无法从视频地址中获取所需的编码，则默认分配为`native`。
 
-### \* preset
+### \* preset 🚫（v0.4.0 废弃，更改为 kernels）
 - 类型: `Object`
 - 含义: 播放器核心解码器。因为体积问题，chimee 默认仅支持原生播放器，如果需要支持其余解码方式请引入相应的解码器。
 - 默认: `{}`
@@ -76,6 +76,28 @@ import Flv from 'chimee-kernel-flv';
 const player = new Chimee({
   src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
   preset: {
+    flv: Flv
+  },
+  // 编解码容器
+  box: 'flv', // flv hls mp4
+  // dom容器
+  wrapper: '#wrapper',
+  // video
+  autoplay: true,
+  controls: true
+})
+```
+
+### \* kernels
+- 类型: `Object`
+- 含义: 播放器核心解码器。因为体积问题，chimee 默认仅支持原生播放器，如果需要支持其余解码方式请引入相应的解码器。
+- 默认: `{}`
+
+```javascript
+import Flv from 'chimee-kernel-flv';
+const player = new Chimee({
+  src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
+  kernels: {
     flv: Flv
   },
   // 编解码容器
@@ -215,7 +237,7 @@ const chimee = new Chimee({
     - box
       - 类型：`string`
       - 编码器类型：`native`、`flv`、`hls`
-    - preset
+    - kernels
       - 类型：`Object`
       - 新的编码器
 
@@ -263,7 +285,7 @@ const chimee = new Chimee({
 ...
 chimee.load('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv', {
   box: 'flv',
-  preset: {
+  kernels: {
     flv: ChimeeKernelFlv
   }
 })
@@ -357,7 +379,7 @@ chimee.load('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070
     * 类型：`boolean`
     * 默认：原主视频设定
     * 编解码容器
-  * preset
+  * kernels
     * 类型：`Object`
     * 默认：原主视频设定
     * 预设的解码器
@@ -410,7 +432,7 @@ const player = new Chimee({
 });
 player.$silentLoad('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv', {
   box: 'flv',
-  preset: {
+  kernels: {
     flv: chimeeKernelFlv
   }
 });
@@ -475,7 +497,7 @@ chimee.load();
 - 可选：`flv`、`native`和`hls`
 - 只读属性
 
-### \* preset
+### \* preset 🚫（v0.4.0废弃，请不要修改）
 - 类型: `Object`
 - 含义: 播放器核心解码器。因为体积问题，chimee 默认仅支持原生播放器，如果需要支持其余解码方式请引入相应的解码器。
 - 默认: `{}`

@@ -423,7 +423,7 @@ level 值可以由用户设置、插件默认设置或插件内部通过 `$level
     - box
       - 类型：`string`
       - 编码器类型：`native`、`flv`、`hls`
-    - preset
+    - kernels
       - 类型：`Object`
       - 新的编码器
 
@@ -548,7 +548,7 @@ load 方法会将地址设置到 video 元素上。之后才能进行相应的�
     - 类型：`boolean`
     - 默认：原主视频设定
     - 编解码容器
-  - preset
+  - kernels
     - 类型：`Object`
     - 默认：原主视频设定
     - 预设的解码器
@@ -582,7 +582,7 @@ this.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', {repeatTim
 ```javascript
 this.$silentLoad('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv', {
   box: 'flv',
-  preset: {
+  kernels: {
     flv: chimeeKernelFlv
   }
 });
@@ -624,7 +624,7 @@ option.abort = true;
 - 可选：`flv`、`native`和`hls`
 - 只读属性
 
-### \* preset
+### \* preset 🚫(v0.4.0废弃，请使用 kernels )
 - 类型: `Object`
 - 含义: 播放器核心解码器。因为体积问题，chimee 默认仅支持原生播放器，如果需要支持其余解码方式请引入相应的解码器。
 - 默认: `{}`
@@ -634,6 +634,28 @@ import Flv from 'chimee-kernel-flv';
 const player = new Chimee({
   src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
   preset: {
+    flv: Flv
+  },
+  // 编解码容器
+  box: 'flv', // flv hls mp4
+  // dom容器
+  wrapper: '#wrapper',
+  // video
+  autoplay: true,
+  controls: true
+})
+```
+
+### \* kernels
+- 类型: `Object`
+- 含义: 播放器核心解码器。因为体积问题，chimee 默认仅支持原生播放器，如果需要支持其余解码方式请引入相应的解码器。
+- 默认: `{}`
+
+```javascript
+import Flv from 'chimee-kernel-flv';
+const player = new Chimee({
+  src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
+  kernels: {
     flv: Flv
   },
   // 编解码容器

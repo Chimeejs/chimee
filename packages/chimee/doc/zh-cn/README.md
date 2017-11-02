@@ -81,7 +81,7 @@ const chimee = new Chimee({
 });
 ```
 
-如果需要播放 `flv` 或者 `hls` 格式，请传入解码器，具体参数请查阅[此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md#-preset)。
+如果需要播放 `flv` 或者 `hls` 格式，请传入解码器，具体参数请查阅[此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md#-kernels)。
 
 ```javascript
 import Chimee from 'chimee';
@@ -92,7 +92,7 @@ const chimee = new Chimee({
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
   controls: true,
   autoplay: true,
-  preset: {
+  kernels: {
     flv,
     hls
   }
