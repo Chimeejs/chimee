@@ -284,8 +284,8 @@ export default class Dispatcher {
           addEvent(video, 'canplay', videoCanplay, true);
           addEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
           addEvent(video, 'error', videoError, true);
-          addEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
           const kernel = this._createKernel(video, config);
+          addEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
           kernel.load();
         });
       };
@@ -453,9 +453,15 @@ export default class Dispatcher {
     this.changeWatchable = true;
   }
   _createKernel (video: HTMLVideoElement, config: Object) {
-    const { kernels, preset } = config;
+    let { kernels, preset } = config;
     /* istanbul ignore else  */
     if(process.env.NODE_ENV !== 'production' && isEmpty(kernels) && !isEmpty(preset)) Log.warn('preset will be deprecated in next major version, please use kernels instead.');
+    if (isEmpty(kernels) && isEmpty(preset)) {
+      // it means user pass nothing
+      // go on use the original set
+      kernels = this.videoConfig.kernels;
+      preset = this.videoConfig.preset;
+    }
     const newPreset = isArray(kernels)
       ? kernels.reduce((kernels, key) => {
         if(!isFunction(kernelsSet[key])) {
@@ -468,7 +474,7 @@ export default class Dispatcher {
       : isObject(kernels)
         ? kernels
         : {};
-    config.preset = Object.assign(newPreset, config.preset);
+    config.preset = Object.assign(newPreset, preset);
     return new Kernel(video, config);
   }
   /**
@@ -518,6 +524,7 @@ export default class Dispatcher {
     });
   }
 
+  // only use for debug in internal
   static uninstallKernel (key: string) {
     delete kernelsSet[key];
   }
