@@ -1,5 +1,6 @@
 import Chimee from 'index';
 import ChimeeKernelHls from 'chimee-kernel-hls';
+// import ChimeeKernelFlv from 'chimee-kernel-flv';
 import {bind, Log} from 'chimee-helper';
 describe('$silentLoad', () => {
   let player;
@@ -29,6 +30,39 @@ describe('$silentLoad', () => {
     global.document.createElement = originFn;
     player.destroy();
   });
+  // test('silentload should use default preset and kernels if people do not pass one', async () => {
+  //   const wrapper = document.createElement('div');
+  //   player = new Chimee({
+  //     src:
+  //       'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
+  //     isLive: false,
+  //     preset: {
+  //       flv: ChimeeKernelFlv
+  //     },
+  //     // 编解码容器
+  //     box: 'flv', // flv hls native
+  //     // dom容器
+  //     wrapper
+  //   });
+  //   oldVideo = player.__dispatcher.dom.videoElement;
+  //   oldKernel = player.__dispatcher.kernel;
+  //   const result = player.silentLoad(
+  //     'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
+  //     {
+  //       immediate: true
+  //     }
+  //   );
+  //   // simulate timeupdate beforechange
+  //   oldVideo.dispatchEvent(new Event('timeupdate'));
+  //   // simulate metadata loaded finished
+  //   video.dispatchEvent(new Event('loadedmetadata'));
+  //   // simulate canplayable
+  //   video.dispatchEvent(new Event('canplay'));
+  //   // simulate times up
+  //   player.currentTime = 3;
+  //   oldVideo.dispatchEvent(new Event('timeupdate'));
+  //   await expect(result).resolves.toBe();
+  // });
   test('normal run', async () => {
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
     await Promise.resolve();
