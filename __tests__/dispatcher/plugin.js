@@ -24,7 +24,7 @@ describe('dispatcher/plugin', () => {
       }
     };
     dispatcher.dom = new Dom(wrapper, dispatcher);
-    dispatcher.videoConfig = new VideoConfig(dispatcher, {})
+    dispatcher.videoConfig = new VideoConfig(dispatcher, {});
     dispatcher.bus = new Bus(dispatcher);
     Log.data.error = [];
     Log.data.warn = [];
@@ -665,7 +665,7 @@ describe('dispatcher/plugin', () => {
       const plugin = new Plugin({
         id: 'err',
         inited () {
-          return new Promise(() => {throw error;})
+          return new Promise(() => {throw error;});
         }
       }, dispatcher);
       let catcherr = false;

@@ -2,7 +2,7 @@ import Chimee from 'index';
 import {Log, getAttr, setAttr} from 'chimee-helper';
 import {videoReadOnlyProperties} from 'helper/const';
 import esFullscreen from 'es-fullscreen';
-import chimeeKernelFlv from 'chimee-kernel-flv';
+// import chimeeKernelFlv from 'chimee-kernel-flv';
 
 describe('Chimee', () => {
   const normalInstall = {

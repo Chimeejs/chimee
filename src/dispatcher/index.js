@@ -203,6 +203,7 @@ export default class Dispatcher {
     immediate?: boolean,
     isLive?: boolean,
     box?: string,
+    preset?: Object,
     kernels?: Object | Array<string> | void
   } = {}) {
     const {
@@ -212,11 +213,12 @@ export default class Dispatcher {
       increment = 0,
       isLive = this.videoConfig.isLive,
       box = this.videoConfig.box,
-      kernels = this.videoConfig.kernels
+      kernels = this.videoConfig.kernels,
+      preset = this.videoConfig.preset
     } = option;
     // form the base config for kernel
     // it should be the same as the config now
-    const config = {isLive, box, src, kernels};
+    const config = { isLive, box, src, kernels, preset };
     // build tasks accroding repeat times
     const tasks = new Array(repeatTimes + 1).fill(1).map((value, index) => {
       return () => {
@@ -453,15 +455,9 @@ export default class Dispatcher {
     this.changeWatchable = true;
   }
   _createKernel (video: HTMLVideoElement, config: Object) {
-    let { kernels, preset } = config;
+    const { kernels, preset } = config;
     /* istanbul ignore else  */
     if(process.env.NODE_ENV !== 'production' && isEmpty(kernels) && !isEmpty(preset)) Log.warn('preset will be deprecated in next major version, please use kernels instead.');
-    if (isEmpty(kernels) && isEmpty(preset)) {
-      // it means user pass nothing
-      // go on use the original set
-      kernels = this.videoConfig.kernels;
-      preset = this.videoConfig.preset;
-    }
     const newPreset = isArray(kernels)
       ? kernels.reduce((kernels, key) => {
         if(!isFunction(kernelsSet[key])) {

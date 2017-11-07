@@ -3,7 +3,10 @@ window.player = new window.Chimee({
     src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
     // src: 'http://1253804432.vod2.myqcloud.com/3712977fvodgzp1253804432/f3f31e5f9031868223411915443/f0.flv',
     isLive: false,
-    kernels: {
+    // kernels: {
+    //   flv: window.chimeeKernelFlv
+    // },
+    preset: {
       flv: window.chimeeKernelFlv
     },
     // 编解码容器
@@ -18,6 +21,9 @@ window.player = new window.Chimee({
 
 window.player.on('play', evt => {
   setTimeout(() => {
-    window.player.$silentLoad('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv');
+    console.log('wowowoow');
+    window.player.$silentLoad('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv', {
+      duration: 10
+    });
   }, 500);
 });
