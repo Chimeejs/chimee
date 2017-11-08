@@ -231,6 +231,8 @@ export default class VideoConfig {
   @configurable
   isLive = false;
 
+  // 此处 box 只能置空，因为 kernel 会自动根据你的安装 kernel 和相关地址作智能判断。
+  // 曾经 bug 详见 https://github.com/Chimeejs/chimee-kernel/issues/1
   @initString(str => str.toLocaleLowerCase())
   @configurable
   box = '';
