@@ -43,7 +43,7 @@
   "homepage": "https://github.com/Chimeejs/chimee#readme",
   "dependencies": {
     "babel-runtime": "^6.26.0",
-    "chimee-kernel": "<=1.0.9",
+    "chimee-kernel": "^1.0.11",
     "es-fullscreen": "^0.2.1",
     "toxic-decorators": "^0.3.8"
   },
@@ -68,7 +68,7 @@
     "husky": "^0.14.3",
     "jest": "^21.2.1",
     "npm-check-updates": "^2.13.0",
-    "rollup": "^0.50.0",
+    "rollup": "^0.51.1",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-flow-no-whitespace": "^1.0.0",
