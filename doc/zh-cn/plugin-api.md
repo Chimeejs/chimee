@@ -707,13 +707,13 @@ const player = new Chimee({
 ### width
 
 - 类型：`number | string | void`
-- 含义：宽度
+- 含义：video 的宽度
 - 默认：`undefined`
 
 ### height
 
 - 类型：`number | string | void`
-- 含义：高度
+- 含义：video 的高度
 - 默认：`undefined`
 
 ### crossOrigin
@@ -1231,8 +1231,8 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 | src                     | 播放地址                           | string           | ''        | 假如 `autoload` 为 `true`，则当我们设置 `src` 后，该地址会加载到 `video` 元素上，并作出相应加载。若果 `autoload` 为 `false`， 则意味着我们仅仅在 `videoConfig` 上设置了地址，此时可以手动调用 `load` 方法进行 |
 | autoplay                | 是否自动播放                         | boolean          | false     | autoplay 指在分配 src 后自动播放，即调用`chimee.load()`后。 |
 | controls                | 是否展示控制条                        | boolean          | false     | 在没有安装任何皮肤插件时，该属性控制是否展示原生控制条。若果安装了皮肤插件，则意味着是否展示皮肤自带的控制条。 |
-| width                   | 宽度                             | number \| string | undefined | 支持数字、百分比或像素值。在大部分浏览器下，数字和`px`值一致，其余单位没有效果，建议尽量使用数字。且该属性优先级较低，会被 CSS 值覆盖。建议谨慎使用。 |
-| height                  | 高度                             | number \| string | undefined | 支持数字、百分比或像素值。在大部分浏览器下，数字和`px`值一致，其余单位没有效果，建议尽量使用数字。且该属性优先级较低，会被 CSS 值覆盖。建议谨慎使用。 |
+| width                   | video 的宽度                             | number \| string | undefined | 支持数字、百分比或像素值。在大部分浏览器下，数字和`px`值一致，其余单位没有效果，建议尽量使用数字。且该属性优先级较低，会被 CSS 值覆盖。建议谨慎使用。 |
+| height                  | video 的高度                             | number \| string | undefined | 支持数字、百分比或像素值。在大部分浏览器下，数字和`px`值一致，其余单位没有效果，建议尽量使用数字。且该属性优先级较低，会被 CSS 值覆盖。建议谨慎使用。 |
 | crossOrigin             | 是否跨域                           | boolean          | undefined |                                          |
 | loop                    | 是否循环                           | boolean          | false     |                                          |
 | muted                   | 是否静音                           | boolean          | false     |                                          |
