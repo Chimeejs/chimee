@@ -55,7 +55,10 @@ export default class Kernel extends CustEvent {
 				box = 'mp4';
 			}
 		}
-
+		if(box !== 'native' && config.preset[box]) {
+			Log.error(this.tag, 'need set preset config');
+			return;
+		}
 		if (box === 'native') {
 			return new Native(this.video, config);
 		} else if (box === 'flv') {
@@ -63,7 +66,12 @@ export default class Kernel extends CustEvent {
 		} else if (box === 'hls') {
 			return new config.preset[box](this.video, config);
 		} else if(box === 'mp4') {
-			return new config.preset[box](this.video, config);
+			if(config.preset[box] && config.preset[box].isSupport()) {
+				return new config.preset[box](this.video, config);
+			} else {
+				Log.verbose(this.tag, 'browser is not support mp4 decode, auto switch native player');
+				return new Native(this.video, config);
+			}
 		} else {
 			Log.error(this.tag, 'not mactch any player, please check your config');
 			return null;
