@@ -37,8 +37,6 @@ var core = module.exports = { version: '2.5.1' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
 
-var _core_1 = _core.version;
-
 var _aFunction = function (it) {
   if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
@@ -358,6 +356,8 @@ module.exports = { "default": getPrototypeOf$1, __esModule: true };
 var _Object$getPrototypeOf = unwrapExports(getPrototypeOf);
 
 var classCallCheck = createCommonjsModule(function (module, exports) {
+"use strict";
+
 exports.__esModule = true;
 
 exports.default = function (instance, Constructor) {
@@ -370,6 +370,8 @@ exports.default = function (instance, Constructor) {
 var _classCallCheck = unwrapExports(classCallCheck);
 
 var createClass = createCommonjsModule(function (module, exports) {
+"use strict";
+
 exports.__esModule = true;
 
 
@@ -385,7 +387,7 @@ exports.default = function () {
       descriptor.enumerable = descriptor.enumerable || false;
       descriptor.configurable = true;
       if ("value" in descriptor) descriptor.writable = true;
-      (_defineProperty2.default)(target, descriptor.key, descriptor);
+      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
     }
   }
 
@@ -572,6 +574,10 @@ var _setToStringTag = function (it, tag, stat) {
   if (it && !_has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
 
+'use strict';
+
+
+
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
@@ -581,6 +587,16 @@ var _iterCreate = function (Constructor, NAME, next) {
   Constructor.prototype = _objectCreate(IteratorPrototype, { next: _propertyDesc(1, next) });
   _setToStringTag(Constructor, NAME + ' Iterator');
 };
+
+'use strict';
+
+
+
+
+
+
+
+
 
 var ITERATOR = _wks('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
@@ -643,6 +659,7 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
   return methods;
 };
 
+'use strict';
 var $at = _stringAt(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
@@ -663,6 +680,12 @@ _iterDefine(String, 'String', function (iterated) {
 var _iterStep = function (done, value) {
   return { value: value, done: !!done };
 };
+
+'use strict';
+
+
+
+
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
@@ -775,12 +798,6 @@ var meta = module.exports = {
 };
 });
 
-var _meta_1 = _meta.KEY;
-var _meta_2 = _meta.NEED;
-var _meta_3 = _meta.fastKey;
-var _meta_4 = _meta.getWeak;
-var _meta_5 = _meta.onFreeze;
-
 var defineProperty$3 = _objectDp.f;
 var _wksDefine = function (name) {
   var $Symbol = _core.Symbol || (_core.Symbol = _library ? {} : _global.Symbol || {});
@@ -851,6 +868,7 @@ var _objectGopnExt = {
 	f: f$5
 };
 
+'use strict';
 // ECMAScript 6 symbols shim
 
 
@@ -1098,6 +1116,8 @@ module.exports = { "default": symbol$2, __esModule: true };
 unwrapExports(symbol);
 
 var _typeof_1 = createCommonjsModule(function (module, exports) {
+"use strict";
+
 exports.__esModule = true;
 
 
@@ -1122,6 +1142,8 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 var _typeof = unwrapExports(_typeof_1);
 
 var possibleConstructorReturn = createCommonjsModule(function (module, exports) {
+"use strict";
+
 exports.__esModule = true;
 
 
@@ -1135,13 +1157,15 @@ exports.default = function (self, call) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
   }
 
-  return call && ((typeof call === "undefined" ? "undefined" : (_typeof3.default)(call)) === "object" || typeof call === "function") ? call : self;
+  return call && ((typeof call === "undefined" ? "undefined" : (0, _typeof3.default)(call)) === "object" || typeof call === "function") ? call : self;
 };
 });
 
 var _possibleConstructorReturn = unwrapExports(possibleConstructorReturn);
 
 var get = createCommonjsModule(function (module, exports) {
+"use strict";
+
 exports.__esModule = true;
 
 
@@ -1156,10 +1180,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function get(object, property, receiver) {
   if (object === null) object = Function.prototype;
-  var desc = (_getOwnPropertyDescriptor2.default)(object, property);
+  var desc = (0, _getOwnPropertyDescriptor2.default)(object, property);
 
   if (desc === undefined) {
-    var parent = (_getPrototypeOf2.default)(object);
+    var parent = (0, _getPrototypeOf2.default)(object);
 
     if (parent === null) {
       return undefined;
@@ -1235,6 +1259,8 @@ module.exports = { "default": create$2, __esModule: true };
 var _Object$create = unwrapExports(create$1);
 
 var inherits = createCommonjsModule(function (module, exports) {
+"use strict";
+
 exports.__esModule = true;
 
 
@@ -1253,10 +1279,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function (subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : (_typeof3.default)(superClass)));
+    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : (0, _typeof3.default)(superClass)));
   }
 
-  subClass.prototype = (_create2.default)(superClass && superClass.prototype, {
+  subClass.prototype = (0, _create2.default)(superClass && superClass.prototype, {
     constructor: {
       value: subClass,
       enumerable: false,
@@ -1264,7 +1290,7 @@ exports.default = function (subClass, superClass) {
       configurable: true
     }
   });
-  if (superClass) _setPrototypeOf2.default ? (_setPrototypeOf2.default)(subClass, superClass) : subClass.__proto__ = superClass;
+  if (superClass) _setPrototypeOf2.default ? (0, _setPrototypeOf2.default)(subClass, superClass) : subClass.__proto__ = superClass;
 };
 });
 
@@ -1335,6 +1361,8 @@ module.exports = { "default": getIterator$2, __esModule: true };
 unwrapExports(getIterator);
 
 var slicedToArray = createCommonjsModule(function (module, exports) {
+"use strict";
+
 exports.__esModule = true;
 
 
@@ -1355,7 +1383,7 @@ exports.default = function () {
     var _e = undefined;
 
     try {
-      for (var _i = (_getIterator3.default)(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      for (var _i = (0, _getIterator3.default)(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
         _arr.push(_s.value);
 
         if (i && _arr.length === i) break;
@@ -1377,7 +1405,7 @@ exports.default = function () {
   return function (arr, i) {
     if (Array.isArray(arr)) {
       return arr;
-    } else if ((_isIterable3.default)(Object(arr))) {
+    } else if ((0, _isIterable3.default)(Object(arr))) {
       return sliceIterator(arr, i);
     } else {
       throw new TypeError("Invalid attempt to destructure non-iterable instance");
@@ -1421,6 +1449,7 @@ module.exports = { "default": entries$1, __esModule: true };
 
 var _Object$entries = unwrapExports(entries);
 
+'use strict';
 // 19.1.2.1 Object.assign(target, source, ...)
 
 
@@ -1695,6 +1724,7 @@ var _microtask = function () {
   };
 };
 
+'use strict';
 // 25.4.1.5 NewPromiseCapability(C)
 
 
@@ -1741,6 +1771,11 @@ var _redefineAll = function (target, src, safe) {
   } return target;
 };
 
+'use strict';
+
+
+
+
 var SPECIES$1 = _wks('species');
 
 var _setSpecies = function (KEY) {
@@ -1773,6 +1808,17 @@ var _iterDetect = function (exec, skipClosing) {
   } catch (e) { /* empty */ }
   return safe;
 };
+
+'use strict';
+
+
+
+
+
+
+
+
+
 
 var task = _task.set;
 var microtask = _microtask();
@@ -2047,6 +2093,14 @@ _export(_export.S + _export.F * !(USE_NATIVE$1 && _iterDetect(function (iter) {
   }
 });
 
+// https://github.com/tc39/proposal-promise-finally
+'use strict';
+
+
+
+
+
+
 _export(_export.P + _export.R, 'Promise', { 'finally': function (onFinally) {
   var C = _speciesConstructor(this, _core.Promise || _global.Promise);
   var isFunction = typeof onFinally == 'function';
@@ -2060,6 +2114,7 @@ _export(_export.P + _export.R, 'Promise', { 'finally': function (onFinally) {
   );
 } });
 
+'use strict';
 // https://github.com/tc39/proposal-promise-try
 
 
@@ -2453,6 +2508,13 @@ var uaParser = createCommonjsModule(function (module, exports) {
  */
 
 (function (window, undefined) {
+
+    'use strict';
+
+    //////////////
+    // Constants
+    /////////////
+
 
     var LIBVERSION  = '0.7.17',
         EMPTY       = '',
@@ -3510,12 +3572,24 @@ var uaParser = createCommonjsModule(function (module, exports) {
 })(typeof window === 'object' ? window : commonjsGlobal);
 });
 
-var uaParser_1 = uaParser.UAParser;
+'use strict';
+
+
 
 var _createProperty = function (object, index, value) {
   if (index in object) _objectDp.f(object, index, _propertyDesc(0, value));
   else object[index] = value;
 };
+
+'use strict';
+
+
+
+
+
+
+
+
 
 _export(_export.S + _export.F * !_iterDetect(function (iter) {  }), 'Array', {
   // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
@@ -3554,6 +3628,8 @@ module.exports = { "default": from$1, __esModule: true };
 var _Array$from = unwrapExports(from);
 
 var toConsumableArray = createCommonjsModule(function (module, exports) {
+"use strict";
+
 exports.__esModule = true;
 
 
@@ -3570,7 +3646,7 @@ exports.default = function (arr) {
 
     return arr2;
   } else {
-    return (_from2.default)(arr);
+    return (0, _from2.default)(arr);
   }
 };
 });
@@ -3797,16 +3873,6 @@ function runStoppableQueue(queue) {
   };
   return step(0);
 }
-
-// requestAnimationFrame
-var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function (cb) {
-  return setTimeout(cb, 17);
-};
-
-// cancelAnimationFrame
-var caf = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame || window.msCancelAnimationFrame || window.oCancelAnimationFrame || function (id) {
-  clearTimeout(id);
-};
 
 /**
  * chimee-helper-events v0.1.0
@@ -5401,6 +5467,7 @@ var _validateCollection = function (it, TYPE) {
   return it;
 };
 
+'use strict';
 var dP$2 = _objectDp.f;
 
 
@@ -5612,6 +5679,17 @@ var _arrayMethods = function (TYPE, $create) {
   };
 };
 
+'use strict';
+
+
+
+
+
+
+
+
+
+
 var dP$3 = _objectDp.f;
 var each = _arrayMethods(0);
 
@@ -5661,6 +5739,9 @@ var _collection = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
   return C;
 };
 
+'use strict';
+
+
 var MAP = 'Map';
 
 // 23.1 Map Objects
@@ -5699,6 +5780,7 @@ var _collectionToJson = function (NAME) {
 
 _export(_export.P + _export.R, 'Map', { toJSON: _collectionToJson('Map') });
 
+'use strict';
 // https://tc39.github.io/proposal-setmap-offrom/
 
 
@@ -5714,6 +5796,7 @@ var _setCollectionOf = function (COLLECTION) {
 // https://tc39.github.io/proposal-setmap-offrom/#sec-map.of
 _setCollectionOf('Map');
 
+'use strict';
 // https://tc39.github.io/proposal-setmap-offrom/
 
 
@@ -5829,6 +5912,8 @@ module.exports = { "default": getOwnPropertyNames$1, __esModule: true };
 
 var _Object$getOwnPropertyNames = unwrapExports(getOwnPropertyNames);
 
+'use strict';
+
 var getWeak = _meta.getWeak;
 
 
@@ -5914,6 +5999,7 @@ var _collectionWeak = {
 };
 
 var es6_weakMap = createCommonjsModule(function (module) {
+'use strict';
 var each = _arrayMethods(0);
 
 
@@ -5989,6 +6075,8 @@ module.exports = { "default": weakMap$1, __esModule: true };
 var _WeakMap = unwrapExports(weakMap);
 
 var defineProperty$5$1 = createCommonjsModule(function (module, exports) {
+"use strict";
+
 exports.__esModule = true;
 
 
@@ -5999,7 +6087,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function (obj, key, value) {
   if (key in obj) {
-    (_defineProperty2.default)(obj, key, {
+    (0, _defineProperty2.default)(obj, key, {
       value: value,
       enumerable: true,
       configurable: true,
@@ -6346,6 +6434,37 @@ function before() {
         : [result];
       }, args);
       return bind(fn, this).apply(undefined, _toConsumableArray(paras));
+    };
+    return {
+      value: handler,
+      configurable: configurable,
+      enumerable: enumerable,
+      writable: writable
+    };
+  };
+}
+
+function after() {
+  for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
+    fns[_key] = arguments[_key];
+  }
+
+  if (fns.length === 0) throw new Error("@after accept at least one parameter. If you don't need to preprocess after your function, do not add @after decorators");
+  if (fns.length > 2 && isDescriptor(fns[2])) {
+    throw new Error('You may have used @after straightly. @after return decorators. You should call it before you use it as decorators');
+  }
+  var fn = compressOneArgFnArray(fns, '@after only accept function parameter');
+  return function (obj, prop, descriptor) {
+    var _ref = descriptor || {},
+        value = _ref.value,
+        configurable = _ref.configurable,
+        enumerable = _ref.enumerable,
+        writable = _ref.writable;
+
+    if (!isFunction(value)) throw new TypeError('@after can only be used on function, please checkout your property "' + prop + '" is a method or not.');
+    var handler = function handler() {
+      var ret = bind(value, this).apply(undefined, arguments);
+      return bind(fn, this)(ret);
     };
     return {
       value: handler,
@@ -6925,12 +7044,12 @@ function deepProxy(value, hook, _ref) {
       return true;
     }
   });
-  var operateProps = (_operateProps = {}, _defineProperty(_operateProps, operationPrefix + 'set', [initialize(function (method) {
+  var operateProps = (_operateProps = {}, _defineProperty$1(_operateProps, operationPrefix + 'set', [initialize(function (method) {
     return function (property, val) {
       // $FlowFixMe: we have check the computed value
       proxyValue[property] = val;
     };
-  }), nonenumerable]), _defineProperty(_operateProps, operationPrefix + 'del', [initialize(function (method) {
+  }), nonenumerable]), _defineProperty$1(_operateProps, operationPrefix + 'del', [initialize(function (method) {
     return function (property) {
       // $FlowFixMe: we have check the computed value
       delete proxyValue[property];
@@ -7003,7 +7122,7 @@ function deepObserve(value, hook, _ref2) {
     }, {});
     applyDecorators(value, methodProps, { self: true });
   }
-  var operateProps = (_operateProps2 = {}, _defineProperty(_operateProps2, operationPrefix + 'set', [initialize(function (method) {
+  var operateProps = (_operateProps2 = {}, _defineProperty$1(_operateProps2, operationPrefix + 'set', [initialize(function (method) {
     return function (property, val) {
       var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
           disable = _ref3.disable,
@@ -7021,7 +7140,7 @@ function deepObserve(value, hook, _ref2) {
         value[property] = val;
       }
     };
-  }), nonenumerable]), _defineProperty(_operateProps2, operationPrefix + 'del', [initialize(function (method) {
+  }), nonenumerable]), _defineProperty$1(_operateProps2, operationPrefix + 'del', [initialize(function (method) {
     return function (property) {
       if (isFunction(method)) {
         bind(method, _this)(property);
@@ -7246,6 +7365,42 @@ function number$1() {
   return accessor({ set: args, get: args });
 }
 
+var before$1 = classify(before, {
+  requirement: function requirement(obj, prop, desc) {
+    // $FlowFixMe: it's data descriptor now
+    return isDataDescriptor(desc) && isFunction(desc.value);
+  },
+
+  customArgs: true
+});
+
+var after$1 = classify(after, {
+  requirement: function requirement(obj, prop, desc) {
+    // $FlowFixMe: it's data descriptor now
+    return isDataDescriptor(desc) && isFunction(desc.value);
+  },
+
+  customArgs: true
+});
+
+var runnable$1 = classify(runnable, {
+  requirement: function requirement(obj, prop, desc) {
+    // $FlowFixMe: it's data descriptor now
+    return isDataDescriptor(desc) && isFunction(desc.value);
+  },
+
+  customArgs: true
+});
+
+var waituntil$1 = classify(waituntil, {
+  requirement: function requirement(obj, prop, desc) {
+    // $FlowFixMe: it's data descriptor now
+    return isDataDescriptor(desc) && isFunction(desc.value);
+  },
+
+  customArgs: true
+});
+
 var _dec$2;
 var _dec2$1;
 var _dec3$1;
@@ -7305,15 +7460,15 @@ function secondaryChecker(key) {
  * side effect(_): This events will always trigger once we bump into trigger period. So that you can know if the events been blocked. But it's not advice to listen on this effect.
  * </pre>
  */
-var Bus = (_dec = runnable(secondaryChecker), _dec2 = runnable(secondaryChecker, {
+var Bus = (_dec$2 = runnable(secondaryChecker), _dec2$1 = runnable(secondaryChecker, {
   backup: function backup() {
     return false;
   }
-}), _dec3 = runnable(secondaryChecker), _dec4 = runnable(secondaryChecker, {
+}), _dec3$1 = runnable(secondaryChecker), _dec4$1 = runnable(secondaryChecker, {
   backup: function backup() {
     return false;
   }
-}), _class = function () {
+}), (_class$2 = function () {
   /**
    * @param {Dispatcheer} dispatcher bus rely on dispatcher, so you mush pass dispatcher at first when you generate Bus.
    * @return {Bus}
@@ -7581,9 +7736,9 @@ var Bus = (_dec = runnable(secondaryChecker), _dec2 = runnable(secondaryChecker,
     key: '_addToOnceMap',
     value: function _addToOnceMap(keys, fn, handler) {
       var key = keys.join('-');
-      var map = this.onceMap[key] = this.onceMap[key] || new _Map();
-      if (!map.has(fn)) map.set(fn, []);
-      var handlers = map.get(fn);
+      var map$$1 = this.onceMap[key] = this.onceMap[key] || new _Map();
+      if (!map$$1.has(fn)) map$$1.set(fn, []);
+      var handlers = map$$1.get(fn);
       // $FlowFixMe: flow do not understand map yet
       handlers.push(handler);
     }
@@ -7591,21 +7746,21 @@ var Bus = (_dec = runnable(secondaryChecker), _dec2 = runnable(secondaryChecker,
     key: '_removeFromOnceMap',
     value: function _removeFromOnceMap(keys, fn, handler) {
       var key = keys.join('-');
-      var map = this.onceMap[key];
+      var map$$1 = this.onceMap[key];
       // do not need to check now
       // if(isVoid(map) || !map.has(fn)) return;
-      var handlers = map.get(fn);
+      var handlers = map$$1.get(fn);
       var index = handlers.indexOf(handler);
       handlers.splice(index, 1);
-      if (isEmpty(handlers)) map.delete(fn);
+      if (isEmpty(handlers)) map$$1.delete(fn);
     }
   }, {
     key: '_getHandlerFromOnceMap',
     value: function _getHandlerFromOnceMap(keys, fn) {
       var key = keys.join('-');
-      var map = this.onceMap[key];
-      if (isVoid(map) || !map.has(fn)) return;
-      var handlers = map.get(fn);
+      var map$$1 = this.onceMap[key];
+      if (isVoid(map$$1) || !map$$1.has(fn)) return;
+      var handlers = map$$1.get(fn);
       return handlers[0];
     }
     /**
@@ -7638,9 +7793,9 @@ var Bus = (_dec = runnable(secondaryChecker), _dec2 = runnable(secondaryChecker,
     value: function _getEventQueue(handlerSet, order) {
       var _this3 = this;
 
-      order = isArray(order) ? order.concat(['_vm']) : ['_vm'];
+      order = isArray$1(order) ? order.concat(['_vm']) : ['_vm'];
       return isEmpty(handlerSet) ? [] : order.reduce(function (queue, id) {
-        if (isEmpty(handlerSet[id]) || !isArray(handlerSet[id]) ||
+        if (isEmpty(handlerSet[id]) || !isArray$1(handlerSet[id]) ||
         // in case plugins is missed
         // _vm indicate the user. This is the function for user
         !_this3.__dispatcher.plugins[id] && id !== '_vm') {
@@ -7717,7 +7872,7 @@ var Bus = (_dec = runnable(secondaryChecker), _dec2 = runnable(secondaryChecker,
   }]);
 
   return Bus;
-}(), (_applyDecoratedDescriptor(_class.prototype, 'emit', [_dec], _Object$getOwnPropertyDescriptor(_class.prototype, 'emit'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'emitSync', [_dec2], _Object$getOwnPropertyDescriptor(_class.prototype, 'emitSync'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'trigger', [_dec3], _Object$getOwnPropertyDescriptor(_class.prototype, 'trigger'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'triggerSync', [_dec4], _Object$getOwnPropertyDescriptor(_class.prototype, 'triggerSync'), _class.prototype)), _class);
+}(), (_applyDecoratedDescriptor$2(_class$2.prototype, 'emit', [_dec$2], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'emit'), _class$2.prototype), _applyDecoratedDescriptor$2(_class$2.prototype, 'emitSync', [_dec2$1], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'emitSync'), _class$2.prototype), _applyDecoratedDescriptor$2(_class$2.prototype, 'trigger', [_dec3$1], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'trigger'), _class$2.prototype), _applyDecoratedDescriptor$2(_class$2.prototype, 'triggerSync', [_dec4$1], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'triggerSync'), _class$2.prototype)), _class$2));
 
 var $JSON$1 = _core.JSON || (_core.JSON = { stringify: JSON.stringify });
 var stringify$1 = function stringify(it) { // eslint-disable-line no-unused-vars
@@ -7974,23 +8129,23 @@ var accessorMap = {
   volume: [number$1(1), accessorVideoProperty('volume')]
 };
 
-var VideoConfig = (_dec = initBoolean(), _dec2 = initString(function (str) {
+var VideoConfig = (_dec$5 = boolean(), _dec2$3 = string(function (str) {
   return str.toLocaleLowerCase();
-}), _class = function () {
+}), (_class$5 = function () {
   function VideoConfig(dispatcher, config) {
     _classCallCheck(this, VideoConfig);
 
-    _initDefineProp(this, 'needToLoadSrc', _descriptor, this);
+    _initDefineProp$1(this, 'needToLoadSrc', _descriptor$1, this);
 
-    _initDefineProp(this, 'changeWatchable', _descriptor2, this);
+    _initDefineProp$1(this, 'changeWatchable', _descriptor2$1, this);
 
-    _initDefineProp(this, 'inited', _descriptor3, this);
+    _initDefineProp$1(this, 'inited', _descriptor3$1, this);
 
     this.src = '';
 
-    _initDefineProp(this, 'isLive', _descriptor4, this);
+    _initDefineProp$1(this, 'isLive', _descriptor4, this);
 
-    _initDefineProp(this, 'box', _descriptor5, this);
+    _initDefineProp$1(this, 'box', _descriptor5, this);
 
     this.preset = {};
     this.autoload = true;
@@ -8013,9 +8168,9 @@ var VideoConfig = (_dec = initBoolean(), _dec2 = initString(function (str) {
     this.disableRemotePlayback = false;
     this.volume = 1;
 
-    _initDefineProp(this, '_kernelProperty', _descriptor6, this);
+    _initDefineProp$1(this, '_kernelProperty', _descriptor6, this);
 
-    _initDefineProp(this, '_realDomAttr', _descriptor7, this);
+    _initDefineProp$1(this, '_realDomAttr', _descriptor7, this);
 
     applyDecorators(this, accessorMap, { self: true });
     Object.defineProperty(this, 'dispatcher', {
@@ -8051,42 +8206,42 @@ var VideoConfig = (_dec = initBoolean(), _dec2 = initString(function (str) {
   }]);
 
   return VideoConfig;
-}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'needToLoadSrc', [nonenumerable], {
+}(), (_descriptor$1 = _applyDecoratedDescriptor$4(_class$5.prototype, 'needToLoadSrc', [nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'changeWatchable', [nonenumerable], {
+}), _descriptor2$1 = _applyDecoratedDescriptor$4(_class$5.prototype, 'changeWatchable', [nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return true;
   }
-}), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'inited', [nonenumerable], {
+}), _descriptor3$1 = _applyDecoratedDescriptor$4(_class$5.prototype, 'inited', [nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'isLive', [_dec, configurable], {
+}), _descriptor4 = _applyDecoratedDescriptor$4(_class$5.prototype, 'isLive', [_dec$5, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'box', [_dec2, configurable], {
+}), _descriptor5 = _applyDecoratedDescriptor$4(_class$5.prototype, 'box', [_dec2$3, nonconfigurable], {
   enumerable: true,
   initializer: function initializer() {
     return '';
   }
-}), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, '_kernelProperty', [frozen], {
+}), _descriptor6 = _applyDecoratedDescriptor$4(_class$5.prototype, '_kernelProperty', [frozen], {
   enumerable: true,
   initializer: function initializer() {
     return ['isLive', 'box', 'preset'];
   }
-}), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, '_realDomAttr', [frozen], {
+}), _descriptor7 = _applyDecoratedDescriptor$4(_class$5.prototype, '_realDomAttr', [frozen], {
   enumerable: true,
   initializer: function initializer() {
     return ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
   }
-})), _class);
+})), _class$5));
 
 var _dec$4;
 var _dec2$2;
@@ -8143,7 +8298,7 @@ function propertyAccessibilityWarn(property) {
   /* istanbul ignore else  */
   Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
 }
-var VideoWrapper = (_dec = autobindClass(), _dec2 = alias('silentLoad'), _dec3 = alias('fullScreen'), _dec4 = alias('$fullScreen'), _dec5 = alias('fullscreen'), _dec6 = alias('emit'), _dec7 = alias('emitSync'), _dec8 = alias('on'), _dec9 = alias('addEventListener'), _dec10 = before(eventBinderCheck), _dec11 = alias('off'), _dec12 = alias('removeEventListener'), _dec13 = before(eventBinderCheck), _dec14 = alias('once'), _dec15 = before(eventBinderCheck), _dec16 = alias('css'), _dec17 = before(attrAndStyleCheck), _dec18 = alias('attr'), _dec19 = before(attrAndStyleCheck), _dec(_class = (_class2 = function () {
+var VideoWrapper = (_dec$4 = autobindClass(), _dec2$2 = alias('silentLoad'), _dec3$2 = alias('fullScreen'), _dec4$2 = alias('$fullScreen'), _dec5$1 = alias('fullscreen'), _dec6 = alias('emit'), _dec7 = alias('emitSync'), _dec8 = alias('on'), _dec9 = alias('addEventListener'), _dec10 = before(eventBinderCheck), _dec11 = alias('off'), _dec12 = alias('removeEventListener'), _dec13 = before(eventBinderCheck), _dec14 = alias('once'), _dec15 = before(eventBinderCheck), _dec16 = alias('css'), _dec17 = before(attrAndStyleCheck), _dec18 = alias('attr'), _dec19 = before(attrAndStyleCheck), _dec$4(_class$4 = (_class2$1 = function () {
   function VideoWrapper() {
     _classCallCheck(this, VideoWrapper);
 
@@ -8247,7 +8402,7 @@ var VideoWrapper = (_dec = autobindClass(), _dec2 = alias('silentLoad'), _dec3 =
           _ref$proxy = _ref.proxy,
           proxy = _ref$proxy === undefined ? false : _ref$proxy;
 
-      if (!isString(key) && !isArray(key)) throw new TypeError('$watch only accept string and Array<string> as key to find the target to spy on, but not ' + key + ', whose type is ' + (typeof key === 'undefined' ? 'undefined' : _typeof(key)));
+      if (!isString(key) && !isArray$1(key)) throw new TypeError('$watch only accept string and Array<string> as key to find the target to spy on, but not ' + key + ', whose type is ' + (typeof key === 'undefined' ? 'undefined' : _typeof(key)));
       var watching = true;
       var watcher = function watcher() {
         if (watching && (!(this instanceof VideoConfig) || this.dispatcher.changeWatchable)) bind(handler, this).apply(undefined, arguments);
@@ -8257,22 +8412,22 @@ var VideoWrapper = (_dec = autobindClass(), _dec2 = alias('silentLoad'), _dec3 =
         var index = _this3.__unwatchHandlers.indexOf(unwatcher);
         if (index > -1) _this3.__unwatchHandlers.splice(index, 1);
       };
-      var keys = isString(key) ? key.split('.') : key;
-      var property = keys.pop();
+      var keys$$1 = isString(key) ? key.split('.') : key;
+      var property = keys$$1.pop();
       var videoConfig = this.__dispatcher.videoConfig;
-      var target = keys.length === 0 && !other && videoConfig._realDomAttr.indexOf(property) > -1 ? videoConfig : ['isFullscreen', 'fullscreenElement'].indexOf(property) > -1 ? this.__dispatcher.dom : getDeepProperty(other || this, keys, { throwError: true });
-      applyDecorators(target, _defineProperty({}, property, watch(watcher, { deep: deep, diff: diff, proxy: proxy })), { self: true });
+      var target = keys$$1.length === 0 && !other && videoConfig._realDomAttr.indexOf(property) > -1 ? videoConfig : ['isFullscreen', 'fullscreenElement'].indexOf(property) > -1 ? this.__dispatcher.dom : getDeepProperty(other || this, keys$$1, { throwError: true });
+      applyDecorators(target, _defineProperty$1({}, property, watch(watcher, { deep: deep, diff: diff, proxy: proxy })), { self: true });
       this.__unwatchHandlers.push(unwatcher);
       return unwatcher;
     }
   }, {
     key: '$set',
     value: function $set(obj, property, value) {
-      if (!isObject(obj) && !isArray(obj)) throw new TypeError('$set only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
+      if (!isObject$1(obj) && !isArray$1(obj)) throw new TypeError('$set only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
       // $FlowFixMe: we have custom this function
       if (!isFunction(obj.__set)) {
         /* istanbul ignore else  */
-        if ("development" !== 'production') Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $set.');
+        Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $set.');
         // $FlowFixMe: we support computed string on array here
         obj[property] = value;
         return;
@@ -8282,11 +8437,11 @@ var VideoWrapper = (_dec = autobindClass(), _dec2 = alias('silentLoad'), _dec3 =
   }, {
     key: '$del',
     value: function $del(obj, property) {
-      if (!isObject(obj) && !isArray(obj)) throw new TypeError('$del only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
+      if (!isObject$1(obj) && !isArray$1(obj)) throw new TypeError('$del only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
       // $FlowFixMe: we have custom this function
       if (!isFunction(obj.__del)) {
         /* istanbul ignore else  */
-        if ("development" !== 'production') Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $del.');
+        Log.warn('chimee', _JSON$stringify(obj) + ' has not been deep watch. There is no need to use $del.');
         // $FlowFixMe: we support computed string on array here
         delete obj[property];
         return;
@@ -8470,7 +8625,7 @@ var VideoWrapper = (_dec = autobindClass(), _dec2 = alias('silentLoad'), _dec3 =
       if (method === 'set' && /video/.test(args[0])) {
         if (!this.__dispatcher.videoConfigReady) {
           /* istanbul ignore else  */
-          if ("development" !== 'production') Log.warn('chimee', this.__id + ' is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger');
+          Log.warn('chimee', this.__id + ' is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger');
           return args[2];
         }
         if (this.__dispatcher.videoConfig._realDomAttr.indexOf(args[1]) > -1) {
@@ -8507,7 +8662,7 @@ var VideoWrapper = (_dec = autobindClass(), _dec2 = alias('silentLoad'), _dec3 =
         return unwatcher();
       });
       _Object$keys(this.__events).forEach(function (key) {
-        if (!isArray(_this6.__events[key])) return;
+        if (!isArray$1(_this6.__events[key])) return;
         _this6.__events[key].forEach(function (fn) {
           return _this6.$off(key, fn);
         });
@@ -8563,7 +8718,7 @@ var VideoWrapper = (_dec = autobindClass(), _dec2 = alias('silentLoad'), _dec3 =
   }]);
 
   return VideoWrapper;
-}(), (_applyDecoratedDescriptor(_class2.prototype, '$silentLoad', [_dec2], _Object$getOwnPropertyDescriptor(_class2.prototype, '$silentLoad'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$fullscreen', [_dec3, _dec4, _dec5], _Object$getOwnPropertyDescriptor(_class2.prototype, '$fullscreen'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emit'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emitSync'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2.prototype, '$on'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2.prototype, '$off'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2.prototype, '$once'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2.prototype, '$css'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2.prototype, '$attr'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$plugins'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$pluginOrder'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$wrapper'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$container'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$video'), _class2.prototype)), _class2)) || _class);
+}(), (_applyDecoratedDescriptor$3(_class2$1.prototype, '$silentLoad', [_dec2$2], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$silentLoad'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$fullscreen', [_dec3$2, _dec4$2, _dec5$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$fullscreen'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emit'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emitSync'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$on'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$off'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$once'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$css'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$attr'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$plugins'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$pluginOrder'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$wrapper'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$container'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$video'), _class2$1.prototype)), _class2$1)) || _class$4);
 
 var _dec$3;
 var _class$3;
@@ -8575,7 +8730,7 @@ var _class$3;
  * Developer can do most of things base on this plugin
  * </pre>
  */
-var Plugin = (_dec = autobindClass(), _dec(_class = function (_VideoWrapper) {
+var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrapper) {
   _inherits(Plugin, _VideoWrapper);
 
   /**
@@ -8647,7 +8802,7 @@ var Plugin = (_dec = autobindClass(), _dec(_class = function (_VideoWrapper) {
 
     if (isEmpty(dispatcher)) {
       /* istanbul ignore else  */
-      if ("development" !== 'production') Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
+      Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
       throw new TypeError('lack of dispatcher');
     }
     if (!isString(id)) {
@@ -8669,7 +8824,7 @@ var Plugin = (_dec = autobindClass(), _dec(_class = function (_VideoWrapper) {
       _this.$throwError(error);
     }
     // bind plugin methods into instance
-    if (!isEmpty(methods) && isObject(methods)) {
+    if (!isEmpty(methods) && isObject$1(methods)) {
       _Object$keys(methods).forEach(function (key) {
         var fn = methods[key];
         if (!isFunction(fn)) throw new TypeError('plugins methods must be Function');
@@ -8682,30 +8837,30 @@ var Plugin = (_dec = autobindClass(), _dec(_class = function (_VideoWrapper) {
       });
     }
     // hook plugin events on bus
-    if (!isEmpty(events) && isObject(events)) {
+    if (!isEmpty(events) && isObject$1(events)) {
       _Object$keys(events).forEach(function (key) {
         if (!isFunction(events[key])) throw new TypeError('plugins events hook must bind with Function');
         _this.$on(key, events[key]);
       });
     }
     // bind data into plugin instance
-    if (!isEmpty(data) && isObject(data)) {
+    if (!isEmpty(data) && isObject$1(data)) {
       deepAssign(_this, data);
     }
     // set the computed member by getter and setter
-    if (!isEmpty(computed) && isObject(computed)) {
+    if (!isEmpty(computed) && isObject$1(computed)) {
       var props = _Object$keys(computed).reduce(function (props, key) {
         var val = computed[key];
         if (isFunction(val)) {
           props[key] = accessor({ get: val });
           return props;
         }
-        if (isObject(val) && (isFunction(val.get) || isFunction(val.set))) {
+        if (isObject$1(val) && (isFunction(val.get) || isFunction(val.set))) {
           props[key] = accessor(val);
           return props;
         }
         /* istanbul ignore else  */
-        if ("development" !== 'production') Log.warn('Dispatcher.plugin', 'Wrong computed member \'' + key + '\' defination in Plugin ' + name);
+        Log.warn('Dispatcher.plugin', 'Wrong computed member \'' + key + '\' defination in Plugin ' + name);
         return props;
       }, {});
       applyDecorators(_this, props, { self: true });
@@ -8850,7 +9005,7 @@ var Plugin = (_dec = autobindClass(), _dec(_class = function (_VideoWrapper) {
       this.$dom.style.pointerEvents = val ? 'auto' : 'none';
       this.__operable = val;
     },
-    get: function get() {
+    get: function get$$1() {
       return this.__operable;
     }
     /**
@@ -8865,13 +9020,13 @@ var Plugin = (_dec = autobindClass(), _dec(_class = function (_VideoWrapper) {
       this.__level = val;
       this.__dispatcher._sortZIndex();
     },
-    get: function get() {
+    get: function get$$1() {
       return this.__level;
     }
   }]);
 
   return Plugin;
-}(VideoWrapper)) || _class);
+}(VideoWrapper)) || _class$3);
 
 /**
  * es-fullscreen v0.2.1
@@ -9023,12 +9178,12 @@ function _applyDecoratedDescriptor$6(target, property, decorators, descriptor, c
 
 var fullscreenEnabled = native('fullscreenEnabled');
 
-var ESFullScreen = (_dec = autobindClass(), _dec2 = alias('requestFullscreen'), _dec3 = alias('exitFullscreen'), _dec4 = alias('addEventListener'), _dec5 = alias('removeEventListener'), _dec(_class = (_class2 = function () {
+var ESFullScreen = (_dec$7 = autobindClass(), _dec2$5 = alias('requestFullscreen'), _dec3$4 = alias('exitFullscreen'), _dec4$4 = alias('addEventListener'), _dec5$3 = alias('removeEventListener'), _dec$7(_class$7 = (_class2$2 = function () {
   function ESFullScreen() {
     _classCallCheck(this, ESFullScreen);
 
     this._fullscreenElement = null;
-    this.isNativelySupport = defined(native('fullscreenElement')) && (!defined(fullscreenEnabled) || fullscreenEnabled === true);
+    this.isNativelySupport = defined$1(native('fullscreenElement')) && (!defined$1(fullscreenEnabled) || fullscreenEnabled === true);
     this._openKey = native(document.body, 'requestFullscreen', { keyOnly: true });
     this._exitKey = native('exitFullscreen', { keyOnly: true });
   }
@@ -9041,7 +9196,7 @@ var ESFullScreen = (_dec = autobindClass(), _dec2 = alias('requestFullscreen'), 
           force = _ref$force === undefined ? false : _ref$force;
 
       /* istanbul ignore else  */
-      if ("development" !== 'production') {
+      {
         if (!isElement(element)) throw new Error('You should passed in a legal element to requestFullScreen, but not ' + (typeof element === 'undefined' ? 'undefined' : _typeof(element)) + '.');
         if (!isPosterityNode(document, element)) throw new Error('You must pass in a HTML element in document.');
       }
@@ -9064,7 +9219,7 @@ var ESFullScreen = (_dec = autobindClass(), _dec2 = alias('requestFullscreen'), 
         styles[key] = element.style[key];
         return styles;
       }, {});
-      setStyle(element, DESKTOP_FULLSCREEN_STYLE);
+      setStyle$1(element, DESKTOP_FULLSCREEN_STYLE);
 
       /* istanbul ignore else  */
       if (document.body) {
@@ -9092,7 +9247,7 @@ var ESFullScreen = (_dec = autobindClass(), _dec2 = alias('requestFullscreen'), 
       }
       // $FlowFixMe: element is an Elment here
       var element = this._fullscreenElement;
-      setStyle(element, this._savedStyles);
+      setStyle$1(element, this._savedStyles);
       /* istanbul ignore else  */
       if (document.body) document.body.style.overflow = this._bodyOverflow;
       /* istanbul ignore else  */
@@ -9121,7 +9276,7 @@ var ESFullScreen = (_dec = autobindClass(), _dec2 = alias('requestFullscreen'), 
     key: '_handleEvent',
     value: function _handleEvent(element, behavior, name, fn) {
       /* istanbul ignore else  */
-      if ("development" !== 'production') {
+      {
         if (name !== 'fullscreenchange' && name !== 'fullscreenerror') throw new Error(this.constructor.name + ' only handle "fullscreenchange" and "fullscreenerror" event, but not ' + name + '. Pleas pass in an right event name.');
         if (!isFunction(fn)) throw new Error('You must pass in an legal function, but not ' + (typeof fn === 'undefined' ? 'undefined' : _typeof(fn)) + '.');
         if (!isElement(element) && element !== document) throw new Error('You should passed in a legal element, but not ' + (typeof element === 'undefined' ? 'undefined' : _typeof(element)) + '.');
@@ -9149,7 +9304,7 @@ var ESFullScreen = (_dec = autobindClass(), _dec2 = alias('requestFullscreen'), 
   }]);
 
   return ESFullScreen;
-}(), (_applyDecoratedDescriptor(_class2.prototype, 'open', [_dec2], _Object$getOwnPropertyDescriptor(_class2.prototype, 'open'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'exit', [_dec3], _Object$getOwnPropertyDescriptor(_class2.prototype, 'exit'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'on', [_dec4], _Object$getOwnPropertyDescriptor(_class2.prototype, 'on'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, 'off', [_dec5], _Object$getOwnPropertyDescriptor(_class2.prototype, 'off'), _class2.prototype)), _class2)) || _class);
+}(), (_applyDecoratedDescriptor$6(_class2$2.prototype, 'open', [_dec2$5], _Object$getOwnPropertyDescriptor(_class2$2.prototype, 'open'), _class2$2.prototype), _applyDecoratedDescriptor$6(_class2$2.prototype, 'exit', [_dec3$4], _Object$getOwnPropertyDescriptor(_class2$2.prototype, 'exit'), _class2$2.prototype), _applyDecoratedDescriptor$6(_class2$2.prototype, 'on', [_dec4$4], _Object$getOwnPropertyDescriptor(_class2$2.prototype, 'on'), _class2$2.prototype), _applyDecoratedDescriptor$6(_class2$2.prototype, 'off', [_dec5$3], _Object$getOwnPropertyDescriptor(_class2$2.prototype, 'off'), _class2$2.prototype)), _class2$2)) || _class$7);
 
 
 var index = new ESFullScreen();
@@ -9212,7 +9367,7 @@ function attrOperationCheck(target, attr, val) {
  * It take charge of dom management of Dispatcher.
  * </pre>
  */
-var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(attrOperationCheck, targetCheck), _dec3 = before(attrOperationCheck, targetCheck), _dec4 = before(attrOperationCheck, targetCheck), _dec5 = before(attrOperationCheck, targetCheck), _dec6 = before(targetCheck), _class = function () {
+var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before(attrOperationCheck, targetCheck), _dec3$3 = before(attrOperationCheck, targetCheck), _dec4$3 = before(attrOperationCheck, targetCheck), _dec5$2 = before(attrOperationCheck, targetCheck), _dec6$1 = before(targetCheck), (_class$6 = function () {
   /**
    * to mark is the mouse in the video area
    */
@@ -9294,7 +9449,7 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
       addEvent(_this.wrapper, key, wfn);
     });
     this._fullscreenMonitor();
-    esFullscreen.on('fullscreenchange', this._fullscreenMonitor);
+    index.on('fullscreenchange', this._fullscreenMonitor);
   }
   /**
    * collection of video extension nodes
@@ -9325,7 +9480,7 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
       var _this2 = this;
 
       this.__videoExtendedNodes.push(videoElement);
-      _setAttr(videoElement, 'tabindex', -1);
+      setAttr(videoElement, 'tabindex', -1);
       this._autoFocusToVideo(videoElement);
       if (!isElement(this.container)) {
         // create container
@@ -9375,11 +9530,11 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
 
       var videoElement = this.videoElement;
       this._autoFocusToVideo(this.videoElement, false);
-      videoEvents.forEach(function (key, index) {
-        removeEvent(_this3.videoElement, key, _this3.videoEventHandlerList[index]);
+      videoEvents.forEach(function (key, index$$1) {
+        removeEvent(_this3.videoElement, key, _this3.videoEventHandlerList[index$$1]);
       });
-      domEvents.forEach(function (key, index) {
-        removeEvent(_this3.videoElement, key, _this3.videoDomEventHandlerList[index]);
+      domEvents.forEach(function (key, index$$1) {
+        removeEvent(_this3.videoElement, key, _this3.videoDomEventHandlerList[index$$1]);
       });
       $(videoElement).remove();
       delete this.videoElement;
@@ -9404,7 +9559,7 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
       if (!isString(id)) throw new TypeError('insertPlugin id parameter must be string');
       if (isElement(this.plugins[id])) {
         /* istanbul ignore else  */
-        if ("development" !== 'production') Log.warn('Dispatcher.dom', 'Plugin ' + id + ' have already had a dom node. Now it will be replaced');
+        Log.warn('Dispatcher.dom', 'Plugin ' + id + ' have already had a dom node. Now it will be replaced');
         this.removePlugin(id);
       }
       if (isString(el)) {
@@ -9415,7 +9570,7 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
         } else {
           el = document.createElement(hypenate(el));
         }
-      } else if (isObject(el)) {
+      } else if (isObject$1(el)) {
         // $FlowFixMe: we have check el's type here and make sure it's an object
         option = el;
       }
@@ -9427,7 +9582,7 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
           className = _option2.className;
 
       var node = el && isElement(el) ? el : document.createElement('div');
-      if (isArray(className)) {
+      if (isArray$1(className)) {
         className = className.join(' ');
       }
       if (isString(className)) {
@@ -9470,8 +9625,8 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
         this._autoFocusToVideo(dom, true);
       }
       if (!isEmpty(this.__domEventHandlerList[id])) {
-        domEvents.forEach(function (key, index) {
-          removeEvent(_this5.plugins[id], key, _this5.__domEventHandlerList[id][index]);
+        domEvents.forEach(function (key, index$$1) {
+          removeEvent(_this5.plugins[id], key, _this5.__domEventHandlerList[id][index$$1]);
         });
         delete this.__domEventHandlerList[id];
       }
@@ -9487,8 +9642,8 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
       var _this6 = this;
 
       // $FlowFixMe: there are videoElment and container here
-      plugins.forEach(function (key, index) {
-        return _setStyle(key.match(/^(videoElement|container)$/) ? _this6[key] : _this6.plugins[key], 'z-index', ++index);
+      plugins.forEach(function (key, index$$1) {
+        return setStyle(key.match(/^(videoElement|container)$/) ? _this6[key] : _this6.plugins[key], 'z-index', ++index$$1);
       });
     }
     /**
@@ -9500,38 +9655,38 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
 
   }, {
     key: 'setAttr',
-    value: function setAttr(target, attr, val) {
+    value: function setAttr$$1(target, attr, val) {
       // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
-      _setAttr(this[target], attr, val);
+      setAttr(this[target], attr, val);
     }
   }, {
     key: 'getAttr',
-    value: function getAttr(target, attr) {
+    value: function getAttr$$1(target, attr) {
       // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
-      return _getAttr(this[target], attr);
+      return getAttr(this[target], attr);
     }
   }, {
     key: 'setStyle',
-    value: function setStyle(target, attr, val) {
+    value: function setStyle$$1(target, attr, val) {
       // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
-      _setStyle(this[target], attr, val);
+      setStyle(this[target], attr, val);
     }
   }, {
     key: 'getStyle',
-    value: function getStyle(target, attr) {
+    value: function getStyle$$1(target, attr) {
       // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
-      return _getStyle(this[target], attr);
+      return getStyle(this[target], attr);
     }
   }, {
     key: 'requestFullscreen',
     value: function requestFullscreen(target) {
       // $FlowFixMe: flow do not support computed property/element on document, which is silly here.
-      return esFullscreen.open(this[target]);
+      return index.open(this[target]);
     }
   }, {
     key: 'exitFullscreen',
     value: function exitFullscreen() {
-      return esFullscreen.exit();
+      return index.exit();
     }
   }, {
     key: 'fullscreen',
@@ -9560,11 +9715,11 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
       var _this7 = this;
 
       this.removeVideo();
-      domEvents.forEach(function (key, index) {
-        removeEvent(_this7.container, key, _this7.containerDomEventHandlerList[index]);
-        removeEvent(_this7.wrapper, key, _this7.wrapperDomEventHandlerList[index]);
+      domEvents.forEach(function (key, index$$1) {
+        removeEvent(_this7.container, key, _this7.containerDomEventHandlerList[index$$1]);
+        removeEvent(_this7.wrapper, key, _this7.wrapperDomEventHandlerList[index$$1]);
       });
-      esFullscreen.off('fullscreenchange', this._fullscreenMonitor);
+      index.off('fullscreenchange', this._fullscreenMonitor);
       this.wrapper.innerHTML = this.originHTML;
       delete this.wrapper;
       delete this.plugins;
@@ -9588,7 +9743,7 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
   }, {
     key: '_fullscreenMonitor',
     value: function _fullscreenMonitor(evt) {
-      var element = esFullscreen.fullscreenElement;
+      var element = index.fullscreenElement;
       var original = this.isFullscreen;
       if (!element || !isPosterityNode(this.wrapper, element) && element !== this.wrapper) {
         this.isFullscreen = false;
@@ -9658,7 +9813,7 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
   }]);
 
   return Dom;
-}(), (_applyDecoratedDescriptor(_class.prototype, 'setAttr', [_dec, _dec2], _Object$getOwnPropertyDescriptor(_class.prototype, 'setAttr'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getAttr', [_dec3], _Object$getOwnPropertyDescriptor(_class.prototype, 'getAttr'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'setStyle', [_dec4], _Object$getOwnPropertyDescriptor(_class.prototype, 'setStyle'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getStyle', [_dec5], _Object$getOwnPropertyDescriptor(_class.prototype, 'getStyle'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'requestFullscreen', [_dec6], _Object$getOwnPropertyDescriptor(_class.prototype, 'requestFullscreen'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, '_focusToVideo', [autobind], _Object$getOwnPropertyDescriptor(_class.prototype, '_focusToVideo'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, '_fullscreenMonitor', [autobind], _Object$getOwnPropertyDescriptor(_class.prototype, '_fullscreenMonitor'), _class.prototype)), _class);
+}(), (_applyDecoratedDescriptor$5(_class$6.prototype, 'setAttr', [_dec$6, _dec2$4], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'setAttr'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'getAttr', [_dec3$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'getAttr'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'setStyle', [_dec4$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'setStyle'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'getStyle', [_dec5$2], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'getStyle'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'requestFullscreen', [_dec6$1], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'requestFullscreen'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, '_focusToVideo', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, '_focusToVideo'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, '_fullscreenMonitor', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, '_fullscreenMonitor'), _class$6.prototype)), _class$6));
 
 var _dec$1;
 var _dec2;
@@ -9721,7 +9876,7 @@ function checkPluginConfig(config) {
  * It also offer a bridge to let user handle video kernel.
  * </pre>
  */
-var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginConfig), _dec3 = before(convertNameIntoId), _dec4 = before(convertNameIntoId), _dec5 = before(convertNameIntoId), _class = function () {
+var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPluginConfig), _dec3 = before(convertNameIntoId), _dec4 = before(convertNameIntoId), _dec5 = before(convertNameIntoId), (_class$1 = function () {
   /**
    * @param  {UserConfig} config UserConfig for whole Chimee player
    * @param  {Chimee} vm referrence of outer class
@@ -9753,7 +9908,7 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
     };
     this.changeWatchable = true;
 
-    if (!isObject(config)) throw new TypeError('UserConfig must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
+    if (!isObject$1(config)) throw new TypeError('UserConfig must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
     /**
      * dom Manager
      * @type {Dom}
@@ -9778,7 +9933,7 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
     this.videoConfig = new VideoConfig(this, config);
     // support both plugin and plugins here as people often cofuse both
     // $FlowFixMe: we support plugins here, which should be illegal
-    if (isArray(config.plugins) && !isArray(config.plugin)) {
+    if (isArray$1(config.plugins) && !isArray$1(config.plugin)) {
       config.plugin = config.plugins;
       delete config.plugins;
     }
@@ -9833,22 +9988,22 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
     key: 'use',
     value: function use(option) {
       if (isString(option)) option = { name: option, alias: undefined };
-      if (!isObject(option) || isObject(option) && !isString(option.name)) {
+      if (!isObject$1(option) || isObject$1(option) && !isString(option.name)) {
         throw new TypeError('pluginConfig do not match requirement');
       }
       if (!isString(option.alias)) option.alias = undefined;
       var _option = option,
           name = _option.name,
-          alias = _option.alias;
+          alias$$1 = _option.alias;
 
-      option.name = alias || name;
+      option.name = alias$$1 || name;
       delete option.alias;
       var key = camelize(name);
-      var id = camelize(alias || name);
+      var id = camelize(alias$$1 || name);
       var pluginOption = option;
       var pluginConfig = Dispatcher.getPluginConfig(key);
       if (isEmpty(pluginConfig)) throw new TypeError('You have not installed plugin ' + key);
-      if (isObject(pluginConfig)) {
+      if (isObject$1(pluginConfig)) {
         pluginConfig.id = id;
       }
       var plugin = isFunction(pluginConfig) ? new pluginConfig({ id: id }, this, pluginOption) // eslint-disable-line 
@@ -9874,7 +10029,7 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
     key: 'unuse',
     value: function unuse(id) {
       var plugin = this.plugins[id];
-      if (!isObject(plugin) || !isFunction(plugin.$destroy)) {
+      if (!isObject$1(plugin) || !isFunction(plugin.$destroy)) {
         delete this.plugins[id];
         return;
       }
@@ -9985,7 +10140,7 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
       return runRejectableQueue(tasks).then(function () {
         var message = 'The silentLoad for ' + src + ' timed out. Please set a longer duration or check your network';
         /* istanbul ignore else  */
-        if ("development" !== 'production') {
+        {
           Log.warn("chimee's silentLoad", message);
         }
         return _Promise.reject(new Error(message));
@@ -9995,7 +10150,7 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
         }
         if (data.error) {
           /* istanbul ignore else  */
-          if ("development" !== 'production') {
+          {
             Log.warn("chimee's silentLoad", data.message);
           }
           return _Promise.reject(new Error(data.message));
@@ -10109,9 +10264,9 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
 
       var configs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-      if (!isArray(configs)) {
+      if (!isArray$1(configs)) {
         /* istanbul ignore else  */
-        if ("development" !== 'production') Log.warn('Dispatcher', 'UserConfig.plugin can only by an Array, but not "' + configs + '" in ' + (typeof configs === 'undefined' ? 'undefined' : _typeof(configs)));
+        Log.warn('Dispatcher', 'UserConfig.plugin can only by an Array, but not "' + configs + '" in ' + (typeof configs === 'undefined' ? 'undefined' : _typeof(configs)));
         configs = [];
       }
       return configs.map(function (config) {
@@ -10182,14 +10337,14 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
       /* istanbul ignore else  */
 
       if ("development" !== 'production' && isEmpty(kernels) && !isEmpty(preset)) Log.warn('preset will be deprecated in next major version, please use kernels instead.');
-      var newPreset = isArray(kernels) ? kernels.reduce(function (kernels, key) {
+      var newPreset = isArray$1(kernels) ? kernels.reduce(function (kernels, key) {
         if (!isFunction(kernelsSet[key])) {
           Log.warn('You have not installed kernel for ' + key + '.');
           return kernels;
         }
         kernels[key] = kernelsSet[key];
         return kernels;
-      }, {}) : isObject(kernels) ? kernels : {};
+      }, {}) : isObject$1(kernels) ? kernels : {};
       config.preset = _Object$assign(newPreset, preset);
       return new Kernel(video, config);
     }
@@ -10207,7 +10362,7 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
       var id = camelize(name);
       if (!isEmpty(pluginConfigSet[id])) {
         /* istanbul ignore else  */
-        if ("development" !== 'production') Log.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
+        Log.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
       }
       var pluginConfig = isFunction(config) ? config : deepAssign({ id: id }, config);
       pluginConfigSet[id] = pluginConfig;
@@ -10236,7 +10391,7 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
   }, {
     key: 'installKernel',
     value: function installKernel(key, value) {
-      var tasks = isObject(key) ? _Object$entries(key) : [[key, value]];
+      var tasks = isObject$1(key) ? _Object$entries(key) : [[key, value]];
       tasks.forEach(function (_ref2) {
         var _ref3 = _slicedToArray(_ref2, 2),
             key = _ref3[0],
@@ -10263,7 +10418,7 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
   }]);
 
   return Dispatcher;
-}(), (_applyDecoratedDescriptor(_class.prototype, 'unuse', [_dec], _Object$getOwnPropertyDescriptor(_class.prototype, 'unuse'), _class.prototype), _applyDecoratedDescriptor(_class, 'install', [_dec2], _Object$getOwnPropertyDescriptor(_class, 'install'), _class), _applyDecoratedDescriptor(_class, 'hasInstalled', [_dec3], _Object$getOwnPropertyDescriptor(_class, 'hasInstalled'), _class), _applyDecoratedDescriptor(_class, 'uninstall', [_dec4], _Object$getOwnPropertyDescriptor(_class, 'uninstall'), _class), _applyDecoratedDescriptor(_class, 'getPluginConfig', [_dec5], _Object$getOwnPropertyDescriptor(_class, 'getPluginConfig'), _class)), _class);
+}(), (_applyDecoratedDescriptor$1(_class$1.prototype, 'unuse', [_dec$1], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'unuse'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1, 'install', [_dec2], _Object$getOwnPropertyDescriptor(_class$1, 'install'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'hasInstalled', [_dec3], _Object$getOwnPropertyDescriptor(_class$1, 'hasInstalled'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'uninstall', [_dec4], _Object$getOwnPropertyDescriptor(_class$1, 'uninstall'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'getPluginConfig', [_dec5], _Object$getOwnPropertyDescriptor(_class$1, 'getPluginConfig'), _class$1)), _class$1));
 
 var _class$8;
 var _descriptor$2;
@@ -10308,7 +10463,7 @@ function _applyDecoratedDescriptor$7(target, property, decorators, descriptor, c
   return desc;
 }
 
-var GlobalConfig = (_class = function () {
+var GlobalConfig = (_class$8 = function () {
   _createClass(GlobalConfig, [{
     key: 'silent',
     get: function get() {
@@ -10336,7 +10491,7 @@ var GlobalConfig = (_class = function () {
       verbose: true
     };
 
-    _initDefineProp(this, '_silent', _descriptor, this);
+    _initDefineProp$2(this, '_silent', _descriptor$2, this);
 
     this.errorHandler = undefined;
 
@@ -10359,12 +10514,12 @@ var GlobalConfig = (_class = function () {
   }
 
   return GlobalConfig;
-}(), _descriptor = _applyDecoratedDescriptor(_class.prototype, '_silent', [nonenumerable], {
+}(), (_descriptor$2 = _applyDecoratedDescriptor$7(_class$8.prototype, '_silent', [nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _class);
+})), _class$8);
 
 var _dec;
 var _class;
@@ -10445,7 +10600,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
         wrapper: config,
         controls: true
       };
-    } else if (isObject(config)) {
+    } else if (isObject$1(config)) {
       if (!config.wrapper) throw new Error('You must pass in an legal object');
     } else {
       throw new Error('You must pass in an Object containing wrapper or string or element to new a Chimee');

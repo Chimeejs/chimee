@@ -326,6 +326,13 @@ var uaParser = createCommonjsModule(function (module, exports) {
 
 (function (window, undefined) {
 
+    'use strict';
+
+    //////////////
+    // Constants
+    /////////////
+
+
     var LIBVERSION  = '0.7.17',
         EMPTY       = '',
         UNKNOWN     = '?',
@@ -1382,8 +1389,6 @@ var uaParser = createCommonjsModule(function (module, exports) {
 })(typeof window === 'object' ? window : commonjsGlobal);
 });
 
-var uaParser_1 = uaParser.UAParser;
-
 /**
  * toxic-utils v0.1.6
  * (c) 2017 toxic-johann
@@ -1604,16 +1609,6 @@ function runStoppableQueue(queue) {
   };
   return step(0);
 }
-
-// requestAnimationFrame
-var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function (cb) {
-  return setTimeout(cb, 17);
-};
-
-// cancelAnimationFrame
-var caf = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame || window.msCancelAnimationFrame || window.oCancelAnimationFrame || function (id) {
-  clearTimeout(id);
-};
 
 /**
  * chimee-helper-events v0.1.0
@@ -2870,15 +2865,15 @@ function secondaryChecker(key) {
  * side effect(_): This events will always trigger once we bump into trigger period. So that you can know if the events been blocked. But it's not advice to listen on this effect.
  * </pre>
  */
-var Bus = (_dec = runnable(secondaryChecker), _dec2 = runnable(secondaryChecker, {
+var Bus = (_dec$2 = toxicDecorators.runnable(secondaryChecker), _dec2$1 = toxicDecorators.runnable(secondaryChecker, {
   backup: function backup() {
     return false;
   }
-}), _dec3 = runnable(secondaryChecker), _dec4 = runnable(secondaryChecker, {
+}), _dec3$1 = toxicDecorators.runnable(secondaryChecker), _dec4$1 = toxicDecorators.runnable(secondaryChecker, {
   backup: function backup() {
     return false;
   }
-}), _class = function () {
+}), (_class$2 = function () {
   /**
    * @param {Dispatcheer} dispatcher bus rely on dispatcher, so you mush pass dispatcher at first when you generate Bus.
    * @return {Bus}
@@ -3282,7 +3277,7 @@ var Bus = (_dec = runnable(secondaryChecker), _dec2 = runnable(secondaryChecker,
   }]);
 
   return Bus;
-}(), (_applyDecoratedDescriptor(_class.prototype, 'emit', [_dec], _Object$getOwnPropertyDescriptor(_class.prototype, 'emit'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'emitSync', [_dec2], _Object$getOwnPropertyDescriptor(_class.prototype, 'emitSync'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'trigger', [_dec3], _Object$getOwnPropertyDescriptor(_class.prototype, 'trigger'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'triggerSync', [_dec4], _Object$getOwnPropertyDescriptor(_class.prototype, 'triggerSync'), _class.prototype)), _class);
+}(), (_applyDecoratedDescriptor$2(_class$2.prototype, 'emit', [_dec$2], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'emit'), _class$2.prototype), _applyDecoratedDescriptor$2(_class$2.prototype, 'emitSync', [_dec2$1], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'emitSync'), _class$2.prototype), _applyDecoratedDescriptor$2(_class$2.prototype, 'trigger', [_dec3$1], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'trigger'), _class$2.prototype), _applyDecoratedDescriptor$2(_class$2.prototype, 'triggerSync', [_dec4$1], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'triggerSync'), _class$2.prototype)), _class$2));
 
 /**
  * checker for on, off, once function
@@ -3510,23 +3505,23 @@ var accessorMap = {
   volume: [toxicDecorators.alwaysNumber(1), accessorVideoProperty('volume')]
 };
 
-var VideoConfig = (_dec = initBoolean(), _dec2 = initString(function (str) {
+var VideoConfig = (_dec$5 = toxicDecorators.initBoolean(), _dec2$3 = toxicDecorators.initString(function (str) {
   return str.toLocaleLowerCase();
-}), _class = function () {
+}), (_class$5 = function () {
   function VideoConfig(dispatcher, config) {
     _classCallCheck(this, VideoConfig);
 
-    _initDefineProp(this, 'needToLoadSrc', _descriptor, this);
+    _initDefineProp$1(this, 'needToLoadSrc', _descriptor$1, this);
 
-    _initDefineProp(this, 'changeWatchable', _descriptor2, this);
+    _initDefineProp$1(this, 'changeWatchable', _descriptor2$1, this);
 
-    _initDefineProp(this, 'inited', _descriptor3, this);
+    _initDefineProp$1(this, 'inited', _descriptor3$1, this);
 
     this.src = '';
 
-    _initDefineProp(this, 'isLive', _descriptor4, this);
+    _initDefineProp$1(this, 'isLive', _descriptor4, this);
 
-    _initDefineProp(this, 'box', _descriptor5, this);
+    _initDefineProp$1(this, 'box', _descriptor5, this);
 
     this.preset = {};
     this.autoload = true;
@@ -3549,11 +3544,11 @@ var VideoConfig = (_dec = initBoolean(), _dec2 = initString(function (str) {
     this.disableRemotePlayback = false;
     this.volume = 1;
 
-    _initDefineProp(this, '_kernelProperty', _descriptor6, this);
+    _initDefineProp$1(this, '_kernelProperty', _descriptor6, this);
 
-    _initDefineProp(this, '_realDomAttr', _descriptor7, this);
+    _initDefineProp$1(this, '_realDomAttr', _descriptor7, this);
 
-    applyDecorators(this, accessorMap, { self: true });
+    toxicDecorators.applyDecorators(this, accessorMap, { self: true });
     Object.defineProperty(this, 'dispatcher', {
       value: dispatcher,
       enumerable: false,
@@ -3587,42 +3582,42 @@ var VideoConfig = (_dec = initBoolean(), _dec2 = initString(function (str) {
   }]);
 
   return VideoConfig;
-}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'needToLoadSrc', [nonenumerable], {
+}(), (_descriptor$1 = _applyDecoratedDescriptor$4(_class$5.prototype, 'needToLoadSrc', [toxicDecorators.nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor2 = _applyDecoratedDescriptor(_class.prototype, 'changeWatchable', [nonenumerable], {
+}), _descriptor2$1 = _applyDecoratedDescriptor$4(_class$5.prototype, 'changeWatchable', [toxicDecorators.nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return true;
   }
-}), _descriptor3 = _applyDecoratedDescriptor(_class.prototype, 'inited', [nonenumerable], {
+}), _descriptor3$1 = _applyDecoratedDescriptor$4(_class$5.prototype, 'inited', [toxicDecorators.nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor4 = _applyDecoratedDescriptor(_class.prototype, 'isLive', [_dec, configurable], {
+}), _descriptor4 = _applyDecoratedDescriptor$4(_class$5.prototype, 'isLive', [_dec$5, toxicDecorators.configurable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _descriptor5 = _applyDecoratedDescriptor(_class.prototype, 'box', [_dec2, configurable], {
+}), _descriptor5 = _applyDecoratedDescriptor$4(_class$5.prototype, 'box', [_dec2$3, toxicDecorators.configurable], {
   enumerable: true,
   initializer: function initializer() {
     return '';
   }
-}), _descriptor6 = _applyDecoratedDescriptor(_class.prototype, '_kernelProperty', [frozen], {
+}), _descriptor6 = _applyDecoratedDescriptor$4(_class$5.prototype, '_kernelProperty', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
     return ['isLive', 'box', 'preset'];
   }
-}), _descriptor7 = _applyDecoratedDescriptor(_class.prototype, '_realDomAttr', [frozen], {
+}), _descriptor7 = _applyDecoratedDescriptor$4(_class$5.prototype, '_realDomAttr', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
     return ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
   }
-})), _class);
+})), _class$5));
 
 var _dec$4;
 var _dec2$2;
@@ -3679,7 +3674,7 @@ function propertyAccessibilityWarn(property) {
   /* istanbul ignore else  */
   if (process.env.NODE_ENV !== 'production') Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
 }
-var VideoWrapper = (_dec = autobindClass(), _dec2 = alias('silentLoad'), _dec3 = alias('fullScreen'), _dec4 = alias('$fullScreen'), _dec5 = alias('fullscreen'), _dec6 = alias('emit'), _dec7 = alias('emitSync'), _dec8 = alias('on'), _dec9 = alias('addEventListener'), _dec10 = before(eventBinderCheck), _dec11 = alias('off'), _dec12 = alias('removeEventListener'), _dec13 = before(eventBinderCheck), _dec14 = alias('once'), _dec15 = before(eventBinderCheck), _dec16 = alias('css'), _dec17 = before(attrAndStyleCheck), _dec18 = alias('attr'), _dec19 = before(attrAndStyleCheck), _dec(_class = (_class2 = function () {
+var VideoWrapper = (_dec$4 = toxicDecorators.autobindClass(), _dec2$2 = toxicDecorators.alias('silentLoad'), _dec3$2 = toxicDecorators.alias('fullScreen'), _dec4$2 = toxicDecorators.alias('$fullScreen'), _dec5$1 = toxicDecorators.alias('fullscreen'), _dec6 = toxicDecorators.alias('emit'), _dec7 = toxicDecorators.alias('emitSync'), _dec8 = toxicDecorators.alias('on'), _dec9 = toxicDecorators.alias('addEventListener'), _dec10 = toxicDecorators.before(eventBinderCheck), _dec11 = toxicDecorators.alias('off'), _dec12 = toxicDecorators.alias('removeEventListener'), _dec13 = toxicDecorators.before(eventBinderCheck), _dec14 = toxicDecorators.alias('once'), _dec15 = toxicDecorators.before(eventBinderCheck), _dec16 = toxicDecorators.alias('css'), _dec17 = toxicDecorators.before(attrAndStyleCheck), _dec18 = toxicDecorators.alias('attr'), _dec19 = toxicDecorators.before(attrAndStyleCheck), _dec$4(_class$4 = (_class2$1 = function () {
   function VideoWrapper() {
     _classCallCheck(this, VideoWrapper);
 
@@ -3719,7 +3714,7 @@ var VideoWrapper = (_dec = autobindClass(), _dec2 = alias('silentLoad'), _dec3 =
       });
       // bind video config properties on instance, so that you can just set src by this
       var props = videoConfig._realDomAttr.concat(videoConfig._kernelProperty).reduce(function (props, key) {
-        props[key] = [accessor({
+        props[key] = [toxicDecorators.accessor({
           get: function get() {
             // $FlowFixMe: support computed key here
             return videoConfig[key];
@@ -3729,10 +3724,10 @@ var VideoWrapper = (_dec = autobindClass(), _dec2 = alias('silentLoad'), _dec3 =
             videoConfig[key] = value;
             return value;
           }
-        }), nonenumerable];
+        }), toxicDecorators.nonenumerable];
         return props;
       }, {});
-      applyDecorators(this, props, { self: true });
+      toxicDecorators.applyDecorators(this, props, { self: true });
       kernelMethods.forEach(function (key) {
         _Object$defineProperty(_this, key, {
           value: function value() {
@@ -3797,7 +3792,7 @@ var VideoWrapper = (_dec = autobindClass(), _dec2 = alias('silentLoad'), _dec3 =
       var property = keys.pop();
       var videoConfig = this.__dispatcher.videoConfig;
       var target = keys.length === 0 && !other && videoConfig._realDomAttr.indexOf(property) > -1 ? videoConfig : ['isFullscreen', 'fullscreenElement'].indexOf(property) > -1 ? this.__dispatcher.dom : getDeepProperty(other || this, keys, { throwError: true });
-      applyDecorators(target, _defineProperty({}, property, watch(watcher, { deep: deep, diff: diff, proxy: proxy })), { self: true });
+      toxicDecorators.applyDecorators(target, _defineProperty({}, property, toxicDecorators.watch(watcher, { deep: deep, diff: diff, proxy: proxy })), { self: true });
       this.__unwatchHandlers.push(unwatcher);
       return unwatcher;
     }
@@ -4099,7 +4094,7 @@ var VideoWrapper = (_dec = autobindClass(), _dec2 = alias('silentLoad'), _dec3 =
   }]);
 
   return VideoWrapper;
-}(), (_applyDecoratedDescriptor(_class2.prototype, '$silentLoad', [_dec2], _Object$getOwnPropertyDescriptor(_class2.prototype, '$silentLoad'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$fullscreen', [_dec3, _dec4, _dec5], _Object$getOwnPropertyDescriptor(_class2.prototype, '$fullscreen'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emit'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emitSync'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2.prototype, '$on'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2.prototype, '$off'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2.prototype, '$once'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2.prototype, '$css'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2.prototype, '$attr'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$plugins'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$pluginOrder'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$wrapper'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$container'), _class2.prototype), _applyDecoratedDescriptor(_class2.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$video'), _class2.prototype)), _class2)) || _class);
+}(), (_applyDecoratedDescriptor$3(_class2$1.prototype, '$silentLoad', [_dec2$2], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$silentLoad'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$fullscreen', [_dec3$2, _dec4$2, _dec5$1], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$fullscreen'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emit'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$emitSync'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$on'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$off'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$once'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$css'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$attr'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$plugins', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$plugins'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$pluginOrder', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$pluginOrder'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$wrapper', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$wrapper'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$container', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$container'), _class2$1.prototype), _applyDecoratedDescriptor$3(_class2$1.prototype, '$video', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2$1.prototype, '$video'), _class2$1.prototype)), _class2$1)) || _class$4);
 
 var _dec$3;
 var _class$3;
@@ -4111,7 +4106,7 @@ var _class$3;
  * Developer can do most of things base on this plugin
  * </pre>
  */
-var Plugin = (_dec = autobindClass(), _dec(_class = function (_VideoWrapper) {
+var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = function (_VideoWrapper) {
   _inherits(Plugin, _VideoWrapper);
 
   /**
@@ -4233,18 +4228,18 @@ var Plugin = (_dec = autobindClass(), _dec(_class = function (_VideoWrapper) {
       var props = _Object$keys(computed).reduce(function (props, key) {
         var val = computed[key];
         if (isFunction(val)) {
-          props[key] = accessor({ get: val });
+          props[key] = toxicDecorators.accessor({ get: val });
           return props;
         }
         if (isObject(val) && (isFunction(val.get) || isFunction(val.set))) {
-          props[key] = accessor(val);
+          props[key] = toxicDecorators.accessor(val);
           return props;
         }
         /* istanbul ignore else  */
         if (process.env.NODE_ENV !== 'production') Log.warn('Dispatcher.plugin', 'Wrong computed member \'' + key + '\' defination in Plugin ' + name);
         return props;
       }, {});
-      applyDecorators(_this, props, { self: true });
+      toxicDecorators.applyDecorators(_this, props, { self: true });
     }
     /**
      * the create Function of plugin
@@ -4278,10 +4273,10 @@ var Plugin = (_dec = autobindClass(), _dec(_class = function (_VideoWrapper) {
     _this.$inner = inner;
     _this.$autoFocus = autoFocus;
     _this.$penetrate = penetrate;
-    applyDecorators(_this, {
-      $inner: frozen,
-      $autoFocus: frozen,
-      $penetrate: frozen
+    toxicDecorators.applyDecorators(_this, {
+      $inner: toxicDecorators.frozen,
+      $autoFocus: toxicDecorators.frozen,
+      $penetrate: toxicDecorators.frozen
     }, { self: true });
     /**
      * to tell us if the plugin can be operable, can be dynamic change
@@ -4407,7 +4402,7 @@ var Plugin = (_dec = autobindClass(), _dec(_class = function (_VideoWrapper) {
   }]);
 
   return Plugin;
-}(VideoWrapper)) || _class);
+}(VideoWrapper)) || _class$3);
 
 var _dec$6;
 var _dec2$4;
@@ -4467,7 +4462,7 @@ function attrOperationCheck(target, attr, val) {
  * It take charge of dom management of Dispatcher.
  * </pre>
  */
-var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(attrOperationCheck, targetCheck), _dec3 = before(attrOperationCheck, targetCheck), _dec4 = before(attrOperationCheck, targetCheck), _dec5 = before(attrOperationCheck, targetCheck), _dec6 = before(targetCheck), _class = function () {
+var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), _dec2$4 = toxicDecorators.before(attrOperationCheck, targetCheck), _dec3$3 = toxicDecorators.before(attrOperationCheck, targetCheck), _dec4$3 = toxicDecorators.before(attrOperationCheck, targetCheck), _dec5$2 = toxicDecorators.before(attrOperationCheck, targetCheck), _dec6$1 = toxicDecorators.before(targetCheck), (_class$6 = function () {
   /**
    * to mark is the mouse in the video area
    */
@@ -4580,7 +4575,7 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
       var _this2 = this;
 
       this.__videoExtendedNodes.push(videoElement);
-      _setAttr(videoElement, 'tabindex', -1);
+      setAttr(videoElement, 'tabindex', -1);
       this._autoFocusToVideo(videoElement);
       if (!isElement(this.container)) {
         // create container
@@ -4743,7 +4738,7 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
 
       // $FlowFixMe: there are videoElment and container here
       plugins.forEach(function (key, index) {
-        return _setStyle(key.match(/^(videoElement|container)$/) ? _this6[key] : _this6.plugins[key], 'z-index', ++index);
+        return setStyle(key.match(/^(videoElement|container)$/) ? _this6[key] : _this6.plugins[key], 'z-index', ++index);
       });
     }
     /**
@@ -4755,27 +4750,27 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
 
   }, {
     key: 'setAttr',
-    value: function setAttr(target, attr, val) {
+    value: function setAttr$$1(target, attr, val) {
       // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
-      _setAttr(this[target], attr, val);
+      setAttr(this[target], attr, val);
     }
   }, {
     key: 'getAttr',
-    value: function getAttr(target, attr) {
+    value: function getAttr$$1(target, attr) {
       // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
-      return _getAttr(this[target], attr);
+      return getAttr(this[target], attr);
     }
   }, {
     key: 'setStyle',
-    value: function setStyle(target, attr, val) {
+    value: function setStyle$$1(target, attr, val) {
       // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
-      _setStyle(this[target], attr, val);
+      setStyle(this[target], attr, val);
     }
   }, {
     key: 'getStyle',
-    value: function getStyle(target, attr) {
+    value: function getStyle$$1(target, attr) {
       // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
-      return _getStyle(this[target], attr);
+      return getStyle(this[target], attr);
     }
   }, {
     key: 'requestFullscreen',
@@ -4913,7 +4908,7 @@ var Dom = (_dec = waituntil('__dispatcher.videoConfigReady'), _dec2 = before(att
   }]);
 
   return Dom;
-}(), (_applyDecoratedDescriptor(_class.prototype, 'setAttr', [_dec, _dec2], _Object$getOwnPropertyDescriptor(_class.prototype, 'setAttr'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getAttr', [_dec3], _Object$getOwnPropertyDescriptor(_class.prototype, 'getAttr'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'setStyle', [_dec4], _Object$getOwnPropertyDescriptor(_class.prototype, 'setStyle'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'getStyle', [_dec5], _Object$getOwnPropertyDescriptor(_class.prototype, 'getStyle'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'requestFullscreen', [_dec6], _Object$getOwnPropertyDescriptor(_class.prototype, 'requestFullscreen'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, '_focusToVideo', [autobind], _Object$getOwnPropertyDescriptor(_class.prototype, '_focusToVideo'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, '_fullscreenMonitor', [autobind], _Object$getOwnPropertyDescriptor(_class.prototype, '_fullscreenMonitor'), _class.prototype)), _class);
+}(), (_applyDecoratedDescriptor$5(_class$6.prototype, 'setAttr', [_dec$6, _dec2$4], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'setAttr'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'getAttr', [_dec3$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'getAttr'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'setStyle', [_dec4$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'setStyle'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'getStyle', [_dec5$2], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'getStyle'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'requestFullscreen', [_dec6$1], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'requestFullscreen'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, '_focusToVideo', [toxicDecorators.autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, '_focusToVideo'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, '_fullscreenMonitor', [toxicDecorators.autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, '_fullscreenMonitor'), _class$6.prototype)), _class$6));
 
 var _dec$1;
 var _dec2;
@@ -4976,7 +4971,7 @@ function checkPluginConfig(config) {
  * It also offer a bridge to let user handle video kernel.
  * </pre>
  */
-var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginConfig), _dec3 = before(convertNameIntoId), _dec4 = before(convertNameIntoId), _dec5 = before(convertNameIntoId), _class = function () {
+var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = toxicDecorators.before(checkPluginConfig), _dec3 = toxicDecorators.before(convertNameIntoId), _dec4 = toxicDecorators.before(convertNameIntoId), _dec5 = toxicDecorators.before(convertNameIntoId), (_class$1 = function () {
   /**
    * @param  {UserConfig} config UserConfig for whole Chimee player
    * @param  {Chimee} vm referrence of outer class
@@ -5094,12 +5089,12 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
       if (!isString(option.alias)) option.alias = undefined;
       var _option = option,
           name = _option.name,
-          alias = _option.alias;
+          alias$$1 = _option.alias;
 
-      option.name = alias || name;
+      option.name = alias$$1 || name;
       delete option.alias;
       var key = camelize(name);
-      var id = camelize(alias || name);
+      var id = camelize(alias$$1 || name);
       var pluginOption = option;
       var pluginConfig = Dispatcher.getPluginConfig(key);
       if (isEmpty(pluginConfig)) throw new TypeError('You have not installed plugin ' + key);
@@ -5518,7 +5513,7 @@ var Dispatcher = (_dec = before(convertNameIntoId), _dec2 = before(checkPluginCo
   }]);
 
   return Dispatcher;
-}(), (_applyDecoratedDescriptor(_class.prototype, 'unuse', [_dec], _Object$getOwnPropertyDescriptor(_class.prototype, 'unuse'), _class.prototype), _applyDecoratedDescriptor(_class, 'install', [_dec2], _Object$getOwnPropertyDescriptor(_class, 'install'), _class), _applyDecoratedDescriptor(_class, 'hasInstalled', [_dec3], _Object$getOwnPropertyDescriptor(_class, 'hasInstalled'), _class), _applyDecoratedDescriptor(_class, 'uninstall', [_dec4], _Object$getOwnPropertyDescriptor(_class, 'uninstall'), _class), _applyDecoratedDescriptor(_class, 'getPluginConfig', [_dec5], _Object$getOwnPropertyDescriptor(_class, 'getPluginConfig'), _class)), _class);
+}(), (_applyDecoratedDescriptor$1(_class$1.prototype, 'unuse', [_dec$1], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'unuse'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1, 'install', [_dec2], _Object$getOwnPropertyDescriptor(_class$1, 'install'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'hasInstalled', [_dec3], _Object$getOwnPropertyDescriptor(_class$1, 'hasInstalled'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'uninstall', [_dec4], _Object$getOwnPropertyDescriptor(_class$1, 'uninstall'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'getPluginConfig', [_dec5], _Object$getOwnPropertyDescriptor(_class$1, 'getPluginConfig'), _class$1)), _class$1));
 
 var _class$7;
 var _descriptor$2;
@@ -5563,7 +5558,7 @@ function _applyDecoratedDescriptor$6(target, property, decorators, descriptor, c
   return desc;
 }
 
-var GlobalConfig = (_class = function () {
+var GlobalConfig = (_class$7 = function () {
   _createClass(GlobalConfig, [{
     key: 'silent',
     get: function get() {
@@ -5591,12 +5586,12 @@ var GlobalConfig = (_class = function () {
       verbose: true
     };
 
-    _initDefineProp(this, '_silent', _descriptor, this);
+    _initDefineProp$2(this, '_silent', _descriptor$2, this);
 
     this.errorHandler = undefined;
 
     var props = _Object$keys(this.log).reduce(function (props, key) {
-      props[key] = accessor({
+      props[key] = toxicDecorators.accessor({
         get: function get() {
           // $FlowFixMe: we have check the keys
           return Log['ENABLE_' + key.toUpperCase()];
@@ -5610,16 +5605,16 @@ var GlobalConfig = (_class = function () {
       });
       return props;
     }, {});
-    applyDecorators(this.log, props, { self: true });
+    toxicDecorators.applyDecorators(this.log, props, { self: true });
   }
 
   return GlobalConfig;
-}(), _descriptor = _applyDecoratedDescriptor(_class.prototype, '_silent', [nonenumerable], {
+}(), (_descriptor$2 = _applyDecoratedDescriptor$6(_class$7.prototype, '_silent', [toxicDecorators.nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _class);
+})), _class$7);
 
 var _dec;
 var _class;
@@ -5679,7 +5674,7 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
   return desc;
 }
 
-var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 = function (_VideoWrapper) {
+var Chimee = (_dec = toxicDecorators.autobindClass(), _dec(_class = (_class2 = (_temp = _class3 = function (_VideoWrapper) {
   _inherits(Chimee, _VideoWrapper);
 
   function Chimee(config) {
@@ -5743,80 +5738,80 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
   }]);
 
   return Chimee;
-}(VideoWrapper), _class3.plugin = Plugin, _class3.config = new GlobalConfig(), _class3.install = Dispatcher.install, _class3.uninstall = Dispatcher.uninstall, _class3.hasInstalled = Dispatcher.hasInstalled, _class3.installKernel = Dispatcher.installKernel, _class3.uninstallKernel = Dispatcher.uninstallKernel, _class3.hasInstalledKernel = Dispatcher.hasInstalledKernel, _class3.getPluginConfig = Dispatcher.getPluginConfig, _temp), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, '__id', [frozen], {
+}(VideoWrapper), _class3.plugin = Plugin, _class3.config = new GlobalConfig(), _class3.install = Dispatcher.install, _class3.uninstall = Dispatcher.uninstall, _class3.hasInstalled = Dispatcher.hasInstalled, _class3.installKernel = Dispatcher.installKernel, _class3.uninstallKernel = Dispatcher.uninstallKernel, _class3.hasInstalledKernel = Dispatcher.hasInstalledKernel, _class3.getPluginConfig = Dispatcher.getPluginConfig, _temp), (_descriptor = _applyDecoratedDescriptor(_class2.prototype, '__id', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
     return '_vm';
   }
-}), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
+}), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
     return '0.4.3';
   }
-}), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
+}), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
     return {
       errorHandler: undefined
     };
   }
-}), _applyDecoratedDescriptor(_class2, 'plugin', [frozen], (_init = _Object$getOwnPropertyDescriptor(_class2, 'plugin'), _init = _init ? _init.value : undefined, {
+}), _applyDecoratedDescriptor(_class2, 'plugin', [toxicDecorators.frozen], (_init = _Object$getOwnPropertyDescriptor(_class2, 'plugin'), _init = _init ? _init.value : undefined, {
   enumerable: true,
   configurable: true,
   writable: true,
   initializer: function initializer() {
     return _init;
   }
-}), _class2), _applyDecoratedDescriptor(_class2, 'config', [frozen], (_init2 = _Object$getOwnPropertyDescriptor(_class2, 'config'), _init2 = _init2 ? _init2.value : undefined, {
+}), _class2), _applyDecoratedDescriptor(_class2, 'config', [toxicDecorators.frozen], (_init2 = _Object$getOwnPropertyDescriptor(_class2, 'config'), _init2 = _init2 ? _init2.value : undefined, {
   enumerable: true,
   configurable: true,
   writable: true,
   initializer: function initializer() {
     return _init2;
   }
-}), _class2), _applyDecoratedDescriptor(_class2, 'install', [frozen], (_init3 = _Object$getOwnPropertyDescriptor(_class2, 'install'), _init3 = _init3 ? _init3.value : undefined, {
+}), _class2), _applyDecoratedDescriptor(_class2, 'install', [toxicDecorators.frozen], (_init3 = _Object$getOwnPropertyDescriptor(_class2, 'install'), _init3 = _init3 ? _init3.value : undefined, {
   enumerable: true,
   configurable: true,
   writable: true,
   initializer: function initializer() {
     return _init3;
   }
-}), _class2), _applyDecoratedDescriptor(_class2, 'uninstall', [frozen], (_init4 = _Object$getOwnPropertyDescriptor(_class2, 'uninstall'), _init4 = _init4 ? _init4.value : undefined, {
+}), _class2), _applyDecoratedDescriptor(_class2, 'uninstall', [toxicDecorators.frozen], (_init4 = _Object$getOwnPropertyDescriptor(_class2, 'uninstall'), _init4 = _init4 ? _init4.value : undefined, {
   enumerable: true,
   configurable: true,
   writable: true,
   initializer: function initializer() {
     return _init4;
   }
-}), _class2), _applyDecoratedDescriptor(_class2, 'hasInstalled', [frozen], (_init5 = _Object$getOwnPropertyDescriptor(_class2, 'hasInstalled'), _init5 = _init5 ? _init5.value : undefined, {
+}), _class2), _applyDecoratedDescriptor(_class2, 'hasInstalled', [toxicDecorators.frozen], (_init5 = _Object$getOwnPropertyDescriptor(_class2, 'hasInstalled'), _init5 = _init5 ? _init5.value : undefined, {
   enumerable: true,
   configurable: true,
   writable: true,
   initializer: function initializer() {
     return _init5;
   }
-}), _class2), _applyDecoratedDescriptor(_class2, 'installKernel', [frozen], (_init6 = _Object$getOwnPropertyDescriptor(_class2, 'installKernel'), _init6 = _init6 ? _init6.value : undefined, {
+}), _class2), _applyDecoratedDescriptor(_class2, 'installKernel', [toxicDecorators.frozen], (_init6 = _Object$getOwnPropertyDescriptor(_class2, 'installKernel'), _init6 = _init6 ? _init6.value : undefined, {
   enumerable: true,
   configurable: true,
   writable: true,
   initializer: function initializer() {
     return _init6;
   }
-}), _class2), _applyDecoratedDescriptor(_class2, 'uninstallKernel', [frozen], (_init7 = _Object$getOwnPropertyDescriptor(_class2, 'uninstallKernel'), _init7 = _init7 ? _init7.value : undefined, {
+}), _class2), _applyDecoratedDescriptor(_class2, 'uninstallKernel', [toxicDecorators.frozen], (_init7 = _Object$getOwnPropertyDescriptor(_class2, 'uninstallKernel'), _init7 = _init7 ? _init7.value : undefined, {
   enumerable: true,
   configurable: true,
   writable: true,
   initializer: function initializer() {
     return _init7;
   }
-}), _class2), _applyDecoratedDescriptor(_class2, 'hasInstalledKernel', [frozen], (_init8 = _Object$getOwnPropertyDescriptor(_class2, 'hasInstalledKernel'), _init8 = _init8 ? _init8.value : undefined, {
+}), _class2), _applyDecoratedDescriptor(_class2, 'hasInstalledKernel', [toxicDecorators.frozen], (_init8 = _Object$getOwnPropertyDescriptor(_class2, 'hasInstalledKernel'), _init8 = _init8 ? _init8.value : undefined, {
   enumerable: true,
   configurable: true,
   writable: true,
   initializer: function initializer() {
     return _init8;
   }
-}), _class2), _applyDecoratedDescriptor(_class2, 'getPluginConfig', [frozen], (_init9 = _Object$getOwnPropertyDescriptor(_class2, 'getPluginConfig'), _init9 = _init9 ? _init9.value : undefined, {
+}), _class2), _applyDecoratedDescriptor(_class2, 'getPluginConfig', [toxicDecorators.frozen], (_init9 = _Object$getOwnPropertyDescriptor(_class2, 'getPluginConfig'), _init9 = _init9 ? _init9.value : undefined, {
   enumerable: true,
   configurable: true,
   writable: true,

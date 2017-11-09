@@ -16,52 +16,104 @@ const babelConfig = {
   common: {
     presets: [
       'flow',
-      ['latest', {es2015: {modules: false}}],
+      ['env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
       'stage-0'
     ],
-    plugins: [
-      'transform-decorators-legacy',
-      'transform-runtime'
-    ],
     exclude: 'node_modules/**',
+    plugins: [
+      'external-helpers',
+      'transform-decorators-legacy',
+      'transform-runtime',
+    ],
+    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false
   },
   es: {
     presets: [
       'flow',
-      ['latest', {es2015: {modules: false}}],
+      ['env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
       'stage-0'
     ],
-    plugins: [
-      'transform-decorators-legacy',
-      'transform-runtime'
-    ],
     exclude: 'node_modules/**',
+    plugins: [
+      'external-helpers',
+      'transform-decorators-legacy',
+      'transform-runtime',
+    ],
+    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false
   },
   umd: {
-    presets: ['flow', 'es2015-rollup', 'stage-0'],
-    plugins: [
-      'transform-decorators-legacy',
-      'transform-runtime'
+    presets: [
+      'flow',
+      ['env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
+      'stage-0'
     ],
     exclude: 'node_modules/**',
+    plugins: [
+      'external-helpers',
+      'transform-decorators-legacy',
+      'transform-runtime',
+    ],
+    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false
   },
   iife: {
-    presets: ['flow', 'es2015-rollup', 'stage-0'],
-    plugins: ['transform-decorators-legacy'],
+    presets: [
+      'flow',
+      ['env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
+      'stage-0'
+    ],
     exclude: 'node_modules/**',
+    plugins: [
+      'external-helpers',
+      'transform-decorators-legacy',
+      'transform-runtime',
+    ],
+    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false
   },
   min: {
-    presets: ['flow', 'es2015-rollup', 'stage-0'],
+    presets: [
+      'flow',
+      ['env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
+      'stage-0'
+    ],
     exclude: 'node_modules/**',
-    plugins: ['transform-decorators-legacy'],
+    plugins: [
+      'external-helpers',
+      'transform-decorators-legacy',
+    ],
+    externalHelpers: true,
     babelrc: false
   }
 };
