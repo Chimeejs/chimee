@@ -98,7 +98,7 @@ export default class Kernel extends CustEvent {
 		this.config.src = src || this.config.src;
 		if (this.videokernel && this.config.src) {
 			this.videokernel.load(this.config.src);
-			if(!this.timer) {
+			if(!this.timer && this.box !== 'hls') {
 				this.timer = setTimeout(()=>{
 					this.timer = null;
 					this.pause();
