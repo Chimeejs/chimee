@@ -1,5 +1,6 @@
 import Chimee from 'index';
 import chimeeKernelFlv from 'chimee-kernel-flv';
+import { Log } from 'chimee-helper';
 test('redudant event bind on video', () => {
   const wrapper = document.createElement('div');
   const fn = jest.fn();
@@ -55,4 +56,13 @@ test('load should use default preset and kernels if people do not pass one', () 
     wrapper,
   });
   expect(() => chimee.load('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv')).not.toThrow();
+});
+
+test('when src is empty and autoload is true', () => {
+  Log.data.error = [];
+  const wrapper = document.createElement('div');
+  expect(() => new Chimee({
+    wrapper,
+  })).not.toThrow();
+  expect(Log.data.error.length).toBe(0);
 });

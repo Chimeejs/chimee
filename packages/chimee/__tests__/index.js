@@ -20,6 +20,11 @@ describe('Chimee', () => {
 
   let player;
 
+  beforeEach(() => {
+    Log.data.warn = [];
+    Log.data.error = [];
+  });
+
   test('install', () => {
     expect(Chimee.install(normalInstall)).toBe('normalInstall');
     expect(Chimee.install(NormalFunctionInstall)).toBe('normalFunctionInstall');

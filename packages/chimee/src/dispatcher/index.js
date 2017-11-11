@@ -452,7 +452,13 @@ export default class Dispatcher {
     return isEmpty(plugin) ? 0 : plugin.$level;
   }
   _autoloadVideoSrcAtFirst() {
-    if (this.videoConfig.autoload) this.bus.emit('load', this.videoConfig.src);
+    if (this.videoConfig.autoload) {
+      if (process.env.NODE_ENV !== 'prodution' && !this.videoConfig.src) {
+        Log.warn('You have not set the src, so you better set autoload to be false. Accroding to https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md#src.');
+        return;
+      }
+      this.bus.emit('load', this.videoConfig.src);
+    }
   }
   _changeUnwatchable(object: Object, property: string, value: any) {
     this.changeWatchable = false;

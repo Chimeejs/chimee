@@ -21,7 +21,8 @@
     "b-umd": "rollup -c build/rollup.config.umd.js",
     "b-min": "rollup -c build/rollup.config.min.js",
     "ie": "rollup -c demo/ie/rollup.config.js -w",
-    "autou": "ncu -a"
+    "autou": "ncu -a",
+    "jest": "jest"
   },
   "repository": {
     "type": "git",
