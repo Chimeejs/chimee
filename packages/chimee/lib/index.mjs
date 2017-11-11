@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.4.3
+ * chimee v0.4.4
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -4168,7 +4168,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.4.3';
+    _this.VERSION = '0.4.4';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -5742,7 +5742,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.4.3';
+    return '0.4.4';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,

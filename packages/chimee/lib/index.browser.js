@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.4.3
+ * chimee v0.4.4
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -677,6 +677,8 @@ _iterDefine(String, 'String', function (iterated) {
   return { value: point, done: false };
 });
 
+var _addToUnscopables = function () { /* empty */ };
+
 var _iterStep = function (done, value) {
   return { value: value, done: !!done };
 };
@@ -711,6 +713,10 @@ var es6_array_iterator = _iterDefine(Array, 'Array', function (iterated, kind) {
 
 // argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
 _iterators.Arguments = _iterators.Array;
+
+_addToUnscopables('keys');
+_addToUnscopables('values');
+_addToUnscopables('entries');
 
 var TO_STRING_TAG = _wks('toStringTag');
 
@@ -5062,135 +5068,135 @@ var NodeWrap = function () {
 
 var defaultConfig = {
   type: 'vod',
+  autoPlay: false,
   box: 'native',
-  lockInternalProperty: false
+  lockInternalProperty: false,
+  debug: true,
+  reloadTime: 1500
 };
 
 /**
- * native player
+ * mp4解码器
  *
  * @export
  * @class Native
  */
 
 var Native = function (_CustEvent) {
-  _inherits(Native, _CustEvent);
+    _inherits(Native, _CustEvent);
 
-  /**
-   * Creates an instance of Native.
-   * @param {any} videodom video dom
-   * @param {any} config 
-   * @memberof Native
-   */
-  function Native(videodom, config) {
-    _classCallCheck(this, Native);
+    /**
+     * Creates an instance of Native.
+     * @param {any} videodom video dom对象
+     * @param {any} config 配置
+     * @memberof Native
+     */
+    function Native(videodom, config) {
+        _classCallCheck(this, Native);
 
-    var _this2 = _possibleConstructorReturn(this, (Native.__proto__ || _Object$getPrototypeOf(Native)).call(this));
+        var _this2 = _possibleConstructorReturn(this, (Native.__proto__ || _Object$getPrototypeOf(Native)).call(this));
 
-    _this2.video = videodom;
-    _this2.box = 'native';
-    _this2.config = defaultConfig;
-    deepAssign(_this2.config, config);
-    _this2.bindEvents();
-    return _this2;
-  }
+        _this2.video = videodom;
+        _this2.box = 'Native';
+        _this2.config = defaultConfig;
+        deepAssign(_this2.config, config);
+        _this2.bindEvents();
+        return _this2;
+    }
 
-  _createClass(Native, [{
-    key: 'internalPropertyHandle',
-    value: function internalPropertyHandle() {
-      if (!_Object$getOwnPropertyDescriptor) {
-        return;
-      }
-      var _this = this;
-      var time = _Object$getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');
+    _createClass(Native, [{
+        key: 'internalPropertyHandle',
+        value: function internalPropertyHandle() {
+            if (!_Object$getOwnPropertyDescriptor) {
+                return;
+            }
+            var _this = this;
+            var time = _Object$getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');
 
-      Object.defineProperty(this.video, 'currentTime', {
-        get: function get() {
-          return time.get.call(_this.video);
-        },
-        set: function set(t) {
-          if (!_this.currentTimeLock) {
-            throw new Error('can not set currentTime by youself');
-          } else {
-            return time.set.call(_this.video, t);
-          }
+            Object.defineProperty(this.video, 'currentTime', {
+                get: function get() {
+                    return time.get.call(_this.video);
+                },
+                set: function set(t) {
+                    if (!_this.currentTimeLock) {
+                        throw new Error('can not set currentTime by youself');
+                    } else {
+                        return time.set.call(_this.video, t);
+                    }
+                }
+            });
         }
-      });
-    }
-  }, {
-    key: 'bindEvents',
-    value: function bindEvents() {
-      var _this3 = this;
+    }, {
+        key: 'bindEvents',
+        value: function bindEvents() {
+            var _this3 = this;
 
-      if (this.video && this.config.lockInternalProperty) {
-        this.video.addEventListener('canplay', function () {
-          _this3.internalPropertyHandle();
-        });
-      }
-    }
-  }, {
-    key: 'load',
-    value: function load(src) {
-      this.config.src = src || this.config.src;
-      this.video.src = this.config.src;
-    }
-  }, {
-    key: 'unload',
-    value: function unload() {
-      this.video.src = '';
-      this.video.removeAttribute('src');
-    }
-  }, {
-    key: 'destroy',
-    value: function destroy() {
-      if (this.video) {
-        this.unload();
-      }
-    }
-  }, {
-    key: 'play',
-    value: function play() {
-      return this.video.play();
-    }
-  }, {
-    key: 'pause',
-    value: function pause() {
-      return this.video.pause();
-    }
-  }, {
-    key: 'refresh',
-    value: function refresh() {
-      this.video.src = this.config.src;
-    }
-  }, {
-    key: 'attachMedia',
-    value: function attachMedia() {}
-  }, {
-    key: 'seek',
-    value: function seek(seconds) {
-      this.currentTimeLock = true;
-      this.video.currentTime = seconds;
-      this.currentTimeLock = false;
-    }
-  }]);
+            if (this.video && this.config.lockInternalProperty) {
+                this.video.addEventListener('canplay', function () {
+                    _this3.internalPropertyHandle();
+                });
+            }
+        }
+    }, {
+        key: 'load',
+        value: function load(src) {
+            this.config.src = src || this.config.src;
+            this.video.src = this.config.src;
+        }
+    }, {
+        key: 'unload',
+        value: function unload() {
+            this.video.src = '';
+            this.video.removeAttribute('src');
+        }
+    }, {
+        key: 'destroy',
+        value: function destroy() {
+            if (this.video) {
+                this.unload();
+            }
+        }
+    }, {
+        key: 'play',
+        value: function play() {
+            return this.video.play();
+        }
+    }, {
+        key: 'pause',
+        value: function pause() {
+            return this.video.pause();
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+            this.video.src = this.config.src;
+        }
+    }, {
+        key: 'attachMedia',
+        value: function attachMedia() {}
+    }, {
+        key: 'seek',
+        value: function seek(seconds) {
+            this.currentTimeLock = true;
+            this.video.currentTime = seconds;
+            this.currentTimeLock = false;
+        }
+    }]);
 
-  return Native;
+    return Native;
 }(CustEvent);
 
 var defaultConfig$1 = {
-  isLive: true, // vod or live
-  box: 'native', // box type : native mp4 hls flv
-  lockInternalProperty: false,
-  reloadTime: 1500 // video can't play when this time to reload
+  reloadTime: 1500
 };
 
 var Kernel = function (_CustEvent) {
 	_inherits(Kernel, _CustEvent);
 
 	/**
-  * kernelWrapper
-  * @param {any} wrap videoElement
-  * @param {any} option
+  * 创建核心解码器
+  * @param {any} wrap 父层容器
+  * @param {any} option 整合参数
   * @class kernel
   */
 	function Kernel(videoElement, config) {
@@ -5208,7 +5214,7 @@ var Kernel = function (_CustEvent) {
 	}
 
 	/**
-  * bind events
+  * 绑定事件
   * @memberof kernel
   */
 
@@ -5231,7 +5237,7 @@ var Kernel = function (_CustEvent) {
 		}
 
 		/**
-   * select kernel
+   * 选择解码器
    * @memberof kernel
    */
 
@@ -5240,56 +5246,32 @@ var Kernel = function (_CustEvent) {
 		value: function selectKernel() {
 			var config = this.config;
 
-			var box = config.box;
-			if (!box) {
-				if (config.src.indexOf('.flv') !== -1) {
-					box = 'flv';
-				} else if (config.src.indexOf('.m3u8') !== -1) {
-					box = 'hls';
-				} else if (config.src.indexOf('mp4') !== -1) {
-					box = 'mp4';
-				}
-			}
-			if (box !== 'native' && config.preset[box]) {
-				Log.error(this.tag, 'need set preset config');
-				return;
-			}
+			var box = config.box ? config.box : config.src.indexOf('.flv') !== -1 ? 'flv' : config.src.indexOf('.m3u8') !== -1 ? 'hls' : 'native';
+
 			if (box === 'native') {
 				return new Native(this.video, config);
 			} else if (box === 'flv') {
 				return new config.preset[box](this.video, config);
 			} else if (box === 'hls') {
 				return new config.preset[box](this.video, config);
-			} else if (box === 'mp4') {
-				if (config.preset[box] && config.preset[box].isSupport()) {
-					return new config.preset[box](this.video, config);
-				} else {
-					Log.verbose(this.tag, 'browser is not support mp4 decode, auto switch native player');
-					return new Native(this.video, config);
-				}
 			} else {
 				Log.error(this.tag, 'not mactch any player, please check your config');
 				return null;
 			}
 		}
-
-		/**
-   * select attachMedia
-   * @memberof kernel
-   */
-
 	}, {
 		key: 'attachMedia',
 		value: function attachMedia() {
 			if (this.videokernel) {
 				this.videokernel.attachMedia();
 			} else {
-				Log.error(this.tag, 'videokernel is not already, must init player');
+				Log.error(this.tag, 'video player is not already, must init player');
 			}
 		}
+
 		/**
-   * load source
-   * @param {string} src 
+   * 启动加载
+   * @param {string} src 媒体资源地址
    * @memberof kernel
    */
 
@@ -5301,7 +5283,7 @@ var Kernel = function (_CustEvent) {
 			this.config.src = src || this.config.src;
 			if (this.videokernel && this.config.src) {
 				this.videokernel.load(this.config.src);
-				if (!this.timer && this.box !== 'hls') {
+				if (!this.timer) {
 					this.timer = setTimeout(function () {
 						_this3.timer = null;
 						_this3.pause();
@@ -5309,11 +5291,11 @@ var Kernel = function (_CustEvent) {
 					}, this.config.reloadTime);
 				}
 			} else {
-				Log.error(this.tag, 'videokernel is not already, must init player');
+				Log.error(this.tag, 'video player is not already, must init player');
 			}
 		}
 		/**
-   * destory kernel
+   * 销毁kernel
    * @memberof kernel
    */
 
@@ -5325,7 +5307,7 @@ var Kernel = function (_CustEvent) {
 				clearTimeout(this.timer);
 				this.timer = null;
 			} else {
-				Log.error(this.tag, 'videokernel is not exit');
+				Log.error(this.tag, 'player is not exit');
 			}
 		}
 		/**
@@ -5339,7 +5321,7 @@ var Kernel = function (_CustEvent) {
 			if (this.videokernel) {
 				this.videokernel.play();
 			} else {
-				Log.error(this.tag, 'videokernel is not already, must init player');
+				Log.error(this.tag, 'video player is not already, must init player');
 			}
 		}
 		/**
@@ -5353,7 +5335,7 @@ var Kernel = function (_CustEvent) {
 			if (this.videokernel && this.config.src) {
 				this.videokernel.pause();
 			} else {
-				Log.error(this.tag, 'videokernel is not already, must init player');
+				Log.error(this.tag, 'video player is not already, must init player');
 			}
 		}
 		/**
@@ -5373,25 +5355,12 @@ var Kernel = function (_CustEvent) {
 				Log.error(this.tag, 'seek params must be a number');
 				return;
 			}
-			if (this.videokernel) {
-				return this.videokernel.seek(seconds);
-			} else {
-				Log.error(this.tag, 'videokernel is not already, must init player');
-			}
+			return this.videokernel.seek(seconds);
 		}
-		/**
-   * refresh kernel
-   * @memberof kernel
-   */
-
 	}, {
 		key: 'refresh',
 		value: function refresh() {
-			if (this.videokernel) {
-				this.videokernel.refresh();
-			} else {
-				Log.error(this.tag, 'videokernel is not already, must init player');
-			}
+			this.videokernel.refresh();
 		}
 		/**
    * get video duration
@@ -8796,7 +8765,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.4.3';
+    _this.VERSION = '0.4.4';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -10651,7 +10620,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.4.3';
+    return '0.4.4';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,
