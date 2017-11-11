@@ -1,8 +1,8 @@
 // @flow
 import Dispatcher from './dispatcher/index';
-import {isString, isFunction, isElement, isObject} from 'chimee-helper';
+import { isString, isFunction, isElement, isObject } from 'chimee-helper';
 import Plugin from './dispatcher/plugin';
-import {frozen, autobindClass} from 'toxic-decorators';
+import { frozen, autobindClass } from 'toxic-decorators';
 import VideoWrapper from 'dispatcher/video-wrapper';
 import GlobalConfig from 'global/config';
 @autobindClass()
@@ -27,7 +27,7 @@ export default class Chimee extends VideoWrapper {
   version = process.env.PLAYER_VERSION;
   @frozen
   config = {
-    errorHandler: undefined
+    errorHandler: undefined,
   };
   @frozen
   static plugin = Plugin;
@@ -47,15 +47,15 @@ export default class Chimee extends VideoWrapper {
   static hasInstalledKernel = Dispatcher.hasInstalledKernel;
   @frozen
   static getPluginConfig = Dispatcher.getPluginConfig;
-  constructor (config: UserConfig | string | Element) {
+  constructor(config: UserConfig | string | Element) {
     super();
-    if(isString(config) || isElement(config)) {
+    if (isString(config) || isElement(config)) {
       config = {
         wrapper: config,
-        controls: true
+        controls: true,
       };
-    } else if(isObject(config)) {
-      if(!config.wrapper) throw new Error('You must pass in an legal object');
+    } else if (isObject(config)) {
+      if (!config.wrapper) throw new Error('You must pass in an legal object');
     } else {
       throw new Error('You must pass in an Object containing wrapper or string or element to new a Chimee');
     }
@@ -65,23 +65,23 @@ export default class Chimee extends VideoWrapper {
     this.ready = this.__dispatcher.ready;
     this.readySync = this.__dispatcher.readySync;
     this.__wrapAsVideo(this.__dispatcher.videoConfig);
-	}
-  destroy () {
+  }
+  destroy() {
     super.__destroy();
     this.__dispatcher.destroy();
     this.destroyed = true;
   }
-  use (option: string | PluginOption) {
+  use(option: string | PluginOption) {
     this.__dispatcher.use(option);
   }
-  unuse (name: string) {
+  unuse(name: string) {
     this.__dispatcher.unuse(name);
   }
-  __throwError (error: Error | string) {
-    if(isString(error)) error = new Error(error);
+  __throwError(error: Error | string) {
+    if (isString(error)) error = new Error(error);
     const errorHandler = this.config.errorHandler || Chimee.config.errorHandler;
-    if(isFunction(errorHandler)) return errorHandler(error);
-    if(Chimee.config.silent) return;
+    if (isFunction(errorHandler)) return errorHandler(error);
+    if (Chimee.config.silent) return;
     throw error;
   }
 }

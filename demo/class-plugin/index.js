@@ -1,6 +1,6 @@
-(function (Chimee) {
+(function(Chimee) {
   class Controller extends Chimee.plugin {
-    constructor (...args) {
+    constructor(...args) {
       super(...args);
       this.button = document.createElement('button');
       this.text = 'play';
@@ -16,14 +16,14 @@
         this.changeButtonText('pause');
       });
     }
-    changeButtonText (text) {
+    changeButtonText(text) {
       this.text = text;
       this.button.innerText = text;
     }
-    destroy () {
+    destroy() {
       this.$dom.removeChild(this.button);
     }
-  };
+  }
   Chimee.install(Controller);
   const player = new Chimee({
     // 播放地址
@@ -34,10 +34,10 @@
     box: 'mp4',
     // dom容器
     wrapper: '#wrapper',
-    plugin: ['controller'],
+    plugin: [ 'controller' ],
     volume: 0.1,
     autoplay: true,
-    controls: true
+    controls: true,
   });
 
   player.load();

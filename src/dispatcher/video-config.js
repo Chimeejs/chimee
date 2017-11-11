@@ -1,42 +1,42 @@
 // @flow
-import {alwaysString, initString, accessor, alwaysBoolean, frozen, alwaysNumber, nonenumerable, applyDecorators, configurable, initBoolean} from 'toxic-decorators';
-import {isNumber, isString, deepAssign, isObject, isNumeric} from 'chimee-helper';
+import { alwaysString, initString, accessor, alwaysBoolean, frozen, alwaysNumber, nonenumerable, applyDecorators, configurable, initBoolean } from 'toxic-decorators';
+import { isNumber, isString, deepAssign, isObject, isNumeric } from 'chimee-helper';
 
-function stringOrVoid (value: any): string | void {
+function stringOrVoid(value: any): string | void {
   return isString(value) ? value : undefined;
 }
 
-function accessorVideoProperty (property: string): Function {
+function accessorVideoProperty(property: string): Function {
   return accessor({
-    get (value) {
+    get(value) {
       return (this.dispatcher.videoConfigReady && this.inited)
         ? this.dom.videoElement[property]
         : value;
     },
-    set (value) {
-      if(!this.dispatcher.videoConfigReady) return value;
+    set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
       this.dom.videoElement[property] = value;
       return value;
-    }
+    },
   });
 }
 
-function accessorVideoAttribute (attribute: string | {set: string, get: string, isBoolean?: boolean}): Function {
-  const {set, get, isBoolean} = isObject(attribute)
+function accessorVideoAttribute(attribute: string | {set: string, get: string, isBoolean?: boolean}): Function {
+  const { set, get, isBoolean } = isObject(attribute)
     ? attribute
     : {
       set: attribute,
       get: attribute,
-      isBoolean: false
+      isBoolean: false,
     };
   return accessor({
-    get (value) {
+    get(value) {
       return (this.dispatcher.videoConfigReady && this.inited)
         ? this.dom.videoElement[get]
         : value;
     },
-    set (value) {
-      if(!this.dispatcher.videoConfigReady) return value;
+    set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
       const val = isBoolean
         ? value
           ? ''
@@ -46,13 +46,13 @@ function accessorVideoAttribute (attribute: string | {set: string, get: string, 
           : value;
       this.dom.setAttr('video', set, val);
       return value;
-    }
+    },
   });
 }
 
-function accessorCustomAttribute (attribute: string, isBoolean?: boolean): Function {
+function accessorCustomAttribute(attribute: string, isBoolean?: boolean): Function {
   return accessor({
-    get (value) {
+    get(value) {
       const attrValue = this.dom.getAttr('video', attribute);
       return (this.dispatcher.videoConfigReady && this.inited)
         ? isBoolean
@@ -60,8 +60,8 @@ function accessorCustomAttribute (attribute: string, isBoolean?: boolean): Funct
           : attrValue
         : value;
     },
-    set (value) {
-      if(!this.dispatcher.videoConfigReady) return value;
+    set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
       const val = isBoolean
         ? value || undefined
         : value === null
@@ -69,30 +69,30 @@ function accessorCustomAttribute (attribute: string, isBoolean?: boolean): Funct
           : value;
       this.dom.setAttr('video', attribute, val);
       return value;
-    }
+    },
   });
 }
 
-function accessorWidthAndHeight (property: string): Function {
+function accessorWidthAndHeight(property: string): Function {
   return accessor({
-    get (value) {
-      if(!this.dispatcher.videoConfigReady) return value;
+    get(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
       const attr = this.dom.getAttr('video', property);
       const prop = this.dom.videoElement[property];
-      if(isNumeric(attr) && isNumber(prop)) return prop;
+      if (isNumeric(attr) && isNumber(prop)) return prop;
       return attr || undefined;
     },
-    set (value) {
-      if(!this.dispatcher.videoConfigReady) return value;
+    set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
       let val;
-      if(value === undefined || isNumber(value)) {
+      if (value === undefined || isNumber(value)) {
         val = value;
-      } else if(isString(value) && !Number.isNaN(parseFloat(value))) {
+      } else if (isString(value) && !Number.isNaN(parseFloat(value))) {
         val = value;
       }
       this.dom.setAttr('video', property, val);
       return val;
-    }
+    },
   });
 }
 
@@ -100,67 +100,67 @@ const accessorMap = {
   src: [
     alwaysString(),
     accessor({
-      set (val: string) {
+      set(val: string) {
         // must check val !== this.src here
         // as we will set config.src in the video
         // the may cause dead lock
-        if(this.dispatcher.readySync && this.autoload && val !== this.src) this.needToLoadSrc = true;
+        if (this.dispatcher.readySync && this.autoload && val !== this.src) this.needToLoadSrc = true;
         return val;
-      }
+      },
     }),
     accessor({
-      set (val: string) {
-        if(this.needToLoadSrc) {
+      set(val: string) {
+        if (this.needToLoadSrc) {
           // unlock it at first, to avoid deadlock
           this.needToLoadSrc = false;
           this.dispatcher.bus.emit('load', val);
         }
         return val;
-      }
-    }, {preSet: false})
+      },
+    }, { preSet: false }),
   ],
   autoload: alwaysBoolean(),
   autoplay: [
     alwaysBoolean(),
-    accessorVideoProperty('autoplay')
+    accessorVideoProperty('autoplay'),
   ],
   controls: [
     alwaysBoolean(),
-    accessorVideoProperty('controls')
+    accessorVideoProperty('controls'),
   ],
   width: [
-    accessorWidthAndHeight('width')
+    accessorWidthAndHeight('width'),
   ],
   height: [
-    accessorWidthAndHeight('height')
+    accessorWidthAndHeight('height'),
   ],
   crossOrigin: [
-    accessor({set: stringOrVoid}),
-    accessorVideoAttribute({set: 'crossorigin', get: 'crossOrigin'})
+    accessor({ set: stringOrVoid }),
+    accessorVideoAttribute({ set: 'crossorigin', get: 'crossOrigin' }),
   ],
   loop: [
     alwaysBoolean(),
-    accessorVideoProperty('loop')
+    accessorVideoProperty('loop'),
   ],
   defaultMuted: [
     alwaysBoolean(),
-    accessorVideoAttribute({get: 'defaultMuted', set: 'muted', isBoolean: true})
+    accessorVideoAttribute({ get: 'defaultMuted', set: 'muted', isBoolean: true }),
   ],
   muted: [
     alwaysBoolean(),
-    accessorVideoProperty('muted')
+    accessorVideoProperty('muted'),
   ],
   preload: [
-    accessor({set: stringOrVoid}),
-    accessorVideoAttribute('preload')
+    accessor({ set: stringOrVoid }),
+    accessorVideoAttribute('preload'),
   ],
   poster: [
-    accessor({set: stringOrVoid}),
-    accessorVideoAttribute('poster')
+    accessor({ set: stringOrVoid }),
+    accessorVideoAttribute('poster'),
   ],
   playsInline: [
     accessor({
-      get (value) {
+      get(value) {
         const playsInline = this.dom.videoElement.playsInline;
         return (this.dispatcher.videoConfigReady && this.inited)
           ? playsInline === undefined
@@ -168,46 +168,46 @@ const accessorMap = {
             : playsInline
           : value;
       },
-      set (value) {
-        if(!this.dispatcher.videoConfigReady) return value;
+      set(value) {
+        if (!this.dispatcher.videoConfigReady) return value;
         this.dom.videoElement.playsInline = value;
         const val = value ? '' : undefined;
         this.dom.setAttr('video', 'playsinline', val);
         this.dom.setAttr('video', 'webkit-playsinline', val);
         this.dom.setAttr('video', 'x5-video-player-type', value ? 'h5' : undefined);
         return value;
-      }
+      },
     }),
-    alwaysBoolean()
+    alwaysBoolean(),
   ],
   x5VideoPlayerFullscreen: [
-    accessor({set (value) {return !!value;}, get (value) {return !!value;}}),
-    accessorCustomAttribute('x5-video-player-fullscreen', true)
+    accessor({ set(value) { return !!value; }, get(value) { return !!value; } }),
+    accessorCustomAttribute('x5-video-player-fullscreen', true),
   ],
   x5VideoOrientation: [
-    accessor({set: stringOrVoid}),
-    accessorCustomAttribute('x5-video-orientation')
+    accessor({ set: stringOrVoid }),
+    accessorCustomAttribute('x5-video-orientation'),
   ],
   xWebkitAirplay: [
-    accessor({set (value) {return !!value;}, get (value) {return !!value;}}),
-    accessorCustomAttribute('x-webkit-airplay', true)
+    accessor({ set(value) { return !!value; }, get(value) { return !!value; } }),
+    accessorCustomAttribute('x-webkit-airplay', true),
   ],
   playbackRate: [
     alwaysNumber(1),
-    accessorVideoProperty('playbackRate')
+    accessorVideoProperty('playbackRate'),
   ],
   defaultPlaybackRate: [
     accessorVideoProperty('defaultPlaybackRate'),
-    alwaysNumber(1)
+    alwaysNumber(1),
   ],
   disableRemotePlayback: [
     alwaysBoolean(),
-    accessorVideoProperty('disableRemotePlayback')
+    accessorVideoProperty('disableRemotePlayback'),
   ],
   volume: [
     alwaysNumber(1),
-    accessorVideoProperty('volume')
-  ]
+    accessorVideoProperty('volume'),
+  ],
 };
 
 export default class VideoConfig {
@@ -278,29 +278,29 @@ export default class VideoConfig {
   volume = 1;
 
   @frozen
-  _kernelProperty = ['isLive', 'box', 'preset'];
+  _kernelProperty = [ 'isLive', 'box', 'preset' ];
 
   @frozen
-  _realDomAttr = ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
+  _realDomAttr = [ 'src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume' ];
 
-  constructor (dispatcher: Dispatcher, config: Object) {
-    applyDecorators(this, accessorMap, {self: true});
+  constructor(dispatcher: Dispatcher, config: Object) {
+    applyDecorators(this, accessorMap, { self: true });
     Object.defineProperty(this, 'dispatcher', {
       value: dispatcher,
       enumerable: false,
       writable: false,
-      configurable: false
+      configurable: false,
     });
     Object.defineProperty(this, 'dom', {
       value: dispatcher.dom,
       enumerable: false,
       writable: false,
-      configurable: false
+      configurable: false,
     });
     deepAssign(this, config);
   }
 
-  init () {
+  init() {
     this._realDomAttr.forEach(key => {
       // $FlowFixMe: we have check the computed here
       this[key] = this[key];

@@ -10,13 +10,13 @@ test('redudant event bind on video', () => {
     events: {
       click: fn,
       c_click: cfn,
-      w_click: wfn
-    }
+      w_click: wfn,
+    },
   };
   Chimee.install(plugin);
   const player = new Chimee({
     wrapper,
-    plugin: ['redudantEventBind']
+    plugin: [ 'redudantEventBind' ],
   });
   player.__dispatcher.dom.videoElement.dispatchEvent(new Event('click'));
   expect(fn).toHaveBeenCalledTimes(1);
@@ -29,14 +29,14 @@ test('redudant event bind on video', () => {
 test('non extendable should not be set on dispatcher.plugins', () => {
   const plugin = {
     name: 'nonextendablePlugins',
-    create () {
+    create() {
       expect(this.$plugins).not.toBe();
-    }
+    },
   };
   Chimee.install(plugin);
   expect(() => new Chimee({
     wrapper: document.createElement('div'),
-    plugin: ['nonextendablePlugins']
+    plugin: [ 'nonextendablePlugins' ],
   })).not.toThrow();
 });
 
@@ -47,7 +47,7 @@ test('load should use default preset and kernels if people do not pass one', () 
       'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
     isLive: false,
     kernels: {
-      flv: chimeeKernelFlv
+      flv: chimeeKernelFlv,
     },
     // 编解码容器
     box: 'flv', // flv hls native

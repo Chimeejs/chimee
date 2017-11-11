@@ -52,23 +52,23 @@ const domEventList = [
   'resize',
   'scroll',
   'select',
-  'wheel'
+  'wheel',
 ];
 const logger = document.getElementById('logger');
-function log (msg, color = '#000000') {
+function log(msg, color = '#000000') {
   const text = document.createElement('p');
   const time = new Date();
   text.innerHTML = `<span class="time">[${time.toLocaleTimeString()}]</span> ${msg}`;
   text.style.color = color;
   const firstChild = logger.children[0];
-  if(firstChild) {
+  if (firstChild) {
     logger.insertBefore(text, firstChild);
   } else {
     logger.appendChild(text);
   }
-};
+}
 class Stater extends Chimee.plugin {
-  constructor (...args) {
+  constructor(...args) {
     super(...args);
     this.videoList = [];
     this.domList = [];
@@ -83,7 +83,7 @@ class Stater extends Chimee.plugin {
       this.domList.push(fn);
     });
   }
-  destroy () {
+  destroy() {
     videoEventList.forEach((key, index) => {
       this.$off(key, this.videoList[index]);
     });
@@ -91,22 +91,22 @@ class Stater extends Chimee.plugin {
       this.$off(key, this.domList[index]);
     });
   }
-};
+}
 Chimee.install(Stater);
 class HollowMan extends Chimee.plugin {
-  constructor (...args) {
+  constructor(...args) {
     super(...args);
     this.$operable = false;
     this.$dom.classList.add('hollow-man');
   }
-};
+}
 Chimee.install(HollowMan);
 const postman = {
   name: 'postman',
   data: {
-    domList: []
+    domList: [],
   },
-  create () {
+  create() {
     this.$dom.classList.add('postman');
     domEventList.forEach(key => {
       const fn = () => log(key, '#FACB03');
@@ -114,33 +114,33 @@ const postman = {
       this.domList.push(fn);
     });
   },
-  destroy () {
+  destroy() {
     domEventList.forEach((key, index) => {
       this.$dom.removeEventListener(key, this.domList[index]);
     });
   },
   penetrate: true,
   events: {
-    mouseenter (evt) {
+    mouseenter(evt) {
       log('mouseenter', '#843A37');
     },
-    mouseleave (evt) {
+    mouseleave(evt) {
       log('mouseleave', '#843A37');
-    }
-  }
+    },
+  },
 };
 Chimee.install(postman);
 const interceptor = {
   name: 'interceptor',
   data: {
-    domList: []
+    domList: [],
   },
-  create () {
+  create() {
     this.$dom.classList.add('interceptor');
     this.div = document.createElement('div');
     this.$dom.appendChild(this.div);
     domEventList.forEach(key => {
-      const fn = (evt) => {
+      const fn = evt => {
         // evt.stopPropagation(); // 为什么 penetrate:false 后 还要 stop
         log(key, '#DB6100');
       };
@@ -148,12 +148,12 @@ const interceptor = {
       this.domList.push(fn);
     });
   },
-  destroy () {
+  destroy() {
     domEventList.forEach((key, index) => {
       this.div.removeEventListener(key, this.domList[index]);
     });
   },
-  penetrate: false
+  penetrate: false,
 };
 Chimee.install(interceptor);
 const player = new Chimee({
@@ -169,7 +169,7 @@ const player = new Chimee({
     'stater',
     'hollow-man',
     'postman',
-    'interceptor'
+    'interceptor',
   ],
   autoplay: false,
   controls: true,
@@ -177,12 +177,12 @@ const player = new Chimee({
 window.player = player;
 player.load();
 // player.attachMedia();
-document.getElementById('play').addEventListener('click', function () {
+document.getElementById('play').addEventListener('click', function() {
   player.play();
 });
-document.getElementById('pause').addEventListener('click', function () {
+document.getElementById('pause').addEventListener('click', function() {
   player.pause();
 });
-document.getElementById('load').addEventListener('click', function () {
+document.getElementById('load').addEventListener('click', function() {
   player.load();
 });

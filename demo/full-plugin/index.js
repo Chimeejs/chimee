@@ -1,128 +1,128 @@
 const Chimee = window.Chimee;
 const plugin = {
   name: 'video-state',
-  create () {
+  create() {
     log('create');
     this.$dom.classList.add('video-state');
     this.$dom.innerHTML = '<h1>create</h1>';
   },
-  destroy () {
+  destroy() {
     log('destroy');
   },
   events: {
-    ready () {
+    ready() {
       log('ready');
       this.$dom.innerHTML = '<h1>ready</h1>';
     },
-    afterReady () {
+    afterReady() {
       log('afterReady');
     },
-    abort (...args) {
+    abort(...args) {
       log('abort');
     },
-    canplay (...args) {
+    canplay(...args) {
       log('canplay');
       this.$dom.innerHTML = '<h1>canplay</h1>';
     },
-    canplaythrough (...args) {
+    canplaythrough(...args) {
       log('canplaythrough');
     },
-    durationchange (...args) {
+    durationchange(...args) {
       log('durationchange');
     },
-    emptied (...args) {
+    emptied(...args) {
       log('emptied');
     },
-    encrypted (...args) {
+    encrypted(...args) {
       log('encrypted');
     },
-    ended (...args) {
+    ended(...args) {
       log('ended');
       this.$dom.innerHTML = '<h1>ended</h1>';
     },
-    error (...args) {
+    error(...args) {
       log('error');
     },
-    interruptbegin (...args) {
+    interruptbegin(...args) {
       log('interruptbegin');
     },
-    interruptend (...args) {
+    interruptend(...args) {
       log('interruptend');
     },
-    loadeddata (...args) {
+    loadeddata(...args) {
       log('loadeddata');
     },
-    loadedmetadata (...args) {
+    loadedmetadata(...args) {
       log('loadedmetadata');
     },
-    loadstart (...args) {
+    loadstart(...args) {
       log('loadstart');
     },
-    mozaudioavailable (...args) {
+    mozaudioavailable(...args) {
       log('mozaudioavailable');
     },
-    beforePause () {
+    beforePause() {
       log('beforePause', 'important');
     },
-    pause (...args) {
+    pause(...args) {
       log('pause');
       this.$dom.innerHTML = '<h1>pause</h1>';
     },
-    afterPause () {
+    afterPause() {
       log('afterPause', 'important');
     },
-    beforePlay () {
+    beforePlay() {
       log('beforePlay', 'important');
     },
-    play (...args) {
+    play(...args) {
       log('play');
       this.$dom.innerHTML = '<h1>play</h1>';
     },
-    afterPlay () {
+    afterPlay() {
       log('afterPlay', 'important');
     },
-    playing (...args) {
+    playing(...args) {
       log('playing');
     },
-    progress (...args) {
+    progress(...args) {
       log('progress');
     },
-    ratechange (...args) {
+    ratechange(...args) {
       log('ratechange');
     },
-    seeked (...args) {
-      for(let i = 0; i < this.buffered.length; i++) {
+    seeked(...args) {
+      for (let i = 0; i < this.buffered.length; i++) {
       }
       log('seeked');
     },
-    seeking (...args) {
+    seeking(...args) {
       log('seeking');
     },
-    stalled (...args) {
+    stalled(...args) {
       log('stalled');
     },
-    suspend (...args) {
+    suspend(...args) {
       log('suspend');
     },
-    timeupdate (...args) {
+    timeupdate(...args) {
       log('timeupdate');
     },
-    volumechange (...args) {
+    volumechange(...args) {
       log('volumechange');
     },
-    waiting (...args) {
+    waiting(...args) {
       log('waiting');
-    }
-  }
+    },
+  },
 };
 const logger = document.getElementById('logger');
-function log (msg, type = 'normal') {
+function log(msg, type = 'normal') {
   const text = document.createElement('p');
   const time = new Date();
   text.innerHTML = `<span class="time">[${time.toLocaleTimeString()}]</span> ${msg}`;
   text.classList.add(type);
   const firstChild = logger.children[0];
-  if(firstChild) {
+  if (firstChild) {
     logger.insertBefore(text, firstChild);
   } else {
     logger.appendChild(text);
@@ -134,7 +134,7 @@ Chimee.install(plugin);
 const outer = {
   name: 'outer',
   el: '<p>You know, you will have some plugin outside of the container</p>',
-  inner: false
+  inner: false,
 };
 
 Chimee.install(outer);
@@ -142,37 +142,37 @@ Chimee.install(outer);
 let player;
 window.player = player;
 // player.attachMedia();
-document.getElementById('play').addEventListener('click', function () {
+document.getElementById('play').addEventListener('click', function() {
   player.play();
 });
-document.getElementById('pause').addEventListener('click', function () {
+document.getElementById('pause').addEventListener('click', function() {
   player.pause();
 });
-document.getElementById('add-plugin').addEventListener('click', function () {
+document.getElementById('add-plugin').addEventListener('click', function() {
   player.use('video-state');
 });
-document.getElementById('remove-plugin').addEventListener('click', function () {
+document.getElementById('remove-plugin').addEventListener('click', function() {
   player.unuse('video-state');
 });
-document.getElementById('load').addEventListener('click', function () {
+document.getElementById('load').addEventListener('click', function() {
   player.load();
 });
-document.getElementById('focus').addEventListener('click', function () {
+document.getElementById('focus').addEventListener('click', function() {
   player.focus();
 });
-document.getElementById('destroy').addEventListener('click', function () {
+document.getElementById('destroy').addEventListener('click', function() {
   player.destroy();
 });
-document.getElementById('video-fullscreen').addEventListener('click', function () {
+document.getElementById('video-fullscreen').addEventListener('click', function() {
   player.fullScreen(true, 'video');
 });
-document.getElementById('container-fullscreen').addEventListener('click', function () {
+document.getElementById('container-fullscreen').addEventListener('click', function() {
   player.fullScreen(true, 'container');
 });
-document.getElementById('wrapper-fullscreen').addEventListener('click', function () {
+document.getElementById('wrapper-fullscreen').addEventListener('click', function() {
   player.fullScreen(true, 'wrapper');
 });
-document.getElementById('create').addEventListener('click', function () {
+document.getElementById('create').addEventListener('click', function() {
   player = new Chimee({
     // 播放地址
     src: 'http://cdn.toxicjohann.com/lostStar.mp4',
@@ -184,20 +184,20 @@ document.getElementById('create').addEventListener('click', function () {
     wrapper: '#wrapper',
     plugin: [
       {
-        name: 'video-state'
+        name: 'video-state',
       },
-      'outer'
+      'outer',
     ],
     autoplay: false,
-    controls: true
+    controls: true,
   });
-  player.on('play', function () {
+  player.on('play', function() {
     console.log(this, 'play');
   });
-  player.addEventListener('play', function () {
+  player.addEventListener('play', function() {
     console.log(this, 'play + add');
   });
-  player.on('beforePlay', function () {
+  player.on('beforePlay', function() {
     console.log(this, 'beforePlay');
   });
 });

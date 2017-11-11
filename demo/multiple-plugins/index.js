@@ -2,7 +2,7 @@ const Chimee = window.Chimee;
 const controller = {
   name: 'controller',
   el: 'controller',
-  create () {
+  create() {
     this.$dom.classList.add('controller');
     this.button = document.createElement('button');
     this.button.innerText = 'Play';
@@ -18,30 +18,30 @@ const controller = {
     this.$attr('video', 'data-index', 1);
     this.$attr('wrapper', 'data-index', 1);
   },
-  init (config) {
+  init(config) {
   },
-  destroy () {
+  destroy() {
     this.$dom.removeChild(this.button);
   },
   events: {
-    pause (...args) {
+    pause(...args) {
       this.setButton('play');
       console.log('i am going to throw an error');
       throw new Error('i am a fucking error');
     },
-    play (...args) {
+    play(...args) {
       this.setButton('pause');
     },
-    load (...args) {
+    load(...args) {
       this.setButton('play');
-    }
+    },
   },
   methods: {
-    setButton (state) {
+    setButton(state) {
       this.button.innerText = state;
       this.operation = state;
-    }
-  }
+    },
+  },
 };
 Chimee.install(controller);
 const locker = {
@@ -52,7 +52,7 @@ const locker = {
   },
   computed: {
     locked: {
-      set (val) {
+      set(val) {
         const nextType = val ? 'unlock' : 'lock';
         const currentType = val ? 'lock' : 'unlock';
         this.button.innerText = nextType;
@@ -61,12 +61,12 @@ const locker = {
         this.$dom.classList.add(currentType);
         this._locked = val;
       },
-      get (val) {
+      get(val) {
         return this._locked;
-      }
-    }
+      },
+    },
   },
-  create () {
+  create() {
     this.$dom.classList.add('locker');
     this.locked = false;
     this.$dom.appendChild(this.button);
@@ -74,19 +74,19 @@ const locker = {
       this.locked = !this.locked;
     });
   },
-  init (config) {
+  init(config) {
   },
-  destroy () {
+  destroy() {
     this.$dom.removeChild(this.button);
   },
   events: {
-    beforePause () {
+    beforePause() {
       return !this.locked;
     },
-    beforePlay () {
+    beforePlay() {
       return !this.locked;
-    }
-  }
+    },
+  },
 };
 Chimee.install(locker);
 const loader = {
@@ -95,26 +95,26 @@ const loader = {
   data: {
     videos: [
       'http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4',
-      'http://cdn.toxicjohann.com/lostStar.mp4'
+      'http://cdn.toxicjohann.com/lostStar.mp4',
     ],
-    chosen: true
+    chosen: true,
   },
-  create () {
+  create() {
     this.$dom.classList.add('loader');
     this.$dom.innerText = 'next';
     this.$dom.addEventListener('click', () => this.next());
   },
-  init (config) {
+  init(config) {
   },
-  destroy () {
+  destroy() {
   },
   methods: {
-    next () {
+    next() {
       this.chosen = !this.chosen;
       const src = this.videos[Number(this.chosen)];
       this.$emit('load', src);
-    }
-  }
+    },
+  },
 };
 Chimee.install(loader);
 const banner = {
@@ -122,9 +122,9 @@ const banner = {
   el: '<button>untouchable</button>',
   level: 99,
   operable: false,
-  create () {
+  create() {
     this.$dom.classList.add('banner');
-  }
+  },
 };
 Chimee.install(banner);
 
@@ -140,19 +140,19 @@ const player = new Chimee({
     'banner',
     {
       name: 'controller',
-      level: 2
+      level: 2,
     },
     {
       name: 'locker',
-      level: 1
+      level: 1,
     },
-    'loader'
+    'loader',
   ],
   autoplay: false,
-  controls: true
+  controls: true,
 });
 window.player = player;
 player.load();
-document.addEventListener('mouseup', function (evt) {
+document.addEventListener('mouseup', function(evt) {
   document.getElementById('active').innerText = document.activeElement.toString();
 });

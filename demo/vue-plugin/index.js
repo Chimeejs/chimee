@@ -3,29 +3,29 @@ const Vue = window.Vue;
 
 const plugin = {
   name: 'controller',
-  create () {
+  create() {
     this.vm = new Vue({
       el: this.$dom,
       template: '<div class="controller"><button @click="click">{{operation}}</button></div>',
       data: {
         Chimee: this,
-        operation: 'play'
+        operation: 'play',
       },
-      created () {
-        this.Chimee.$on('play', () => {this.operation = 'pause';});
-        this.Chimee.$on('pause', () => {this.operation = 'play';});
+      created() {
+        this.Chimee.$on('play', () => { this.operation = 'pause'; });
+        this.Chimee.$on('pause', () => { this.operation = 'play'; });
       },
       methods: {
-        click () {
+        click() {
           this.Chimee.$emit(this.operation);
-        }
-      }
+        },
+      },
     });
   },
-  destroy () {
+  destroy() {
     this.vm.$destroy();
     this.$dom.removeChild(this.button);
-  }
+  },
 };
 Chimee.install(plugin);
 const player = new Chimee({
@@ -37,9 +37,9 @@ const player = new Chimee({
   box: 'mp4',
   // dom容器
   wrapper: '#wrapper',
-  plugin: ['controller'],
+  plugin: [ 'controller' ],
   autoplay: false,
-  controls: true
+  controls: true,
 });
 
 player.load();

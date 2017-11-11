@@ -1,4 +1,4 @@
-const {version, name, author, license, dependencies} = require('../package.json');
+const { version, name, author, license, dependencies } = require('../package.json');
 const banner = `
 /**
  * ${name} v${version}
@@ -16,13 +16,13 @@ const babelConfig = {
   common: {
     presets: [
       'flow',
-      ['env', {
+      [ 'env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0'
+      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
@@ -32,18 +32,18 @@ const babelConfig = {
     ],
     externalHelpers: true,
     runtimeHelpers: true,
-    babelrc: false
+    babelrc: false,
   },
   es: {
     presets: [
       'flow',
-      ['env', {
+      [ 'env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0'
+      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
@@ -53,18 +53,18 @@ const babelConfig = {
     ],
     externalHelpers: true,
     runtimeHelpers: true,
-    babelrc: false
+    babelrc: false,
   },
   umd: {
     presets: [
       'flow',
-      ['env', {
+      [ 'env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0'
+      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
@@ -74,18 +74,18 @@ const babelConfig = {
     ],
     externalHelpers: true,
     runtimeHelpers: true,
-    babelrc: false
+    babelrc: false,
   },
   iife: {
     presets: [
       'flow',
-      ['env', {
+      [ 'env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0'
+      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
@@ -95,18 +95,18 @@ const babelConfig = {
     ],
     externalHelpers: true,
     runtimeHelpers: true,
-    babelrc: false
+    babelrc: false,
   },
   min: {
     presets: [
       'flow',
-      ['env', {
+      [ 'env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0'
+      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
@@ -114,15 +114,15 @@ const babelConfig = {
       'transform-decorators-legacy',
     ],
     externalHelpers: true,
-    babelrc: false
-  }
+    babelrc: false,
+  },
 };
 const externalRegExp = new RegExp(Object.keys(dependencies).join('|'));
-export default function (mode) {
+export default function(mode) {
   return {
     input: 'src/index.js',
     banner,
-    external (id) {
+    external(id) {
       return !/min|umd|iife/.test(mode) && externalRegExp.test(id);
     },
     plugins: [
@@ -130,16 +130,16 @@ export default function (mode) {
       flow(),
       resolve({
         customResolveOptions: {
-          moduleDirectory: ['src', 'node_modules']
-        }
+          moduleDirectory: [ 'src', 'node_modules' ],
+        },
       }),
       commonjs(),
       replace({
-        'process.env.PLAYER_VERSION': `'${version}'`
+        'process.env.PLAYER_VERSION': `'${version}'`,
       }),
       visualizer({
-        filename: `bundle-size/${mode}.html`
-      })
-    ]
+        filename: `bundle-size/${mode}.html`,
+      }),
+    ],
   };
-};
+}

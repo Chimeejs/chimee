@@ -1,27 +1,21 @@
 import Chimee from 'index';
-import {Log, getAttr, setAttr} from 'chimee-helper';
-import {videoReadOnlyProperties} from 'helper/const';
+import { Log, getAttr, setAttr } from 'chimee-helper';
+import { videoReadOnlyProperties } from 'helper/const';
 import esFullscreen from 'es-fullscreen';
 // import chimeeKernelFlv from 'chimee-kernel-flv';
 
 describe('Chimee', () => {
   const normalInstall = {
     name: 'normal install',
-    level: 1
+    level: 1,
   };
   class NormalFunctionInstall extends Chimee.plugin {
-    constructor (...args) {
-      super(...args);
-    }
   }
   class GrandSon extends NormalFunctionInstall {
-    constructor (...args) {
-      super(...args);
-    }
   }
   const outer = {
     name: 'outer',
-    inner: false
+    inner: false,
   };
 
   let player;
@@ -31,12 +25,12 @@ describe('Chimee', () => {
     expect(Chimee.install(NormalFunctionInstall)).toBe('normalFunctionInstall');
     expect(Chimee.install(GrandSon)).toBe('grandSon');
     Chimee.install(GrandSon);
-    expect(Log.data.warn[0]).toEqual(['Dispatcher', 'You have installed GrandSon again. And the older one will be replaced']);
+    expect(Log.data.warn[0]).toEqual([ 'Dispatcher', 'You have installed GrandSon again. And the older one will be replaced' ]);
   });
 
   test('getPluginConfig', () => {
     expect(() => Chimee.getPluginConfig()).toThrow();
-    expect(Chimee.getPluginConfig('normal install')).toEqual(Object.assign(normalInstall, {id: 'normalInstall'}));
+    expect(Chimee.getPluginConfig('normal install')).toEqual(Object.assign(normalInstall, { id: 'normalInstall' }));
     expect(Chimee.getPluginConfig('normal function install')).toBe(NormalFunctionInstall);
   });
 
@@ -65,7 +59,7 @@ describe('Chimee', () => {
           // dom容器
           wrapper: 'body',
           plugin: [],
-          events: {}
+          events: {},
         });
       }).not.toThrow();
     });
@@ -153,17 +147,17 @@ describe('Chimee', () => {
   });
 
   test('once', () => {
-    expect(() => player.once('hello', function () {})).not.toThrow();
+    expect(() => player.once('hello', function() {})).not.toThrow();
   });
 
   test('on', () => {
-    expect(() => player.on('hello', function () {})).not.toThrow();
+    expect(() => player.on('hello', function() {})).not.toThrow();
     expect(() => player.on('hello', 1)).toThrow();
-    expect(() => player.on(1, function () {})).toThrow();
+    expect(() => player.on(1, function() {})).toThrow();
   });
 
   test('off', () => {
-    expect(() => player.off('hello', function () {})).not.toThrow();
+    expect(() => player.off('hello', function() {})).not.toThrow();
   });
 
   test('use', () => {
@@ -193,7 +187,7 @@ describe('Chimee', () => {
         // dom容器
         wrapper: 'body',
         plugin: [],
-        events: {}
+        events: {},
       });
       videoElement = player.__dispatcher.dom.videoElement;
     });
@@ -204,7 +198,7 @@ describe('Chimee', () => {
     });
     test('duration', () => {
       expect(player.duration).toBe(videoElement.duration);
-      expect(() => {player.duration = 40;}).toThrow();
+      expect(() => { player.duration = 40; }).toThrow();
     });
     test('volume', () => {
       expect(player.volume).toBe(videoElement.volume);
@@ -477,10 +471,10 @@ describe('Chimee', () => {
         Chimee.install({
           name: 'autoloadtest',
           events: {
-            load () {
+            load() {
               resolveFn(++loadCount);
-            }
-          }
+            },
+          },
         });
       });
       beforeEach(() => {
@@ -497,7 +491,7 @@ describe('Chimee', () => {
       });
       test('autoload is true', async () => {
         player.autoload = true;
-        const waiter = new Promise(resolve => {resolveFn = resolve;});
+        const waiter = new Promise(resolve => { resolveFn = resolve; });
         player.src = 'http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4';
         await waiter;
         expect(loadCount).toBe(1);
@@ -512,12 +506,12 @@ describe('Chimee', () => {
           box: 'native',
           // dom容器
           wrapper: 'body',
-          plugin: ['autoloadtest'],
+          plugin: [ 'autoloadtest' ],
           events: {},
-          autoload: false
+          autoload: false,
         });
         await player.ready;
-        const waiter = new Promise(resolve => {resolveFn = resolve;});
+        const waiter = new Promise(resolve => { resolveFn = resolve; });
         player.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
         await waiter;
         expect(loadCount).toBe(1);
@@ -550,7 +544,7 @@ describe('Chimee', () => {
         // dom容器
         wrapper: 'body',
         plugin: [],
-        events: {}
+        events: {},
       });
     });
     afterEach(() => {
@@ -590,15 +584,15 @@ describe('Chimee', () => {
     const plugin = {
       name: 'stopFullscreen',
       events: {
-        beforeFullscreen () {
+        beforeFullscreen() {
           return false;
-        }
-      }
+        },
+      },
     };
     Chimee.install(plugin);
     const player = new Chimee({
       wrapper: document.createElement('div'),
-      plugin: ['stopFullscreen']
+      plugin: [ 'stopFullscreen' ],
     });
     expect(player.fullscreen()).toBe(false);
   });
@@ -650,7 +644,7 @@ describe('isFullscreen and fullscreenElement', () => {
     const wrapper = document.createElement('div');
     const player = new Chimee({
       wrapper,
-      plugin: ['stopFullscreen']
+      plugin: [ 'stopFullscreen' ],
     });
     document.body.appendChild(wrapper);
     const target = player.stopFullscreen.$dom;
@@ -678,8 +672,8 @@ describe('isFullscreen and fullscreenElement', () => {
     player = new Chimee(wrapper);
     const container = wrapper.childNodes[0];
     const video = container.childNodes[0];
-    const elements = [video, container, wrapper];
-    ['video', 'container', 'wrapper'].forEach((key, index) => {
+    const elements = [ video, container, wrapper ];
+    [ 'video', 'container', 'wrapper' ].forEach((key, index) => {
       test('key', () => {
         Log.data.warn = [];
         expect(player['$' + key]).toEqual(elements[index]);
