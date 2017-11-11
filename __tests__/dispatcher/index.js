@@ -24,6 +24,10 @@ describe('dispatcher', () => {
     inner: false,
   };
 
+  beforeEach(() => {
+    Log.data.warn = [];
+  });
+
   test('install', () => {
     expect(() => Dispatcher.install()).toThrow("plugin's config must be an Object");
     expect(() => Dispatcher.install({})).toThrow("plugin's config must be an Object");
@@ -123,9 +127,10 @@ describe('dispatcher', () => {
   test('_initUserPlugin', () => {
     const dispatcher = new Dispatcher({
       wrapper: document.createElement('div'),
+      autoload: false,
     }, {});
     dispatcher._initUserPlugin('not a array');
-    expect(Log.data.warn[1]).toEqual([ 'Dispatcher', 'UserConfig.plugin can only by an Array, but not "not a array" in string' ]);
+    expect(Log.data.warn[0]).toEqual([ 'Dispatcher', 'UserConfig.plugin can only by an Array, but not "not a array" in string' ]);
     dispatcher.destroy();
   });
 
