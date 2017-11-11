@@ -22,6 +22,10 @@ class Log {
     expect(typeof msg).toBe('string');
     this.data.error.push([tag, msg]);
   }
+
+  static verbose () {
+    return true;
+  }
 };
 helper.Log = Log;
 module.exports = helper;

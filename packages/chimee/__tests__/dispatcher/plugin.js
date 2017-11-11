@@ -373,7 +373,12 @@ describe('dispatcher/plugin', () => {
   });
 
   describe('video attr', () => {
-    const dispatcher = new Dispatcher({wrapper: document.createElement('div')}, {});
+    const dispatcher = new Dispatcher({
+      wrapper: document.createElement('div'),
+      // https://github.com/Chimeejs/chimee-kernel/issues/1
+      // 因为没有默认垫底的选项
+      box: 'native'
+    }, {});
     const plugin = new Plugin({id: 'normal'}, dispatcher);
     plugin.__init(dispatcher.videoConfig);
     beforeAll(() => {
