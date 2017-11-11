@@ -55,8 +55,8 @@ export default class Kernel extends CustEvent {
 				box = 'mp4';
 			}
 		}
-		if(box !== 'native' && config.preset[box]) {
-			Log.error(this.tag, 'need set preset config');
+		if(box !== 'native' && !config.preset[box]) {
+			Log.error(this.tag, `You want to play for ${box}, but you have not installed the kernel.`);
 			return;
 		}
 		if (box === 'native') {
