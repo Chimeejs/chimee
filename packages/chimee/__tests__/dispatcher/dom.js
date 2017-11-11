@@ -1,5 +1,5 @@
 import Dom from 'dispatcher/dom';
-import {Log} from 'chimee-helper';
+import { Log } from 'chimee-helper';
 describe('dispatcher/dom', () => {
   test('dom needs wrapper and dispatcher if you pass in illegal desipatcher, it should throw error', () => {
     expect(() => new Dom()).toThrow('Wrapper can only be string or HTMLElement, but not undefined');
@@ -54,44 +54,44 @@ describe('dispatcher/dom', () => {
     const node = document.createElement('div');
     const dom = new Dom(node, {
       videoConfigReady: true,
-      throwError (error) {
+      throwError(error) {
         throw error;
-      }
+      },
     });
     test('illegal test', () => {
       expect(() => dom.insertPlugin()).toThrow('insertPlugin id parameter must be string');
     });
     test('you can insert with an htmlelement', () => {
       const section = document.createElement('section');
-      dom.insertPlugin('section', section, {inner: true});
+      dom.insertPlugin('section', section, { inner: true });
       expect(node.querySelector('section')).toBe(section);
       expect(node.children[0].children.length).toBe(2);
       expect(section).toBe(dom.plugins.section);
     });
     test('You can insert with an html string', () => {
       const buttonHTML = '<button></button>';
-      dom.insertPlugin('button', buttonHTML, {inner: true});
+      dom.insertPlugin('button', buttonHTML, { inner: true });
       expect(node.querySelector('button')).not.toBe(null);
       expect(node.children[0].children.length).toBe(3);
     });
     test('You can insert with an custom tag', () => {
       const custom = 'custom';
-      dom.insertPlugin('custom', custom, {inner: true});
+      dom.insertPlugin('custom', custom, { inner: true });
       expect(node.querySelector('custom')).not.toBe(null);
       expect(node.children[0].children.length).toBe(4);
     });
     test('insert with nothing is ok', () => {
-      dom.insertPlugin('div', {inner: true});
+      dom.insertPlugin('div', { inner: true });
       expect(node.children[0].children.length).toBe(5);
     });
     test('warn when you duplicate insert', () => {
-      dom.insertPlugin('div', {inner: true});
+      dom.insertPlugin('div', { inner: true });
       expect(Log.data.warn).toEqual([
-        ['Dispatcher.dom', 'Plugin div have already had a dom node. Now it will be replaced']
+        [ 'Dispatcher.dom', 'Plugin div have already had a dom node. Now it will be replaced' ],
       ]);
     });
     test('insert plugin with autofocus', () => {
-      dom.insertPlugin('div', {inner: false, autoFocus: true});
+      dom.insertPlugin('div', { inner: false, autoFocus: true });
     });
     test('remove plugin', () => {
       dom.removePlugin('div');
@@ -108,8 +108,8 @@ describe('_getEventHanlder', () => {
   const triggerSync = jest.fn();
   const dom = new Dom(node, {
     bus: {
-      triggerSync
-    }
+      triggerSync,
+    },
   });
   test('normal click event', () => {
     const fn1 = dom._getEventHandler('click', {});
@@ -129,18 +129,18 @@ describe('_getEventHanlder', () => {
     insideVideoNode.appendChild((insideVideoChildNode));
     dom.__videoExtendedNodes.push(insideVideoNode);
     dom.__videoExtendedNodes.push(document.createElement('div'));
-    const fn3 = dom._getEventHandler('mouseenter', {penetrate: true});
+    const fn3 = dom._getEventHandler('mouseenter', { penetrate: true });
     test('mouseenter event, but not enter video area, should trigger nothing', () => {
       fn3({
         type: 'mouseenter',
-        currentTarget: null
+        currentTarget: null,
       });
       expect(triggerSync).toHaveBeenCalledTimes(2);
     });
     test('mouseener and enter video area on insideVideoNode, should trigger mouseenter', () => {
       const event1 = {
         type: 'mouseenter',
-        currentTarget: insideVideoNode
+        currentTarget: insideVideoNode,
       };
       fn3(event1);
       expect(triggerSync).lastCalledWith('mouseenter', event1);
@@ -150,14 +150,14 @@ describe('_getEventHanlder', () => {
       fn3({
         type: 'mouseleave',
         currentTarget: insideVideoNode,
-        toElement: dom.videoElement
+        toElement: dom.videoElement,
       });
       expect(triggerSync).toHaveBeenCalledTimes(3);
     });
     test('mouseenter video, should trigger nothing', () => {
       fn3({
         type: 'mouseenter',
-        currentTarget: dom.videoElement
+        currentTarget: dom.videoElement,
       });
       expect(triggerSync).toHaveBeenCalledTimes(3);
     });
@@ -165,7 +165,7 @@ describe('_getEventHanlder', () => {
       const event2 = {
         type: 'mouseleave',
         currentTarget: dom.videoElement,
-        relatedTarget: null
+        relatedTarget: null,
       };
       fn3(event2);
       expect(triggerSync).toHaveBeenCalledTimes(4);
@@ -174,7 +174,7 @@ describe('_getEventHanlder', () => {
     test('mouseenter to inside video node child element', () => {
       const event3 = {
         type: 'mouseenter',
-        currentTarget: insideVideoChildNode
+        currentTarget: insideVideoChildNode,
       };
       fn3(event3);
       expect(triggerSync).toHaveBeenCalledTimes(5);
@@ -193,7 +193,7 @@ describe('_getEventHanlder', () => {
   test('fullscreen should work', () => {
     const node = document.createElement('div');
     document.body.appendChild(node);
-    const dom = new Dom(node, {videoConfigReady: true});
+    const dom = new Dom(node, { videoConfigReady: true });
     dom.container.mozRequestFullscreen = () => {};
     dom.fullscreen(true);
     document.mozCancelFullscreen = () => {};
@@ -206,7 +206,7 @@ describe('_getEventHanlder', () => {
 
   test('focus', () => {
     const node = document.createElement('div');
-    const dom = new Dom(node, {videoConfigReady: true});
+    const dom = new Dom(node, { videoConfigReady: true });
     expect(document.activeElement).toBe(document.body);
     dom.focus();
     expect(document.activeElement).toBe(dom.videoElement);
@@ -215,9 +215,9 @@ describe('_getEventHanlder', () => {
   test('setStyle', () => {
     const node = document.createElement('div');
     const dom = new Dom(node, {
-      throwError (error) {
+      throwError(error) {
         throw error;
-      }
+      },
     });
     dom.setStyle('container', 'z-index', 10);
     expect(dom.container.style.zIndex).toBe('10');

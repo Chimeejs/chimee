@@ -6,43 +6,43 @@ const plugin = {
   // 插件实体为按钮
   el: '<button>play</button>',
   data: {
-    text: 'play'
+    text: 'play',
   },
   methods: {
-    changeVideoStatus () {
+    changeVideoStatus() {
       this[this.text]();
     },
-    changeButtonText (text) {
+    changeButtonText(text) {
       this.text = text;
       this.$dom.innerText = this.text;
-    }
+    },
   },
   // 在插件创建的阶段，我们为插件绑定事件。
-  create () {
+  create() {
     this.$dom.addEventListener('click', this.changeVideoStatus);
-    this.$watch('controls', function (newVal, oldVal) {
+    this.$watch('controls', function(newVal, oldVal) {
       console.log(newVal, oldVal);
-    }, {diff: false});
+    }, { diff: false });
     console.log(this.$plugins);
   },
   // 插件会在播放暂停操作发生后改变自己的文案及相应的行为
   events: {
-    pause () {
+    pause() {
       this.changeButtonText('play');
     },
-    play () {
+    play() {
       this.changeButtonText('pause');
     },
-    c_contextmenu (evt) {
+    c_contextmenu(evt) {
       console.log(evt);
     },
-    c_click (evt) {
+    c_click(evt) {
       console.warn(evt);
     },
-    click (evt) {
+    click(evt) {
       console.log(evt);
-    }
-  }
+    },
+  },
 };
 Chimee.install(plugin);
 const player = new Chimee({
@@ -53,14 +53,14 @@ const player = new Chimee({
   // src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/79_3041054cc65-ae8c-4b63-8937-5ccb05f79720.m3u8',
   // dom容器
   wrapper: '#wrapper',
-  plugin: ['controller'],
+  plugin: [ 'controller' ],
   preset: {
     flv: window.chimeeKernelFlv,
-    hls: window.chimeeKernelHls
+    hls: window.chimeeKernelHls,
   },
   volume: 0.1,
   // autoplay: true,
-  controls: true
+  controls: true,
 });
 player.$on('beforePlay', evt => {
   console.warn(evt, 'srth');
@@ -69,10 +69,10 @@ player.$on('play', evt => {
   console.warn(evt, 'srth');
 });
 window.player = player;
-['fullscreenchange',
-'webkitfullscreenchange',
-'mozfullscreenchange',
-'msfullscreenchange'].forEach(key => {
+[ 'fullscreenchange',
+  'webkitfullscreenchange',
+  'mozfullscreenchange',
+  'msfullscreenchange' ].forEach(key => {
   console.log(key);
   document.addEventListener(key, evt => console.log(key, evt));
 });

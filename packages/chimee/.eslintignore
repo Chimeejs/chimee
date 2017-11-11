@@ -1,0 +1,6 @@
+node_modules
+lib
+flow
+coverage
+bundle-size
+demo

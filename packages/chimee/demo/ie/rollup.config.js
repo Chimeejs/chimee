@@ -7,15 +7,15 @@ export default {
   dest: 'demo/ie/dist.js',
   plugins: [
     babel({
-      presets: ['es2015-rollup', 'stage-0'],
+      presets: [ 'es2015-rollup', 'stage-0' ],
       exclude: 'node_modules/**',
-      babelrc: false
+      babelrc: false,
     }),
     resolve({
       customResolveOptions: {
-        moduleDirectory: ['src', 'node_modules']
-      }
+        moduleDirectory: [ 'src', 'node_modules' ],
+      },
     }),
-    commonjs()
-  ]
+    commonjs(),
+  ],
 };

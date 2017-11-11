@@ -1,12 +1,12 @@
 // @flow
-import {isEmpty, isArray, runRejectableQueue, runStoppableQueue, camelize, bind, isError, isVoid, isFunction, deepClone, Log} from 'chimee-helper';
-import {videoEvents, kernelMethods, domEvents, domMethods, selfProcessorEvents, dispatcherMethods} from 'helper/const';
-import {runnable} from 'toxic-decorators';
+import { isEmpty, isArray, runRejectableQueue, runStoppableQueue, camelize, bind, isError, isVoid, isFunction, deepClone, Log } from 'chimee-helper';
+import { videoEvents, kernelMethods, domEvents, domMethods, selfProcessorEvents, dispatcherMethods } from 'helper/const';
+import { runnable } from 'toxic-decorators';
 const secondaryReg = /^(before|after|_)/;
-function secondaryChecker (key) {
-  if(key.match(secondaryReg)) {
+function secondaryChecker(key) {
+  if (key.match(secondaryReg)) {
     /* istanbul ignore else  */
-    if(process.env.NODE_ENV !== 'production') Log.warn('bus', `Secondary Event "${key}" could not be call straightly by API.`);
+    if (process.env.NODE_ENV !== 'production') Log.warn('bus', `Secondary Event "${key}" could not be call straightly by API.`);
     return false;
   }
   return true;
@@ -58,7 +58,7 @@ export default class Bus {
    * @param {Dispatcheer} dispatcher bus rely on dispatcher, so you mush pass dispatcher at first when you generate Bus.
    * @return {Bus}
    */
-  constructor (dispatcher: Dispatcher) {
+  constructor(dispatcher: Dispatcher) {
     /**
      * the referrence to dispatcher
      * @type {Dispatcher}
@@ -71,9 +71,9 @@ export default class Bus {
    * @param  {string} key event's name
    * @param  {fn} handler function
    */
-  on (id: string, key: string, fn: Function) {
-    const {stage, key: eventName} = this._getEventStage(key);
-    this._addEvent([eventName, stage, id], fn);
+  on(id: string, key: string, fn: Function) {
+    const { stage, key: eventName } = this._getEventStage(key);
+    this._addEvent([ eventName, stage, id ], fn);
   }
   /**
    * [Can only be called in dispatcher]remove event off bus. Only suggest one by one.
@@ -81,13 +81,13 @@ export default class Bus {
    * @param  {string} key event's name
    * @param  {fn} handler function
    */
-  off (id: string, key: string, fn: Function) {
-    const {stage, key: eventName} = this._getEventStage(key);
-    const keys = [eventName, stage, id];
+  off(id: string, key: string, fn: Function) {
+    const { stage, key: eventName } = this._getEventStage(key);
+    const keys = [ eventName, stage, id ];
     const deleted = this._removeEvent(keys, fn);
-    if(deleted) return;
+    if (deleted) return;
     const handler = this._getHandlerFromOnceMap(keys, fn);
-    if(isFunction(handler)) {
+    if (isFunction(handler)) {
       this._removeEvent(keys, handler) && this._removeFromOnceMap(keys, fn, handler);
     }
   }
@@ -97,11 +97,11 @@ export default class Bus {
    * @param  {string} key event's name
    * @param  {Function} fn handler function
    */
-  once (id: string, key: string, fn: Function) {
-    const {stage, key: eventName} = this._getEventStage(key);
+  once(id: string, key: string, fn: Function) {
+    const { stage, key: eventName } = this._getEventStage(key);
     const bus = this;
-    const keys = [eventName, stage, id];
-    const handler = function (...args) {
+    const keys = [ eventName, stage, id ];
+    const handler = function(...args) {
       // keep the this so that it can run
       bind(fn, this)(...args);
       bus._removeEvent(keys, handler);
@@ -118,23 +118,23 @@ export default class Bus {
    * @return {Promise}  this promise maybe useful if the event would not trigger kernel event. In that will you can know if it runs successful. But you can know if the event been stopped by the promise.
    */
   @runnable(secondaryChecker)
-  emit (key: string, ...args: any): Promise<*> {
+  emit(key: string, ...args: any): Promise<*> {
     const event = this.events[key];
-    if(isEmpty(event)) {
-      if(selfProcessorEvents.indexOf(key) > -1) return Promise.resolve();
+    if (isEmpty(event)) {
+      if (selfProcessorEvents.indexOf(key) > -1) return Promise.resolve();
       // $FlowFixMe: conditional return here
-      return this._eventProcessor(key, {sync: false}, ...args);
+      return this._eventProcessor(key, { sync: false }, ...args);
     }
     const beforeQueue = this._getEventQueue(event.before, this.__dispatcher.order);
     return runRejectableQueue(beforeQueue, ...args)
-    .then(() => {
-      if(selfProcessorEvents.indexOf(key) > -1) return;
-      return this._eventProcessor(key, {sync: false}, ...args);
-    })
-    .catch(error => {
-      if(isError(error)) this.__dispatcher.throwError(error);
-      return Promise.reject(error);
-    });
+      .then(() => {
+        if (selfProcessorEvents.indexOf(key) > -1) return;
+        return this._eventProcessor(key, { sync: false }, ...args);
+      })
+      .catch(error => {
+        if (isError(error)) this.__dispatcher.throwError(error);
+        return Promise.reject(error);
+      });
   }
   /**
    * [Can only be called in dispatcher]emit an event, which will run before -> processor period synchronize.
@@ -143,18 +143,18 @@ export default class Bus {
    * @param  {anything} args other argument will be passed into handler
    * @return {Promise}  this promise maybe useful if the event would not trigger kernel event. In that will you can know if it runs successful. But you can know if the event been stopped by the promise.
    */
-  @runnable(secondaryChecker, {backup () {return false;}})
-  emitSync (key: string, ...args: any): boolean {
+  @runnable(secondaryChecker, { backup() { return false; } })
+  emitSync(key: string, ...args: any): boolean {
     const event = this.events[key];
-    if(isEmpty(event)) {
-      if(selfProcessorEvents.indexOf(key) > -1) return true;
+    if (isEmpty(event)) {
+      if (selfProcessorEvents.indexOf(key) > -1) return true;
       // $FlowFixMe: conditional return here
-      return this._eventProcessor(key, {sync: true}, ...args);
+      return this._eventProcessor(key, { sync: true }, ...args);
     }
     const beforeQueue = this._getEventQueue(event.before, this.__dispatcher.order);
     return runStoppableQueue(beforeQueue, ...args) && (selfProcessorEvents.indexOf(key) > -1 ||
       // $FlowFixMe: conditional return here
-      this._eventProcessor(key, {sync: true}, ...args));
+      this._eventProcessor(key, { sync: true }, ...args));
   }
   /**
    * [Can only be called in dispatcher]trigger an event, which will run main -> after -> side effect period
@@ -163,35 +163,35 @@ export default class Bus {
    * @return {Promise|undefined}    you can know if event trigger finished~ However, if it's unlegal
    */
   @runnable(secondaryChecker)
-  trigger (key: string, ...args: any): Promise<*> {
+  trigger(key: string, ...args: any): Promise<*> {
     const event = this.events[key];
-    if(isEmpty(event)) {
+    if (isEmpty(event)) {
       return Promise.resolve(true);
     }
     const mainQueue = this._getEventQueue(event.main, this.__dispatcher.order);
     return runRejectableQueue(mainQueue, ...args)
-    .then(() => {
-      const afterQueue = this._getEventQueue(event.after, this.__dispatcher.order);
-      return runRejectableQueue(afterQueue, ...args);
-    })
-    .then(() => {
-      return this._runSideEffectEvent(key, this.__dispatcher.order, ...args);
-    })
-    .catch(error => {
-      if(isError(error)) this.__dispatcher.throwError(error);
-      return this._runSideEffectEvent(key, this.__dispatcher.order, ...args);
-    });
+      .then(() => {
+        const afterQueue = this._getEventQueue(event.after, this.__dispatcher.order);
+        return runRejectableQueue(afterQueue, ...args);
+      })
+      .then(() => {
+        return this._runSideEffectEvent(key, this.__dispatcher.order, ...args);
+      })
+      .catch(error => {
+        if (isError(error)) this.__dispatcher.throwError(error);
+        return this._runSideEffectEvent(key, this.__dispatcher.order, ...args);
+      });
   }
-   /**
+  /**
    * [Can only be called in dispatcher]trigger an event, which will run main -> after -> side effect period in synchronize
    * @param  {string}    key event's name
    * @param  {anything} args
    * @return {boolean}    you can know if event trigger finished~ However, if it's unlegal
    */
-  @runnable(secondaryChecker, {backup () {return false;}})
-  triggerSync (key: string, ...args: any): boolean {
+  @runnable(secondaryChecker, { backup() { return false; } })
+  triggerSync(key: string, ...args: any): boolean {
     const event = this.events[key];
-    if(isEmpty(event)) {
+    if (isEmpty(event)) {
       return true;
     }
     const mainQueue = this._getEventQueue(event.main, this.__dispatcher.order);
@@ -203,7 +203,7 @@ export default class Bus {
   /**
    * destroy hook which will be called when object destroy
    */
-  destroy (): void {
+  destroy(): void {
     delete this.events;
     delete this.__dispatcher;
   }
@@ -213,7 +213,7 @@ export default class Bus {
    * @param {Array} keys keys map pointing to position to put event handler
    * @param {function} fn handler to put
    */
-  _addEvent (keys: Array<string>, fn: Function): void {
+  _addEvent(keys: Array<string>, fn: Function): void {
     keys = deepClone(keys);
     const id = keys.pop();
     const target = keys.reduce((target, key) => {
@@ -230,38 +230,38 @@ export default class Bus {
    * @param {Array} keys keys map pointing to position to get event handler
    * @param {function} fn handler to put
    */
-  _removeEvent (keys: Array<string>, fn: Function): void | boolean {
+  _removeEvent(keys: Array<string>, fn: Function): void | boolean {
     keys = deepClone(keys);
     const id = keys.pop();
     let target = this.events;
-    for(let i = 0, len = keys.length; i < len; i++) {
+    for (let i = 0, len = keys.length; i < len; i++) {
       const son = target[keys[i]];
       // if we can't find the event binder, just return
-      if(isEmpty(son)) return;
+      if (isEmpty(son)) return;
       target = son;
     }
     const queue = target[id] || [];
     const index = queue.indexOf(fn);
     const hasFn = index > -1;
     // if we found handler remove it
-    if(hasFn) {
+    if (hasFn) {
       queue.splice(index, 1);
     }
     // if this plugin has no event binding, we remove this event session, which make us perform faster in emit & trigger period.
-    if(queue.length < 1) {
+    if (queue.length < 1) {
       delete target[id];
     }
     return hasFn;
   }
-  _addToOnceMap (keys: Array<string>, fn: Function, handler: Function): void {
+  _addToOnceMap(keys: Array<string>, fn: Function, handler: Function): void {
     const key = keys.join('-');
     const map = this.onceMap[key] = this.onceMap[key] || new Map();
-    if(!map.has(fn)) map.set(fn, []);
+    if (!map.has(fn)) map.set(fn, []);
     const handlers = map.get(fn);
     // $FlowFixMe: flow do not understand map yet
     handlers.push(handler);
   }
-  _removeFromOnceMap (keys: Array<string>, fn: Function, handler: Function): void {
+  _removeFromOnceMap(keys: Array<string>, fn: Function, handler: Function): void {
     const key = keys.join('-');
     const map = this.onceMap[key];
     // do not need to check now
@@ -269,12 +269,12 @@ export default class Bus {
     const handlers = map.get(fn);
     const index = handlers.indexOf(handler);
     handlers.splice(index, 1);
-    if(isEmpty(handlers)) map.delete(fn);
+    if (isEmpty(handlers)) map.delete(fn);
   }
-  _getHandlerFromOnceMap (keys: Array<string>, fn: Function): Function | void {
+  _getHandlerFromOnceMap(keys: Array<string>, fn: Function): Function | void {
     const key = keys.join('-');
     const map = this.onceMap[key];
-    if(isVoid(map) || !map.has(fn)) return;
+    if (isVoid(map) || !map.has(fn)) return;
     const handlers = map.get(fn);
     return handlers[0];
   }
@@ -284,13 +284,13 @@ export default class Bus {
    * @param  {key} key event's name
    * @return {stage}  event stage
    */
-  _getEventStage (key: string): {stage: string, key: string} {
+  _getEventStage(key: string): {stage: string, key: string} {
     const secondaryCheck = key.match(secondaryReg);
     const stage = (secondaryCheck && secondaryCheck[0]) || 'main';
-    if(secondaryCheck) {
+    if (secondaryCheck) {
       key = camelize(key.replace(secondaryReg, ''));
     }
-    return {stage, key};
+    return { stage, key };
   }
   /**
    * get event handlers queue to run
@@ -299,12 +299,12 @@ export default class Bus {
    * @param  {Array} Array form of plugin id
    * @return {Array<Function>} event handler in queue to run
    */
-  _getEventQueue (handlerSet: Object, order: PluginOrder): Array<Function> {
-    order = isArray(order) ? order.concat(['_vm']) : ['_vm'];
+  _getEventQueue(handlerSet: Object, order: PluginOrder): Array<Function> {
+    order = isArray(order) ? order.concat([ '_vm' ]) : [ '_vm' ];
     return isEmpty(handlerSet)
       ? []
       : order.reduce((queue, id) => {
-        if(isEmpty(handlerSet[id]) ||
+        if (isEmpty(handlerSet[id]) ||
           !isArray(handlerSet[id]) ||
           // in case plugins is missed
           // _vm indicate the user. This is the function for user
@@ -327,17 +327,17 @@ export default class Bus {
    * @param  {anything} args
    * @return {Promise|undefined}
    */
-  _eventProcessor (key: string, {sync}: {sync: boolean}, ...args: any): Promise<*> | boolean {
+  _eventProcessor(key: string, { sync }: {sync: boolean}, ...args: any): Promise<*> | boolean {
     const isKernelMethod: boolean = kernelMethods.indexOf(key) > -1;
     const isDomMethod: boolean = domMethods.indexOf(key) > -1;
     const isDispatcherMethod: boolean = dispatcherMethods.indexOf(key) > -1;
-    if(isKernelMethod || isDomMethod || isDispatcherMethod) {
-      if(isDispatcherMethod) {
+    if (isKernelMethod || isDomMethod || isDispatcherMethod) {
+      if (isDispatcherMethod) {
         this.__dispatcher[key](...args);
       } else {
         this.__dispatcher[isKernelMethod ? 'kernel' : 'dom'][key](...args);
       }
-      if(videoEvents.indexOf(key) > -1 ||
+      if (videoEvents.indexOf(key) > -1 ||
         domEvents.indexOf(key) > -1) return true;
     }
     // $FlowFixMe: flow do not support computed sytax on classs, but it's ok here
@@ -348,13 +348,13 @@ export default class Bus {
    * @param  {string}    key event's name
    * @param  {args} args
    */
-  _runSideEffectEvent (key: string, order: PluginOrder, ...args: any): boolean {
+  _runSideEffectEvent(key: string, order: PluginOrder, ...args: any): boolean {
     const event = this.events[key];
-    if(isEmpty(event)) {
+    if (isEmpty(event)) {
       return false;
     }
-    const queue = this._getEventQueue(event['_'], order);
+    const queue = this._getEventQueue(event._, order);
     queue.forEach(run => run(...args));
     return true;
   }
-};
+}

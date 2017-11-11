@@ -1,6 +1,6 @@
 import Dom from 'dispatcher/dom';
 import Bus from 'dispatcher/bus';
-import {Log, getAttr, isString, isNumber, isBoolean} from 'chimee-helper';
+import { Log, getAttr, isString, isNumber, isBoolean } from 'chimee-helper';
 import Plugin from 'dispatcher/plugin';
 import Dispatcher from 'dispatcher/index';
 import VideoConfig from 'dispatcher/video-config';
@@ -15,13 +15,13 @@ describe('dispatcher/plugin', () => {
       _sortZIndex: jest.fn(),
       kernel: {
         currentTime: 0,
-        seek (value) {
+        seek(value) {
           this.currentTime = value;
-        }
+        },
       },
-      throwError (error) {
+      throwError(error) {
         throw error;
-      }
+      },
     };
     dispatcher.dom = new Dom(wrapper, dispatcher);
     dispatcher.videoConfig = new VideoConfig(dispatcher, {});
@@ -36,7 +36,7 @@ describe('dispatcher/plugin', () => {
   test('illegal constructor', () => {
     expect(() => new Plugin()).toThrow('lack of dispatcher');
     expect(Log.data.error).toEqual([
-      ['Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?']
+      [ 'Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?' ],
     ]);
   });
 
@@ -46,26 +46,26 @@ describe('dispatcher/plugin', () => {
   describe('class name support', () => {
     test('normal class name string', () => {
       const className = 'test-cls';
-      const plugin = new Plugin({id: 'a', className}, dispatcher);
+      const plugin = new Plugin({ id: 'a', className }, dispatcher);
       expect(plugin.$dom.className).toBe(className);
       plugin.$destroy();
     });
     test('multiple class name string', () => {
       const className = 'test-cls a b c';
-      const plugin = new Plugin({id: 'a', className}, dispatcher);
+      const plugin = new Plugin({ id: 'a', className }, dispatcher);
       expect(plugin.$dom.className).toBe(className);
       plugin.$destroy();
     });
     test('multiple class name array', () => {
-      const className = ['test-cls', 'a', 'b', 'c'];
-      const plugin = new Plugin({id: 'a', className}, dispatcher);
+      const className = [ 'test-cls', 'a', 'b', 'c' ];
+      const plugin = new Plugin({ id: 'a', className }, dispatcher);
       expect(plugin.$dom.className).toBe('test-cls a b c');
       plugin.$destroy();
     });
   });
   test('base running', () => {
-    const pluginA = new Plugin({id: 'a'}, dispatcher);
-    expect(pluginA.$config).toEqual({name: undefined});
+    const pluginA = new Plugin({ id: 'a' }, dispatcher);
+    expect(pluginA.$config).toEqual({ name: undefined });
     expect(pluginA.$operable).toBe(true);
     expect(pluginA.$dom.style.pointerEvents).toBe('auto');
     expect(pluginA.$level).toBe(0);
@@ -76,7 +76,7 @@ describe('dispatcher/plugin', () => {
 
   describe('init', () => {
     test('do nothing', () => {
-      const pluginI1 = new Plugin({id: 'i2'}, dispatcher);
+      const pluginI1 = new Plugin({ id: 'i2' }, dispatcher);
       const videoConfig = new VideoConfig(dispatcher, {});
       expect(pluginI1.$videoConfig).not.toBe();
       pluginI1.__init({});
@@ -86,9 +86,9 @@ describe('dispatcher/plugin', () => {
     test('change src by config pass in', () => {
       const pluginI2 = new Plugin({
         id: 'i2',
-        init (config) {
+        init(config) {
           config.src = 'i am a test';
-        }
+        },
       }, dispatcher);
       pluginI2.__init(pluginI2.$videoConfig);
       expect(pluginI2.$videoConfig.src).toBe('i am a test');
@@ -97,9 +97,9 @@ describe('dispatcher/plugin', () => {
     test('change src by this', () => {
       const plugin = new Plugin({
         id: 'i3',
-        init (config) {
+        init() {
           this.src = 'i am a test';
-        }
+        },
       }, dispatcher);
       plugin.__init({});
       expect(plugin.$videoConfig.src).toBe('i am a test');
@@ -110,7 +110,7 @@ describe('dispatcher/plugin', () => {
   test('methods', () => {
     const pluginM1 = new Plugin({
       id: 'm1',
-      methods: ['what']
+      methods: [ 'what' ],
     }, dispatcher);
     pluginM1.$destroy();
     const fn = jest.fn();
@@ -118,8 +118,8 @@ describe('dispatcher/plugin', () => {
       id: 'm2',
       methods: {
         a: fn,
-        b: fn
-      }
+        b: fn,
+      },
     }, dispatcher);
     pluginM2.a();
     expect(fn).toHaveBeenCalledTimes(1);
@@ -133,31 +133,32 @@ describe('dispatcher/plugin', () => {
     expect(() => new Plugin({
       id: 'm3',
       methods: {
-        a: 1
-      }
+        a: 1,
+      },
     }, dispatcher))
-    .toThrow('plugins methods must be Function');
+      .toThrow('plugins methods must be Function');
   });
 
   test('methods binding', () => {
-    const fn = function () {
+    let plugin;
+    const fn = function() {
       expect(this).toBe(plugin);
     };
-    const plugin = new Plugin({
+    plugin = new Plugin({
       id: 'm',
       methods: {
-        fn
-      }
+        fn,
+      },
     }, dispatcher);
     plugin.fn();
-    const {fn: theFn} = plugin;
+    const { fn: theFn } = plugin;
     theFn();
   });
 
   test('events', () => {
     const pluginE1 = new Plugin({
       id: 'e1',
-      events: [1]
+      events: [ 1 ],
     }, dispatcher);
     expect(pluginE1.__events).toEqual({});
     pluginE1.$destroy();
@@ -166,24 +167,24 @@ describe('dispatcher/plugin', () => {
       id: 'e2',
       events: {
         a: fn1,
-        b: fn1
-      }
+        b: fn1,
+      },
     }, dispatcher);
-    expect(pluginE2.__events.a).toEqual([fn1]);
-    expect(pluginE2.__events.b).toEqual([fn1]);
+    expect(pluginE2.__events.a).toEqual([ fn1 ]);
+    expect(pluginE2.__events.b).toEqual([ fn1 ]);
     dispatcher.bus.events.a.main.e2[0]();
     dispatcher.bus.events.b.main.e2[0]();
     expect(fn1).toHaveBeenCalledTimes(2);
     pluginE2.__events.ahahah = 1;
     pluginE2.$destroy();
     expect(pluginE2.__events).toBe();
-    expect(dispatcher.bus.events.a).toEqual({main: {}});
-    expect(dispatcher.bus.events.b).toEqual({main: {}});
+    expect(dispatcher.bus.events.a).toEqual({ main: {} });
+    expect(dispatcher.bus.events.b).toEqual({ main: {} });
     expect(() => new Plugin({
       id: 'e3',
       events: {
-        a: 1
-      }
+        a: 1,
+      },
     }, dispatcher)).toThrow('plugins events hook must bind with Function');
   });
 
@@ -191,15 +192,15 @@ describe('dispatcher/plugin', () => {
     const pluginD1 = new Plugin({
       id: 'd1',
       data: {
-        a: 1
-      }
+        a: 1,
+      },
     }, dispatcher);
     expect(pluginD1.a).toBe(1);
     pluginD1.$destroy();
     expect(pluginD1.a).toBe(1);
     const pluginD2 = new Plugin({
       id: 'd2',
-      data: []
+      data: [],
     }, dispatcher);
     pluginD2.$destroy();
   });
@@ -212,26 +213,26 @@ describe('dispatcher/plugin', () => {
         id: 'c2',
         name: 'c2',
         computed: {
-          a () {return 1;},
+          a() { return 1; },
           b: {
-            set (val) {
+            set(val) {
               return val;
-            }
+            },
           },
           c: 2,
           d: {
-            get () {return dForComputed;},
-            set (val) {dForComputed = val;}
+            get() { return dForComputed; },
+            set(val) { dForComputed = val; },
           },
           e: {
-            get (value) {return value;}
-          }
-        }
+            get(value) { return value; },
+          },
+        },
       }, dispatcher);
     });
     test('wrong computed member', () => {
       expect(pluginC2.c).toBe();
-      expect(Log.data.warn[0]).toEqual(['Dispatcher.plugin', "Wrong computed member 'c' defination in Plugin c2"]);
+      expect(Log.data.warn[0]).toEqual([ 'Dispatcher.plugin', "Wrong computed member 'c' defination in Plugin c2" ]);
     });
     test('one function return normal getter', () => {
       expect(pluginC2.a).toBe(1);
@@ -257,28 +258,28 @@ describe('dispatcher/plugin', () => {
     const createAndDestroyCall = [];
     const pluginCD = new Plugin({
       id: 'cd',
-      create () {createAndDestroyCall.push('create');},
-      destroy () {createAndDestroyCall.push('destroy');},
-      inited () {createAndDestroyCall.push('inited');}
+      create() { createAndDestroyCall.push('create'); },
+      destroy() { createAndDestroyCall.push('destroy'); },
+      inited() { createAndDestroyCall.push('inited'); },
     }, dispatcher);
-    expect(createAndDestroyCall).toEqual(['create']);
+    expect(createAndDestroyCall).toEqual([ 'create' ]);
     pluginCD.__inited();
-    expect(createAndDestroyCall).toEqual(['create', 'inited']);
+    expect(createAndDestroyCall).toEqual([ 'create', 'inited' ]);
     expect(pluginCD.ready).resolves.toBe();
     pluginCD.$destroy();
-    expect(createAndDestroyCall).toEqual(['create', 'inited', 'destroy']);
+    expect(createAndDestroyCall).toEqual([ 'create', 'inited', 'destroy' ]);
   });
 
   test('penetrate', done => {
-    const dispatcher = new Dispatcher({wrapper: document.createElement('div')}, {});
+    const dispatcher = new Dispatcher({ wrapper: document.createElement('div') }, {});
     const pluginP = new Plugin({
       id: 'p',
       penetrate: true,
       events: {
-        click () {
+        click() {
           done();
-        }
-      }
+        },
+      },
     }, dispatcher);
     dispatcher.order.unshift('p');
     dispatcher.plugins.p = pluginP;
@@ -289,7 +290,7 @@ describe('dispatcher/plugin', () => {
   test('operable', () => {
     const pluginO = new Plugin({
       id: 'o',
-      operable: false
+      operable: false,
     }, dispatcher);
     expect(pluginO.$operable).toBe(false);
     expect(pluginO.$dom.style.pointerEvents).toBe('none');
@@ -301,8 +302,8 @@ describe('dispatcher/plugin', () => {
     expect(pluginO.$operable).toBe(true);
     pluginO.$destroy();
     const pluginO1 = new Plugin({
-      id: 'o'
-    }, dispatcher, {operable: false});
+      id: 'o',
+    }, dispatcher, { operable: false });
     expect(pluginO1.$operable).toBe(false);
     expect(pluginO1.$dom.style.pointerEvents).toBe('none');
     pluginO1.$destroy();
@@ -311,7 +312,7 @@ describe('dispatcher/plugin', () => {
   test('level', () => {
     const pluginZ = new Plugin({
       id: 'z',
-      level: 1
+      level: 1,
     }, dispatcher);
     expect(pluginZ.$level).toBe(1);
     expect(dispatcher._sortZIndex).toHaveBeenCalledTimes(0);
@@ -323,8 +324,8 @@ describe('dispatcher/plugin', () => {
     expect(dispatcher._sortZIndex).toHaveBeenCalledTimes(1);
     pluginZ.$destroy();
     const pluginZ1 = new Plugin({
-      id: 'z'
-    }, dispatcher, {level: 1});
+      id: 'z',
+    }, dispatcher, { level: 1 });
     expect(pluginZ1.$level).toBe(1);
     expect(dispatcher._sortZIndex).toHaveBeenCalledTimes(1);
     pluginZ1.$destroy();
@@ -332,7 +333,7 @@ describe('dispatcher/plugin', () => {
 
   test('$emit', () => {
     const pluginE = new Plugin({
-      id: 'e'
+      id: 'e',
     }, dispatcher);
     expect(() => pluginE.$emit()).toThrow('emit key parameter must be String');
     pluginE.$emit('click');
@@ -342,7 +343,7 @@ describe('dispatcher/plugin', () => {
 
   test('$emitSync', () => {
     const pluginE = new Plugin({
-      id: 'e'
+      id: 'e',
     }, dispatcher);
     expect(() => pluginE.$emitSync()).toThrow('emitSync key parameter must be String');
     expect(pluginE.$emitSync('hello')).toBe(true);
@@ -351,12 +352,12 @@ describe('dispatcher/plugin', () => {
 
   test('$once', () => {
     const plugin = new Plugin({
-      id: 'e'
+      id: 'e',
     }, dispatcher);
     const fn = jest.fn();
-    dispatcher.order = ['e'];
+    dispatcher.order = [ 'e' ];
     dispatcher.plugins = {
-      e: {}
+      e: {},
     };
     plugin.$once('hi', fn);
     expect(plugin.__dispatcher.bus.events.hi.main.e.length).toBe(1);
@@ -367,7 +368,7 @@ describe('dispatcher/plugin', () => {
   });
 
   test('__checkArgsForOnAndOff', () => {
-    const plugin = new Plugin({id: 'check'}, dispatcher);
+    const plugin = new Plugin({ id: 'check' }, dispatcher);
     expect(() => plugin.$on()).toThrow('key parameter must be String');
     expect(() => plugin.$on('1')).toThrow('fn parameter must be Function');
   });
@@ -377,9 +378,9 @@ describe('dispatcher/plugin', () => {
       wrapper: document.createElement('div'),
       // https://github.com/Chimeejs/chimee-kernel/issues/1
       // 因为没有默认垫底的选项
-      box: 'native'
+      box: 'native',
     }, {});
-    const plugin = new Plugin({id: 'normal'}, dispatcher);
+    const plugin = new Plugin({ id: 'normal' }, dispatcher);
     plugin.__init(dispatcher.videoConfig);
     beforeAll(() => {
       dispatcher.videoConfigReady = true;
@@ -391,7 +392,7 @@ describe('dispatcher/plugin', () => {
     });
     test('duration', () => {
       expect(plugin.duration).toBe(dispatcher.dom.videoElement.duration);
-      expect(() => {plugin.duration = 40;}).toThrow();
+      expect(() => { plugin.duration = 40; }).toThrow();
     });
     test('volume', () => {
       expect(plugin.volume).toBe(dispatcher.dom.videoElement.volume);
@@ -509,7 +510,7 @@ describe('dispatcher/plugin', () => {
   });
 
   test('$fullscreen', () => {
-    const plugin = new Plugin({id: 'normal'}, dispatcher);
+    const plugin = new Plugin({ id: 'normal' }, dispatcher);
     plugin.$fullscreen();
     plugin.$fullscreen(true);
     plugin.$fullscreen(false);
@@ -519,7 +520,7 @@ describe('dispatcher/plugin', () => {
   });
 
   test('fullscreen', () => {
-    const plugin = new Plugin({id: 'normal'}, dispatcher);
+    const plugin = new Plugin({ id: 'normal' }, dispatcher);
     plugin.fullscreen();
     plugin.fullscreen(true);
     plugin.fullscreen(false);
@@ -531,7 +532,7 @@ describe('dispatcher/plugin', () => {
   describe('$attr & $css', () => {
     let plugin;
     beforeEach(() => {
-      plugin = new Plugin({id: 'normal'}, dispatcher);
+      plugin = new Plugin({ id: 'normal' }, dispatcher);
     });
     afterEach(() => {
       plugin.$destroy();
@@ -553,7 +554,7 @@ describe('dispatcher/plugin', () => {
       plugin.$attr('video', 'controls', true);
       expect(plugin.$attr('video', 'controls')).toBe(null);
       expect(Log.data.warn[0]).toEqual([ 'chimee',
-          'normal is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger' ]);
+        'normal is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger' ]);
       dispatcher.videoConfigReady = true;
       plugin.$attr('video', 'controls', true);
       expect(plugin.$attr('video', 'controls')).toBe('');
@@ -573,30 +574,30 @@ describe('dispatcher/plugin', () => {
     const wrapper = document.createElement('div');
     const level1 = {
       name: 'level1',
-      level: 1
+      level: 1,
     };
     const level2 = {
       name: 'level2',
-      level: 2
+      level: 2,
     };
     const level3 = {
       name: 'level3',
-      level: 3
+      level: 3,
     };
     const olevel1 = {
       name: 'olevel1',
       level: 1,
-      inner: false
+      inner: false,
     };
     const olevel2 = {
       name: 'olevel2',
       level: 2,
-      inner: false
+      inner: false,
     };
     const olevel3 = {
       name: 'olevel3',
       level: 3,
-      inner: false
+      inner: false,
     };
     Dispatcher.install(level1);
     Dispatcher.install(level2);
@@ -605,7 +606,7 @@ describe('dispatcher/plugin', () => {
     Dispatcher.install(olevel2);
     Dispatcher.install(olevel3);
     const dispatcher = new Dispatcher({
-      wrapper
+      wrapper,
     }, {});
     dispatcher.use('level1');
     dispatcher.use('level2');
@@ -635,43 +636,43 @@ describe('dispatcher/plugin', () => {
     test('beforeCreate', () => {
       expect(() => new Plugin({
         id: 'err',
-        beforeCreate () {
+        beforeCreate() {
           throw error;
-        }
+        },
       }, dispatcher)).toThrow(error.message);
     });
     test('create', () => {
       expect(() => new Plugin({
         id: 'err',
-        create () {
+        create() {
           throw error;
-        }
+        },
       }, dispatcher)).toThrow(error.message);
     });
     test('init', () => {
       const plugin = new Plugin({
         id: 'err',
-        init () {
+        init() {
           throw error;
-        }
+        },
       }, dispatcher);
       expect(() => plugin.__init({})).toThrow(error.message);
     });
     test('inited', () => {
       const plugin = new Plugin({
         id: 'err',
-        inited () {
+        inited() {
           throw error;
-        }
+        },
       }, dispatcher);
       expect(() => plugin.__inited({})).toThrow(error.message);
     });
     test('inited with promise', async () => {
       const plugin = new Plugin({
         id: 'err',
-        inited () {
-          return new Promise(() => {throw error;});
-        }
+        inited() {
+          return new Promise(() => { throw error; });
+        },
       }, dispatcher);
       let catcherr = false;
       try {
@@ -685,9 +686,9 @@ describe('dispatcher/plugin', () => {
     test('inited with reject', async () => {
       const plugin = new Plugin({
         id: 'err',
-        inited () {
+        inited() {
           return Promise.reject();
-        }
+        },
       }, dispatcher);
       expect(plugin.__inited({})).rejects.toBe();
     });
@@ -695,7 +696,7 @@ describe('dispatcher/plugin', () => {
   describe('__removeEvents', () => {
     let plugin;
     beforeEach(() => {
-      plugin = new Plugin({id: 're'}, dispatcher);
+      plugin = new Plugin({ id: 're' }, dispatcher);
     });
     afterEach(() => {
       plugin.$destroy();
@@ -716,7 +717,7 @@ describe('dispatcher/plugin', () => {
   });
   describe('ready and readySync', () => {
     test('synchronize', () => {
-      const plugin = new Plugin({id: 'a'}, dispatcher);
+      const plugin = new Plugin({ id: 'a' }, dispatcher);
       plugin.__inited();
       expect(plugin.readySync).toBe(true);
       expect(plugin.ready).resolves.toBe();
@@ -724,9 +725,9 @@ describe('dispatcher/plugin', () => {
     test('asynchronize with resolve', async () => {
       const plugin = new Plugin({
         id: 'b',
-        inited () {
+        inited() {
           return Promise.resolve(1);
-        }
+        },
       }, dispatcher);
       plugin.__inited();
       await expect(plugin.ready).resolves.toBe(1);
@@ -735,9 +736,9 @@ describe('dispatcher/plugin', () => {
     test('asynchronize with reject', async () => {
       const plugin = new Plugin({
         id: 'b',
-        inited () {
+        inited() {
           return Promise.reject();
-        }
+        },
       }, dispatcher);
       plugin.__inited();
       await expect(plugin.ready).rejects.toBe();
@@ -746,14 +747,14 @@ describe('dispatcher/plugin', () => {
   });
 
   test('$pluginOrder', () => {
-    dispatcher.order = ['a', 'b', 'c'];
-    const plugin = new Plugin({id: 'p'}, dispatcher);
+    dispatcher.order = [ 'a', 'b', 'c' ];
+    const plugin = new Plugin({ id: 'p' }, dispatcher);
     expect(plugin.$pluginOrder).toBe(dispatcher.order);
   });
 
   test('$plugins', () => {
-    Dispatcher.install({name: 'p'});
-    dispatcher = new Dispatcher({wrapper: document.createElement('div')}, {});
+    Dispatcher.install({ name: 'p' });
+    dispatcher = new Dispatcher({ wrapper: document.createElement('div') }, {});
     dispatcher.use('p');
     expect(dispatcher.plugins.p.$plugins).toBe(dispatcher.plugins);
   });
@@ -770,17 +771,17 @@ describe('dispatcher/plugin => $watch', () => {
     const normalWatch = {
       name: 'normalWatch',
       data: {
-        test: 1
+        test: 1,
       },
-      create () {
+      create() {
         this.unwatch = this.$watch('test', fn);
-        this.$watch(['array'], fn);
-      }
+        this.$watch([ 'array' ], fn);
+      },
     };
     Chimee.install(normalWatch);
     const player = new Chimee({
       wrapper,
-      plugin: ['normalWatch']
+      plugin: [ 'normalWatch' ],
     });
     player.normalWatch.test = 2;
     expect(fn).toHaveBeenCalledTimes(1);
@@ -793,28 +794,28 @@ describe('dispatcher/plugin => $watch', () => {
     const videoConfigWatch = {
       name: 'videoConfigWatch',
       data: {
-        test: 1
+        test: 1,
       },
-      create () {
+      create() {
         this.$videoConfig._realDomAttr.forEach(key => {
           this.$watch(key, fn);
         });
-      }
+      },
     };
     Chimee.install(videoConfigWatch);
     const player = new Chimee({
       wrapper,
-      plugin: ['videoConfigWatch']
+      plugin: [ 'videoConfigWatch' ],
     });
     let index = 0;
     player.__dispatcher.videoConfig._realDomAttr.forEach(key => {
-      if(['src'].indexOf(key) > -1) return;
-      if(isBoolean(player[key])) {
+      if ([ 'src' ].indexOf(key) > -1) return;
+      if (isBoolean(player[key])) {
         player[key] = !player[key];
         expect(fn).toHaveBeenCalledTimes(++index);
         expect(fn).lastCalledWith(player[key], !player[key]);
       }
-      if(isNumber(player[key])) {
+      if (isNumber(player[key])) {
         player[key] = key === 'volume'
           ? player[key] / 2
           : player[key] + 1;
@@ -824,7 +825,7 @@ describe('dispatcher/plugin => $watch', () => {
           : player[key] - 1
         );
       }
-      if(isString(player[key])) {
+      if (isString(player[key])) {
         const origin = player[key];
         player[key] = '123';
         expect(fn).toHaveBeenCalledTimes(++index);
@@ -836,22 +837,22 @@ describe('dispatcher/plugin => $watch', () => {
     const errorWatch = {
       name: 'errorWatch',
       data: {
-        test: 1
+        test: 1,
       },
-      create () {
+      create() {
         this.$watch(1, fn);
-      }
+      },
     };
     Chimee.install(errorWatch);
     expect(() => new Chimee({
       wrapper,
-      plugin: ['errorWatch']
+      plugin: [ 'errorWatch' ],
     })).toThrow('$watch only accept string and Array<string> as key to find the target to spy on, but not 1, whose type is number');
   });
   test('unwatch nothing', () => {
     const player = new Chimee({
       wrapper,
-      plugin: ['normalWatch']
+      plugin: [ 'normalWatch' ],
     });
     player.normalWatch.__unwatchHandlers.pop();
     player.normalWatch.__unwatchHandlers.pop();
@@ -864,21 +865,21 @@ describe('dispatcher/plugin => $watch', () => {
         name: 'deepWatch',
         data: {
           test: {
-            foo: 1
+            foo: 1,
           },
-          arr: [1, 2, 3]
+          arr: [ 1, 2, 3 ],
         },
-        create () {
-          this.$watch('test', fn, {deep: true});
-          this.$watch('arr', fn, {deep: true});
-        }
+        create() {
+          this.$watch('test', fn, { deep: true });
+          this.$watch('arr', fn, { deep: true });
+        },
       };
       Chimee.install(deepWatch);
     });
     beforeEach(() => {
       player = new Chimee({
         wrapper,
-        plugin: ['deepWatch']
+        plugin: [ 'deepWatch' ],
       });
     });
 
@@ -886,14 +887,14 @@ describe('dispatcher/plugin => $watch', () => {
       player.deepWatch.$set(player.deepWatch.test, 'bar', 2);
       expect(fn).toHaveBeenCalledTimes(1);
       expect(fn).lastCalledWith(player.deepWatch.test, player.deepWatch.test);
-      expect(player.deepWatch.test).toEqual({foo: 1, bar: 2});
+      expect(player.deepWatch.test).toEqual({ foo: 1, bar: 2 });
     });
 
     test('$set object exist', () => {
       player.deepWatch.$set(player.deepWatch.test, 'foo', 2);
       expect(fn).toHaveBeenCalledTimes(1);
       expect(fn).lastCalledWith(player.deepWatch.test, player.deepWatch.test);
-      expect(player.deepWatch.test).toEqual({foo: 2});
+      expect(player.deepWatch.test).toEqual({ foo: 2 });
     });
 
     test('$del object', () => {
@@ -907,21 +908,21 @@ describe('dispatcher/plugin => $watch', () => {
       player.deepWatch.$del(player.deepWatch.test, 'bar');
       expect(fn).toHaveBeenCalledTimes(1);
       expect(fn).lastCalledWith(player.deepWatch.test, player.deepWatch.test);
-      expect(player.deepWatch.test).toEqual({foo: 1});
+      expect(player.deepWatch.test).toEqual({ foo: 1 });
     });
 
     test('$set array', () => {
       player.deepWatch.$set(player.deepWatch.arr, 3, 4);
       expect(fn).toHaveBeenCalledTimes(1);
       expect(fn).lastCalledWith(player.deepWatch.arr, player.deepWatch.arr);
-      expect(player.deepWatch.arr).toEqual([1, 2, 3, 4]);
+      expect(player.deepWatch.arr).toEqual([ 1, 2, 3, 4 ]);
     });
 
     test('$del array', () => {
       player.deepWatch.$del(player.deepWatch.arr, 2);
       expect(fn).toHaveBeenCalledTimes(1);
       expect(fn).lastCalledWith(player.deepWatch.arr, player.deepWatch.arr);
-      expect(player.deepWatch.arr).toEqual([1, 2, undefined]);
+      expect(player.deepWatch.arr).toEqual([ 1, 2, undefined ]);
     });
 
     test('destroy watcher', () => {
@@ -936,33 +937,33 @@ describe('dispatcher/plugin => $watch', () => {
         name: 'withoutDeepWatch',
         data: {
           test: {
-            foo: 1
+            foo: 1,
           },
-          arr: [1, 2, 3]
+          arr: [ 1, 2, 3 ],
         },
-        create () {
+        create() {
           this.$watch('test', fn);
           this.$watch('arr', fn);
-        }
+        },
       };
       Chimee.install(withoutDeepWatch);
     });
     beforeEach(() => {
       player = new Chimee({
         wrapper,
-        plugin: ['withoutDeepWatch']
+        plugin: [ 'withoutDeepWatch' ],
       });
       Log.data.warn = [];
     });
     test('$set', () => {
       player.$set(player.withoutDeepWatch.test, 'foo', 2);
       expect(player.withoutDeepWatch.test.foo).toBe(2);
-      expect(Log.data.warn).toEqual([['chimee', '{"foo":1} has not been deep watch. There is no need to use $set.']]);
+      expect(Log.data.warn).toEqual([[ 'chimee', '{"foo":1} has not been deep watch. There is no need to use $set.' ]]);
     });
     test('$del', () => {
       player.$del(player.withoutDeepWatch.test, 'foo');
       expect(player.withoutDeepWatch.test.foo).toBe();
-      expect(Log.data.warn).toEqual([['chimee', '{"foo":1} has not been deep watch. There is no need to use $del.']]);
+      expect(Log.data.warn).toEqual([[ 'chimee', '{"foo":1} has not been deep watch. There is no need to use $del.' ]]);
     });
     test('$set only support array and object', () => {
       expect(() => player.$set(1, '123', 2)).toThrow();

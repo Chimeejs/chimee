@@ -24,7 +24,7 @@ export const videoEvents = [
   'suspend',
   'timeupdate',
   'volumechange',
-  'waiting'
+  'waiting',
 ];
 export const videoReadOnlyProperties = [
   'buffered',
@@ -44,7 +44,7 @@ export const videoReadOnlyProperties = [
   'offsetLeft',
   'offsetParent',
   'offsetTop',
-  'offsetWidth'
+  'offsetWidth',
 ];
 export const domEvents = [
   'beforeinput',
@@ -73,31 +73,31 @@ export const domEvents = [
   'select',
   'wheel',
   'fullscreenchange',
-  'contextmenu'
+  'contextmenu',
 ];
 export const selfProcessorEvents = [
   'silentLoad',
-  'fullscreen'
+  'fullscreen',
 ];
 export const kernelMethods = [
   'play',
   'pause',
-  'seek'
+  'seek',
 ];
 export const dispatcherMethods = [
-  'load'
+  'load',
 ];
 export const kernelEvents = [
-  'mediaInfo'
+  'mediaInfo',
 ];
 export const domMethods = [
   'focus',
   'fullscreen',
   'requestFullscreen',
-  'exitFullscreen'
+  'exitFullscreen',
 ];
 export const videoMethods = [
   'canPlayType',
   'captureStream',
-  'setSinkId'
+  'setSinkId',
 ];

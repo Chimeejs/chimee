@@ -1,6 +1,6 @@
 // @flow
-import {isError, isString, isFunction, isEmpty, isObject, isBoolean, isInteger, isPromise, deepAssign, bind, Log} from 'chimee-helper';
-import {accessor, applyDecorators, frozen, autobindClass} from 'toxic-decorators';
+import { isError, isString, isFunction, isEmpty, isObject, isBoolean, isInteger, isPromise, deepAssign, bind, Log } from 'chimee-helper';
+import { accessor, applyDecorators, frozen, autobindClass } from 'toxic-decorators';
 import VideoWrapper from 'dispatcher/video-wrapper';
 
 /**
@@ -63,7 +63,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
    * @param  {Object}  option  PluginOption that will pass to the plugin
    * @return {Plugin}  plugin instance
    */
-  constructor ({
+  constructor({
     id,
     name,
     level = 0,
@@ -81,15 +81,15 @@ export default @autobindClass() class Plugin extends VideoWrapper {
     penetrate = false,
     inner = true,
     autoFocus,
-    className
-  }: PluginConfig = {}, dispatcher: Dispatcher, option: PluginOption = {name}) {
+    className,
+  }: PluginConfig = {}, dispatcher: Dispatcher, option: PluginOption = { name }) {
     super();
-    if(isEmpty(dispatcher)) {
+    if (isEmpty(dispatcher)) {
       /* istanbul ignore else  */
-      if(process.env.NODE_ENV !== 'production') Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
+      if (process.env.NODE_ENV !== 'production') Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
       throw new TypeError('lack of dispatcher');
     }
-    if(!isString(id)) {
+    if (!isString(id)) {
       throw new TypeError('id of PluginConfig must be string');
     }
     this.__id = id;
@@ -108,48 +108,48 @@ export default @autobindClass() class Plugin extends VideoWrapper {
       this.$throwError(error);
     }
     // bind plugin methods into instance
-    if(!isEmpty(methods) && isObject(methods)) {
+    if (!isEmpty(methods) && isObject(methods)) {
       Object.keys(methods).forEach(key => {
         const fn = methods[key];
-        if(!isFunction(fn)) throw new TypeError('plugins methods must be Function');
+        if (!isFunction(fn)) throw new TypeError('plugins methods must be Function');
         Object.defineProperty(this, key, {
           value: bind(fn, this),
           writable: true,
           enumerable: false,
-          configurable: true
+          configurable: true,
         });
       });
     }
     // hook plugin events on bus
-    if(!isEmpty(events) && isObject(events)) {
+    if (!isEmpty(events) && isObject(events)) {
       Object.keys(events)
-      .forEach(key => {
-        if(!isFunction(events[key])) throw new TypeError('plugins events hook must bind with Function');
-        this.$on(key, events[key]);
-      });
+        .forEach(key => {
+          if (!isFunction(events[key])) throw new TypeError('plugins events hook must bind with Function');
+          this.$on(key, events[key]);
+        });
     }
     // bind data into plugin instance
-    if(!isEmpty(data) && isObject(data)) {
+    if (!isEmpty(data) && isObject(data)) {
       deepAssign(this, data);
     }
     // set the computed member by getter and setter
-    if(!isEmpty(computed) && isObject(computed)) {
+    if (!isEmpty(computed) && isObject(computed)) {
       const props = Object.keys(computed)
-      .reduce((props, key) => {
-        const val = computed[key];
-        if(isFunction(val)) {
-          props[key] = accessor({get: val});
+        .reduce((props, key) => {
+          const val = computed[key];
+          if (isFunction(val)) {
+            props[key] = accessor({ get: val });
+            return props;
+          }
+          if (isObject(val) && (isFunction(val.get) || isFunction(val.set))) {
+            props[key] = accessor(val);
+            return props;
+          }
+          /* istanbul ignore else  */
+          if (process.env.NODE_ENV !== 'production') Log.warn('Dispatcher.plugin', `Wrong computed member '${key}' defination in Plugin ${name}`);
           return props;
-        }
-        if(isObject(val) && (isFunction(val.get) || isFunction(val.set))) {
-          props[key] = accessor(val);
-          return props;
-        }
-        /* istanbul ignore else  */
-        if(process.env.NODE_ENV !== 'production') Log.warn('Dispatcher.plugin', `Wrong computed member '${key}' defination in Plugin ${name}`);
-        return props;
-      }, {});
-      applyDecorators(this, props, {self: true});
+        }, {});
+      applyDecorators(this, props, { self: true });
     }
     /**
      * the create Function of plugin
@@ -178,7 +178,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
      * the dom node of whole plugin
      * @type {HTMLElement}
      */
-    this.$dom = this.__dispatcher.dom.insertPlugin(this.__id, el, {penetrate, inner, autoFocus, className});
+    this.$dom = this.__dispatcher.dom.insertPlugin(this.__id, el, { penetrate, inner, autoFocus, className });
     // now we can frozen inner, autoFocus and penetrate
     this.$inner = inner;
     this.$autoFocus = autoFocus;
@@ -186,8 +186,8 @@ export default @autobindClass() class Plugin extends VideoWrapper {
     applyDecorators(this, {
       $inner: frozen,
       $autoFocus: frozen,
-      $penetrate: frozen
-    }, {self: true});
+      $penetrate: frozen,
+    }, { self: true });
     /**
      * to tell us if the plugin can be operable, can be dynamic change
      * @type {boolean}
@@ -213,7 +213,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
    * call for init lifecycle hook, which mainly handle the original config of video and kernel.
    * @param {VideoConfig} videoConfig the original config of the videoElement or Kernel
    */
-  __init (videoConfig: VideoConfig) {
+  __init(videoConfig: VideoConfig) {
     try {
       isFunction(this.init) && this.init(videoConfig);
     } catch (error) {
@@ -223,7 +223,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   /**
    * call for inited lifecycle hook, which just to tell the plugin we have inited.
    */
-  __inited (): Promise<*> | boolean {
+  __inited(): Promise<*> | boolean {
     let result;
     try {
       result = isFunction(this.inited) && this.inited();
@@ -240,7 +240,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
           return ret;
         })
         .catch(error => {
-          if(isError(error)) return this.$throwError(error);
+          if (isError(error)) return this.$throwError(error);
           return Promise.reject(error);
         });
     return this.readySync || this.ready;
@@ -249,19 +249,19 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   /**
    * set the plugin to be the top of all plugins
    */
-  $bumpToTop () {
+  $bumpToTop() {
     const topLevel = this.__dispatcher._getTopLevel(this.$inner);
     this.$level = topLevel + 1;
   }
 
-  $throwError (error: Error | string) {
+  $throwError(error: Error | string) {
     this.__dispatcher.throwError(error);
   }
   /**
    * officail destroy function for plugin
    * we will call user destory function in this method
    */
-  $destroy () {
+  $destroy() {
     isFunction(this.destroy) && this.destroy();
     super.__destroy();
     this.__dispatcher.dom.removePlugin(this.__id);
@@ -273,24 +273,24 @@ export default @autobindClass() class Plugin extends VideoWrapper {
    * to tell us if the plugin can be operable, can be dynamic change
    * @type {boolean}
    */
-  set $operable (val: boolean) {
-    if(!isBoolean(val)) return;
+  set $operable(val: boolean) {
+    if (!isBoolean(val)) return;
     this.$dom.style.pointerEvents = val ? 'auto' : 'none';
     this.__operable = val;
   }
-  get $operable (): boolean {
+  get $operable(): boolean {
     return this.__operable;
   }
   /**
    * the z-index level, higher when you set higher
    * @type {boolean}
    */
-  set $level (val: number) {
-    if(!isInteger(val)) return;
+  set $level(val: number) {
+    if (!isInteger(val)) return;
     this.__level = val;
     this.__dispatcher._sortZIndex();
   }
-  get $level (): number {
+  get $level(): number {
     return this.__level;
   }
 };
