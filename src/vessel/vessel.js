@@ -7,7 +7,7 @@ export default class Vessel {
   __target: string;
   width: string;
   height: string;
-  constructor(dispatcher: Dispatcher, target: string, config: VesselConfig = {}) {
+  constructor(dispatcher: Dispatcher, target: string, config: VesselConfig) {
     this.__dispatcher = dispatcher;
     this.__target = target;
     [ 'width', 'height', 'position', 'display' ].forEach(key => {
@@ -19,9 +19,10 @@ export default class Vessel {
           if (isNumber(value)) {
             value = value + 'px';
           }
-          if (isString(value)) {
-            this.__dispatcher.dom.setStyle(this.__target, key, value);
+          if (!isString(value)) {
+            throw new Error(`The value of ${key} in ${this.__target}Config must be string, but not ${typeof value}.`);
           }
+          this.__dispatcher.dom.setStyle(this.__target, key, value);
           return value;
         },
         configurable: true,
