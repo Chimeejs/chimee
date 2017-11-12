@@ -76,7 +76,7 @@ function accessorCustomAttribute(attribute: string, isBoolean?: boolean): Functi
 function accessorWidthAndHeight(property: string): Function {
   return accessor({
     get(value) {
-      if (!this.dispatcher.videoConfigReady) return value;
+      if (!this.dispatcher.videoConfigReady || !this.inited) return value;
       const attr = this.dom.getAttr('video', property);
       const prop = this.dom.videoElement[property];
       if (isNumeric(attr) && isNumber(prop)) return prop;
@@ -245,9 +245,9 @@ export default class VideoConfig {
 
   controls = false;
 
-  width = undefined;
+  width = '100%';
 
-  height = undefined;
+  height = '100%';
 
   crossOrigin = undefined;
 

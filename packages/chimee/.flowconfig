@@ -11,4 +11,5 @@ unsafe.enable_getters_and_setters=true
 module.name_mapper='^helper/\(.*\)$' -> '<PROJECT_ROOT>/src/helper/\1'
 module.name_mapper='^dispatcher/\(.*\)$' -> '<PROJECT_ROOT>/src/dispatcher/\1'
 module.name_mapper='^global/\(.*\)$' -> '<PROJECT_ROOT>/src/global/\1'
+module.name_mapper='^config/\(.*\)$' -> '<PROJECT_ROOT>/src/config/\1'
 esproposal.decorators=ignore

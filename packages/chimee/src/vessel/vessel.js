@@ -1,0 +1,33 @@
+// @flow
+import { isNumber, isString, deepAssign } from 'chimee-helper';
+import Dispatcher from '../dispatcher/index';
+// base css controller for cotainer and wrapper
+export default class Vessel {
+  __dispatcher: Dispatcher;
+  __target: string;
+  width: string;
+  height: string;
+  constructor(dispatcher: Dispatcher, target: string, config: VesselConfig = {}) {
+    this.__dispatcher = dispatcher;
+    this.__target = target;
+    [ 'width', 'height', 'position', 'display' ].forEach(key => {
+      Object.defineProperty(this, key, {
+        get() {
+          return this.__dispatcher.dom.getStyle(this.__target, key);
+        },
+        set(value) {
+          if (isNumber(value)) {
+            value = value + 'px';
+          }
+          if (isString(value)) {
+            this.__dispatcher.dom.setStyle(this.__target, key, value);
+          }
+          return value;
+        },
+        configurable: true,
+        enumerable: true,
+      });
+    });
+    deepAssign(this, config);
+  }
+}

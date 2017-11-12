@@ -5,7 +5,9 @@ import Bus from './bus';
 import Plugin from './plugin';
 import Dom from './dom';
 import VideoConfig from './video-config';
+import defaultContainerConfig from 'config/container';
 import { before } from 'toxic-decorators';
+import Vessel from '../vessel/vessel';
 const pluginConfigSet: PluginConfigSet = {};
 const kernelsSet: KernelsSet = {};
 function convertNameIntoId(name: string): string {
@@ -41,6 +43,7 @@ export default class Dispatcher {
   readySync: boolean;
   videoConfig: VideoConfig;
   videoConfigReady: boolean;
+  containerConfig: Vessel;
   zIndexMap: Object;
   changeWatchable: boolean;
   /**
@@ -106,10 +109,15 @@ export default class Dispatcher {
       config.plugin = config.plugins;
       delete config.plugins;
     }
+    // use the plugin user want to use
     this._initUserPlugin(config.plugin);
-    this.order.forEach(key => this.plugins[key].__init(this.videoConfig));
+    // add default config for container
+    const containerConfig = deepAssign({}, defaultContainerConfig, config.container || {});
+    // trigger the init life hook of plugin
+    this.order.forEach(key => this.plugins[key].__init(this.videoConfig, containerConfig));
     this.videoConfigReady = true;
     this.videoConfig.init();
+    this.containerConfig = new Vessel(this, 'container', containerConfig);
     /**
      * video kernel
      * @type {Kernel}
