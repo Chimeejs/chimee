@@ -15,6 +15,7 @@ Chimee 本质上是对原生 video 元素的一个封装。因此在许多用法
 * [全屏相关方法](#全屏相关方法)
 * [全屏相关属性](#全屏相关属性)
 * [插件操作](#插件操作)
+* [全局设置](#全局设置)
 
 ## 生成实例
 
@@ -1048,6 +1049,46 @@ chimee.use({
   - name
     - 类型：`string`
     - 含义：插件名称
+
+## 全局设置
+
+我们可以通过 Chimee.config 这个静态属性配置一些全局设置。
+
+### log
+
+log 中可以配置全局的 log 级别。默认设置如下：
+
+```javascript
+log: {
+    error: true,
+    info: true,
+    warn: true,
+    debug: true,
+    verbose: true,
+  }
+```
+
+我们可以直接修改，例如关闭 verbose。
+
+```javascript
+Chimee.log.verbose = false;
+```
+
+### silent
+
+如果你不想逐个更改，也可以使用 silent 属性统一关闭所有 log.
+
+```javascript
+Chimee.silent = true;
+```
+
+### errorHandler
+
+你还可以通过 errorHandler 配置自己的错误处理勾子。
+
+```javascript
+Chimee.errorHandler = error => console.log('wow, an error!!!', error.message)
+```
 
 ## 进阶使用
 
