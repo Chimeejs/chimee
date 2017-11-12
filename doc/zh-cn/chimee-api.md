@@ -9,6 +9,7 @@ Chimee 本质上是对原生 video 元素的一个封装。因此在许多用法
 * [生成实例](#生成实例)
 * [video元素相关方法](#video元素相关方法)
 * [video元素相关属性](#video元素相关属性)
+* [container元素相关属性](#container元素相关属性)
 * [事件监听相关方法](#事件监听相关方法)
 * [数据监听相关方法](#数据监听相关方法)
 * [全屏相关方法](#全屏相关方法)
@@ -169,6 +170,21 @@ const chimee = new Chimee({
 >
 > 要获知插件相关的 api， 请阅读[Chimee 插件 API 介绍](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)
 
+### container (v0.5.0 后)
+
+* 类型：`Object`
+* 含义：和 `container` 相关的属性
+* 默认：
+
+```jso
+{
+  "width": "100%",
+  "height": "100%",
+  "position": "relative",
+  "display": "block",
+}
+```
+
 ### video属性
 
 除了以上几个用于 Chimee 内部使用的配置，我们还可以传入一些 video 元素需要用到的参数。
@@ -178,8 +194,8 @@ const chimee = new Chimee({
 | src                     | 播放地址                           | string         | ''          | 假如 `autoload` 为 `true`，则当我们设置 `src` 后，该地址会加载到 `video` 元素上，并作出相应加载。若果 `autoload` 为 `false`， 则意味着我们仅仅在 `videoConfig` 上设置了地址，此时可以手动调用 `load` 方法进行 |
 | autoplay                | 是否自动播放                         | boolean        | false       | autoplay 指在分配 src 后自动播放，即调用`chimee.load()`后。 |
 | controls                | 是否展示控制条                        | boolean        | false       | 在没有安装任何皮肤插件时，该属性控制是否展示原生控制条。若果安装了皮肤插件，则意味着是否展示皮肤自带的控制条。 |
-| width                   | video 的宽度                             | number         | undefined   |                                          |
-| height                  | video 的高度                             | number         | undefined   |                                          |
+| width                   | video 的宽度                      | number         | undefined   |                                          |
+| height                  | video 的高度                      | number         | undefined   |                                          |
 | crossOrigin             | 是否跨域                           | boolean        | undefined   |                                          |
 | loop                    | 是否循环                           | boolean        | false       |                                          |
 | muted                   | 是否静音                           | boolean        | false       |                                          |
@@ -643,6 +659,22 @@ const player = new Chimee({
 
 * 类型：`boolean`
 * 默认：`false`
+
+## container元素相关属性
+
+在 v0.5.0 后，chimee 提供入口直接操作 container 的配置。
+
+现在提供四个 css 样式，分别为 `width`, `height`, `display`, `block`.
+
+你可以采取如下方式直接更改 container 的宽度
+
+```javascript
+import Chimee from 'chimee';
+const chimee = new Chimee({
+  wrapper: '#wrapper',
+});
+chimee.container.width = '90%';
+```
 
 ## 事件监听相关方法
 
