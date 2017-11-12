@@ -189,28 +189,28 @@ const chimee = new Chimee({
 
 除了以上几个用于 Chimee 内部使用的配置，我们还可以传入一些 video 元素需要用到的参数。
 
-| 属性                      | 含义                             | 类型             | 默认值         | 备注                                       |
-| ----------------------- | ------------------------------ | -------------- | ----------- | ---------------------------------------- |
-| src                     | 播放地址                           | string         | ''          | 假如 `autoload` 为 `true`，则当我们设置 `src` 后，该地址会加载到 `video` 元素上，并作出相应加载。若果 `autoload` 为 `false`， 则意味着我们仅仅在 `videoConfig` 上设置了地址，此时可以手动调用 `load` 方法进行 |
-| autoplay                | 是否自动播放                         | boolean        | false       | autoplay 指在分配 src 后自动播放，即调用`chimee.load()`后。 |
-| controls                | 是否展示控制条                        | boolean        | false       | 在没有安装任何皮肤插件时，该属性控制是否展示原生控制条。若果安装了皮肤插件，则意味着是否展示皮肤自带的控制条。 |
-| width                   | video 的宽度                      | number         | undefined   |                                          |
-| height                  | video 的高度                      | number         | undefined   |                                          |
-| crossOrigin             | 是否跨域                           | boolean        | undefined   |                                          |
-| loop                    | 是否循环                           | boolean        | false       |                                          |
-| muted                   | 是否静音                           | boolean        | false       |                                          |
-| preload                 | 是否预加载                          | boolean        | undefined   |                                          |
-| poster                  | 封面                             | string         | ''          |                                          |
-| playsInline             | 是否内联                           | boolean        | false       | 我们会为此添加 `playsinle="true" webkit-playsinline="true" x5-video-player-type="h5"` |
-| xWebkitAirplay          | 是否添加 `x-webkit-airplay`        | boolean        | false       |                                          |
-| x5VideoPlayerFullscreen | 是否添加`x5-video-play-fullscreen` | boolean        | false       |                                          |
-| x5VideoOrientation      | ` x5-video-orientation`        | string \| void | undefined   | 可选 landscape 和 portrait                  |
-| playbackRate            | 回放速率                           | number         | 1           | 大于1加速，小于1减速                              |
-| defaultPlaybackRate     | 默认回放速率                         | number         | 1           | 大于1加速，小于1减速                              |
-| autoload                | 设置`src`时是否进行自动加载               | boolean        | true        |                                          |
-| defaultMuted            | 是否是默认静音                        | boolean        | false       | 对应于 video 上的 muted 标签                    |
-| disableRemotePlayback   | 是否不展示远程回放标志                    | boolean        | false       | 对应于 video 上的  disableRemotePlayback 标签   |
-| volume                  | 音量                             | number         | 原 video 的音量 |                                          |
+| 属性                      | 含义                             | 类型               | 默认值         | 备注                                       |
+| ----------------------- | ------------------------------ | ---------------- | ----------- | ---------------------------------------- |
+| src                     | 播放地址                           | string           | ''          | 假如 `autoload` 为 `true`，则当我们设置 `src` 后，该地址会加载到 `video` 元素上，并作出相应加载。若果 `autoload` 为 `false`， 则意味着我们仅仅在 `videoConfig` 上设置了地址，此时可以手动调用 `load` 方法进行 |
+| autoplay                | 是否自动播放                         | boolean          | false       | autoplay 指在分配 src 后自动播放，即调用`chimee.load()`后。 |
+| controls                | 是否展示控制条                        | boolean          | false       | 在没有安装任何皮肤插件时，该属性控制是否展示原生控制条。若果安装了皮肤插件，则意味着是否展示皮肤自带的控制条。 |
+| width                   | video 的宽度                      | number \| string | '100%'      |                                          |
+| height                  | video 的高度                      | number \| string | '100%'      |                                          |
+| crossOrigin             | 是否跨域                           | boolean          | undefined   |                                          |
+| loop                    | 是否循环                           | boolean          | false       |                                          |
+| muted                   | 是否静音                           | boolean          | false       |                                          |
+| preload                 | 是否预加载                          | boolean          | undefined   |                                          |
+| poster                  | 封面                             | string           | ''          |                                          |
+| playsInline             | 是否内联                           | boolean          | false       | 我们会为此添加 `playsinle="true" webkit-playsinline="true" x5-video-player-type="h5"` |
+| xWebkitAirplay          | 是否添加 `x-webkit-airplay`        | boolean          | false       |                                          |
+| x5VideoPlayerFullscreen | 是否添加`x5-video-play-fullscreen` | boolean          | false       |                                          |
+| x5VideoOrientation      | ` x5-video-orientation`        | string \| void   | undefined   | 可选 landscape 和 portrait                  |
+| playbackRate            | 回放速率                           | number           | 1           | 大于1加速，小于1减速                              |
+| defaultPlaybackRate     | 默认回放速率                         | number           | 1           | 大于1加速，小于1减速                              |
+| autoload                | 设置`src`时是否进行自动加载               | boolean          | true        |                                          |
+| defaultMuted            | 是否是默认静音                        | boolean          | false       | 对应于 video 上的 muted 标签                    |
+| disableRemotePlayback   | 是否不展示远程回放标志                    | boolean          | false       | 对应于 video 上的  disableRemotePlayback 标签   |
+| volume                  | 音量                             | number           | 原 video 的音量 |                                          |
 
 > 注意
 >
@@ -575,13 +575,13 @@ const player = new Chimee({
 
 - 类型：`number | string | void`
 - 含义：video 的宽度
-- 默认：`undefined`
+- 默认：`100%`
 
 ### height
 
 - 类型：`number | string | void`
 - 含义：video 的高度
-- 默认：`undefined`
+- 默认：`100%`
 
 ### crossOrigin
 
