@@ -329,14 +329,14 @@ export default @autobindClass() class VideoWrapper {
   }
 
   get container(): VesselConfig {
-    return this.__dispatcher.container;
+    return this.__dispatcher.containerConfig;
   }
 
   set container(config: Object): VesselConfig {
     if (!isObject(config)) {
-      throw new Error(`config of container must be Object, but not ${typeof config}`);
+      throw new Error(`The config of container must be Object, but not ${typeof config}.`);
     }
-    deepAssign(this.__dispatcher.container, config);
+    deepAssign(this.__dispatcher.containerConfig, config);
     return this.__dispatcher.container;
   }
 
