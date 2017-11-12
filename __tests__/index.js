@@ -345,7 +345,7 @@ describe('Chimee', () => {
         player.__dispatcher.videoConfigReady = false;
         player.height = 20;
         expect(player.height).toBe(20);
-        expect(videoElement.height).toBe(10);
+        expect(videoElement.height).toBe(100);
       });
       test('set percentage', () => {
         player.height = '50%';

@@ -1,5 +1,5 @@
 // @flow
-import { bind, isString, getDeepProperty, isArray, isObject, isFunction, Log, isEmpty } from 'chimee-helper';
+import { bind, isString, getDeepProperty, isArray, isObject, isFunction, Log, isEmpty, deepAssign } from 'chimee-helper';
 import { videoReadOnlyProperties, videoMethods, kernelMethods, domMethods, domEvents } from 'helper/const';
 import { attrAndStyleCheck, eventBinderCheck } from 'helper/checker';
 import { accessor, nonenumerable, applyDecorators, watch, alias, before, autobindClass } from 'toxic-decorators';
@@ -326,6 +326,18 @@ export default @autobindClass() class VideoWrapper {
 
   get fullscreenElement(): HTMLElement | string | void {
     return this.__dispatcher.dom.fullscreenElement;
+  }
+
+  get container(): VesselConfig {
+    return this.__dispatcher.container;
+  }
+
+  set container(config: Object): VesselConfig {
+    if (!isObject(config)) {
+      throw new Error(`config of container must be Object, but not ${typeof config}`);
+    }
+    deepAssign(this.__dispatcher.container, config);
+    return this.__dispatcher.container;
   }
 
   __addEvents(key: string, fn: Function) {

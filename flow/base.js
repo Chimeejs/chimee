@@ -62,6 +62,11 @@ declare type KernelsSet = {
   [key: string]: Function
 }
 
+declare type VesselConfig = {
+  width?: number | string,
+  height?: number | string,
+}
+
 declare type UserConfig = {
   src?: string,
   box?: string,
@@ -94,5 +99,6 @@ declare type UserConfig = {
   preset?: {
     flv?: Function,
     hls?: Function
-  }
+  },
+  container?: VesselConfig,
 }

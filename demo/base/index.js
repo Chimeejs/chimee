@@ -46,7 +46,7 @@ const plugin = {
 Chimee.install(plugin);
 const player = new Chimee({
   // 播放地址
-  // src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+  src: 'http://cdn.toxicjohann.com/lostStar.mp4',
   // src: 'http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4',
   // src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
   // src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/79_3041054cc65-ae8c-4b63-8937-5ccb05f79720.m3u8',
@@ -57,6 +57,8 @@ const player = new Chimee({
   //   flv: window.chimeeKernelFlv,
   //   hls: window.chimeeKernelHls
   // },
+  // width: 60,
+  // height: 90,
   volume: 0.1,
   // autoplay: true,
   controls: true,
