@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.4.4
+ * chimee v0.5.0
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -3047,11 +3047,11 @@ var Bus = (_dec$2 = runnable(secondaryChecker), _dec2$1 = runnable(secondaryChec
       });
     }
     /**
-    * [Can only be called in dispatcher]trigger an event, which will run main -> after -> side effect period in synchronize
-    * @param  {string}    key event's name
-    * @param  {anything} args
-    * @return {boolean}    you can know if event trigger finished~ However, if it's unlegal
-    */
+     * [Can only be called in dispatcher]trigger an event, which will run main -> after -> side effect period in synchronize
+     * @param  {string}    key event's name
+     * @param  {anything} args
+     * @return {boolean}    you can know if event trigger finished~ However, if it's unlegal
+     */
 
   }, {
     key: 'triggerSync',
@@ -3264,7 +3264,7 @@ var Bus = (_dec$2 = runnable(secondaryChecker), _dec2$1 = runnable(secondaryChec
       if (isEmpty(event)) {
         return false;
       }
-      var queue = this._getEventQueue(event['_'], order);
+      var queue = this._getEventQueue(event._, order);
       queue.forEach(function (run) {
         return run.apply(undefined, _toConsumableArray(args));
       });
@@ -3413,7 +3413,7 @@ function accessorCustomAttribute(attribute, isBoolean) {
 function accessorWidthAndHeight(property) {
   return accessor({
     get: function get(value) {
-      if (!this.dispatcher.videoConfigReady) return value;
+      if (!this.dispatcher.videoConfigReady || !this.inited) return value;
       var attr = this.dom.getAttr('video', property);
       var prop = this.dom.videoElement[property];
       if (isNumeric(attr) && isNumber(prop)) return prop;
@@ -3523,8 +3523,8 @@ var VideoConfig = (_dec$5 = initBoolean(), _dec2$3 = initString(function (str) {
     this.autoload = true;
     this.autoplay = false;
     this.controls = false;
-    this.width = undefined;
-    this.height = undefined;
+    this.width = '100%';
+    this.height = '100%';
     this.crossOrigin = undefined;
     this.loop = false;
     this.defaultMuted = false;
@@ -3733,7 +3733,7 @@ var VideoWrapper = (_dec$4 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
               args[_key] = arguments[_key];
             }
 
-            return new _Promise(function (resolve, reject) {
+            return new _Promise(function (resolve) {
               var _dispatcher$bus;
 
               _this2.__dispatcher.bus.once(_this2.__id, '_' + key, resolve);
@@ -3829,7 +3829,7 @@ var VideoWrapper = (_dec$4 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
         args[_key2] = arguments[_key2];
       }
 
-      return new _Promise(function (resolve, reject) {
+      return new _Promise(function (resolve) {
         var _dispatcher$bus2;
 
         _this4.__dispatcher.bus.once(_this4.__id, '_load', resolve);
@@ -4087,6 +4087,18 @@ var VideoWrapper = (_dec$4 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
     get: function get() {
       return this.__dispatcher.dom.fullscreenElement;
     }
+  }, {
+    key: 'container',
+    get: function get() {
+      return this.__dispatcher.containerConfig;
+    },
+    set: function set(config) {
+      if (!isObject(config)) {
+        throw new Error('The config of container must be Object, but not ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)) + '.');
+      }
+      deepAssign(this.__dispatcher.containerConfig, config);
+      return this.__dispatcher.container;
+    }
   }]);
 
   return VideoWrapper;
@@ -4168,7 +4180,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.4.4';
+    _this.VERSION = '0.5.0';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -4825,7 +4837,7 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
     }
   }, {
     key: '_focusToVideo',
-    value: function _focusToVideo(evt) {
+    value: function _focusToVideo() {
       var x = window.scrollX;
       var y = window.scrollY;
       isFunction(this.videoElement.focus) && this.videoElement.focus();
@@ -4905,6 +4917,45 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
 
   return Dom;
 }(), (_applyDecoratedDescriptor$5(_class$6.prototype, 'setAttr', [_dec$6, _dec2$4], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'setAttr'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'getAttr', [_dec3$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'getAttr'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'setStyle', [_dec4$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'setStyle'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'getStyle', [_dec5$2], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'getStyle'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'requestFullscreen', [_dec6$1], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'requestFullscreen'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, '_focusToVideo', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, '_focusToVideo'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, '_fullscreenMonitor', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, '_fullscreenMonitor'), _class$6.prototype)), _class$6));
+
+var defaultContainerConfig = {
+  width: '100%',
+  height: '100%',
+  position: 'relative',
+  display: 'block'
+};
+
+// base css controller for cotainer and wrapper
+
+var Vessel = function Vessel(dispatcher, target, config) {
+  var _this = this;
+
+  _classCallCheck(this, Vessel);
+
+  this.__dispatcher = dispatcher;
+  this.__target = target;
+  ['width', 'height', 'position', 'display'].forEach(function (key) {
+    _Object$defineProperty(_this, key, {
+      get: function get() {
+        return this.__dispatcher.dom.getStyle(this.__target, key);
+      },
+      set: function set(value) {
+        if (isNumber(value)) {
+          value = value + 'px';
+        }
+        if (!isString(value)) {
+          throw new Error('The value of ' + key + ' in ' + this.__target + 'Config must be string, but not ' + (typeof value === 'undefined' ? 'undefined' : _typeof(value)) + '.');
+        }
+        this.__dispatcher.dom.setStyle(this.__target, key, value);
+        return value;
+      },
+
+      configurable: true,
+      enumerable: true
+    });
+  });
+  deepAssign(this, config);
+};
 
 var _dec$1;
 var _dec2;
@@ -5028,12 +5079,17 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
       config.plugin = config.plugins;
       delete config.plugins;
     }
+    // use the plugin user want to use
     this._initUserPlugin(config.plugin);
+    // add default config for container
+    var containerConfig = deepAssign({}, defaultContainerConfig, config.container || {});
+    // trigger the init life hook of plugin
     this.order.forEach(function (key) {
-      return _this.plugins[key].__init(_this.videoConfig);
+      return _this.plugins[key].__init(_this.videoConfig, containerConfig);
     });
     this.videoConfigReady = true;
     this.videoConfig.init();
+    this.containerConfig = new Vessel(this, 'container', containerConfig);
     /**
      * video kernel
      * @type {Kernel}
@@ -5173,6 +5229,11 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
             var idealTime = _this2.kernel.currentTime + duration + increment * index;
             video.muted = true;
             var newVideoReady = false;
+            var kernel = void 0;
+            var videoError = void 0;
+            var videoCanplay = void 0;
+            var videoLoadedmetadata = void 0;
+
             // bind time update on old video
             // when we bump into the switch point and ready
             // we switch
@@ -5194,7 +5255,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
                 });
               }
             };
-            var videoCanplay = function videoCanplay(evt) {
+            videoCanplay = function videoCanplay() {
               newVideoReady = true;
               // you can set it immediately run by yourself
               if (option.immediate) {
@@ -5207,10 +5268,10 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
                 });
               }
             };
-            var videoLoadedmetadata = function videoLoadedmetadata(evt) {
+            videoLoadedmetadata = function videoLoadedmetadata() {
               kernel.seek(idealTime);
             };
-            var videoError = function videoError(evt) {
+            videoError = function videoError() {
               removeEvent(video, 'canplay', videoCanplay, true);
               removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
               removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
@@ -5222,7 +5283,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
             addEvent(video, 'canplay', videoCanplay, true);
             addEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
             addEvent(video, 'error', videoError, true);
-            var kernel = _this2._createKernel(video, config);
+            kernel = _this2._createKernel(video, config);
             addEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
             kernel.load();
           });
@@ -5259,7 +5320,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
           return _Promise.resolve();
         }
         return new _Promise(function (resolve) {
-          addEvent(video, 'play', function (evt) {
+          addEvent(video, 'play', function () {
             _this2.switchKernel({ video: video, kernel: kernel, config: config });
             resolve();
           }, true);
@@ -5286,8 +5347,8 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
 
         var video = document.createElement('video');
         var config = { isLive: _isLive, box: _box, preset: _preset, src: src, kernels: _kernels };
-        var _kernel = this._createKernel(video, config);
-        this.switchKernel({ video: video, kernel: _kernel, config: config });
+        var kernel = this._createKernel(video, config);
+        this.switchKernel({ video: video, kernel: kernel, config: config });
       }
       var originAutoLoad = this.videoConfig.autoload;
       this._changeUnwatchable(this.videoConfig, 'autoload', false);
@@ -5411,7 +5472,13 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
   }, {
     key: '_autoloadVideoSrcAtFirst',
     value: function _autoloadVideoSrcAtFirst() {
-      if (this.videoConfig.autoload) this.bus.emit('load', this.videoConfig.src);
+      if (this.videoConfig.autoload) {
+        if (process.env.NODE_ENV !== 'prodution' && !this.videoConfig.src) {
+          Log.warn('You have not set the src, so you better set autoload to be false. Accroding to https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md#src.');
+          return;
+        }
+        this.bus.emit('load', this.videoConfig.src);
+      }
     }
   }, {
     key: '_changeUnwatchable',
@@ -5742,7 +5809,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.4.4';
+    return '0.5.0';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,
