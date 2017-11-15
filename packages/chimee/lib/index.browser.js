@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.5.0
+ * chimee v0.5.1
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -5807,7 +5807,7 @@ var _Map = unwrapExports(map);
 
 var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting'];
 var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'error', 'ended', 'networkState', 'paused', 'readyState', 'seekable', 'sinkId', 'controlsList', 'tabIndex', 'dataset', 'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth'];
-var domEvents = ['beforeinput', 'blur', 'click', 'compositionend', 'compositionstart', 'compositionupdate', 'dblclick', 'focus', 'focusin', 'focusout', 'input', 'keydown', 'keypress', 'keyup', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll', 'select', 'wheel', 'fullscreenchange', 'contextmenu'];
+var domEvents = ['beforeinput', 'blur', 'click', 'compositionend', 'compositionstart', 'compositionupdate', 'dblclick', 'focus', 'focusin', 'focusout', 'input', 'keydown', 'keypress', 'keyup', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll', 'select', 'wheel', 'fullscreenchange', 'contextmenu', 'touchstart', 'touchmove', 'touchend'];
 var selfProcessorEvents = ['silentLoad', 'fullscreen'];
 var kernelMethods = ['play', 'pause', 'seek'];
 var dispatcherMethods = ['load'];
@@ -8777,7 +8777,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.5.0';
+    _this.VERSION = '0.5.1';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -9803,7 +9803,7 @@ var defaultContainerConfig = {
   display: 'block'
 };
 
-// base css controller for cotainer and wrapper
+// base css controller for container and wrapper
 
 var Vessel = function Vessel(dispatcher, target, config) {
   var _this = this;
@@ -10687,7 +10687,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.5.0';
+    return '0.5.1';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,
