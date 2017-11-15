@@ -1,7 +1,7 @@
 // @flow
 import { isNumber, isString, deepAssign } from 'chimee-helper';
 import Dispatcher from '../dispatcher/index';
-// base css controller for cotainer and wrapper
+// base css controller for container and wrapper
 export default class Vessel {
   __dispatcher: Dispatcher;
   __target: string;
