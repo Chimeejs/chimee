@@ -63,10 +63,8 @@ const player = new Chimee({
   // autoplay: true,
   controls: true,
 });
-player.$on('beforePlay', evt => {
-  console.warn(evt, 'srth');
+[ 'touchstart', 'touchmove', 'touchend' ].forEach(key => {
+  player.$on(key, evt => console.log(evt, key));
 });
-player.$on('play', evt => {
-  console.warn(evt, 'srth');
-});
+
 window.player = player;

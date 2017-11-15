@@ -74,6 +74,9 @@ export const domEvents = [
   'wheel',
   'fullscreenchange',
   'contextmenu',
+  'touchstart',
+  'touchmove',
+  'touchend',
 ];
 export const selfProcessorEvents = [
   'silentLoad',
