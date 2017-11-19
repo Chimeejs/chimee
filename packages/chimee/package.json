@@ -45,6 +45,7 @@
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "chimee-kernel": "<=1.0.9",
+    "chimee-helper": "^0.2.6",
     "es-fullscreen": "^0.2.1",
     "toxic-decorators": "^0.3.8"
   },
@@ -60,9 +61,11 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-latest": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "chimee-helper": "^0.2.6",
     "chimee-kernel-flv": "^1.3.0",
     "chimee-kernel-hls": "^1.0.7",
+    "chimee-plugin-center-state": "0.0.8",
+    "chimee-plugin-controlbar": "^0.3.5",
+    "chimee-plugin-danmu": "0.0.8",
     "es-fullscreen": "^0.2.1",
     "eslint": "^4.10.0",
     "eslint-config-egg": "^5.1.1",
