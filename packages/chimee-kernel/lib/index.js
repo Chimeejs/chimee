@@ -82,7 +82,7 @@ var Native = function (_CustEvent) {
     key: 'load',
     value: function load(src) {
       this.config.src = src || this.config.src;
-      this.video.src = this.config.src;
+      this.video.setAttribute('src', this.config.src);
     }
   }, {
     key: 'unload',
@@ -196,12 +196,12 @@ var Kernel = function (_CustEvent) {
 					box = 'flv';
 				} else if (config.src.indexOf('.m3u8') !== -1) {
 					box = 'hls';
-				} else if (config.src.indexOf('mp4') !== -1) {
+				} else if (config.src.indexOf('.mp4') !== -1) {
 					box = 'mp4';
 				}
 			}
-			if (box !== 'native' && config.preset[box]) {
-				chimeeHelper.Log.error(this.tag, 'need set preset config');
+			if (box !== 'native' && !config.preset[box]) {
+				chimeeHelper.Log.error(this.tag, 'You want to play for ' + box + ', but you have not installed the kernel.');
 				return;
 			}
 			if (box === 'native') {

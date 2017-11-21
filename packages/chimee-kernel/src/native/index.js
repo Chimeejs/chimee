@@ -54,7 +54,7 @@ export default class Native extends CustEvent {
 
   load (src) {
     this.config.src = src || this.config.src;
-    this.video.src = this.config.src;
+    this.video.setAttribute('src', this.config.src);
   }
 
   unload () {

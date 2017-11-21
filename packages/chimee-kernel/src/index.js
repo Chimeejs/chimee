@@ -51,7 +51,7 @@ export default class Kernel extends CustEvent {
 				box = 'flv';
 			} else if(config.src.indexOf('.m3u8') !== -1) {
 				box = 'hls';
-			} else if(config.src.indexOf('mp4') !== -1) {
+			} else if(config.src.indexOf('.mp4') !== -1) {
 				box = 'mp4';
 			}
 		}
