@@ -29,3 +29,5 @@ Field | Type | Description
 `isLive` | `boolean` | `'false'` or `'true'`，set video is a live stream or vod
 `box` | `string` | Indicates stream box `'flv'` or `'hls'` or `'native'` or `'mp4'`
 `preset?`| `object`| set kernel decoder，example: `import chimeeKernelFlv for 'chimee-kernel-flv'; preset:{'flv': chimeeKernelFlv}`
+`reloadTime`| `Number`| video can't play when this time to reload
+
