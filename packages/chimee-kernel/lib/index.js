@@ -189,21 +189,25 @@ var Kernel = function (_CustEvent) {
 		key: 'selectKernel',
 		value: function selectKernel() {
 			var config = this.config;
-
 			var box = config.box;
+			var src = config.src.toLowerCase();
+			// 根据 src 判断 box
 			if (!box) {
-				if (config.src.indexOf('.flv') !== -1) {
+				if (src.indexOf('.flv') !== -1) {
 					box = 'flv';
-				} else if (config.src.indexOf('.m3u8') !== -1) {
+				} else if (src.indexOf('.m3u8') !== -1) {
 					box = 'hls';
-				} else if (config.src.indexOf('.mp4') !== -1) {
+				} else if (src.indexOf('.mp4') !== -1) {
 					box = 'mp4';
 				}
 			}
-			if (box !== 'native' && !config.preset[box]) {
+			// 如果是自定义 box，就检测 box 有没有安装
+			// 因为 native 和 mp4 都可以有原生方案支持，所以不用检测。
+			if ((box !== 'native' || box !== 'mp4') && !config.preset[box]) {
 				chimeeHelper.Log.error(this.tag, 'You want to play for ' + box + ', but you have not installed the kernel.');
 				return;
 			}
+			// 调用各个 box
 			if (box === 'native') {
 				return new Native(this.video, config);
 			} else if (box === 'flv') {
