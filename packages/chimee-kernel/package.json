@@ -1,6 +1,6 @@
 {
   "name": "chimee-kernel",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "kernel of chimee",
   "main": "lib/index.js",
   "module": "lib/index.mjs",

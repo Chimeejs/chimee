@@ -5783,11 +5783,14 @@ var Kernel = function (_CustEvent) {
 					box = 'hls';
 				} else if (src.indexOf('.mp4') !== -1) {
 					box = 'mp4';
+				} else {
+					// 如果 src 不存在或无法判断，继续采用 native 方案。
+					box = 'native';
 				}
 			}
 			// 如果是自定义 box，就检测 box 有没有安装
 			// 因为 native 和 mp4 都可以有原生方案支持，所以不用检测。
-			if ((box !== 'native' || box !== 'mp4') && !config.preset[box]) {
+			if (box !== 'native' && box !== 'mp4' && !config.preset[box]) {
 				Log.error(this.tag, 'You want to play for ' + box + ', but you have not installed the kernel.');
 				return;
 			}
