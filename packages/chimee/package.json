@@ -9,7 +9,7 @@
   "scripts": {
     "precommit": "npm run lint && npm t",
     "prepush": "npm run test",
-    "prepublish": "npm t && pkg-ok",
+    "prepublishOnly": "npm t && pkg-ok",
     "postmerge": "sh tool/auto-npm-install.sh",
     "test": "jest --coverage",
     "unit": "jest --coverage --watch",
