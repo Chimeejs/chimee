@@ -9,6 +9,7 @@
   "scripts": {
     "precommit": "npm run lint && npm t",
     "prepush": "npm run test",
+    "prepublish": "npm t && pkg-ok",
     "postmerge": "sh tool/auto-npm-install.sh",
     "test": "jest --coverage",
     "unit": "jest --coverage --watch",
@@ -44,8 +45,8 @@
   "homepage": "https://github.com/Chimeejs/chimee#readme",
   "dependencies": {
     "babel-runtime": "^6.26.0",
-    "chimee-kernel": "<=1.0.9",
     "chimee-helper": "^0.2.6",
+    "chimee-kernel": "^1.0.15",
     "es-fullscreen": "^0.2.1",
     "toxic-decorators": "^0.3.8"
   },
@@ -75,6 +76,7 @@
     "husky": "^0.14.3",
     "jest": "^21.2.1",
     "npm-check-updates": "^2.13.0",
+    "pkg-ok": "^1.1.0",
     "rollup": "^0.49.3",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.6",
