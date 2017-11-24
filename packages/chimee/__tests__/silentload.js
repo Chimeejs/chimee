@@ -30,6 +30,7 @@ describe('$silentLoad', () => {
     global.document.createElement = originFn;
     player.destroy();
   });
+  // need to mock chimeeKernelFlv function on jest
   // test('silentload should use default preset and kernels if people do not pass one', async () => {
   //   const wrapper = document.createElement('div');
   //   player = new Chimee({
