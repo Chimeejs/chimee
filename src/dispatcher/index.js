@@ -375,7 +375,8 @@ export default class Dispatcher {
       src: string,
       isLive: boolean,
       box: string,
-      kernels: Object | Array<string> | void
+      kernels: Object | Array<string> | void,
+      preset: Object,
     }
   }) {
     const oldKernel = this.kernel;
@@ -384,6 +385,7 @@ export default class Dispatcher {
     this.dom.installVideo(video);
     // as we will reset the currentVideoConfig on the new video
     // it will trigger the watch function as they maybe differnet
+    // because video config will return the real situation
     // so we need to stop them
     this.videoConfig.changeWatchable = false;
     this.videoConfig.autoload = false;
@@ -394,6 +396,9 @@ export default class Dispatcher {
     });
     this.videoConfig.changeWatchable = true;
     this.kernel = kernel;
+    const { isLive, box, preset, kernels } = config;
+    Object.assign(this.videoConfig, { isLive, box, preset, kernels });
+    // const config = {}
     oldKernel.destroy();
   }
   /**
