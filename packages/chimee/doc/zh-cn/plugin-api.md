@@ -650,7 +650,7 @@ const player = new Chimee({
 ### \* kernels
 - 类型: `Object`
 - 含义: 播放器核心解码器。因为体积问题，chimee 默认仅支持原生播放器，如果需要支持其余解码方式请引入相应的解码器。
-- 默认: `{}`
+- 默认: `undefined`
 
 ```javascript
 import Flv from 'chimee-kernel-flv';
