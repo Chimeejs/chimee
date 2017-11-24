@@ -157,9 +157,11 @@ export default class Dom {
     videoEvents.forEach((key, index) => {
       removeEvent(this.videoElement, key, this.videoEventHandlerList[index]);
     });
+    this.videoEventHandlerList = [];
     domEvents.forEach((key, index) => {
       removeEvent(this.videoElement, key, this.videoDomEventHandlerList[index]);
     });
+    this.videoDomEventHandlerList = [];
     $(videoElement).remove();
     delete this.videoElement;
     return videoElement;
