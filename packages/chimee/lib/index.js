@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.5.2
+ * chimee v0.5.3
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -745,6 +745,8 @@ var accessorMap = {
 var VideoConfig = (_dec$5 = toxicDecorators.initBoolean(), _dec2$3 = toxicDecorators.initString(function (str) {
   return str.toLocaleLowerCase();
 }), (_class$5 = function () {
+
+  // 会逐渐被遗弃
   function VideoConfig(dispatcher, config) {
     _classCallCheck(this, VideoConfig);
 
@@ -804,6 +806,8 @@ var VideoConfig = (_dec$5 = toxicDecorators.initBoolean(), _dec2$3 = toxicDecora
   // 此处 box 只能置空，因为 kernel 会自动根据你的安装 kernel 和相关地址作智能判断。
   // 曾经 bug 详见 https://github.com/Chimeejs/chimee-kernel/issues/1
 
+  // kernels 不在 videoConfig 上设置默认值，防止判断出错
+
 
   _createClass(VideoConfig, [{
     key: 'init',
@@ -847,7 +851,7 @@ var VideoConfig = (_dec$5 = toxicDecorators.initBoolean(), _dec2$3 = toxicDecora
 }), _descriptor6 = _applyDecoratedDescriptor$4(_class$5.prototype, '_kernelProperty', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return ['isLive', 'box', 'preset'];
+    return ['isLive', 'box', 'preset', 'kernels'];
   }
 }), _descriptor7 = _applyDecoratedDescriptor$4(_class$5.prototype, '_realDomAttr', [toxicDecorators.frozen], {
   enumerable: true,
@@ -1421,7 +1425,7 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.5.2';
+    _this.VERSION = '0.5.3';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -1877,9 +1881,11 @@ var Dom = (_dec$6 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       videoEvents.forEach(function (key, index) {
         chimeeHelper.removeEvent(_this3.videoElement, key, _this3.videoEventHandlerList[index]);
       });
+      this.videoEventHandlerList = [];
       domEvents.forEach(function (key, index) {
         chimeeHelper.removeEvent(_this3.videoElement, key, _this3.videoDomEventHandlerList[index]);
       });
+      this.videoDomEventHandlerList = [];
       chimeeHelper.$(videoElement).remove();
       delete this.videoElement;
       return videoElement;
@@ -2612,6 +2618,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
       this.dom.installVideo(video);
       // as we will reset the currentVideoConfig on the new video
       // it will trigger the watch function as they maybe differnet
+      // because video config will return the real situation
       // so we need to stop them
       this.videoConfig.changeWatchable = false;
       this.videoConfig.autoload = false;
@@ -2622,6 +2629,13 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
       });
       this.videoConfig.changeWatchable = true;
       this.kernel = kernel;
+      var isLive = config.isLive,
+          box = config.box,
+          preset = config.preset,
+          kernels = config.kernels;
+
+      _Object$assign(this.videoConfig, { isLive: isLive, box: box, preset: preset, kernels: kernels });
+      // const config = {}
       oldKernel.destroy();
     }
     /**
@@ -3050,7 +3064,7 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec(_class = (_class2 = (
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.5.2';
+    return '0.5.3';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
