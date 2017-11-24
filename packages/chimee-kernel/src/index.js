@@ -26,16 +26,18 @@ export default class Kernel extends CustEvent {
 	 * @memberof kernel
 	 */
 	bindEvents (videokernel, video) {
-		if (videokernel) {
-			videokernel.on('mediaInfo', (mediaInfo) => {
-				this.emit('mediaInfo', mediaInfo);
-			});
-
-			video.addEventListener('canplay', ()=> {
-				clearTimeout(this.timer);
-				this.timer = null;
-			});
+		if(!videokernel) {
+			return;
 		}
+
+		videokernel.on('mediaInfo', (mediaInfo) => {
+			this.emit('mediaInfo', mediaInfo);
+		});
+
+		video.addEventListener('canplay', ()=> {
+			clearTimeout(this.timer);
+			this.timer = null;
+		});
 	}
 
 	/**
@@ -65,23 +67,25 @@ export default class Kernel extends CustEvent {
 			Log.error(this.tag, `You want to play for ${box}, but you have not installed the kernel.`);
 			return;
 		}
-		// 调用各个 box
-		if (box === 'native') {
-			return new Native(this.video, config);
-		} else if (box === 'flv') {
-			return new config.preset[box](this.video, config);
-		} else if (box === 'hls') {
-			return new config.preset[box](this.video, config);
-		} else if(box === 'mp4') {
-			if(config.preset[box] && config.preset[box].isSupport()) {
-				return new config.preset[box](this.video, config);
-			} else {
+		
+		if(box === 'mp4') {
+			if(!config.preset[box] || !config.preset[box].isSupport()) {
 				Log.verbose(this.tag, 'browser is not support mp4 decode, auto switch native player');
-				return new Native(this.video, config);
+				box = 'native';
 			}
-		} else {
-			Log.error(this.tag, 'not mactch any player, please check your config');
-			return null;
+		}
+
+		// 调用各个 box
+		switch(box) {
+			case 'native':
+				return new Native(this.video, config);
+			case 'mp4':
+			case 'flv':
+			case 'hls':
+				return new config.preset[box](this.video, config);
+			default:
+				Log.error(this.tag, 'not mactch any player, please check your config');
+				return;
 		}
 	}
 
@@ -90,11 +94,11 @@ export default class Kernel extends CustEvent {
 	 * @memberof kernel
 	 */
 	attachMedia () {
-		if (this.videokernel) {
-			this.videokernel.attachMedia();
-		} else {
-			Log.error(this.tag, 'videokernel is not already, must init player');
+		if(!this.videokernel) {
+			return Log.error(this.tag, 'videokernel is not already, must init player');
 		}
+
+		this.videokernel.attachMedia();
 	}
 	/**
 	 * load source
@@ -103,17 +107,17 @@ export default class Kernel extends CustEvent {
 	 */
 	load (src) {
 		this.config.src = src || this.config.src;
-		if (this.videokernel && this.config.src) {
-			this.videokernel.load(this.config.src);
-			if(!this.timer && this.box !== 'hls') {
-				this.timer = setTimeout(()=>{
-					this.timer = null;
-					this.pause();
-					this.refresh();
-				}, this.config.reloadTime);
-			}
-		} else {
-			Log.error(this.tag, 'videokernel is not already, must init player');
+		if(!this.videokernel || !this.config.src) {
+			return Log.error(this.tag, 'videokernel is not already, must init player');
+		}
+
+		this.videokernel.load(this.config.src);
+		if(!this.timer && this.box !== 'hls') {
+			this.timer = setTimeout(()=>{
+				this.timer = null;
+				this.pause();
+				this.refresh();
+			}, this.config.reloadTime);
 		}
 	}
 	/**
@@ -121,35 +125,35 @@ export default class Kernel extends CustEvent {
 	 * @memberof kernel
 	 */
 	destroy () {
-		if (this.videokernel) {
-			this.videokernel.destroy();
-			clearTimeout(this.timer);
-			this.timer = null;
-		} else {
-			Log.error(this.tag, 'videokernel is not exit');
+		if(!this.videokernel) {
+			return Log.error(this.tag, 'videokernel is not exit');
 		}
+
+		this.videokernel.destroy();
+		clearTimeout(this.timer);
+		this.timer = null;
 	}
 	/**
 	 * to play
 	 * @memberof kernel
 	 */
 	play () {
-		if (this.videokernel) {
-			this.videokernel.play();
-		} else {
-			Log.error(this.tag, 'videokernel is not already, must init player');
+		if(!this.videokernel) {
+			return Log.error(this.tag, 'videokernel is not already, must init player');;
 		}
+
+		this.videokernel.play();
 	}
 	/**
 	 * pause
 	 * @memberof kernel
 	 */
 	pause () {
-		if (this.videokernel && this.config.src) {
-			this.videokernel.pause();
-		} else {
-			Log.error(this.tag, 'videokernel is not already, must init player');
+		if(!this.videokernel || !this.config.src) {
+			return 
+			Log.error(this.tag, 'videokernel is not already, must init player');;
 		}
+		this.videokernel.pause();
 	}
 	/**
 	 * get video currentTime
@@ -181,11 +185,11 @@ export default class Kernel extends CustEvent {
 	 * @memberof kernel
 	 */
 	refresh () {
-		if(this.videokernel) {
-			this.videokernel.refresh();
-		} else {
+		if(!this.videokernel) {
+			return 
 			Log.error(this.tag, 'videokernel is not already, must init player');
 		}
+		this.videokernel.refresh();
 	}
 	/**
 	 * get video duration

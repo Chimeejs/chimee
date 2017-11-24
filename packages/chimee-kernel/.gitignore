@@ -58,3 +58,4 @@ typings/
 .env
 
 demo/dist/*
+.DS_Store
