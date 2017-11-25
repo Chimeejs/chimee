@@ -376,9 +376,16 @@ describe('Chimee', () => {
     test('poster', () => {
       expect(player.poster).toBe('');
       expect(videoElement.poster).toBe('');
+      player.poster = 123;
+      expect(player.poster).toBe('');
+      expect(videoElement.poster).toBe('');
       const url = 'https://www.baidu.com/';
       player.poster = url;
       expect(player.poster).toBe(url);
+      expect(videoElement.poster).toBe(url);
+      player.__dispatcher.videoConfigReady = false;
+      player.poster = 123;
+      expect(player.poster).toBe('');
       expect(videoElement.poster).toBe(url);
     });
     test('playsinline', () => {
