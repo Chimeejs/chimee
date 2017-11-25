@@ -7,6 +7,7 @@ $('#_duration').click(function() {
   console.log(window.__duration = 1e4);
 });
 
+const sources = {};
 
 const needFlv = location.href.indexOf('flv') !== -1;
 $('h2 a').eq(+needFlv).addClass('on');
@@ -40,11 +41,15 @@ function start() {
     if (!re[0].url || !re[1].url || !re[2].url) {
       console.error('流地址异常');
     }
-    rebuildPlayer(re[0].url, re[1].url, re[2].url);
+    sources.snow = re[0].url;
+    sources.river = re[1].url;
+    sources.city = re[2].url;
+    rebuildPlayer(sources);
   });
 }
 // alert(11);
-function rebuildPlayer(snow, water, city) {
+function rebuildPlayer({ snow, river, city }) {
+  window.player && !window.player.destroyed && window.player.destroy();
   const Chimee = window.Chimee;
   const snowSwitch = {
     name: 'snow-switch',
@@ -60,7 +65,7 @@ function rebuildPlayer(snow, water, city) {
     el: '<button>river switch</button>',
     create() {
       this.$dom.addEventListener('click', () => {
-        this.$silentLoad(water, { repeatTimes: 5, increment: 2 });
+        this.$silentLoad(river, { repeatTimes: 5, increment: 2 });
       });
     },
   };
@@ -98,3 +103,7 @@ function rebuildPlayer(snow, water, city) {
 // 自动开始
 start();
 
+const rebuildButton = document.createElement('button');
+rebuildButton.innerText = 'rebuild';
+rebuildButton.addEventListener('click', () => rebuildPlayer(sources));
+document.body.appendChild(rebuildButton);
