@@ -155,8 +155,21 @@ const accessorMap = {
     accessorVideoAttribute('preload'),
   ],
   poster: [
-    accessor({ set: stringOrVoid }),
-    accessorVideoAttribute('poster'),
+    // 因为如果在 video 上随便加一个字符串，他会将其拼接到地址上，所以这里要避免
+    // 单元测试无法检测
+    alwaysString(),
+    accessor({
+      get(value) {
+        return (this.dispatcher.videoConfigReady && this.inited)
+          ? this.dom.videoElement.poster
+          : value;
+      },
+      set(value) {
+        if (!this.dispatcher.videoConfigReady) return value;
+        if (value.length) this.dom.setAttr('video', 'poster', value);
+        return value;
+      },
+    }),
   ],
   playsInline: [
     accessor({
