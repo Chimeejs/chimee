@@ -1,10 +1,19 @@
 const Chimee = window.Chimee;
 const nativeSwitch = {
   name: 'native-switch',
-  el: '<button>native switch</button>',
+  el: '<button>G.E.M switch</button>',
   create() {
     this.$dom.addEventListener('click', () => {
       this.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', { repeatTimes: 5, increment: 2 });
+    });
+  },
+};
+const nativeOneSwitch = {
+  name: 'native-one-switch',
+  el: '<button>Lost star switch</button>',
+  create() {
+    this.$dom.addEventListener('click', () => {
+      this.$silentLoad('http://cdn.toxicjohann.com/lostStar.mp4', { repeatTimes: 5, increment: 2 });
     });
   },
 };
@@ -27,6 +36,7 @@ const hlsSwitch = {
   },
 };
 Chimee.install(nativeSwitch);
+Chimee.install(nativeOneSwitch);
 Chimee.install(flvSwitch);
 Chimee.install(hlsSwitch);
 Chimee.installKernel({
@@ -36,7 +46,7 @@ Chimee.installKernel({
 const player = new Chimee({
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
   wrapper: '#wrapper',
-  plugin: [ 'nativeSwitch', 'flvSwitch', 'hlsSwitch' ],
+  plugin: [ 'nativeSwitch', 'nativeOneSwitch', 'flvSwitch', 'hlsSwitch' ],
   volume: 0.1,
   kernels: [ 'flv', 'hls' ],
   autoplay: true,
