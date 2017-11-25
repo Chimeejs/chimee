@@ -1,8 +1,9 @@
 import { Log } from 'chimee-helper';
-import { CustEvent } from 'chimee-helper';
+import { CustEvent, isObject } from 'chimee-helper';
 import { isNumber, deepAssign } from 'chimee-helper';
 import Native from './native/index';
 import defaultConfig from './config';
+import $const from './const';
 
 export default class Kernel extends CustEvent {
 	/**
@@ -18,7 +19,6 @@ export default class Kernel extends CustEvent {
 		this.video = videoElement;
 		this.videokernel = this.selectKernel();
 		this.bindEvents(this.videokernel, this.video);
-		this.timer = null;
 	}
 
 	/**
@@ -29,14 +29,10 @@ export default class Kernel extends CustEvent {
 		if(!videokernel) {
 			return;
 		}
-
-		videokernel.on('mediaInfo', (mediaInfo) => {
-			this.emit('mediaInfo', mediaInfo);
-		});
-
-		video.addEventListener('canplay', ()=> {
-			clearTimeout(this.timer);
-			this.timer = null;
+		$const.kernelEvent.forEach((item)=>{
+			videokernel.on(item, (msg) => {
+				this.emit(item, msg.data);
+			});
 		});
 	}
 
@@ -46,6 +42,7 @@ export default class Kernel extends CustEvent {
 	 */
 	selectKernel () {
 		const config = this.config;
+		isObject(config.preset) || (config.preset = {});
 		let box = config.box;
 		const src = config.src.toLowerCase();
 		// 根据 src 判断 box
@@ -67,7 +64,6 @@ export default class Kernel extends CustEvent {
 			Log.error(this.tag, `You want to play for ${box}, but you have not installed the kernel.`);
 			return;
 		}
-		
 		if(box === 'mp4') {
 			if(!config.preset[box] || !config.preset[box].isSupport()) {
 				Log.verbose(this.tag, 'browser is not support mp4 decode, auto switch native player');
@@ -112,13 +108,6 @@ export default class Kernel extends CustEvent {
 		}
 
 		this.videokernel.load(this.config.src);
-		if(!this.timer && this.box !== 'hls') {
-			this.timer = setTimeout(()=>{
-				this.timer = null;
-				this.pause();
-				this.refresh();
-			}, this.config.reloadTime);
-		}
 	}
 	/**
 	 * destory kernel
@@ -130,8 +119,6 @@ export default class Kernel extends CustEvent {
 		}
 
 		this.videokernel.destroy();
-		clearTimeout(this.timer);
-		this.timer = null;
 	}
 	/**
 	 * to play
@@ -150,8 +137,7 @@ export default class Kernel extends CustEvent {
 	 */
 	pause () {
 		if(!this.videokernel || !this.config.src) {
-			return 
-			Log.error(this.tag, 'videokernel is not already, must init player');;
+			return Log.error(this.tag, 'videokernel is not already, must init player');;
 		}
 		this.videokernel.pause();
 	}
@@ -186,8 +172,7 @@ export default class Kernel extends CustEvent {
 	 */
 	refresh () {
 		if(!this.videokernel) {
-			return 
-			Log.error(this.tag, 'videokernel is not already, must init player');
+			return Log.error(this.tag, 'videokernel is not already, must init player');
 		}
 		this.videokernel.refresh();
 	}

@@ -1,6 +1,6 @@
 {
   "name": "chimee-kernel",
-  "version": "1.0.15",
+  "version": "1.1.0",
   "description": "kernel of chimee",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -31,7 +31,8 @@
   "homepage": "https://github.com/Chimeejs/chimee-kernel#readme",
   "dependencies": {
     "babel-runtime": "^6.25.0",
-    "chimee-helper": "^0.2.2"
+    "chimee-helper": "^0.2.2",
+    "chimee-kernel-flv": "^1.4.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

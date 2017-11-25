@@ -3,7 +3,7 @@ import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
 import _createClass from 'babel-runtime/helpers/createClass';
 import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
 import _inherits from 'babel-runtime/helpers/inherits';
-import { CustEvent, Log, deepAssign, isNumber } from 'chimee-helper';
+import { CustEvent, Log, deepAssign, isNumber, isObject } from 'chimee-helper';
 import _Object$getOwnPropertyDescriptor from 'babel-runtime/core-js/object/get-own-property-descriptor';
 
 var defaultConfig = {
@@ -130,6 +130,10 @@ var defaultConfig$1 = {
   reloadTime: 1500 // video can't play when this time to reload
 };
 
+var $const = {
+  kernelEvent: ['mediaInfo', 'heartbeat', 'error']
+};
+
 var Kernel = function (_CustEvent) {
 	_inherits(Kernel, _CustEvent);
 
@@ -149,7 +153,6 @@ var Kernel = function (_CustEvent) {
 		_this.video = videoElement;
 		_this.videokernel = _this.selectKernel();
 		_this.bindEvents(_this.videokernel, _this.video);
-		_this.timer = null;
 		return _this;
 	}
 
@@ -164,16 +167,14 @@ var Kernel = function (_CustEvent) {
 		value: function bindEvents(videokernel, video) {
 			var _this2 = this;
 
-			if (videokernel) {
-				videokernel.on('mediaInfo', function (mediaInfo) {
-					_this2.emit('mediaInfo', mediaInfo);
-				});
-
-				video.addEventListener('canplay', function () {
-					clearTimeout(_this2.timer);
-					_this2.timer = null;
-				});
+			if (!videokernel) {
+				return;
 			}
+			$const.kernelEvent.forEach(function (item) {
+				videokernel.on(item, function (msg) {
+					_this2.emit(item, msg.data);
+				});
+			});
 		}
 
 		/**
@@ -185,6 +186,7 @@ var Kernel = function (_CustEvent) {
 		key: 'selectKernel',
 		value: function selectKernel() {
 			var config = this.config;
+			isObject(config.preset) || (config.preset = {});
 			var box = config.box;
 			var src = config.src.toLowerCase();
 			// 根据 src 判断 box
@@ -206,23 +208,24 @@ var Kernel = function (_CustEvent) {
 				Log.error(this.tag, 'You want to play for ' + box + ', but you have not installed the kernel.');
 				return;
 			}
-			// 调用各个 box
-			if (box === 'native') {
-				return new Native(this.video, config);
-			} else if (box === 'flv') {
-				return new config.preset[box](this.video, config);
-			} else if (box === 'hls') {
-				return new config.preset[box](this.video, config);
-			} else if (box === 'mp4') {
-				if (config.preset[box] && config.preset[box].isSupport()) {
-					return new config.preset[box](this.video, config);
-				} else {
+			if (box === 'mp4') {
+				if (!config.preset[box] || !config.preset[box].isSupport()) {
 					Log.verbose(this.tag, 'browser is not support mp4 decode, auto switch native player');
-					return new Native(this.video, config);
+					box = 'native';
 				}
-			} else {
-				Log.error(this.tag, 'not mactch any player, please check your config');
-				return null;
+			}
+
+			// 调用各个 box
+			switch (box) {
+				case 'native':
+					return new Native(this.video, config);
+				case 'mp4':
+				case 'flv':
+				case 'hls':
+					return new config.preset[box](this.video, config);
+				default:
+					Log.error(this.tag, 'not mactch any player, please check your config');
+					return;
 			}
 		}
 
@@ -234,11 +237,11 @@ var Kernel = function (_CustEvent) {
 	}, {
 		key: 'attachMedia',
 		value: function attachMedia() {
-			if (this.videokernel) {
-				this.videokernel.attachMedia();
-			} else {
-				Log.error(this.tag, 'videokernel is not already, must init player');
+			if (!this.videokernel) {
+				return Log.error(this.tag, 'videokernel is not already, must init player');
 			}
+
+			this.videokernel.attachMedia();
 		}
 		/**
    * load source
@@ -249,21 +252,12 @@ var Kernel = function (_CustEvent) {
 	}, {
 		key: 'load',
 		value: function load(src) {
-			var _this3 = this;
-
 			this.config.src = src || this.config.src;
-			if (this.videokernel && this.config.src) {
-				this.videokernel.load(this.config.src);
-				if (!this.timer && this.box !== 'hls') {
-					this.timer = setTimeout(function () {
-						_this3.timer = null;
-						_this3.pause();
-						_this3.refresh();
-					}, this.config.reloadTime);
-				}
-			} else {
-				Log.error(this.tag, 'videokernel is not already, must init player');
+			if (!this.videokernel || !this.config.src) {
+				return Log.error(this.tag, 'videokernel is not already, must init player');
 			}
+
+			this.videokernel.load(this.config.src);
 		}
 		/**
    * destory kernel
@@ -273,13 +267,11 @@ var Kernel = function (_CustEvent) {
 	}, {
 		key: 'destroy',
 		value: function destroy() {
-			if (this.videokernel) {
-				this.videokernel.destroy();
-				clearTimeout(this.timer);
-				this.timer = null;
-			} else {
-				Log.error(this.tag, 'videokernel is not exit');
+			if (!this.videokernel) {
+				return Log.error(this.tag, 'videokernel is not exit');
 			}
+
+			this.videokernel.destroy();
 		}
 		/**
    * to play
@@ -289,11 +281,11 @@ var Kernel = function (_CustEvent) {
 	}, {
 		key: 'play',
 		value: function play() {
-			if (this.videokernel) {
-				this.videokernel.play();
-			} else {
-				Log.error(this.tag, 'videokernel is not already, must init player');
+			if (!this.videokernel) {
+				return Log.error(this.tag, 'videokernel is not already, must init player');
 			}
+
+			this.videokernel.play();
 		}
 		/**
    * pause
@@ -303,11 +295,10 @@ var Kernel = function (_CustEvent) {
 	}, {
 		key: 'pause',
 		value: function pause() {
-			if (this.videokernel && this.config.src) {
-				this.videokernel.pause();
-			} else {
-				Log.error(this.tag, 'videokernel is not already, must init player');
+			if (!this.videokernel || !this.config.src) {
+				return Log.error(this.tag, 'videokernel is not already, must init player');
 			}
+			this.videokernel.pause();
 		}
 		/**
    * get video currentTime
@@ -340,11 +331,10 @@ var Kernel = function (_CustEvent) {
 	}, {
 		key: 'refresh',
 		value: function refresh() {
-			if (this.videokernel) {
-				this.videokernel.refresh();
-			} else {
-				Log.error(this.tag, 'videokernel is not already, must init player');
+			if (!this.videokernel) {
+				return Log.error(this.tag, 'videokernel is not already, must init player');
 			}
+			this.videokernel.refresh();
 		}
 		/**
    * get video duration
