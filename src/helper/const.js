@@ -72,11 +72,18 @@ export const domEvents = [
   'scroll',
   'select',
   'wheel',
+  'mousewheel',
   'fullscreenchange',
   'contextmenu',
   'touchstart',
   'touchmove',
   'touchend',
+];
+export const passiveEvents = [
+  'wheel',
+  'mousewheel',
+  'touchstart',
+  'touchmove',
 ];
 export const selfProcessorEvents = [
   'silentLoad',
