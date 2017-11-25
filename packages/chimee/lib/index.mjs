@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.5.3
+ * chimee v0.5.4
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -31,7 +31,8 @@ import esFullscreen from 'es-fullscreen';
 
 var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting'];
 var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'error', 'ended', 'networkState', 'paused', 'readyState', 'seekable', 'sinkId', 'controlsList', 'tabIndex', 'dataset', 'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth'];
-var domEvents = ['beforeinput', 'blur', 'click', 'compositionend', 'compositionstart', 'compositionupdate', 'dblclick', 'focus', 'focusin', 'focusout', 'input', 'keydown', 'keypress', 'keyup', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll', 'select', 'wheel', 'fullscreenchange', 'contextmenu', 'touchstart', 'touchmove', 'touchend'];
+var domEvents = ['beforeinput', 'blur', 'click', 'compositionend', 'compositionstart', 'compositionupdate', 'dblclick', 'focus', 'focusin', 'focusout', 'input', 'keydown', 'keypress', 'keyup', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll', 'select', 'wheel', 'mousewheel', 'fullscreenchange', 'contextmenu', 'touchstart', 'touchmove', 'touchend'];
+var passiveEvents = ['wheel', 'mousewheel', 'touchstart', 'touchmove'];
 var selfProcessorEvents = ['silentLoad', 'fullscreen'];
 var kernelMethods = ['play', 'pause', 'seek'];
 var dispatcherMethods = ['load'];
@@ -1421,7 +1422,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.5.3';
+    _this.VERSION = '0.5.4';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -1768,8 +1769,8 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
      * referrence of video's dom element
      */
     this.installVideo(videoElement);
-    domEvents.forEach(function (key) {
-      var cfn = function cfn() {
+    this._addDomEvents(this.container, this.containerDomEventHandlerList, function (key) {
+      return function () {
         var _dispatcher$bus;
 
         for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
@@ -1778,9 +1779,9 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
 
         return (_dispatcher$bus = _this.__dispatcher.bus).triggerSync.apply(_dispatcher$bus, ['c_' + key].concat(_toConsumableArray(args)));
       };
-      _this.containerDomEventHandlerList.push(cfn);
-      addEvent(_this.container, key, cfn);
-      var wfn = function wfn() {
+    });
+    this._addDomEvents(this.wrapper, this.wrapperDomEventHandlerList, function (key) {
+      return function () {
         var _dispatcher$bus2;
 
         for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
@@ -1789,8 +1790,6 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
 
         return (_dispatcher$bus2 = _this.__dispatcher.bus).triggerSync.apply(_dispatcher$bus2, ['w_' + key].concat(_toConsumableArray(args)));
       };
-      _this.wrapperDomEventHandlerList.push(wfn);
-      addEvent(_this.wrapper, key, wfn);
     });
     this._fullscreenMonitor();
     esFullscreen.on('fullscreenchange', this._fullscreenMonitor);
@@ -1859,10 +1858,8 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
         _this2.videoEventHandlerList.push(fn);
         addEvent(videoElement, key, fn);
       });
-      domEvents.forEach(function (key) {
-        var fn = _this2._getEventHandler(key, { penetrate: true });
-        _this2.videoDomEventHandlerList.push(fn);
-        addEvent(videoElement, key, fn);
+      this._addDomEvents(videoElement, this.videoDomEventHandlerList, function (key) {
+        return _this2._getEventHandler(key, { penetrate: true });
       });
       this.videoElement = videoElement;
       return videoElement;
@@ -1886,6 +1883,7 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
       delete this.videoElement;
       return videoElement;
     }
+
     /**
      * each plugin has its own dom node, this function will create one or them.
      * we support multiple kind of el
@@ -1941,10 +1939,8 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
       // auto forward the event if this plugin can be penetrate
       if (penetrate) {
         this.__domEventHandlerList[id] = this.__domEventHandlerList[id] || [];
-        domEvents.forEach(function (key) {
-          var fn = _this4._getEventHandler(key, { penetrate: penetrate });
-          addEvent(node, key, fn);
-          _this4.__domEventHandlerList[id].push(fn);
+        this._addDomEvents(node, this.__domEventHandlerList[id], function (key) {
+          return _this4._getEventHandler(key, { penetrate: penetrate });
         });
         this.__videoExtendedNodes.push(node);
       }
@@ -1955,6 +1951,7 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
       outerElement.insertBefore(node, originElement.nextSibling);
       return node;
     }
+
     /**
      * remove plugin's dom
      */
@@ -1978,6 +1975,7 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
       }
       delete this.plugins[id];
     }
+
     /**
      * Set zIndex for a plugins list
      */
@@ -1992,6 +1990,7 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
         return setStyle(key.match(/^(videoElement|container)$/) ? _this6[key] : _this6.plugins[key], 'z-index', ++index);
       });
     }
+
     /**
      * set attribute on our dom
      * @param {string} attr attribute's name
@@ -2051,6 +2050,7 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
     value: function focus() {
       this.videoElement.focus();
     }
+
     /**
      * function called when we distory
      */
@@ -2069,6 +2069,25 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
       this.wrapper.innerHTML = this.originHTML;
       delete this.wrapper;
       delete this.plugins;
+    }
+
+    /**
+     * bind all dom events on one element
+     * we will use passive mode if it support
+     */
+
+  }, {
+    key: '_addDomEvents',
+    value: function _addDomEvents(element, handlerList, handlerGenerate) {
+      domEvents.forEach(function (key) {
+        var fn = handlerGenerate(key);
+        handlerList.push(fn);
+        if (passiveEvents.indexOf(key) > -1) {
+          addEvent(element, key, fn, false, { passive: true });
+          return;
+        }
+        addEvent(element, key, fn);
+      });
     }
   }, {
     key: '_autoFocusToVideo',
@@ -2102,6 +2121,7 @@ var Dom = (_dec$6 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
         this.__dispatcher.bus.triggerSync('fullscreenchange', evt);
       }
     }
+
     /**
      * get the event handler for dom to bind
      */
@@ -3060,7 +3080,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.5.3';
+    return '0.5.4';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,
