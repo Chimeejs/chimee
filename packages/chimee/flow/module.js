@@ -91,7 +91,7 @@ declare module 'chimee-helper' {
   declare export function removeClassName (el: Node, cls: string): void;
   declare export function hasClassName (el: Node, cls: string): boolean;
   declare export function removeEvent (el: Node, type: string, handler: Function, once?: boolean, capture?: boolean): void;
-  declare export function addEvent (el: Node, type: string, handler: Function, once?: boolean, capture?: boolean): void;
+  declare export function addEvent (el: Node, type: string, handler: Function, once?: boolean, capture?: boolean | Object): void;
   declare export function addDelegate (el: Node, selector: string, type: string, handler: Function, capture: boolean): void; 
   declare export function removeDelegate (el: Node, selector: string, type: string, handler: Function, capture: boolean): void;
   declare export function getStyle (el: Node, key: string): string;

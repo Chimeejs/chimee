@@ -1,6 +1,6 @@
 // @flow
 import { isArray, isElement, isString, isHTMLString, hypenate, isFunction, isEmpty, isPosterityNode, isObject, isBoolean, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log, isEvent } from 'chimee-helper';
-import { videoEvents, domEvents } from 'helper/const';
+import { videoEvents, domEvents, passiveEvents } from 'helper/const';
 import esFullscreen from 'es-fullscreen';
 import { autobind, before, waituntil } from 'toxic-decorators';
 function targetCheck(target: string, ...args) {
@@ -75,6 +75,7 @@ export default class Dom {
   __videoExtendedNodes = [];
   isFullscreen = false;
   fullscreenElement = undefined;
+
   constructor(wrapper: string | Element, dispatcher: Dispatcher) {
     this.__dispatcher = dispatcher;
     if (!isElement(wrapper) && !isString(wrapper)) throw new TypeError(`Wrapper can only be string or HTMLElement, but not ${typeof wrapper}`);
@@ -100,17 +101,12 @@ export default class Dom {
      * referrence of video's dom element
      */
     this.installVideo(videoElement);
-    domEvents.forEach(key => {
-      const cfn = (...args: any) => this.__dispatcher.bus.triggerSync('c_' + key, ...args);
-      this.containerDomEventHandlerList.push(cfn);
-      addEvent(this.container, key, cfn);
-      const wfn = (...args: any) => this.__dispatcher.bus.triggerSync('w_' + key, ...args);
-      this.wrapperDomEventHandlerList.push(wfn);
-      addEvent(this.wrapper, key, wfn);
-    });
+    this._addDomEvents(this.container, this.containerDomEventHandlerList, key => (...args: any) => this.__dispatcher.bus.triggerSync('c_' + key, ...args));
+    this._addDomEvents(this.wrapper, this.wrapperDomEventHandlerList, key => (...args: any) => this.__dispatcher.bus.triggerSync('w_' + key, ...args));
     this._fullscreenMonitor();
     esFullscreen.on('fullscreenchange', this._fullscreenMonitor);
   }
+
   installVideo(videoElement: HTMLVideoElement): HTMLVideoElement {
     this.__videoExtendedNodes.push(videoElement);
     setAttr(videoElement, 'tabindex', -1);
@@ -143,14 +139,11 @@ export default class Dom {
       this.videoEventHandlerList.push(fn);
       addEvent(videoElement, key, fn);
     });
-    domEvents.forEach(key => {
-      const fn = this._getEventHandler(key, { penetrate: true });
-      this.videoDomEventHandlerList.push(fn);
-      addEvent(videoElement, key, fn);
-    });
+    this._addDomEvents(videoElement, this.videoDomEventHandlerList, key => this._getEventHandler(key, { penetrate: true }));
     this.videoElement = videoElement;
     return videoElement;
   }
+
   removeVideo(): HTMLVideoElement {
     const videoElement = this.videoElement;
     this._autoFocusToVideo(this.videoElement, false);
@@ -166,6 +159,7 @@ export default class Dom {
     delete this.videoElement;
     return videoElement;
   }
+
   /**
    * each plugin has its own dom node, this function will create one or them.
    * we support multiple kind of el
@@ -209,11 +203,7 @@ export default class Dom {
     // auto forward the event if this plugin can be penetrate
     if (penetrate) {
       this.__domEventHandlerList[id] = this.__domEventHandlerList[id] || [];
-      domEvents.forEach(key => {
-        const fn = this._getEventHandler(key, { penetrate });
-        addEvent(node, key, fn);
-        this.__domEventHandlerList[id].push(fn);
-      });
+      this._addDomEvents(node, this.__domEventHandlerList[id], key => this._getEventHandler(key, { penetrate }));
       this.__videoExtendedNodes.push(node);
     }
     if (outerElement.lastChild === originElement) {
@@ -223,6 +213,7 @@ export default class Dom {
     outerElement.insertBefore(node, originElement.nextSibling);
     return node;
   }
+
   /**
    * remove plugin's dom
    */
@@ -241,6 +232,7 @@ export default class Dom {
     }
     delete this.plugins[id];
   }
+
   /**
    * Set zIndex for a plugins list
    */
@@ -248,6 +240,7 @@ export default class Dom {
     // $FlowFixMe: there are videoElment and container here
     plugins.forEach((key, index) => setStyle(key.match(/^(videoElement|container)$/) ? this[key] : this.plugins[key], 'z-index', ++index));
   }
+
   /**
    * set attribute on our dom
    * @param {string} attr attribute's name
@@ -260,37 +253,45 @@ export default class Dom {
     // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
     setAttr(this[target], attr, val);
   }
+
   @before(attrOperationCheck, targetCheck)
   getAttr(target: string, attr: string): string {
     // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
     return getAttr(this[target], attr);
   }
+
   @before(attrOperationCheck, targetCheck)
   setStyle(target: string, attr: string, val: any): void {
     // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
     setStyle(this[target], attr, val);
   }
+
   @before(attrOperationCheck, targetCheck)
   getStyle(target: string, attr: string): string {
     // $FlowFixMe: flow do not support computed property/element on class, which is silly here.
     return getStyle(this[target], attr);
   }
+
   @before(targetCheck)
   requestFullscreen(target: string) {
     // $FlowFixMe: flow do not support computed property/element on document, which is silly here.
     return esFullscreen.open(this[target]);
   }
+
   exitFullscreen(): boolean {
     return esFullscreen.exit();
   }
+
   fullscreen(request: boolean = true, target: string = 'container', ...args: any): boolean {
     return request
       ? this.requestFullscreen(target, ...args)
       : this.exitFullscreen(...args);
   }
+
   focus() {
     this.videoElement.focus();
   }
+
   /**
    * function called when we distory
    */
@@ -305,10 +306,28 @@ export default class Dom {
     delete this.wrapper;
     delete this.plugins;
   }
+
+  /**
+   * bind all dom events on one element
+   * we will use passive mode if it support
+   */
+  _addDomEvents(element: Element, handlerList: Array<Function>, handlerGenerate: Function) {
+    domEvents.forEach(key => {
+      const fn = handlerGenerate(key);
+      handlerList.push(fn);
+      if (passiveEvents.indexOf(key) > -1) {
+        addEvent(element, key, fn, false, { passive: true });
+        return;
+      }
+      addEvent(element, key, fn);
+    });
+  }
+
   _autoFocusToVideo(element: Element, remove: boolean = false): void {
     (remove ? removeEvent : addEvent)(element, 'mouseup', this._focusToVideo, false, true);
     (remove ? removeEvent : addEvent)(element, 'touchend', this._focusToVideo, false, true);
   }
+
   @autobind
   _focusToVideo() {
     const x = window.scrollX;
@@ -316,6 +335,7 @@ export default class Dom {
     isFunction(this.videoElement.focus) && this.videoElement.focus();
     window.scrollTo(x, y);
   }
+
   @autobind
   _fullscreenMonitor(evt?: Event) {
     const element = esFullscreen.fullscreenElement;
@@ -337,6 +357,7 @@ export default class Dom {
       this.__dispatcher.bus.triggerSync('fullscreenchange', evt);
     }
   }
+
   /**
    * get the event handler for dom to bind
    */
