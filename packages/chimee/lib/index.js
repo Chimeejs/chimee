@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.5.4
+ * chimee v0.5.5
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -704,7 +704,19 @@ var accessorMap = {
   defaultMuted: [toxicDecorators.alwaysBoolean(), accessorVideoAttribute({ get: 'defaultMuted', set: 'muted', isBoolean: true })],
   muted: [toxicDecorators.alwaysBoolean(), accessorVideoProperty('muted')],
   preload: [toxicDecorators.accessor({ set: stringOrVoid }), accessorVideoAttribute('preload')],
-  poster: [toxicDecorators.accessor({ set: stringOrVoid }), accessorVideoAttribute('poster')],
+  poster: [
+  // 因为如果在 video 上随便加一个字符串，他会将其拼接到地址上，所以这里要避免
+  // 单元测试无法检测
+  toxicDecorators.alwaysString(), toxicDecorators.accessor({
+    get: function get(value) {
+      return this.dispatcher.videoConfigReady && this.inited ? this.dom.videoElement.poster : value;
+    },
+    set: function set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      if (value.length) this.dom.setAttr('video', 'poster', value);
+      return value;
+    }
+  })],
   playsInline: [toxicDecorators.accessor({
     get: function get(value) {
       var playsInline = this.dom.videoElement.playsInline;
@@ -1426,7 +1438,7 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.5.4';
+    _this.VERSION = '0.5.5';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -3084,7 +3096,7 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec(_class = (_class2 = (
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.5.4';
+    return '0.5.5';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
