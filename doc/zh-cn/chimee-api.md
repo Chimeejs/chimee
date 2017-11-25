@@ -392,6 +392,7 @@ chimee.load('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070
     * 类型：`boolean`
     * 默认：原主视频设定
     * 是否是直播
+    * 若是直播，则默认使用 immediate 模式
   * box
     * 类型：`boolean`
     * 默认：原主视频设定
