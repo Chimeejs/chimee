@@ -224,6 +224,9 @@ export default class Dispatcher {
       kernels = this.videoConfig.kernels,
       preset = this.videoConfig.preset,
     } = option;
+    // all live stream seem as immediate mode
+    // it's impossible to seek on live stream
+    const immediate = option.immediate || isLive;
     // form the base config for kernel
     // it should be the same as the config now
     const config = { isLive, box, src, kernels, preset };
@@ -270,7 +273,7 @@ export default class Dispatcher {
           videoCanplay = () => {
             newVideoReady = true;
             // you can set it immediately run by yourself
-            if (option.immediate) {
+            if (immediate) {
               removeEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
               removeEvent(video, 'error', videoError, true);
               return reject({
@@ -281,7 +284,7 @@ export default class Dispatcher {
             }
           };
           videoLoadedmetadata = () => {
-            kernel.seek(idealTime);
+            if (!isLive) kernel.seek(idealTime);
           };
           videoError = () => {
             removeEvent(video, 'canplay', videoCanplay, true);

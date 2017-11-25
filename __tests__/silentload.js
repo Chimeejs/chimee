@@ -139,6 +139,29 @@ describe('$silentLoad', () => {
     player.src = 'http://cdn.toxicjohann.com/lostStar.mp4';
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
   });
+  test('isLive', async () => {
+    const option = { isLive: true };
+    const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', option);
+    Object.defineProperty(oldVideo, 'paused', { value: false });
+    await Promise.resolve();
+    Object.defineProperty(video, 'play', { value() {
+      Promise.resolve().then(() => {
+        video.dispatchEvent(new Event('play'));
+      });
+    } });
+    // simulate timeupdate beforechange
+    oldVideo.dispatchEvent(new Event('timeupdate'));
+    // simulate metadata loaded finished
+    video.dispatchEvent(new Event('loadedmetadata'));
+    // simulate canplayable
+    video.dispatchEvent(new Event('canplay'));
+    await expect(result).resolves.toBe();
+    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.__dispatcher.dom.videoElement).toBe(video);
+    expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
+    player.src = 'http://cdn.toxicjohann.com/lostStar.mp4';
+    expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
+  });
   test('repeat times', async () => {
     const plugin = {
       name: 'silentLoadWithPlugin',
