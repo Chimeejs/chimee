@@ -39,6 +39,7 @@ Field | Type | Description
 `error` | `Object` | kernel error
 
 Error code FLV:
+
 Errno | Type | Description
 ---|---|---
 `100` | `Number` | NET_ERROR
