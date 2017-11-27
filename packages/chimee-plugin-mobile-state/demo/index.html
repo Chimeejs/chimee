@@ -42,5 +42,8 @@
       x5VideoOrientation: true,
       xWebkitAirplay: true
     });
+    document.addEventListener("WeixinJSBridgeReady", function (){ 
+      player.play();
+    }, false)
   </script>
 </html>

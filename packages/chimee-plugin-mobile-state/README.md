@@ -73,3 +73,7 @@ const player = new chimee({
 
 4. 横屏
 
+5. ios 11 微信下， 不会自动加载
+
+6. ios 11 微信／safari 下， 全屏， tap 时会有一层， 灰色遮罩
+
