@@ -1,0 +1,46 @@
+<!DOCTYPE html> 
+<html>
+  <meta name="viewport">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <head>
+    <title>test</title>
+    <style>
+      #wrap{
+        width: 100%;
+      }
+      container{
+        position: relative;
+      }
+      container, video{
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: #000;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="wrap"></div>
+  </body>
+  <script src="https://s5.ssl.qhres.com/static/588b46b97caa0749.js"></script>  
+  <script src="../node_modules/chimee/lib/index.browser.js"></script>
+  <script src="../../chimee-plugin-mobile-controlbar/lib/index.browser.js"></script>
+  <script src="../lib/index.browser.js"></script>
+  <script>
+    const vConsole = new VConsole();
+    Chimee.install(chimeePluginMobileControlbar);
+    Chimee.install(chimeePluginMobileCenterState);
+    const player = new Chimee({
+      wrapper: '#wrap',
+      src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/103_371ab0c0fda-143d-4755-8727-d3cd12dce02d.mp4',
+      plugin: [chimeePluginMobileControlbar.name, chimeePluginMobileCenterState.name],
+      controls: true,
+      autoplay: true,
+      playsInline: true,
+      x5VideoPlayerFullscreen: true,
+      x5VideoOrientation: true,
+      xWebkitAirplay: true
+    });
+  </script>
+</html>
