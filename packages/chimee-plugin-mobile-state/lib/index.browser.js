@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-mobile-center-state v0.0.1
+ * chimee-plugin-mobile-state v0.0.1
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -8,7 +8,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
-	(global.chimeePluginMobileCenterState = factory());
+	(global.chimeePluginMobileState = factory());
 }(this, (function () { 'use strict';
 
 function __$styleInject(css, returnValue) {
@@ -29,21 +29,21 @@ function __$styleInject(css, returnValue) {
   return returnValue;
 }
 
-__$styleInject("chimee-state{position:absolute;top:0;left:0;width:100%;height:100%;font-size:24px}chimee-state-error,chimee-state-light,chimee-state-loading,chimee-state-play,chimee-state-volume{display:none}chimee-state.error chimee-state-error,chimee-state.light chimee-state-light,chimee-state.loading chimee-state-loading,chimee-state.play chimee-state-play,chimee-state.volume chimee-state-volume{display:inline-block}chimee-state-error,chimee-state-loading,chimee-state-play{position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}chimee-state-play{background-image:url(\"data:image/svg+xml;base64,Cjxzdmcgd2lkdGg9IjkycHgiIGhlaWdodD0iOTJweCIgdmlld0JveD0iMCAwIDkyIDkyIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0Ny4xICg0NTQyMikgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxjaXJjbGUgaWQ9Ik92YWwiIGZpbGwtb3BhY2l0eT0iMC41IiBmaWxsPSIjMDAwMDAwIiBjeD0iNDYiIGN5PSI0NiIgcj0iNDYiPjwvY2lyY2xlPgogICAgICAgIDxwb2x5Z29uIGlkPSJUcmlhbmdsZSIgZmlsbD0iI0ZGRkZGRiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTEuMDAwMDAwLCA0Ni41MDAwMDApIHJvdGF0ZSg5MC4wMDAwMDApIHRyYW5zbGF0ZSgtNTEuMDAwMDAwLCAtNDYuNTAwMDAwKSAiIHBvaW50cz0iNTEgMjYgNzYgNjcgMjYgNjciPjwvcG9seWdvbj4KICAgIDwvZz4KPC9zdmc+\");background-position:110% 50%;-webkit-box-sizing:content-box;box-sizing:content-box;-webkit-box-sizing:initial;box-sizing:initial}chimee-state-loading,chimee-state-play{width:2em;height:2em;background-origin:content-box;background-size:auto 100%;background-repeat:no-repeat}chimee-state-loading{background-image:url(\"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTIwcHgnIGhlaWdodD0nMTIwcHgnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIiBjbGFzcz0idWlsLWRlZmF1bHQiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSJub25lIiBjbGFzcz0iYmsiPjwvcmVjdD48cmVjdCAgeD0nNDcnIHk9JzQwJyB3aWR0aD0nNicgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSgwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nLTFzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDcnIHk9JzQwJyB3aWR0aD0nNicgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSgzMCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49Jy0wLjkxNjY2NjY2NjY2NjY2NjZzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDcnIHk9JzQwJyB3aWR0aD0nNicgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSg2MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49Jy0wLjgzMzMzMzMzMzMzMzMzMzRzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDcnIHk9JzQwJyB3aWR0aD0nNicgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSg5MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49Jy0wLjc1cycgcmVwZWF0Q291bnQ9J2luZGVmaW5pdGUnLz48L3JlY3Q+PHJlY3QgIHg9JzQ3JyB5PSc0MCcgd2lkdGg9JzYnIGhlaWdodD0nMjAnIHJ4PSc1JyByeT0nNScgZmlsbD0nI2ZmZmZmZicgdHJhbnNmb3JtPSdyb3RhdGUoMTIwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nLTAuNjY2NjY2NjY2NjY2NjY2NnMnIHJlcGVhdENvdW50PSdpbmRlZmluaXRlJy8+PC9yZWN0PjxyZWN0ICB4PSc0NycgeT0nNDAnIHdpZHRoPSc2JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNmZmZmZmYnIHRyYW5zZm9ybT0ncm90YXRlKDE1MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49Jy0wLjU4MzMzMzMzMzMzMzMzMzRzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDcnIHk9JzQwJyB3aWR0aD0nNicgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSgxODAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPiAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0nb3BhY2l0eScgZnJvbT0nMScgdG89JzAnIGR1cj0nMXMnIGJlZ2luPSctMC41cycgcmVwZWF0Q291bnQ9J2luZGVmaW5pdGUnLz48L3JlY3Q+PHJlY3QgIHg9JzQ3JyB5PSc0MCcgd2lkdGg9JzYnIGhlaWdodD0nMjAnIHJ4PSc1JyByeT0nNScgZmlsbD0nI2ZmZmZmZicgdHJhbnNmb3JtPSdyb3RhdGUoMjEwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nLTAuNDE2NjY2NjY2NjY2NjY2N3MnIHJlcGVhdENvdW50PSdpbmRlZmluaXRlJy8+PC9yZWN0PjxyZWN0ICB4PSc0NycgeT0nNDAnIHdpZHRoPSc2JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNmZmZmZmYnIHRyYW5zZm9ybT0ncm90YXRlKDI0MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49Jy0wLjMzMzMzMzMzMzMzMzMzMzNzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDcnIHk9JzQwJyB3aWR0aD0nNicgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSgyNzAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPiAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0nb3BhY2l0eScgZnJvbT0nMScgdG89JzAnIGR1cj0nMXMnIGJlZ2luPSctMC4yNXMnIHJlcGVhdENvdW50PSdpbmRlZmluaXRlJy8+PC9yZWN0PjxyZWN0ICB4PSc0NycgeT0nNDAnIHdpZHRoPSc2JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNmZmZmZmYnIHRyYW5zZm9ybT0ncm90YXRlKDMwMCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49Jy0wLjE2NjY2NjY2NjY2NjY2NjY2cycgcmVwZWF0Q291bnQ9J2luZGVmaW5pdGUnLz48L3JlY3Q+PHJlY3QgIHg9JzQ3JyB5PSc0MCcgd2lkdGg9JzYnIGhlaWdodD0nMjAnIHJ4PSc1JyByeT0nNScgZmlsbD0nI2ZmZmZmZicgdHJhbnNmb3JtPSdyb3RhdGUoMzMwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nLTAuMDgzMzMzMzMzMzMzMzMzMzNzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48L3N2Zz4=\");background-position:50%}chimee-state-error{display:none;font-size:16px;z-index:1;color:#ffcf00;text-shadow:0 0 3px red;font-weight:100}chimee-state-volume{position:absolute;top:4em;left:1em;width:1em;bottom:4em}chimee-state-volume-icon{display:inline-block;position:absolute;left:.2em;bottom:0;width:.5em;height:1em;fill:#fff;stroke:#fff}chimee-state-volume-bar{display:inline-block;position:absolute;left:.4em;top:0;bottom:1em;width:4px}chimee-state-volume-bar-track,chimee-state-volume-bar-value{display:inline-block;position:absolute;left:0;bottom:0;width:100%;height:100%;background-color:#4c4c4c;border-radius:4px}chimee-state-volume-bar-value{height:0%;background-color:#de698c}", undefined);
+__$styleInject("chimee-state{position:absolute;top:0;left:0;width:100%;height:100%;font-size:24px}chimee-state-error,chimee-state-loading,chimee-state-play{display:none}chimee-state.error chimee-state-error,chimee-state.loading chimee-state-loading,chimee-state.play chimee-state-play{display:inline-block}chimee-state-error,chimee-state-loading,chimee-state-play{position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}chimee-state-play{background-image:url(\"data:image/svg+xml;base64,Cjxzdmcgd2lkdGg9IjkycHgiIGhlaWdodD0iOTJweCIgdmlld0JveD0iMCAwIDkyIDkyIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA0Ny4xICg0NTQyMikgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxjaXJjbGUgaWQ9Ik92YWwiIGZpbGwtb3BhY2l0eT0iMC41IiBmaWxsPSIjMDAwMDAwIiBjeD0iNDYiIGN5PSI0NiIgcj0iNDYiPjwvY2lyY2xlPgogICAgICAgIDxwb2x5Z29uIGlkPSJUcmlhbmdsZSIgZmlsbD0iI0ZGRkZGRiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTEuMDAwMDAwLCA0Ni41MDAwMDApIHJvdGF0ZSg5MC4wMDAwMDApIHRyYW5zbGF0ZSgtNTEuMDAwMDAwLCAtNDYuNTAwMDAwKSAiIHBvaW50cz0iNTEgMjYgNzYgNjcgMjYgNjciPjwvcG9seWdvbj4KICAgIDwvZz4KPC9zdmc+\");background-position:110% 50%;-webkit-box-sizing:content-box;box-sizing:content-box;-webkit-box-sizing:initial;box-sizing:initial}chimee-state-loading,chimee-state-play{width:2em;height:2em;background-origin:content-box;background-size:auto 100%;background-repeat:no-repeat}chimee-state-loading{background-image:url(\"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTIwcHgnIGhlaWdodD0nMTIwcHgnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIiBjbGFzcz0idWlsLWRlZmF1bHQiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSJub25lIiBjbGFzcz0iYmsiPjwvcmVjdD48cmVjdCAgeD0nNDcnIHk9JzQwJyB3aWR0aD0nNicgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSgwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nLTFzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDcnIHk9JzQwJyB3aWR0aD0nNicgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSgzMCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49Jy0wLjkxNjY2NjY2NjY2NjY2NjZzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDcnIHk9JzQwJyB3aWR0aD0nNicgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSg2MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49Jy0wLjgzMzMzMzMzMzMzMzMzMzRzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDcnIHk9JzQwJyB3aWR0aD0nNicgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSg5MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49Jy0wLjc1cycgcmVwZWF0Q291bnQ9J2luZGVmaW5pdGUnLz48L3JlY3Q+PHJlY3QgIHg9JzQ3JyB5PSc0MCcgd2lkdGg9JzYnIGhlaWdodD0nMjAnIHJ4PSc1JyByeT0nNScgZmlsbD0nI2ZmZmZmZicgdHJhbnNmb3JtPSdyb3RhdGUoMTIwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nLTAuNjY2NjY2NjY2NjY2NjY2NnMnIHJlcGVhdENvdW50PSdpbmRlZmluaXRlJy8+PC9yZWN0PjxyZWN0ICB4PSc0NycgeT0nNDAnIHdpZHRoPSc2JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNmZmZmZmYnIHRyYW5zZm9ybT0ncm90YXRlKDE1MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49Jy0wLjU4MzMzMzMzMzMzMzMzMzRzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDcnIHk9JzQwJyB3aWR0aD0nNicgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSgxODAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPiAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0nb3BhY2l0eScgZnJvbT0nMScgdG89JzAnIGR1cj0nMXMnIGJlZ2luPSctMC41cycgcmVwZWF0Q291bnQ9J2luZGVmaW5pdGUnLz48L3JlY3Q+PHJlY3QgIHg9JzQ3JyB5PSc0MCcgd2lkdGg9JzYnIGhlaWdodD0nMjAnIHJ4PSc1JyByeT0nNScgZmlsbD0nI2ZmZmZmZicgdHJhbnNmb3JtPSdyb3RhdGUoMjEwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nLTAuNDE2NjY2NjY2NjY2NjY2N3MnIHJlcGVhdENvdW50PSdpbmRlZmluaXRlJy8+PC9yZWN0PjxyZWN0ICB4PSc0NycgeT0nNDAnIHdpZHRoPSc2JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNmZmZmZmYnIHRyYW5zZm9ybT0ncm90YXRlKDI0MCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49Jy0wLjMzMzMzMzMzMzMzMzMzMzNzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48cmVjdCAgeD0nNDcnIHk9JzQwJyB3aWR0aD0nNicgaGVpZ2h0PScyMCcgcng9JzUnIHJ5PSc1JyBmaWxsPScjZmZmZmZmJyB0cmFuc2Zvcm09J3JvdGF0ZSgyNzAgNTAgNTApIHRyYW5zbGF0ZSgwIC0zMCknPiAgPGFuaW1hdGUgYXR0cmlidXRlTmFtZT0nb3BhY2l0eScgZnJvbT0nMScgdG89JzAnIGR1cj0nMXMnIGJlZ2luPSctMC4yNXMnIHJlcGVhdENvdW50PSdpbmRlZmluaXRlJy8+PC9yZWN0PjxyZWN0ICB4PSc0NycgeT0nNDAnIHdpZHRoPSc2JyBoZWlnaHQ9JzIwJyByeD0nNScgcnk9JzUnIGZpbGw9JyNmZmZmZmYnIHRyYW5zZm9ybT0ncm90YXRlKDMwMCA1MCA1MCkgdHJhbnNsYXRlKDAgLTMwKSc+ICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSdvcGFjaXR5JyBmcm9tPScxJyB0bz0nMCcgZHVyPScxcycgYmVnaW49Jy0wLjE2NjY2NjY2NjY2NjY2NjY2cycgcmVwZWF0Q291bnQ9J2luZGVmaW5pdGUnLz48L3JlY3Q+PHJlY3QgIHg9JzQ3JyB5PSc0MCcgd2lkdGg9JzYnIGhlaWdodD0nMjAnIHJ4PSc1JyByeT0nNScgZmlsbD0nI2ZmZmZmZicgdHJhbnNmb3JtPSdyb3RhdGUoMzMwIDUwIDUwKSB0cmFuc2xhdGUoMCAtMzApJz4gIDxhbmltYXRlIGF0dHJpYnV0ZU5hbWU9J29wYWNpdHknIGZyb209JzEnIHRvPScwJyBkdXI9JzFzJyBiZWdpbj0nLTAuMDgzMzMzMzMzMzMzMzMzMzNzJyByZXBlYXRDb3VudD0naW5kZWZpbml0ZScvPjwvcmVjdD48L3N2Zz4=\");background-position:50%}chimee-state-error{display:none;font-size:16px;z-index:1;color:#ffcf00;text-shadow:0 0 3px red;font-weight:100}", undefined);
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 
 
-function unwrapExports (x) {
+function unwrapExports$1 (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
-function createCommonjsModule(fn, module) {
+function createCommonjsModule$1(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
 
-var classCallCheck = createCommonjsModule(function (module, exports) {
+var classCallCheck$1 = createCommonjsModule$1(function (module, exports) {
 exports.__esModule = true;
 
 exports.default = function (instance, Constructor) {
@@ -53,9 +53,9 @@ exports.default = function (instance, Constructor) {
 };
 });
 
-var _classCallCheck = unwrapExports(classCallCheck);
+var _classCallCheck$1 = unwrapExports$1(classCallCheck$1);
 
-var _global = createCommonjsModule(function (module) {
+var _global$1 = createCommonjsModule$1(function (module) {
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self
@@ -64,20 +64,22 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
-var _core = createCommonjsModule(function (module) {
+var _core$1 = createCommonjsModule$1(function (module) {
 var core = module.exports = { version: '2.5.1' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
 
-var _core_1 = _core.version;
+var _core_1$1 = _core$1.version;
 
-var _aFunction = function (it) {
+var _aFunction$1 = function (it) {
   if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
 
-var _ctx = function (fn, that, length) {
-  _aFunction(fn);
+// optional / simple context binding
+
+var _ctx$1 = function (fn, that, length) {
+  _aFunction$1(fn);
   if (that === undefined) return fn;
   switch (length) {
     case 1: return function (a) {
@@ -95,16 +97,16 @@ var _ctx = function (fn, that, length) {
   };
 };
 
-var _isObject = function (it) {
+var _isObject$1 = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
-var _anObject = function (it) {
-  if (!_isObject(it)) throw TypeError(it + ' is not an object!');
+var _anObject$1 = function (it) {
+  if (!_isObject$1(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
 
-var _fails = function (exec) {
+var _fails$1 = function (exec) {
   try {
     return !!exec();
   } catch (e) {
@@ -112,49 +114,54 @@ var _fails = function (exec) {
   }
 };
 
-var _descriptors = !_fails(function () {
+// Thank's IE8 for his funny defineProperty
+var _descriptors$1 = !_fails$1(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
-var document$1 = _global.document;
+var document$2 = _global$1.document;
 // typeof document.createElement is 'object' in old IE
-var is = _isObject(document$1) && _isObject(document$1.createElement);
-var _domCreate = function (it) {
-  return is ? document$1.createElement(it) : {};
+var is$1 = _isObject$1(document$2) && _isObject$1(document$2.createElement);
+var _domCreate$1 = function (it) {
+  return is$1 ? document$2.createElement(it) : {};
 };
 
-var _ie8DomDefine = !_descriptors && !_fails(function () {
-  return Object.defineProperty(_domCreate('div'), 'a', { get: function () { return 7; } }).a != 7;
+var _ie8DomDefine$1 = !_descriptors$1 && !_fails$1(function () {
+  return Object.defineProperty(_domCreate$1('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
-var _toPrimitive = function (it, S) {
-  if (!_isObject(it)) return it;
+// 7.1.1 ToPrimitive(input [, PreferredType])
+
+// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+// and the second argument - flag - preferred type is a string
+var _toPrimitive$1 = function (it, S) {
+  if (!_isObject$1(it)) return it;
   var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !_isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !_isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !_isObject(val = fn.call(it))) return val;
+  if (S && typeof (fn = it.toString) == 'function' && !_isObject$1(val = fn.call(it))) return val;
+  if (typeof (fn = it.valueOf) == 'function' && !_isObject$1(val = fn.call(it))) return val;
+  if (!S && typeof (fn = it.toString) == 'function' && !_isObject$1(val = fn.call(it))) return val;
   throw TypeError("Can't convert object to primitive value");
 };
 
-var dP = Object.defineProperty;
+var dP$1 = Object.defineProperty;
 
-var f = _descriptors ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  _anObject(O);
-  P = _toPrimitive(P, true);
-  _anObject(Attributes);
-  if (_ie8DomDefine) try {
-    return dP(O, P, Attributes);
+var f$1 = _descriptors$1 ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+  _anObject$1(O);
+  P = _toPrimitive$1(P, true);
+  _anObject$1(Attributes);
+  if (_ie8DomDefine$1) try {
+    return dP$1(O, P, Attributes);
   } catch (e) { /* empty */ }
   if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
   if ('value' in Attributes) O[P] = Attributes.value;
   return O;
 };
 
-var _objectDp = {
-	f: f
+var _objectDp$1 = {
+	f: f$1
 };
 
-var _propertyDesc = function (bitmap, value) {
+var _propertyDesc$1 = function (bitmap, value) {
   return {
     enumerable: !(bitmap & 1),
     configurable: !(bitmap & 2),
@@ -163,25 +170,25 @@ var _propertyDesc = function (bitmap, value) {
   };
 };
 
-var _hide = _descriptors ? function (object, key, value) {
-  return _objectDp.f(object, key, _propertyDesc(1, value));
+var _hide$1 = _descriptors$1 ? function (object, key, value) {
+  return _objectDp$1.f(object, key, _propertyDesc$1(1, value));
 } : function (object, key, value) {
   object[key] = value;
   return object;
 };
 
-var PROTOTYPE = 'prototype';
+var PROTOTYPE$1 = 'prototype';
 
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? _core : _core[name] || (_core[name] = {});
-  var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? _global : IS_STATIC ? _global[name] : (_global[name] || {})[PROTOTYPE];
+var $export$1 = function (type, name, source) {
+  var IS_FORCED = type & $export$1.F;
+  var IS_GLOBAL = type & $export$1.G;
+  var IS_STATIC = type & $export$1.S;
+  var IS_PROTO = type & $export$1.P;
+  var IS_BIND = type & $export$1.B;
+  var IS_WRAP = type & $export$1.W;
+  var exports = IS_GLOBAL ? _core$1 : _core$1[name] || (_core$1[name] = {});
+  var expProto = exports[PROTOTYPE$1];
+  var target = IS_GLOBAL ? _global$1 : IS_STATIC ? _global$1[name] : (_global$1[name] || {})[PROTOTYPE$1];
   var key, own, out;
   if (IS_GLOBAL) source = name;
   for (key in source) {
@@ -193,7 +200,7 @@ var $export = function (type, name, source) {
     // prevent global pollution for namespaces
     exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
     // bind timers to global for call from export context
-    : IS_BIND && own ? _ctx(out, _global)
+    : IS_BIND && own ? _ctx$1(out, _global$1)
     // wrap global constructors for prevent change them in library
     : IS_WRAP && target[key] == out ? (function (C) {
       var F = function (a, b, c) {
@@ -205,48 +212,49 @@ var $export = function (type, name, source) {
           } return new C(a, b, c);
         } return C.apply(this, arguments);
       };
-      F[PROTOTYPE] = C[PROTOTYPE];
+      F[PROTOTYPE$1] = C[PROTOTYPE$1];
       return F;
     // make static versions for prototype methods
-    })(out) : IS_PROTO && typeof out == 'function' ? _ctx(Function.call, out) : out;
+    })(out) : IS_PROTO && typeof out == 'function' ? _ctx$1(Function.call, out) : out;
     // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
     if (IS_PROTO) {
       (exports.virtual || (exports.virtual = {}))[key] = out;
       // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) _hide(expProto, key, out);
+      if (type & $export$1.R && expProto && !expProto[key]) _hide$1(expProto, key, out);
     }
   }
 };
 // type bitmap
-$export.F = 1;   // forced
-$export.G = 2;   // global
-$export.S = 4;   // static
-$export.P = 8;   // proto
-$export.B = 16;  // bind
-$export.W = 32;  // wrap
-$export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
-var _export = $export;
+$export$1.F = 1;   // forced
+$export$1.G = 2;   // global
+$export$1.S = 4;   // static
+$export$1.P = 8;   // proto
+$export$1.B = 16;  // bind
+$export$1.W = 32;  // wrap
+$export$1.U = 64;  // safe
+$export$1.R = 128; // real proto method for `library`
+var _export$1 = $export$1;
 
-_export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
+// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+_export$1(_export$1.S + _export$1.F * !_descriptors$1, 'Object', { defineProperty: _objectDp$1.f });
 
-var $Object = _core.Object;
-var defineProperty$2 = function defineProperty(it, key, desc) {
-  return $Object.defineProperty(it, key, desc);
+var $Object$1 = _core$1.Object;
+var defineProperty$3 = function defineProperty(it, key, desc) {
+  return $Object$1.defineProperty(it, key, desc);
 };
 
-var defineProperty = createCommonjsModule(function (module) {
-module.exports = { "default": defineProperty$2, __esModule: true };
+var defineProperty$1 = createCommonjsModule$1(function (module) {
+module.exports = { "default": defineProperty$3, __esModule: true };
 });
 
-unwrapExports(defineProperty);
+unwrapExports$1(defineProperty$1);
 
-var createClass = createCommonjsModule(function (module, exports) {
+var createClass$1 = createCommonjsModule$1(function (module, exports) {
 exports.__esModule = true;
 
 
 
-var _defineProperty2 = _interopRequireDefault(defineProperty);
+var _defineProperty2 = _interopRequireDefault(defineProperty$1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -269,7 +277,7 @@ exports.default = function () {
 }();
 });
 
-var _createClass = unwrapExports(createClass);
+var _createClass$1 = unwrapExports$1(createClass$1);
 
 // 7.1.4 ToInteger
 var ceil = Math.ceil;
@@ -284,6 +292,8 @@ var _defined = function (it) {
   return it;
 };
 
+// true  -> String#at
+// false -> String#codePointAt
 var _stringAt = function (TO_STRING) {
   return function (that, pos) {
     var s = String(_defined(that));
@@ -300,7 +310,7 @@ var _stringAt = function (TO_STRING) {
 
 var _library = true;
 
-var _redefine = _hide;
+var _redefine = _hide$1;
 
 var hasOwnProperty = {}.hasOwnProperty;
 var _has = function (it, key) {
@@ -315,13 +325,21 @@ var _cof = function (it) {
   return toString.call(it).slice(8, -1);
 };
 
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+
+// eslint-disable-next-line no-prototype-builtins
 var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return _cof(it) == 'String' ? it.split('') : Object(it);
 };
 
+// to indexed object, toObject with fallback for non-array-like ES3 strings
+
+
 var _toIobject = function (it) {
   return _iobject(_defined(it));
 };
+
+// 7.1.15 ToLength
 
 var min = Math.min;
 var _toLength = function (it) {
@@ -334,6 +352,11 @@ var _toAbsoluteIndex = function (index, length) {
   index = _toInteger(index);
   return index < 0 ? max(index + length, 0) : min$1(index, length);
 };
+
+// false -> Array#indexOf
+// true  -> Array#includes
+
+
 
 var _arrayIncludes = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
@@ -355,7 +378,7 @@ var _arrayIncludes = function (IS_INCLUDES) {
 };
 
 var SHARED = '__core-js_shared__';
-var store = _global[SHARED] || (_global[SHARED] = {});
+var store = _global$1[SHARED] || (_global$1[SHARED] = {});
 var _shared = function (key) {
   return store[key] || (store[key] = {});
 };
@@ -393,31 +416,39 @@ var _enumBugKeys = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
 
+// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+
+
+
 var _objectKeys = Object.keys || function keys(O) {
   return _objectKeysInternal(O, _enumBugKeys);
 };
 
-var _objectDps = _descriptors ? Object.defineProperties : function defineProperties(O, Properties) {
-  _anObject(O);
+var _objectDps = _descriptors$1 ? Object.defineProperties : function defineProperties(O, Properties) {
+  _anObject$1(O);
   var keys = _objectKeys(Properties);
   var length = keys.length;
   var i = 0;
   var P;
-  while (length > i) _objectDp.f(O, P = keys[i++], Properties[P]);
+  while (length > i) _objectDp$1.f(O, P = keys[i++], Properties[P]);
   return O;
 };
 
-var document$2 = _global.document;
-var _html = document$2 && document$2.documentElement;
+var document$3 = _global$1.document;
+var _html = document$3 && document$3.documentElement;
+
+// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+
+
 
 var IE_PROTO = _sharedKey('IE_PROTO');
 var Empty = function () { /* empty */ };
-var PROTOTYPE$1 = 'prototype';
+var PROTOTYPE$2 = 'prototype';
 
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
 var createDict = function () {
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = _domCreate('iframe');
+  var iframe = _domCreate$1('iframe');
   var i = _enumBugKeys.length;
   var lt = '<';
   var gt = '>';
@@ -432,26 +463,26 @@ var createDict = function () {
   iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
   iframeDocument.close();
   createDict = iframeDocument.F;
-  while (i--) delete createDict[PROTOTYPE$1][_enumBugKeys[i]];
+  while (i--) delete createDict[PROTOTYPE$2][_enumBugKeys[i]];
   return createDict();
 };
 
 var _objectCreate = Object.create || function create(O, Properties) {
   var result;
   if (O !== null) {
-    Empty[PROTOTYPE$1] = _anObject(O);
+    Empty[PROTOTYPE$2] = _anObject$1(O);
     result = new Empty();
-    Empty[PROTOTYPE$1] = null;
+    Empty[PROTOTYPE$2] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
     result[IE_PROTO] = O;
   } else result = createDict();
   return Properties === undefined ? result : _objectDps(result, Properties);
 };
 
-var _wks = createCommonjsModule(function (module) {
+var _wks = createCommonjsModule$1(function (module) {
 var store = _shared('wks');
 
-var Symbol = _global.Symbol;
+var Symbol = _global$1.Symbol;
 var USE_SYMBOL = typeof Symbol == 'function';
 
 var $exports = module.exports = function (name) {
@@ -462,7 +493,7 @@ var $exports = module.exports = function (name) {
 $exports.store = store;
 });
 
-var def = _objectDp.f;
+var def = _objectDp$1.f;
 
 var TAG = _wks('toStringTag');
 
@@ -473,16 +504,21 @@ var _setToStringTag = function (it, tag, stat) {
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-_hide(IteratorPrototype, _wks('iterator'), function () { return this; });
+_hide$1(IteratorPrototype, _wks('iterator'), function () { return this; });
 
 var _iterCreate = function (Constructor, NAME, next) {
-  Constructor.prototype = _objectCreate(IteratorPrototype, { next: _propertyDesc(1, next) });
+  Constructor.prototype = _objectCreate(IteratorPrototype, { next: _propertyDesc$1(1, next) });
   _setToStringTag(Constructor, NAME + ' Iterator');
 };
+
+// 7.1.13 ToObject(argument)
 
 var _toObject = function (it) {
   return Object(_defined(it));
 };
+
+// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+
 
 var IE_PROTO$2 = _sharedKey('IE_PROTO');
 var ObjectProto = Object.prototype;
@@ -528,7 +564,7 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
       // Set @@toStringTag to native iterators
       _setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if (!_library && !_has(IteratorPrototype, ITERATOR)) _hide(IteratorPrototype, ITERATOR, returnThis);
+      if (!_library && !_has(IteratorPrototype, ITERATOR)) _hide$1(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
@@ -538,7 +574,7 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
   }
   // Define iterator
   if ((!_library || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
-    _hide(proto, ITERATOR, $default);
+    _hide$1(proto, ITERATOR, $default);
   }
   // Plug for library
   _iterators[NAME] = $default;
@@ -551,7 +587,7 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
     };
     if (FORCED) for (key in methods) {
       if (!(key in proto)) _redefine(proto, key, methods[key]);
-    } else _export(_export.P + _export.F * (BUGGY || VALUES_BUG), NAME, methods);
+    } else _export$1(_export$1.P + _export$1.F * (BUGGY || VALUES_BUG), NAME, methods);
   }
   return methods;
 };
@@ -577,6 +613,10 @@ var _iterStep = function (done, value) {
   return { value: value, done: !!done };
 };
 
+// 22.1.3.4 Array.prototype.entries()
+// 22.1.3.13 Array.prototype.keys()
+// 22.1.3.29 Array.prototype.values()
+// 22.1.3.30 Array.prototype[@@iterator]()
 var es6_array_iterator = _iterDefine(Array, 'Array', function (iterated, kind) {
   this._t = _toIobject(iterated); // target
   this._i = 0;                   // next index
@@ -608,36 +648,36 @@ var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList
 
 for (var i = 0; i < DOMIterables.length; i++) {
   var NAME = DOMIterables[i];
-  var Collection = _global[NAME];
+  var Collection = _global$1[NAME];
   var proto = Collection && Collection.prototype;
-  if (proto && !proto[TO_STRING_TAG]) _hide(proto, TO_STRING_TAG, NAME);
+  if (proto && !proto[TO_STRING_TAG]) _hide$1(proto, TO_STRING_TAG, NAME);
   _iterators[NAME] = _iterators.Array;
 }
 
-var f$1 = _wks;
+var f$2 = _wks;
 
 var _wksExt = {
-	f: f$1
+	f: f$2
 };
 
 var iterator$2 = _wksExt.f('iterator');
 
-var iterator = createCommonjsModule(function (module) {
+var iterator = createCommonjsModule$1(function (module) {
 module.exports = { "default": iterator$2, __esModule: true };
 });
 
-unwrapExports(iterator);
+unwrapExports$1(iterator);
 
-var _meta = createCommonjsModule(function (module) {
+var _meta = createCommonjsModule$1(function (module) {
 var META = _uid('meta');
 
 
-var setDesc = _objectDp.f;
+var setDesc = _objectDp$1.f;
 var id = 0;
 var isExtensible = Object.isExtensible || function () {
   return true;
 };
-var FREEZE = !_fails(function () {
+var FREEZE = !_fails$1(function () {
   return isExtensible(Object.preventExtensions({}));
 });
 var setMeta = function (it) {
@@ -648,7 +688,7 @@ var setMeta = function (it) {
 };
 var fastKey = function (it, create) {
   // return primitive with prefix
-  if (!_isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if (!_isObject$1(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
   if (!_has(it, META)) {
     // can't set metadata to uncaught frozen object
     if (!isExtensible(it)) return 'F';
@@ -690,23 +730,27 @@ var _meta_3 = _meta.fastKey;
 var _meta_4 = _meta.getWeak;
 var _meta_5 = _meta.onFreeze;
 
-var defineProperty$4 = _objectDp.f;
+var defineProperty$5 = _objectDp$1.f;
 var _wksDefine = function (name) {
-  var $Symbol = _core.Symbol || (_core.Symbol = _library ? {} : _global.Symbol || {});
-  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$4($Symbol, name, { value: _wksExt.f(name) });
+  var $Symbol = _core$1.Symbol || (_core$1.Symbol = _library ? {} : _global$1.Symbol || {});
+  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$5($Symbol, name, { value: _wksExt.f(name) });
 };
 
-var f$2 = Object.getOwnPropertySymbols;
+var f$3 = Object.getOwnPropertySymbols;
 
 var _objectGops = {
-	f: f$2
-};
-
-var f$3 = {}.propertyIsEnumerable;
-
-var _objectPie = {
 	f: f$3
 };
+
+var f$4 = {}.propertyIsEnumerable;
+
+var _objectPie = {
+	f: f$4
+};
+
+// all enumerable object keys, includes symbols
+
+
 
 var _enumKeys = function (it) {
   var result = _objectKeys(it);
@@ -720,19 +764,25 @@ var _enumKeys = function (it) {
   } return result;
 };
 
+// 7.2.2 IsArray(argument)
+
 var _isArray = Array.isArray || function isArray(arg) {
   return _cof(arg) == 'Array';
 };
 
+// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
+
 var hiddenKeys = _enumBugKeys.concat('length', 'prototype');
 
-var f$5 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+var f$6 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return _objectKeysInternal(O, hiddenKeys);
 };
 
 var _objectGopn = {
-	f: f$5
+	f: f$6
 };
+
+// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 
 var gOPN$1 = _objectGopn.f;
 var toString$1 = {}.toString;
@@ -748,28 +798,34 @@ var getWindowNames = function (it) {
   }
 };
 
-var f$4 = function getOwnPropertyNames(it) {
+var f$5 = function getOwnPropertyNames(it) {
   return windowNames && toString$1.call(it) == '[object Window]' ? getWindowNames(it) : gOPN$1(_toIobject(it));
 };
 
 var _objectGopnExt = {
-	f: f$4
+	f: f$5
 };
 
 var gOPD$1 = Object.getOwnPropertyDescriptor;
 
-var f$6 = _descriptors ? gOPD$1 : function getOwnPropertyDescriptor(O, P) {
+var f$7 = _descriptors$1 ? gOPD$1 : function getOwnPropertyDescriptor(O, P) {
   O = _toIobject(O);
-  P = _toPrimitive(P, true);
-  if (_ie8DomDefine) try {
+  P = _toPrimitive$1(P, true);
+  if (_ie8DomDefine$1) try {
     return gOPD$1(O, P);
   } catch (e) { /* empty */ }
-  if (_has(O, P)) return _propertyDesc(!_objectPie.f.call(O, P), O[P]);
+  if (_has(O, P)) return _propertyDesc$1(!_objectPie.f.call(O, P), O[P]);
 };
 
 var _objectGopd = {
-	f: f$6
+	f: f$7
 };
+
+// ECMAScript 6 symbols shim
+
+
+
+
 
 var META = _meta.KEY;
 
@@ -791,38 +847,38 @@ var META = _meta.KEY;
 
 
 var gOPD = _objectGopd.f;
-var dP$2 = _objectDp.f;
+var dP$3 = _objectDp$1.f;
 var gOPN = _objectGopnExt.f;
-var $Symbol = _global.Symbol;
-var $JSON = _global.JSON;
+var $Symbol = _global$1.Symbol;
+var $JSON = _global$1.JSON;
 var _stringify = $JSON && $JSON.stringify;
-var PROTOTYPE$2 = 'prototype';
+var PROTOTYPE$3 = 'prototype';
 var HIDDEN = _wks('_hidden');
 var TO_PRIMITIVE = _wks('toPrimitive');
 var isEnum = {}.propertyIsEnumerable;
 var SymbolRegistry = _shared('symbol-registry');
 var AllSymbols = _shared('symbols');
 var OPSymbols = _shared('op-symbols');
-var ObjectProto$1 = Object[PROTOTYPE$2];
+var ObjectProto$1 = Object[PROTOTYPE$3];
 var USE_NATIVE = typeof $Symbol == 'function';
-var QObject = _global.QObject;
+var QObject = _global$1.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
-var setter = !QObject || !QObject[PROTOTYPE$2] || !QObject[PROTOTYPE$2].findChild;
+var setter = !QObject || !QObject[PROTOTYPE$3] || !QObject[PROTOTYPE$3].findChild;
 
 // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-var setSymbolDesc = _descriptors && _fails(function () {
-  return _objectCreate(dP$2({}, 'a', {
-    get: function () { return dP$2(this, 'a', { value: 7 }).a; }
+var setSymbolDesc = _descriptors$1 && _fails$1(function () {
+  return _objectCreate(dP$3({}, 'a', {
+    get: function () { return dP$3(this, 'a', { value: 7 }).a; }
   })).a != 7;
 }) ? function (it, key, D) {
   var protoDesc = gOPD(ObjectProto$1, key);
   if (protoDesc) delete ObjectProto$1[key];
-  dP$2(it, key, D);
-  if (protoDesc && it !== ObjectProto$1) dP$2(ObjectProto$1, key, protoDesc);
-} : dP$2;
+  dP$3(it, key, D);
+  if (protoDesc && it !== ObjectProto$1) dP$3(ObjectProto$1, key, protoDesc);
+} : dP$3;
 
 var wrap = function (tag) {
-  var sym = AllSymbols[tag] = _objectCreate($Symbol[PROTOTYPE$2]);
+  var sym = AllSymbols[tag] = _objectCreate($Symbol[PROTOTYPE$3]);
   sym._k = tag;
   return sym;
 };
@@ -835,21 +891,21 @@ var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it)
 
 var $defineProperty = function defineProperty(it, key, D) {
   if (it === ObjectProto$1) $defineProperty(OPSymbols, key, D);
-  _anObject(it);
-  key = _toPrimitive(key, true);
-  _anObject(D);
+  _anObject$1(it);
+  key = _toPrimitive$1(key, true);
+  _anObject$1(D);
   if (_has(AllSymbols, key)) {
     if (!D.enumerable) {
-      if (!_has(it, HIDDEN)) dP$2(it, HIDDEN, _propertyDesc(1, {}));
+      if (!_has(it, HIDDEN)) dP$3(it, HIDDEN, _propertyDesc$1(1, {}));
       it[HIDDEN][key] = true;
     } else {
       if (_has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
-      D = _objectCreate(D, { enumerable: _propertyDesc(0, false) });
+      D = _objectCreate(D, { enumerable: _propertyDesc$1(0, false) });
     } return setSymbolDesc(it, key, D);
-  } return dP$2(it, key, D);
+  } return dP$3(it, key, D);
 };
 var $defineProperties = function defineProperties(it, P) {
-  _anObject(it);
+  _anObject$1(it);
   var keys = _enumKeys(P = _toIobject(P));
   var i = 0;
   var l = keys.length;
@@ -861,13 +917,13 @@ var $create = function create(it, P) {
   return P === undefined ? _objectCreate(it) : $defineProperties(_objectCreate(it), P);
 };
 var $propertyIsEnumerable = function propertyIsEnumerable(key) {
-  var E = isEnum.call(this, key = _toPrimitive(key, true));
+  var E = isEnum.call(this, key = _toPrimitive$1(key, true));
   if (this === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key)) return false;
   return E || !_has(this, key) || !_has(AllSymbols, key) || _has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
 };
 var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
   it = _toIobject(it);
-  key = _toPrimitive(key, true);
+  key = _toPrimitive$1(key, true);
   if (it === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key)) return;
   var D = gOPD(it, key);
   if (D && _has(AllSymbols, key) && !(_has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
@@ -901,22 +957,22 @@ if (!USE_NATIVE) {
     var $set = function (value) {
       if (this === ObjectProto$1) $set.call(OPSymbols, value);
       if (_has(this, HIDDEN) && _has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
-      setSymbolDesc(this, tag, _propertyDesc(1, value));
+      setSymbolDesc(this, tag, _propertyDesc$1(1, value));
     };
-    if (_descriptors && setter) setSymbolDesc(ObjectProto$1, tag, { configurable: true, set: $set });
+    if (_descriptors$1 && setter) setSymbolDesc(ObjectProto$1, tag, { configurable: true, set: $set });
     return wrap(tag);
   };
-  _redefine($Symbol[PROTOTYPE$2], 'toString', function toString() {
+  _redefine($Symbol[PROTOTYPE$3], 'toString', function toString() {
     return this._k;
   });
 
   _objectGopd.f = $getOwnPropertyDescriptor;
-  _objectDp.f = $defineProperty;
+  _objectDp$1.f = $defineProperty;
   _objectGopn.f = _objectGopnExt.f = $getOwnPropertyNames;
   _objectPie.f = $propertyIsEnumerable;
   _objectGops.f = $getOwnPropertySymbols;
 
-  if (_descriptors && !_library) {
+  if (_descriptors$1 && !_library) {
     _redefine(ObjectProto$1, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
@@ -925,7 +981,7 @@ if (!USE_NATIVE) {
   };
 }
 
-_export(_export.G + _export.W + _export.F * !USE_NATIVE, { Symbol: $Symbol });
+_export$1(_export$1.G + _export$1.W + _export$1.F * !USE_NATIVE, { Symbol: $Symbol });
 
 for (var es6Symbols = (
   // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
@@ -934,7 +990,7 @@ for (var es6Symbols = (
 
 for (var wellKnownSymbols = _objectKeys(_wks.store), k = 0; wellKnownSymbols.length > k;) _wksDefine(wellKnownSymbols[k++]);
 
-_export(_export.S + _export.F * !USE_NATIVE, 'Symbol', {
+_export$1(_export$1.S + _export$1.F * !USE_NATIVE, 'Symbol', {
   // 19.4.2.1 Symbol.for(key)
   'for': function (key) {
     return _has(SymbolRegistry, key += '')
@@ -950,7 +1006,7 @@ _export(_export.S + _export.F * !USE_NATIVE, 'Symbol', {
   useSimple: function () { setter = false; }
 });
 
-_export(_export.S + _export.F * !USE_NATIVE, 'Object', {
+_export$1(_export$1.S + _export$1.F * !USE_NATIVE, 'Object', {
   // 19.1.2.2 Object.create(O [, Properties])
   create: $create,
   // 19.1.2.4 Object.defineProperty(O, P, Attributes)
@@ -966,7 +1022,7 @@ _export(_export.S + _export.F * !USE_NATIVE, 'Object', {
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
-$JSON && _export(_export.S + _export.F * (!USE_NATIVE || _fails(function () {
+$JSON && _export$1(_export$1.S + _export$1.F * (!USE_NATIVE || _fails$1(function () {
   var S = $Symbol();
   // MS Edge converts symbol values to JSON as {}
   // WebKit converts symbol values to JSON as null
@@ -991,27 +1047,27 @@ $JSON && _export(_export.S + _export.F * (!USE_NATIVE || _fails(function () {
 });
 
 // 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
-$Symbol[PROTOTYPE$2][TO_PRIMITIVE] || _hide($Symbol[PROTOTYPE$2], TO_PRIMITIVE, $Symbol[PROTOTYPE$2].valueOf);
+$Symbol[PROTOTYPE$3][TO_PRIMITIVE] || _hide$1($Symbol[PROTOTYPE$3], TO_PRIMITIVE, $Symbol[PROTOTYPE$3].valueOf);
 // 19.4.3.5 Symbol.prototype[@@toStringTag]
 _setToStringTag($Symbol, 'Symbol');
 // 20.2.1.9 Math[@@toStringTag]
 _setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
-_setToStringTag(_global.JSON, 'JSON', true);
+_setToStringTag(_global$1.JSON, 'JSON', true);
 
 _wksDefine('asyncIterator');
 
 _wksDefine('observable');
 
-var symbol$2 = _core.Symbol;
+var symbol$2 = _core$1.Symbol;
 
-var symbol = createCommonjsModule(function (module) {
+var symbol = createCommonjsModule$1(function (module) {
 module.exports = { "default": symbol$2, __esModule: true };
 });
 
-unwrapExports(symbol);
+unwrapExports$1(symbol);
 
-var _typeof_1 = createCommonjsModule(function (module, exports) {
+var _typeof_1 = createCommonjsModule$1(function (module, exports) {
 exports.__esModule = true;
 
 
@@ -1033,14 +1089,22 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 };
 });
 
-var _typeof = unwrapExports(_typeof_1);
+var _typeof = unwrapExports$1(_typeof_1);
+
+// most Object methods by ES6 should accept primitives
+
+
 
 var _objectSap = function (KEY, exec) {
-  var fn = (_core.Object || {})[KEY] || Object[KEY];
+  var fn = (_core$1.Object || {})[KEY] || Object[KEY];
   var exp = {};
   exp[KEY] = exec(fn);
-  _export(_export.S + _export.F * _fails(function () { fn(1); }), 'Object', exp);
+  _export$1(_export$1.S + _export$1.F * _fails$1(function () { fn(1); }), 'Object', exp);
 };
+
+// 19.1.2.14 Object.keys(O)
+
+
 
 _objectSap('keys', function () {
   return function keys(it) {
@@ -1048,28 +1112,33 @@ _objectSap('keys', function () {
   };
 });
 
-var keys$1 = _core.Object.keys;
+var keys$1 = _core$1.Object.keys;
 
-var keys = createCommonjsModule(function (module) {
+var keys = createCommonjsModule$1(function (module) {
 module.exports = { "default": keys$1, __esModule: true };
 });
 
-unwrapExports(keys);
+unwrapExports$1(keys);
+
+// 20.1.2.3 Number.isInteger(number)
 
 var floor$1 = Math.floor;
 var _isInteger = function isInteger(it) {
-  return !_isObject(it) && isFinite(it) && floor$1(it) === it;
+  return !_isObject$1(it) && isFinite(it) && floor$1(it) === it;
 };
 
-_export(_export.S, 'Number', { isInteger: _isInteger });
+// 20.1.2.3 Number.isInteger(number)
 
-var isInteger$2 = _core.Number.isInteger;
 
-var isInteger$1 = createCommonjsModule(function (module) {
+_export$1(_export$1.S, 'Number', { isInteger: _isInteger });
+
+var isInteger$2 = _core$1.Number.isInteger;
+
+var isInteger$1 = createCommonjsModule$1(function (module) {
 module.exports = { "default": isInteger$2, __esModule: true };
 });
 
-unwrapExports(isInteger$1);
+unwrapExports$1(isInteger$1);
 
 var _stringWs = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
   '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
@@ -1081,12 +1150,12 @@ var rtrim = RegExp(space + space + '*$');
 
 var exporter = function (KEY, exec, ALIAS) {
   var exp = {};
-  var FORCE = _fails(function () {
+  var FORCE = _fails$1(function () {
     return !!_stringWs[KEY]() || non[KEY]() != non;
   });
   var fn = exp[KEY] = FORCE ? exec(trim) : _stringWs[KEY];
   if (ALIAS) exp[ALIAS] = fn;
-  _export(_export.P + _export.F * FORCE, 'String', exp);
+  _export$1(_export$1.P + _export$1.F * FORCE, 'String', exp);
 };
 
 // 1 -> String#trimLeft
@@ -1101,7 +1170,7 @@ var trim = exporter.trim = function (string, TYPE) {
 
 var _stringTrim = exporter;
 
-var $parseFloat = _global.parseFloat;
+var $parseFloat = _global$1.parseFloat;
 var $trim = _stringTrim.trim;
 
 var _parseFloat$3 = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function parseFloat(str) {
@@ -1110,15 +1179,16 @@ var _parseFloat$3 = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function p
   return result === 0 && string.charAt(0) == '-' ? -0 : result;
 } : $parseFloat;
 
-_export(_export.S + _export.F * (Number.parseFloat != _parseFloat$3), 'Number', { parseFloat: _parseFloat$3 });
+// 20.1.2.12 Number.parseFloat(string)
+_export$1(_export$1.S + _export$1.F * (Number.parseFloat != _parseFloat$3), 'Number', { parseFloat: _parseFloat$3 });
 
 var _parseFloat$1 = parseFloat;
 
-var _parseFloat = createCommonjsModule(function (module) {
+var _parseFloat = createCommonjsModule$1(function (module) {
 module.exports = { "default": _parseFloat$1, __esModule: true };
 });
 
-unwrapExports(_parseFloat);
+unwrapExports$1(_parseFloat);
 
 /**
  * toxic-predicate-functions v0.1.5
@@ -1126,7 +1196,10 @@ unwrapExports(_parseFloat);
  * Released under MIT
  */
 
-function isArray$1(arr) {
+/**
+ * to check whether a variable is array
+ */
+function isArray$2(arr) {
   return Array.isArray(arr);
 }
 
@@ -1142,10 +1215,10 @@ function isFunction(obj) {
  */
 function isObject$1(obj) {
   // incase of arrow function and array
-  return Object(obj) === obj && String(obj) === '[object Object]' && !isFunction(obj) && !isArray$1(obj);
+  return Object(obj) === obj && String(obj) === '[object Object]' && !isFunction(obj) && !isArray$2(obj);
 }
 /**
- * to tell you if it's a real number
+ * is it a string
  */
 function isString(str) {
   return typeof str === 'string' || str instanceof String;
@@ -1156,9 +1229,6 @@ function isString(str) {
 function isBoolean(bool) {
   return typeof bool === 'boolean';
 }
-/**
- * is a promise or not
- */
 
 /**
  * chimee-helper-log v0.1.2
@@ -1178,10 +1248,10 @@ function formatter(tag, msg) {
 
 var Log = function () {
   function Log() {
-    _classCallCheck(this, Log);
+    _classCallCheck$1(this, Log);
   }
 
-  _createClass(Log, null, [{
+  _createClass$1(Log, null, [{
     key: 'error',
 
     /**
@@ -1293,7 +1363,7 @@ Log.ENABLE_WARN = true;
 Log.ENABLE_DEBUG = true;
 Log.ENABLE_VERBOSE = true;
 
-var uaParser = createCommonjsModule(function (module, exports) {
+var uaParser = createCommonjsModule$1(function (module, exports) {
 /**
  * UAParser.js v0.7.17
  * Lightweight JavaScript-based User-Agent string parser
@@ -2363,16 +2433,20 @@ var uaParser = createCommonjsModule(function (module, exports) {
 
 var uaParser_1 = uaParser.UAParser;
 
+// call something on iterator step with safe closing on error
+
 var _iterCall = function (iterator, fn, value, entries) {
   try {
-    return entries ? fn(_anObject(value)[0], value[1]) : fn(value);
+    return entries ? fn(_anObject$1(value)[0], value[1]) : fn(value);
   // 7.4.6 IteratorClose(iterator, completion)
   } catch (e) {
     var ret = iterator['return'];
-    if (ret !== undefined) _anObject(ret.call(iterator));
+    if (ret !== undefined) _anObject$1(ret.call(iterator));
     throw e;
   }
 };
+
+// check on default Array iterator
 
 var ITERATOR$1 = _wks('iterator');
 var ArrayProto = Array.prototype;
@@ -2382,9 +2456,11 @@ var _isArrayIter = function (it) {
 };
 
 var _createProperty = function (object, index, value) {
-  if (index in object) _objectDp.f(object, index, _propertyDesc(0, value));
+  if (index in object) _objectDp$1.f(object, index, _propertyDesc$1(0, value));
   else object[index] = value;
 };
+
+// getting tag from 19.1.3.6 Object.prototype.toString()
 
 var TAG$1 = _wks('toStringTag');
 // ES3 wrong here
@@ -2410,7 +2486,7 @@ var _classof = function (it) {
 
 var ITERATOR$2 = _wks('iterator');
 
-var core_getIteratorMethod = _core.getIteratorMethod = function (it) {
+var core_getIteratorMethod = _core$1.getIteratorMethod = function (it) {
   if (it != undefined) return it[ITERATOR$2]
     || it['@@iterator']
     || _iterators[_classof(it)];
@@ -2439,7 +2515,7 @@ var _iterDetect = function (exec, skipClosing) {
   return safe;
 };
 
-_export(_export.S + _export.F * !_iterDetect(function (iter) {  }), 'Array', {
+_export$1(_export$1.S + _export$1.F * !_iterDetect(function (iter) {  }), 'Array', {
   // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
   from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
     var O = _toObject(arrayLike);
@@ -2450,7 +2526,7 @@ _export(_export.S + _export.F * !_iterDetect(function (iter) {  }), 'Array', {
     var index = 0;
     var iterFn = core_getIteratorMethod(O);
     var length, result, step, iterator;
-    if (mapping) mapfn = _ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
+    if (mapping) mapfn = _ctx$1(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
     // if object isn't iterable or it's array with default iterator - use simple case
     if (iterFn != undefined && !(C == Array && _isArrayIter(iterFn))) {
       for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
@@ -2467,15 +2543,15 @@ _export(_export.S + _export.F * !_iterDetect(function (iter) {  }), 'Array', {
   }
 });
 
-var from$1 = _core.Array.from;
+var from$1 = _core$1.Array.from;
 
-var from = createCommonjsModule(function (module) {
+var from = createCommonjsModule$1(function (module) {
 module.exports = { "default": from$1, __esModule: true };
 });
 
-var _Array$from = unwrapExports(from);
+var _Array$from = unwrapExports$1(from);
 
-var toConsumableArray = createCommonjsModule(function (module, exports) {
+var toConsumableArray = createCommonjsModule$1(function (module, exports) {
 exports.__esModule = true;
 
 
@@ -2497,7 +2573,7 @@ exports.default = function (arr) {
 };
 });
 
-unwrapExports(toConsumableArray);
+unwrapExports$1(toConsumableArray);
 
 /**
  * toxic-utils v0.1.6
@@ -2511,18 +2587,18 @@ var _anInstance = function (it, Constructor, name, forbiddenField) {
   } return it;
 };
 
-var _forOf = createCommonjsModule(function (module) {
+var _forOf = createCommonjsModule$1(function (module) {
 var BREAK = {};
 var RETURN = {};
 var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) {
   var iterFn = ITERATOR ? function () { return iterable; } : core_getIteratorMethod(iterable);
-  var f = _ctx(fn, that, entries ? 2 : 1);
+  var f = _ctx$1(fn, that, entries ? 2 : 1);
   var index = 0;
   var length, step, iterator, result;
   if (typeof iterFn != 'function') throw TypeError(iterable + ' is not iterable!');
   // fast case for arrays with default iterator
   if (_isArrayIter(iterFn)) for (length = _toLength(iterable.length); length > index; index++) {
-    result = entries ? f(_anObject(step = iterable[index])[0], step[1]) : f(iterable[index]);
+    result = entries ? f(_anObject$1(step = iterable[index])[0], step[1]) : f(iterable[index]);
     if (result === BREAK || result === RETURN) return result;
   } else for (iterator = iterFn.call(iterable); !(step = iterator.next()).done;) {
     result = _iterCall(iterator, f, step.value, entries);
@@ -2533,11 +2609,14 @@ exports.BREAK = BREAK;
 exports.RETURN = RETURN;
 });
 
+// 7.3.20 SpeciesConstructor(O, defaultConstructor)
+
+
 var SPECIES = _wks('species');
 var _speciesConstructor = function (O, D) {
-  var C = _anObject(O).constructor;
+  var C = _anObject$1(O).constructor;
   var S;
-  return C === undefined || (S = _anObject(C)[SPECIES]) == undefined ? D : _aFunction(S);
+  return C === undefined || (S = _anObject$1(C)[SPECIES]) == undefined ? D : _aFunction$1(S);
 };
 
 // fast apply, http://jsperf.lnkit.com/fast-apply/5
@@ -2557,11 +2636,11 @@ var _invoke = function (fn, args, that) {
   } return fn.apply(that, args);
 };
 
-var process$1 = _global.process;
-var setTask = _global.setImmediate;
-var clearTask = _global.clearImmediate;
-var MessageChannel = _global.MessageChannel;
-var Dispatch = _global.Dispatch;
+var process$1 = _global$1.process;
+var setTask = _global$1.setImmediate;
+var clearTask = _global$1.clearImmediate;
+var MessageChannel = _global$1.MessageChannel;
+var Dispatch = _global$1.Dispatch;
 var counter = 0;
 var queue = {};
 var ONREADYSTATECHANGE = 'onreadystatechange';
@@ -2599,30 +2678,30 @@ if (!setTask || !clearTask) {
   // Node.js 0.8-
   if (_cof(process$1) == 'process') {
     defer = function (id) {
-      process$1.nextTick(_ctx(run, id, 1));
+      process$1.nextTick(_ctx$1(run, id, 1));
     };
   // Sphere (JS game engine) Dispatch API
   } else if (Dispatch && Dispatch.now) {
     defer = function (id) {
-      Dispatch.now(_ctx(run, id, 1));
+      Dispatch.now(_ctx$1(run, id, 1));
     };
   // Browsers with MessageChannel, includes WebWorkers
   } else if (MessageChannel) {
     channel = new MessageChannel();
     port = channel.port2;
     channel.port1.onmessage = listener;
-    defer = _ctx(port.postMessage, port, 1);
+    defer = _ctx$1(port.postMessage, port, 1);
   // Browsers with postMessage, skip WebWorkers
   // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
-  } else if (_global.addEventListener && typeof postMessage == 'function' && !_global.importScripts) {
+  } else if (_global$1.addEventListener && typeof postMessage == 'function' && !_global$1.importScripts) {
     defer = function (id) {
-      _global.postMessage(id + '', '*');
+      _global$1.postMessage(id + '', '*');
     };
-    _global.addEventListener('message', listener, false);
+    _global$1.addEventListener('message', listener, false);
   // IE8-
-  } else if (ONREADYSTATECHANGE in _domCreate('script')) {
+  } else if (ONREADYSTATECHANGE in _domCreate$1('script')) {
     defer = function (id) {
-      _html.appendChild(_domCreate('script'))[ONREADYSTATECHANGE] = function () {
+      _html.appendChild(_domCreate$1('script'))[ONREADYSTATECHANGE] = function () {
         _html.removeChild(this);
         run.call(id);
       };
@@ -2630,7 +2709,7 @@ if (!setTask || !clearTask) {
   // Rest old browsers
   } else {
     defer = function (id) {
-      setTimeout(_ctx(run, id, 1), 0);
+      setTimeout(_ctx$1(run, id, 1), 0);
     };
   }
 }
@@ -2640,9 +2719,9 @@ var _task = {
 };
 
 var macrotask = _task.set;
-var Observer = _global.MutationObserver || _global.WebKitMutationObserver;
-var process$2 = _global.process;
-var Promise = _global.Promise;
+var Observer = _global$1.MutationObserver || _global$1.WebKitMutationObserver;
+var process$2 = _global$1.process;
+var Promise = _global$1.Promise;
 var isNode$2 = _cof(process$2) == 'process';
 
 var _microtask = function () {
@@ -2693,7 +2772,7 @@ var _microtask = function () {
   } else {
     notify = function () {
       // strange IE + webpack dev server bug - use .call(global)
-      macrotask.call(_global, flush);
+      macrotask.call(_global$1, flush);
     };
   }
 
@@ -2707,6 +2786,9 @@ var _microtask = function () {
   };
 };
 
+// 25.4.1.5 NewPromiseCapability(C)
+
+
 function PromiseCapability(C) {
   var resolve, reject;
   this.promise = new C(function ($$resolve, $$reject) {
@@ -2714,16 +2796,16 @@ function PromiseCapability(C) {
     resolve = $$resolve;
     reject = $$reject;
   });
-  this.resolve = _aFunction(resolve);
-  this.reject = _aFunction(reject);
+  this.resolve = _aFunction$1(resolve);
+  this.reject = _aFunction$1(reject);
 }
 
-var f$7 = function (C) {
+var f$8 = function (C) {
   return new PromiseCapability(C);
 };
 
 var _newPromiseCapability = {
-	f: f$7
+	f: f$8
 };
 
 var _perform = function (exec) {
@@ -2735,8 +2817,8 @@ var _perform = function (exec) {
 };
 
 var _promiseResolve = function (C, x) {
-  _anObject(C);
-  if (_isObject(x) && x.constructor === C) return x;
+  _anObject$1(C);
+  if (_isObject$1(x) && x.constructor === C) return x;
   var promiseCapability = _newPromiseCapability.f(C);
   var resolve = promiseCapability.resolve;
   resolve(x);
@@ -2746,15 +2828,15 @@ var _promiseResolve = function (C, x) {
 var _redefineAll = function (target, src, safe) {
   for (var key in src) {
     if (safe && target[key]) target[key] = src[key];
-    else _hide(target, key, src[key]);
+    else _hide$1(target, key, src[key]);
   } return target;
 };
 
 var SPECIES$1 = _wks('species');
 
 var _setSpecies = function (KEY) {
-  var C = typeof _core[KEY] == 'function' ? _core[KEY] : _global[KEY];
-  if (_descriptors && C && !C[SPECIES$1]) _objectDp.f(C, SPECIES$1, {
+  var C = typeof _core$1[KEY] == 'function' ? _core$1[KEY] : _global$1[KEY];
+  if (_descriptors$1 && C && !C[SPECIES$1]) _objectDp$1.f(C, SPECIES$1, {
     configurable: true,
     get: function () { return this; }
   });
@@ -2766,9 +2848,9 @@ var microtask = _microtask();
 
 
 var PROMISE = 'Promise';
-var TypeError$1 = _global.TypeError;
-var process = _global.process;
-var $Promise = _global[PROMISE];
+var TypeError$1 = _global$1.TypeError;
+var process = _global$1.process;
+var $Promise = _global$1[PROMISE];
 var isNode$1 = _classof(process) == 'process';
 var empty = function () { /* empty */ };
 var Internal;
@@ -2792,7 +2874,7 @@ var USE_NATIVE$1 = !!function () {
 // helpers
 var isThenable = function (it) {
   var then;
-  return _isObject(it) && typeof (then = it.then) == 'function' ? then : false;
+  return _isObject$1(it) && typeof (then = it.then) == 'function' ? then : false;
 };
 var notify = function (promise, isReject) {
   if (promise._n) return;
@@ -2837,7 +2919,7 @@ var notify = function (promise, isReject) {
   });
 };
 var onUnhandled = function (promise) {
-  task.call(_global, function () {
+  task.call(_global$1, function () {
     var value = promise._v;
     var unhandled = isUnhandled(promise);
     var result, handler, console;
@@ -2845,9 +2927,9 @@ var onUnhandled = function (promise) {
       result = _perform(function () {
         if (isNode$1) {
           process.emit('unhandledRejection', value, promise);
-        } else if (handler = _global.onunhandledrejection) {
+        } else if (handler = _global$1.onunhandledrejection) {
           handler({ promise: promise, reason: value });
-        } else if ((console = _global.console) && console.error) {
+        } else if ((console = _global$1.console) && console.error) {
           console.error('Unhandled promise rejection', value);
         }
       });
@@ -2868,11 +2950,11 @@ var isUnhandled = function (promise) {
   } return true;
 };
 var onHandleUnhandled = function (promise) {
-  task.call(_global, function () {
+  task.call(_global$1, function () {
     var handler;
     if (isNode$1) {
       process.emit('rejectionHandled', promise);
-    } else if (handler = _global.onrejectionhandled) {
+    } else if (handler = _global$1.onrejectionhandled) {
       handler({ promise: promise, reason: promise._v });
     }
   });
@@ -2899,7 +2981,7 @@ var $resolve = function (value) {
       microtask(function () {
         var wrapper = { _w: promise, _d: false }; // wrap
         try {
-          then.call(value, _ctx($resolve, wrapper, 1), _ctx($reject, wrapper, 1));
+          then.call(value, _ctx$1($resolve, wrapper, 1), _ctx$1($reject, wrapper, 1));
         } catch (e) {
           $reject.call(wrapper, e);
         }
@@ -2919,10 +3001,10 @@ if (!USE_NATIVE$1) {
   // 25.4.3.1 Promise(executor)
   $Promise = function Promise(executor) {
     _anInstance(this, $Promise, PROMISE, '_h');
-    _aFunction(executor);
+    _aFunction$1(executor);
     Internal.call(this);
     try {
-      executor(_ctx($resolve, this, 1), _ctx($reject, this, 1));
+      executor(_ctx$1($resolve, this, 1), _ctx$1($reject, this, 1));
     } catch (err) {
       $reject.call(this, err);
     }
@@ -2957,8 +3039,8 @@ if (!USE_NATIVE$1) {
   OwnPromiseCapability = function () {
     var promise = new Internal();
     this.promise = promise;
-    this.resolve = _ctx($resolve, promise, 1);
-    this.reject = _ctx($reject, promise, 1);
+    this.resolve = _ctx$1($resolve, promise, 1);
+    this.reject = _ctx$1($reject, promise, 1);
   };
   _newPromiseCapability.f = newPromiseCapability = function (C) {
     return C === $Promise || C === Wrapper
@@ -2967,13 +3049,13 @@ if (!USE_NATIVE$1) {
   };
 }
 
-_export(_export.G + _export.W + _export.F * !USE_NATIVE$1, { Promise: $Promise });
+_export$1(_export$1.G + _export$1.W + _export$1.F * !USE_NATIVE$1, { Promise: $Promise });
 _setToStringTag($Promise, PROMISE);
 _setSpecies(PROMISE);
-Wrapper = _core[PROMISE];
+Wrapper = _core$1[PROMISE];
 
 // statics
-_export(_export.S + _export.F * !USE_NATIVE$1, PROMISE, {
+_export$1(_export$1.S + _export$1.F * !USE_NATIVE$1, PROMISE, {
   // 25.4.4.5 Promise.reject(r)
   reject: function reject(r) {
     var capability = newPromiseCapability(this);
@@ -2982,13 +3064,13 @@ _export(_export.S + _export.F * !USE_NATIVE$1, PROMISE, {
     return capability.promise;
   }
 });
-_export(_export.S + _export.F * (_library || !USE_NATIVE$1), PROMISE, {
+_export$1(_export$1.S + _export$1.F * (_library || !USE_NATIVE$1), PROMISE, {
   // 25.4.4.6 Promise.resolve(x)
   resolve: function resolve(x) {
     return _promiseResolve(_library && this === Wrapper ? $Promise : this, x);
   }
 });
-_export(_export.S + _export.F * !(USE_NATIVE$1 && _iterDetect(function (iter) {
+_export$1(_export$1.S + _export$1.F * !(USE_NATIVE$1 && _iterDetect(function (iter) {
   $Promise.all(iter)['catch'](empty);
 })), PROMISE, {
   // 25.4.4.1 Promise.all(iterable)
@@ -3033,8 +3115,8 @@ _export(_export.S + _export.F * !(USE_NATIVE$1 && _iterDetect(function (iter) {
   }
 });
 
-_export(_export.P + _export.R, 'Promise', { 'finally': function (onFinally) {
-  var C = _speciesConstructor(this, _core.Promise || _global.Promise);
+_export$1(_export$1.P + _export$1.R, 'Promise', { 'finally': function (onFinally) {
+  var C = _speciesConstructor(this, _core$1.Promise || _global$1.Promise);
   var isFunction = typeof onFinally == 'function';
   return this.then(
     isFunction ? function (x) {
@@ -3046,20 +3128,25 @@ _export(_export.P + _export.R, 'Promise', { 'finally': function (onFinally) {
   );
 } });
 
-_export(_export.S, 'Promise', { 'try': function (callbackfn) {
+// https://github.com/tc39/proposal-promise-try
+
+
+
+
+_export$1(_export$1.S, 'Promise', { 'try': function (callbackfn) {
   var promiseCapability = _newPromiseCapability.f(this);
   var result = _perform(callbackfn);
   (result.e ? promiseCapability.reject : promiseCapability.resolve)(result.v);
   return promiseCapability.promise;
 } });
 
-var promise$1 = _core.Promise;
+var promise$1 = _core$1.Promise;
 
-var promise = createCommonjsModule(function (module) {
+var promise = createCommonjsModule$1(function (module) {
 module.exports = { "default": promise$1, __esModule: true };
 });
 
-unwrapExports(promise);
+unwrapExports$1(promise);
 
 /**
  * chimee-helper-utils v0.2.0
@@ -3067,12 +3154,14 @@ unwrapExports(promise);
  * Released under MIT
  */
 
+// **********************  judgement   ************************
+/**
+ * check if the code running in browser environment (not include worker env)
+ * @returns {Boolean}
+ */
 var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
 
-// **********************  对象操作  ************************
-/**
- * 转变一个类数组对象为数组
- */
+// requestAnimationFrame
 var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function (cb) {
   return setTimeout(cb, 17);
 };
@@ -3082,12 +3171,16 @@ var caf = window.cancelAnimationFrame || window.mozCancelAnimationFrame || windo
   clearTimeout(id);
 };
 
-// 根据要求的位数，将9格式化为 09\009\0009...
+// 19.1.2.1 Object.assign(target, source, ...)
+
+
+
+
 
 var $assign = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
-var _objectAssign = !$assign || _fails(function () {
+var _objectAssign = !$assign || _fails$1(function () {
   var A = {};
   var B = {};
   // eslint-disable-next-line no-undef
@@ -3112,28 +3205,32 @@ var _objectAssign = !$assign || _fails(function () {
   } return T;
 } : $assign;
 
-_export(_export.S + _export.F, 'Object', { assign: _objectAssign });
+// 19.1.3.1 Object.assign(target, source)
 
-var assign$1 = _core.Object.assign;
 
-var assign = createCommonjsModule(function (module) {
+_export$1(_export$1.S + _export$1.F, 'Object', { assign: _objectAssign });
+
+var assign$1 = _core$1.Object.assign;
+
+var assign = createCommonjsModule$1(function (module) {
 module.exports = { "default": assign$1, __esModule: true };
 });
 
-var _Object$assign = unwrapExports(assign);
+var _Object$assign = unwrapExports$1(assign);
 
-_export(_export.S, 'Object', { create: _objectCreate });
+// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+_export$1(_export$1.S, 'Object', { create: _objectCreate });
 
-var $Object$1 = _core.Object;
+var $Object$2 = _core$1.Object;
 var create$1 = function create(P, D) {
-  return $Object$1.create(P, D);
+  return $Object$2.create(P, D);
 };
 
-var create = createCommonjsModule(function (module) {
+var create = createCommonjsModule$1(function (module) {
 module.exports = { "default": create$1, __esModule: true };
 });
 
-var _Object$create = unwrapExports(create);
+var _Object$create = unwrapExports$1(create);
 
 /**
  * chimee-helper-events v0.1.0
@@ -3141,6 +3238,19 @@ var _Object$create = unwrapExports(create);
  * Released under MIT
  */
 
+/**
+* @module event
+* @author huzunjie
+* @description 自定义事件基础类
+*/
+
+/* 缓存事件监听方法及包装，内部数据格式：
+ * targetIndex_<type:'click|mouseup|done'>: [ [
+ *   function(){ ... handler ... },
+ *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
+ *   isOnce
+ * ]]
+ */
 var _evtListenerCache = _Object$create(null);
 _evtListenerCache.count = 0;
 
@@ -3277,7 +3387,7 @@ var CustEvent = function () {
   function CustEvent(target, assign$$1) {
     var _this = this;
 
-    _classCallCheck(this, CustEvent);
+    _classCallCheck$1(this, CustEvent);
 
     /* 设置__target不可枚举 */
     Object.defineProperty(this, '__target', {
@@ -3312,7 +3422,7 @@ var CustEvent = function () {
    */
 
 
-  _createClass(CustEvent, [{
+  _createClass$1(CustEvent, [{
     key: 'on',
     value: function on(type, handler) {
       var isOnce = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
@@ -3374,6 +3484,25 @@ var CustEvent = function () {
  * Released under MIT
  */
 
+/**
+ * chimee-helper-events v0.1.0
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
+
+/**
+* @module event
+* @author huzunjie
+* @description 自定义事件基础类
+*/
+
+/* 缓存事件监听方法及包装，内部数据格式：
+ * targetIndex_<type:'click|mouseup|done'>: [ [
+ *   function(){ ... handler ... },
+ *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
+ *   isOnce
+ * ]]
+ */
 var _evtListenerCache$1 = _Object$create(null);
 _evtListenerCache$1.count = 0;
 
@@ -3510,7 +3639,7 @@ var CustEvent$1 = function () {
   function CustEvent(target, assign$$1) {
     var _this = this;
 
-    _classCallCheck(this, CustEvent);
+    _classCallCheck$1(this, CustEvent);
 
     /* 设置__target不可枚举 */
     Object.defineProperty(this, '__target', {
@@ -3545,7 +3674,7 @@ var CustEvent$1 = function () {
    */
 
 
-  _createClass(CustEvent, [{
+  _createClass$1(CustEvent, [{
     key: 'on',
     value: function on(type, handler) {
       var isOnce = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
@@ -3949,7 +4078,7 @@ var NodeWrap = function () {
   function NodeWrap(selector) {
     var container = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
 
-    _classCallCheck(this, NodeWrap);
+    _classCallCheck$1(this, NodeWrap);
 
     var _this = this;
     _this.selector = selector;
@@ -3959,7 +4088,7 @@ var NodeWrap = function () {
     if (selector && selector.constructor === NodeList) {
       /* 支持直接传入NodeList来构建包装器 */
       elsArr = makeArray$1(selector);
-    } else if (isArray$1(selector)) {
+    } else if (isArray$2(selector)) {
       /* 支持直接传入Node数组来构建包装器 */
       elsArr = selector;
     } else if (isString(selector)) {
@@ -3988,7 +4117,7 @@ var NodeWrap = function () {
    */
 
 
-  _createClass(NodeWrap, [{
+  _createClass$1(NodeWrap, [{
     key: 'each',
     value: function each() {
       for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
@@ -4315,964 +4444,20 @@ var NodeWrap = function () {
  */
 
 /**
- * chimee-helper-utils v0.2.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-var inBrowser$2 = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
-
-// **********************  对象操作  ************************
-/**
- * 转变一个类数组对象为数组
- */
-var raf$1 = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function (cb) {
-  return setTimeout(cb, 17);
-};
-
-// cancelAnimationFrame
-var caf$1 = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame || window.msCancelAnimationFrame || window.oCancelAnimationFrame || function (id) {
-  clearTimeout(id);
-};
-
-// 根据要求的位数，将9格式化为 09\009\0009...
-
-/**
- * chimee-helper-dom v0.1.4
- * (c) 2017 huzunjie
- * Released under MIT
- */
-
-var _evtListenerCache$2 = _Object$create(null);
-_evtListenerCache$2.count = 0;
-
-/**
- * 得到某对象的某事件类型对应的监听队列数组
- * @param  {Object}  target 发生事件的对象
- * @param {String} type 事件类型(这里的时间类型不只是名称，还是缓存标识，可以通过添加后缀来区分)
- * @return {Array}
- */
-function getEvtTypeCache$2(target, type) {
-
-  var evtId = target.__evt_id;
-  if (!evtId) {
-
-    /* 设置__evt_id不可枚举 */
-    Object.defineProperty(target, '__evt_id', {
-      writable: true,
-      enumerable: false,
-      configurable: true
-    });
-
-    /* 空对象初始化绑定索引 */
-    evtId = target.__evt_id = ++_evtListenerCache$2.count;
-  }
-
-  var typeCacheKey = evtId + '_' + type;
-  var evtTypeCache = _evtListenerCache$2[typeCacheKey];
-  if (!evtTypeCache) {
-    evtTypeCache = _evtListenerCache$2[typeCacheKey] = [];
-  }
-
-  return evtTypeCache;
-}
-
-/**
- * 触发事件监听方法
- * @param  {Object}  target 发生事件的对象
- * @param {String} type 事件类型
- * @param {Object} eventObj 触发事件时要传回的event对象
- * @return {undefined}
- */
-function emitEventCache$2(target, type, eventObj) {
-  var evt = _Object$create(null);
-  evt.type = type;
-  evt.target = target;
-  if (eventObj) {
-    _Object$assign(evt, isObject$1(eventObj) ? eventObj : { data: eventObj });
-  }
-  getEvtTypeCache$2(target, type).forEach(function (item) {
-    (item[1] || item[0]).apply(target, [evt]);
-  });
-}
-
-/**
- * 添加事件监听到缓存
- * @param  {Object}  target 发生事件的对象
- * @param {String} type 事件类型
- * @param {Function} handler 监听函数
- * @param {Boolean} isOnce 是否单次执行
- * @param {Function} handlerWrap
- * @return {undefined}
- */
-function addEventCache$2(target, type, handler) {
-  var isOnce = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  var handlerWrap = arguments[4];
-
-  if (isFunction(isOnce) && !handlerWrap) {
-    handlerWrap = isOnce;
-    isOnce = undefined;
-  }
-  var handlers = [handler, undefined, isOnce];
-  if (isOnce && !handlerWrap) {
-    handlerWrap = function handlerWrap() {
-      removeEventCache$2(target, type, handler, isOnce);
-
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      handler.apply(target, args);
-    };
-  }
-  if (handlerWrap) {
-    handlers[1] = handlerWrap;
-  }
-  getEvtTypeCache$2(target, type).push(handlers);
-}
-
-/**
- * 移除事件监听
- * @param  {Object}  target 发生事件的对象
- * @param {String} type 事件类型
- * @param {Function} handler 监听函数
- * @return {undefined}
- */
-function removeEventCache$2(target, type, handler) {
-  var isOnce = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-  var typeCache = getEvtTypeCache$2(target, type);
-
-  if (handler || isOnce) {
-    /* 有指定 handler 则清除对应监听 */
-    var handlerId = -1;
-    var handlerWrap = void 0;
-    typeCache.find(function (item, i) {
-      if ((!handler || item[0] === handler) && (!isOnce || item[2])) {
-        handlerId = i;
-        handlerWrap = item[1];
-        return true;
-      }
-    });
-    if (handlerId !== -1) {
-      typeCache.splice(handlerId, 1);
-    }
-    return handlerWrap;
-  } else {
-    /* 未指定 handler 则清除type对应的所有监听 */
-    typeCache.length = 0;
-  }
-}
-
-/**
- * @class CustEvent
- * @description
- * Event 自定义事件类
- * 1. 可以使用不传参得到的实例作为eventBus使用
- * 2. 可以通过指定target，用多个实例操作同一target对象的事件管理
- * 3. 当设定target时，可以通过设置assign为true，来给target实现"on\once\off\emit"方法
- * @param  {Object}  target 发生事件的对象（空则默认为event实例）
- * @param  {Boolean}  assign 是否将"on\once\off\emit"方法实现到target对象上
- * @return {event}
- */
-var CustEvent$2 = function () {
-  function CustEvent(target, assign$$1) {
-    var _this = this;
-
-    _classCallCheck(this, CustEvent);
-
-    /* 设置__target不可枚举 */
-    Object.defineProperty(this, '__target', {
-      writable: true,
-      enumerable: false,
-      configurable: true
-    });
-    this.__target = this;
-
-    if (target) {
-
-      if ((typeof target === 'undefined' ? 'undefined' : _typeof(target)) !== 'object') {
-        throw new Error('CusEvent target are not object');
-      }
-      this.__target = target;
-
-      /* 为target实现on\once\off\emit */
-      if (assign$$1) {
-        ['on', 'once', 'off', 'emit'].forEach(function (mth) {
-          target[mth] = _this[mth];
-        });
-      }
-    }
-  }
-
-  /**
-   * 添加事件监听
-   * @param {String} type 事件类型
-   * @param {Function} handler 监听函数
-   * @param {Boolean} isOnce 单次监听类型
-   * @return {event}
-   */
-
-
-  _createClass(CustEvent, [{
-    key: 'on',
-    value: function on(type, handler) {
-      var isOnce = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-      addEventCache$2(this.__target, type, handler, isOnce);
-      return this;
-    }
-
-    /**
-     * 添加事件监听,并且只执行一次
-     * @param {String} type 事件类型
-     * @param {Function} handler 监听函数
-     * @return {event}
-     */
-
-  }, {
-    key: 'once',
-    value: function once(type, handler) {
-      return this.on(type, handler, true);
-    }
-
-    /**
-     * 移除事件监听
-     * @param {String} type 事件类型
-     * @param {Function} handler 监听函数(不指定handler则清除type对应的所有事件监听)
-     * @param {Boolean} isOnce 单次监听类型
-     * @return {event}
-     */
-
-  }, {
-    key: 'off',
-    value: function off(type, handler) {
-      var isOnce = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-      removeEventCache$2(this.__target, type, handler, isOnce);
-      return this;
-    }
-
-    /**
-     * 触发事件监听函数
-     * @param {String} type 事件类型
-     * @return {event}
-     */
-
-  }, {
-    key: 'emit',
-    value: function emit(type, data) {
-      emitEventCache$2(this.__target, type, { data: data });
-      return this;
-    }
-  }]);
-
-  return CustEvent;
-}();
-
-/**
- * chimee-helper-utils v0.2.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-// **********************  judgement   ************************
-/**
- * check if the code running in browser environment (not include worker env)
- * @returns {Boolean}
- */
-var inBrowser$3 = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
-
-// **********************  对象操作  ************************
-/**
- * 转变一个类数组对象为数组
- */
-function makeArray$3(obj) {
-  return _Array$from(obj);
-}
-
-/**
-* @module dom
-* @author huzunjie
-* @description 一些常用的DOM判断及操作方法，可以使用dom.$('*')包装DOM，实现类jQuery的链式操作；当然这里的静态方法也可以直接使用。
-*/
-
-var _divEl$1 = document.createElement('div');
-var _textAttrName$1 = 'innerText';
-'textContent' in _divEl$1 && (_textAttrName$1 = 'textContent');
-var _arrPrototype$1 = Array.prototype;
-
-/**
- * 读取HTML元素属性值
- * @param {HTMLElement} el 目标元素
- * @param {String} attrName 目标属性名称
- * @return {String}
- */
-function getAttr$1(el, attrName) {
-  return el.getAttribute(attrName);
-}
-
-/**
- * 设置HTML元素属性值
- * @param {HTMLElement} el 目标元素
- * @param {String} attrName 目标属性名称
- * @param {String} attrVal 目标属性值
- */
-function setAttr$1(el, attrName, attrVal) {
-  if (attrVal === undefined) {
-    el.removeAttribute(attrName);
-  } else {
-    el.setAttribute(attrName, attrVal);
-  }
-}
-
-/**
- * 为HTML元素添加className
- * @param {HTMLElement} el 目标元素
- * @param {String} cls 要添加的className（多个以空格分割）
- */
-function addClassName$1(el, cls) {
-  if (!cls || !(cls = cls.trim())) {
-    return;
-  }
-  var clsArr = cls.split(/\s+/);
-  if (el.classList) {
-    clsArr.forEach(function (c) {
-      return el.classList.add(c);
-    });
-  } else {
-    var curCls = ' ' + (el.className || '') + ' ';
-    clsArr.forEach(function (c) {
-      curCls.indexOf(' ' + c + ' ') === -1 && (curCls += ' ' + c);
-    });
-    el.className = curCls.trim();
-  }
-}
-
-/**
- * 为HTML元素移除className
- * @param {HTMLElement} el 目标元素
- * @param {String} cls 要移除的className（多个以空格分割）
- */
-function removeClassName$1(el, cls) {
-  if (!cls || !(cls = cls.trim())) {
-    return;
-  }
-
-  var clsArr = cls.split(/\s+/);
-  if (el.classList) {
-    clsArr.forEach(function (c) {
-      return el.classList.remove(c);
-    });
-  } else {
-    var curCls = ' ' + el.className + ' ';
-    clsArr.forEach(function (c) {
-      var tar = ' ' + c + ' ';
-      while (curCls.indexOf(tar) !== -1) {
-        curCls = curCls.replace(tar, ' ');
-      }
-    });
-    el.className = curCls.trim();
-  }
-}
-
-/**
- * 检查HTML元素是否已设置className
- * @param {HTMLElement} el 目标元素
- * @param {String} className 要检查的className
- * @return {Boolean}
- */
-function hasClassName$1(el, className) {
-  return new RegExp('(?:^|\\s)' + className + '(?=\\s|$)').test(el.className);
-}
-
-/**
- * 为HTML元素移除事件监听
- * @param {HTMLElement} el 目标元素
- * @param {String} type 事件名称
- * @param {Function} handler 处理函数
- * @param {Boolean} once 是否只监听一次
- * @param {Boolean} capture 是否在捕获阶段的监听
- */
-function removeEvent$1(el, type, handler) {
-  var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-
-  if (once) {
-    /* 尝试从缓存中读取包装后的方法 */
-    var handlerWrap = removeEventCache$2(el, type + '_once', handler);
-    if (handlerWrap) {
-      handler = handlerWrap;
-    }
-  }
-  el.removeEventListener(type, handler, capture);
-}
-
-/**
- * 为HTML元素添加事件监听
- * @param {HTMLElement} el 目标元素
- * @param {String} type 事件名称
- * @param {Function} handler 处理函数
- * @param {Boolean} once 是否只监听一次
- * @param {Boolean} capture 是否在捕获阶段监听
- */
-function addEvent$1(el, type, handler) {
-  var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-
-  if (once) {
-    var oldHandler = handler;
-    handler = function () {
-      return function () {
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-          args[_key] = arguments[_key];
-        }
-
-        oldHandler.apply(this, args);
-        removeEvent$1(el, type, handler, once, capture);
-      };
-    }();
-    /* 将包装后的方法记录到缓存中 */
-    addEventCache$2(el, type + '_once', oldHandler, handler);
-  }
-
-  el.addEventListener(type, handler, capture);
-}
-
-/**
- * 为HTML元素添加事件代理
- * @param {HTMLElement} el 目标元素
- * @param {String} selector 要被代理的元素
- * @param {String} type 事件名称
- * @param {Function} handler 处理函数
- * @param {Boolean} capture 是否在捕获阶段监听
- */
-function addDelegate$1(el, selector, type, handler) {
-  var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-
-
-  var handlerWrap = function handlerWrap(e) {
-    var targetElsArr = findParents$1(e.target || e.srcElement, el, true);
-    var targetElArr = query$1(selector, el, true);
-    var retEl = void 0;
-    if (targetElArr.find) {
-      retEl = targetElArr.find(function (seEl) {
-        return targetElsArr.find(function (tgEl) {
-          return seEl === tgEl;
-        });
-      });
-    } else {
-      // Fixed IE11 Array.find not defined bug
-      targetElArr.forEach(function (seEl) {
-        return !retEl && targetElsArr.forEach(function (tgEl) {
-          if (!retEl && seEl === tgEl) {
-            retEl = tgEl;
-          }
-        });
-      });
-    }
-    retEl && handler.apply(retEl, arguments);
-  };
-  /* 将包装后的方法记录到缓存中 */
-  addEventCache$2(el, type + '_delegate_' + selector, handler, handlerWrap);
-  el.addEventListener(type, handlerWrap, capture);
-}
-
-/**
- * 为HTML元素移除事件代理
- * @param {HTMLElement} el 目标元素
- * @param {String} selector 要被代理的元素
- * @param {String} type 事件名称
- * @param {Function} handler 处理函数
- * @param {Boolean} capture 是否在捕获阶段监听
- */
-function removeDelegate$1(el, selector, type, handler) {
-  var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-
-  /* 尝试从缓存中读取包装后的方法 */
-  var handlerWrap = removeEventCache$2(el, type + '_delegate_' + selector, handler);
-  handlerWrap && el.removeEventListener(type, handlerWrap, capture);
-}
-
-/**
- * 读取HTML元素样式值
- * @param {HTMLElement} el 目标元素
- * @param {String} key 样式key
- * @return {String}
- */
-function getStyle$1(el, key) {
-  return (el.currentStyle || document.defaultView.getComputedStyle(el, null))[key] || el.style[key];
-}
-
-/**
- * 设置HTML元素样式值
- * @param {HTMLElement} el 目标元素
- * @param {String} key 样式key
- * @param {String} val 样式值
- */
-function setStyle$1(el, key, val) {
-  if (isObject$1(key)) {
-    for (var k in key) {
-      setStyle$1(el, k, key[k]);
-    }
-  } else {
-    el.style[key] = val;
-  }
-}
-
-/**
- * 根据选择器查询目标元素
- * @param {String} selector 选择器,用于 querySelectorAll
- * @param {HTMLElement} container 父容器
- * @param {Boolean} toArray 强制输出为数组
- * @return {NodeList|Array}
- */
-function query$1(selector) {
-  var container = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
-  var toArray = arguments[2];
-
-  var retNodeList = container.querySelectorAll(selector);
-  return toArray ? _Array$from(retNodeList) : retNodeList;
-}
-
-/**
- * 从DOM树中移除el
- * @param {HTMLElement} el 目标元素
- */
-function removeEl$1(el) {
-  el.parentNode.removeChild(el);
-}
-
-/**
- * 查找元素的父节点们
- * @param {HTMLElement} el 目标元素
- * @param {HTMLElement} endEl 最大父容器（不指定则找到html）
- * @param {Boolean} haveEl 包含当前元素
- * @param {Boolean} haveEndEl 包含设定的最大父容器
- */
-function findParents$1(el) {
-  var endEl = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-  var haveEl = arguments[2];
-  var haveEndEl = arguments[3];
-
-  var retEls = [];
-  if (haveEl) {
-    retEls.push(el);
-  }
-  while (el && el.parentNode !== endEl) {
-    el = el.parentNode;
-    el && retEls.push(el);
-  }
-  if (haveEndEl) {
-    retEls.push(endEl);
-  }
-  return retEls;
-}
-
-/**
- * 根据选择器查询并得到目标元素的wrap包装器
- * @param {String} selector 选择器,另外支持 HTMLString||NodeList||NodeArray||HTMLElement
- * @param {HTMLElement} container 父容器
- * @return {Object}
- */
-function $$1(selector, container) {
-  return selector.constructor === NodeWrap$1 ? selector : new NodeWrap$1(selector, container);
-}
-
-/**
- * @class NodeWrap
- * @description
- * NodeWrap DOM包装器，用以实现基本的链式操作
- * new dom.NodeWrap('*') 相当于 dom.$('*')
- * 这里面用于DOM操作的属性方法都是基于上面静态方法实现，有需要可以随时修改补充
- * @param {String} selector 选择器(兼容 String||HTMLString||NodeList||NodeArray||HTMLElement)
- * @param {HTMLElement} container 父容器（默认为document）
- */
-
-var NodeWrap$1 = function () {
-  function NodeWrap(selector) {
-    var container = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
-
-    _classCallCheck(this, NodeWrap);
-
-    var _this = this;
-    _this.selector = selector;
-
-    /* String||NodeList||HTMLElement 识别处理 */
-    var elsArr = void 0;
-    if (selector && selector.constructor === NodeList) {
-      /* 支持直接传入NodeList来构建包装器 */
-      elsArr = makeArray$3(selector);
-    } else if (isArray$1(selector)) {
-      /* 支持直接传入Node数组来构建包装器 */
-      elsArr = selector;
-    } else if (isString(selector)) {
-      if (selector.indexOf('<') === 0) {
-        /* 支持直接传入HTML字符串来新建DOM并构建包装器 */
-        _divEl$1.innerHTML = selector;
-        elsArr = query$1('*', _divEl$1, true);
-      } else {
-        /* 支持直接传入字符串选择器来查找DOM并构建包装器 */
-        elsArr = query$1(selector, container, true);
-      }
-    } else {
-      /* 其他任意对象直接构建包装器 */
-      elsArr = [selector];
-    }
-    _Object$assign(_this, elsArr);
-
-    /* NodeWrap本意可以 extends Array省略构造方法中下面这部分代码，但目前编译不支持 */
-    _this.length = elsArr.length;
-  }
-
-  /**
-   * 循环遍历DOM集合
-   * @param {Function} fn 遍历函数 fn(item, i)
-   * @return {Object}
-   */
-
-
-  _createClass(NodeWrap, [{
-    key: 'each',
-    value: function each() {
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      _arrPrototype$1.forEach.apply(this, args);
-      return this;
-    }
-  }, {
-    key: 'push',
-
-
-    /**
-     * 添加元素到DOM集合
-     * @param {HTMLElement} el 要加入的元素
-     * @return {this}
-     */
-    value: function push() {
-      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-        args[_key3] = arguments[_key3];
-      }
-
-      _arrPrototype$1.push.apply(this, args);
-      return this;
-    }
-  }, {
-    key: 'splice',
-
-
-    /**
-     * 截取DOM集合片段，并得到新的包装器splice
-     * @param {Nubmer} start
-     * @param {Nubmer} count
-     * @return {NodeWrap} 新的DOM集合包装器
-     */
-    value: function splice() {
-      for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-        args[_key4] = arguments[_key4];
-      }
-
-      return $$1(_arrPrototype$1.splice.apply(this, args));
-    }
-  }, {
-    key: 'find',
-
-
-    /**
-     * 查找子元素
-     * @param {String} selector 选择器
-     * @return {NodeWrap} 新的DOM集合包装器
-     */
-    value: function find(selector) {
-      var childs = [];
-      this.each(function (el) {
-        childs = childs.concat(query$1(selector, el, true));
-      });
-      var childsWrap = $$1(childs);
-      childsWrap.parent = this;
-      childsWrap.selector = selector;
-      return childsWrap;
-    }
-
-    /**
-     * 添加子元素
-     * @param {HTMLElement} childEls 要添加的HTML元素
-     * @return {this}
-     */
-
-  }, {
-    key: 'append',
-    value: function append(childEls) {
-      var childsWrap = $$1(childEls);
-      var firstEl = this[0];
-      childsWrap.each(function (newEl) {
-        return firstEl.appendChild(newEl);
-      });
-      return this;
-    }
-
-    /**
-     * 将元素集合添加到指定容器
-     * @param {HTMLElement} parentEl 要添加到父容器
-     * @return {this}
-     */
-
-  }, {
-    key: 'appendTo',
-    value: function appendTo(parentEl) {
-      $$1(parentEl).append(this);
-      return this;
-    }
-
-    /**
-     * DOM集合text内容读写操作
-     * @param {String} val 文本内容（如果有设置该参数则执行写操作，否则执行读操作）
-     * @return {this}
-     */
-
-  }, {
-    key: 'text',
-    value: function text(val) {
-      if (arguments.length === 0) {
-        return this[0][_textAttrName$1];
-      }
-      return this.each(function (el) {
-        el[_textAttrName$1] = val;
-      });
-    }
-
-    /**
-     * DOM集合HTML内容读写操作
-     * @param {String} html html内容（如果有设置该参数则执行写操作，否则执行读操作）
-     * @return {this}
-     */
-
-  }, {
-    key: 'html',
-    value: function html(_html) {
-      if (arguments.length === 0) {
-        return this[0].innerHTML;
-      }
-      return this.each(function (el) {
-        el.innerHTML = _html;
-      });
-    }
-
-    /**
-     * DOM集合属性读写操作
-     * @param {String} name 属性名称
-     * @param {String} val 属性值（如果有设置该参数则执行写操作，否则执行读操作）
-     * @return {this}
-     */
-
-  }, {
-    key: 'attr',
-    value: function attr(name, val) {
-      if (arguments.length === 1) {
-        return getAttr$1(this[0], name);
-      }
-      return this.each(function (el) {
-        return setAttr$1(el, name, val);
-      });
-    }
-
-    /**
-     * DOM集合dataset读写操作
-     * @param {String} key 键名
-     * @param {Any} val 键值（如果有设置该参数则执行写操作，否则执行读操作）
-     * @return {this}
-     */
-
-  }, {
-    key: 'data',
-    value: function data(key, val) {
-      if (arguments.length === 0) {
-        return this[0].dataset || {};
-      }
-      if (arguments.length === 1) {
-        return (this[0].dataset || {})[key];
-      }
-      return this.each(function (el) {
-        (el.dataset || (el.dataset = {}))[key] = val;
-      });
-    }
-
-    /**
-     * DOM集合样式读写操作
-     * @param {String} key 样式key
-     * @param {String} val 样式值（如果有设置该参数则执行写操作，否则执行读操作）
-     * @return {this}
-     */
-
-  }, {
-    key: 'css',
-    value: function css(key, val) {
-      if (arguments.length === 1 && !isObject$1(key)) {
-        return getStyle$1(this[0], key);
-      }
-      return this.each(function (el) {
-        return setStyle$1(el, key, val);
-      });
-    }
-
-    /**
-     * 为DOM集合增加className
-     * @param {String} cls 要增加的className
-     * @return {this}
-     */
-
-  }, {
-    key: 'addClass',
-    value: function addClass(cls) {
-      return this.each(function (el) {
-        return addClassName$1(el, cls);
-      });
-    }
-
-    /**
-     * 移除当前DOM集合的className
-     * @param {String} cls 要移除的className
-     * @return {this}
-     */
-
-  }, {
-    key: 'removeClass',
-    value: function removeClass(cls) {
-      return this.each(function (el) {
-        return removeClassName$1(el, cls);
-      });
-    }
-
-    /**
-     * 检查索引0的DOM是否有className
-     * @param {String} cls 要检查的className
-     * @return {this}
-     */
-
-  }, {
-    key: 'hasClass',
-    value: function hasClass(cls) {
-      return hasClassName$1(this[0], cls);
-    }
-
-    /**
-     * 为DOM集合添加事件监听
-     * @param {String} type 事件名称
-     * @param {Function} handler 处理函数
-     * @param {Boolean} once 是否只监听一次
-     * @param {Boolean} capture 是否在捕获阶段监听
-     * @return {this}
-     */
-
-  }, {
-    key: 'on',
-    value: function on(type, handler) {
-      var once = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      var capture = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-      return this.each(function (el) {
-        return addEvent$1(el, type, handler, once, capture);
-      });
-    }
-
-    /**
-     * 为DOM集合解除事件监听
-     * @param {String} type 事件名称
-     * @param {Function} handler 处理函数
-     * @param {Boolean} once 是否只监听一次
-     * @param {Boolean} capture 是否在捕获阶段监听
-     * @return {this}
-     */
-
-  }, {
-    key: 'off',
-    value: function off(type, handler) {
-      var once = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      var capture = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-      return this.each(function (el) {
-        return removeEvent$1(el, type, handler, once, capture);
-      });
-    }
-
-    /**
-     * 为DOM集合绑定事件代理
-     * @param {String} selector 目标子元素选择器
-     * @param {String} type 事件名称
-     * @param {Function} handler 处理函数
-     * @param {Boolean} capture 是否在捕获阶段监听
-     * @return {this}
-     */
-
-  }, {
-    key: 'delegate',
-    value: function delegate(selector, type, handler) {
-      var capture = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-      return this.each(function (el) {
-        return addDelegate$1(el, selector, type, handler, capture);
-      });
-    }
-
-    /**
-     * 为DOM集合解绑事件代理
-     * @param {String} selector 目标子元素选择器
-     * @param {String} type 事件名称
-     * @param {Function} handler 处理函数
-     * @param {Boolean} capture 是否在捕获阶段监听
-     * @return {this}
-     */
-
-  }, {
-    key: 'undelegate',
-    value: function undelegate(selector, type, handler) {
-      var capture = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-      return this.each(function (el) {
-        return removeDelegate$1(el, selector, type, handler, capture);
-      });
-    }
-
-    /**
-     * 从DOM树中移除
-     * @return {this}
-     */
-
-  }, {
-    key: 'remove',
-    value: function remove() {
-      return this.each(function (el) {
-        return removeEl$1(el);
-      });
-    }
-  }]);
-
-  return NodeWrap;
-}();
-
-/**
- * chimee-helper v0.2.6
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-/**
  * chimee-plugin-gesture v0.0.4
  * (c) 2017 yandeqiang
  * Released under ISC
  */
 
-function unwrapExports$1 (x) {
+function unwrapExports (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
-function createCommonjsModule$1(fn, module) {
+function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
 
-var classCallCheck$1 = createCommonjsModule$1(function (module, exports) {
+var classCallCheck = createCommonjsModule(function (module, exports) {
 exports.__esModule = true;
 
 exports.default = function (instance, Constructor) {
@@ -5282,9 +4467,9 @@ exports.default = function (instance, Constructor) {
 };
 });
 
-var _classCallCheck$1 = unwrapExports$1(classCallCheck$1);
+var _classCallCheck = unwrapExports(classCallCheck);
 
-var _global$2 = createCommonjsModule$1(function (module) {
+var _global = createCommonjsModule(function (module) {
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self
@@ -5293,22 +4478,22 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
-var _core$2 = createCommonjsModule$1(function (module) {
+var _core = createCommonjsModule(function (module) {
 var core = module.exports = { version: '2.5.1' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
 
-var _core_1$1 = _core$2.version;
+var _core_1 = _core.version;
 
-var _aFunction$2 = function (it) {
+var _aFunction = function (it) {
   if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
 
 // optional / simple context binding
 
-var _ctx$2 = function (fn, that, length) {
-  _aFunction$2(fn);
+var _ctx = function (fn, that, length) {
+  _aFunction(fn);
   if (that === undefined) return fn;
   switch (length) {
     case 1: return function (a) {
@@ -5326,16 +4511,16 @@ var _ctx$2 = function (fn, that, length) {
   };
 };
 
-var _isObject$2 = function (it) {
+var _isObject = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
-var _anObject$2 = function (it) {
-  if (!_isObject$2(it)) throw TypeError(it + ' is not an object!');
+var _anObject = function (it) {
+  if (!_isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
 
-var _fails$2 = function (exec) {
+var _fails = function (exec) {
   try {
     return !!exec();
   } catch (e) {
@@ -5344,53 +4529,53 @@ var _fails$2 = function (exec) {
 };
 
 // Thank's IE8 for his funny defineProperty
-var _descriptors$2 = !_fails$2(function () {
+var _descriptors = !_fails(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
-var document$3 = _global$2.document;
+var document$1 = _global.document;
 // typeof document.createElement is 'object' in old IE
-var is$1 = _isObject$2(document$3) && _isObject$2(document$3.createElement);
-var _domCreate$2 = function (it) {
-  return is$1 ? document$3.createElement(it) : {};
+var is = _isObject(document$1) && _isObject(document$1.createElement);
+var _domCreate = function (it) {
+  return is ? document$1.createElement(it) : {};
 };
 
-var _ie8DomDefine$2 = !_descriptors$2 && !_fails$2(function () {
-  return Object.defineProperty(_domCreate$2('div'), 'a', { get: function () { return 7; } }).a != 7;
+var _ie8DomDefine = !_descriptors && !_fails(function () {
+  return Object.defineProperty(_domCreate('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
 
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-var _toPrimitive$2 = function (it, S) {
-  if (!_isObject$2(it)) return it;
+var _toPrimitive = function (it, S) {
+  if (!_isObject(it)) return it;
   var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !_isObject$2(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !_isObject$2(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !_isObject$2(val = fn.call(it))) return val;
+  if (S && typeof (fn = it.toString) == 'function' && !_isObject(val = fn.call(it))) return val;
+  if (typeof (fn = it.valueOf) == 'function' && !_isObject(val = fn.call(it))) return val;
+  if (!S && typeof (fn = it.toString) == 'function' && !_isObject(val = fn.call(it))) return val;
   throw TypeError("Can't convert object to primitive value");
 };
 
-var dP$3 = Object.defineProperty;
+var dP = Object.defineProperty;
 
-var f$8 = _descriptors$2 ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  _anObject$2(O);
-  P = _toPrimitive$2(P, true);
-  _anObject$2(Attributes);
-  if (_ie8DomDefine$2) try {
-    return dP$3(O, P, Attributes);
+var f = _descriptors ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+  _anObject(O);
+  P = _toPrimitive(P, true);
+  _anObject(Attributes);
+  if (_ie8DomDefine) try {
+    return dP(O, P, Attributes);
   } catch (e) { /* empty */ }
   if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
   if ('value' in Attributes) O[P] = Attributes.value;
   return O;
 };
 
-var _objectDp$2 = {
-	f: f$8
+var _objectDp = {
+	f: f
 };
 
-var _propertyDesc$2 = function (bitmap, value) {
+var _propertyDesc = function (bitmap, value) {
   return {
     enumerable: !(bitmap & 1),
     configurable: !(bitmap & 2),
@@ -5399,25 +4584,25 @@ var _propertyDesc$2 = function (bitmap, value) {
   };
 };
 
-var _hide$2 = _descriptors$2 ? function (object, key, value) {
-  return _objectDp$2.f(object, key, _propertyDesc$2(1, value));
+var _hide = _descriptors ? function (object, key, value) {
+  return _objectDp.f(object, key, _propertyDesc(1, value));
 } : function (object, key, value) {
   object[key] = value;
   return object;
 };
 
-var PROTOTYPE$3 = 'prototype';
+var PROTOTYPE = 'prototype';
 
-var $export$2 = function (type, name, source) {
-  var IS_FORCED = type & $export$2.F;
-  var IS_GLOBAL = type & $export$2.G;
-  var IS_STATIC = type & $export$2.S;
-  var IS_PROTO = type & $export$2.P;
-  var IS_BIND = type & $export$2.B;
-  var IS_WRAP = type & $export$2.W;
-  var exports = IS_GLOBAL ? _core$2 : _core$2[name] || (_core$2[name] = {});
-  var expProto = exports[PROTOTYPE$3];
-  var target = IS_GLOBAL ? _global$2 : IS_STATIC ? _global$2[name] : (_global$2[name] || {})[PROTOTYPE$3];
+var $export = function (type, name, source) {
+  var IS_FORCED = type & $export.F;
+  var IS_GLOBAL = type & $export.G;
+  var IS_STATIC = type & $export.S;
+  var IS_PROTO = type & $export.P;
+  var IS_BIND = type & $export.B;
+  var IS_WRAP = type & $export.W;
+  var exports = IS_GLOBAL ? _core : _core[name] || (_core[name] = {});
+  var expProto = exports[PROTOTYPE];
+  var target = IS_GLOBAL ? _global : IS_STATIC ? _global[name] : (_global[name] || {})[PROTOTYPE];
   var key, own, out;
   if (IS_GLOBAL) source = name;
   for (key in source) {
@@ -5429,7 +4614,7 @@ var $export$2 = function (type, name, source) {
     // prevent global pollution for namespaces
     exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
     // bind timers to global for call from export context
-    : IS_BIND && own ? _ctx$2(out, _global$2)
+    : IS_BIND && own ? _ctx(out, _global)
     // wrap global constructors for prevent change them in library
     : IS_WRAP && target[key] == out ? (function (C) {
       var F = function (a, b, c) {
@@ -5441,49 +4626,49 @@ var $export$2 = function (type, name, source) {
           } return new C(a, b, c);
         } return C.apply(this, arguments);
       };
-      F[PROTOTYPE$3] = C[PROTOTYPE$3];
+      F[PROTOTYPE] = C[PROTOTYPE];
       return F;
     // make static versions for prototype methods
-    })(out) : IS_PROTO && typeof out == 'function' ? _ctx$2(Function.call, out) : out;
+    })(out) : IS_PROTO && typeof out == 'function' ? _ctx(Function.call, out) : out;
     // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
     if (IS_PROTO) {
       (exports.virtual || (exports.virtual = {}))[key] = out;
       // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export$2.R && expProto && !expProto[key]) _hide$2(expProto, key, out);
+      if (type & $export.R && expProto && !expProto[key]) _hide(expProto, key, out);
     }
   }
 };
 // type bitmap
-$export$2.F = 1;   // forced
-$export$2.G = 2;   // global
-$export$2.S = 4;   // static
-$export$2.P = 8;   // proto
-$export$2.B = 16;  // bind
-$export$2.W = 32;  // wrap
-$export$2.U = 64;  // safe
-$export$2.R = 128; // real proto method for `library`
-var _export$2 = $export$2;
+$export.F = 1;   // forced
+$export.G = 2;   // global
+$export.S = 4;   // static
+$export.P = 8;   // proto
+$export.B = 16;  // bind
+$export.W = 32;  // wrap
+$export.U = 64;  // safe
+$export.R = 128; // real proto method for `library`
+var _export = $export;
 
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-_export$2(_export$2.S + _export$2.F * !_descriptors$2, 'Object', { defineProperty: _objectDp$2.f });
+_export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
 
-var $Object$2 = _core$2.Object;
-var defineProperty$2$1 = function defineProperty(it, key, desc) {
-  return $Object$2.defineProperty(it, key, desc);
+var $Object = _core.Object;
+var defineProperty$2 = function defineProperty(it, key, desc) {
+  return $Object.defineProperty(it, key, desc);
 };
 
-var defineProperty$5 = createCommonjsModule$1(function (module) {
-module.exports = { "default": defineProperty$2$1, __esModule: true };
+var defineProperty = createCommonjsModule(function (module) {
+module.exports = { "default": defineProperty$2, __esModule: true };
 });
 
-unwrapExports$1(defineProperty$5);
+unwrapExports(defineProperty);
 
-var createClass$1 = createCommonjsModule$1(function (module, exports) {
+var createClass = createCommonjsModule(function (module, exports) {
 exports.__esModule = true;
 
 
 
-var _defineProperty2 = _interopRequireDefault(defineProperty$5);
+var _defineProperty2 = _interopRequireDefault(defineProperty);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5506,7 +4691,7 @@ exports.default = function () {
 }();
 });
 
-var _createClass$1 = unwrapExports$1(createClass$1);
+var _createClass = unwrapExports(createClass);
 
 function getDistance(x, y, x1, y1) {
 
@@ -5517,7 +4702,7 @@ function getSpeed(s, t) {
   return s / t;
 }
 
-function isArray$2(arr) {
+function isArray(arr) {
   return Array.isArray(arr);
 }
 
@@ -5535,7 +4720,7 @@ function isArray$2(arr) {
 
 var Gesture = function () {
   function Gesture() {
-    _classCallCheck$1(this, Gesture);
+    _classCallCheck(this, Gesture);
 
     // this.events = events;
     // ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press'].forEach(item => {
@@ -5549,7 +4734,7 @@ var Gesture = function () {
     this.status = 'none';
   }
 
-  _createClass$1(Gesture, [{
+  _createClass(Gesture, [{
     key: 'touchstart',
     value: function touchstart(evt) {
       this.status = 'tapping';
@@ -5619,7 +4804,7 @@ var Gesture = function () {
     key: 'fire',
     value: function fire(type, prefix, evt) {
       type = prefix + type;
-      if (!isArray$2(this.event[type])) return;
+      if (!isArray(this.event[type])) return;
       this.event[type].forEach(function (item) {
         item(evt);
       });
@@ -5711,7 +4896,7 @@ function gestureFactory() {
         _this2[key] = function (evt) {
           _this2.gesture[item](evt, 'd_');
         };
-        addEvent$1(_this2.$dom, item, _this2[key]);
+        addEvent(_this2.$dom, item, _this2[key]);
       });
 
       _create && _create.call(this);
@@ -5724,7 +4909,7 @@ function gestureFactory() {
 
       baseMobileEvent.forEach(function (item) {
         var key = '__' + item;
-        removeEvent$1(_this3.$dom, item, _this3[key]);
+        removeEvent(_this3.$dom, item, _this3[key]);
       });
 
       _destroy && _destroy.call(this);
@@ -5737,30 +4922,12 @@ function gestureFactory() {
   };
 }
 
-/**
- * 判断某个事件的落点在元素的什么位置
- * @param {Object} evt 事件对象
- * @param {*} elem dom 元素
- * @return 'left' or 'right'
- */
-
-
-/**
- * 判断点是否在某矩形区域内
- * @param {Object} point 点{x, y}
- * @param {Object} rect 矩形{x1, y1, x2, y2}
- */
-
 var chimeeState = gestureFactory({
   name: 'chimeeState',
-  el: '\n    <chimee-state>\n      <chimee-state-loading></chimee-state-loading>\n      <chimee-state-play>\n      </chimee-state-play>\n      <chimee-state-volume>\n        <chimee-state-volume-icon>\n          \n          <svg viewBox="0 0 107 101" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n            <g>\n              <polygon points="0.407316446 30 27.6500779 30 57.3737293 2.84217094e-14 58.4762532 100 27.6500779 70 0.407316446 70"></polygon>\n              <path d="M71,73 L92,89" stroke-width="8" stroke-linecap="round"></path>\n              <path d="M76.4032258,53.6071429 L100.596774,43.3928571" stroke-width="8" stroke-linecap="round" transform="translate(88.500000, 48.500000) rotate(23.000000) translate(-88.500000, -48.500000) "></path>\n              <path d="M72,26 L93,10" stroke-width="8" stroke-linecap="round"></path>\n            </g>\n          </svg>\n        </chimee-state-volume-icon>\n        <chimee-state-volume-bar>\n          <chimee-state-volume-bar-track></chimee-state-volume-bar-track>\n          <chimee-state-volume-bar-value></chimee-state-volume-bar-value>\n        </chimee-state-volume-bar>\n      </chimee-state-volume>\n      <chimee-state-error>\u52A0\u8F7D\u5931\u8D25\uFF0C\u8BF7\u5237\u65B0\u91CD\u8BD5</chimee-state-error>\n    </chimee-state>\n  ',
+  el: '\n    <chimee-state>\n      <chimee-state-loading></chimee-state-loading>\n      <chimee-state-play>\n      </chimee-state-play>\n      <chimee-state-error>\u52A0\u8F7D\u5931\u8D25\uFF0C\u8BF7\u5237\u65B0\u91CD\u8BD5</chimee-state-error>\n    </chimee-state>\n  ',
   create: function create() {
     this.volueArea = this.$dom.querySelector('chimee-state-volume');
     this.volumeBar = this.$dom.querySelector('chimee-state-volume-bar-value');
-    this._setVolume();
-
-    var parser = new uaParser();
-    this.os = parser.getOS().name;
   },
   inited: function inited() {
     this.src && this.showState('loading', true);
@@ -5792,15 +4959,7 @@ var chimeeState = gestureFactory({
     waiting: function waiting() {
       this.waiting();
     },
-    volumechange: function volumechange() {
-      this._setVolume();
-    },
 
-    // 屏幕亮度
-    // lightchange () {
-    //   const height = this.light * 100 + '%';
-    //   setStyle(this.lightBar, 'height', height);
-    // },
     // 卡顿(FLV|HLS加载异常待内部特供事件)
     // stalled () {
     //   this.showLoading();
@@ -5809,23 +4968,13 @@ var chimeeState = gestureFactory({
       this.clearTimeout();
     },
     panstart: function panstart(evt) {
-      if (this.os === 'iOS') return;
-      this.startY = evt.changedTouches[0].clientY;
-      this.startVolume = this.volume;
-      setStyle(this.volueArea, 'display', 'inline-block');
+      this.emit('state_panstart', evt);
     },
     panmove: function panmove(evt) {
-      if (this.os === 'iOS') return;
-      var endY = evt.changedTouches[0].clientY;
-      var distance = endY - this.startY;
-      var screenY = window.screen.height;
-      var volumeOffset = -distance / screenY;
-      var volume = this.startVolume + volumeOffset;
-      this.volume = volume > 1 ? 1 : volume < 0 ? 0 : volume;
+      this.emit('state_panmove', evt);
     },
-    panend: function panend() {
-      if (this.os === 'iOS') return;
-      setStyle(this.volueArea, 'display', 'none');
+    panend: function panend(evt) {
+      this.emit('state_panend', evt);
     },
     d_tap: function d_tap(evt) {
       if (evt.target.tagName === 'CHIMEE-STATE-PLAY') this.play();
@@ -5865,10 +5014,6 @@ var chimeeState = gestureFactory({
     }),
     showState: function showState(state, show) {
       this.$dom.className = show ? state : '';
-    },
-    _setVolume: function _setVolume() {
-      var height = this.volume * 100 + '%';
-      setStyle(this.volumeBar, 'height', height);
     }
   }
 });

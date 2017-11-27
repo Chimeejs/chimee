@@ -15,21 +15,16 @@ chimee-state {
 /* 全部初始皆为隐藏状态 */
 chimee-state-error,
 chimee-state-loading,
-chimee-state-volume,
-chimee-state-light,
 chimee-state-play {
   display: none;
 }
 
 chimee-state.error chimee-state-error,
 chimee-state.loading chimee-state-loading,
-chimee-state.volume chimee-state-volume,
-chimee-state.light chimee-state-light,
 chimee-state.play chimee-state-play {
   display: inline-block;
 }
 
-chimee-state-error,
 chimee-state-loading,
 chimee-state-play,
 chimee-state-error {
@@ -67,49 +62,4 @@ chimee-state-error {
   color: rgb(255, 207, 0);
   text-shadow: 0 0 3px rgb(255, 0, 0);
   font-weight: 100;
-}
-
-chimee-state-volume {
-  position: absolute;
-  top: 4em;
-  left: 1em;
-  width: 1em;
-  bottom: 4em;
-}
-
-chimee-state-volume-icon {
-  display: inline-block;
-  position: absolute;
-  left: 0.2em;
-  bottom: 0;
-  width: .5em;
-  height: 1em;
-  fill: #ffffff;
-  stroke: #ffffff;
-}
-
-chimee-state-volume-bar {
-  display: inline-block;
-  position: absolute;
-  left: .4em;
-  top: 0;
-  bottom: 1em;
-  width: 4px;
-}
-
-chimee-state-volume-bar-value,
-chimee-state-volume-bar-track {
-  display: inline-block;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--trackColor);
-  border-radius: 4px;  
-}
-
-chimee-state-volume-bar-value {
-  height: 0%;
-  background-color: var(--barColor);
 }
