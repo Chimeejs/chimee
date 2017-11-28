@@ -61,7 +61,6 @@ export default class Chimee extends VideoWrapper {
     }
     // $FlowFixMe: we have check wrapper here
     this.__dispatcher = new Dispatcher(config, this);
-    this.__dispatcher.kernel.on('error', this.__throwError);
     this.ready = this.__dispatcher.ready;
     this.readySync = this.__dispatcher.readySync;
     this.__wrapAsVideo(this.__dispatcher.videoConfig);
