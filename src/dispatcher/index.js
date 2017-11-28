@@ -301,13 +301,9 @@ export default class Dispatcher {
             if (evt.target === kernel) {
               const {
                 errmsg: message,
-                errno: code,
               } = evt.data;
               Log.error("chimee's silent bump into a kernel error", message);
-              error = {
-                message,
-                code,
-              };
+              error = new Error(message);
             } else {
               error = !isEmpty(video.error)
                 ? new Error(video.error.message)
