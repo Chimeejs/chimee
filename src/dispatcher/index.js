@@ -48,6 +48,7 @@ export default class Dispatcher {
   zIndexMap: Object;
   changeWatchable: boolean;
   kernelEventHandlerList: Array<Function>;
+  _silentLoadTempKernel: Kernel;
   /**
    * all plugins instance set
    * @type {Object}
@@ -314,6 +315,7 @@ export default class Dispatcher {
               Log.error("chimee's silentload", error.message);
             }
             kernel.destroy();
+            this._silentLoadTempKernel = undefined;
             return index === repeatTimes
               ? reject(error)
               : resolve(error);
@@ -322,6 +324,7 @@ export default class Dispatcher {
           addEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
           addEvent(video, 'error', videoError, true);
           kernel = this._createKernel(video, config);
+          this._silentLoadTempKernel = kernel;
           kernel.on('error', videoError);
           addEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
           kernel.load();
@@ -421,6 +424,7 @@ export default class Dispatcher {
     this._bindKernelEvents(oldKernel, true);
     this._bindKernelEvents(kernel);
     this.kernel = kernel;
+    this._silentLoadTempKernel = undefined;
     const { isLive, box, preset, kernels } = config;
     Object.assign(this.videoConfig, { isLive, box, preset, kernels });
     // const config = {}
