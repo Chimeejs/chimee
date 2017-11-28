@@ -6,7 +6,7 @@ import Plugin from './plugin';
 import Dom from './dom';
 import VideoConfig from './video-config';
 import defaultContainerConfig from 'config/container';
-import { before } from 'toxic-decorators';
+import { before, autobind } from 'toxic-decorators';
 import Vessel from '../vessel/vessel';
 import { kernelEvents } from 'helper/const';
 const pluginConfigSet: PluginConfigSet = {};
@@ -204,6 +204,7 @@ export default class Dispatcher {
     delete this.plugins[id];
     delete this.vm[id];
   }
+  @autobind
   throwError(error: Error | string) {
     this.vm.__throwError(error);
   }
