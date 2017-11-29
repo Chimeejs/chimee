@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-gesture v0.0.1
+ * chimee-plugin-gesture v0.0.5
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -297,6 +297,8 @@ var Gesture = function () {
   _createClass(Gesture, [{
     key: 'touchstart',
     value: function touchstart(evt) {
+
+      // 初始状态
       this.status = 'tapping';
 
       // 当前 touch 点
@@ -308,8 +310,6 @@ var Gesture = function () {
   }, {
     key: 'touchmove',
     value: function touchmove(evt) {
-      var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-
 
       var touch = evt.changedTouches[0];
 
@@ -317,16 +317,14 @@ var Gesture = function () {
 
       if (this.status === 'tapping' && distance > 10) {
         this.status = 'panning';
-        this.fire('panstart', prefix, evt);
+        this.fire('panstart', evt);
       } else if (this.status === 'panning') {
-        this.fire('panmove', prefix, evt);
+        this.fire('panmove', evt);
       }
     }
   }, {
     key: 'touchend',
     value: function touchend(evt) {
-      var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-
 
       this.endTouch = evt.changedTouches[0];
 
@@ -335,26 +333,24 @@ var Gesture = function () {
       var interval = Date.now() - this.startTime;
 
       // 时间 <= 250ms 距离小于 10 px 则认为是 tap
-      if (interval <= 250 && distance < 10) this.fire('tap', prefix, evt);
+      if (interval <= 250 && distance < 10) this.fire('tap', evt);
 
       // 时间 > 250ms 距离小于 10 px 则认为是 press    
-      if (interval > 250 && distance < 10) this.fire('press', prefix, evt);
+      if (interval > 250 && distance < 10) this.fire('press', evt);
 
       var speed = getSpeed(distance, interval);
 
       // 距离大于 10 px , 速度大于 0.3 则认为是 swipe
-      if (speed > 0.3 && distance >= 10) this.fire('swipe', prefix, evt);
+      if (speed > 0.3 && distance >= 10) this.fire('swipe', evt);
 
       // 处于 panning 则触发 panend 事件
-      if (this.status === 'panning') this.fire('panend', prefix, evt);
+      if (this.status === 'panning') this.fire('panend', evt);
 
       this.status = 'none';
     }
   }, {
     key: 'touchcancel',
-    value: function touchcancel(evt) {
-      
-    }
+    value: function touchcancel(evt) {}
   }, {
     key: 'on',
     value: function on(type, func) {
@@ -362,8 +358,7 @@ var Gesture = function () {
     }
   }, {
     key: 'fire',
-    value: function fire(type, prefix, evt) {
-      type = prefix + type;
+    value: function fire(type, evt) {
       if (!isArray(this.event[type])) return;
       this.event[type].forEach(function (item) {
         item(evt);
@@ -375,15 +370,28 @@ var Gesture = function () {
 }();
 
 var baseMobileEvent = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
+
+var gesture = new Gesture();
+var c_gesture = new Gesture();
+var w_gesture = new Gesture();
+var d_gesture = new Gesture();
+
 function gestureFactory() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       _ref$name = _ref.name,
       name = _ref$name === undefined ? 'chimeeGesture' : _ref$name,
+      el = _ref.el,
+      _ref$level = _ref.level,
+      level = _ref$level === undefined ? 0 : _ref$level,
+      _ref$inner = _ref.inner,
+      inner = _ref$inner === undefined ? true : _ref$inner,
+      autoFocus = _ref.autoFocus,
+      className = _ref.className,
       _beforeCreate = _ref.beforeCreate,
       _create = _ref.create,
       init = _ref.init,
       inited = _ref.inited,
-      destroy = _ref.destroy,
+      _destroy = _ref.destroy,
       data = _ref.data,
       computed = _ref.computed,
       _ref$events = _ref.events,
@@ -397,22 +405,25 @@ function gestureFactory() {
 
   return {
     name: name,
+    el: el,
+    level: level,
+    inner: inner,
+    autoFocus: autoFocus,
+    className: className,
     data: data,
     computed: computed,
     beforeCreate: function beforeCreate(config) {
       var _this = this;
 
-      _beforeCreate && _beforeCreate.call(this);
-      var gesture = this.gesture = new Gesture();
       baseMobileEvent.forEach(function (item) {
         config.events[item] = function (evt) {
           gesture[item](evt);
         };
         config.events['c_' + item] = function (evt) {
-          gesture[item](evt, 'c_');
+          c_gesture[item](evt);
         };
         config.events['w_' + item] = function (evt) {
-          gesture[item](evt, 'w_');
+          w_gesture[item](evt);
         };
       });
 
@@ -421,34 +432,49 @@ function gestureFactory() {
           var func = config.events[item];
           func && func.call(_this, evt);
         });
-        gesture.on('c_' + item, function (evt) {
+        c_gesture.on(item, function (evt) {
           var func = config.events['c_' + item];
           func && func.call(_this, evt);
         });
-        gesture.on('w_' + item, function (evt) {
+        w_gesture.on(item, function (evt) {
           var func = config.events['w_' + item];
           func && func.call(_this, evt);
         });
-        gesture.on('d_' + item, function (evt) {
+        d_gesture.on(item, function (evt) {
           var func = config.events['d_' + item];
           func && func.call(_this, evt);
         });
       });
+
+      _beforeCreate && _beforeCreate.call(this);
     },
     create: function create() {
       var _this2 = this;
 
-      _create && _create.call(this);
       baseMobileEvent.forEach(function (item) {
-        chimeeHelper.addEvent(_this2.$dom, item, function (evt) {
-          _this2.gesture[item](evt, 'd_');
-        });
+        var key = '__' + item;
+        _this2[key] = function (evt) {
+          d_gesture[item](evt);
+        };
+        chimeeHelper.addEvent(_this2.$dom, item, _this2[key]);
       });
+
+      _create && _create.call(this);
     },
 
     init: init,
     inited: inited,
-    destroy: destroy,
+    destroy: function destroy() {
+      var _this3 = this;
+
+      baseMobileEvent.forEach(function (item) {
+        var key = '__' + item;
+        chimeeHelper.removeEvent(_this3.$dom, item, _this3[key]);
+      });
+
+      _destroy && _destroy.call(this);
+    },
+
     methods: methods,
     penetrate: penetrate,
     operable: operable,

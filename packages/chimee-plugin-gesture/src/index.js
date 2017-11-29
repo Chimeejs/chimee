@@ -2,8 +2,19 @@ import {addEvent, removeEvent} from 'chimee-helper';
 import Gesture from './gesture';
 
 const baseMobileEvent = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
+
+const gesture = new Gesture();
+const c_gesture = new Gesture();
+const w_gesture = new Gesture();
+const d_gesture = new Gesture();
+
 export default function gestureFactory ({
   name = 'chimeeGesture',
+  el,
+  level = 0,
+  inner = true,
+  autoFocus,
+  className,
   beforeCreate,
   create,
   init,
@@ -18,20 +29,23 @@ export default function gestureFactory ({
 } = {}) {
   return {
     name,
+    el,
+    level,
+    inner,
+    autoFocus,
+    className,
     data,
     computed,
     beforeCreate(config) {
-      beforeCreate && this::beforeCreate();
-      const gesture = this.gesture = new Gesture();
       baseMobileEvent.forEach(item => {
         config.events[item] = evt => {
           gesture[item](evt);
         }
         config.events['c_' + item] = (evt) => {
-          gesture[item](evt, 'c_');
+          c_gesture[item](evt);
         }
         config.events['w_' + item] = (evt) => {
-          gesture[item](evt, 'w_');
+          w_gesture[item](evt);
         }
       });
 
@@ -40,31 +54,43 @@ export default function gestureFactory ({
           const func = config.events[item];
           func && this::func(evt);
         })
-        gesture.on('c_' + item, evt => {
+        c_gesture.on(item, evt => {
           const func = config.events['c_' + item];
           func && this::func(evt);
         })
-        gesture.on('w_' + item, evt => {
+        w_gesture.on(item, evt => {
           const func = config.events['w_' + item];
           func && this::func(evt);
         })
-        gesture.on('d_' + item, evt => {
+        d_gesture.on(item, evt => {
           const func = config.events['d_' + item];
           func && this::func(evt);
         })
       })
+
+      beforeCreate && this::beforeCreate();      
     },
     create() {
-      create && this::create();
       baseMobileEvent.forEach(item => {
-        addEvent(this.$dom, item, evt => {
-          this.gesture[item](evt, 'd_');
-        })        
+        const key = '__' + item;
+        this[key] = evt => {
+          d_gesture[item](evt);
+        }
+        addEvent(this.$dom, item, this[key]);
       })
+
+      create && this::create();      
     },
     init,
     inited,
-    destroy,
+    destroy() {
+      baseMobileEvent.forEach(item => {
+        const key = '__' + item;        
+        removeEvent(this.$dom, item, this[key]);        
+      })
+
+      destroy && this::destroy();      
+    },
     methods,
     penetrate,
     operable,

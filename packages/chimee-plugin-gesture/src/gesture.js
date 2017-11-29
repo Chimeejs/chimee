@@ -27,7 +27,7 @@ export default class Gesture {
     this.status = 'none'
   }
  
-  touchstart (evt, prefix = '') {
+  touchstart (evt) {
     
     // 初始状态
     this.status = 'tapping'
@@ -40,7 +40,7 @@ export default class Gesture {
 
   }
 
-  touchmove (evt, prefix = '') {
+  touchmove (evt) {
 
     const touch = evt.changedTouches[0]
 
@@ -48,13 +48,13 @@ export default class Gesture {
     
     if(this.status === 'tapping' && distance > 10) {
       this.status = 'panning'
-      this.fire('panstart', prefix, evt)
+      this.fire('panstart', evt)
     }else if(this.status === 'panning'){
-      this.fire('panmove', prefix, evt)
+      this.fire('panmove', evt)
     }
   }
 
-  touchend (evt, prefix = '') {
+  touchend (evt) {
 
     this.endTouch = evt.changedTouches[0]
 
@@ -63,23 +63,23 @@ export default class Gesture {
     const interval = Date.now() - this.startTime
 
     // 时间 <= 250ms 距离小于 10 px 则认为是 tap
-    if(interval <= 250 && distance < 10) this.fire('tap', prefix, evt)
+    if(interval <= 250 && distance < 10) this.fire('tap', evt)
 
     // 时间 > 250ms 距离小于 10 px 则认为是 press    
-    if(interval > 250 && distance < 10) this.fire('press', prefix, evt)
+    if(interval > 250 && distance < 10) this.fire('press', evt)
 
     const speed = getSpeed(distance, interval)
 
     // 距离大于 10 px , 速度大于 0.3 则认为是 swipe
-    if(speed > 0.3 && distance >= 10) this.fire('swipe', prefix, evt)
+    if(speed > 0.3 && distance >= 10) this.fire('swipe', evt)
 
     // 处于 panning 则触发 panend 事件
-    if(this.status === 'panning') this.fire('panend', prefix, evt)
+    if(this.status === 'panning') this.fire('panend', evt)
 
     this.status = 'none'
   }
 
-  touchcancel (evt, prefix = '') {
+  touchcancel (evt) {
 
   }
 
@@ -87,8 +87,7 @@ export default class Gesture {
     this.event[type] = this.event[type] ? this.event[type].push(func) : [func];
   }
 
-  fire (type, prefix, evt) {
-    type = prefix + type;
+  fire (type, evt) {
     if(!isArray(this.event[type])) return;
     this.event[type].forEach(item => {
       item(evt);

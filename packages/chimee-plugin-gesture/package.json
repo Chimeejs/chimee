@@ -1,6 +1,6 @@
 {
   "name": "chimee-plugin-gesture",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "Gestrue for chimee.",
   "main": "lib/index.mjs",
   "directories": {

@@ -31,6 +31,8 @@
 }
 ```
 
+与 tap 互斥
+
 ## swipe
 
 ```javascript
@@ -55,6 +57,8 @@
   direction: DIRECTION_ALL
 }
 ```
+
+会触发 swipe
 
 ## 参考
 
