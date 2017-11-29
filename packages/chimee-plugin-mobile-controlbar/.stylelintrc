@@ -2,7 +2,7 @@
   "extends": "stylelint-config-standard",
   "rules": {
     "selector-type-no-unknown": [true, {
-      "ignore": ["custom-elements", "default-namespace"]
+      "ignore": ["default-namespace"]
     }]
   }
 }

@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-controlbar v0.3.5
+ * chimee-plugin-mobile-controlbar v0.0.1
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -23,10 +23,16 @@ function __$styleInject(css, returnValue) {
   return returnValue;
 }
 
+import { $, UAParser, addClassName, addEvent, addEventCache, bind, deepAssign, findParents, formatTime, isArray, isObject, query, removeClassName, removeEvent, removeEventCache, setStyle } from 'chimee-helper';
 import { accessor, applyDecorators, autobind } from 'toxic-decorators';
-import { $, addClassName, addEvent, deepAssign, formatTime, isObject, removeClassName, removeEvent, setStyle } from 'chimee-helper';
 
-__$styleInject("/* 暂时存放到这的， 用来设置 container video 的基本样式 */\ncontainer {\n  position: relative;\n}\n\ncontainer,\nvideo {\n  display: block;\n  width: 100%;\n  height: 100%;\n  background: #000;\n  outline: none;\n}\n\nvideo:focus {\n  outline: none;\n}\n\n/* 用到的变量 */\n\n/* 全局默认样式 */\n.chimee-flex-component svg g {\n  fill: #fff;\n  stroke: #fff;\n}\n\n.chimee-flex-component svg:hover g {\n  fill: #fff;\n  stroke: #fff;\n}\n\n/* 默认隐藏 */\nchimee-volume-state-mute,\nchimee-volume-state-low,\nchimee-volume-state-high,\nchimee-control-state-pause,\nchimee-control-state-play,\nchimee-progressbar-tip,\nchimee-screen-full,\nchimee-clarity-list,\nchimee-screen-small {\n  display: none;\n}\n\n/* 满足条件时显示 */\nchimee-control.full chimee-screen-full,\nchimee-control.small chimee-screen-small,\nchimee-volume.mute chimee-volume-state-mute,\nchimee-volume.low chimee-volume-state-low,\nchimee-volume.high chimee-volume-state-high,\nchimee-control.pause chimee-control-state-pause,\nchimee-control.play chimee-control-state-play,\nchimee-control.full chimee-screen-full,\nchimee-control.small chimee-screen-small {\n  display: inline-block;\n  width: 1.4em;\n  height: 100%;\n}\n\n/* 开始写具体样式 */\nchimee-control {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  display: block;\n  width: 100%;\n  height: 100%;\n  line-height: 2em;\n  font-size: 14px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  overflow: hidden;\n  font-family: Roboto, Arial, Helvetica, sans-serif;\n  -webkit-transition: visibility 0.5s ease;\n  transition: visibility 0.5s ease;\n}\n\nchimee-control-wrap {\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  height: 2.2em;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row nowrap;\n          flex-flow: row nowrap;\n  -webkit-box-pack: start;\n      -ms-flex-pack: start;\n          justify-content: flex-start;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  background: rgba(0, 0, 0, .5);\n  -webkit-transition: bottom 0.5s ease;\n  transition: bottom 0.5s ease;\n  pointer-events: auto;\n}\n\n.chimee-flex-component {\n  -webkit-box-ordinal-group: 2;\n      -ms-flex-order: 1;\n          order: 1;\n  -webkit-box-flex: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  height: 2em;\n  cursor: pointer;\n}\n\n.chimee-flex-component svg {\n  vertical-align: middle;\n  width: 2em;\n  height: 1.5em;\n}\n\n/* 播放器状态，播放／暂停 */\nchimee-control-state.chimee-flex-component {\n  -ms-flex-preferred-size: 3em;\n      flex-basis: 3em;\n  text-align: right;\n  margin-right: 1em;\n}\n\n/* 播放器状态，播放／暂停 动画效果 */\nchimee-control-state .left,\nchimee-control-state .right {\n  -webkit-transition: d 0.2s ease-in-out;\n  transition: d 0.2s ease-in-out;\n}\n\n/* 时间显示 */\nchimee-progresstime.chimee-flex-component {\n  color: #fff;\n  font-weight: normal;\n  text-align: center;\n  white-space: nowrap;\n}\n\nchimee-progresstime-pass,\nchimee-progresstime-total {\n  display: inline;\n}\n\n/* 播放器控制条 */\nchimee-progressbar.chimee-flex-component {\n  position: relative;\n  -webkit-box-flex: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n\nchimee-progressbar-wrap {\n  display: inline-block;\n  height: 100%;\n  position: absolute;\n  left: 1em;\n  right: 1em;\n  top: 0;\n}\n\nchimee-progressbar.progressbar-layout-top {\n  position: static\n}\n\nchimee-progressbar.progressbar-layout-top chimee-progressbar-wrap {\n  top: -1.6em;\n  height: 1.6em;\n  left: 0.8em;\n  right: 0;\n}\n\nchimee-progressbar.progressbar-layout-top .chimee-progressbar-line {\n  left: 0;\n  top: 0.8em;\n}\n\n.chimee-progressbar-line {\n  position: absolute;\n  top: 0.9em;\n  left: 0;\n  display: inline-block;\n  height: 3px;\n}\n\nchimee-progressbar-bg {\n  width: 100%;\n  background: #4c4c4c;\n}\n\nchimee-progressbar-buffer {\n  width: 0;\n  background: #6f6f6f;\n}\n\nchimee-progressbar-all {\n  margin-left: -0.8em;\n  background: #de698c;\n}\n\nchimee-progressbar-ball {\n  content: '';\n  position: absolute;\n  right: -0.8em;\n  top: -0.3em;\n  display: inline-block;\n  width: 0.8em;\n  height: 0.8em;\n  border-radius: 0.8em;\n  background: #fff;\n  pointer-events: none;\n}\n\nchimee-progressbar-tip {\n  position: absolute;\n  bottom: 0.5em;\n  top: -1.5em;\n  left: 0;\n  z-index: 10;\n  padding: 0 0.5em;\n  height: 1.5em;\n  background: #fff;\n  line-height: 1.5em;\n  border-radius: 4px;\n  color: #000;\n  text-align: center;\n}\n\n/* 音量控制 */\nchimee-volume.chimee-flex-component {\n  cursor: pointer;\n  padding: 0;\n  -ms-flex-preferred-size: 7em;\n      flex-basis: 7em;\n  white-space: nowrap;\n  margin-right: 1em;\n  position: relative;\n}\n\nchimee-volume.chimee-flex-component.vertical {\n  padding-right: 1em;\n  -ms-flex-preferred-size: 2em;\n      flex-basis: 2em;\n}\n\nchimee-volume-state {\n  display: inline-block;\n  width: 2em;\n  vertical-align: top;\n}\n\n/* 动画所用到的元素 css */\nchimee-volume .ring1,\nchimee-volume .ring2,\nchimee-volume .line {\n  stroke-dasharray: 150;\n  stroke-dashoffset: 150;\n  -webkit-transition: stroke-dashoffset 0.7s ease-in-out;\n  transition: stroke-dashoffset 0.7s ease-in-out;\n}\n\nchimee-volume.mute .line,\nchimee-volume.mute .ring1,\nchimee-volume.mute .ring2 {\n  stroke-dashoffset: 0;\n}\n\nchimee-volume.high .ring1,\nchimee-volume.high .ring2 {\n  stroke-dashoffset: 0;\n}\n\nchimee-volume.low .ring2 {\n  stroke-dashoffset: 0;\n}\n\nchimee-volume.vertical:hover chimee-volume-bar {\n  display: inline-block;\n}\n\nchimee-volume.vertical chimee-volume-bar {\n  position: absolute;\n  top: -7em;\n  left: -0.2em;\n  width: 2em;\n  height: 4em;\n  padding-bottom: 3em;\n  display: none;\n  vertical-align: middle;\n}\n\nchimee-volume.vertical chimee-volume-bar::before {\n  content: '';\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 1em;\n  background: #212121;\n  border-radius: 4px;\n}\n\nchimee-volume.horizonal chimee-volume-bar {\n  position: relative;\n  height: 1.2em;\n  width: 4em;\n  display: inline-block;\n  vertical-align: middle;\n}\n\nchimee-volume.vertical chimee-volume-bar-wrap {\n  display: inline-block;\n  position: absolute;\n  bottom: 1em;\n  left: 0;\n  top: 1em;\n  right: 0;\n  height: 4em;\n}\n\nchimee-volume.vertical chimee-volume-bar-all,\nchimee-volume.vertical chimee-volume-bar-bg {\n  position: absolute;\n  bottom: 0;\n  left: 1em;\n  display: inline-block;\n  width: 2px;\n  border-radius: 4px;\n}\n\nchimee-volume.vertical chimee-volume-bar-bg {\n  height: 4em;\n  background: #4c4c4c;\n  opacity: 0.5;\n}\n\nchimee-volume.vertical chimee-volume-bar-all {\n  background: #de698c;\n}\n\nchimee-volume.vertical chimee-volume-bar-all::after {\n  content: '';\n  position: absolute;\n  right: -0.34em;\n  top: -0.4em;\n  display: inline-block;\n  width: 0.8em;\n  height: 0.8em;\n  border-radius: 0.8em;\n  background: #fff;\n  pointer-events: none;\n}\n\nchimee-volume.horizonal chimee-volume-bar {\n  position: relative;\n  height: 1.2em;\n  width: 4em;\n  display: inline-block;\n  vertical-align: middle;\n}\n\nchimee-volume.horizonal chimee-volume-bar-all,\nchimee-volume.horizonal chimee-volume-bar-bg {\n  position: absolute;\n  top: 0.4em;\n  left: 0;\n  display: inline-block;\n  height: 2px;\n}\n\nchimee-volume.horizonal chimee-volume-bar-bg {\n  width: 4em;\n  background: #4c4c4c;\n  opacity: 0.5;\n}\n\nchimee-volume.horizonal chimee-volume-bar-all {\n  background: #de698c;\n}\n\nchimee-volume.horizonal chimee-volume-bar-all::after {\n  content: '';\n  position: absolute;\n  right: -0.4em;\n  top: -0.3em;\n  display: inline-block;\n  width: 0.8em;\n  height: 0.8em;\n  border-radius: 0.8em;\n  background: #fff;\n  pointer-events: none;\n}\n\n/* 全屏 */\nchimee-screen.chimee-flex-component {\n  -ms-flex-preferred-size: 3em;\n      flex-basis: 3em;\n  text-align: left;\n}\n\n/* 清晰度切换 */\nchimee-clarity.chimee-flex-component {\n  position: relative;\n  color: #fff;\n  width: 6em;\n  height: 1.75em;\n  padding: 0;\n  padding-right: 1em;\n  padding-left: 1em;\n  text-align: center;\n  vertical-align: middle;\n  font-size: 16px;\n}\n\nchimee-clarity.chimee-flex-component:hover chimee-clarity-list {\n  display: inline-block;\n}\n\nchimee-clarity.chimee-flex-component svg {\n  width: auto;\n  height: auto;\n}\n\nchimee-clarity-list {\n  position: absolute;\n  left: 0;\n  bottom: 1em;\n  width: 100%;\n  padding-bottom: 1.5em;\n  opacity: 0.8;\n  -webkit-box-sizing: content-box;\n          box-sizing: content-box;\n  line-height: 0;\n}\n\nchimee-clarity-list ul {\n  margin: 0;\n  padding: 0.5em 0;\n  background: #292929;\n  line-height: 2em;\n}\n\nchimee-clarity-list li {\n  list-style-type: none;\n}\n\nchimee-clarity-list li:hover,\nchimee-clarity-list li.active {\n  color: #de698c;\n}\n\nchimee-clarity-list-arrow {\n  position: absolute;\n  bottom: 1.5em;\n  width: 100%;\n}\n", undefined);
+__$styleInject("/* 暂时存放到这的， 用来设置 container video 的基本样式 */\ncontainer {\n  position: relative;\n  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);\n}\n\ncontainer,\nvideo {\n  display: block;\n  width: 100%;\n  height: 100%;\n  background: #000;\n  outline: none;\n}\n\nvideo:focus {\n  outline: none;\n}\n\n/* 用到的变量 */\n\n/* 全局默认样式 */\n.chimee-flex-component svg g {\n  fill: #fff;\n  stroke: #fff;\n}\n\n.chimee-flex-component svg:hover g {\n  fill: #fff;\n  stroke: #fff;\n}\n\n/* 默认隐藏 */\nchimee-control-state-pause,\nchimee-control-state-play,\nchimee-screen-full,\nchimee-clarity-list,\nchimee-screen-small {\n  display: none;\n}\n\n/* 满足条件时显示 */\nchimee-control.full chimee-screen-full,\nchimee-control.small chimee-screen-small,\nchimee-control.pause chimee-control-state-pause,\nchimee-control.play chimee-control-state-play,\nchimee-control.full chimee-screen-full,\nchimee-control.small chimee-screen-small {\n  display: inline-block;\n  width: 1.4em;\n  height: 100%;\n}\n\n/* 开始写具体样式 */\nchimee-control {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  display: block;\n  width: 100%;\n  height: 4em;\n  font-size: 10px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  overflow: hidden;\n  font-family: Roboto, Arial, Helvetica, sans-serif;\n  -webkit-transition: visibility 0.5s ease;\n  transition: visibility 0.5s ease;\n}\n\nchimee-control:focus {\n  outline: none;\n}\n\nchimee-control-wrap {\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  height: 4em;\n  line-height: 4em;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row nowrap;\n          flex-flow: row nowrap;\n  -webkit-box-pack: start;\n      -ms-flex-pack: start;\n          justify-content: flex-start;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  background: rgba(0, 0, 0, .5);\n  -webkit-transition: bottom 0.5s ease;\n  transition: bottom 0.5s ease;\n  pointer-events: auto;\n}\n\n.chimee-flex-component {\n  -webkit-box-ordinal-group: 2;\n      -ms-flex-order: 1;\n          order: 1;\n  -webkit-box-flex: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  height: 4em;\n  cursor: pointer;\n}\n\n.chimee-flex-component svg {\n  vertical-align: middle;\n  width: 1.8em;\n  height: 1.8em;\n}\n\n/* 播放器状态，播放／暂停 */\nchimee-control-state.chimee-flex-component {\n  -ms-flex-preferred-size: 3em;\n      flex-basis: 3em;\n  text-align: right;\n  margin-right: 1em;\n}\n\n/* 播放器状态，播放／暂停 动画效果 */\nchimee-control-state .left,\nchimee-control-state .right {\n  -webkit-transition: d 0.2s ease-in-out;\n  transition: d 0.2s ease-in-out;\n}\n\n/* 时间显示 */\nchimee-current-time.chimee-flex-component,\nchimee-total-time.chimee-flex-component {\n  color: #fff;\n  font-size: 1.5em;\n  font-weight: normal;\n  text-align: center;\n  white-space: nowrap;\n}\n\n/* 播放器控制条 */\nchimee-progressbar.chimee-flex-component {\n  position: relative;\n  -webkit-box-flex: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n  margin: 0 1.5em;\n}\n\n.chimee-progressbar-line {\n  position: absolute;\n  top: 1.8em;\n  left: 0;\n  display: inline-block;\n  height: 8px;\n  border-radius: 4px;\n}\n\nchimee-progressbar-bg {\n  width: 100%;\n  background: #4c4c4c;\n}\n\nchimee-progressbar-buffer {\n  width: 0;\n  background: #6f6f6f;\n}\n\nchimee-progressbar-all {\n  background: #de698c;\n}\n\nchimee-progressbar-ball {\n  content: '';\n  position: absolute;\n  right: -1em;\n  top: -0.4em;\n  display: inline-block;\n  width: 1.4em;\n  height: 1.4em;\n  border-radius: 1.4em;\n  background: #fff;\n  pointer-events: none;\n}\n\n/* 全屏 */\nchimee-screen.chimee-flex-component {\n  -ms-flex-preferred-size: 3em;\n      flex-basis: 3em;\n  text-align: left;\n  margin-left: 1em;\n}\n", undefined);
+
+/**
+ * chimee-plugin-gesture v0.0.5
+ * (c) 2017 yandeqiang
+ * Released under ISC
+ */
 
 function unwrapExports (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
@@ -36,87 +42,17 @@ function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
 
-// 7.2.1 RequireObjectCoercible(argument)
-var _defined = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
-  return it;
+var classCallCheck = createCommonjsModule(function (module, exports) {
+exports.__esModule = true;
+
+exports.default = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
 };
+});
 
-// 7.1.13 ToObject(argument)
-
-var _toObject = function (it) {
-  return Object(_defined(it));
-};
-
-var hasOwnProperty = {}.hasOwnProperty;
-var _has = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
-var toString = {}.toString;
-
-var _cof = function (it) {
-  return toString.call(it).slice(8, -1);
-};
-
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-
-// eslint-disable-next-line no-prototype-builtins
-var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
-  return _cof(it) == 'String' ? it.split('') : Object(it);
-};
-
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-
-
-var _toIobject = function (it) {
-  return _iobject(_defined(it));
-};
-
-// 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-var _toInteger = function (it) {
-  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-};
-
-// 7.1.15 ToLength
-
-var min = Math.min;
-var _toLength = function (it) {
-  return it > 0 ? min(_toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
-};
-
-var max = Math.max;
-var min$1 = Math.min;
-var _toAbsoluteIndex = function (index, length) {
-  index = _toInteger(index);
-  return index < 0 ? max(index + length, 0) : min$1(index, length);
-};
-
-// false -> Array#indexOf
-// true  -> Array#includes
-
-
-
-var _arrayIncludes = function (IS_INCLUDES) {
-  return function ($this, el, fromIndex) {
-    var O = _toIobject($this);
-    var length = _toLength(O.length);
-    var index = _toAbsoluteIndex(fromIndex, length);
-    var value;
-    // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare
-    if (IS_INCLUDES && el != el) while (length > index) {
-      value = O[index++];
-      // eslint-disable-next-line no-self-compare
-      if (value != value) return true;
-    // Array#indexOf ignores holes, Array#includes - not
-    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-      if (O[index] === el) return IS_INCLUDES || index || 0;
-    } return !IS_INCLUDES && -1;
-  };
-};
+var _classCallCheck = unwrapExports(classCallCheck);
 
 var _global = createCommonjsModule(function (module) {
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -127,57 +63,12 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
-var SHARED = '__core-js_shared__';
-var store = _global[SHARED] || (_global[SHARED] = {});
-var _shared = function (key) {
-  return store[key] || (store[key] = {});
-};
-
-var id = 0;
-var px = Math.random();
-var _uid = function (key) {
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-var shared = _shared('keys');
-
-var _sharedKey = function (key) {
-  return shared[key] || (shared[key] = _uid(key));
-};
-
-var arrayIndexOf = _arrayIncludes(false);
-var IE_PROTO = _sharedKey('IE_PROTO');
-
-var _objectKeysInternal = function (object, names) {
-  var O = _toIobject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) if (key != IE_PROTO) _has(O, key) && result.push(key);
-  // Don't enum bug & hidden keys
-  while (names.length > i) if (_has(O, key = names[i++])) {
-    ~arrayIndexOf(result, key) || result.push(key);
-  }
-  return result;
-};
-
-// IE 8- don't enum bug keys
-var _enumBugKeys = (
-  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
-).split(',');
-
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-
-
-
-var _objectKeys = Object.keys || function keys(O) {
-  return _objectKeysInternal(O, _enumBugKeys);
-};
-
 var _core = createCommonjsModule(function (module) {
 var core = module.exports = { version: '2.5.1' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
+
+var _core_1 = _core.version;
 
 var _aFunction = function (it) {
   if (typeof it != 'function') throw TypeError(it + ' is not a function!');
@@ -343,15 +234,605 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 var _export = $export;
 
+// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+_export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
+
+var $Object = _core.Object;
+var defineProperty$2 = function defineProperty(it, key, desc) {
+  return $Object.defineProperty(it, key, desc);
+};
+
+var defineProperty = createCommonjsModule(function (module) {
+module.exports = { "default": defineProperty$2, __esModule: true };
+});
+
+unwrapExports(defineProperty);
+
+var createClass = createCommonjsModule(function (module, exports) {
+exports.__esModule = true;
+
+
+
+var _defineProperty2 = _interopRequireDefault(defineProperty);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      (_defineProperty2.default)(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+});
+
+var _createClass = unwrapExports(createClass);
+
+function getDistance(x, y, x1, y1) {
+
+  return Math.sqrt(Math.pow(x1 - x, 2) + Math.pow(y1 - y, 2));
+}
+
+function getSpeed(s, t) {
+  return s / t;
+}
+
+function isArray$1(arr) {
+  return Array.isArray(arr);
+}
+
+/**
+ * 手势判断组件
+ * 
+ * 目前判断的手势
+ * 
+ * 单点操作
+ * 
+ * tap
+ * swipe
+ * drag
+ */
+
+var Gesture = function () {
+  function Gesture() {
+    _classCallCheck(this, Gesture);
+
+    // this.events = events;
+    // ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press'].forEach(item => {
+    //   this[item] = events[item].bind(host);
+    // })
+
+    // 手势该有的几个状态
+    // none tapping pressing
+
+    this.event = {};
+    this.status = 'none';
+  }
+
+  _createClass(Gesture, [{
+    key: 'touchstart',
+    value: function touchstart(evt) {
+
+      // 初始状态
+      this.status = 'tapping';
+
+      // 当前 touch 点
+      this.startTouch = evt.changedTouches[0];
+
+      // 开始时间
+      this.startTime = Date.now();
+    }
+  }, {
+    key: 'touchmove',
+    value: function touchmove(evt) {
+
+      var touch = evt.changedTouches[0];
+
+      var distance = getDistance(this.startTouch.clientX, this.startTouch.clientY, touch.clientX, touch.clientY);
+
+      if (this.status === 'tapping' && distance > 10) {
+        this.status = 'panning';
+        this.fire('panstart', evt);
+      } else if (this.status === 'panning') {
+        this.fire('panmove', evt);
+      }
+    }
+  }, {
+    key: 'touchend',
+    value: function touchend(evt) {
+
+      this.endTouch = evt.changedTouches[0];
+
+      var distance = getDistance(this.startTouch.clientX, this.startTouch.clientY, this.endTouch.clientX, this.endTouch.clientY);
+
+      var interval = Date.now() - this.startTime;
+
+      // 时间 <= 250ms 距离小于 10 px 则认为是 tap
+      if (interval <= 250 && distance < 10) this.fire('tap', evt);
+
+      // 时间 > 250ms 距离小于 10 px 则认为是 press    
+      if (interval > 250 && distance < 10) this.fire('press', evt);
+
+      var speed = getSpeed(distance, interval);
+
+      // 距离大于 10 px , 速度大于 0.3 则认为是 swipe
+      if (speed > 0.3 && distance >= 10) this.fire('swipe', evt);
+
+      // 处于 panning 则触发 panend 事件
+      if (this.status === 'panning') this.fire('panend', evt);
+
+      this.status = 'none';
+    }
+  }, {
+    key: 'touchcancel',
+    value: function touchcancel(evt) {}
+  }, {
+    key: 'on',
+    value: function on(type, func) {
+      this.event[type] = this.event[type] ? this.event[type].push(func) : [func];
+    }
+  }, {
+    key: 'fire',
+    value: function fire(type, evt) {
+      if (!isArray$1(this.event[type])) return;
+      this.event[type].forEach(function (item) {
+        item(evt);
+      });
+    }
+  }]);
+
+  return Gesture;
+}();
+
+var baseMobileEvent = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
+
+var gesture = new Gesture();
+var c_gesture = new Gesture();
+var w_gesture = new Gesture();
+var d_gesture = new Gesture();
+
+function gestureFactory() {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref$name = _ref.name,
+      name = _ref$name === undefined ? 'chimeeGesture' : _ref$name,
+      el = _ref.el,
+      _ref$level = _ref.level,
+      level = _ref$level === undefined ? 0 : _ref$level,
+      _ref$inner = _ref.inner,
+      inner = _ref$inner === undefined ? true : _ref$inner,
+      autoFocus = _ref.autoFocus,
+      className = _ref.className,
+      _beforeCreate = _ref.beforeCreate,
+      _create = _ref.create,
+      init = _ref.init,
+      inited = _ref.inited,
+      _destroy = _ref.destroy,
+      data = _ref.data,
+      computed = _ref.computed,
+      _ref$events = _ref.events,
+      events = _ref$events === undefined ? {} : _ref$events,
+      _ref$methods = _ref.methods,
+      methods = _ref$methods === undefined ? {} : _ref$methods,
+      _ref$penetrate = _ref.penetrate,
+      penetrate = _ref$penetrate === undefined ? false : _ref$penetrate,
+      _ref$operable = _ref.operable,
+      operable = _ref$operable === undefined ? true : _ref$operable;
+
+  return {
+    name: name,
+    el: el,
+    level: level,
+    inner: inner,
+    autoFocus: autoFocus,
+    className: className,
+    data: data,
+    computed: computed,
+    beforeCreate: function beforeCreate(config) {
+      var _this = this;
+
+      baseMobileEvent.forEach(function (item) {
+        config.events[item] = function (evt) {
+          gesture[item](evt);
+        };
+        config.events['c_' + item] = function (evt) {
+          c_gesture[item](evt);
+        };
+        config.events['w_' + item] = function (evt) {
+          w_gesture[item](evt);
+        };
+      });
+
+      ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press'].forEach(function (item) {
+        gesture.on(item, function (evt) {
+          var func = config.events[item];
+          func && func.call(_this, evt);
+        });
+        c_gesture.on(item, function (evt) {
+          var func = config.events['c_' + item];
+          func && func.call(_this, evt);
+        });
+        w_gesture.on(item, function (evt) {
+          var func = config.events['w_' + item];
+          func && func.call(_this, evt);
+        });
+        d_gesture.on(item, function (evt) {
+          var func = config.events['d_' + item];
+          func && func.call(_this, evt);
+        });
+      });
+
+      _beforeCreate && _beforeCreate.call(this);
+    },
+    create: function create() {
+      var _this2 = this;
+
+      baseMobileEvent.forEach(function (item) {
+        var key = '__' + item;
+        _this2[key] = function (evt) {
+          d_gesture[item](evt);
+        };
+        addEvent(_this2.$dom, item, _this2[key]);
+      });
+
+      _create && _create.call(this);
+    },
+
+    init: init,
+    inited: inited,
+    destroy: function destroy() {
+      var _this3 = this;
+
+      baseMobileEvent.forEach(function (item) {
+        var key = '__' + item;
+        removeEvent(_this3.$dom, item, _this3[key]);
+      });
+
+      _destroy && _destroy.call(this);
+    },
+
+    methods: methods,
+    penetrate: penetrate,
+    operable: operable,
+    events: events
+  };
+}
+
+function unwrapExports$1 (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
+
+function createCommonjsModule$1(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+// 7.2.1 RequireObjectCoercible(argument)
+var _defined = function (it) {
+  if (it == undefined) throw TypeError("Can't call method on  " + it);
+  return it;
+};
+
+// 7.1.13 ToObject(argument)
+
+var _toObject = function (it) {
+  return Object(_defined(it));
+};
+
+var hasOwnProperty = {}.hasOwnProperty;
+var _has = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
+
+var toString = {}.toString;
+
+var _cof = function (it) {
+  return toString.call(it).slice(8, -1);
+};
+
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+
+// eslint-disable-next-line no-prototype-builtins
+var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
+  return _cof(it) == 'String' ? it.split('') : Object(it);
+};
+
+// to indexed object, toObject with fallback for non-array-like ES3 strings
+
+
+var _toIobject = function (it) {
+  return _iobject(_defined(it));
+};
+
+// 7.1.4 ToInteger
+var ceil = Math.ceil;
+var floor = Math.floor;
+var _toInteger = function (it) {
+  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+};
+
+// 7.1.15 ToLength
+
+var min = Math.min;
+var _toLength = function (it) {
+  return it > 0 ? min(_toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
+};
+
+var max = Math.max;
+var min$1 = Math.min;
+var _toAbsoluteIndex = function (index, length) {
+  index = _toInteger(index);
+  return index < 0 ? max(index + length, 0) : min$1(index, length);
+};
+
+// false -> Array#indexOf
+// true  -> Array#includes
+
+
+
+var _arrayIncludes = function (IS_INCLUDES) {
+  return function ($this, el, fromIndex) {
+    var O = _toIobject($this);
+    var length = _toLength(O.length);
+    var index = _toAbsoluteIndex(fromIndex, length);
+    var value;
+    // Array#includes uses SameValueZero equality algorithm
+    // eslint-disable-next-line no-self-compare
+    if (IS_INCLUDES && el != el) while (length > index) {
+      value = O[index++];
+      // eslint-disable-next-line no-self-compare
+      if (value != value) return true;
+    // Array#indexOf ignores holes, Array#includes - not
+    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
+      if (O[index] === el) return IS_INCLUDES || index || 0;
+    } return !IS_INCLUDES && -1;
+  };
+};
+
+var _global$1 = createCommonjsModule$1(function (module) {
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+var global = module.exports = typeof window != 'undefined' && window.Math == Math
+  ? window : typeof self != 'undefined' && self.Math == Math ? self
+  // eslint-disable-next-line no-new-func
+  : Function('return this')();
+if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
+});
+
+var SHARED = '__core-js_shared__';
+var store = _global$1[SHARED] || (_global$1[SHARED] = {});
+var _shared = function (key) {
+  return store[key] || (store[key] = {});
+};
+
+var id = 0;
+var px = Math.random();
+var _uid = function (key) {
+  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+};
+
+var shared = _shared('keys');
+
+var _sharedKey = function (key) {
+  return shared[key] || (shared[key] = _uid(key));
+};
+
+var arrayIndexOf = _arrayIncludes(false);
+var IE_PROTO = _sharedKey('IE_PROTO');
+
+var _objectKeysInternal = function (object, names) {
+  var O = _toIobject(object);
+  var i = 0;
+  var result = [];
+  var key;
+  for (key in O) if (key != IE_PROTO) _has(O, key) && result.push(key);
+  // Don't enum bug & hidden keys
+  while (names.length > i) if (_has(O, key = names[i++])) {
+    ~arrayIndexOf(result, key) || result.push(key);
+  }
+  return result;
+};
+
+// IE 8- don't enum bug keys
+var _enumBugKeys = (
+  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
+).split(',');
+
+// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+
+
+
+var _objectKeys = Object.keys || function keys(O) {
+  return _objectKeysInternal(O, _enumBugKeys);
+};
+
+var _core$1 = createCommonjsModule$1(function (module) {
+var core = module.exports = { version: '2.5.1' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+});
+
+var _core_1$1 = _core$1.version;
+
+var _aFunction$1 = function (it) {
+  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+  return it;
+};
+
+// optional / simple context binding
+
+var _ctx$1 = function (fn, that, length) {
+  _aFunction$1(fn);
+  if (that === undefined) return fn;
+  switch (length) {
+    case 1: return function (a) {
+      return fn.call(that, a);
+    };
+    case 2: return function (a, b) {
+      return fn.call(that, a, b);
+    };
+    case 3: return function (a, b, c) {
+      return fn.call(that, a, b, c);
+    };
+  }
+  return function (/* ...args */) {
+    return fn.apply(that, arguments);
+  };
+};
+
+var _isObject$1 = function (it) {
+  return typeof it === 'object' ? it !== null : typeof it === 'function';
+};
+
+var _anObject$1 = function (it) {
+  if (!_isObject$1(it)) throw TypeError(it + ' is not an object!');
+  return it;
+};
+
+var _fails$1 = function (exec) {
+  try {
+    return !!exec();
+  } catch (e) {
+    return true;
+  }
+};
+
+// Thank's IE8 for his funny defineProperty
+var _descriptors$1 = !_fails$1(function () {
+  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+});
+
+var document$2 = _global$1.document;
+// typeof document.createElement is 'object' in old IE
+var is$1 = _isObject$1(document$2) && _isObject$1(document$2.createElement);
+var _domCreate$1 = function (it) {
+  return is$1 ? document$2.createElement(it) : {};
+};
+
+var _ie8DomDefine$1 = !_descriptors$1 && !_fails$1(function () {
+  return Object.defineProperty(_domCreate$1('div'), 'a', { get: function () { return 7; } }).a != 7;
+});
+
+// 7.1.1 ToPrimitive(input [, PreferredType])
+
+// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+// and the second argument - flag - preferred type is a string
+var _toPrimitive$1 = function (it, S) {
+  if (!_isObject$1(it)) return it;
+  var fn, val;
+  if (S && typeof (fn = it.toString) == 'function' && !_isObject$1(val = fn.call(it))) return val;
+  if (typeof (fn = it.valueOf) == 'function' && !_isObject$1(val = fn.call(it))) return val;
+  if (!S && typeof (fn = it.toString) == 'function' && !_isObject$1(val = fn.call(it))) return val;
+  throw TypeError("Can't convert object to primitive value");
+};
+
+var dP$1 = Object.defineProperty;
+
+var f$1 = _descriptors$1 ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+  _anObject$1(O);
+  P = _toPrimitive$1(P, true);
+  _anObject$1(Attributes);
+  if (_ie8DomDefine$1) try {
+    return dP$1(O, P, Attributes);
+  } catch (e) { /* empty */ }
+  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+  if ('value' in Attributes) O[P] = Attributes.value;
+  return O;
+};
+
+var _objectDp$1 = {
+	f: f$1
+};
+
+var _propertyDesc$1 = function (bitmap, value) {
+  return {
+    enumerable: !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable: !(bitmap & 4),
+    value: value
+  };
+};
+
+var _hide$1 = _descriptors$1 ? function (object, key, value) {
+  return _objectDp$1.f(object, key, _propertyDesc$1(1, value));
+} : function (object, key, value) {
+  object[key] = value;
+  return object;
+};
+
+var PROTOTYPE$1 = 'prototype';
+
+var $export$1 = function (type, name, source) {
+  var IS_FORCED = type & $export$1.F;
+  var IS_GLOBAL = type & $export$1.G;
+  var IS_STATIC = type & $export$1.S;
+  var IS_PROTO = type & $export$1.P;
+  var IS_BIND = type & $export$1.B;
+  var IS_WRAP = type & $export$1.W;
+  var exports = IS_GLOBAL ? _core$1 : _core$1[name] || (_core$1[name] = {});
+  var expProto = exports[PROTOTYPE$1];
+  var target = IS_GLOBAL ? _global$1 : IS_STATIC ? _global$1[name] : (_global$1[name] || {})[PROTOTYPE$1];
+  var key, own, out;
+  if (IS_GLOBAL) source = name;
+  for (key in source) {
+    // contains in native
+    own = !IS_FORCED && target && target[key] !== undefined;
+    if (own && key in exports) continue;
+    // export native or passed
+    out = own ? target[key] : source[key];
+    // prevent global pollution for namespaces
+    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
+    // bind timers to global for call from export context
+    : IS_BIND && own ? _ctx$1(out, _global$1)
+    // wrap global constructors for prevent change them in library
+    : IS_WRAP && target[key] == out ? (function (C) {
+      var F = function (a, b, c) {
+        if (this instanceof C) {
+          switch (arguments.length) {
+            case 0: return new C();
+            case 1: return new C(a);
+            case 2: return new C(a, b);
+          } return new C(a, b, c);
+        } return C.apply(this, arguments);
+      };
+      F[PROTOTYPE$1] = C[PROTOTYPE$1];
+      return F;
+    // make static versions for prototype methods
+    })(out) : IS_PROTO && typeof out == 'function' ? _ctx$1(Function.call, out) : out;
+    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
+    if (IS_PROTO) {
+      (exports.virtual || (exports.virtual = {}))[key] = out;
+      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
+      if (type & $export$1.R && expProto && !expProto[key]) _hide$1(expProto, key, out);
+    }
+  }
+};
+// type bitmap
+$export$1.F = 1;   // forced
+$export$1.G = 2;   // global
+$export$1.S = 4;   // static
+$export$1.P = 8;   // proto
+$export$1.B = 16;  // bind
+$export$1.W = 32;  // wrap
+$export$1.U = 64;  // safe
+$export$1.R = 128; // real proto method for `library`
+var _export$1 = $export$1;
+
 // most Object methods by ES6 should accept primitives
 
 
 
 var _objectSap = function (KEY, exec) {
-  var fn = (_core.Object || {})[KEY] || Object[KEY];
+  var fn = (_core$1.Object || {})[KEY] || Object[KEY];
   var exp = {};
   exp[KEY] = exec(fn);
-  _export(_export.S + _export.F * _fails(function () { fn(1); }), 'Object', exp);
+  _export$1(_export$1.S + _export$1.F * _fails$1(function () { fn(1); }), 'Object', exp);
 };
 
 // 19.1.2.14 Object.keys(O)
@@ -364,13 +845,13 @@ _objectSap('keys', function () {
   };
 });
 
-var keys$1 = _core.Object.keys;
+var keys$1 = _core$1.Object.keys;
 
-var keys = createCommonjsModule(function (module) {
+var keys = createCommonjsModule$1(function (module) {
 module.exports = { "default": keys$1, __esModule: true };
 });
 
-var _Object$keys = unwrapExports(keys);
+var _Object$keys = unwrapExports$1(keys);
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 
@@ -396,17 +877,15 @@ _objectSap('getPrototypeOf', function () {
   };
 });
 
-var getPrototypeOf$1 = _core.Object.getPrototypeOf;
+var getPrototypeOf$1 = _core$1.Object.getPrototypeOf;
 
-var getPrototypeOf = createCommonjsModule(function (module) {
+var getPrototypeOf = createCommonjsModule$1(function (module) {
 module.exports = { "default": getPrototypeOf$1, __esModule: true };
 });
 
-var _Object$getPrototypeOf = unwrapExports(getPrototypeOf);
+var _Object$getPrototypeOf = unwrapExports$1(getPrototypeOf);
 
-var classCallCheck = createCommonjsModule(function (module, exports) {
-"use strict";
-
+var classCallCheck$1 = createCommonjsModule$1(function (module, exports) {
 exports.__esModule = true;
 
 exports.default = function (instance, Constructor) {
@@ -416,30 +895,28 @@ exports.default = function (instance, Constructor) {
 };
 });
 
-var _classCallCheck = unwrapExports(classCallCheck);
+var _classCallCheck$1 = unwrapExports$1(classCallCheck$1);
 
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-_export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
+_export$1(_export$1.S + _export$1.F * !_descriptors$1, 'Object', { defineProperty: _objectDp$1.f });
 
-var $Object = _core.Object;
-var defineProperty$2 = function defineProperty(it, key, desc) {
-  return $Object.defineProperty(it, key, desc);
+var $Object$1 = _core$1.Object;
+var defineProperty$3 = function defineProperty(it, key, desc) {
+  return $Object$1.defineProperty(it, key, desc);
 };
 
-var defineProperty = createCommonjsModule(function (module) {
-module.exports = { "default": defineProperty$2, __esModule: true };
+var defineProperty$1 = createCommonjsModule$1(function (module) {
+module.exports = { "default": defineProperty$3, __esModule: true };
 });
 
-unwrapExports(defineProperty);
+unwrapExports$1(defineProperty$1);
 
-var createClass = createCommonjsModule(function (module, exports) {
-"use strict";
-
+var createClass$1 = createCommonjsModule$1(function (module, exports) {
 exports.__esModule = true;
 
 
 
-var _defineProperty2 = _interopRequireDefault(defineProperty);
+var _defineProperty2 = _interopRequireDefault(defineProperty$1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -462,7 +939,7 @@ exports.default = function () {
 }();
 });
 
-var _createClass = unwrapExports(createClass);
+var _createClass$1 = unwrapExports$1(createClass$1);
 
 // true  -> String#at
 // false -> String#codePointAt
@@ -482,22 +959,20 @@ var _stringAt = function (TO_STRING) {
 
 var _library = true;
 
-var _redefine = _hide;
+var _redefine = _hide$1;
 
-var _iterators = {};
-
-var _objectDps = _descriptors ? Object.defineProperties : function defineProperties(O, Properties) {
-  _anObject(O);
+var _objectDps = _descriptors$1 ? Object.defineProperties : function defineProperties(O, Properties) {
+  _anObject$1(O);
   var keys = _objectKeys(Properties);
   var length = keys.length;
   var i = 0;
   var P;
-  while (length > i) _objectDp.f(O, P = keys[i++], Properties[P]);
+  while (length > i) _objectDp$1.f(O, P = keys[i++], Properties[P]);
   return O;
 };
 
-var document$2 = _global.document;
-var _html = document$2 && document$2.documentElement;
+var document$3 = _global$1.document;
+var _html = document$3 && document$3.documentElement;
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 
@@ -505,12 +980,12 @@ var _html = document$2 && document$2.documentElement;
 
 var IE_PROTO$2 = _sharedKey('IE_PROTO');
 var Empty = function () { /* empty */ };
-var PROTOTYPE$1 = 'prototype';
+var PROTOTYPE$2 = 'prototype';
 
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
 var createDict = function () {
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = _domCreate('iframe');
+  var iframe = _domCreate$1('iframe');
   var i = _enumBugKeys.length;
   var lt = '<';
   var gt = '>';
@@ -525,26 +1000,26 @@ var createDict = function () {
   iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
   iframeDocument.close();
   createDict = iframeDocument.F;
-  while (i--) delete createDict[PROTOTYPE$1][_enumBugKeys[i]];
+  while (i--) delete createDict[PROTOTYPE$2][_enumBugKeys[i]];
   return createDict();
 };
 
 var _objectCreate = Object.create || function create(O, Properties) {
   var result;
   if (O !== null) {
-    Empty[PROTOTYPE$1] = _anObject(O);
+    Empty[PROTOTYPE$2] = _anObject$1(O);
     result = new Empty();
-    Empty[PROTOTYPE$1] = null;
+    Empty[PROTOTYPE$2] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
     result[IE_PROTO$2] = O;
   } else result = createDict();
   return Properties === undefined ? result : _objectDps(result, Properties);
 };
 
-var _wks = createCommonjsModule(function (module) {
+var _wks = createCommonjsModule$1(function (module) {
 var store = _shared('wks');
 
-var Symbol = _global.Symbol;
+var Symbol = _global$1.Symbol;
 var USE_SYMBOL = typeof Symbol == 'function';
 
 var $exports = module.exports = function (name) {
@@ -555,7 +1030,7 @@ var $exports = module.exports = function (name) {
 $exports.store = store;
 });
 
-var def = _objectDp.f;
+var def = _objectDp$1.f;
 
 var TAG = _wks('toStringTag');
 
@@ -563,29 +1038,15 @@ var _setToStringTag = function (it, tag, stat) {
   if (it && !_has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
 
-'use strict';
-
-
-
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-_hide(IteratorPrototype, _wks('iterator'), function () { return this; });
+_hide$1(IteratorPrototype, _wks('iterator'), function () { return this; });
 
 var _iterCreate = function (Constructor, NAME, next) {
-  Constructor.prototype = _objectCreate(IteratorPrototype, { next: _propertyDesc(1, next) });
+  Constructor.prototype = _objectCreate(IteratorPrototype, { next: _propertyDesc$1(1, next) });
   _setToStringTag(Constructor, NAME + ' Iterator');
 };
-
-'use strict';
-
-
-
-
-
-
-
-
 
 var ITERATOR = _wks('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
@@ -620,7 +1081,7 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
       // Set @@toStringTag to native iterators
       _setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if (!_library && !_has(IteratorPrototype, ITERATOR)) _hide(IteratorPrototype, ITERATOR, returnThis);
+      if (!_library && !_has(IteratorPrototype, ITERATOR)) _hide$1(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
@@ -630,11 +1091,9 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
   }
   // Define iterator
   if ((!_library || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
-    _hide(proto, ITERATOR, $default);
+    _hide$1(proto, ITERATOR, $default);
   }
   // Plug for library
-  _iterators[NAME] = $default;
-  _iterators[TAG] = returnThis;
   if (DEFAULT) {
     methods = {
       values: DEF_VALUES ? $default : getMethod(VALUES),
@@ -643,12 +1102,11 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
     };
     if (FORCED) for (key in methods) {
       if (!(key in proto)) _redefine(proto, key, methods[key]);
-    } else _export(_export.P + _export.F * (BUGGY || VALUES_BUG), NAME, methods);
+    } else _export$1(_export$1.P + _export$1.F * (BUGGY || VALUES_BUG), NAME, methods);
   }
   return methods;
 };
 
-'use strict';
 var $at = _stringAt(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
@@ -669,12 +1127,6 @@ _iterDefine(String, 'String', function (iterated) {
 var _iterStep = function (done, value) {
   return { value: value, done: !!done };
 };
-
-'use strict';
-
-
-
-
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
@@ -698,9 +1150,6 @@ var es6_array_iterator = _iterDefine(Array, 'Array', function (iterated, kind) {
   return _iterStep(0, [index, O[index]]);
 }, 'values');
 
-// argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
-_iterators.Arguments = _iterators.Array;
-
 var TO_STRING_TAG = _wks('toStringTag');
 
 var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
@@ -711,36 +1160,36 @@ var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList
 
 for (var i = 0; i < DOMIterables.length; i++) {
   var NAME = DOMIterables[i];
-  var Collection = _global[NAME];
+  var Collection = _global$1[NAME];
   var proto = Collection && Collection.prototype;
-  if (proto && !proto[TO_STRING_TAG]) _hide(proto, TO_STRING_TAG, NAME);
-  _iterators[NAME] = _iterators.Array;
+  if (proto && !proto[TO_STRING_TAG]) _hide$1(proto, TO_STRING_TAG, NAME);
+  
 }
 
-var f$1 = _wks;
+var f$2 = _wks;
 
 var _wksExt = {
-	f: f$1
+	f: f$2
 };
 
 var iterator$2 = _wksExt.f('iterator');
 
-var iterator = createCommonjsModule(function (module) {
+var iterator = createCommonjsModule$1(function (module) {
 module.exports = { "default": iterator$2, __esModule: true };
 });
 
-unwrapExports(iterator);
+unwrapExports$1(iterator);
 
-var _meta = createCommonjsModule(function (module) {
+var _meta = createCommonjsModule$1(function (module) {
 var META = _uid('meta');
 
 
-var setDesc = _objectDp.f;
+var setDesc = _objectDp$1.f;
 var id = 0;
 var isExtensible = Object.isExtensible || function () {
   return true;
 };
-var FREEZE = !_fails(function () {
+var FREEZE = !_fails$1(function () {
   return isExtensible(Object.preventExtensions({}));
 });
 var setMeta = function (it) {
@@ -751,7 +1200,7 @@ var setMeta = function (it) {
 };
 var fastKey = function (it, create) {
   // return primitive with prefix
-  if (!_isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if (!_isObject$1(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
   if (!_has(it, META)) {
     // can't set metadata to uncaught frozen object
     if (!isExtensible(it)) return 'F';
@@ -787,22 +1236,28 @@ var meta = module.exports = {
 };
 });
 
-var defineProperty$4 = _objectDp.f;
+var _meta_1 = _meta.KEY;
+var _meta_2 = _meta.NEED;
+var _meta_3 = _meta.fastKey;
+var _meta_4 = _meta.getWeak;
+var _meta_5 = _meta.onFreeze;
+
+var defineProperty$5 = _objectDp$1.f;
 var _wksDefine = function (name) {
-  var $Symbol = _core.Symbol || (_core.Symbol = _library ? {} : _global.Symbol || {});
-  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$4($Symbol, name, { value: _wksExt.f(name) });
+  var $Symbol = _core$1.Symbol || (_core$1.Symbol = _library ? {} : _global$1.Symbol || {});
+  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$5($Symbol, name, { value: _wksExt.f(name) });
 };
 
-var f$2 = Object.getOwnPropertySymbols;
+var f$3 = Object.getOwnPropertySymbols;
 
 var _objectGops = {
-	f: f$2
+	f: f$3
 };
 
-var f$3 = {}.propertyIsEnumerable;
+var f$4 = {}.propertyIsEnumerable;
 
 var _objectPie = {
-	f: f$3
+	f: f$4
 };
 
 // all enumerable object keys, includes symbols
@@ -823,7 +1278,7 @@ var _enumKeys = function (it) {
 
 // 7.2.2 IsArray(argument)
 
-var _isArray = Array.isArray || function isArray(arg) {
+var _isArray = Array.isArray || function isArray$$1(arg) {
   return _cof(arg) == 'Array';
 };
 
@@ -831,12 +1286,12 @@ var _isArray = Array.isArray || function isArray(arg) {
 
 var hiddenKeys = _enumBugKeys.concat('length', 'prototype');
 
-var f$5 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+var f$6 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return _objectKeysInternal(O, hiddenKeys);
 };
 
 var _objectGopn = {
-	f: f$5
+	f: f$6
 };
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
@@ -855,30 +1310,29 @@ var getWindowNames = function (it) {
   }
 };
 
-var f$4 = function getOwnPropertyNames(it) {
+var f$5 = function getOwnPropertyNames(it) {
   return windowNames && toString$1.call(it) == '[object Window]' ? getWindowNames(it) : gOPN$1(_toIobject(it));
 };
 
 var _objectGopnExt = {
-	f: f$4
+	f: f$5
 };
 
 var gOPD$1 = Object.getOwnPropertyDescriptor;
 
-var f$6 = _descriptors ? gOPD$1 : function getOwnPropertyDescriptor(O, P) {
+var f$7 = _descriptors$1 ? gOPD$1 : function getOwnPropertyDescriptor(O, P) {
   O = _toIobject(O);
-  P = _toPrimitive(P, true);
-  if (_ie8DomDefine) try {
+  P = _toPrimitive$1(P, true);
+  if (_ie8DomDefine$1) try {
     return gOPD$1(O, P);
   } catch (e) { /* empty */ }
-  if (_has(O, P)) return _propertyDesc(!_objectPie.f.call(O, P), O[P]);
+  if (_has(O, P)) return _propertyDesc$1(!_objectPie.f.call(O, P), O[P]);
 };
 
 var _objectGopd = {
-	f: f$6
+	f: f$7
 };
 
-'use strict';
 // ECMAScript 6 symbols shim
 
 
@@ -905,38 +1359,38 @@ var META = _meta.KEY;
 
 
 var gOPD = _objectGopd.f;
-var dP$1 = _objectDp.f;
+var dP$2 = _objectDp$1.f;
 var gOPN = _objectGopnExt.f;
-var $Symbol = _global.Symbol;
-var $JSON = _global.JSON;
+var $Symbol = _global$1.Symbol;
+var $JSON = _global$1.JSON;
 var _stringify = $JSON && $JSON.stringify;
-var PROTOTYPE$2 = 'prototype';
+var PROTOTYPE$3 = 'prototype';
 var HIDDEN = _wks('_hidden');
 var TO_PRIMITIVE = _wks('toPrimitive');
 var isEnum = {}.propertyIsEnumerable;
 var SymbolRegistry = _shared('symbol-registry');
 var AllSymbols = _shared('symbols');
 var OPSymbols = _shared('op-symbols');
-var ObjectProto$1 = Object[PROTOTYPE$2];
+var ObjectProto$1 = Object[PROTOTYPE$3];
 var USE_NATIVE = typeof $Symbol == 'function';
-var QObject = _global.QObject;
+var QObject = _global$1.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
-var setter = !QObject || !QObject[PROTOTYPE$2] || !QObject[PROTOTYPE$2].findChild;
+var setter = !QObject || !QObject[PROTOTYPE$3] || !QObject[PROTOTYPE$3].findChild;
 
 // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-var setSymbolDesc = _descriptors && _fails(function () {
-  return _objectCreate(dP$1({}, 'a', {
-    get: function () { return dP$1(this, 'a', { value: 7 }).a; }
+var setSymbolDesc = _descriptors$1 && _fails$1(function () {
+  return _objectCreate(dP$2({}, 'a', {
+    get: function () { return dP$2(this, 'a', { value: 7 }).a; }
   })).a != 7;
 }) ? function (it, key, D) {
   var protoDesc = gOPD(ObjectProto$1, key);
   if (protoDesc) delete ObjectProto$1[key];
-  dP$1(it, key, D);
-  if (protoDesc && it !== ObjectProto$1) dP$1(ObjectProto$1, key, protoDesc);
-} : dP$1;
+  dP$2(it, key, D);
+  if (protoDesc && it !== ObjectProto$1) dP$2(ObjectProto$1, key, protoDesc);
+} : dP$2;
 
 var wrap = function (tag) {
-  var sym = AllSymbols[tag] = _objectCreate($Symbol[PROTOTYPE$2]);
+  var sym = AllSymbols[tag] = _objectCreate($Symbol[PROTOTYPE$3]);
   sym._k = tag;
   return sym;
 };
@@ -947,41 +1401,41 @@ var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it)
   return it instanceof $Symbol;
 };
 
-var $defineProperty$1 = function defineProperty(it, key, D) {
-  if (it === ObjectProto$1) $defineProperty$1(OPSymbols, key, D);
-  _anObject(it);
-  key = _toPrimitive(key, true);
-  _anObject(D);
+var $defineProperty = function defineProperty(it, key, D) {
+  if (it === ObjectProto$1) $defineProperty(OPSymbols, key, D);
+  _anObject$1(it);
+  key = _toPrimitive$1(key, true);
+  _anObject$1(D);
   if (_has(AllSymbols, key)) {
     if (!D.enumerable) {
-      if (!_has(it, HIDDEN)) dP$1(it, HIDDEN, _propertyDesc(1, {}));
+      if (!_has(it, HIDDEN)) dP$2(it, HIDDEN, _propertyDesc$1(1, {}));
       it[HIDDEN][key] = true;
     } else {
       if (_has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
-      D = _objectCreate(D, { enumerable: _propertyDesc(0, false) });
+      D = _objectCreate(D, { enumerable: _propertyDesc$1(0, false) });
     } return setSymbolDesc(it, key, D);
-  } return dP$1(it, key, D);
+  } return dP$2(it, key, D);
 };
 var $defineProperties = function defineProperties(it, P) {
-  _anObject(it);
+  _anObject$1(it);
   var keys = _enumKeys(P = _toIobject(P));
   var i = 0;
   var l = keys.length;
   var key;
-  while (l > i) $defineProperty$1(it, key = keys[i++], P[key]);
+  while (l > i) $defineProperty(it, key = keys[i++], P[key]);
   return it;
 };
 var $create = function create(it, P) {
   return P === undefined ? _objectCreate(it) : $defineProperties(_objectCreate(it), P);
 };
 var $propertyIsEnumerable = function propertyIsEnumerable(key) {
-  var E = isEnum.call(this, key = _toPrimitive(key, true));
+  var E = isEnum.call(this, key = _toPrimitive$1(key, true));
   if (this === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key)) return false;
   return E || !_has(this, key) || !_has(AllSymbols, key) || _has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
 };
 var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
   it = _toIobject(it);
-  key = _toPrimitive(key, true);
+  key = _toPrimitive$1(key, true);
   if (it === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key)) return;
   var D = gOPD(it, key);
   if (D && _has(AllSymbols, key) && !(_has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
@@ -1015,22 +1469,22 @@ if (!USE_NATIVE) {
     var $set = function (value) {
       if (this === ObjectProto$1) $set.call(OPSymbols, value);
       if (_has(this, HIDDEN) && _has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
-      setSymbolDesc(this, tag, _propertyDesc(1, value));
+      setSymbolDesc(this, tag, _propertyDesc$1(1, value));
     };
-    if (_descriptors && setter) setSymbolDesc(ObjectProto$1, tag, { configurable: true, set: $set });
+    if (_descriptors$1 && setter) setSymbolDesc(ObjectProto$1, tag, { configurable: true, set: $set });
     return wrap(tag);
   };
-  _redefine($Symbol[PROTOTYPE$2], 'toString', function toString() {
+  _redefine($Symbol[PROTOTYPE$3], 'toString', function toString() {
     return this._k;
   });
 
   _objectGopd.f = $getOwnPropertyDescriptor;
-  _objectDp.f = $defineProperty$1;
+  _objectDp$1.f = $defineProperty;
   _objectGopn.f = _objectGopnExt.f = $getOwnPropertyNames;
   _objectPie.f = $propertyIsEnumerable;
   _objectGops.f = $getOwnPropertySymbols;
 
-  if (_descriptors && !_library) {
+  if (_descriptors$1 && !_library) {
     _redefine(ObjectProto$1, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
@@ -1039,7 +1493,7 @@ if (!USE_NATIVE) {
   };
 }
 
-_export(_export.G + _export.W + _export.F * !USE_NATIVE, { Symbol: $Symbol });
+_export$1(_export$1.G + _export$1.W + _export$1.F * !USE_NATIVE, { Symbol: $Symbol });
 
 for (var es6Symbols = (
   // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
@@ -1048,7 +1502,7 @@ for (var es6Symbols = (
 
 for (var wellKnownSymbols = _objectKeys(_wks.store), k = 0; wellKnownSymbols.length > k;) _wksDefine(wellKnownSymbols[k++]);
 
-_export(_export.S + _export.F * !USE_NATIVE, 'Symbol', {
+_export$1(_export$1.S + _export$1.F * !USE_NATIVE, 'Symbol', {
   // 19.4.2.1 Symbol.for(key)
   'for': function (key) {
     return _has(SymbolRegistry, key += '')
@@ -1064,11 +1518,11 @@ _export(_export.S + _export.F * !USE_NATIVE, 'Symbol', {
   useSimple: function () { setter = false; }
 });
 
-_export(_export.S + _export.F * !USE_NATIVE, 'Object', {
+_export$1(_export$1.S + _export$1.F * !USE_NATIVE, 'Object', {
   // 19.1.2.2 Object.create(O [, Properties])
   create: $create,
   // 19.1.2.4 Object.defineProperty(O, P, Attributes)
-  defineProperty: $defineProperty$1,
+  defineProperty: $defineProperty,
   // 19.1.2.3 Object.defineProperties(O, Properties)
   defineProperties: $defineProperties,
   // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
@@ -1080,7 +1534,7 @@ _export(_export.S + _export.F * !USE_NATIVE, 'Object', {
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
-$JSON && _export(_export.S + _export.F * (!USE_NATIVE || _fails(function () {
+$JSON && _export$1(_export$1.S + _export$1.F * (!USE_NATIVE || _fails$1(function () {
   var S = $Symbol();
   // MS Edge converts symbol values to JSON as {}
   // WebKit converts symbol values to JSON as null
@@ -1105,29 +1559,27 @@ $JSON && _export(_export.S + _export.F * (!USE_NATIVE || _fails(function () {
 });
 
 // 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
-$Symbol[PROTOTYPE$2][TO_PRIMITIVE] || _hide($Symbol[PROTOTYPE$2], TO_PRIMITIVE, $Symbol[PROTOTYPE$2].valueOf);
+$Symbol[PROTOTYPE$3][TO_PRIMITIVE] || _hide$1($Symbol[PROTOTYPE$3], TO_PRIMITIVE, $Symbol[PROTOTYPE$3].valueOf);
 // 19.4.3.5 Symbol.prototype[@@toStringTag]
 _setToStringTag($Symbol, 'Symbol');
 // 20.2.1.9 Math[@@toStringTag]
 _setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
-_setToStringTag(_global.JSON, 'JSON', true);
+_setToStringTag(_global$1.JSON, 'JSON', true);
 
 _wksDefine('asyncIterator');
 
 _wksDefine('observable');
 
-var symbol$2 = _core.Symbol;
+var symbol$2 = _core$1.Symbol;
 
-var symbol = createCommonjsModule(function (module) {
+var symbol = createCommonjsModule$1(function (module) {
 module.exports = { "default": symbol$2, __esModule: true };
 });
 
-unwrapExports(symbol);
+unwrapExports$1(symbol);
 
-var _typeof_1 = createCommonjsModule(function (module, exports) {
-"use strict";
-
+var _typeof_1 = createCommonjsModule$1(function (module, exports) {
 exports.__esModule = true;
 
 
@@ -1149,11 +1601,9 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 };
 });
 
-unwrapExports(_typeof_1);
+unwrapExports$1(_typeof_1);
 
-var possibleConstructorReturn = createCommonjsModule(function (module, exports) {
-"use strict";
-
+var possibleConstructorReturn = createCommonjsModule$1(function (module, exports) {
 exports.__esModule = true;
 
 
@@ -1171,7 +1621,7 @@ exports.default = function (self, call) {
 };
 });
 
-var _possibleConstructorReturn = unwrapExports(possibleConstructorReturn);
+var _possibleConstructorReturn = unwrapExports$1(possibleConstructorReturn);
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
 
@@ -1183,20 +1633,18 @@ _objectSap('getOwnPropertyDescriptor', function () {
   };
 });
 
-var $Object$1 = _core.Object;
+var $Object$2 = _core$1.Object;
 var getOwnPropertyDescriptor$1 = function getOwnPropertyDescriptor(it, key) {
-  return $Object$1.getOwnPropertyDescriptor(it, key);
+  return $Object$2.getOwnPropertyDescriptor(it, key);
 };
 
-var getOwnPropertyDescriptor = createCommonjsModule(function (module) {
+var getOwnPropertyDescriptor = createCommonjsModule$1(function (module) {
 module.exports = { "default": getOwnPropertyDescriptor$1, __esModule: true };
 });
 
-var _Object$getOwnPropertyDescriptor = unwrapExports(getOwnPropertyDescriptor);
+var _Object$getOwnPropertyDescriptor = unwrapExports$1(getOwnPropertyDescriptor);
 
-var get = createCommonjsModule(function (module, exports) {
-"use strict";
-
+var get = createCommonjsModule$1(function (module, exports) {
 exports.__esModule = true;
 
 
@@ -1235,21 +1683,21 @@ exports.default = function get(object, property, receiver) {
 };
 });
 
-var _get = unwrapExports(get);
+var _get = unwrapExports$1(get);
 
 // Works with __proto__ only. Old v8 can't work with null proto objects.
 /* eslint-disable no-proto */
 
 
 var check = function (O, proto) {
-  _anObject(O);
-  if (!_isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
+  _anObject$1(O);
+  if (!_isObject$1(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
 };
 var _setProto = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
     function (test, buggy, set) {
       try {
-        set = _ctx(Function.call, _objectGopd.f(Object.prototype, '__proto__').set, 2);
+        set = _ctx$1(Function.call, _objectGopd.f(Object.prototype, '__proto__').set, 2);
         set(test, []);
         buggy = !(test instanceof Array);
       } catch (e) { buggy = true; }
@@ -1265,33 +1713,31 @@ var _setProto = {
 
 // 19.1.3.19 Object.setPrototypeOf(O, proto)
 
-_export(_export.S, 'Object', { setPrototypeOf: _setProto.set });
+_export$1(_export$1.S, 'Object', { setPrototypeOf: _setProto.set });
 
-var setPrototypeOf$2 = _core.Object.setPrototypeOf;
+var setPrototypeOf$2 = _core$1.Object.setPrototypeOf;
 
-var setPrototypeOf = createCommonjsModule(function (module) {
+var setPrototypeOf = createCommonjsModule$1(function (module) {
 module.exports = { "default": setPrototypeOf$2, __esModule: true };
 });
 
-unwrapExports(setPrototypeOf);
+unwrapExports$1(setPrototypeOf);
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-_export(_export.S, 'Object', { create: _objectCreate });
+_export$1(_export$1.S, 'Object', { create: _objectCreate });
 
-var $Object$2 = _core.Object;
+var $Object$3 = _core$1.Object;
 var create$2 = function create(P, D) {
-  return $Object$2.create(P, D);
+  return $Object$3.create(P, D);
 };
 
-var create = createCommonjsModule(function (module) {
+var create = createCommonjsModule$1(function (module) {
 module.exports = { "default": create$2, __esModule: true };
 });
 
-unwrapExports(create);
+unwrapExports$1(create);
 
-var inherits = createCommonjsModule(function (module, exports) {
-"use strict";
-
+var inherits = createCommonjsModule$1(function (module, exports) {
 exports.__esModule = true;
 
 
@@ -1325,283 +1771,78 @@ exports.default = function (subClass, superClass) {
 };
 });
 
-var _inherits = unwrapExports(inherits);
+var _inherits = unwrapExports$1(inherits);
 
-// call something on iterator step with safe closing on error
-
-var _iterCall = function (iterator, fn, value, entries) {
-  try {
-    return entries ? fn(_anObject(value)[0], value[1]) : fn(value);
-  // 7.4.6 IteratorClose(iterator, completion)
-  } catch (e) {
-    var ret = iterator['return'];
-    if (ret !== undefined) _anObject(ret.call(iterator));
-    throw e;
-  }
-};
-
-// check on default Array iterator
-
-var ITERATOR$1 = _wks('iterator');
-var ArrayProto = Array.prototype;
-
-var _isArrayIter = function (it) {
-  return it !== undefined && (_iterators.Array === it || ArrayProto[ITERATOR$1] === it);
-};
-
-'use strict';
-
-
-
-var _createProperty = function (object, index, value) {
-  if (index in object) _objectDp.f(object, index, _propertyDesc(0, value));
-  else object[index] = value;
-};
-
-// getting tag from 19.1.3.6 Object.prototype.toString()
-
-var TAG$1 = _wks('toStringTag');
-// ES3 wrong here
-var ARG = _cof(function () { return arguments; }()) == 'Arguments';
-
-// fallback for IE11 Script Access Denied error
-var tryGet = function (it, key) {
-  try {
-    return it[key];
-  } catch (e) { /* empty */ }
-};
-
-var _classof = function (it) {
-  var O, T, B;
-  return it === undefined ? 'Undefined' : it === null ? 'Null'
-    // @@toStringTag case
-    : typeof (T = tryGet(O = Object(it), TAG$1)) == 'string' ? T
-    // builtinTag case
-    : ARG ? _cof(O)
-    // ES3 arguments fallback
-    : (B = _cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
-};
-
-var ITERATOR$2 = _wks('iterator');
-
-var core_getIteratorMethod = _core.getIteratorMethod = function (it) {
-  if (it != undefined) return it[ITERATOR$2]
-    || it['@@iterator']
-    || _iterators[_classof(it)];
-};
-
-var ITERATOR$3 = _wks('iterator');
-var SAFE_CLOSING = false;
-
-try {
-  var riter = [7][ITERATOR$3]();
-  riter['return'] = function () { SAFE_CLOSING = true; };
-  // eslint-disable-next-line no-throw-literal
-  
-} catch (e) { /* empty */ }
-
-var _iterDetect = function (exec, skipClosing) {
-  if (!skipClosing && !SAFE_CLOSING) return false;
-  var safe = false;
-  try {
-    var arr = [7];
-    var iter = arr[ITERATOR$3]();
-    iter.next = function () { return { done: safe = true }; };
-    arr[ITERATOR$3] = function () { return iter; };
-    exec(arr);
-  } catch (e) { /* empty */ }
-  return safe;
-};
-
-'use strict';
-
-
-
-
-
-
-
-
-
-_export(_export.S + _export.F * !_iterDetect(function (iter) {  }), 'Array', {
-  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
-  from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
-    var O = _toObject(arrayLike);
-    var C = typeof this == 'function' ? this : Array;
-    var aLen = arguments.length;
-    var mapfn = aLen > 1 ? arguments[1] : undefined;
-    var mapping = mapfn !== undefined;
-    var index = 0;
-    var iterFn = core_getIteratorMethod(O);
-    var length, result, step, iterator;
-    if (mapping) mapfn = _ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
-    // if object isn't iterable or it's array with default iterator - use simple case
-    if (iterFn != undefined && !(C == Array && _isArrayIter(iterFn))) {
-      for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
-        _createProperty(result, index, mapping ? _iterCall(iterator, mapfn, [step.value, index], true) : step.value);
-      }
+/**
+ * 为HTML元素添加事件代理
+ * @param {HTMLElement} host 目标对象
+ * @param {String} selector 要被代理的元素
+ * @param {String} type 事件名称
+ * @param {Function} handler 处理函数
+ * @param {Boolean} capture 是否在捕获阶段监听
+ */
+function addDelegate(host, selector, type, handler) {
+  var el = host.$dom;
+  var handlerWrap = function handlerWrap(e) {
+    var targetElsArr = findParents(e.target || e.srcElement, el, true);
+    var targetElArr = query(selector, el, true);
+    var retEl = void 0;
+    if (targetElArr.find) {
+      retEl = targetElArr.find(function (seEl) {
+        return targetElsArr.find(function (tgEl) {
+          return seEl === tgEl;
+        });
+      });
     } else {
-      length = _toLength(O.length);
-      for (result = new C(length); length > index; index++) {
-        _createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
-      }
+      // Fixed IE11 Array.find not defined bug
+      targetElArr.forEach(function (seEl) {
+        return !retEl && targetElsArr.forEach(function (tgEl) {
+          if (!retEl && seEl === tgEl) {
+            retEl = tgEl;
+          }
+        });
+      });
     }
-    result.length = index;
-    return result;
+    retEl && handler.apply(retEl, arguments);
+  };
+  /* 将包装后的方法记录到缓存中 */
+  addEventCache(el, type + '_delegate_' + selector, handler, handlerWrap);
+  host.events[type] = isArray(host.events[type]) ? host.events[type] : [];
+  host.events[type].push(handlerWrap);
+}
+
+/**
+ * 为HTML元素移除事件代理
+ * @param {HTMLElement} host 目标对象
+ * @param {String} selector 要被代理的元素
+ * @param {String} type 事件名称
+ * @param {Function} handler 处理函数
+ * @param {Boolean} capture 是否在捕获阶段监听
+ */
+function removeDelegate(host, selector, type, handler) {
+  var el = host.$dom;
+  /* 尝试从缓存中读取包装后的方法 */
+  var handlerWrap = removeEventCache(el, type + '_delegate_' + selector, handler);
+  if (handlerWrap) {
+    var index = host.events[type].indexOf(handlerWrap);
+    host.events[type].splice(index, 1);
   }
-});
+}
 
-var from$1 = _core.Array.from;
-
-var from = createCommonjsModule(function (module) {
-module.exports = { "default": from$1, __esModule: true };
-});
-
-var _Array$from = unwrapExports(from);
-
-var toConsumableArray = createCommonjsModule(function (module, exports) {
-"use strict";
-
-exports.__esModule = true;
-
-
-
-var _from2 = _interopRequireDefault(from);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-      arr2[i] = arr[i];
-    }
-
-    return arr2;
-  } else {
-    return (0, _from2.default)(arr);
-  }
-};
-});
-
-var _toConsumableArray = unwrapExports(toConsumableArray);
-
-// 20.1.2.3 Number.isInteger(number)
-
-var floor$1 = Math.floor;
-var _isInteger = function isInteger(it) {
-  return !_isObject(it) && isFinite(it) && floor$1(it) === it;
-};
-
-// 20.1.2.3 Number.isInteger(number)
-
-
-_export(_export.S, 'Number', { isInteger: _isInteger });
-
-var isInteger$2 = _core.Number.isInteger;
-
-var isInteger$1 = createCommonjsModule(function (module) {
-module.exports = { "default": isInteger$2, __esModule: true };
-});
-
-unwrapExports(isInteger$1);
-
-var _stringWs = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
-  '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
-
-var space = '[' + _stringWs + ']';
-var non = '\u200b\u0085';
-var ltrim = RegExp('^' + space + space + '*');
-var rtrim = RegExp(space + space + '*$');
-
-var exporter = function (KEY, exec, ALIAS) {
-  var exp = {};
-  var FORCE = _fails(function () {
-    return !!_stringWs[KEY]() || non[KEY]() != non;
+function fireEvent(host, type, evt) {
+  isArray(host.events[type]) && host.events[type].forEach(function (item) {
+    item(evt);
   });
-  var fn = exp[KEY] = FORCE ? exec(trim) : _stringWs[KEY];
-  if (ALIAS) exp[ALIAS] = fn;
-  _export(_export.P + _export.F * FORCE, 'String', exp);
-};
-
-// 1 -> String#trimLeft
-// 2 -> String#trimRight
-// 3 -> String#trim
-var trim = exporter.trim = function (string, TYPE) {
-  string = String(_defined(string));
-  if (TYPE & 1) string = string.replace(ltrim, '');
-  if (TYPE & 2) string = string.replace(rtrim, '');
-  return string;
-};
-
-var _stringTrim = exporter;
-
-var $parseFloat = _global.parseFloat;
-var $trim = _stringTrim.trim;
-
-var _parseFloat$3 = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function parseFloat(str) {
-  var string = $trim(String(str), 3);
-  var result = $parseFloat(string);
-  return result === 0 && string.charAt(0) == '-' ? -0 : result;
-} : $parseFloat;
-
-// 20.1.2.12 Number.parseFloat(string)
-_export(_export.S + _export.F * (Number.parseFloat != _parseFloat$3), 'Number', { parseFloat: _parseFloat$3 });
-
-var _parseFloat$1 = parseFloat;
-
-var _parseFloat = createCommonjsModule(function (module) {
-module.exports = { "default": _parseFloat$1, __esModule: true };
-});
-
-unwrapExports(_parseFloat);
-
-/**
- * toxic-predicate-functions v0.1.5
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-/**
- * toxic-utils v0.1.6
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-/**
- * bind the function with some context. we have some fallback strategy here
- * @param {function} fn the function which we need to bind the context on
- * @param {any} context the context object
- */
-function bind(fn, context) {
-  if (fn.bind) {
-    return fn.bind(context);
-  } else if (fn.apply) {
-    return function __autobind__() {
-      for (var _len2 = arguments.length, args = Array(_len2), _key3 = 0; _key3 < _len2; _key3++) {
-        args[_key3] = arguments[_key3];
-      }
-
-      return fn.apply(context, args);
-    };
-  } else {
-    return function __autobind__() {
-      for (var _len3 = arguments.length, args = Array(_len3), _key4 = 0; _key4 < _len3; _key4++) {
-        args[_key4] = arguments[_key4];
-      }
-
-      return fn.call.apply(fn, [context].concat(_toConsumableArray(args)));
-    };
-  }
 }
 
 var Base = function () {
   function Base(parent) {
-    _classCallCheck(this, Base);
+    _classCallCheck$1(this, Base);
 
     this.parent = parent;
   }
 
-  _createClass(Base, [{
+  _createClass$1(Base, [{
     key: 'create',
     value: function create() {
       this.createEl();
@@ -1627,12 +1868,12 @@ var Base = function () {
       this.option.defaultEvent && _Object$keys(this.option.defaultEvent).forEach(function (item) {
         var key = _this.option.defaultEvent[item];
         _this[key] = bind(_this[key], _this);
-        addEvent(_this.$dom, item, _this[key], false, false);
+        addDelegate(_this.parent, _this.option.tag, item, _this[key], false, false);
       });
       this.option.event && _Object$keys(this.option.event).forEach(function (item) {
         var key = '__' + item;
         _this[key] = bind(_this.option.event[item], _this);
-        addEvent(_this.$dom, item, _this[key], false, false);
+        addDelegate(_this.parent, _this.option.tag, item, _this[key], false, false);
       });
     }
   }, {
@@ -1643,12 +1884,12 @@ var Base = function () {
       this.option.defaultEvent && _Object$keys(this.option.defaultEvent).forEach(function (item) {
         var key = _this2.option.defaultEvent[item];
         _this2[key] = bind(_this2[key], _this2);
-        removeEvent(_this2.$dom, item, _this2[key], false, false);
+        removeDelegate(_this2.parent, _this2.option.tag, item, _this2[key], false, false);
       });
       this.option.event && _Object$keys(this.option.event).forEach(function (item) {
         var key = '__' + item;
         _this2[key] = bind(_this2.option.event[item], _this2);
-        removeEvent(_this2.$dom, item, _this2[key], false, false);
+        removeDelegate(_this2.parent, _this2.option.tag, item, _this2[key], false, false);
       });
     }
   }]);
@@ -1664,7 +1905,7 @@ var Component = function (_Base) {
   _inherits(Component, _Base);
 
   function Component(parent, option) {
-    _classCallCheck(this, Component);
+    _classCallCheck$1(this, Component);
 
     var _this = _possibleConstructorReturn(this, (Component.__proto__ || _Object$getPrototypeOf(Component)).call(this, parent));
 
@@ -1673,7 +1914,7 @@ var Component = function (_Base) {
     return _this;
   }
 
-  _createClass(Component, [{
+  _createClass$1(Component, [{
     key: 'init',
     value: function init() {
       _get(Component.prototype.__proto__ || _Object$getPrototypeOf(Component.prototype), 'create', this).call(this);
@@ -1705,7 +1946,7 @@ var defaultOption = {
     }
   },
   defaultEvent: {
-    click: 'click'
+    tap: 'tap'
   }
 };
 
@@ -1713,7 +1954,7 @@ var Play = function (_Base) {
   _inherits(Play, _Base);
 
   function Play(parent, option) {
-    _classCallCheck(this, Play);
+    _classCallCheck$1(this, Play);
 
     var _this = _possibleConstructorReturn(this, (Play.__proto__ || _Object$getPrototypeOf(Play)).call(this, parent));
 
@@ -1723,7 +1964,7 @@ var Play = function (_Base) {
     return _this;
   }
 
-  _createClass(Play, [{
+  _createClass$1(Play, [{
     key: 'init',
     value: function init() {
       // 创建 html ／ 绑定事件
@@ -1768,8 +2009,8 @@ var Play = function (_Base) {
       }
     }
   }, {
-    key: 'click',
-    value: function click(e) {
+    key: 'tap',
+    value: function tap(e) {
       var nextState = this.state === 'play' ? 'pause' : 'play';
       this.changeState(nextState);
       this.parent.$emit(nextState);
@@ -1811,172 +2052,92 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
 }
 
 /**
- * Volume 配置
+ * Screen 配置
  */
 
 var defaultOption$1 = {
-  tag: 'chimee-volume',
-  html: '\n    <chimee-volume-state>\n      <chimee-volume-state-mute></chimee-volume-state-mute>\n      <chimee-volume-state-low></chimee-volume-state-low>\n      <chimee-volume-state-high></chimee-volume-state-high>\n    </chimee-volume-state>\n    <chimee-volume-bar>\n      <chimee-volume-bar-wrap>\n        <chimee-volume-bar-bg></chimee-volume-bar-bg>\n        <chimee-volume-bar-all>\n          <chimee-volume-bar-ball></chimee-volume-bar-ball>\n        </chimee-volume-bar-all>\n        <chimee-volume-bar-track></chimee-volume-bar-track>\n      </chimee-volume-bar-wrap>\n    </chimee-volume-bar>\n  ',
-  animate: {
-    icon: '\n      <svg viewBox="0 0 107 101" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n        <g class="volume">\n          <polygon class="horn" points="0.403399942 30 27.3842118 30 56.8220589 2.84217094e-14 57.9139815 100 27.3842118 70 0.403399942 70"></polygon>\n          <path class="ring1" d="M63,5.00975239 C69.037659,4.78612057 75.9178585,8.40856146 83.6405984,15.877075 C95.2247083,27.0798454 100,34.7975125 100,50.9608558 C100,67.1241991 95.3628694,73.7907482 83.6405984,83.8306724 C75.8257511,90.5239552 68.9455516,94.0320644 63,94.355" fill-opacity="0" stroke-width="10"></path>\n          <path class="ring2" d="M65.2173913,29.4929195 C67.8779343,29.3931169 70.9097496,31.0097416 74.3128371,34.3427934 C79.4174684,39.3423712 81.5217391,42.7866154 81.5217391,50 C81.5217391,57.2133846 79.4783502,60.1885354 74.3128371,64.6691576 C70.8691617,67.656239 67.8373465,69.2218397 65.2173913,69.3659595" fill-opacity="0" stroke-width="10"></path>\n          <path class="line" d="M4.19119202,3.65220497 L102,96" stroke-width="10"></path>\n        </g>\n      </svg>\n    '
-  },
+  tag: 'chimee-screen',
+  html: '\n    <chimee-screen-full>\n      <svg viewBox="0 0 67 66" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n          <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->\n          <desc>Created with Sketch.</desc>\n          <defs></defs>\n          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n              <g id="screen-small" transform="translate(33.756308, 32.621867) rotate(45.000000) translate(-33.756308, -32.621867) translate(18.756308, -10.378133)" fill="#FFFFFF">\n                  <polygon id="Path" transform="translate(14.967695, 66.389245) rotate(180.000000) translate(-14.967695, -66.389245) " points="11.5190786 46.9431778 11.7210093 70.7913773 0.565180527 70.7913773 15.4674455 85.8353125 29.3702096 70.7913773 18.5573247 70.7702156 18.5573247 46.9431778"></polygon>\n                  <polygon id="Path" points="11.5190786 0.274130278 11.7210093 24.1223298 0.565180527 24.1223298 15.4674455 39.1662649 29.3702096 24.1223298 18.5573247 24.1011681 18.5573247 0.274130278"></polygon>\n              </g>\n          </g>\n      </svg>\n    </chimee-screen-full>\n    <chimee-screen-small>\n      <svg viewBox="0 0 61 62" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n        <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->\n        <desc>Created with Sketch.</desc>\n        <defs></defs>\n        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n            <g id="Group" transform="translate(30.756308, 30.621867) rotate(45.000000) translate(-30.756308, -30.621867) translate(15.756308, -12.378133)" fill="#FFFFFF">\n                <polygon id="Path" points="11.5190786 46.9431778 11.7210093 70.7913773 0.565180527 70.7913773 15.4674455 85.8353125 29.3702096 70.7913773 18.5573247 70.7702156 18.5573247 46.9431778"></polygon>\n                <polygon id="Path" transform="translate(14.967695, 19.720198) rotate(180.000000) translate(-14.967695, -19.720198) " points="11.5190786 0.274130278 11.7210093 24.1223298 0.565180527 24.1223298 15.4674455 39.1662649 29.3702096 24.1223298 18.5573247 24.1011681 18.5573247 0.274130278"></polygon>\n            </g>\n        </g>\n      </svg>\n    </chimee-screen-small>\n  ',
   defaultEvent: {
-    mousedown: 'mousedown'
+    tap: 'tap'
   }
 };
 
-var getElementPath = function getElementPath(elem) {
-  var path = [];
-  if (elem === null) return path;
-  path.push(elem);
-  while (elem.parentNode !== null) {
-    elem = elem.parentNode;
-    path.push(elem);
-  }
-  return path;
-};
+var Screen = (_class = function (_Base) {
+  _inherits(Screen, _Base);
 
-var Volume = (_class = function (_Base) {
-  _inherits(Volume, _Base);
+  function Screen(parent, option) {
+    _classCallCheck$1(this, Screen);
 
-  function Volume(parent, option) {
-    _classCallCheck(this, Volume);
+    var _this = _possibleConstructorReturn(this, (Screen.__proto__ || _Object$getPrototypeOf(Screen)).call(this, parent));
 
-    var _this = _possibleConstructorReturn(this, (Volume.__proto__ || _Object$getPrototypeOf(Volume)).call(this, parent));
-
-    _this.parent.preVolume = 0;
+    _this.state = 'small';
     _this.option = deepAssign(defaultOption$1, isObject(option) ? option : {});
     _this.init();
     return _this;
   }
 
-  _createClass(Volume, [{
-    key: 'inited',
-    value: function inited() {
-      this.update();
-    }
-  }, {
+  _createClass$1(Screen, [{
     key: 'init',
     value: function init() {
-      _get(Volume.prototype.__proto__ || _Object$getPrototypeOf(Volume.prototype), 'create', this).call(this);
+      _get(Screen.prototype.__proto__ || _Object$getPrototypeOf(Screen.prototype), 'create', this).call(this);
       this.$dom = $(this.$dom);
-      this.$state = this.$dom.find('chimee-volume-state');
-      this.$bar = this.$dom.find('chimee-volume-bar');
-      this.$all = this.$dom.find('chimee-volume-bar-all');
-      this.$bg = this.$dom.find('chimee-volume-bar-bg');
-      this.layout = this.option.layout === 'vertical' ? 'vertical' : 'horizonal';
+      this.changeState(this.state);
+      // addClassName(this.$dom, 'flex-item');
+      this.$dom.addClass('chimee-flex-component');
 
+      this.$full = this.$dom.find('chimee-screen-full');
+      this.$small = this.$dom.find('chimee-screen-small');
       // 判断是否是默认或者用户提供 icon
-      if (this.option.icon && this.option.icon.mute && this.option.icon.low) {
-        this.option.icon.high = this.option.icon.high || this.option.icon.low;
-        this.$mute = this.$dom.find('chimee-volume-state-mute');
-        this.$low = this.$dom.find('chimee-volume-state-low');
-        this.$high = this.$dom.find('chimee-volume-state-high');
-        this.$mute.html(this.option.icon.mute);
-        this.$low.html(this.option.icon.low);
-        this.$high.html(this.option.icon.high);
-      } else if (!this.option.bitmap) {
-        this.animate = true;
-        this.$state.html(this.option.animate.icon);
+      if (this.option.icon && this.option.icon.full && this.option.icon.small) {
+        // if((!this.option.icon.play && this.option.icon.puase) || (this.option.icon.play && !this.option.icon.puase)) {
+        //   console.warn(`Please provide a play and pause icon！If you can't, we will use default icon!`);
+        // }
+        this.$full.html(this.option.icon.full);
+        this.$small.html(this.option.icon.small);
+      } else if (this.option.bitmap) {
+        this.$full.html('');
+        this.$small.html('');
       }
-
-      this.$dom.addClass('chimee-flex-component ' + this.layout);
-      this.changeState();
     }
   }, {
     key: 'changeState',
-    value: function changeState() {
-      if (this.parent.volume === 0) {
-        this.state = 'mute';
-      } else if (this.parent.volume > 0 && this.parent.volume <= 0.5) {
-        this.state = 'low';
-      } else if (this.parent.volume > 0.5 && this.parent.volume <= 1) {
-        this.state = 'high';
+    value: function changeState(state) {
+      var removeState = state === 'small' ? 'full' : 'small';
+      addClassName(this.parent.$dom, state);
+      removeClassName(this.parent.$dom, removeState);
+    }
+  }, {
+    key: 'tap',
+    value: function tap() {
+      var full = false;
+      if (this.state === 'small') {
+        this.state = 'full';
+        full = true;
+      } else {
+        this.state = 'small';
+        full = false;
       }
-      this.$dom.removeClass('mute low high');
-      this.$dom.addClass(this.state);
-    }
-  }, {
-    key: 'click',
-    value: function click(e) {
-      var path = e.path || getElementPath(e.target);
-      if (path.indexOf(this.$state[0]) !== -1) {
-        this.stateClick(e);
-        return 'state';
-      } else if (path.indexOf(this.$bar[0]) !== -1) {
-        this.barClick(e);
-        return 'bar';
+      this.changeState(this.state);
+      this.parent.$fullscreen(full, 'container');
+      if (full) {
+        this.watch_screen = this.parent.$watch('isFullscreen', this.screenChange);
+      } else {
+        this.watch_screen();
       }
-      return 'padding';
     }
   }, {
-    key: 'stateClick',
-    value: function stateClick() {
-      var currentVolume = this.parent.volume;
-      this.parent.volume = currentVolume === 0 ? this.parent.preVolume : 0;
-      this.parent.preVolume = currentVolume;
-      this.changeState();
-    }
-  }, {
-    key: 'barClick',
-    value: function barClick(e) {
-      var volume = this.layout === 'vertical' ? 1 - e.offsetY / this.$bg[0].offsetHeight : e.offsetX / this.$bg[0].offsetWidth;
-      this.parent.volume = volume < 0 ? 0 : volume > 1 ? 1 : volume;
-      this.update();
-    }
-  }, {
-    key: 'mousedown',
-    value: function mousedown(e) {
-      if (this.click(e) !== 'bar') return;
-      this.startX = this.layout === 'vertical' ? e.clientY : e.clientX;
-      this.startVolume = this.parent.volume;
-      addEvent(window, 'mousemove', this.draging);
-      addEvent(window, 'mouseup', this.dragEnd);
-      addEvent(window, 'contextmenu', this.dragEnd);
-    }
-
-    /**
-     * 更新声音条
-     */
-
-  }, {
-    key: 'update',
-    value: function update() {
-      this.changeState();
-      this.layout === 'vertical' ? this.$all.css('height', this.parent.volume * 100 + '%') : this.$all.css('width', this.parent.volume * 100 + '%');
-    }
-
-    /**
-     * 开始拖拽
-     * @param {EventObject} e 鼠标事件
-     */
-
-  }, {
-    key: 'draging',
-    value: function draging(e) {
-      this.endX = this.layout === 'vertical' ? e.clientY : e.clientX;
-      var dragVolume = this.layout === 'vertical' ? (this.startX - this.endX) / this.$bg[0].offsetHeight : (this.endX - this.startX) / this.$bg[0].offsetWidth;
-      var dragAfterVolume = +(this.startVolume + dragVolume).toFixed(2);
-      this.parent.volume = dragAfterVolume < 0 ? 0 : dragAfterVolume > 1 ? 1 : dragAfterVolume;
-    }
-
-    /**
-     * 结束拖拽
-     */
-
-  }, {
-    key: 'dragEnd',
-    value: function dragEnd() {
-      this.startX = 0;
-      this.startVolume = 0;
-      removeEvent(window, 'mousemove', this.draging);
-      removeEvent(window, 'mouseup', this.dragEnd);
-      removeEvent(window, 'contextmenu', this.dragEnd);
+    key: 'screenChange',
+    value: function screenChange() {
+      if (!this.parent.fullscreenElement) return;
+      this.state = 'small';
+      this.changeState('small');
+      this.parent.$fullscreen(false, 'container');
     }
   }]);
 
-  return Volume;
-}(Base), (_applyDecoratedDescriptor(_class.prototype, 'draging', [autobind], _Object$getOwnPropertyDescriptor(_class.prototype, 'draging'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'dragEnd', [autobind], _Object$getOwnPropertyDescriptor(_class.prototype, 'dragEnd'), _class.prototype)), _class);
+  return Screen;
+}(Base), _applyDecoratedDescriptor(_class.prototype, 'screenChange', [autobind], _Object$getOwnPropertyDescriptor(_class.prototype, 'screenChange'), _class.prototype), _class);
 
 var _class$1;
 
@@ -2011,14 +2172,14 @@ function _applyDecoratedDescriptor$1(target, property, decorators, descriptor, c
 
 var defaultOption$2 = {
   tag: 'chimee-progressbar',
-  html: '\n    <chimee-progressbar-wrap>\n      <chimee-progressbar-bg class="chimee-progressbar-line"></chimee-progressbar-bg>\n      <chimee-progressbar-buffer class="chimee-progressbar-line"></chimee-progressbar-buffer>\n      <chimee-progressbar-all class="chimee-progressbar-line">\n        <chimee-progressbar-ball></chimee-progressbar-ball>\n      </chimee-progressbar-all>\n      <chimee-progressbar-tip></chimee-progressbar-tip>\n    </chimee-progressbar-wrap>\n  '
+  html: '\n    <chimee-progressbar-bg class="chimee-progressbar-line"></chimee-progressbar-bg>\n    <chimee-progressbar-buffer class="chimee-progressbar-line"></chimee-progressbar-buffer>\n    <chimee-progressbar-all class="chimee-progressbar-line">\n      <chimee-progressbar-ball></chimee-progressbar-ball>\n    </chimee-progressbar-all>\n  '
 };
 
 var ProgressBar = (_class$1 = function (_Base) {
   _inherits(ProgressBar, _Base);
 
   function ProgressBar(parent, option) {
-    _classCallCheck(this, ProgressBar);
+    _classCallCheck$1(this, ProgressBar);
 
     var _this = _possibleConstructorReturn(this, (ProgressBar.__proto__ || _Object$getPrototypeOf(ProgressBar)).call(this, parent));
 
@@ -2028,61 +2189,39 @@ var ProgressBar = (_class$1 = function (_Base) {
     return _this;
   }
 
-  _createClass(ProgressBar, [{
+  _createClass$1(ProgressBar, [{
     key: 'init',
     value: function init() {
       _get(ProgressBar.prototype.__proto__ || _Object$getPrototypeOf(ProgressBar.prototype), 'create', this).call(this);
       this.$dom = $(this.$dom);
-      this.$wrap = this.$dom.find('chimee-progressbar-wrap');
       this.$buffer = this.$dom.find('chimee-progressbar-buffer');
       this.$all = this.$dom.find('chimee-progressbar-all');
-      this.$tip = this.$dom.find('chimee-progressbar-tip');
-      this.$track = this.$dom.find('chimee-progressbar-track');
-      this.$line = this.$dom.find('.chimee-progressbar-line');
       this.$ball = this.$dom.find('chimee-progressbar-ball');
       this.$dom.addClass('chimee-flex-component');
 
       // css 配置
       !this.visiable && this.$dom.css('visibility', 'hidden');
-      // this.$line.css({
-      //   top: this.$wrap.
-      // });
-      // 进度条居中布局，还是在上方
-      if (this.option.layout === 'top') {
-        this.$dom.addClass('progressbar-layout-top');
-        this.$wrap.css({
-          // left: -this.$dom[0].offsetLeft + 'px',
-          top: -this.$ball[0].offsetHeight + 'px'
-          // height: this.$ball[0].offsetHeight * 2 + 'px'
-        });
-        // this.$line.css({
-        //   top: this.$ball[0].offsetHeight + 'px'
-        // })
-        setStyle(this.parent.$wrap, 'paddingTop', this.$ball[0].offsetHeight + 'px');
-      }
-      this.addWrapEvent();
+      this.addEvent();
     }
   }, {
     key: 'destroy',
     value: function destroy() {
-      this.removeWrapEvent();
+      this.removeEvent();
       // 解绑全屏监听事件
       this.watch_screen && this.watch_screen();
       _get(ProgressBar.prototype.__proto__ || _Object$getPrototypeOf(ProgressBar.prototype), 'destroy', this).call(this);
     }
   }, {
-    key: 'addWrapEvent',
-    value: function addWrapEvent() {
-      this.$wrap.on('mousedown', this.mousedown);
-      this.$wrap.on('mousemove', this.tipShow);
-      this.$wrap.on('mouseleave', this.tipEnd);
+    key: 'addEvent',
+    value: function addEvent$$1() {
+      addDelegate(this.parent, 'chimee-progressbar', 'tap', this.tap);
+      addDelegate(this.parent, 'chimee-progressbar', 'panstart', this.mousedown);
     }
   }, {
-    key: 'removeWrapEvent',
-    value: function removeWrapEvent() {
-      this.$wrap.off('mousedown', this.mousedown);
-      this.$wrap.off('mousemove', this.tipShow);
-      this.$wrap.off('mouseleave', this.tipEnd);
+    key: 'removeEvent',
+    value: function removeEvent$$1() {
+      removeDelegate(this.parent, 'chimee-progressbar', 'tap', this.tap);
+      removeDelegate(this.parent, 'chimee-progressbar', 'panstart', this.mousedown);
     }
 
     /**
@@ -2107,27 +2246,26 @@ var ProgressBar = (_class$1 = function (_Base) {
   }, {
     key: 'update',
     value: function update() {
-      // const allWidth = this.$wrap[0].offsetWidth - this.$ball[0].offsetWidth;
       var time = this._currentTime !== undefined ? this._currentTime : this.parent.currentTime;
       var timePer = time ? time / this.parent.duration : 0;
-      // const timeWidth = timePer * allWidth;
       this.$all.css('width', timePer * 100 + '%');
+    }
+  }, {
+    key: 'tap',
+    value: function tap(e) {
+      this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$dom[0].offsetWidth * this.parent.duration;
+      this.update();
+      this.parent.currentTime = this._currentTime;
     }
   }, {
     key: 'mousedown',
     value: function mousedown(e) {
-      // const ballRect = this.$ball[0].getClientRects()[0];
-      // const ballLeft = ballRect.left;
-      // const ballRight = ballRect.left + ballRect.width;
-      // this.inBall = e.clientX <= ballRight && e.clientX >= ballLeft;
-      if (e.target === this.$tip[0]) return;
-      this._currentTime = e.offsetX / this.$wrap[0].offsetWidth * this.parent.duration;
-      // if(!this.inBall) this.update();
+
+      this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$dom[0].offsetWidth * this.parent.duration;
       this.startX = e.clientX;
       this.startTime = this._currentTime;
-      addEvent(window, 'mousemove', this.draging);
-      addEvent(window, 'mouseup', this.dragEnd);
-      addEvent(window, 'contextmenu', this.dragEnd);
+      addDelegate(this.parent, this.option.tag, 'panmove', this.draging);
+      addDelegate(this.parent, this.option.tag, 'panend', this.dragEnd);
     }
 
     /**
@@ -2139,7 +2277,7 @@ var ProgressBar = (_class$1 = function (_Base) {
     key: 'draging',
     value: function draging(e) {
       this.endX = e.clientX;
-      var dragTime = (this.endX - this.startX) / this.$wrap[0].offsetWidth * this.parent.duration;
+      var dragTime = (this.endX - this.startX) / this.$dom[0].offsetWidth * this.parent.duration;
       var dragAfterTime = +(this.startTime + dragTime).toFixed(2);
       this._currentTime = dragAfterTime < 0 ? 0 : dragAfterTime > this.parent.duration ? this.parent.duration : dragAfterTime;
       this.update();
@@ -2154,299 +2292,92 @@ var ProgressBar = (_class$1 = function (_Base) {
     value: function dragEnd() {
       this.startX = 0;
       this.startTime = 0;
-      // if(!this.inBall) {
       this.parent.currentTime = this._currentTime;
-      // this.inBall = false;
-      // }
       this._currentTime = undefined;
-      removeEvent(window, 'mousemove', this.draging);
-      removeEvent(window, 'mouseup', this.dragEnd);
-      removeEvent(window, 'contextmenu', this.dragEnd);
-    }
-  }, {
-    key: 'tipShow',
-    value: function tipShow(e) {
-      if (e.target === this.$tip[0] || e.target === this.$ball[0]) {
-        this.$tip.css('display', 'none');
-        return;
-      }
-      var time = e.offsetX / this.$wrap[0].offsetWidth * this.parent.duration;
-      time = time < 0 ? 0 : time > this.parent.duration ? this.parent.duration : time;
-      var tipContent = formatTime(time);
-      var left = e.offsetX - this.$tip[0].offsetWidth / 2;
-      var leftBound = this.$wrap[0].offsetWidth - this.$tip[0].offsetWidth;
-      left = left < 0 ? 0 : left > leftBound ? leftBound : left;
-      this.$tip.text(tipContent);
-      this.$tip.css('display', 'inline-block');
-      this.$tip.css('left', left + 'px');
-    }
-  }, {
-    key: 'tipEnd',
-    value: function tipEnd() {
-      this.$tip.css('display', 'none');
+      removeDelegate(this.parent, this.option.tag, 'panmove', this.draging);
+      removeDelegate(this.parent, this.option.tag, 'panend', this.dragEnd);
     }
   }]);
 
   return ProgressBar;
-}(Base), (_applyDecoratedDescriptor$1(_class$1.prototype, 'mousedown', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'mousedown'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1.prototype, 'draging', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'draging'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1.prototype, 'dragEnd', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'dragEnd'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1.prototype, 'tipShow', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'tipShow'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1.prototype, 'tipEnd', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'tipEnd'), _class$1.prototype)), _class$1);
+}(Base), _applyDecoratedDescriptor$1(_class$1.prototype, 'tap', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'tap'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1.prototype, 'mousedown', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'mousedown'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1.prototype, 'draging', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'draging'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1.prototype, 'dragEnd', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'dragEnd'), _class$1.prototype), _class$1);
 
 /**
- * progressTime 配置
+ * currentTime 配置
  */
 
 var defaultOption$3 = {
-  tag: 'chimee-progresstime',
-  html: '\n    <chimee-progresstime-pass>00:00</chimee-progresstime-pass\n    ><chimee-progresstime-total\n      ><span>/</span\n      ><chimee-progresstime-total-value>00:00</chimee-progresstime-total-value>\n    </chimee-progresstime-total>\n  '
+  tag: 'chimee-current-time',
+  html: '\n    00:00\n  '
 };
 
-var ProgressTime = function (_Base) {
-  _inherits(ProgressTime, _Base);
+var CurrentTime = function (_Base) {
+  _inherits(CurrentTime, _Base);
 
-  function ProgressTime(parent, option) {
-    _classCallCheck(this, ProgressTime);
+  function CurrentTime(parent, option) {
+    _classCallCheck$1(this, CurrentTime);
 
-    var _this = _possibleConstructorReturn(this, (ProgressTime.__proto__ || _Object$getPrototypeOf(ProgressTime)).call(this, parent));
+    var _this = _possibleConstructorReturn(this, (CurrentTime.__proto__ || _Object$getPrototypeOf(CurrentTime)).call(this, parent));
 
     _this.option = deepAssign(defaultOption$3, isObject(option) ? option : {});
     _this.init();
     return _this;
   }
 
-  _createClass(ProgressTime, [{
+  _createClass$1(CurrentTime, [{
     key: 'init',
     value: function init() {
-      _get(ProgressTime.prototype.__proto__ || _Object$getPrototypeOf(ProgressTime.prototype), 'create', this).call(this);
+      _get(CurrentTime.prototype.__proto__ || _Object$getPrototypeOf(CurrentTime.prototype), 'create', this).call(this);
       this.$dom = $(this.$dom);
-      this.$total = this.$dom.find('chimee-progresstime-total-value');
-      this.$pass = this.$dom.find('chimee-progresstime-pass');
       this.$dom.addClass('chimee-flex-component');
     }
   }, {
-    key: 'updatePass',
-    value: function updatePass() {
-      this.$pass.text(formatTime(this.parent.currentTime));
-    }
-  }, {
-    key: 'updateTotal',
-    value: function updateTotal() {
-      this.$total.text(formatTime(this.parent.duration));
+    key: 'updateCurrent',
+    value: function updateCurrent() {
+      this.$dom.text(formatTime(this.parent.currentTime));
     }
   }]);
 
-  return ProgressTime;
+  return CurrentTime;
 }(Base);
 
-var _class$2;
-
-function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, context) {
-  var desc = {};
-  Object['ke' + 'ys'](descriptor).forEach(function (key) {
-    desc[key] = descriptor[key];
-  });
-  desc.enumerable = !!desc.enumerable;
-  desc.configurable = !!desc.configurable;
-
-  if ('value' in desc || desc.initializer) {
-    desc.writable = true;
-  }
-
-  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
-    return decorator(target, property, desc) || desc;
-  }, desc);
-
-  if (context && desc.initializer !== void 0) {
-    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
-    desc.initializer = undefined;
-  }
-
-  if (desc.initializer === void 0) {
-    Object['define' + 'Property'](target, property, desc);
-    desc = null;
-  }
-
-  return desc;
-}
-
 /**
- * Screen 配置
+ * totalTime 配置
  */
 
 var defaultOption$4 = {
-  tag: 'chimee-screen',
-  html: '\n    <chimee-screen-full>\n      <svg viewBox="0 0 67 66" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n          <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->\n          <desc>Created with Sketch.</desc>\n          <defs></defs>\n          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n              <g id="screen-small" transform="translate(33.756308, 32.621867) rotate(45.000000) translate(-33.756308, -32.621867) translate(18.756308, -10.378133)" fill="#FFFFFF">\n                  <polygon id="Path" transform="translate(14.967695, 66.389245) rotate(180.000000) translate(-14.967695, -66.389245) " points="11.5190786 46.9431778 11.7210093 70.7913773 0.565180527 70.7913773 15.4674455 85.8353125 29.3702096 70.7913773 18.5573247 70.7702156 18.5573247 46.9431778"></polygon>\n                  <polygon id="Path" points="11.5190786 0.274130278 11.7210093 24.1223298 0.565180527 24.1223298 15.4674455 39.1662649 29.3702096 24.1223298 18.5573247 24.1011681 18.5573247 0.274130278"></polygon>\n              </g>\n          </g>\n      </svg>\n    </chimee-screen-full>\n    <chimee-screen-small>\n      <svg viewBox="0 0 61 62" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n        <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->\n        <desc>Created with Sketch.</desc>\n        <defs></defs>\n        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n            <g id="Group" transform="translate(30.756308, 30.621867) rotate(45.000000) translate(-30.756308, -30.621867) translate(15.756308, -12.378133)" fill="#FFFFFF">\n                <polygon id="Path" points="11.5190786 46.9431778 11.7210093 70.7913773 0.565180527 70.7913773 15.4674455 85.8353125 29.3702096 70.7913773 18.5573247 70.7702156 18.5573247 46.9431778"></polygon>\n                <polygon id="Path" transform="translate(14.967695, 19.720198) rotate(180.000000) translate(-14.967695, -19.720198) " points="11.5190786 0.274130278 11.7210093 24.1223298 0.565180527 24.1223298 15.4674455 39.1662649 29.3702096 24.1223298 18.5573247 24.1011681 18.5573247 0.274130278"></polygon>\n            </g>\n        </g>\n      </svg>\n    </chimee-screen-small>\n  ',
-  defaultEvent: {
-    click: 'click'
-  }
+  tag: 'chimee-total-time',
+  html: '\n    00:00\n  '
 };
 
-var Screen = (_class$2 = function (_Base) {
-  _inherits(Screen, _Base);
+var TotalTime = function (_Base) {
+  _inherits(TotalTime, _Base);
 
-  function Screen(parent, option) {
-    _classCallCheck(this, Screen);
+  function TotalTime(parent, option) {
+    _classCallCheck$1(this, TotalTime);
 
-    var _this = _possibleConstructorReturn(this, (Screen.__proto__ || _Object$getPrototypeOf(Screen)).call(this, parent));
+    var _this = _possibleConstructorReturn(this, (TotalTime.__proto__ || _Object$getPrototypeOf(TotalTime)).call(this, parent));
 
-    _this.state = 'small';
     _this.option = deepAssign(defaultOption$4, isObject(option) ? option : {});
     _this.init();
     return _this;
   }
 
-  _createClass(Screen, [{
+  _createClass$1(TotalTime, [{
     key: 'init',
     value: function init() {
-      _get(Screen.prototype.__proto__ || _Object$getPrototypeOf(Screen.prototype), 'create', this).call(this);
+      _get(TotalTime.prototype.__proto__ || _Object$getPrototypeOf(TotalTime.prototype), 'create', this).call(this);
       this.$dom = $(this.$dom);
-      this.changeState(this.state);
-      // addClassName(this.$dom, 'flex-item');
       this.$dom.addClass('chimee-flex-component');
-
-      this.$full = this.$dom.find('chimee-screen-full');
-      this.$small = this.$dom.find('chimee-screen-small');
-      // 判断是否是默认或者用户提供 icon
-      if (this.option.icon && this.option.icon.full && this.option.icon.small) {
-        // if((!this.option.icon.play && this.option.icon.puase) || (this.option.icon.play && !this.option.icon.puase)) {
-        //   console.warn(`Please provide a play and pause icon！If you can't, we will use default icon!`);
-        // }
-        this.$full.html(this.option.icon.full);
-        this.$small.html(this.option.icon.small);
-      } else if (this.option.bitmap) {
-        this.$full.html('');
-        this.$small.html('');
-      }
     }
   }, {
-    key: 'changeState',
-    value: function changeState(state) {
-      var removeState = state === 'small' ? 'full' : 'small';
-      addClassName(this.parent.$dom, state);
-      removeClassName(this.parent.$dom, removeState);
-    }
-  }, {
-    key: 'click',
-    value: function click() {
-      var full = false;
-      if (this.state === 'small') {
-        this.state = 'full';
-        full = true;
-      } else {
-        this.state = 'small';
-        full = false;
-      }
-      this.changeState(this.state);
-      this.parent.$fullscreen(full, 'container');
-      if (full) {
-        this.watch_screen = this.parent.$watch('isFullscreen', this.screenChange);
-      } else {
-        this.watch_screen();
-      }
-    }
-  }, {
-    key: 'screenChange',
-    value: function screenChange() {
-      if (!this.parent.fullscreenElement) return;
-      this.state = 'small';
-      this.changeState('small');
-      this.parent.$fullscreen(false, 'container');
+    key: 'updateTotal',
+    value: function updateTotal() {
+      this.$dom.text(formatTime(this.parent.duration));
     }
   }]);
 
-  return Screen;
-}(Base), (_applyDecoratedDescriptor$2(_class$2.prototype, 'screenChange', [autobind], _Object$getOwnPropertyDescriptor(_class$2.prototype, 'screenChange'), _class$2.prototype)), _class$2);
-
-/**
- * play 配置
- */
-
-var defaultOption$5 = {
-  tag: 'chimee-clarity',
-  width: '2em',
-  html: '\n    <chimee-clarity-text></chimee-clarity-text>\n    <chimee-clarity-list>\n      <ul></ul>\n      <div class="chimee-clarity-list-arrow">\n        <svg viewBox="0 0 115 6"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n          <g id="Group-3-Copy" fill="#57B0F6">\n            <polygon id="Path-2" points="0.0205224145 0.0374249581 0.0205224145 2.12677903 53.9230712 2.12677903 57.1127727 5.3468462 60.2283558 2.12677903 113.820935 2.12677903 113.820935 0.0374249581"></polygon>\n          </g>\n        </svg>\n      </div>\n    </chimee-clarity-list>\n  ',
-  defaultEvent: {
-    click: 'click'
-  }
-};
-
-var Clarity = function (_Base) {
-  _inherits(Clarity, _Base);
-
-  function Clarity(parent, option) {
-    _classCallCheck(this, Clarity);
-
-    var _this = _possibleConstructorReturn(this, (Clarity.__proto__ || _Object$getPrototypeOf(Clarity)).call(this, parent));
-
-    _this.option = deepAssign(defaultOption$5, isObject(option) ? option : {});
-    _this.init();
-    return _this;
-  }
-
-  _createClass(Clarity, [{
-    key: 'init',
-    value: function init() {
-      _get(Clarity.prototype.__proto__ || _Object$getPrototypeOf(Clarity.prototype), 'create', this).call(this);
-      addClassName(this.$dom, 'chimee-flex-component');
-
-      this.$text = $(this.$dom).find('chimee-clarity-text');
-      this.$list = $(this.$dom).find('chimee-clarity-list');
-      this.$listUl = this.$list.find('ul');
-
-      // 用户自定义配置
-      this.option.width && setStyle(this.$dom, 'width', this.option.width);
-
-      this.initTextList();
-    }
-  }, {
-    key: 'initTextList',
-    value: function initTextList() {
-      var _this2 = this;
-
-      this.option.list.forEach(function (item) {
-        var li = $(document.createElement('li'));
-        li.attr('data-url', item.src);
-        li.text(item.name);
-        if (item.src === _this2.parent.$videoConfig.src) {
-          _this2.$text.text(item.name);
-          li.addClass('active');
-        }
-        _this2.$listUl.append(li);
-      });
-    }
-  }, {
-    key: 'click',
-    value: function click(e) {
-      var elem = e.target;
-      if (elem.tagName === 'LI') {
-        _Array$from(elem.parentElement.children).map(function (item) {
-          removeClassName(item, 'active');
-        });
-        var url = elem.getAttribute('data-url') || '';
-        addClassName(e.target, 'active');
-        this.$text.text(e.target.textContent);
-        this.switchClarity(url);
-      }
-    }
-  }, {
-    key: 'switchClarity',
-    value: function switchClarity(url) {
-      var _this3 = this;
-
-      if (this.loadOption) {
-        this.loadOption.abort = true;
-      }
-      this.loadOption = {
-        abort: false,
-        repeatTimes: 3,
-        increment: 1,
-        immediate: true
-      };
-      this.parent.$silentLoad(url, this.loadOption).then(function () {
-        _this3.loadOption = undefined;
-      }).catch(function (e) {});
-    }
-  }]);
-
-  return Clarity;
+  return TotalTime;
 }(Base);
 
 function hundleChildren(plugin) {
@@ -2454,21 +2385,20 @@ function hundleChildren(plugin) {
   if (!plugin.$config.children) {
     childConfig = plugin.isLive ? {
       play: true, // 底部播放暂停按钮
-      progressTime: false, // 播放时间
+      currentTime: false, // 播放时间
       progressBar: false, // 播放进度控制条
-      volume: true, // 声音控制
+      totalTime: false, // 总时间
       screen: true // 全屏控制
     } : {
       play: true, // 底部播放暂停按钮
-      progressTime: true, // 播放时间
+      currentTime: true, // 播放时间
       progressBar: true, // 播放进度控制条
-      volume: true, // 声音控制
+      totalTime: true, // 总时间
       screen: true // 全屏控制
     };
   } else {
     childConfig = plugin.$config.children;
   }
-
   return childConfig;
 }
 
@@ -2483,49 +2413,36 @@ function hundleChildren(plugin) {
 function createChild(plugin) {
   var childConfig = plugin.config.children = hundleChildren(plugin);
   var children = {};
-  if (!childConfig) {
-    children.play = new Play(plugin);
-    children.progressTime = new ProgressTime(plugin);
-    children.progressBar = new ProgressBar(plugin);
-    children.volume = new Volume(plugin);
-    children.screen = new Screen(plugin);
-  } else {
-    _Object$keys(childConfig).forEach(function (item) {
-      switch (item) {
-        case 'play':
-          if (childConfig.play) {
-            children.play = new Play(plugin, childConfig.play);
-          }
-          break;
-        case 'progressTime':
-          if (childConfig.progressTime) {
-            children.progressTime = new ProgressTime(plugin, childConfig.progressTime);
-          }
-          break;
-        case 'progressBar':
-          children.progressBar = new ProgressBar(plugin, childConfig.progressBar);
-          break;
-        case 'volume':
-          if (childConfig.volume) {
-            children.volume = new Volume(plugin, childConfig.volume);
-          }
-          break;
-        case 'screen':
-          if (childConfig.screen) {
-            children.screen = new Screen(plugin, childConfig.screen);
-          }
-          break;
-        case 'clarity':
-          if (childConfig.clarity && Array.isArray(childConfig.clarity.list)) {
-            children.clarity = new Clarity(plugin, childConfig.clarity);
-          }
-          break;
-        default:
-          children[item] = new Component(plugin, childConfig[item]);
-          break;
-      }
-    });
-  }
+  _Object$keys(childConfig).forEach(function (item) {
+    switch (item) {
+      case 'play':
+        if (childConfig.play) {
+          children.play = new Play(plugin, childConfig.play);
+        }
+        break;
+      case 'currentTime':
+        if (childConfig.currentTime) {
+          children.currentTime = new CurrentTime(plugin, childConfig.currentTime);
+        }
+        break;
+      case 'progressBar':
+        children.progressBar = new ProgressBar(plugin, childConfig.progressBar);
+        break;
+      case 'totalTime':
+        if (childConfig.totalTime) {
+          children.totalTime = new TotalTime(plugin, childConfig.totalTime);
+        }
+        break;
+      case 'screen':
+        if (childConfig.screen) {
+          children.screen = new Screen(plugin, childConfig.screen);
+        }
+        break;
+      default:
+        children[item] = new Component(plugin, childConfig[item]);
+        break;
+    }
+  });
 
   return children;
 }
@@ -2540,18 +2457,20 @@ var hoverColorStyle = '\n  .chimee-flex-component svg:hover *{\n    fill: hoverC
 
 var defaultConfig = {};
 
-var chimeeControl = {
-  name: 'chimeeControl',
+var mobiControlbar = gestureFactory({
+  name: 'chimeeMobiControlbar',
   el: 'chimee-control',
   data: {
     children: {},
     show: false,
-    disabled: true
+    disabled: false
   },
   level: 99,
-  operable: false,
+  operable: true,
   penetrate: false,
-  create: function create() {},
+  create: function create() {
+    this.environment = new UAParser().getResult();
+  },
   init: function init(videoConfig) {
     if (videoConfig.controls) {
       this.show = true;
@@ -2573,11 +2492,22 @@ var chimeeControl = {
     this.config = isObject(this.$config) ? deepAssign(defaultConfig, this.$config) : defaultConfig;
     this.$dom.innerHTML = '<chimee-control-wrap></chimee-control-wrap>';
     this.$wrap = this.$dom.querySelector('chimee-control-wrap');
+
+    this.events = {};
     this.children = createChild(this);
     this._setStyle();
+
+    // 增加 window / document 的全局监听
+    this._addGlobalEvent();
+
+    // 监听全屏事件
+
+    this.watch_fullscreen = this.$watch('isFullscreen', this._mousemove);
   },
   destroy: function destroy() {
     window.clearTimeout(this.timeId);
+    this._removeGlobalEvent();
+    this.watch_fullscreen && this.watch_fullscreen();
   },
   inited: function inited() {
     for (var i in this.children) {
@@ -2586,10 +2516,11 @@ var chimeeControl = {
   },
 
   events: {
+    // 视频事件
     loadstart: function loadstart() {
       this._disable(true);
     },
-    canplay: function canplay() {
+    loadedmetadata: function loadedmetadata() {
       this._disable(false);
     },
     play: function play() {
@@ -2601,14 +2532,8 @@ var chimeeControl = {
       this._showItself();
     },
     load: function load() {},
-    c_touchmove: function c_touchmove() {
-      this._mousemove();
-    },
-    c_mousemove: function c_mousemove() {
-      this._mousemove();
-    },
     durationchange: function durationchange() {
-      this.children.progressTime && this.children.progressTime.updateTotal();
+      this.children.totalTime && this.children.totalTime.updateTotal();
     },
     timeupdate: function timeupdate() {
       this._progressUpdate();
@@ -2619,88 +2544,41 @@ var chimeeControl = {
     volumechange: function volumechange() {
       this.children.volume && this.children.volume.update();
     },
-    keydown: function keydown(e) {
-      if (this.disabled) return;
-      e.stopPropagation();
-      switch (e.keyCode) {
-        case 32:
-          {
-            e.preventDefault();
-            this.children.play && this.children.play.click(e);
-            break;
-          }
-        case 37:
-          {
-            e.preventDefault();
-            var reduceTime = this.currentTime - 10;
-            this.currentTime = reduceTime < 0 ? 0 : reduceTime;
-            this._mousemove();
-            break;
-          }
-        case 39:
-          {
-            e.preventDefault();
-            var raiseTime = this.currentTime + 10;
-            this.currentTime = raiseTime > this.duration ? this.duration : raiseTime;
-            this._mousemove();
-            break;
-          }
-        case 38:
-          {
-            e.preventDefault();
-            var raiseVolume = this.volume + 0.1;
-            this.volume = raiseVolume > 1 ? 1 : raiseVolume;
-            this._mousemove();
-            break;
-          }
-        case 40:
-          {
-            e.preventDefault();
-            var reduceVolume = this.volume - 0.1;
-            this.volume = reduceVolume < 0 ? 0 : reduceVolume;
-            this._mousemove();
-            break;
-          }
-      }
+    tap: function tap(evt) {
+      this._mousemove();
     },
-    touchstart: function touchstart(e) {
-      !this.disabled && this.children.play && this.children.play.click(e);
+    d_tap: function d_tap(evt) {
+      !this.paused && this._mousemove();
+      fireEvent(this, 'tap', evt.changedTouches[0]);
     },
-    click: function click(e) {
-      var _this2 = this;
-
-      var time = new Date();
-      var preTime = this.clickTime;
-      this.clickTime = time;
-      if (time - preTime < 300) {
-        clearTimeout(this.clickTimeId);
-        return;
-      }
-      this.clickTimeId = setTimeout(function () {
-        !_this2.disabled && _this2.children.play && _this2.children.play.click(e);
-      }, 300);
+    d_panstart: function d_panstart(evt) {
+      !this.paused && this._mousemove();
+      fireEvent(this, 'panstart', evt.changedTouches[0]);
     },
-    dblclick: function dblclick(e) {
-      // this.dblclick = true;
-      !this.disabled && this.children.screen && this.children.screen.click();
+    d_panmove: function d_panmove(evt) {
+      !this.paused && this._mousemove();
+      fireEvent(this, 'panmove', evt.changedTouches[0]);
+    },
+    d_panend: function d_panend(evt) {
+      !this.paused && this._mousemove();
+      fireEvent(this, 'panend', evt.changedTouches[0]);
     }
   },
   methods: {
     _progressUpdate: function _progressUpdate() {
       this.children.progressBar && this.children.progressBar.update();
-      this.children.progressTime && this.children.progressTime.updatePass();
+      this.children.currentTime && this.children.currentTime.updateCurrent();
     },
     _hideItself: function _hideItself() {
-      var _this3 = this;
+      var _this2 = this;
 
       window.clearTimeout(this.timeId);
       this.timeId = setTimeout(function () {
-        var bottom = _this3.$wrap.offsetHeight;
-        bottom = _this3.children.progressBar ? _this3.children.progressBar.$wrap[0].offsetTop - bottom : -bottom;
-        setStyle(_this3.$wrap, {
+        var bottom = -_this2.$wrap.offsetHeight;
+        setStyle(_this2.$wrap, {
           bottom: bottom + 'px'
         });
-        setStyle(_this3.$dom, {
+        setStyle(_this2.$dom, {
           visibility: 'hidden'
         });
       }, 2000);
@@ -2741,8 +2619,24 @@ var chimeeControl = {
       style.setAttribute('type', 'text/css');
       style.innerHTML = css;
       document.head.appendChild(style);
+    },
+    _weixinJSBridgeReady: function _weixinJSBridgeReady() {
+      // console.log(this.environment.os === 'iOS', window.WeixinJSBridge)
+      window.WeixinJSBridge && this.environment.os.name === 'iOS' && this.load();
+    },
+
+    // 增加一些全局事件监听
+    _addGlobalEvent: function _addGlobalEvent() {
+      addEvent(window, 'orientationchange', this._mousemove);
+      addEvent(document, 'WeixinJSBridgeReady', this._weixinJSBridgeReady);
+    },
+
+    // 去除一些全局事件监听
+    _removeGlobalEvent: function _removeGlobalEvent() {
+      removeEvent(window, 'orientationchange', this._mousemove);
+      removeEvent(document, 'WeixinJSBridgeReady', this._weixinJSBridgeReady);
     }
   }
-};
+});
 
-export default chimeeControl;
+export default mobiControlbar;

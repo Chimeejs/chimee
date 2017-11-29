@@ -1,7 +1,7 @@
 import './control.css';
 import gestureFactory from 'chimee-plugin-gesture';
 import {accessor, applyDecorators} from 'toxic-decorators';
-import {isObject, deepAssign, setStyle} from 'chimee-helper';
+import {isObject, deepAssign, setStyle, addEvent, removeEvent, UAParser} from 'chimee-helper';
 import {createChild} from './createchild.js';
 import {fireEvent} from './event';
 
@@ -42,12 +42,14 @@ const mobiControlbar = gestureFactory({
   data: {
     children: {},
     show: false,
-    disabled: true
+    disabled: false
   },
   level: 99,
   operable: true,
   penetrate: false,
-  create () {},
+  create () {
+    this.environment = new UAParser().getResult();
+  },
   init (videoConfig) {
     if(videoConfig.controls) {
       this.show = true;
@@ -73,9 +75,18 @@ const mobiControlbar = gestureFactory({
     this.events = {};
     this.children = createChild(this);
     this._setStyle();
+
+    // 增加 window / document 的全局监听
+    this._addGlobalEvent();
+
+    // 监听全屏事件
+
+    this.watch_fullscreen = this.$watch('isFullscreen', this._mousemove);
   },
   destroy () {
     window.clearTimeout(this.timeId);
+    this._removeGlobalEvent();
+    this.watch_fullscreen && this.watch_fullscreen();
   },
   inited () {
     for(const i in this.children) {
@@ -87,7 +98,7 @@ const mobiControlbar = gestureFactory({
     loadstart () {
       this._disable(true);
     },
-    canplay () {
+    loadedmetadata () {
       this._disable(false);
     },
     play () {
@@ -101,7 +112,7 @@ const mobiControlbar = gestureFactory({
     load () {
     },
     durationchange () {
-      this.children.progressTime && this.children.progressTime.updateTotal();
+      this.children.totalTime && this.children.totalTime.updateTotal();
     },
     timeupdate () {
       this._progressUpdate();
@@ -112,66 +123,35 @@ const mobiControlbar = gestureFactory({
     volumechange () {
       this.children.volume && this.children.volume.update();
     },
-    // 手势事件
-      // c_touchmove () {
-      //   this._mousemove();
-      // },
-      // c_mousemove () {
-      //   this._mousemove();
-      // },
-      // touchstart (e) {
-      //   !this.disabled && this.children.play && this.children.play.click(e);
-      // },
-      // click (e) {
-      //   const time = new Date();
-      //   const preTime = this.clickTime;
-      //   this.clickTime = time;
-      //   if(time - preTime < 300) {
-      //     clearTimeout(this.clickTimeId);
-      //     return;
-      //   }
-      //   this.clickTimeId = setTimeout(() => {
-      //     !this.disabled && this.children.play && this.children.play.click(e);
-      //   }, 300);
-
-      // },
-      // dblclick (e) {
-      //   // this.dblclick = true;
-      //   !this.disabled && this.children.screen && this.children.screen.click();
-      // },
-    tap(evt) {
+    tap (evt) {
       this._mousemove();
-      // this.children.play.tap(evt);
     },
-    press(evt) {
-      console.log('press', evt, evt.touches)
-    },
-    swipe(evt) {
-      console.log('swipe', evt)
-    },
-    d_tap(evt) {
+    d_tap (evt) {
+      !this.paused && this._mousemove();
       fireEvent(this, 'tap', evt.changedTouches[0]);
     },
-    d_panstart(evt) {
+    d_panstart (evt) {
+      !this.paused && this._mousemove();
       fireEvent(this, 'panstart', evt.changedTouches[0]);
     },
-    d_panmove(evt) {
+    d_panmove (evt) {
+      !this.paused && this._mousemove();
       fireEvent(this, 'panmove', evt.changedTouches[0]);
     },
-    d_panend(evt) {
+    d_panend (evt) {
+      !this.paused && this._mousemove();
       fireEvent(this, 'panend', evt.changedTouches[0]);
     }
   },
   methods: {
     _progressUpdate () {
       this.children.progressBar && this.children.progressBar.update();
-      this.children.progressTime && this.children.progressTime.updatePass();
+      this.children.currentTime && this.children.currentTime.updateCurrent();
     },
     _hideItself () {
       window.clearTimeout(this.timeId);
       this.timeId = setTimeout(() => {
-        let bottom = this.$wrap.offsetHeight;
-        bottom = this.children.progressBar ? this.children.progressBar.$wrap[0].offsetTop - bottom : -bottom;
+        const bottom = -this.$wrap.offsetHeight;
         setStyle(this.$wrap, {
           bottom: bottom + 'px'
         });
@@ -195,6 +175,7 @@ const mobiControlbar = gestureFactory({
         display
       });
     },
+
     _mousemove (e) {
       if(this.paused) return;
       this._showItself();
@@ -215,7 +196,21 @@ const mobiControlbar = gestureFactory({
       style.setAttribute('type', 'text/css');
       style.innerHTML = css;
       document.head.appendChild(style);
-    }
+    },
+    _weixinJSBridgeReady () {
+      // console.log(this.environment.os === 'iOS', window.WeixinJSBridge)
+      window.WeixinJSBridge && this.environment.os.name === 'iOS' && this.load();
+    },
+    // 增加一些全局事件监听
+    _addGlobalEvent () {
+      addEvent(window, 'orientationchange', this._mousemove);
+      addEvent(document, 'WeixinJSBridgeReady', this._weixinJSBridgeReady);
+    },
+    // 去除一些全局事件监听
+    _removeGlobalEvent () {
+      removeEvent(window, 'orientationchange', this._mousemove);
+      removeEvent(document, 'WeixinJSBridgeReady', this._weixinJSBridgeReady);
+    },
   }
 });
 

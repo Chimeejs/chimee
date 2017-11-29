@@ -1,6 +1,4 @@
-# [暂不可用]chimee-plugin-controlbar
-
-快发中，暂不可用
+# chimee-plugin-mobile-controlbar
 
 ## install
 
@@ -10,27 +8,27 @@
 # 依赖于 chimee， 首先需要安装 chimee
 npm install chimee
 # 安装控制条组件
-npm install chimee-plugin-controlbar
+npm install chimee-plugin-mobile-controlbar
 ```
 
 使用
 
 ```javascript
 import chimee from 'chimee';
-import chimeePluginControlbar from 'chimee-plugin-controlbar';
+import chimeePluginMobileControlbar from 'chimee-plugin-mobile-controlbar';
 
 // 安装插件
-chimee.install(chimeeControlbar);
+chimee.install(chimeePluginMobileControlbar);
 const player = new chimee({
   // ...
   // 使用插件
   plugin: [
-    chimeePluginControlbar.name // 或者 'chimeeControl'
+    chimeePluginMobileControlbar.name // 或者 'chimeeMobiControlbar'
   ]
 });
 ```
 
-**也可以在页面中引用 `/lib/index.browser.js` 然后在页面中使用 chimeePluginControlbar**
+**也可以在页面中引用 `/lib/index.browser.js` 然后在页面中使用 chimeePluginMobileControlbar**
 
 ## 配置
 
@@ -42,13 +40,7 @@ plugin: [{
   majorColor: '',
   hoverColor: '',
   children: {
-    volume: {
-      icon: {
-        low: '',
-        high: ''
-      },
-      layout: 'vertical'
-    }
+
   }
 }]
 ```
@@ -58,7 +50,7 @@ plugin: [{
 #### name
   * 类型： string
   * 含义： 该插件名字， 在 chimee 中使用需要名字，需要唯一对应
-  * 值： 'chimeeControl' | chimeePluginControlbar.name
+  * 值： 'chimeeMobiControlbar' | chimeePluginMobileControlbar.name
   * 必需
 
 #### majorColor
@@ -83,7 +75,7 @@ plugin: [{
   * 类型： Object
   * 含义： 配置子组件是否展示／展示方式，还可以自己扩展子组件
   * 非必需
-  * 目前支持的组件： play, progressTime, progressBar, volume, screen, clarity
+  * 目前支持的组件： play, currentTime, totalTime, progressBar, screen
   
 ##### 目前支持的组件及配置
 
@@ -127,9 +119,29 @@ plugin: [{
     }
     ```
 
-  * progressTime
+  * currentTime
     * 类型： Object
-    * 含义： 时间展示组件，用来展示播放时间／开播时间／视频总时长
+    * 含义： 时间展示组件，用来展示播放时间
+    * 默认： {}
+    * 可配置属性：
+      * event: 绑定 dom 事件， this 指向这个插件， 通过 this.$dom 可以拿到 dom 节点
+
+    配置 🌰
+
+    ```javascirpt
+    {
+      // 可以指定 event 来绑定一些事件，默认 this 是该插件，而不是 dom
+      event: {
+        click () {
+          console.log('');
+        }
+      }
+    }
+    ```
+
+  * totalTime
+    * 类型： Object
+    * 含义： 时间展示组件，用来展示总时间
     * 默认： {}
     * 可配置属性：
       * event: 绑定 dom 事件， this 指向这个插件， 通过 this.$dom 可以拿到 dom 节点
@@ -152,16 +164,12 @@ plugin: [{
     * 含义： 进度条控制组件
     * 默认： {}
     * 可配置属性：
-      * layout: 有两种位置， 一是，居中布局。二是，位于整个控制条顶部。
-        * 可选值： 'top' ／ 'baseline'(默认)
       * event: 绑定 dom 事件， this 指向这个插件， 通过 this.$dom 可以拿到 dom 节点
 
     配置 🌰
 
     ```javascirpt
     {
-      layout: 'top',
-
       // 可以指定 event 来绑定一些事件，默认 this 是该插件，而不是 dom
       event: {
         click () {
@@ -169,39 +177,6 @@ plugin: [{
         }
       }
     }
-    ```
-
-  * volume
-    * 类型： Object
-    * 含义： 声音控制组件
-    * 默认： {}
-    * 可配置属性：
-      * layout: 有两种位置， 一是，垂直。二是，水平。
-        * 可选值： 'vertical' ／ 'horizonal'(默认)
-      * bitmap: true/ false 是否是位图，默认 false，如果用户采用位图的话，则把当前的默认 svg 都清空掉， 用户通过 css background 来自己设置图片
-      * icon: 音量按钮的三个状态按钮，mute / low ／ high 最少写前两个
-      * [暂时不支持]animate: 也可以配置，然后自己通过 css 来控制
-      * event: 绑定 dom 事件， this 指向这个插件， 通过 this.$dom 可以拿到 dom 节点
-      * 注意： icon bitmap 都是配置图的。 bitmap 优先。其次 icon
-
-    配置 🌰
-
-    ```javascirpt
-    volume: {
-      icon: {
-        low: ``,
-        mute: ``,
-        high: ``
-      },
-      layout: 'vertical',
-
-      // 可以指定 event 来绑定一些事件，默认 this 是该插件，而不是 dom
-      event: {
-        click () {
-          console.log('');
-        }
-      }
-    },
     ```
 
   * screen
@@ -233,33 +208,6 @@ plugin: [{
     }
     ```
 
-  * clarity
-    * 类型： Object
-    * 含义： 切换清晰度组件
-    * 默认： {}
-    * 可配置参数
-      * list: []
-      * 
-    * 注意空数组时不展示
-
-    配置 🌰
-
-    ```javascirpt
-    {
-      list: [
-        {name: '标清', src:''},
-        {name: '高清', src: ''},
-        {name: '原画', src: ''}
-      ],
-      // 可以指定 event 来绑定一些事件，默认 this 是该插件，而不是 dom
-      event: {
-        click () {
-          console.log('');
-        }
-      }
-    }
-    ```
-  
   * 自定义组件
     * 类型： Object
     * 含义： 自定义组件
@@ -292,9 +240,9 @@ plugin: [{
   
     * 注意：根据 chimee 的参数 isLive 来判断是否是直播还是点播
     
-    * 直播： play, progressTime, volume, screen
+    * 直播： play, screen
     
-    * 点播： play, progressTime, progressTime, volume, screen
+    * 点播： play, currentTime, progressBar, totalTime, screen
 
 * Q: 我可以控制顺序吗？
 
@@ -304,6 +252,23 @@ plugin: [{
 
   A: 假如 children 配置后， 会读 children 的属性，并渲染， 不会补充其他组件，所以，需要你把所有的组件都写.
 
+#### 兼容性
+
+> 兼容性是移动端的大坑，在各个浏览器内总有特殊的表现，遇到最多的情况是，浏览器控制了 video，强制使用他的播放器，并且有最高层级，结尾的时候还会有广告😂
+
+我们这里总结了一些可操作方案，供大家选择，来避免踩这些移动端的坑
+
+1. uc 浏览器
+  * 当前效果：强制横屏，并且使用他的播放器
+  * 解决方案：貌似加联系 uc 加白名单可以解决
+2. 微信
+  * 当前效果：
+    * ios 目前测试的几款手机可以使用 iphone 6s /iphone 5s
+    * 安卓 手机未安卓 qq 浏览器时，比较正常，手机上有 qq 浏览器时，还是 qq 浏览器的默认播放器
+  * 解决方案：
+    * 安卓手机下， 配置 `x5VideoOrientation: 'landscape'` 直接横屏播放，不会调用 qq 浏览器的播放器
+    * 如果用户需要竖屏播放的话， 目前有一个 hack 方案，参见 [问题列表](https://github.com/Chimeejs/chimee-plugin-mobile-controlbar/issues/2)
+3. 手机自带浏览器
 
 ## 最后
 

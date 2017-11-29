@@ -29,7 +29,7 @@ function __$styleInject(css, returnValue) {
   return returnValue;
 }
 
-__$styleInject("/* 暂时存放到这的， 用来设置 container video 的基本样式 */\ncontainer {\n  position: relative;\n}\n\ncontainer,\nvideo {\n  display: block;\n  width: 100%;\n  height: 100%;\n  background: #000;\n  outline: none;\n}\n\nvideo:focus {\n  outline: none;\n}\n\n/* 用到的变量 */\n\n/* 全局默认样式 */\n.chimee-flex-component svg g {\n  fill: #fff;\n  stroke: #fff;\n}\n\n.chimee-flex-component svg:hover g {\n  fill: #fff;\n  stroke: #fff;\n}\n\n/* 默认隐藏 */\nchimee-volume-state-mute,\nchimee-volume-state-low,\nchimee-volume-state-high,\nchimee-control-state-pause,\nchimee-control-state-play,\nchimee-progressbar-tip,\nchimee-screen-full,\nchimee-clarity-list,\nchimee-screen-small {\n  display: none;\n}\n\n/* 满足条件时显示 */\nchimee-control.full chimee-screen-full,\nchimee-control.small chimee-screen-small,\nchimee-volume.mute chimee-volume-state-mute,\nchimee-volume.low chimee-volume-state-low,\nchimee-volume.high chimee-volume-state-high,\nchimee-control.pause chimee-control-state-pause,\nchimee-control.play chimee-control-state-play,\nchimee-control.full chimee-screen-full,\nchimee-control.small chimee-screen-small {\n  display: inline-block;\n  width: 1.4em;\n  height: 100%;\n}\n\n/* 开始写具体样式 */\nchimee-control {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  display: block;\n  width: 100%;\n  height: 100%;\n  line-height: 2em;\n  font-size: 14px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  overflow: hidden;\n  font-family: Roboto, Arial, Helvetica, sans-serif;\n  -webkit-transition: visibility 0.5s ease;\n  transition: visibility 0.5s ease;\n}\n\nchimee-control-wrap {\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  height: 2.2em;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row nowrap;\n          flex-flow: row nowrap;\n  -webkit-box-pack: start;\n      -ms-flex-pack: start;\n          justify-content: flex-start;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  background: rgba(0, 0, 0, .5);\n  -webkit-transition: bottom 0.5s ease;\n  transition: bottom 0.5s ease;\n  pointer-events: auto;\n}\n\n.chimee-flex-component {\n  -webkit-box-ordinal-group: 2;\n      -ms-flex-order: 1;\n          order: 1;\n  -webkit-box-flex: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  height: 2em;\n  cursor: pointer;\n}\n\n.chimee-flex-component svg {\n  vertical-align: middle;\n  width: 2em;\n  height: 1.5em;\n}\n\n/* 播放器状态，播放／暂停 */\nchimee-control-state.chimee-flex-component {\n  -ms-flex-preferred-size: 3em;\n      flex-basis: 3em;\n  text-align: right;\n  margin-right: 1em;\n}\n\n/* 播放器状态，播放／暂停 动画效果 */\nchimee-control-state .left,\nchimee-control-state .right {\n  -webkit-transition: d 0.2s ease-in-out;\n  transition: d 0.2s ease-in-out;\n}\n\n/* 时间显示 */\nchimee-progresstime.chimee-flex-component {\n  color: #fff;\n  font-weight: normal;\n  text-align: center;\n  white-space: nowrap;\n}\n\nchimee-progresstime-pass,\nchimee-progresstime-total {\n  display: inline;\n}\n\n/* 播放器控制条 */\nchimee-progressbar.chimee-flex-component {\n  position: relative;\n  -webkit-box-flex: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n}\n\nchimee-progressbar-wrap {\n  display: inline-block;\n  height: 100%;\n  position: absolute;\n  left: 1em;\n  right: 1em;\n  top: 0;\n}\n\nchimee-progressbar.progressbar-layout-top {\n  position: static\n}\n\nchimee-progressbar.progressbar-layout-top chimee-progressbar-wrap {\n  top: -1.6em;\n  height: 1.6em;\n  left: 0.8em;\n  right: 0;\n}\n\nchimee-progressbar.progressbar-layout-top .chimee-progressbar-line {\n  left: 0;\n  top: 0.8em;\n}\n\n.chimee-progressbar-line {\n  position: absolute;\n  top: 0.9em;\n  left: 0;\n  display: inline-block;\n  height: 3px;\n}\n\nchimee-progressbar-bg {\n  width: 100%;\n  background: #4c4c4c;\n}\n\nchimee-progressbar-buffer {\n  width: 0;\n  background: #6f6f6f;\n}\n\nchimee-progressbar-all {\n  margin-left: -0.8em;\n  background: #de698c;\n}\n\nchimee-progressbar-ball {\n  content: '';\n  position: absolute;\n  right: -0.8em;\n  top: -0.3em;\n  display: inline-block;\n  width: 0.8em;\n  height: 0.8em;\n  border-radius: 0.8em;\n  background: #fff;\n  pointer-events: none;\n}\n\nchimee-progressbar-tip {\n  position: absolute;\n  bottom: 0.5em;\n  top: -1.5em;\n  left: 0;\n  z-index: 10;\n  padding: 0 0.5em;\n  height: 1.5em;\n  background: #fff;\n  line-height: 1.5em;\n  border-radius: 4px;\n  color: #000;\n  text-align: center;\n}\n\n/* 音量控制 */\nchimee-volume.chimee-flex-component {\n  cursor: pointer;\n  padding: 0;\n  -ms-flex-preferred-size: 7em;\n      flex-basis: 7em;\n  white-space: nowrap;\n  margin-right: 1em;\n  position: relative;\n}\n\nchimee-volume.chimee-flex-component.vertical {\n  padding-right: 1em;\n  -ms-flex-preferred-size: 2em;\n      flex-basis: 2em;\n}\n\nchimee-volume-state {\n  display: inline-block;\n  width: 2em;\n  vertical-align: top;\n}\n\n/* 动画所用到的元素 css */\nchimee-volume .ring1,\nchimee-volume .ring2,\nchimee-volume .line {\n  stroke-dasharray: 150;\n  stroke-dashoffset: 150;\n  -webkit-transition: stroke-dashoffset 0.7s ease-in-out;\n  transition: stroke-dashoffset 0.7s ease-in-out;\n}\n\nchimee-volume.mute .line,\nchimee-volume.mute .ring1,\nchimee-volume.mute .ring2 {\n  stroke-dashoffset: 0;\n}\n\nchimee-volume.high .ring1,\nchimee-volume.high .ring2 {\n  stroke-dashoffset: 0;\n}\n\nchimee-volume.low .ring2 {\n  stroke-dashoffset: 0;\n}\n\nchimee-volume.vertical:hover chimee-volume-bar {\n  display: inline-block;\n}\n\nchimee-volume.vertical chimee-volume-bar {\n  position: absolute;\n  top: -7em;\n  left: -0.2em;\n  width: 2em;\n  height: 4em;\n  padding-bottom: 3em;\n  display: none;\n  vertical-align: middle;\n}\n\nchimee-volume.vertical chimee-volume-bar::before {\n  content: '';\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 1em;\n  background: #212121;\n  border-radius: 4px;\n}\n\nchimee-volume.horizonal chimee-volume-bar {\n  position: relative;\n  height: 1.2em;\n  width: 4em;\n  display: inline-block;\n  vertical-align: middle;\n}\n\nchimee-volume.vertical chimee-volume-bar-wrap {\n  display: inline-block;\n  position: absolute;\n  bottom: 1em;\n  left: 0;\n  top: 1em;\n  right: 0;\n  height: 4em;\n}\n\nchimee-volume.vertical chimee-volume-bar-all,\nchimee-volume.vertical chimee-volume-bar-bg {\n  position: absolute;\n  bottom: 0;\n  left: 1em;\n  display: inline-block;\n  width: 2px;\n  border-radius: 4px;\n}\n\nchimee-volume.vertical chimee-volume-bar-bg {\n  height: 4em;\n  background: #4c4c4c;\n  opacity: 0.5;\n}\n\nchimee-volume.vertical chimee-volume-bar-all {\n  background: #de698c;\n}\n\nchimee-volume.vertical chimee-volume-bar-all::after {\n  content: '';\n  position: absolute;\n  right: -0.34em;\n  top: -0.4em;\n  display: inline-block;\n  width: 0.8em;\n  height: 0.8em;\n  border-radius: 0.8em;\n  background: #fff;\n  pointer-events: none;\n}\n\nchimee-volume.horizonal chimee-volume-bar {\n  position: relative;\n  height: 1.2em;\n  width: 4em;\n  display: inline-block;\n  vertical-align: middle;\n}\n\nchimee-volume.horizonal chimee-volume-bar-all,\nchimee-volume.horizonal chimee-volume-bar-bg {\n  position: absolute;\n  top: 0.4em;\n  left: 0;\n  display: inline-block;\n  height: 2px;\n}\n\nchimee-volume.horizonal chimee-volume-bar-bg {\n  width: 4em;\n  background: #4c4c4c;\n  opacity: 0.5;\n}\n\nchimee-volume.horizonal chimee-volume-bar-all {\n  background: #de698c;\n}\n\nchimee-volume.horizonal chimee-volume-bar-all::after {\n  content: '';\n  position: absolute;\n  right: -0.4em;\n  top: -0.3em;\n  display: inline-block;\n  width: 0.8em;\n  height: 0.8em;\n  border-radius: 0.8em;\n  background: #fff;\n  pointer-events: none;\n}\n\n/* 全屏 */\nchimee-screen.chimee-flex-component {\n  -ms-flex-preferred-size: 3em;\n      flex-basis: 3em;\n  text-align: left;\n}\n\n/* 清晰度切换 */\nchimee-clarity.chimee-flex-component {\n  position: relative;\n  color: #fff;\n  width: 6em;\n  height: 1.75em;\n  padding: 0;\n  padding-right: 1em;\n  padding-left: 1em;\n  text-align: center;\n  vertical-align: middle;\n  font-size: 16px;\n}\n\nchimee-clarity.chimee-flex-component:hover chimee-clarity-list {\n  display: inline-block;\n}\n\nchimee-clarity.chimee-flex-component svg {\n  width: auto;\n  height: auto;\n}\n\nchimee-clarity-list {\n  position: absolute;\n  left: 0;\n  bottom: 1em;\n  width: 100%;\n  padding-bottom: 1.5em;\n  opacity: 0.8;\n  -webkit-box-sizing: content-box;\n          box-sizing: content-box;\n  line-height: 0;\n}\n\nchimee-clarity-list ul {\n  margin: 0;\n  padding: 0.5em 0;\n  background: #292929;\n  line-height: 2em;\n}\n\nchimee-clarity-list li {\n  list-style-type: none;\n}\n\nchimee-clarity-list li:hover,\nchimee-clarity-list li.active {\n  color: #de698c;\n}\n\nchimee-clarity-list-arrow {\n  position: absolute;\n  bottom: 1.5em;\n  width: 100%;\n}\n", undefined);
+__$styleInject("/* 暂时存放到这的， 用来设置 container video 的基本样式 */\ncontainer {\n  position: relative;\n  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);\n}\n\ncontainer,\nvideo {\n  display: block;\n  width: 100%;\n  height: 100%;\n  background: #000;\n  outline: none;\n}\n\nvideo:focus {\n  outline: none;\n}\n\n/* 用到的变量 */\n\n/* 全局默认样式 */\n.chimee-flex-component svg g {\n  fill: #fff;\n  stroke: #fff;\n}\n\n.chimee-flex-component svg:hover g {\n  fill: #fff;\n  stroke: #fff;\n}\n\n/* 默认隐藏 */\nchimee-control-state-pause,\nchimee-control-state-play,\nchimee-screen-full,\nchimee-clarity-list,\nchimee-screen-small {\n  display: none;\n}\n\n/* 满足条件时显示 */\nchimee-control.full chimee-screen-full,\nchimee-control.small chimee-screen-small,\nchimee-control.pause chimee-control-state-pause,\nchimee-control.play chimee-control-state-play,\nchimee-control.full chimee-screen-full,\nchimee-control.small chimee-screen-small {\n  display: inline-block;\n  width: 1.4em;\n  height: 100%;\n}\n\n/* 开始写具体样式 */\nchimee-control {\n  position: absolute;\n  bottom: 0;\n  left: 0;\n  display: block;\n  width: 100%;\n  height: 4em;\n  font-size: 10px;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  overflow: hidden;\n  font-family: Roboto, Arial, Helvetica, sans-serif;\n  -webkit-transition: visibility 0.5s ease;\n  transition: visibility 0.5s ease;\n}\n\nchimee-control:focus {\n  outline: none;\n}\n\nchimee-control-wrap {\n  position: absolute;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  height: 4em;\n  line-height: 4em;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-flow: row nowrap;\n          flex-flow: row nowrap;\n  -webkit-box-pack: start;\n      -ms-flex-pack: start;\n          justify-content: flex-start;\n  -webkit-box-align: start;\n      -ms-flex-align: start;\n          align-items: flex-start;\n  background: rgba(0, 0, 0, .5);\n  -webkit-transition: bottom 0.5s ease;\n  transition: bottom 0.5s ease;\n  pointer-events: auto;\n}\n\n.chimee-flex-component {\n  -webkit-box-ordinal-group: 2;\n      -ms-flex-order: 1;\n          order: 1;\n  -webkit-box-flex: 0;\n      -ms-flex-positive: 0;\n          flex-grow: 0;\n  height: 4em;\n  cursor: pointer;\n}\n\n.chimee-flex-component svg {\n  vertical-align: middle;\n  width: 1.8em;\n  height: 1.8em;\n}\n\n/* 播放器状态，播放／暂停 */\nchimee-control-state.chimee-flex-component {\n  -ms-flex-preferred-size: 3em;\n      flex-basis: 3em;\n  text-align: right;\n  margin-right: 1em;\n}\n\n/* 播放器状态，播放／暂停 动画效果 */\nchimee-control-state .left,\nchimee-control-state .right {\n  -webkit-transition: d 0.2s ease-in-out;\n  transition: d 0.2s ease-in-out;\n}\n\n/* 时间显示 */\nchimee-current-time.chimee-flex-component,\nchimee-total-time.chimee-flex-component {\n  color: #fff;\n  font-size: 1.5em;\n  font-weight: normal;\n  text-align: center;\n  white-space: nowrap;\n}\n\n/* 播放器控制条 */\nchimee-progressbar.chimee-flex-component {\n  position: relative;\n  -webkit-box-flex: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1;\n  margin: 0 1.5em;\n}\n\n.chimee-progressbar-line {\n  position: absolute;\n  top: 1.8em;\n  left: 0;\n  display: inline-block;\n  height: 8px;\n  border-radius: 4px;\n}\n\nchimee-progressbar-bg {\n  width: 100%;\n  background: #4c4c4c;\n}\n\nchimee-progressbar-buffer {\n  width: 0;\n  background: #6f6f6f;\n}\n\nchimee-progressbar-all {\n  background: #de698c;\n}\n\nchimee-progressbar-ball {\n  content: '';\n  position: absolute;\n  right: -1em;\n  top: -0.4em;\n  display: inline-block;\n  width: 1.4em;\n  height: 1.4em;\n  border-radius: 1.4em;\n  background: #fff;\n  pointer-events: none;\n}\n\n/* 全屏 */\nchimee-screen.chimee-flex-component {\n  -ms-flex-preferred-size: 3em;\n      flex-basis: 3em;\n  text-align: left;\n  margin-left: 1em;\n}\n", undefined);
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -76,6 +76,8 @@ var _aFunction$1 = function (it) {
   return it;
 };
 
+// optional / simple context binding
+
 var _ctx$1 = function (fn, that, length) {
   _aFunction$1(fn);
   if (that === undefined) return fn;
@@ -112,6 +114,7 @@ var _fails$1 = function (exec) {
   }
 };
 
+// Thank's IE8 for his funny defineProperty
 var _descriptors$1 = !_fails$1(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
@@ -127,6 +130,10 @@ var _ie8DomDefine$1 = !_descriptors$1 && !_fails$1(function () {
   return Object.defineProperty(_domCreate$1('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
+// 7.1.1 ToPrimitive(input [, PreferredType])
+
+// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+// and the second argument - flag - preferred type is a string
 var _toPrimitive$1 = function (it, S) {
   if (!_isObject$1(it)) return it;
   var fn, val;
@@ -228,6 +235,7 @@ $export$1.U = 64;  // safe
 $export$1.R = 128; // real proto method for `library`
 var _export$1 = $export$1;
 
+// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 _export$1(_export$1.S + _export$1.F * !_descriptors$1, 'Object', { defineProperty: _objectDp$1.f });
 
 var $Object$1 = _core$1.Object;
@@ -284,6 +292,8 @@ var _defined = function (it) {
   return it;
 };
 
+// true  -> String#at
+// false -> String#codePointAt
 var _stringAt = function (TO_STRING) {
   return function (that, pos) {
     var s = String(_defined(that));
@@ -315,13 +325,21 @@ var _cof = function (it) {
   return toString.call(it).slice(8, -1);
 };
 
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+
+// eslint-disable-next-line no-prototype-builtins
 var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return _cof(it) == 'String' ? it.split('') : Object(it);
 };
 
+// to indexed object, toObject with fallback for non-array-like ES3 strings
+
+
 var _toIobject = function (it) {
   return _iobject(_defined(it));
 };
+
+// 7.1.15 ToLength
 
 var min = Math.min;
 var _toLength = function (it) {
@@ -334,6 +352,11 @@ var _toAbsoluteIndex = function (index, length) {
   index = _toInteger(index);
   return index < 0 ? max(index + length, 0) : min$1(index, length);
 };
+
+// false -> Array#indexOf
+// true  -> Array#includes
+
+
 
 var _arrayIncludes = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
@@ -393,6 +416,10 @@ var _enumBugKeys = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
 
+// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+
+
+
 var _objectKeys = Object.keys || function keys(O) {
   return _objectKeysInternal(O, _enumBugKeys);
 };
@@ -409,6 +436,10 @@ var _objectDps = _descriptors$1 ? Object.defineProperties : function definePrope
 
 var document$3 = _global$1.document;
 var _html = document$3 && document$3.documentElement;
+
+// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+
+
 
 var IE_PROTO = _sharedKey('IE_PROTO');
 var Empty = function () { /* empty */ };
@@ -480,9 +511,14 @@ var _iterCreate = function (Constructor, NAME, next) {
   _setToStringTag(Constructor, NAME + ' Iterator');
 };
 
+// 7.1.13 ToObject(argument)
+
 var _toObject = function (it) {
   return Object(_defined(it));
 };
+
+// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+
 
 var IE_PROTO$2 = _sharedKey('IE_PROTO');
 var ObjectProto = Object.prototype;
@@ -577,6 +613,10 @@ var _iterStep = function (done, value) {
   return { value: value, done: !!done };
 };
 
+// 22.1.3.4 Array.prototype.entries()
+// 22.1.3.13 Array.prototype.keys()
+// 22.1.3.29 Array.prototype.values()
+// 22.1.3.30 Array.prototype[@@iterator]()
 var es6_array_iterator = _iterDefine(Array, 'Array', function (iterated, kind) {
   this._t = _toIobject(iterated); // target
   this._i = 0;                   // next index
@@ -708,6 +748,10 @@ var _objectPie = {
 	f: f$4
 };
 
+// all enumerable object keys, includes symbols
+
+
+
 var _enumKeys = function (it) {
   var result = _objectKeys(it);
   var getSymbols = _objectGops.f;
@@ -720,9 +764,13 @@ var _enumKeys = function (it) {
   } return result;
 };
 
+// 7.2.2 IsArray(argument)
+
 var _isArray = Array.isArray || function isArray(arg) {
   return _cof(arg) == 'Array';
 };
+
+// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 
 var hiddenKeys = _enumBugKeys.concat('length', 'prototype');
 
@@ -733,6 +781,8 @@ var f$6 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 var _objectGopn = {
 	f: f$6
 };
+
+// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 
 var gOPN$1 = _objectGopn.f;
 var toString$1 = {}.toString;
@@ -770,6 +820,12 @@ var f$7 = _descriptors$1 ? gOPD$1 : function getOwnPropertyDescriptor(O, P) {
 var _objectGopd = {
 	f: f$7
 };
+
+// ECMAScript 6 symbols shim
+
+
+
+
 
 var META = _meta.KEY;
 
@@ -1035,12 +1091,20 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 
 var _typeof = unwrapExports$1(_typeof_1);
 
+// most Object methods by ES6 should accept primitives
+
+
+
 var _objectSap = function (KEY, exec) {
   var fn = (_core$1.Object || {})[KEY] || Object[KEY];
   var exp = {};
   exp[KEY] = exec(fn);
   _export$1(_export$1.S + _export$1.F * _fails$1(function () { fn(1); }), 'Object', exp);
 };
+
+// 19.1.2.14 Object.keys(O)
+
+
 
 _objectSap('keys', function () {
   return function keys(it) {
@@ -1056,10 +1120,15 @@ module.exports = { "default": keys$1, __esModule: true };
 
 var _Object$keys = unwrapExports$1(keys);
 
+// 20.1.2.3 Number.isInteger(number)
+
 var floor$1 = Math.floor;
 var _isInteger = function isInteger(it) {
   return !_isObject$1(it) && isFinite(it) && floor$1(it) === it;
 };
+
+// 20.1.2.3 Number.isInteger(number)
+
 
 _export$1(_export$1.S, 'Number', { isInteger: _isInteger });
 
@@ -1110,6 +1179,7 @@ var _parseFloat$3 = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function p
   return result === 0 && string.charAt(0) == '-' ? -0 : result;
 } : $parseFloat;
 
+// 20.1.2.12 Number.parseFloat(string)
 _export$1(_export$1.S + _export$1.F * (Number.parseFloat != _parseFloat$3), 'Number', { parseFloat: _parseFloat$3 });
 
 var _parseFloat$1 = parseFloat;
@@ -1126,6 +1196,9 @@ unwrapExports$1(_parseFloat);
  * Released under MIT
  */
 
+/**
+ * is void element or not ? Means it will return true when val is undefined or null
+ */
 function isVoid(obj) {
   return obj === undefined || obj === null;
 }
@@ -1157,7 +1230,7 @@ function isNumber(obj) {
   return typeof obj === 'number';
 }
 /**
- * to tell you if the val can be transfer into number
+ * is it a string
  */
 function isString(str) {
   return typeof str === 'string' || str instanceof String;
@@ -1169,14 +1242,11 @@ function isBoolean(bool) {
   return typeof bool === 'boolean';
 }
 /**
- * is a promise or not
+ * is Primitive type or not, whick means it will return true when data is number/string/boolean/undefined/null
  */
 function isPrimitive(val) {
   return isVoid(val) || isBoolean(val) || isString(val) || isNumber(val);
 }
-/**
- * is it an url, but this test require the url to have an protocol
- */
 
 /**
  * chimee-helper-log v0.1.2
@@ -2381,6 +2451,8 @@ var uaParser = createCommonjsModule$1(function (module, exports) {
 
 var uaParser_1 = uaParser.UAParser;
 
+// call something on iterator step with safe closing on error
+
 var _iterCall = function (iterator, fn, value, entries) {
   try {
     return entries ? fn(_anObject$1(value)[0], value[1]) : fn(value);
@@ -2391,6 +2463,8 @@ var _iterCall = function (iterator, fn, value, entries) {
     throw e;
   }
 };
+
+// check on default Array iterator
 
 var ITERATOR$1 = _wks('iterator');
 var ArrayProto = Array.prototype;
@@ -2403,6 +2477,8 @@ var _createProperty = function (object, index, value) {
   if (index in object) _objectDp$1.f(object, index, _propertyDesc$1(0, value));
   else object[index] = value;
 };
+
+// getting tag from 19.1.3.6 Object.prototype.toString()
 
 var TAG$1 = _wks('toStringTag');
 // ES3 wrong here
@@ -2523,6 +2599,11 @@ var _toConsumableArray = unwrapExports$1(toConsumableArray);
  * Released under MIT
  */
 
+/**
+ * the handler to generate an deep traversal handler
+ * @param  {Function} fn the function you wanna run when you reach in the deep property
+ * @return {Function}    the handler
+ */
 function genTraversalHandler(fn) {
   function recursiveFn(source, target, key) {
     if (isArray$2(source) || isObject$1(source)) {
@@ -2541,9 +2622,9 @@ var _deepAssign = genTraversalHandler(function (val) {
   return val;
 });
 /**
- * deeply clone an object
- * @param  {Array|Object} source if you pass in other type, it will throw an error
- * @return {clone-target}        the new Object
+ * merge multiple objects
+ * @param  {...Object} args [description]
+ * @return {merge-object}         [description]
  */
 function deepAssign() {
   for (var _len = arguments.length, args = Array(_len), _key2 = 0; _key2 < _len; _key2++) {
@@ -2566,9 +2647,9 @@ function deepAssign() {
 }
 
 /**
- * camelize any string, e.g hello world -> helloWorld
- * @param  {string} str only accept string!
- * @return {string}     camelize string
+ * bind the function with some context. we have some fallback strategy here
+ * @param {function} fn the function which we need to bind the context on
+ * @param {any} context the context object
  */
 function bind(fn, context) {
   if (fn.bind) {
@@ -2591,10 +2672,6 @@ function bind(fn, context) {
     };
   }
 }
-
-/**
- * generate an uuid
- */
 
 var _anInstance = function (it, Constructor, name, forbiddenField) {
   if (!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)) {
@@ -2623,6 +2700,9 @@ var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) 
 exports.BREAK = BREAK;
 exports.RETURN = RETURN;
 });
+
+// 7.3.20 SpeciesConstructor(O, defaultConstructor)
+
 
 var SPECIES = _wks('species');
 var _speciesConstructor = function (O, D) {
@@ -2797,6 +2877,9 @@ var _microtask = function () {
     } last = task;
   };
 };
+
+// 25.4.1.5 NewPromiseCapability(C)
+
 
 function PromiseCapability(C) {
   var resolve, reject;
@@ -3137,6 +3220,11 @@ _export$1(_export$1.P + _export$1.R, 'Promise', { 'finally': function (onFinally
   );
 } });
 
+// https://github.com/tc39/proposal-promise-try
+
+
+
+
 _export$1(_export$1.S, 'Promise', { 'try': function (callbackfn) {
   var promiseCapability = _newPromiseCapability.f(this);
   var result = _perform(callbackfn);
@@ -3158,12 +3246,14 @@ unwrapExports$1(promise);
  * Released under MIT
  */
 
+// **********************  judgement   ************************
+/**
+ * check if the code running in browser environment (not include worker env)
+ * @returns {Boolean}
+ */
 var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
 
-// **********************  对象操作  ************************
-/**
- * 转变一个类数组对象为数组
- */
+// requestAnimationFrame
 var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function (cb) {
   return setTimeout(cb, 17);
 };
@@ -3174,6 +3264,30 @@ var caf = window.cancelAnimationFrame || window.mozCancelAnimationFrame || windo
 };
 
 // 根据要求的位数，将9格式化为 09\009\0009...
+function strRepeat(num, bit) {
+  var pBit = bit;
+  num = '' + (num || '');
+  var numLen = num.length;
+  bit = (bit || numLen) - numLen;
+  var paddingStr = bit > 0 ? num.repeat ? '0'.repeat(bit) : new Array(bit + 1).join('0') : '';
+  return (paddingStr + num).slice(0, pBit);
+}
+
+// video 时间格式化
+function formatTime(time) {
+  var hh = Math.floor(time / 3600);
+  time = Math.floor(time % 3600);
+  var mm = strRepeat(Math.floor(time / 60), 2);
+  time = Math.floor(time % 60);
+  var ss = strRepeat(time, 2);
+  return hh >= 1 ? hh + ':' + mm + ':' + ss : mm + ':' + ss;
+}
+
+// 19.1.2.1 Object.assign(target, source, ...)
+
+
+
+
 
 var $assign = Object.assign;
 
@@ -3203,6 +3317,9 @@ var _objectAssign = !$assign || _fails$1(function () {
   } return T;
 } : $assign;
 
+// 19.1.3.1 Object.assign(target, source)
+
+
 _export$1(_export$1.S + _export$1.F, 'Object', { assign: _objectAssign });
 
 var assign$1 = _core$1.Object.assign;
@@ -3213,6 +3330,7 @@ module.exports = { "default": assign$1, __esModule: true };
 
 var _Object$assign = unwrapExports$1(assign);
 
+// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 _export$1(_export$1.S, 'Object', { create: _objectCreate });
 
 var $Object$2 = _core$1.Object;
@@ -3232,6 +3350,19 @@ var _Object$create = unwrapExports$1(create);
  * Released under MIT
  */
 
+/**
+* @module event
+* @author huzunjie
+* @description 自定义事件基础类
+*/
+
+/* 缓存事件监听方法及包装，内部数据格式：
+ * targetIndex_<type:'click|mouseup|done'>: [ [
+ *   function(){ ... handler ... },
+ *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
+ *   isOnce
+ * ]]
+ */
 var _evtListenerCache = _Object$create(null);
 _evtListenerCache.count = 0;
 
@@ -3460,11 +3591,30 @@ var CustEvent = function () {
 }();
 
 /**
- * chimee-helper-dom v0.1.4
+ * chimee-helper-dom v0.1.7
  * (c) 2017 huzunjie
  * Released under MIT
  */
 
+/**
+ * chimee-helper-events v0.1.0
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
+
+/**
+* @module event
+* @author huzunjie
+* @description 自定义事件基础类
+*/
+
+/* 缓存事件监听方法及包装，内部数据格式：
+ * targetIndex_<type:'click|mouseup|done'>: [ [
+ *   function(){ ... handler ... },
+ *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
+ *   isOnce
+ * ]]
+ */
 var _evtListenerCache$1 = _Object$create(null);
 _evtListenerCache$1.count = 0;
 
@@ -3809,6 +3959,20 @@ function hasClassName(el, className) {
 }
 
 /**
+ * addEventListener 是否已支持 passive
+ * @return {Boolean}
+ */
+var supportsPassive = false;
+try {
+  var opts = Object.defineProperty({}, 'passive', {
+    get: function get() {
+      supportsPassive = true;
+    }
+  });
+  window.addEventListener('test', null, opts);
+} catch (e) {}
+
+/**
  * 为HTML元素移除事件监听
  * @param {HTMLElement} el 目标元素
  * @param {String} type 事件名称
@@ -3820,6 +3984,9 @@ function removeEvent(el, type, handler) {
   var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
   var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
+  if (capture !== undefined && !isBoolean(capture) && supportsPassive) {
+    capture = { passive: true };
+  }
   if (once) {
     /* 尝试从缓存中读取包装后的方法 */
     var handlerWrap = removeEventCache$1(el, type + '_once', handler);
@@ -3842,6 +4009,9 @@ function addEvent(el, type, handler) {
   var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
   var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
+  if (capture !== undefined && !isBoolean(capture) && supportsPassive) {
+    capture = { passive: true };
+  }
   if (once) {
     var oldHandler = handler;
     handler = function () {
@@ -3872,7 +4042,9 @@ function addEvent(el, type, handler) {
 function addDelegate(el, selector, type, handler) {
   var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
-
+  if (capture !== undefined && !isBoolean(capture) && supportsPassive) {
+    capture = { passive: true };
+  }
   var handlerWrap = function handlerWrap(e) {
     var targetElsArr = findParents(e.target || e.srcElement, el, true);
     var targetElArr = query(selector, el, true);
@@ -3911,6 +4083,9 @@ function addDelegate(el, selector, type, handler) {
 function removeDelegate(el, selector, type, handler) {
   var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
+  if (capture !== undefined && !isBoolean(capture) && supportsPassive) {
+    capture = { passive: true };
+  }
   /* 尝试从缓存中读取包装后的方法 */
   var handlerWrap = removeEventCache$1(el, type + '_delegate_' + selector, handler);
   handlerWrap && el.removeEventListener(type, handlerWrap, capture);
@@ -4375,13 +4550,13 @@ var NodeWrap = function () {
 }();
 
 /**
- * chimee-helper v0.2.6
+ * chimee-helper v0.2.8
  * (c) 2017 toxic-johann
  * Released under MIT
  */
 
 /**
- * chimee-plugin-gesture v0.0.2
+ * chimee-plugin-gesture v0.0.5
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -4674,6 +4849,8 @@ var Gesture = function () {
   _createClass(Gesture, [{
     key: 'touchstart',
     value: function touchstart(evt) {
+
+      // 初始状态
       this.status = 'tapping';
 
       // 当前 touch 点
@@ -4685,8 +4862,6 @@ var Gesture = function () {
   }, {
     key: 'touchmove',
     value: function touchmove(evt) {
-      var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-
 
       var touch = evt.changedTouches[0];
 
@@ -4694,16 +4869,14 @@ var Gesture = function () {
 
       if (this.status === 'tapping' && distance > 10) {
         this.status = 'panning';
-        this.fire('panstart', prefix, evt);
+        this.fire('panstart', evt);
       } else if (this.status === 'panning') {
-        this.fire('panmove', prefix, evt);
+        this.fire('panmove', evt);
       }
     }
   }, {
     key: 'touchend',
     value: function touchend(evt) {
-      var prefix = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-
 
       this.endTouch = evt.changedTouches[0];
 
@@ -4712,26 +4885,24 @@ var Gesture = function () {
       var interval = Date.now() - this.startTime;
 
       // 时间 <= 250ms 距离小于 10 px 则认为是 tap
-      if (interval <= 250 && distance < 10) this.fire('tap', prefix, evt);
+      if (interval <= 250 && distance < 10) this.fire('tap', evt);
 
       // 时间 > 250ms 距离小于 10 px 则认为是 press    
-      if (interval > 250 && distance < 10) this.fire('press', prefix, evt);
+      if (interval > 250 && distance < 10) this.fire('press', evt);
 
       var speed = getSpeed(distance, interval);
 
       // 距离大于 10 px , 速度大于 0.3 则认为是 swipe
-      if (speed > 0.3 && distance >= 10) this.fire('swipe', prefix, evt);
+      if (speed > 0.3 && distance >= 10) this.fire('swipe', evt);
 
       // 处于 panning 则触发 panend 事件
-      if (this.status === 'panning') this.fire('panend', prefix, evt);
+      if (this.status === 'panning') this.fire('panend', evt);
 
       this.status = 'none';
     }
   }, {
     key: 'touchcancel',
-    value: function touchcancel(evt) {
-      
-    }
+    value: function touchcancel(evt) {}
   }, {
     key: 'on',
     value: function on(type, func) {
@@ -4739,8 +4910,7 @@ var Gesture = function () {
     }
   }, {
     key: 'fire',
-    value: function fire(type, prefix, evt) {
-      type = prefix + type;
+    value: function fire(type, evt) {
       if (!isArray(this.event[type])) return;
       this.event[type].forEach(function (item) {
         item(evt);
@@ -4752,6 +4922,12 @@ var Gesture = function () {
 }();
 
 var baseMobileEvent = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
+
+var gesture = new Gesture();
+var c_gesture = new Gesture();
+var w_gesture = new Gesture();
+var d_gesture = new Gesture();
+
 function gestureFactory() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       _ref$name = _ref.name,
@@ -4767,7 +4943,7 @@ function gestureFactory() {
       _create = _ref.create,
       init = _ref.init,
       inited = _ref.inited,
-      destroy = _ref.destroy,
+      _destroy = _ref.destroy,
       data = _ref.data,
       computed = _ref.computed,
       _ref$events = _ref.events,
@@ -4791,17 +4967,15 @@ function gestureFactory() {
     beforeCreate: function beforeCreate(config) {
       var _this = this;
 
-      _beforeCreate && _beforeCreate.call(this);
-      var gesture = this.gesture = new Gesture();
       baseMobileEvent.forEach(function (item) {
         config.events[item] = function (evt) {
           gesture[item](evt);
         };
         config.events['c_' + item] = function (evt) {
-          gesture[item](evt, 'c_');
+          c_gesture[item](evt);
         };
         config.events['w_' + item] = function (evt) {
-          gesture[item](evt, 'w_');
+          w_gesture[item](evt);
         };
       });
 
@@ -4810,31 +4984,34 @@ function gestureFactory() {
           var func = config.events[item];
           func && func.call(_this, evt);
         });
-        gesture.on('c_' + item, function (evt) {
+        c_gesture.on(item, function (evt) {
           var func = config.events['c_' + item];
           func && func.call(_this, evt);
         });
-        gesture.on('w_' + item, function (evt) {
+        w_gesture.on(item, function (evt) {
           var func = config.events['w_' + item];
           func && func.call(_this, evt);
         });
-        gesture.on('d_' + item, function (evt) {
+        d_gesture.on(item, function (evt) {
           var func = config.events['d_' + item];
           func && func.call(_this, evt);
         });
       });
+
+      _beforeCreate && _beforeCreate.call(this);
     },
     create: function create() {
       var _this2 = this;
 
-      _create && _create.call(this);
       baseMobileEvent.forEach(function (item) {
         var key = '__' + item;
         _this2[key] = function (evt) {
-          _this2.gesture[item](evt, 'd_');
+          d_gesture[item](evt);
         };
         addEvent(_this2.$dom, item, _this2[key]);
       });
+
+      _create && _create.call(this);
     },
 
     init: init,
@@ -4842,11 +5019,12 @@ function gestureFactory() {
     destroy: function destroy() {
       var _this3 = this;
 
-      _create && _create.call(this);
       baseMobileEvent.forEach(function (item) {
         var key = '__' + item;
         removeEvent(_this3.$dom, item, _this3[key]);
       });
+
+      _destroy && _destroy.call(this);
     },
 
     methods: methods,
@@ -4856,12 +5034,23 @@ function gestureFactory() {
   };
 }
 
+// all object keys, includes non-enumerable and symbols
+
+
+
 var Reflect = _global$1.Reflect;
 var _ownKeys = Reflect && Reflect.ownKeys || function ownKeys(it) {
   var keys = _objectGopn.f(_anObject$1(it));
   var getSymbols = _objectGops.f;
   return getSymbols ? keys.concat(getSymbols(it)) : keys;
 };
+
+// https://github.com/tc39/proposal-object-getownpropertydescriptors
+
+
+
+
+
 
 _export$1(_export$1.S, 'Object', {
   getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object) {
@@ -4895,6 +5084,7 @@ module.exports = { "default": getOwnPropertySymbols$1, __esModule: true };
 
 var _Object$getOwnPropertySymbols = unwrapExports$1(getOwnPropertySymbols);
 
+// 19.1.2.7 Object.getOwnPropertyNames(O)
 _objectSap('getOwnPropertyNames', function () {
   return _objectGopnExt.f;
 });
@@ -4909,6 +5099,8 @@ module.exports = { "default": getOwnPropertyNames$1, __esModule: true };
 });
 
 var _Object$getOwnPropertyNames = unwrapExports$1(getOwnPropertyNames);
+
+// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
 
 var $getOwnPropertyDescriptor$1 = _objectGopd.f;
 
@@ -5015,6 +5207,10 @@ exports.default = function () {
 
 unwrapExports$1(slicedToArray);
 
+// 19.1.2.9 Object.getPrototypeOf(O)
+
+
+
 _objectSap('getPrototypeOf', function () {
   return function getPrototypeOf(it) {
     return _objectGpo(_toObject(it));
@@ -5044,9 +5240,24 @@ var _arraySpeciesConstructor = function (original) {
   } return C === undefined ? Array : C;
 };
 
+// 9.4.2.3 ArraySpeciesCreate(originalArray, length)
+
+
 var _arraySpeciesCreate = function (original, length) {
   return new (_arraySpeciesConstructor(original))(length);
 };
+
+// 0 -> Array#forEach
+// 1 -> Array#map
+// 2 -> Array#filter
+// 3 -> Array#some
+// 4 -> Array#every
+// 5 -> Array#find
+// 6 -> Array#findIndex
+
+
+
+
 
 var _arrayMethods = function (TYPE, $create) {
   var IS_MAP = TYPE == 1;
@@ -5280,6 +5491,9 @@ if (_fails$1(function () { return new $WeakMap().set((Object.freeze || Object)(t
 }
 });
 
+// https://tc39.github.io/proposal-setmap-offrom/
+
+
 var _setCollectionOf = function (COLLECTION) {
   _export$1(_export$1.S, COLLECTION, { of: function of() {
     var length = arguments.length;
@@ -5289,7 +5503,14 @@ var _setCollectionOf = function (COLLECTION) {
   } });
 };
 
+// https://tc39.github.io/proposal-setmap-offrom/#sec-weakmap.of
 _setCollectionOf('WeakMap');
+
+// https://tc39.github.io/proposal-setmap-offrom/
+
+
+
+
 
 var _setCollectionFrom = function (COLLECTION) {
   _export$1(_export$1.S, COLLECTION, { from: function from(source /* , mapFn, thisArg */) {
@@ -5313,6 +5534,7 @@ var _setCollectionFrom = function (COLLECTION) {
   } });
 };
 
+// https://tc39.github.io/proposal-setmap-offrom/#sec-weakmap.from
 _setCollectionFrom('WeakMap');
 
 var weakMap$1 = _core$1.WeakMap;
@@ -5350,6 +5572,8 @@ exports.default = function (obj, key, value) {
 
 unwrapExports$1(defineProperty$6$1);
 
+// 19.1.2.15 Object.preventExtensions(O)
+
 var meta = _meta.onFreeze;
 
 _objectSap('preventExtensions', function ($preventExtensions) {
@@ -5373,19 +5597,9 @@ unwrapExports$1(preventExtensions$1);
  */
 
 var getOwnPropertyDescriptor = _Object$getOwnPropertyDescriptor;
-// **********************  对象操作  ************************
 /**
- * sort Object attributes by function
- * and transfer them into array
- * @param  {Object} obj Object form from numric
- * @param  {Function} fn sort function
- * @return {Array} the sorted attirbutes array
- */
-
-
-/**
- * to check if an descriptor
- * @param {anything} desc
+ * to check if the descirptor is an accessor descriptor
+ * @param {descriptor} desc it should be a descriptor better
  */
 function isAccessorDescriptor(desc) {
   return !!desc && (isFunction(desc.get) || isFunction(desc.set)) && isBoolean(desc.configurable) && isBoolean(desc.enumerable) && desc.writable === undefined;
@@ -5875,6 +6089,10 @@ exports.default = function get(object, property, receiver) {
 
 var _get = unwrapExports$1(get$1);
 
+// Works with __proto__ only. Old v8 can't work with null proto objects.
+/* eslint-disable no-proto */
+
+
 var check = function (O, proto) {
   _anObject$1(O);
   if (!_isObject$1(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
@@ -5896,6 +6114,8 @@ var _setProto = {
     }({}, false) : undefined),
   check: check
 };
+
+// 19.1.3.19 Object.setPrototypeOf(O, proto)
 
 _export$1(_export$1.S, 'Object', { setPrototypeOf: _setProto.set });
 
@@ -5943,6 +6163,14 @@ exports.default = function (subClass, superClass) {
 
 var _inherits = unwrapExports$1(inherits);
 
+/**
+ * 为HTML元素添加事件代理
+ * @param {HTMLElement} host 目标对象
+ * @param {String} selector 要被代理的元素
+ * @param {String} type 事件名称
+ * @param {Function} handler 处理函数
+ * @param {Boolean} capture 是否在捕获阶段监听
+ */
 function addDelegate$1(host, selector, type, handler) {
   var el = host.$dom;
   var handlerWrap = function handlerWrap(e) {
@@ -6058,6 +6286,38 @@ var Base = function () {
 
   return Base;
 }();
+
+/**
+ * 自定义组件配置
+ */
+
+var Component = function (_Base) {
+  _inherits(Component, _Base);
+
+  function Component(parent, option) {
+    _classCallCheck$1(this, Component);
+
+    var _this = _possibleConstructorReturn(this, (Component.__proto__ || _Object$getPrototypeOf(Component)).call(this, parent));
+
+    _this.option = option;
+    _this.init();
+    return _this;
+  }
+
+  _createClass$1(Component, [{
+    key: 'init',
+    value: function init() {
+      _get(Component.prototype.__proto__ || _Object$getPrototypeOf(Component.prototype), 'create', this).call(this);
+      addClassName(this.$dom, 'chimee-flex-component');
+    }
+  }]);
+
+  return Component;
+}(Base);
+
+/**
+ * play 配置
+ */
 
 var defaultOption = {
   tag: 'chimee-control-state',
@@ -6181,6 +6441,10 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
   return desc;
 }
 
+/**
+ * Screen 配置
+ */
+
 var defaultOption$1 = {
   tag: 'chimee-screen',
   html: '\n    <chimee-screen-full>\n      <svg viewBox="0 0 67 66" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n          <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->\n          <desc>Created with Sketch.</desc>\n          <defs></defs>\n          <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n              <g id="screen-small" transform="translate(33.756308, 32.621867) rotate(45.000000) translate(-33.756308, -32.621867) translate(18.756308, -10.378133)" fill="#FFFFFF">\n                  <polygon id="Path" transform="translate(14.967695, 66.389245) rotate(180.000000) translate(-14.967695, -66.389245) " points="11.5190786 46.9431778 11.7210093 70.7913773 0.565180527 70.7913773 15.4674455 85.8353125 29.3702096 70.7913773 18.5573247 70.7702156 18.5573247 46.9431778"></polygon>\n                  <polygon id="Path" points="11.5190786 0.274130278 11.7210093 24.1223298 0.565180527 24.1223298 15.4674455 39.1662649 29.3702096 24.1223298 18.5573247 24.1011681 18.5573247 0.274130278"></polygon>\n              </g>\n          </g>\n      </svg>\n    </chimee-screen-full>\n    <chimee-screen-small>\n      <svg viewBox="0 0 61 62" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n        <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->\n        <desc>Created with Sketch.</desc>\n        <defs></defs>\n        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\n            <g id="Group" transform="translate(30.756308, 30.621867) rotate(45.000000) translate(-30.756308, -30.621867) translate(15.756308, -12.378133)" fill="#FFFFFF">\n                <polygon id="Path" points="11.5190786 46.9431778 11.7210093 70.7913773 0.565180527 70.7913773 15.4674455 85.8353125 29.3702096 70.7913773 18.5573247 70.7702156 18.5573247 46.9431778"></polygon>\n                <polygon id="Path" transform="translate(14.967695, 19.720198) rotate(180.000000) translate(-14.967695, -19.720198) " points="11.5190786 0.274130278 11.7210093 24.1223298 0.565180527 24.1223298 15.4674455 39.1662649 29.3702096 24.1223298 18.5573247 24.1011681 18.5573247 0.274130278"></polygon>\n            </g>\n        </g>\n      </svg>\n    </chimee-screen-small>\n  ',
@@ -6298,7 +6562,7 @@ function _applyDecoratedDescriptor$1(target, property, decorators, descriptor, c
 
 var defaultOption$2 = {
   tag: 'chimee-progressbar',
-  html: '\n    <chimee-progressbar-wrap>\n      <chimee-progressbar-bg class="chimee-progressbar-line"></chimee-progressbar-bg>\n      <chimee-progressbar-buffer class="chimee-progressbar-line"></chimee-progressbar-buffer>\n      <chimee-progressbar-all class="chimee-progressbar-line">\n        <chimee-progressbar-ball></chimee-progressbar-ball>\n      </chimee-progressbar-all>\n      <chimee-progressbar-tip></chimee-progressbar-tip>\n    </chimee-progressbar-wrap>\n  '
+  html: '\n    <chimee-progressbar-bg class="chimee-progressbar-line"></chimee-progressbar-bg>\n    <chimee-progressbar-buffer class="chimee-progressbar-line"></chimee-progressbar-buffer>\n    <chimee-progressbar-all class="chimee-progressbar-line">\n      <chimee-progressbar-ball></chimee-progressbar-ball>\n    </chimee-progressbar-all>\n  '
 };
 
 var ProgressBar = (_class$1 = function (_Base) {
@@ -6320,54 +6584,34 @@ var ProgressBar = (_class$1 = function (_Base) {
     value: function init() {
       _get(ProgressBar.prototype.__proto__ || _Object$getPrototypeOf(ProgressBar.prototype), 'create', this).call(this);
       this.$dom = $(this.$dom);
-      this.$wrap = this.$dom.find('chimee-progressbar-wrap');
       this.$buffer = this.$dom.find('chimee-progressbar-buffer');
       this.$all = this.$dom.find('chimee-progressbar-all');
-      this.$tip = this.$dom.find('chimee-progressbar-tip');
-      this.$track = this.$dom.find('chimee-progressbar-track');
-      this.$line = this.$dom.find('.chimee-progressbar-line');
       this.$ball = this.$dom.find('chimee-progressbar-ball');
       this.$dom.addClass('chimee-flex-component');
 
       // css 配置
       !this.visiable && this.$dom.css('visibility', 'hidden');
-      // this.$line.css({
-      //   top: this.$wrap.
-      // });
-      // 进度条居中布局，还是在上方
-      if (this.option.layout === 'top') {
-        this.$dom.addClass('progressbar-layout-top');
-        this.$wrap.css({
-          // left: -this.$dom[0].offsetLeft + 'px',
-          top: -this.$ball[0].offsetHeight + 'px'
-          // height: this.$ball[0].offsetHeight * 2 + 'px'
-        });
-        // this.$line.css({
-        //   top: this.$ball[0].offsetHeight + 'px'
-        // })
-        setStyle(this.parent.$wrap, 'paddingTop', this.$ball[0].offsetHeight + 'px');
-      }
-      this.addWrapEvent();
+      this.addEvent();
     }
   }, {
     key: 'destroy',
     value: function destroy() {
-      this.removeWrapEvent();
+      this.removeEvent();
       // 解绑全屏监听事件
       this.watch_screen && this.watch_screen();
       _get(ProgressBar.prototype.__proto__ || _Object$getPrototypeOf(ProgressBar.prototype), 'destroy', this).call(this);
     }
   }, {
-    key: 'addWrapEvent',
-    value: function addWrapEvent() {
-      addDelegate$1(this.parent, 'chimee-progressbar-wrap', 'tap', this.tap);
-      addDelegate$1(this.parent, 'chimee-progressbar-wrap', 'panstart', this.mousedown);
+    key: 'addEvent',
+    value: function addEvent() {
+      addDelegate$1(this.parent, 'chimee-progressbar', 'tap', this.tap);
+      addDelegate$1(this.parent, 'chimee-progressbar', 'panstart', this.mousedown);
     }
   }, {
-    key: 'removeWrapEvent',
-    value: function removeWrapEvent() {
-      removeDelegate$1(this.parent, 'chimee-progressbar-wrap', 'tap', this.tap);
-      removeDelegate$1(this.parent, 'chimee-progressbar-wrap', 'panstart', this.mousedown);
+    key: 'removeEvent',
+    value: function removeEvent() {
+      removeDelegate$1(this.parent, 'chimee-progressbar', 'tap', this.tap);
+      removeDelegate$1(this.parent, 'chimee-progressbar', 'panstart', this.mousedown);
     }
 
     /**
@@ -6392,24 +6636,22 @@ var ProgressBar = (_class$1 = function (_Base) {
   }, {
     key: 'update',
     value: function update() {
-      // const allWidth = this.$wrap[0].offsetWidth - this.$ball[0].offsetWidth;
       var time = this._currentTime !== undefined ? this._currentTime : this.parent.currentTime;
       var timePer = time ? time / this.parent.duration : 0;
-      // const timeWidth = timePer * allWidth;
       this.$all.css('width', timePer * 100 + '%');
     }
   }, {
     key: 'tap',
     value: function tap(e) {
-
-      this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$wrap[0].offsetWidth * this.parent.duration;
+      this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$dom[0].offsetWidth * this.parent.duration;
       this.update();
+      this.parent.currentTime = this._currentTime;
     }
   }, {
     key: 'mousedown',
     value: function mousedown(e) {
 
-      this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$wrap[0].offsetWidth * this.parent.duration;
+      this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$dom[0].offsetWidth * this.parent.duration;
       this.startX = e.clientX;
       this.startTime = this._currentTime;
       addDelegate$1(this.parent, this.option.tag, 'panmove', this.draging);
@@ -6425,7 +6667,7 @@ var ProgressBar = (_class$1 = function (_Base) {
     key: 'draging',
     value: function draging(e) {
       this.endX = e.clientX;
-      var dragTime = (this.endX - this.startX) / this.$wrap[0].offsetWidth * this.parent.duration;
+      var dragTime = (this.endX - this.startX) / this.$dom[0].offsetWidth * this.parent.duration;
       var dragAfterTime = +(this.startTime + dragTime).toFixed(2);
       this._currentTime = dragAfterTime < 0 ? 0 : dragAfterTime > this.parent.duration ? this.parent.duration : dragAfterTime;
       this.update();
@@ -6440,10 +6682,7 @@ var ProgressBar = (_class$1 = function (_Base) {
     value: function dragEnd() {
       this.startX = 0;
       this.startTime = 0;
-      // if(!this.inBall) {
       this.parent.currentTime = this._currentTime;
-      // this.inBall = false;
-      // }
       this._currentTime = undefined;
       removeDelegate$1(this.parent, this.option.tag, 'panmove', this.draging);
       removeDelegate$1(this.parent, this.option.tag, 'panend', this.dragEnd);
@@ -6453,13 +6692,147 @@ var ProgressBar = (_class$1 = function (_Base) {
   return ProgressBar;
 }(Base), _applyDecoratedDescriptor$1(_class$1.prototype, 'tap', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'tap'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1.prototype, 'mousedown', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'mousedown'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1.prototype, 'draging', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'draging'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1.prototype, 'dragEnd', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'dragEnd'), _class$1.prototype), _class$1);
 
-function createChild(plugin) {
-  var childConfig = plugin.config.children;
-  var children = {};
+/**
+ * currentTime 配置
+ */
 
-  children.play = new Play(plugin, childConfig.play);
-  children.progressbar = new ProgressBar(plugin, childConfig.progressbar);
-  children.screen = new Screen(plugin, childConfig.screen);
+var defaultOption$3 = {
+  tag: 'chimee-current-time',
+  html: '\n    00:00\n  '
+};
+
+var CurrentTime = function (_Base) {
+  _inherits(CurrentTime, _Base);
+
+  function CurrentTime(parent, option) {
+    _classCallCheck$1(this, CurrentTime);
+
+    var _this = _possibleConstructorReturn(this, (CurrentTime.__proto__ || _Object$getPrototypeOf(CurrentTime)).call(this, parent));
+
+    _this.option = deepAssign(defaultOption$3, isObject$1(option) ? option : {});
+    _this.init();
+    return _this;
+  }
+
+  _createClass$1(CurrentTime, [{
+    key: 'init',
+    value: function init() {
+      _get(CurrentTime.prototype.__proto__ || _Object$getPrototypeOf(CurrentTime.prototype), 'create', this).call(this);
+      this.$dom = $(this.$dom);
+      this.$dom.addClass('chimee-flex-component');
+    }
+  }, {
+    key: 'updateCurrent',
+    value: function updateCurrent() {
+      this.$dom.text(formatTime(this.parent.currentTime));
+    }
+  }]);
+
+  return CurrentTime;
+}(Base);
+
+/**
+ * totalTime 配置
+ */
+
+var defaultOption$4 = {
+  tag: 'chimee-total-time',
+  html: '\n    00:00\n  '
+};
+
+var TotalTime = function (_Base) {
+  _inherits(TotalTime, _Base);
+
+  function TotalTime(parent, option) {
+    _classCallCheck$1(this, TotalTime);
+
+    var _this = _possibleConstructorReturn(this, (TotalTime.__proto__ || _Object$getPrototypeOf(TotalTime)).call(this, parent));
+
+    _this.option = deepAssign(defaultOption$4, isObject$1(option) ? option : {});
+    _this.init();
+    return _this;
+  }
+
+  _createClass$1(TotalTime, [{
+    key: 'init',
+    value: function init() {
+      _get(TotalTime.prototype.__proto__ || _Object$getPrototypeOf(TotalTime.prototype), 'create', this).call(this);
+      this.$dom = $(this.$dom);
+      this.$dom.addClass('chimee-flex-component');
+    }
+  }, {
+    key: 'updateTotal',
+    value: function updateTotal() {
+      this.$dom.text(formatTime(this.parent.duration));
+    }
+  }]);
+
+  return TotalTime;
+}(Base);
+
+function hundleChildren(plugin) {
+  var childConfig = {};
+  if (!plugin.$config.children) {
+    childConfig = plugin.isLive ? {
+      play: true, // 底部播放暂停按钮
+      currentTime: false, // 播放时间
+      progressBar: false, // 播放进度控制条
+      totalTime: false, // 总时间
+      screen: true // 全屏控制
+    } : {
+      play: true, // 底部播放暂停按钮
+      currentTime: true, // 播放时间
+      progressBar: true, // 播放进度控制条
+      totalTime: true, // 总时间
+      screen: true // 全屏控制
+    };
+  } else {
+    childConfig = plugin.$config.children;
+  }
+  return childConfig;
+}
+
+/**
+ * 1. 将所有的 ui component 输出到 html 结构中
+ * 2. 为这些 component 绑定响应的事件
+ * @param {*} dom 所有 ui 节点的子容器
+ * @param {*} config 关于 ui 的一些列设置
+ * @return {Array} 所有子节点
+ */
+
+function createChild(plugin) {
+  var childConfig = plugin.config.children = hundleChildren(plugin);
+  var children = {};
+  _Object$keys(childConfig).forEach(function (item) {
+    switch (item) {
+      case 'play':
+        if (childConfig.play) {
+          children.play = new Play(plugin, childConfig.play);
+        }
+        break;
+      case 'currentTime':
+        if (childConfig.currentTime) {
+          children.currentTime = new CurrentTime(plugin, childConfig.currentTime);
+        }
+        break;
+      case 'progressBar':
+        children.progressBar = new ProgressBar(plugin, childConfig.progressBar);
+        break;
+      case 'totalTime':
+        if (childConfig.totalTime) {
+          children.totalTime = new TotalTime(plugin, childConfig.totalTime);
+        }
+        break;
+      case 'screen':
+        if (childConfig.screen) {
+          children.screen = new Screen(plugin, childConfig.screen);
+        }
+        break;
+      default:
+        children[item] = new Component(plugin, childConfig[item]);
+        break;
+    }
+  });
 
   return children;
 }
@@ -6480,12 +6853,14 @@ var mobiControlbar = gestureFactory({
   data: {
     children: {},
     show: false,
-    disabled: true
+    disabled: false
   },
   level: 99,
   operable: true,
   penetrate: false,
-  create: function create() {},
+  create: function create() {
+    this.environment = new uaParser().getResult();
+  },
   init: function init(videoConfig) {
     if (videoConfig.controls) {
       this.show = true;
@@ -6511,9 +6886,18 @@ var mobiControlbar = gestureFactory({
     this.events = {};
     this.children = createChild(this);
     this._setStyle();
+
+    // 增加 window / document 的全局监听
+    this._addGlobalEvent();
+
+    // 监听全屏事件
+
+    this.watch_fullscreen = this.$watch('isFullscreen', this._mousemove);
   },
   destroy: function destroy() {
     window.clearTimeout(this.timeId);
+    this._removeGlobalEvent();
+    this.watch_fullscreen && this.watch_fullscreen();
   },
   inited: function inited() {
     for (var i in this.children) {
@@ -6526,7 +6910,7 @@ var mobiControlbar = gestureFactory({
     loadstart: function loadstart() {
       this._disable(true);
     },
-    canplay: function canplay() {
+    loadedmetadata: function loadedmetadata() {
       this._disable(false);
     },
     play: function play() {
@@ -6539,7 +6923,7 @@ var mobiControlbar = gestureFactory({
     },
     load: function load() {},
     durationchange: function durationchange() {
-      this.children.progressTime && this.children.progressTime.updateTotal();
+      this.children.totalTime && this.children.totalTime.updateTotal();
     },
     timeupdate: function timeupdate() {
       this._progressUpdate();
@@ -6550,69 +6934,37 @@ var mobiControlbar = gestureFactory({
     volumechange: function volumechange() {
       this.children.volume && this.children.volume.update();
     },
-
-    // 手势事件
-    // c_touchmove () {
-    //   this._mousemove();
-    // },
-    // c_mousemove () {
-    //   this._mousemove();
-    // },
-    // touchstart (e) {
-    //   !this.disabled && this.children.play && this.children.play.click(e);
-    // },
-    // click (e) {
-    //   const time = new Date();
-    //   const preTime = this.clickTime;
-    //   this.clickTime = time;
-    //   if(time - preTime < 300) {
-    //     clearTimeout(this.clickTimeId);
-    //     return;
-    //   }
-    //   this.clickTimeId = setTimeout(() => {
-    //     !this.disabled && this.children.play && this.children.play.click(e);
-    //   }, 300);
-
-    // },
-    // dblclick (e) {
-    //   // this.dblclick = true;
-    //   !this.disabled && this.children.screen && this.children.screen.click();
-    // },
     tap: function tap(evt) {
       this._mousemove();
-      // this.children.play.tap(evt);
-    },
-    press: function press(evt) {
-      console.log('press', evt, evt.touches);
-    },
-    swipe: function swipe(evt) {
-      console.log('swipe', evt);
     },
     d_tap: function d_tap(evt) {
+      !this.paused && this._mousemove();
       fireEvent(this, 'tap', evt.changedTouches[0]);
     },
     d_panstart: function d_panstart(evt) {
+      !this.paused && this._mousemove();
       fireEvent(this, 'panstart', evt.changedTouches[0]);
     },
     d_panmove: function d_panmove(evt) {
+      !this.paused && this._mousemove();
       fireEvent(this, 'panmove', evt.changedTouches[0]);
     },
     d_panend: function d_panend(evt) {
+      !this.paused && this._mousemove();
       fireEvent(this, 'panend', evt.changedTouches[0]);
     }
   },
   methods: {
     _progressUpdate: function _progressUpdate() {
       this.children.progressBar && this.children.progressBar.update();
-      this.children.progressTime && this.children.progressTime.updatePass();
+      this.children.currentTime && this.children.currentTime.updateCurrent();
     },
     _hideItself: function _hideItself() {
       var _this2 = this;
 
       window.clearTimeout(this.timeId);
       this.timeId = setTimeout(function () {
-        var bottom = _this2.$wrap.offsetHeight;
-        bottom = _this2.children.progressBar ? _this2.children.progressBar.$wrap[0].offsetTop - bottom : -bottom;
+        var bottom = -_this2.$wrap.offsetHeight;
         setStyle(_this2.$wrap, {
           bottom: bottom + 'px'
         });
@@ -6657,6 +7009,22 @@ var mobiControlbar = gestureFactory({
       style.setAttribute('type', 'text/css');
       style.innerHTML = css;
       document.head.appendChild(style);
+    },
+    _weixinJSBridgeReady: function _weixinJSBridgeReady() {
+      // console.log(this.environment.os === 'iOS', window.WeixinJSBridge)
+      window.WeixinJSBridge && this.environment.os.name === 'iOS' && this.load();
+    },
+
+    // 增加一些全局事件监听
+    _addGlobalEvent: function _addGlobalEvent() {
+      addEvent(window, 'orientationchange', this._mousemove);
+      addEvent(document, 'WeixinJSBridgeReady', this._weixinJSBridgeReady);
+    },
+
+    // 去除一些全局事件监听
+    _removeGlobalEvent: function _removeGlobalEvent() {
+      removeEvent(window, 'orientationchange', this._mousemove);
+      removeEvent(document, 'WeixinJSBridgeReady', this._weixinJSBridgeReady);
     }
   }
 });

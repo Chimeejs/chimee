@@ -1,6 +1,6 @@
 {
   "name": "chimee-plugin-mobile-controlbar",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "controlbar for chimee in mobile",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -13,7 +13,7 @@
     "build": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
     "b-common": "rollup -c build/rollup.config.common.js",
     "b-es": "rollup -c build/rollup.config.es.js",
-    "b-umd": "rollup -c build/rollup.config.umd.js -w",
+    "b-umd": "rollup -c build/rollup.config.umd.js",
     "b-min": "rollup -c build/rollup.config.min.js"
   },
   "repository": {
@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/Chimeejs/chimee-plugin-mobile-controlbar#readme",
   "dependencies": {
-    "chimee-helper": "^0.2.6",
+    "chimee-helper": "^0.2.8",
     "toxic-decorators": "^0.3.8"
   },
   "devDependencies": {
@@ -46,13 +46,13 @@
     "babel-preset-es2015-rollup": "^3.0.0",
     "babel-preset-latest": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "chimee": "^0.5.1",
+    "chimee": "^0.5.5",
     "chimee-helper-events": "^0.1.0",
-    "chimee-plugin-gesture": "0.0.3",
+    "chimee-plugin-gesture": "0.0.5",
     "postcss": "^6.0.14",
     "postcss-cssnext": "^3.0.2",
     "postcss-reporter": "^5.0.0",
-    "rollup": "^0.50.0",
+    "rollup": "^0.51.8",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0",
