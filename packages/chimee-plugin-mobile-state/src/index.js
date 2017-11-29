@@ -30,7 +30,7 @@ const chimeeState = gestureFactory({
     play () {
       this.showState('play', false);
     },
-    canplay () {
+    loadedmetadata () {
       this.playing();
       this.showState('play', true);
     },

@@ -532,7 +532,7 @@ var chimeeState = gestureFactory({
     play: function play() {
       this.showState('play', false);
     },
-    canplay: function canplay() {
+    loadedmetadata: function loadedmetadata() {
       this.playing();
       this.showState('play', true);
     },

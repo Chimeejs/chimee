@@ -1,27 +1,17 @@
 <!DOCTYPE html> 
 <html>
   <meta name="viewport">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,  user-scalable=no">
   <head>
     <title>test</title>
     <style>
-      #wrap{
-        width: 100%;
+      body{
+        margin: 0;
       }
-      container{
-        position: relative;
-      }
-      container, video{
-        display: block;
-        width: 100%;
-        height: 100%;
-        background: #000;
-      }
-
     </style>
   </head>
   <body>
-    <div id="wrap"></div>
+    <div id="wrap"></div>    
   </body>
   <script src="https://s5.ssl.qhres.com/static/588b46b97caa0749.js"></script>  
   <script src="../node_modules/chimee/lib/index.browser.js"></script>
@@ -36,14 +26,20 @@
       src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/103_371ab0c0fda-143d-4755-8727-d3cd12dce02d.mp4',
       plugin: [chimeePluginMobileControlbar.name, chimeePluginMobileState.name],
       controls: true,
-      autoplay: true,
+      autoplay: false,
       playsInline: true,
+      preload: true,
       x5VideoPlayerFullscreen: true,
       x5VideoOrientation: true,
-      xWebkitAirplay: true
+      xWebkitAirplay: true,
+      x5VideoOrientation: 'landscape|portrait'
     });
-    document.addEventListener("WeixinJSBridgeReady", function (){ 
-      player.play();
-    }, false)
+    // player.on('play', function () {
+    //   player.$fullscreen(false, 'container')
+    // })
+    // document.addEventListener("WeixinJSBridgeReady", function () {
+    //     player.load();
+    // }, false);
+
   </script>
 </html>
