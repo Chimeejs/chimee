@@ -13,7 +13,7 @@ import postcss from 'rollup-plugin-postcss';
 import uglify from 'rollup-plugin-uglify';
 
 // PostCSS plugins
-import cssnano from 'postcss';
+import cssnano from 'cssnano';
 import cssnext from 'postcss-cssnext';
 import postcssReporter from 'postcss-reporter';
 import stylelint from 'stylelint';
