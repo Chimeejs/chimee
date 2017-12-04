@@ -73,6 +73,9 @@ window.player = new Chimee({
 this.player.on('error', error => {
   console.log(error);
 });
+this.player.on('heartbeat', evt => {
+  console.warn(evt, 'heartbeat');
+});
 // window.player = new window.Chimee({
 //   src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
 //   // src: 'http://1253804432.vod2.myqcloud.com/3712977fvodgzp1253804432/f3f31e5f9031868223411915443/f0.flv',

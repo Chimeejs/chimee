@@ -99,6 +99,8 @@ export const dispatcherMethods = [
 ];
 export const kernelEvents = [
   'mediaInfo',
+  'heartbeat',
+  'error',
 ];
 export const domMethods = [
   'focus',

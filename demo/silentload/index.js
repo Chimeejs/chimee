@@ -22,7 +22,7 @@ const flvSwitch = {
   el: '<button>flv switch</button>',
   create() {
     this.$dom.addEventListener('click', () => {
-      this.$silentLoad('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv', { repeatTimes: 5, increment: 2 });
+      this.$silentLoad('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv', { repeatTimes: 5, increment: 10, duration: 5 });
     });
   },
 };
@@ -53,3 +53,9 @@ const player = new Chimee({
   controls: true,
 });
 window.player = player;
+player.on('heartbeat', evt => {
+  console.log(evt);
+});
+player.on('error', evt => {
+  console.error(evt);
+});
