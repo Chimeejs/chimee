@@ -113,7 +113,7 @@ const babelConfig = {
       'external-helpers',
       'transform-decorators-legacy',
     ],
-    externalHelpers: true,
+    runtimeHelpers: true,
     babelrc: false,
   },
 };
