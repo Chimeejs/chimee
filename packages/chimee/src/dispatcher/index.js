@@ -6,8 +6,9 @@ import Plugin from './plugin';
 import Dom from './dom';
 import VideoConfig from './video-config';
 import defaultContainerConfig from 'config/container';
-import { before } from 'toxic-decorators';
+import { before, autobind } from 'toxic-decorators';
 import Vessel from '../vessel/vessel';
+import { kernelEvents } from 'helper/const';
 const pluginConfigSet: PluginConfigSet = {};
 const kernelsSet: KernelsSet = {};
 function convertNameIntoId(name: string): string {
@@ -46,6 +47,8 @@ export default class Dispatcher {
   containerConfig: Vessel;
   zIndexMap: Object;
   changeWatchable: boolean;
+  kernelEventHandlerList: Array<Function>;
+  _silentLoadTempKernel: Kernel;
   /**
    * all plugins instance set
    * @type {Object}
@@ -74,6 +77,8 @@ export default class Dispatcher {
     outer: [],
   };
   changeWatchable = true;
+  // to save the kernel event handler, so that we can remove it when we destroy the kernel
+  kernelEventHandlerList = [];
   /**
    * @param  {UserConfig} config UserConfig for whole Chimee player
    * @param  {Chimee} vm referrence of outer class
@@ -123,6 +128,7 @@ export default class Dispatcher {
      * @type {Kernel}
      */
     this.kernel = this._createKernel(this.dom.videoElement, this.videoConfig);
+    this._bindKernelEvents(this.kernel);
     // trigger auto load event
     const asyncInitedTasks: Array<Promise<*>> = [];
     this.order.forEach(key => {
@@ -199,6 +205,7 @@ export default class Dispatcher {
     delete this.plugins[id];
     delete this.vm[id];
   }
+  @autobind
   throwError(error: Error | string) {
     this.vm.__throwError(error);
   }
@@ -244,7 +251,6 @@ export default class Dispatcher {
           let videoError;
           let videoCanplay;
           let videoLoadedmetadata;
-
           // bind time update on old video
           // when we bump into the switch point and ready
           // we switch
@@ -286,15 +292,26 @@ export default class Dispatcher {
           videoLoadedmetadata = () => {
             if (!isLive) kernel.seek(idealTime);
           };
-          videoError = () => {
+          videoError = evt => {
             removeEvent(video, 'canplay', videoCanplay, true);
             removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
             removeEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-            const error = !isEmpty(video.error)
-              ? new Error(video.error.message)
-              : new Error('unknow video error');
-            Log.error("chimee's silentload", error.message);
+            kernel.off('error', videoError);
+            let error;
+            if (evt.target === kernel) {
+              const {
+                errmsg: message,
+              } = evt.data;
+              Log.error("chimee's silent bump into a kernel error", message);
+              error = new Error(message);
+            } else {
+              error = !isEmpty(video.error)
+                ? new Error(video.error.message)
+                : new Error('unknow video error');
+              Log.error("chimee's silentload", error.message);
+            }
             kernel.destroy();
+            this._silentLoadTempKernel = undefined;
             return index === repeatTimes
               ? reject(error)
               : resolve(error);
@@ -303,6 +320,8 @@ export default class Dispatcher {
           addEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
           addEvent(video, 'error', videoError, true);
           kernel = this._createKernel(video, config);
+          this._silentLoadTempKernel = kernel;
+          kernel.on('error', videoError);
           addEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
           kernel.load();
         });
@@ -398,7 +417,10 @@ export default class Dispatcher {
       if (key !== 'src') this.videoConfig[key] = originVideoConfig[key];
     });
     this.videoConfig.changeWatchable = true;
+    this._bindKernelEvents(oldKernel, true);
+    this._bindKernelEvents(kernel);
     this.kernel = kernel;
+    this._silentLoadTempKernel = undefined;
     const { isLive, box, preset, kernels } = config;
     Object.assign(this.videoConfig, { isLive, box, preset, kernels });
     // const config = {}
@@ -415,6 +437,7 @@ export default class Dispatcher {
     delete this.bus;
     this.dom.destroy();
     delete this.dom;
+    this._bindKernelEvents(this.kernel, true);
     this.kernel.destroy();
     delete this.kernel;
     delete this.vm;
@@ -498,7 +521,26 @@ export default class Dispatcher {
         ? kernels
         : {};
     config.preset = Object.assign(newPreset, preset);
-    return new Kernel(video, config);
+    const kernel = new Kernel(video, config);
+    return kernel;
+  }
+  _bindKernelEvents(kernel: Kernel, remove?: boolean = false) {
+    kernelEvents.forEach((key, index) => {
+      if (!remove) {
+        const fn = (...args: any) => this.bus.triggerSync(key, ...args);
+        kernel.on(key, fn);
+        this.kernelEventHandlerList.push(fn);
+        return;
+      }
+      const fn = this.kernelEventHandlerList[index];
+      kernel.off(key, fn);
+    });
+    if (remove) {
+      this.kernelEventHandlerList = [];
+      kernel.off('error', this.throwError);
+    } else {
+      kernel.on('error', this.throwError);
+    }
   }
   /**
    * static method to install plugin

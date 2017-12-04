@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.6.1
+ * chimee v0.6.2
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -19,13 +19,13 @@ var _get = _interopDefault(require('babel-runtime/helpers/get'));
 var _inherits = _interopDefault(require('babel-runtime/helpers/inherits'));
 var _slicedToArray = _interopDefault(require('babel-runtime/helpers/slicedToArray'));
 var _Object$entries = _interopDefault(require('babel-runtime/core-js/object/entries'));
+var _toConsumableArray = _interopDefault(require('babel-runtime/helpers/toConsumableArray'));
 var _Object$assign = _interopDefault(require('babel-runtime/core-js/object/assign'));
 var _Promise = _interopDefault(require('babel-runtime/core-js/promise'));
 var _typeof = _interopDefault(require('babel-runtime/helpers/typeof'));
 var chimeeHelper = require('chimee-helper');
 var Kernel = _interopDefault(require('chimee-kernel'));
 var _Map = _interopDefault(require('babel-runtime/core-js/map'));
-var _toConsumableArray = _interopDefault(require('babel-runtime/helpers/toConsumableArray'));
 var toxicDecorators = require('toxic-decorators');
 var _Object$keys = _interopDefault(require('babel-runtime/core-js/object/keys'));
 var _JSON$stringify = _interopDefault(require('babel-runtime/core-js/json/stringify'));
@@ -40,7 +40,7 @@ var passiveEvents = ['wheel', 'mousewheel', 'touchstart', 'touchmove'];
 var selfProcessorEvents = ['silentLoad', 'fullscreen'];
 var kernelMethods = ['play', 'pause', 'seek'];
 var dispatcherMethods = ['load'];
-
+var kernelEvents = ['mediaInfo', 'heartbeat', 'error'];
 var domMethods = ['focus', 'fullscreen', 'requestFullscreen', 'exitFullscreen'];
 var videoMethods = ['canPlayType', 'captureStream', 'setSinkId'];
 
@@ -1438,7 +1438,7 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.6.1';
+    _this.VERSION = '0.6.2';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -2305,15 +2305,15 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
    */
 
   /**
-   * the z-index map of the dom, it contain some important infomation
-   * @type {Object}
-   * @member zIndexMap
+   * the synchronous ready flag
+   * @type {boolean}
+   * @member readySync
    */
 
   /**
-   * plugin's order
-   * @type {Array<string>}
-   * @member order
+   * all plugins instance set
+   * @type {Object}
+   * @member plugins
    */
   function Dispatcher(config, vm) {
     var _this = this;
@@ -2328,6 +2328,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
       outer: []
     };
     this.changeWatchable = true;
+    this.kernelEventHandlerList = [];
 
     if (!chimeeHelper.isObject(config)) throw new TypeError('UserConfig must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
     /**
@@ -2374,6 +2375,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
      * @type {Kernel}
      */
     this.kernel = this._createKernel(this.dom.videoElement, this.videoConfig);
+    this._bindKernelEvents(this.kernel);
     // trigger auto load event
     var asyncInitedTasks = [];
     this.order.forEach(function (key) {
@@ -2397,16 +2399,18 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
    * @return {Promise}
    */
 
+  // to save the kernel event handler, so that we can remove it when we destroy the kernel
+
   /**
-   * the synchronous ready flag
-   * @type {boolean}
-   * @member readySync
+   * the z-index map of the dom, it contain some important infomation
+   * @type {Object}
+   * @member zIndexMap
    */
 
   /**
-   * all plugins instance set
-   * @type {Object}
-   * @member plugins
+   * plugin's order
+   * @type {Array<string>}
+   * @member order
    */
 
 
@@ -2512,10 +2516,9 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
             video.muted = true;
             var newVideoReady = false;
             var kernel = void 0;
-            var videoError = void 0;
+            var _videoError = void 0;
             var videoCanplay = void 0;
             var videoLoadedmetadata = void 0;
-
             // bind time update on old video
             // when we bump into the switch point and ready
             // we switch
@@ -2523,7 +2526,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
               var currentTime = _this2.kernel.currentTime;
               if (bias <= 0 && currentTime >= idealTime || bias > 0 && (Math.abs(idealTime - currentTime) <= bias && newVideoReady || currentTime - idealTime > bias)) {
                 chimeeHelper.removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-                chimeeHelper.removeEvent(video, 'error', videoError, true);
+                chimeeHelper.removeEvent(video, 'error', _videoError, true);
                 if (!newVideoReady) {
                   chimeeHelper.removeEvent(video, 'canplay', videoCanplay, true);
                   chimeeHelper.removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
@@ -2542,7 +2545,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
               // you can set it immediately run by yourself
               if (immediate) {
                 chimeeHelper.removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-                chimeeHelper.removeEvent(video, 'error', videoError, true);
+                chimeeHelper.removeEvent(video, 'error', _videoError, true);
                 return reject({
                   error: false,
                   video: video,
@@ -2553,19 +2556,31 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
             videoLoadedmetadata = function videoLoadedmetadata() {
               if (!isLive) kernel.seek(idealTime);
             };
-            videoError = function videoError() {
+            _videoError = function videoError(evt) {
               chimeeHelper.removeEvent(video, 'canplay', videoCanplay, true);
               chimeeHelper.removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
               chimeeHelper.removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-              var error = !chimeeHelper.isEmpty(video.error) ? new Error(video.error.message) : new Error('unknow video error');
-              chimeeHelper.Log.error("chimee's silentload", error.message);
+              kernel.off('error', _videoError);
+              var error = void 0;
+              if (evt.target === kernel) {
+                var message = evt.data.errmsg;
+
+                chimeeHelper.Log.error("chimee's silent bump into a kernel error", message);
+                error = new Error(message);
+              } else {
+                error = !chimeeHelper.isEmpty(video.error) ? new Error(video.error.message) : new Error('unknow video error');
+                chimeeHelper.Log.error("chimee's silentload", error.message);
+              }
               kernel.destroy();
+              _this2._silentLoadTempKernel = undefined;
               return index === repeatTimes ? reject(error) : resolve(error);
             };
             chimeeHelper.addEvent(video, 'canplay', videoCanplay, true);
             chimeeHelper.addEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
-            chimeeHelper.addEvent(video, 'error', videoError, true);
+            chimeeHelper.addEvent(video, 'error', _videoError, true);
             kernel = _this2._createKernel(video, config);
+            _this2._silentLoadTempKernel = kernel;
+            kernel.on('error', _videoError);
             chimeeHelper.addEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
             kernel.load();
           });
@@ -2663,7 +2678,10 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
         if (key !== 'src') _this3.videoConfig[key] = originVideoConfig[key];
       });
       this.videoConfig.changeWatchable = true;
+      this._bindKernelEvents(oldKernel, true);
+      this._bindKernelEvents(kernel);
       this.kernel = kernel;
+      this._silentLoadTempKernel = undefined;
       var isLive = config.isLive,
           box = config.box,
           preset = config.preset,
@@ -2687,6 +2705,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
       delete this.bus;
       this.dom.destroy();
       delete this.dom;
+      this._bindKernelEvents(this.kernel, true);
       this.kernel.destroy();
       delete this.kernel;
       delete this.vm;
@@ -2794,7 +2813,40 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
         return kernels;
       }, {}) : chimeeHelper.isObject(kernels) ? kernels : {};
       config.preset = _Object$assign(newPreset, preset);
-      return new Kernel(video, config);
+      var kernel = new Kernel(video, config);
+      return kernel;
+    }
+  }, {
+    key: '_bindKernelEvents',
+    value: function _bindKernelEvents(kernel) {
+      var _this6 = this;
+
+      var remove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      kernelEvents.forEach(function (key, index) {
+        if (!remove) {
+          var _fn = function _fn() {
+            var _bus;
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+              args[_key] = arguments[_key];
+            }
+
+            return (_bus = _this6.bus).triggerSync.apply(_bus, [key].concat(_toConsumableArray(args)));
+          };
+          kernel.on(key, _fn);
+          _this6.kernelEventHandlerList.push(_fn);
+          return;
+        }
+        var fn = _this6.kernelEventHandlerList[index];
+        kernel.off(key, fn);
+      });
+      if (remove) {
+        this.kernelEventHandlerList = [];
+        kernel.off('error', this.throwError);
+      } else {
+        kernel.on('error', this.throwError);
+      }
     }
     /**
      * static method to install plugin
@@ -2866,7 +2918,7 @@ var Dispatcher = (_dec$1 = toxicDecorators.before(convertNameIntoId), _dec2 = to
   }]);
 
   return Dispatcher;
-}(), _applyDecoratedDescriptor$1(_class$1.prototype, 'unuse', [_dec$1], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'unuse'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1, 'install', [_dec2], _Object$getOwnPropertyDescriptor(_class$1, 'install'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'hasInstalled', [_dec3], _Object$getOwnPropertyDescriptor(_class$1, 'hasInstalled'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'uninstall', [_dec4], _Object$getOwnPropertyDescriptor(_class$1, 'uninstall'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'getPluginConfig', [_dec5], _Object$getOwnPropertyDescriptor(_class$1, 'getPluginConfig'), _class$1), _class$1);
+}(), _applyDecoratedDescriptor$1(_class$1.prototype, 'unuse', [_dec$1], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'unuse'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1.prototype, 'throwError', [toxicDecorators.autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'throwError'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1, 'install', [_dec2], _Object$getOwnPropertyDescriptor(_class$1, 'install'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'hasInstalled', [_dec3], _Object$getOwnPropertyDescriptor(_class$1, 'hasInstalled'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'uninstall', [_dec4], _Object$getOwnPropertyDescriptor(_class$1, 'uninstall'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'getPluginConfig', [_dec5], _Object$getOwnPropertyDescriptor(_class$1, 'getPluginConfig'), _class$1), _class$1);
 
 var _class$7;
 var _descriptor$2;
@@ -3055,7 +3107,6 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec(_class = (_class2 = (
     }
     // $FlowFixMe: we have check wrapper here
     _this.__dispatcher = new Dispatcher(config, _this);
-    _this.__dispatcher.kernel.on('error', _this.__throwError);
     _this.ready = _this.__dispatcher.ready;
     _this.readySync = _this.__dispatcher.readySync;
     _this.__wrapAsVideo(_this.__dispatcher.videoConfig);
@@ -3099,7 +3150,7 @@ var Chimee = (_dec = toxicDecorators.autobindClass(), _dec(_class = (_class2 = (
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.6.1';
+    return '0.6.2';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,

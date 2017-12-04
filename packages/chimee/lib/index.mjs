@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.6.1
+ * chimee v0.6.2
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -15,13 +15,13 @@ import _get from 'babel-runtime/helpers/get';
 import _inherits from 'babel-runtime/helpers/inherits';
 import _slicedToArray from 'babel-runtime/helpers/slicedToArray';
 import _Object$entries from 'babel-runtime/core-js/object/entries';
+import _toConsumableArray from 'babel-runtime/helpers/toConsumableArray';
 import _Object$assign from 'babel-runtime/core-js/object/assign';
 import _Promise from 'babel-runtime/core-js/promise';
 import _typeof from 'babel-runtime/helpers/typeof';
 import { $, Log, addClassName, addEvent, bind, camelize, deepAssign, deepClone, getAttr, getDeepProperty, getStyle, hypenate, isArray, isBoolean, isElement, isEmpty, isError, isEvent, isFunction, isHTMLString, isInteger, isNumber, isNumeric, isObject, isPosterityNode, isPromise, isString, isVoid, removeEvent, runRejectableQueue, runStoppableQueue, setAttr, setStyle, transObjectAttrIntoArray } from 'chimee-helper';
 import Kernel from 'chimee-kernel';
 import _Map from 'babel-runtime/core-js/map';
-import _toConsumableArray from 'babel-runtime/helpers/toConsumableArray';
 import { accessor, alias, alwaysBoolean, alwaysNumber, alwaysString, applyDecorators, autobind, autobindClass, before, configurable, frozen, initBoolean, initString, nonenumerable, runnable, waituntil, watch } from 'toxic-decorators';
 import _Object$keys from 'babel-runtime/core-js/object/keys';
 import _JSON$stringify from 'babel-runtime/core-js/json/stringify';
@@ -36,7 +36,7 @@ var passiveEvents = ['wheel', 'mousewheel', 'touchstart', 'touchmove'];
 var selfProcessorEvents = ['silentLoad', 'fullscreen'];
 var kernelMethods = ['play', 'pause', 'seek'];
 var dispatcherMethods = ['load'];
-
+var kernelEvents = ['mediaInfo', 'heartbeat', 'error'];
 var domMethods = ['focus', 'fullscreen', 'requestFullscreen', 'exitFullscreen'];
 var videoMethods = ['canPlayType', 'captureStream', 'setSinkId'];
 
@@ -1434,7 +1434,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.6.1';
+    _this.VERSION = '0.6.2';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -2301,15 +2301,15 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
    */
 
   /**
-   * the z-index map of the dom, it contain some important infomation
-   * @type {Object}
-   * @member zIndexMap
+   * the synchronous ready flag
+   * @type {boolean}
+   * @member readySync
    */
 
   /**
-   * plugin's order
-   * @type {Array<string>}
-   * @member order
+   * all plugins instance set
+   * @type {Object}
+   * @member plugins
    */
   function Dispatcher(config, vm) {
     var _this = this;
@@ -2324,6 +2324,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
       outer: []
     };
     this.changeWatchable = true;
+    this.kernelEventHandlerList = [];
 
     if (!isObject(config)) throw new TypeError('UserConfig must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
     /**
@@ -2370,6 +2371,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
      * @type {Kernel}
      */
     this.kernel = this._createKernel(this.dom.videoElement, this.videoConfig);
+    this._bindKernelEvents(this.kernel);
     // trigger auto load event
     var asyncInitedTasks = [];
     this.order.forEach(function (key) {
@@ -2393,16 +2395,18 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
    * @return {Promise}
    */
 
+  // to save the kernel event handler, so that we can remove it when we destroy the kernel
+
   /**
-   * the synchronous ready flag
-   * @type {boolean}
-   * @member readySync
+   * the z-index map of the dom, it contain some important infomation
+   * @type {Object}
+   * @member zIndexMap
    */
 
   /**
-   * all plugins instance set
-   * @type {Object}
-   * @member plugins
+   * plugin's order
+   * @type {Array<string>}
+   * @member order
    */
 
 
@@ -2508,10 +2512,9 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
             video.muted = true;
             var newVideoReady = false;
             var kernel = void 0;
-            var videoError = void 0;
+            var _videoError = void 0;
             var videoCanplay = void 0;
             var videoLoadedmetadata = void 0;
-
             // bind time update on old video
             // when we bump into the switch point and ready
             // we switch
@@ -2519,7 +2522,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
               var currentTime = _this2.kernel.currentTime;
               if (bias <= 0 && currentTime >= idealTime || bias > 0 && (Math.abs(idealTime - currentTime) <= bias && newVideoReady || currentTime - idealTime > bias)) {
                 removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-                removeEvent(video, 'error', videoError, true);
+                removeEvent(video, 'error', _videoError, true);
                 if (!newVideoReady) {
                   removeEvent(video, 'canplay', videoCanplay, true);
                   removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
@@ -2538,7 +2541,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
               // you can set it immediately run by yourself
               if (immediate) {
                 removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-                removeEvent(video, 'error', videoError, true);
+                removeEvent(video, 'error', _videoError, true);
                 return reject({
                   error: false,
                   video: video,
@@ -2549,19 +2552,31 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
             videoLoadedmetadata = function videoLoadedmetadata() {
               if (!isLive) kernel.seek(idealTime);
             };
-            videoError = function videoError() {
+            _videoError = function videoError(evt) {
               removeEvent(video, 'canplay', videoCanplay, true);
               removeEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
               removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-              var error = !isEmpty(video.error) ? new Error(video.error.message) : new Error('unknow video error');
-              Log.error("chimee's silentload", error.message);
+              kernel.off('error', _videoError);
+              var error = void 0;
+              if (evt.target === kernel) {
+                var message = evt.data.errmsg;
+
+                Log.error("chimee's silent bump into a kernel error", message);
+                error = new Error(message);
+              } else {
+                error = !isEmpty(video.error) ? new Error(video.error.message) : new Error('unknow video error');
+                Log.error("chimee's silentload", error.message);
+              }
               kernel.destroy();
+              _this2._silentLoadTempKernel = undefined;
               return index === repeatTimes ? reject(error) : resolve(error);
             };
             addEvent(video, 'canplay', videoCanplay, true);
             addEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
-            addEvent(video, 'error', videoError, true);
+            addEvent(video, 'error', _videoError, true);
             kernel = _this2._createKernel(video, config);
+            _this2._silentLoadTempKernel = kernel;
+            kernel.on('error', _videoError);
             addEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
             kernel.load();
           });
@@ -2659,7 +2674,10 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
         if (key !== 'src') _this3.videoConfig[key] = originVideoConfig[key];
       });
       this.videoConfig.changeWatchable = true;
+      this._bindKernelEvents(oldKernel, true);
+      this._bindKernelEvents(kernel);
       this.kernel = kernel;
+      this._silentLoadTempKernel = undefined;
       var isLive = config.isLive,
           box = config.box,
           preset = config.preset,
@@ -2683,6 +2701,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
       delete this.bus;
       this.dom.destroy();
       delete this.dom;
+      this._bindKernelEvents(this.kernel, true);
       this.kernel.destroy();
       delete this.kernel;
       delete this.vm;
@@ -2790,7 +2809,40 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
         return kernels;
       }, {}) : isObject(kernels) ? kernels : {};
       config.preset = _Object$assign(newPreset, preset);
-      return new Kernel(video, config);
+      var kernel = new Kernel(video, config);
+      return kernel;
+    }
+  }, {
+    key: '_bindKernelEvents',
+    value: function _bindKernelEvents(kernel) {
+      var _this6 = this;
+
+      var remove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      kernelEvents.forEach(function (key, index) {
+        if (!remove) {
+          var _fn = function _fn() {
+            var _bus;
+
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+              args[_key] = arguments[_key];
+            }
+
+            return (_bus = _this6.bus).triggerSync.apply(_bus, [key].concat(_toConsumableArray(args)));
+          };
+          kernel.on(key, _fn);
+          _this6.kernelEventHandlerList.push(_fn);
+          return;
+        }
+        var fn = _this6.kernelEventHandlerList[index];
+        kernel.off(key, fn);
+      });
+      if (remove) {
+        this.kernelEventHandlerList = [];
+        kernel.off('error', this.throwError);
+      } else {
+        kernel.on('error', this.throwError);
+      }
     }
     /**
      * static method to install plugin
@@ -2862,7 +2914,7 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
   }]);
 
   return Dispatcher;
-}(), _applyDecoratedDescriptor$1(_class$1.prototype, 'unuse', [_dec$1], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'unuse'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1, 'install', [_dec2], _Object$getOwnPropertyDescriptor(_class$1, 'install'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'hasInstalled', [_dec3], _Object$getOwnPropertyDescriptor(_class$1, 'hasInstalled'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'uninstall', [_dec4], _Object$getOwnPropertyDescriptor(_class$1, 'uninstall'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'getPluginConfig', [_dec5], _Object$getOwnPropertyDescriptor(_class$1, 'getPluginConfig'), _class$1), _class$1);
+}(), _applyDecoratedDescriptor$1(_class$1.prototype, 'unuse', [_dec$1], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'unuse'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1.prototype, 'throwError', [autobind], _Object$getOwnPropertyDescriptor(_class$1.prototype, 'throwError'), _class$1.prototype), _applyDecoratedDescriptor$1(_class$1, 'install', [_dec2], _Object$getOwnPropertyDescriptor(_class$1, 'install'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'hasInstalled', [_dec3], _Object$getOwnPropertyDescriptor(_class$1, 'hasInstalled'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'uninstall', [_dec4], _Object$getOwnPropertyDescriptor(_class$1, 'uninstall'), _class$1), _applyDecoratedDescriptor$1(_class$1, 'getPluginConfig', [_dec5], _Object$getOwnPropertyDescriptor(_class$1, 'getPluginConfig'), _class$1), _class$1);
 
 var _class$7;
 var _descriptor$2;
@@ -3051,7 +3103,6 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
     }
     // $FlowFixMe: we have check wrapper here
     _this.__dispatcher = new Dispatcher(config, _this);
-    _this.__dispatcher.kernel.on('error', _this.__throwError);
     _this.ready = _this.__dispatcher.ready;
     _this.readySync = _this.__dispatcher.readySync;
     _this.__wrapAsVideo(_this.__dispatcher.videoConfig);
@@ -3095,7 +3146,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.6.1';
+    return '0.6.2';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,
