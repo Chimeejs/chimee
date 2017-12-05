@@ -121,27 +121,27 @@ const player = new Chimee({
 当我们安装一个插件后，我们可以直接在新建实例时传入其名称使用它，如下：
 
 ```javascript
-import ui from 'chimee-plugin-ui';
+import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee'
-Chimee.install(ui);
+Chimee.install(popup);
 
 const chimee = new Chimee({
   wrapper: '#wrapper',
-  plugin: [ui.name]
+  plugin: [popup.name]
 });
 ```
 
 有的时候，我们希望给插件传入一些参数，我们可以在 plugin 中传入一个对象，该对象中必须要包含一个 name 属性。
 
 ```javascript
-import ui from 'chimee-plugin-ui';
+import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee'
-Chimee.install(ui);
+Chimee.install(popup);
 
 const chimee = new Chimee({
   wrapper: '#wrapper',
   plugin: [{
-    name: ui.name,
+    name: popup.name,
     theme: 'dark'
   }]
 });
@@ -150,14 +150,14 @@ const chimee = new Chimee({
 部分情况下，可能会出现插件名冲突的情况。又或者，你希望在该实例上重命名某个插件，这时候你可以利用重命名属性。
 
 ```javascript
-import ui from 'chimee-plugin-ui';
+import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee'
-Chimee.install(ui);
+Chimee.install(popup);
 
 const chimee = new Chimee({
   wrapper: '#wrapper',
   plugin: [{
-    name: ui.name,
+    name: popup.name,
     alias: 'myui'
   }]
 });
@@ -967,9 +967,9 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 要使用一个插件，我们首先得利用该方法安装插件，要注意该方法是一个静态方法。
 
 ```javascript
-import ui from 'chimee-plugin-ui';
+import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee'
-Chimee.install(ui);
+Chimee.install(popup);
 ```
 
 ### hasInstalled
@@ -985,10 +985,10 @@ Chimee.install(ui);
   - 类型： boolean
 
 ```javascript
-import ui from 'chimee-plugin-ui';
+import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee'
-Chimee.install(ui);
-Chimee.hasInstalled(ui.name); // true
+Chimee.install(popup);
+Chimee.hasInstalled(popup.name); // true
 Chimee.hasInstalled('something else'); // false
 ```
 
@@ -1028,14 +1028,14 @@ Chimee.hasInstalled('something else'); // false
 该函数其实就是新建实例时传入的 `plugin`选项所使用的方法。利用此函数可以动态安装插件。
 
 ```javascript
-import ui from 'chimee-plugin-ui';
+import popup from 'chimee-plugin-popup';
 import danmu from 'chimee-plugin-danmu';
 import Chimee from 'chimee'
-Chimee.install(ui);
+Chimee.install(popup);
 Chimee.install(danmu)
 
 const chimee = new Chimee('#wrapper');
-chimee.use(ui.name);
+chimee.use(popup.name);
 chimee.use({
   name: danmu.name,
   theme: 'white'
