@@ -126,13 +126,13 @@ video:active {
 在没有配置任何皮肤插件的时候，chimee 会使用浏览器原生的皮肤。你可以尝试使用我们的皮肤插件。
 
 ```javascript
-import ui from 'chimee-plugin-ui';
+import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee';
-Chimee.install(ui);
+Chimee.install();
 const chimee = new Chimee({
   wrapper: '#wrapper',
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
-  plugin: [ui.name],
+  plugin: [popup.name],
   controls: false,
   autoplay: true
 });

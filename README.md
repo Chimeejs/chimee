@@ -149,13 +149,13 @@ video:active {
 Chimee will use the original skin of browser if you do not use any plugin. You may want to try our UI plugin.
 
 ```javascript
-import ui from 'chimee-plugin-ui';
+import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee';
-Chimee.install(ui);
+Chimee.install(popup);
 const chimee = new Chimee({
   wrapper: '#wrapper',
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
-  plugin: [ui.name],
+  plugin: [popup.name],
   controls: false,
   autoplay: true
 });
