@@ -56,8 +56,6 @@ var _aFunction = function (it) {
   return it;
 };
 
-// optional / simple context binding
-
 var _ctx = function (fn, that, length) {
   _aFunction(fn);
   if (that === undefined) return fn;
@@ -94,7 +92,6 @@ var _fails = function (exec) {
   }
 };
 
-// Thank's IE8 for his funny defineProperty
 var _descriptors = !_fails(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
@@ -110,10 +107,6 @@ var _ie8DomDefine = !_descriptors && !_fails(function () {
   return Object.defineProperty(_domCreate('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
-// 7.1.1 ToPrimitive(input [, PreferredType])
-
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
 var _toPrimitive = function (it, S) {
   if (!_isObject(it)) return it;
   var fn, val;
@@ -215,7 +208,6 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 var _export = $export;
 
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 _export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
 
 var $Object = _core.Object;
@@ -245,7 +237,7 @@ exports.default = function () {
       descriptor.enumerable = descriptor.enumerable || false;
       descriptor.configurable = true;
       if ("value" in descriptor) descriptor.writable = true;
-      (_defineProperty2.default)(target, descriptor.key, descriptor);
+      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
     }
   }
 
@@ -272,8 +264,6 @@ var _defined = function (it) {
   return it;
 };
 
-// true  -> String#at
-// false -> String#codePointAt
 var _stringAt = function (TO_STRING) {
   return function (that, pos) {
     var s = String(_defined(that));
@@ -305,21 +295,13 @@ var _cof = function (it) {
   return toString.call(it).slice(8, -1);
 };
 
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-
-// eslint-disable-next-line no-prototype-builtins
 var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return _cof(it) == 'String' ? it.split('') : Object(it);
 };
 
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-
-
 var _toIobject = function (it) {
   return _iobject(_defined(it));
 };
-
-// 7.1.15 ToLength
 
 var min = Math.min;
 var _toLength = function (it) {
@@ -332,11 +314,6 @@ var _toAbsoluteIndex = function (index, length) {
   index = _toInteger(index);
   return index < 0 ? max(index + length, 0) : min$1(index, length);
 };
-
-// false -> Array#indexOf
-// true  -> Array#includes
-
-
 
 var _arrayIncludes = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
@@ -396,10 +373,6 @@ var _enumBugKeys = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
 
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-
-
-
 var _objectKeys = Object.keys || function keys(O) {
   return _objectKeysInternal(O, _enumBugKeys);
 };
@@ -416,10 +389,6 @@ var _objectDps = _descriptors ? Object.defineProperties : function definePropert
 
 var document$2 = _global.document;
 var _html = document$2 && document$2.documentElement;
-
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-
-
 
 var IE_PROTO = _sharedKey('IE_PROTO');
 var Empty = function () { /* empty */ };
@@ -491,14 +460,9 @@ var _iterCreate = function (Constructor, NAME, next) {
   _setToStringTag(Constructor, NAME + ' Iterator');
 };
 
-// 7.1.13 ToObject(argument)
-
 var _toObject = function (it) {
   return Object(_defined(it));
 };
-
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-
 
 var IE_PROTO$2 = _sharedKey('IE_PROTO');
 var ObjectProto = Object.prototype;
@@ -593,10 +557,6 @@ var _iterStep = function (done, value) {
   return { value: value, done: !!done };
 };
 
-// 22.1.3.4 Array.prototype.entries()
-// 22.1.3.13 Array.prototype.keys()
-// 22.1.3.29 Array.prototype.values()
-// 22.1.3.30 Array.prototype[@@iterator]()
 var es6_array_iterator = _iterDefine(Array, 'Array', function (iterated, kind) {
   this._t = _toIobject(iterated); // target
   this._i = 0;                   // next index
@@ -728,10 +688,6 @@ var _objectPie = {
 	f: f$3
 };
 
-// all enumerable object keys, includes symbols
-
-
-
 var _enumKeys = function (it) {
   var result = _objectKeys(it);
   var getSymbols = _objectGops.f;
@@ -744,13 +700,9 @@ var _enumKeys = function (it) {
   } return result;
 };
 
-// 7.2.2 IsArray(argument)
-
 var _isArray = Array.isArray || function isArray(arg) {
   return _cof(arg) == 'Array';
 };
-
-// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 
 var hiddenKeys = _enumBugKeys.concat('length', 'prototype');
 
@@ -761,8 +713,6 @@ var f$5 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 var _objectGopn = {
 	f: f$5
 };
-
-// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 
 var gOPN$1 = _objectGopn.f;
 var toString$1 = {}.toString;
@@ -800,12 +750,6 @@ var f$6 = _descriptors ? gOPD$1 : function getOwnPropertyDescriptor(O, P) {
 var _objectGopd = {
 	f: f$6
 };
-
-// ECMAScript 6 symbols shim
-
-
-
-
 
 var META = _meta.KEY;
 
@@ -1071,20 +1015,12 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 
 var _typeof = unwrapExports(_typeof_1);
 
-// most Object methods by ES6 should accept primitives
-
-
-
 var _objectSap = function (KEY, exec) {
   var fn = (_core.Object || {})[KEY] || Object[KEY];
   var exp = {};
   exp[KEY] = exec(fn);
   _export(_export.S + _export.F * _fails(function () { fn(1); }), 'Object', exp);
 };
-
-// 19.1.2.14 Object.keys(O)
-
-
 
 _objectSap('keys', function () {
   return function keys(it) {
@@ -1100,15 +1036,10 @@ module.exports = { "default": keys$1, __esModule: true };
 
 unwrapExports(keys);
 
-// 20.1.2.3 Number.isInteger(number)
-
 var floor$1 = Math.floor;
 var _isInteger = function isInteger(it) {
   return !_isObject(it) && isFinite(it) && floor$1(it) === it;
 };
-
-// 20.1.2.3 Number.isInteger(number)
-
 
 _export(_export.S, 'Number', { isInteger: _isInteger });
 
@@ -1159,7 +1090,6 @@ var _parseFloat$3 = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function p
   return result === 0 && string.charAt(0) == '-' ? -0 : result;
 } : $parseFloat;
 
-// 20.1.2.12 Number.parseFloat(string)
 _export(_export.S + _export.F * (Number.parseFloat != _parseFloat$3), 'Number', { parseFloat: _parseFloat$3 });
 
 var _parseFloat$1 = parseFloat;
@@ -1176,9 +1106,6 @@ unwrapExports(_parseFloat);
  * Released under MIT
  */
 
-/**
- * to check whether a variable is array
- */
 function isArray$1(arr) {
   return Array.isArray(arr);
 }
@@ -1198,11 +1125,20 @@ function isObject$1(obj) {
   return Object(obj) === obj && String(obj) === '[object Object]' && !isFunction(obj) && !isArray$1(obj);
 }
 /**
- * is it a string
+ * to tell you if it's a real number
  */
 function isString(str) {
   return typeof str === 'string' || str instanceof String;
 }
+/**
+ * is Boolean or not
+ */
+function isBoolean(bool) {
+  return typeof bool === 'boolean';
+}
+/**
+ * is a promise or not
+ */
 
 /**
  * chimee-helper-log v0.1.2
@@ -2407,8 +2343,6 @@ var uaParser = createCommonjsModule(function (module, exports) {
 
 var uaParser_1 = uaParser.UAParser;
 
-// call something on iterator step with safe closing on error
-
 var _iterCall = function (iterator, fn, value, entries) {
   try {
     return entries ? fn(_anObject(value)[0], value[1]) : fn(value);
@@ -2419,8 +2353,6 @@ var _iterCall = function (iterator, fn, value, entries) {
     throw e;
   }
 };
-
-// check on default Array iterator
 
 var ITERATOR$1 = _wks('iterator');
 var ArrayProto = Array.prototype;
@@ -2433,8 +2365,6 @@ var _createProperty = function (object, index, value) {
   if (index in object) _objectDp.f(object, index, _propertyDesc(0, value));
   else object[index] = value;
 };
-
-// getting tag from 19.1.3.6 Object.prototype.toString()
 
 var TAG$1 = _wks('toStringTag');
 // ES3 wrong here
@@ -2542,7 +2472,7 @@ exports.default = function (arr) {
 
     return arr2;
   } else {
-    return (_from2.default)(arr);
+    return (0, _from2.default)(arr);
   }
 };
 });
@@ -2582,9 +2512,6 @@ var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) 
 exports.BREAK = BREAK;
 exports.RETURN = RETURN;
 });
-
-// 7.3.20 SpeciesConstructor(O, defaultConstructor)
-
 
 var SPECIES = _wks('species');
 var _speciesConstructor = function (O, D) {
@@ -2759,9 +2686,6 @@ var _microtask = function () {
     } last = task;
   };
 };
-
-// 25.4.1.5 NewPromiseCapability(C)
-
 
 function PromiseCapability(C) {
   var resolve, reject;
@@ -3102,11 +3026,6 @@ _export(_export.P + _export.R, 'Promise', { 'finally': function (onFinally) {
   );
 } });
 
-// https://github.com/tc39/proposal-promise-try
-
-
-
-
 _export(_export.S, 'Promise', { 'try': function (callbackfn) {
   var promiseCapability = _newPromiseCapability.f(this);
   var result = _perform(callbackfn);
@@ -3128,14 +3047,12 @@ unwrapExports(promise);
  * Released under MIT
  */
 
-// **********************  judgement   ************************
-/**
- * check if the code running in browser environment (not include worker env)
- * @returns {Boolean}
- */
 var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
 
-// requestAnimationFrame
+// **********************  对象操作  ************************
+/**
+ * 转变一个类数组对象为数组
+ */
 var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function (cb) {
   return setTimeout(cb, 17);
 };
@@ -3145,11 +3062,7 @@ var caf = window.cancelAnimationFrame || window.mozCancelAnimationFrame || windo
   clearTimeout(id);
 };
 
-// 19.1.2.1 Object.assign(target, source, ...)
-
-
-
-
+// 根据要求的位数，将9格式化为 09\009\0009...
 
 var $assign = Object.assign;
 
@@ -3179,9 +3092,6 @@ var _objectAssign = !$assign || _fails(function () {
   } return T;
 } : $assign;
 
-// 19.1.3.1 Object.assign(target, source)
-
-
 _export(_export.S + _export.F, 'Object', { assign: _objectAssign });
 
 var assign$1 = _core.Object.assign;
@@ -3192,7 +3102,6 @@ module.exports = { "default": assign$1, __esModule: true };
 
 var _Object$assign = unwrapExports(assign);
 
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 _export(_export.S, 'Object', { create: _objectCreate });
 
 var $Object$1 = _core.Object;
@@ -3212,19 +3121,6 @@ var _Object$create = unwrapExports(create);
  * Released under MIT
  */
 
-/**
-* @module event
-* @author huzunjie
-* @description 自定义事件基础类
-*/
-
-/* 缓存事件监听方法及包装，内部数据格式：
- * targetIndex_<type:'click|mouseup|done'>: [ [
- *   function(){ ... handler ... },
- *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
- *   isOnce
- * ]]
- */
 var _evtListenerCache = _Object$create(null);
 _evtListenerCache.count = 0;
 
@@ -3453,30 +3349,11 @@ var CustEvent = function () {
 }();
 
 /**
- * chimee-helper-dom v0.1.4
+ * chimee-helper-dom v0.1.7
  * (c) 2017 huzunjie
  * Released under MIT
  */
 
-/**
- * chimee-helper-events v0.1.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-/**
-* @module event
-* @author huzunjie
-* @description 自定义事件基础类
-*/
-
-/* 缓存事件监听方法及包装，内部数据格式：
- * targetIndex_<type:'click|mouseup|done'>: [ [
- *   function(){ ... handler ... },
- *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
- *   isOnce
- * ]]
- */
 var _evtListenerCache$1 = _Object$create(null);
 _evtListenerCache$1.count = 0;
 
@@ -3821,6 +3698,20 @@ function hasClassName(el, className) {
 }
 
 /**
+ * addEventListener 是否已支持 passive
+ * @return {Boolean}
+ */
+var supportsPassive = false;
+try {
+  var opts = Object.defineProperty({}, 'passive', {
+    get: function get() {
+      supportsPassive = true;
+    }
+  });
+  window.addEventListener('test', null, opts);
+} catch (e) {}
+
+/**
  * 为HTML元素移除事件监听
  * @param {HTMLElement} el 目标元素
  * @param {String} type 事件名称
@@ -3832,6 +3723,9 @@ function removeEvent(el, type, handler) {
   var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
   var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
+  if (capture !== undefined && !isBoolean(capture) && supportsPassive) {
+    capture = { passive: true };
+  }
   if (once) {
     /* 尝试从缓存中读取包装后的方法 */
     var handlerWrap = removeEventCache$1(el, type + '_once', handler);
@@ -3854,6 +3748,9 @@ function addEvent(el, type, handler) {
   var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
   var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
+  if (capture !== undefined && !isBoolean(capture) && supportsPassive) {
+    capture = { passive: true };
+  }
   if (once) {
     var oldHandler = handler;
     handler = function () {
@@ -3884,7 +3781,9 @@ function addEvent(el, type, handler) {
 function addDelegate(el, selector, type, handler) {
   var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
-
+  if (capture !== undefined && !isBoolean(capture) && supportsPassive) {
+    capture = { passive: true };
+  }
   var handlerWrap = function handlerWrap(e) {
     var targetElsArr = findParents(e.target || e.srcElement, el, true);
     var targetElArr = query(selector, el, true);
@@ -3923,6 +3822,9 @@ function addDelegate(el, selector, type, handler) {
 function removeDelegate(el, selector, type, handler) {
   var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
+  if (capture !== undefined && !isBoolean(capture) && supportsPassive) {
+    capture = { passive: true };
+  }
   /* 尝试从缓存中读取包装后的方法 */
   var handlerWrap = removeEventCache$1(el, type + '_delegate_' + selector, handler);
   handlerWrap && el.removeEventListener(type, handlerWrap, capture);
@@ -4387,7 +4289,7 @@ var NodeWrap = function () {
 }();
 
 /**
- * chimee-helper v0.2.6
+ * chimee-helper v0.2.8
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -4407,14 +4309,11 @@ function isArray$2(arr) {
 
 /**
  * 手势判断组件
- * 
  * 目前判断的手势
- * 
  * 单点操作
- * 
  * tap
  * swipe
- * drag
+ * pan
  */
 
 var Gesture = function () {
@@ -4436,7 +4335,6 @@ var Gesture = function () {
   _createClass(Gesture, [{
     key: 'touchstart',
     value: function touchstart(evt) {
-
       // 初始状态
       this.status = 'tapping';
 
@@ -4474,7 +4372,7 @@ var Gesture = function () {
       // 时间 <= 250ms 距离小于 10 px 则认为是 tap
       if (interval <= 250 && distance < 10) this.fire('tap', evt);
 
-      // 时间 > 250ms 距离小于 10 px 则认为是 press    
+      // 时间 > 250ms 距离小于 10 px 则认为是 press
       if (interval > 250 && distance < 10) this.fire('press', evt);
 
       var speed = getSpeed(distance, interval);
@@ -4485,7 +4383,7 @@ var Gesture = function () {
       // 处于 panning 则触发 panend 事件
       if (this.status === 'panning') this.fire('panend', evt);
 
-      this.status = 'none';
+      this.endTime = Date.now();
     }
   }, {
     key: 'touchcancel',

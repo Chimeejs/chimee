@@ -31,7 +31,7 @@ export default function gestureFactory ({
     className,
     data,
     computed,
-    beforeCreate(config) {
+    beforeCreate (config) {
       this.gesture = new Gesture();
       this.c_gesture = new Gesture();
       this.w_gesture = new Gesture();
@@ -39,63 +39,63 @@ export default function gestureFactory ({
       baseMobileEvent.forEach(item => {
         config.events[item] = evt => {
           this.gesture[item](evt);
-        }
+        };
         config.events['c_' + item] = (evt) => {
           this.c_gesture[item](evt);
-        }
+        };
         config.events['w_' + item] = (evt) => {
           this.w_gesture[item](evt);
-        }
+        };
       });
 
       ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press'].forEach(item => {
         this.gesture.on(item, evt => {
           const func = config.events[item];
           func && this::func(evt);
-        })
+        });
         this.c_gesture.on(item, evt => {
           const func = config.events['c_' + item];
           func && this::func(evt);
-        })
+        });
         this.w_gesture.on(item, evt => {
           const func = config.events['w_' + item];
           func && this::func(evt);
-        })
+        });
         this.d_gesture.on(item, evt => {
           const func = config.events['d_' + item];
           func && this::func(evt);
-        })
-      })
+        });
+      });
 
-      beforeCreate && this::beforeCreate();      
+      beforeCreate && this::beforeCreate();
     },
-    create() {
+    create () {
       this._i = this._i || 0;
       this._i++;
       baseMobileEvent.forEach(item => {
         const key = '__' + item;
         this[key] = evt => {
           this.d_gesture[item](evt);
-        }
+        };
         addEvent(this.$dom, item, this[key]);
-      })
+      });
 
-      create && this::create();      
+      create && this::create();
     },
     init,
     inited,
-    destroy() {
+    destroy () {
       baseMobileEvent.forEach(item => {
-        const key = '__' + item;  
-        removeEvent(this.$dom, item, this[key]);        
-      })
+        const key = '__' + item;
+        removeEvent(this.$dom, item, this[key]);
+      });
 
-      destroy && this::destroy();      
+      destroy && this::destroy();
     },
     methods,
     penetrate,
     operable,
     events
-  }
+  };
 }
 
