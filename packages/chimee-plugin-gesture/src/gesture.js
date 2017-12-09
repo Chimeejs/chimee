@@ -84,7 +84,11 @@ export default class Gesture {
   }
 
   on (type, func) {
-    this.event[type] = this.event[type] ? this.event[type].push(func) : [func];
+    if(isArray(this.event[type])) {
+      this.event[type].push(func);
+    }else{
+      this.event[type] = [func];
+    }
   }
 
   fire (type, evt) {

@@ -70,5 +70,3 @@
 1. touches changetouches 的区别
 
 答：[mdn](https://developer.mozilla.org/zh-CN/docs/Web/Events/touchstart)
-
-1. 移动端为什么要用 touch 事件

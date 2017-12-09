@@ -3,11 +3,6 @@ import Gesture from './gesture';
 
 const baseMobileEvent = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
 
-const gesture = new Gesture();
-const c_gesture = new Gesture();
-const w_gesture = new Gesture();
-const d_gesture = new Gesture();
-
 export default function gestureFactory ({
   name = 'chimeeGesture',
   el,
@@ -37,32 +32,36 @@ export default function gestureFactory ({
     data,
     computed,
     beforeCreate(config) {
+      this.gesture = new Gesture();
+      this.c_gesture = new Gesture();
+      this.w_gesture = new Gesture();
+      this.d_gesture = new Gesture();
       baseMobileEvent.forEach(item => {
         config.events[item] = evt => {
-          gesture[item](evt);
+          this.gesture[item](evt);
         }
         config.events['c_' + item] = (evt) => {
-          c_gesture[item](evt);
+          this.c_gesture[item](evt);
         }
         config.events['w_' + item] = (evt) => {
-          w_gesture[item](evt);
+          this.w_gesture[item](evt);
         }
       });
 
       ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press'].forEach(item => {
-        gesture.on(item, evt => {
+        this.gesture.on(item, evt => {
           const func = config.events[item];
           func && this::func(evt);
         })
-        c_gesture.on(item, evt => {
+        this.c_gesture.on(item, evt => {
           const func = config.events['c_' + item];
           func && this::func(evt);
         })
-        w_gesture.on(item, evt => {
+        this.w_gesture.on(item, evt => {
           const func = config.events['w_' + item];
           func && this::func(evt);
         })
-        d_gesture.on(item, evt => {
+        this.d_gesture.on(item, evt => {
           const func = config.events['d_' + item];
           func && this::func(evt);
         })
@@ -71,10 +70,12 @@ export default function gestureFactory ({
       beforeCreate && this::beforeCreate();      
     },
     create() {
+      this._i = this._i || 0;
+      this._i++;
       baseMobileEvent.forEach(item => {
         const key = '__' + item;
         this[key] = evt => {
-          d_gesture[item](evt);
+          this.d_gesture[item](evt);
         }
         addEvent(this.$dom, item, this[key]);
       })
@@ -85,7 +86,7 @@ export default function gestureFactory ({
     inited,
     destroy() {
       baseMobileEvent.forEach(item => {
-        const key = '__' + item;        
+        const key = '__' + item;  
         removeEvent(this.$dom, item, this[key]);        
       })
 

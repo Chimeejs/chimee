@@ -24,6 +24,15 @@ import gestureFactory from 'chimee-plugin-gesture';
 // 安装插件
 const mobiControlbar = gestureFactory({
   name: 'mobiControlbar',
+  // ...
+  events: {
+    tap() {
+
+    },
+    d_tap() {
+      
+    }
+  }
 })
 chimee.install(mobiControlbar);
 const player = new chimee({

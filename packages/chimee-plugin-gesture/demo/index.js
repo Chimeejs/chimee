@@ -34,7 +34,7 @@ const mobiControlbar = chimeePluginGesture({
 });
 
 Chimee.install(mobiControlbar);
-const player = new Chimee({
+var player = new Chimee({
   volume: 0,
   wrapper: '#wrap',
   src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/103_369ed890f51-1c38-42a7-9ce2-828492660c60.mp4',

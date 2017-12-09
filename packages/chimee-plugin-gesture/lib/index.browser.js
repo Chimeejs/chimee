@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-gesture v0.0.5
+ * chimee-plugin-gesture v0.0.11
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -4493,7 +4493,11 @@ var Gesture = function () {
   }, {
     key: 'on',
     value: function on(type, func) {
-      this.event[type] = this.event[type] ? this.event[type].push(func) : [func];
+      if (isArray$2(this.event[type])) {
+        this.event[type].push(func);
+      } else {
+        this.event[type] = [func];
+      }
     }
   }, {
     key: 'fire',
@@ -4509,11 +4513,6 @@ var Gesture = function () {
 }();
 
 var baseMobileEvent = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
-
-var gesture = new Gesture();
-var c_gesture = new Gesture();
-var w_gesture = new Gesture();
-var d_gesture = new Gesture();
 
 function gestureFactory() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
@@ -4554,32 +4553,36 @@ function gestureFactory() {
     beforeCreate: function beforeCreate(config) {
       var _this = this;
 
+      this.gesture = new Gesture();
+      this.c_gesture = new Gesture();
+      this.w_gesture = new Gesture();
+      this.d_gesture = new Gesture();
       baseMobileEvent.forEach(function (item) {
         config.events[item] = function (evt) {
-          gesture[item](evt);
+          _this.gesture[item](evt);
         };
         config.events['c_' + item] = function (evt) {
-          c_gesture[item](evt);
+          _this.c_gesture[item](evt);
         };
         config.events['w_' + item] = function (evt) {
-          w_gesture[item](evt);
+          _this.w_gesture[item](evt);
         };
       });
 
       ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press'].forEach(function (item) {
-        gesture.on(item, function (evt) {
+        _this.gesture.on(item, function (evt) {
           var func = config.events[item];
           func && func.call(_this, evt);
         });
-        c_gesture.on(item, function (evt) {
+        _this.c_gesture.on(item, function (evt) {
           var func = config.events['c_' + item];
           func && func.call(_this, evt);
         });
-        w_gesture.on(item, function (evt) {
+        _this.w_gesture.on(item, function (evt) {
           var func = config.events['w_' + item];
           func && func.call(_this, evt);
         });
-        d_gesture.on(item, function (evt) {
+        _this.d_gesture.on(item, function (evt) {
           var func = config.events['d_' + item];
           func && func.call(_this, evt);
         });
@@ -4590,10 +4593,12 @@ function gestureFactory() {
     create: function create() {
       var _this2 = this;
 
+      this._i = this._i || 0;
+      this._i++;
       baseMobileEvent.forEach(function (item) {
         var key = '__' + item;
         _this2[key] = function (evt) {
-          d_gesture[item](evt);
+          _this2.d_gesture[item](evt);
         };
         addEvent(_this2.$dom, item, _this2[key]);
       });

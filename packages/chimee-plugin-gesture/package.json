@@ -1,8 +1,11 @@
 {
   "name": "chimee-plugin-gesture",
-  "version": "0.0.6",
-  "description": "Gestrue for chimee.",
-  "main": "lib/index.mjs",
+  "version": "0.0.11",
+  "description": "Gestrue plugin for chimee.",
+  "main": "lib/index.js",
+  "module": "lib/index.mjs",
+  "jsnext:main": "lib/index.mjs",
+  "browser": "lib/index.browser.js",
   "directories": {
     "lib": "lib"
   },
