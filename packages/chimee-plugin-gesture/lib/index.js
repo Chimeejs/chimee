@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-gesture v0.0.11
+ * chimee-plugin-gesture v0.0.12
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -239,7 +239,7 @@ exports.default = function () {
       descriptor.enumerable = descriptor.enumerable || false;
       descriptor.configurable = true;
       if ("value" in descriptor) descriptor.writable = true;
-      (_defineProperty2.default)(target, descriptor.key, descriptor);
+      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
     }
   }
 
@@ -268,14 +268,11 @@ function isArray(arr) {
 
 /**
  * 手势判断组件
- * 
  * 目前判断的手势
- * 
  * 单点操作
- * 
  * tap
  * swipe
- * drag
+ * pan
  */
 
 var Gesture = function () {
@@ -288,24 +285,24 @@ var Gesture = function () {
     // })
 
     // 手势该有的几个状态
-    // none tapping pressing
+    // swipe tapping pressing
 
+    this.startTime = 0;
+    this.endTime = 0;
     this.event = {};
-    this.status = 'none';
+    this.status = '';
   }
 
   _createClass(Gesture, [{
     key: 'touchstart',
     value: function touchstart(evt) {
-
-      // 初始状态
-      this.status = 'tapping';
-
       // 当前 touch 点
       this.startTouch = evt.changedTouches[0];
 
       // 开始时间
       this.startTime = Date.now();
+
+      this.status = 'tapping';
     }
   }, {
     key: 'touchmove',
@@ -328,25 +325,28 @@ var Gesture = function () {
 
       this.endTouch = evt.changedTouches[0];
 
+      var time = Date.now();
       var distance = getDistance(this.startTouch.clientX, this.startTouch.clientY, this.endTouch.clientX, this.endTouch.clientY);
-
-      var interval = Date.now() - this.startTime;
+      var interval = time - this.startTime;
 
       // 时间 <= 250ms 距离小于 10 px 则认为是 tap
-      if (interval <= 250 && distance < 10) this.fire('tap', evt);
+      if (interval <= 250 && distance < 10) {
+        this.fire('tap', evt);
+        time - this.endTime < 300 && this.fire('doubletap', evt);
+      }
 
-      // 时间 > 250ms 距离小于 10 px 则认为是 press    
-      if (interval > 250 && distance < 10) this.fire('press', evt);
+      // 时间 > 250ms 距离小于 10 px 则认为是 press
+      interval > 250 && distance < 10 && this.fire('press', evt);
 
       var speed = getSpeed(distance, interval);
 
       // 距离大于 10 px , 速度大于 0.3 则认为是 swipe
-      if (speed > 0.3 && distance >= 10) this.fire('swipe', evt);
+      speed > 0.3 && distance >= 10 && this.fire('swipe', evt);
 
       // 处于 panning 则触发 panend 事件
-      if (this.status === 'panning') this.fire('panend', evt);
+      this.status === 'panning' && this.fire('panend', evt);
 
-      this.status = 'none';
+      this.endTime = Date.now();
     }
   }, {
     key: 'touchcancel',
@@ -374,7 +374,7 @@ var Gesture = function () {
 }();
 
 var baseMobileEvent = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
-
+var supportGesture = ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press', 'doubletap'];
 function gestureFactory() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       _ref$name = _ref.name,
@@ -430,7 +430,7 @@ function gestureFactory() {
         };
       });
 
-      ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press'].forEach(function (item) {
+      supportGesture.forEach(function (item) {
         _this.gesture.on(item, function (evt) {
           var func = config.events[item];
           func && func.call(_this, evt);
