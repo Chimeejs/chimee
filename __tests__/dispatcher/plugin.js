@@ -3,7 +3,7 @@ import Bus from 'dispatcher/bus';
 import { Log, getAttr, isString, isNumber, isBoolean } from 'chimee-helper';
 import Plugin from 'dispatcher/plugin';
 import Dispatcher from 'dispatcher/index';
-import VideoConfig from 'dispatcher/video-config';
+import VideoConfig from 'config/video';
 import Chimee from 'index';
 describe('dispatcher/plugin', () => {
   let dispatcher;

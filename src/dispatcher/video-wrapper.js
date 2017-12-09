@@ -3,7 +3,7 @@ import { bind, isString, getDeepProperty, isArray, isObject, isFunction, Log, is
 import { videoReadOnlyProperties, videoMethods, kernelMethods, domMethods, domEvents } from 'helper/const';
 import { attrAndStyleCheck, eventBinderCheck } from 'helper/checker';
 import { accessor, nonenumerable, applyDecorators, watch, alias, before, autobindClass } from 'toxic-decorators';
-import VideoConfig from 'dispatcher/video-config';
+import VideoConfig from 'config/video';
 function propertyAccessibilityWarn(property) {
   /* istanbul ignore else  */
   if (process.env.NODE_ENV !== 'production') Log.warn('chimee', `You are trying to obtain ${property}, we will return you the DOM node. It's not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues`);
