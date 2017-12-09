@@ -29,6 +29,9 @@ const mobiControlbar = chimeePluginGesture({
     },
     d_press(evt) {
       console.log('d_press', evt.target)
+    },
+    d_doubletap(evt) {
+      console.log('d_doubletap', evt.target)
     }
   }
 });

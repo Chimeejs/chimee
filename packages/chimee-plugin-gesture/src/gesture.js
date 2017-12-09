@@ -18,21 +18,22 @@ export default class Gesture {
     // })
 
     // 手势该有的几个状态
-    // none tapping pressing
+    // swipe tapping pressing
 
+    this.startTime = 0;
+    this.endTime = 0;
     this.event = {};
-    this.status = 'none';
+    this.status = '';
   }
 
   touchstart (evt) {
-    // 初始状态
-    this.status = 'tapping';
-
     // 当前 touch 点
     this.startTouch = evt.changedTouches[0];
 
     // 开始时间
     this.startTime = Date.now();
+
+    this.status = 'tapping';
 
   }
 
@@ -54,23 +55,26 @@ export default class Gesture {
 
     this.endTouch = evt.changedTouches[0];
 
+    const time = Date.now();
     const distance = getDistance(this.startTouch.clientX, this.startTouch.clientY, this.endTouch.clientX, this.endTouch.clientY);
-
-    const interval = Date.now() - this.startTime;
+    const interval = time - this.startTime;
 
     // 时间 <= 250ms 距离小于 10 px 则认为是 tap
-    if(interval <= 250 && distance < 10) this.fire('tap', evt);
+    if(interval <= 250 && distance < 10) {
+      this.fire('tap', evt);
+      time - this.endTime < 300 && this.fire('doubletap', evt);
+    }
 
     // 时间 > 250ms 距离小于 10 px 则认为是 press
-    if(interval > 250 && distance < 10) this.fire('press', evt);
+    interval > 250 && distance < 10 && this.fire('press', evt);
 
     const speed = getSpeed(distance, interval);
 
     // 距离大于 10 px , 速度大于 0.3 则认为是 swipe
-    if(speed > 0.3 && distance >= 10) this.fire('swipe', evt);
+    speed > 0.3 && distance >= 10 && this.fire('swipe', evt);
 
     // 处于 panning 则触发 panend 事件
-    if(this.status === 'panning') this.fire('panend', evt);
+    this.status === 'panning' && this.fire('panend', evt);
 
     this.endTime = Date.now();
   }

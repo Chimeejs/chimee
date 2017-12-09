@@ -2,7 +2,7 @@ import {addEvent, removeEvent} from 'chimee-helper';
 import Gesture from './gesture';
 
 const baseMobileEvent = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
-
+const supportGesture = ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press', 'doubletap'];
 export default function gestureFactory ({
   name = 'chimeeGesture',
   el,
@@ -48,7 +48,7 @@ export default function gestureFactory ({
         };
       });
 
-      ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press'].forEach(item => {
+      supportGesture.forEach(item => {
         this.gesture.on(item, evt => {
           const func = config.events[item];
           func && this::func(evt);

@@ -23,14 +23,17 @@ import gestureFactory from 'chimee-plugin-gesture';
 
 // 安装插件
 const mobiControlbar = gestureFactory({
+
+  // 参考 chimee 插件配置
   name: 'mobiControlbar',
   // ...
+  // 直接使用 ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press', 'doubletap']， 这些事件就好了，不需要使用 touch 事件
   events: {
     tap() {
 
     },
     d_tap() {
-      
+
     }
   }
 })
@@ -43,12 +46,3 @@ const player = new chimee({
   ]
 });
 ```
-
-## 配置
-
-1. tap
-2. swipe
-3. press
-4. panstart
-5. panmove
-6. panend
