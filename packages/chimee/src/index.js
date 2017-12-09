@@ -4,7 +4,7 @@ import { isString, isFunction, isElement, isObject } from 'chimee-helper';
 import Plugin from './dispatcher/plugin';
 import { frozen, autobindClass } from 'toxic-decorators';
 import VideoWrapper from 'dispatcher/video-wrapper';
-import GlobalConfig from 'global/config';
+import GlobalConfig from 'config/global';
 @autobindClass()
 export default class Chimee extends VideoWrapper {
   __id: string;
