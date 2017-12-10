@@ -43,7 +43,7 @@ declare module 'chimee-helper' {
   declare export function isVoid (val: any): false;
   declare export function isArray (val: any): boolean %checks(Array.isArray(val));
   declare export function isFunction (val: any): boolean %checks(typeof val === 'function');
-  declare export function isObject (val: any): boolean %checks(typeof val === 'object');
+  declare export function isObject (val: any): boolean %checks(typeof val === 'object' && val !== null);
   declare export function isNumber (val: any): boolean %checks(typeof val === 'number');
   declare export function isNumeric (val: any): boolean %checks(typeof val === 'number');
   declare export function isInteger (val: any): boolean %checks(typeof val === 'number');

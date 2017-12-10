@@ -219,7 +219,7 @@ export default class Dispatcher {
     isLive?: boolean,
     box?: string,
     preset?: Object,
-    kernels?: Object | Array<string> | void
+    kernels?: UserKernelsConfig
   } = {}) {
     const {
       duration = 3,
@@ -369,7 +369,7 @@ export default class Dispatcher {
     isLive?: boolean,
     box?: string,
     preset?: Object,
-    kernels?: Object | Array<string>
+    kernels?: UserKernelsConfig
   } = {}) {
     const oldBox = this.kernel.box;
     const videoConfig = this.videoConfig;
@@ -398,7 +398,7 @@ export default class Dispatcher {
       src: string,
       isLive: boolean,
       box: string,
-      kernels: Object | Array<string> | void,
+      kernels: UserKernelsConfig,
       preset: Object,
     }
   }) {
@@ -509,19 +509,90 @@ export default class Dispatcher {
     const { kernels, preset } = config;
     /* istanbul ignore else  */
     if (process.env.NODE_ENV !== 'production' && isEmpty(kernels) && !isEmpty(preset)) Log.warn('preset will be deprecated in next major version, please use kernels instead.');
-    const newPreset = isArray(kernels)
-      ? kernels.reduce((kernels, key) => {
-        if (!isFunction(kernelsSet[key])) {
-          Log.warn(`You have not installed kernel for ${key}.`);
+    const presetConfig: {[key: string]: Object} = {};
+    let newPreset = {};
+    if (isArray(kernels)) {
+      // SKC means SingleKernelConfig
+      newPreset = kernels.reduce((kernels: Object, keyOrSKC: string | SingleKernelConfig) => {
+        // if it is a string key, it means the kernel has been pre installed.
+        if (isString(keyOrSKC)) {
+          const kernelFn = kernelsSet[keyOrSKC];
+          if (!isFunction(kernelFn)) {
+            Log.warn(`You have not installed kernel for ${keyOrSKC}.`);
+            return kernels;
+          }
+          kernels[keyOrSKC] = kernelFn;
           return kernels;
         }
-        kernels[key] = kernelsSet[key];
+        // if it is a SingleKernelConfig, it means user may pass in some config here
+        // so we need to extract the handler
+        // get the name of the handler
+        // and collect the config for the handler
+        if (isObject(keyOrSKC)) {
+          const { name, handler } = keyOrSKC;
+          // if the handler is a pure string, it means the kernel has been pre installed
+          if (isString(handler)) {
+            const kernelFn = kernelsSet[handler];
+            if (!isFunction(kernelFn)) {
+              Log.warn(`You have not installed kernel for ${handler}.`);
+              return kernels;
+            }
+            kernels[handler] = kernelFn;
+            presetConfig[handler] = keyOrSKC;
+            return kernels;
+          }
+          // if the handler is a function, it means that the user pass in the kernel directly
+          // if the provide name, we use it as kernel name
+          // if they do not provide name, we just use the function's name
+          if (isFunction(handler)) {
+            const kernelName = name || handler.name;
+            kernels[kernelName] = handler;
+            presetConfig[kernelName] = keyOrSKC;
+            return kernels;
+          }
+          Log.warn(`When you pass in an SingleKernelConfig in Array, you must clarify it's handler, we only support handler in string or function but not ${typeof handler}`);
+          return kernels;
+        }
+        Log.warn(`If you pass in kernels as array, you must pass in kernels in string or function, but not ${typeof keyOrSKC}`);
         return kernels;
-      }, {})
-      : isObject(kernels)
-        ? kernels
-        : {};
+      }, {});
+    }
+
+    if (isObject(kernels)) {
+      // SKC means SingleKernelConfig
+      Object.entries(kernels).forEach(([ key: string, fnOrSKC: string | SingleKernelConfig ]) => {
+        // if it's a function, means we need to do nothing
+        if (isFunction(fnOrSKC)) {
+          newPreset[key] = fnOrSKC;
+          return;
+        }
+        if (isObject(fnOrSKC)) {
+          const { handler } = fnOrSKC;
+          // if handler is an string, it means user has pre install it
+          if (isString(handler)) {
+            const kernelFn = kernelsSet[handler];
+            if (!isFunction(kernelFn)) {
+              Log.warn(`You have not installed kernel for ${handler}.`);
+              return;
+            }
+            newPreset[key] = kernelFn;
+            presetConfig[key] = fnOrSKC;
+            return;
+          }
+          if (isFunction(handler)) {
+            newPreset[key] = handler;
+            presetConfig[key] = fnOrSKC;
+            return;
+          }
+          Log.warn(`When you pass in an SingleKernelConfig in Object, you must clarify it's handler, we only support handler in string or function but not ${typeof handler}`);
+          return;
+        }
+        Log.warn(`If you pass in kernels as object, you must pass in kernels in string or function, but not ${typeof fnOrSKC}`);
+        return kernels;
+      });
+    }
     config.preset = Object.assign(newPreset, preset);
+    config.presetConfig = presetConfig;
     const kernel = new Kernel(video, config);
     return kernel;
   }
@@ -585,7 +656,7 @@ export default class Dispatcher {
       : [[ key, value ]];
     tasks.forEach(([ key, value ]) => {
       if (!isFunction(value)) throw new Error(`The kernel you install on ${key} must be a Function, but not ${typeof value}`);
-      if (isFunction(kernelsSet[key])) Log.warn(`You have alrady install a kenrle on ${key}, and now we will replace it`);
+      if (isFunction(kernelsSet[key])) Log.warn(`You have alrady install a kernel on ${key}, and now we will replace it`);
       kernelsSet[key] = value;
     });
   }

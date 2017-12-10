@@ -67,6 +67,22 @@ declare type VesselConfig = {
   height?: number | string,
 }
 
+declare type SingleKernelConfig = {
+  name?: string,
+  handler?: Function | string,
+  [key: string]: any,
+}
+
+declare type UserKernelsConfig = Array<string> | {
+  flv?: Function,
+  hls?: Function,
+  mp4?: Function,
+} | {
+  flv?: SingleKernelConfig,
+  hls?: SingleKernelConfig,
+  mp4?: SingleKernelConfig,
+} | Array<SingleKernelConfig>
+
 declare type UserConfig = {
   src?: string,
   box?: string,
@@ -92,10 +108,7 @@ declare type UserConfig = {
   defaultPlaybackRate?: number,
   disableRemotePlayback?: boolean,
   defaultMuted?: boolean,
-  kernels?: Array<string> | {
-    flv?: Function,
-    hls?: Function
-  },
+  kernels?: UserKernelsConfig,
   preset?: {
     flv?: Function,
     hls?: Function

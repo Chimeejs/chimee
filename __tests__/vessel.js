@@ -1,13 +1,17 @@
 import Chimee from 'index';
 describe('vessel', () => {
   let chimee;
+  let originURLrevoke;
   beforeEach(() => {
+    originURLrevoke = global.URL.revokeObjectURL;
+    global.URL.revokeObjectURL = () => {};
     chimee = new Chimee({
       wrapper: document.createElement('div'),
     });
   });
   afterEach(() => {
     chimee.destroy();
+    global.URL.revokeObjectURL = originURLrevoke;
   });
   test('default config', () => {
     expect(chimee.container.width).toBe('100%');

@@ -228,7 +228,7 @@ export default class VideoConfig {
   dom: Dom;
   inited: boolean;
   // kernels 不在 videoConfig 上设置默认值，防止判断出错
-  kernels: void | Array<string> | Object;
+  kernels: UserKernelsConfig;
 
   @nonenumerable
   needToLoadSrc = false;
@@ -251,8 +251,10 @@ export default class VideoConfig {
   @configurable
   box = '';
 
-  // 会逐渐被遗弃
+  // 转为供 kernel 使用的内部参数
   preset = {};
+
+  presetConfig = {};
 
   autoload = true;
 
@@ -293,7 +295,7 @@ export default class VideoConfig {
   volume = 1;
 
   @frozen
-  _kernelProperty = [ 'isLive', 'box', 'preset', 'kernels' ];
+  _kernelProperty = [ 'isLive', 'box', 'preset', 'kernels', 'presetConfig' ];
 
   @frozen
   _realDomAttr = [ 'src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume' ];
