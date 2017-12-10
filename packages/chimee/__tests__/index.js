@@ -19,10 +19,17 @@ describe('Chimee', () => {
   };
 
   let player;
+  let originURLrevoke;
 
   beforeEach(() => {
     Log.data.warn = [];
     Log.data.error = [];
+    originURLrevoke = global.URL.revokeObjectURL;
+    global.URL.revokeObjectURL = () => {};
+  });
+
+  afterEach(() => {
+    global.URL.revokeObjectURL = originURLrevoke;
   });
 
   test('install', () => {
@@ -613,12 +620,16 @@ describe('Chimee', () => {
 describe('isFullscreen and fullscreenElement', () => {
   let player;
   let wrapper;
+  let originURLrevoke;
   beforeEach(() => {
     wrapper = document.createElement('div');
     document.body.appendChild(wrapper);
     player = new Chimee(wrapper);
+    originURLrevoke = global.URL.revokeObjectURL;
+    global.URL.revokeObjectURL = () => {};
   });
   afterEach(() => {
+    global.URL.revokeObjectURL = originURLrevoke;
     esFullscreen.exit();
     wrapper.parentNode.removeChild(wrapper);
   });
