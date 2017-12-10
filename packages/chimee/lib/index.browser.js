@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.6.3
+ * chimee v0.6.4
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -5228,6 +5228,9 @@ var Kernel = function (_CustEvent) {
 				}
 			}
 
+			// 将盒子信息注入实例用于后期比对
+			this.box = box;
+
 			// 调用各个 box
 			switch (box) {
 				case 'native':
@@ -8692,7 +8695,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.6.3';
+    _this.VERSION = '0.6.4';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -10165,20 +10168,20 @@ var Dispatcher = (_dec$1 = before(convertNameIntoId), _dec2 = before(checkPlugin
     value: function load(src) {
       var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-      if (!isEmpty(option)) {
-        var videoConfig = this.videoConfig;
+      var oldBox = this.kernel.box;
+      var videoConfig = this.videoConfig;
+      var _option$isLive2 = option.isLive,
+          isLive = _option$isLive2 === undefined ? videoConfig.isLive : _option$isLive2,
+          _option$box2 = option.box,
+          box = _option$box2 === undefined ? videoConfig.box : _option$box2,
+          _option$preset2 = option.preset,
+          preset = _option$preset2 === undefined ? videoConfig.preset : _option$preset2,
+          _option$kernels2 = option.kernels,
+          kernels = _option$kernels2 === undefined ? videoConfig.kernels : _option$kernels2;
 
-        var _option$isLive2 = option.isLive,
-            _isLive = _option$isLive2 === undefined ? videoConfig.isLive : _option$isLive2,
-            _option$box2 = option.box,
-            _box = _option$box2 === undefined ? videoConfig.box : _option$box2,
-            _option$preset2 = option.preset,
-            _preset = _option$preset2 === undefined ? videoConfig.preset : _option$preset2,
-            _option$kernels2 = option.kernels,
-            _kernels = _option$kernels2 === undefined ? videoConfig.kernels : _option$kernels2;
-
+      if (box !== 'native' || box !== oldBox || !isEmpty(option)) {
         var video = document.createElement('video');
-        var config = { isLive: _isLive, box: _box, preset: _preset, src: src, kernels: _kernels };
+        var config = { isLive: isLive, box: box, preset: preset, src: src, kernels: kernels };
         var kernel = this._createKernel(video, config);
         this.switchKernel({ video: video, kernel: kernel, config: config });
       }
@@ -10685,7 +10688,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.6.3';
+    return '0.6.4';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,
