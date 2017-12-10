@@ -310,6 +310,13 @@ chimee.load('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070
 
 > load 方法会触发 load 系列事件，你可以通过插件 `beforeLoad` 阻截或挂起事件，也可以通过`load`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
 
+> load 会在以下情况切换内部 kernel。
+>
+> * 播放的 box 不是 native
+> * 播放的 box 和原 box 不一致
+> * 传入新的 option 参数的时候
+
+
 ### play
 
 播放视频的函数。
