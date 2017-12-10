@@ -371,14 +371,15 @@ export default class Dispatcher {
     preset?: Object,
     kernels?: Object | Array<string>
   } = {}) {
-    if (!isEmpty(option)) {
-      const videoConfig = this.videoConfig;
-      const {
-        isLive = videoConfig.isLive,
-        box = videoConfig.box,
-        preset = videoConfig.preset,
-        kernels = videoConfig.kernels,
-      } = option;
+    const oldBox = this.kernel.box;
+    const videoConfig = this.videoConfig;
+    const {
+      isLive = videoConfig.isLive,
+      box = videoConfig.box,
+      preset = videoConfig.preset,
+      kernels = videoConfig.kernels,
+    } = option;
+    if (box !== 'native' || box !== oldBox || !isEmpty(option)) {
       const video = document.createElement('video');
       const config = { isLive, box, preset, src, kernels };
       const kernel = this._createKernel(video, config);
