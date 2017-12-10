@@ -1,6 +1,7 @@
 import Chimee from 'index';
 import chimeeKernelFlv from 'chimee-kernel-flv';
 import { Log } from 'chimee-helper';
+global.URL.revokeObjectURL = () => {};
 test('redudant event bind on video', () => {
   const wrapper = document.createElement('div');
   const fn = jest.fn();

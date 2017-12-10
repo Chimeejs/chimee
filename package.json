@@ -46,7 +46,7 @@
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "chimee-helper": "^0.2.8",
-    "chimee-kernel": "^1.1.0",
+    "chimee-kernel": "^1.1.1",
     "es-fullscreen": "^0.2.1",
     "toxic-decorators": "^0.3.8"
   },
