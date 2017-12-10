@@ -71,6 +71,9 @@ export default class Kernel extends CustEvent {
 			}
 		}
 
+		// 将盒子信息注入实例用于后期比对
+		this.box = box;
+
 		// 调用各个 box
 		switch(box) {
 			case 'native':
