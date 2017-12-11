@@ -155,11 +155,11 @@ const chimee = new ChimeePlayer({
 
 ## 文档
 
-1. [Chimee API 介绍](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md)
-2. [为什么要将 Chimee 设计成一个组件化框架？](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/why-chimee-is-a-frame.md)
-3. [Chimee 插件 API 介绍](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)
-4. [如何编写一个插件?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-plugin.md)
-5. [如何编写一个弹窗插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-popup-plugin.md)
+1. [Chimee API 介绍](http://chimee.org/docs/chimee_api.html)
+2. [为什么要将 Chimee 设计成一个组件化框架？](http://chimee.org/docs/why_chimee_is_a_frame.html)
+3. [Chimee 插件 API 介绍](http://chimee.org/docs/chimee_plugin_api.html)
+4. [如何编写一个插件?](http://chimee.org/docs/how_to_write_a_plugin.html)
+5. [如何编写一个弹窗插件](http://chimee.org/docs/how_to_write_a_popup_plugin.html)
 
 ## 不同的构建版本
 
