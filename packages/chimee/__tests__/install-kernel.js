@@ -188,7 +188,7 @@ describe('_createkernel', () => {
       // 直播:live 点播：vod
       type: 'vod',
       // 编解码容器
-      box: 'native',
+      box: 'flv',
       // dom容器
       wrapper: document.createElement('div'),
       kernels: {
@@ -209,7 +209,7 @@ describe('_createkernel', () => {
       // 直播:live 点播：vod
       type: 'vod',
       // 编解码容器
-      box: 'native',
+      box: 'flv',
       // dom容器
       wrapper: document.createElement('div'),
       kernels: [ flvConfig ],
@@ -228,7 +228,7 @@ describe('_createkernel', () => {
       // 直播:live 点播：vod
       type: 'vod',
       // 编解码容器
-      box: 'native',
+      box: 'flv',
       // dom容器
       wrapper: document.createElement('div'),
       kernels: {
@@ -249,7 +249,7 @@ describe('_createkernel', () => {
       // 直播:live 点播：vod
       type: 'vod',
       // 编解码容器
-      box: 'native',
+      box: 'flv',
       // dom容器
       wrapper: document.createElement('div'),
       kernels: {
@@ -269,7 +269,7 @@ describe('_createkernel', () => {
       // 直播:live 点播：vod
       type: 'vod',
       // 编解码容器
-      box: 'native',
+      box: 'flv',
       // dom容器
       wrapper: document.createElement('div'),
       kernels: {
