@@ -218,6 +218,12 @@ var Kernel = function (_CustEvent) {
 			// 将盒子信息注入实例用于后期比对
 			this.box = box;
 
+			// 将 kernel 中的相关的 presetConfig 取出
+			// 写入本实例的配置中
+			// 但其实这种方式感觉不是很好，因为这很容易有重复定义的问题
+			var boxConfig = config.presetConfig[box] || {};
+			deepAssign(config, boxConfig);
+
 			// 调用各个 box
 			switch (box) {
 				case 'native':
