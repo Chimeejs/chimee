@@ -112,6 +112,28 @@ const player = new Chimee({
 })
 ```
 
+有的时候我们需要为 kernel 配置单独的参数。这个时候我们可以用如下方式传入参数。
+
+```javascript
+import Flv from 'chimee-kernel-flv';
+const player = new Chimee({
+  src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
+  kernels: {
+    flv: {
+      handler: Flv,
+      stashSize: 1000 * 1000 * 1024,
+    },
+  },
+  // 编解码容器
+  box: 'flv', // flv hls mp4
+  // dom容器
+  wrapper: '#wrapper',
+  // video
+  autoplay: true,
+  controls: true
+})
+```
+
 ### plugin
 
 - 类型：`Array<string | Object>`
