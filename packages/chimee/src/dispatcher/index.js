@@ -365,12 +365,27 @@ export default class Dispatcher {
         });
       });
   }
-  load(src: string, option: {
+  load(srcOrOption: string | {
+    src: string,
+    isLive?: boolean,
+    box?: string,
+    preset?: Object,
+    kernels?: UserKernelsConfig
+  }, option: {
     isLive?: boolean,
     box?: string,
     preset?: Object,
     kernels?: UserKernelsConfig
   } = {}) {
+    const src: string = isString(srcOrOption)
+      ? srcOrOption
+      : isObject(srcOrOption) && isString(srcOrOption.src)
+        ? srcOrOption.src
+        : '';
+    if (isObject(srcOrOption)) {
+      delete srcOrOption.src;
+      option = srcOrOption;
+    }
     const oldBox = this.kernel.box;
     const videoConfig = this.videoConfig;
     const {

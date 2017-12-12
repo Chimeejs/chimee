@@ -360,6 +360,7 @@ describe('load', () => {
     expect(player.$video).not.toBe(oldVideo);
     expect(player.$video).toBe(video);
     expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
   });
   test('load with same box', async () => {
     player.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', {
@@ -370,5 +371,29 @@ describe('load', () => {
     expect(player.$video).not.toBe(oldVideo);
     expect(player.$video).toBe(video);
     expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
+  });
+  test('load with one object', async () => {
+    player.load({
+      src: 'http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4',
+      isLive: false,
+      box: 'native',
+    });
+    await Promise.resolve();
+    expect(player.$video).not.toBe(oldVideo);
+    expect(player.$video).toBe(video);
+    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
+  });
+  test('load with one object', async () => {
+    player.load({
+      isLive: false,
+      box: 'native',
+    });
+    await Promise.resolve();
+    expect(player.$video).not.toBe(oldVideo);
+    expect(player.$video).toBe(video);
+    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.src).toBe('');
   });
 });
