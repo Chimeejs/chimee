@@ -122,7 +122,6 @@ const player = new Chimee({
     flv: {
       handler: Flv,
       stashSize: 1000 * 1000 * 1024,
-    },
   },
   // 编解码容器
   box: 'flv', // flv hls mp4
@@ -326,6 +325,49 @@ chimee.load('http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070
   box: 'flv',
   kernels: {
     flv: ChimeeKernelFlv
+  }
+})
+```
+
+load 在 v0.7.1 后支持更简便的写法。
+
+```javascript
+import Chimee from 'chimee';
+import ChimeeKernelFlv from 'chimee-kernel-flv';
+const chimee = new Chimee({
+  wrapper: '#wrapper',
+  src:'http://cdn.toxicjohann.com/lostStar.mp4',
+  autoplay: true
+});
+...
+chimee.load({
+  src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
+  box: 'flv',
+  kernels: {
+    flv: ChimeeKernelFlv
+  }
+})
+```
+
+同样的，因为我们传入的是 kernels ，所以我们也可以定义一些 kernels 的参数。
+
+```javascript
+import Chimee from 'chimee';
+import ChimeeKernelFlv from 'chimee-kernel-flv';
+const chimee = new Chimee({
+  wrapper: '#wrapper',
+  src:'http://cdn.toxicjohann.com/lostStar.mp4',
+  autoplay: true
+});
+...
+chimee.load({
+  src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
+  box: 'flv',
+  kernels: {
+    flv: {
+      handler: ChimeeKernelFlv,
+      stashSize: 1000 * 1000 * 1024,
+    },
   }
 })
 ```
