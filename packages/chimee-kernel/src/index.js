@@ -135,7 +135,7 @@ export default class Kernel extends CustEvent {
 	 */
 	play () {
 		if(!this.videokernel) {
-			return Log.error(this.tag, 'videokernel is not already, must init player');;
+			return Log.error(this.tag, 'videokernel is not already, must init player');
 		}
 
 		this.videokernel.play();
@@ -146,7 +146,7 @@ export default class Kernel extends CustEvent {
 	 */
 	pause () {
 		if(!this.videokernel || !this.config.src) {
-			return Log.error(this.tag, 'videokernel is not already, must init player');;
+			return Log.error(this.tag, 'videokernel is not already, must init player');
 		}
 		this.videokernel.pause();
 	}
