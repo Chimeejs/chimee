@@ -126,6 +126,7 @@ export default class Kernel extends CustEvent {
 
   load(src: string = this.config.src) {
     this.config.src = src;
+    console.log(src);
     this.videoKernel.load(src);
   }
 

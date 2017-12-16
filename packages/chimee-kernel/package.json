@@ -17,7 +17,8 @@
     "start": "rollup -c build/rollup.config.dev.js -w",
     "lint": "eslint . --fix && flow",
     "flow": "flow",
-    "test": "flow"
+    "test": "jest --coverage",
+    "unit": "jest --coverage --watch"
   },
   "repository": {
     "type": "git",
@@ -50,11 +51,15 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "chimee-kernel-flv": "^1.4.6",
+    "chimee-kernel-hls": "^1.0.7",
     "eslint": "^4.13.1",
     "eslint-config-egg": "^5.1.1",
     "eslint-plugin-flowtype": "^2.40.1",
     "eslint-plugin-jest": "^21.5.0",
     "flow-bin": "^0.61.0",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "pkg-ok": "^1.1.0",
     "rollup": "^0.52.2",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.6",
