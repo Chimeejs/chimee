@@ -7,6 +7,8 @@
   "jsnext:main": "lib/index.mjs",
   "browser": "lib/index.browser.js",
   "scripts": {
+    "precommit": "npm run lint && npm t",
+    "prepush": "npm run test",
     "build": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
     "b-common": "rollup -c build/rollup.config.common.js",
     "b-es": "rollup -c build/rollup.config.es.js",
