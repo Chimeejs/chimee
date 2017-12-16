@@ -1,88 +1,50 @@
+
+/**
+ * chimee-kernel v1.3.0
+ * (c) 2017 songguangyu
+ * Released under MIT
+ */
+
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var _typeof = _interopDefault(require('babel-runtime/helpers/typeof'));
 var _Object$getPrototypeOf = _interopDefault(require('babel-runtime/core-js/object/get-prototype-of'));
 var _classCallCheck = _interopDefault(require('babel-runtime/helpers/classCallCheck'));
 var _createClass = _interopDefault(require('babel-runtime/helpers/createClass'));
 var _possibleConstructorReturn = _interopDefault(require('babel-runtime/helpers/possibleConstructorReturn'));
 var _inherits = _interopDefault(require('babel-runtime/helpers/inherits'));
 var chimeeHelper = require('chimee-helper');
-var _Object$getOwnPropertyDescriptor = _interopDefault(require('babel-runtime/core-js/object/get-own-property-descriptor'));
 
-var defaultConfig = {
-  type: 'vod',
-  box: 'native',
-  lockInternalProperty: false
-};
+var NativeVideoKernel = function (_CustEvent) {
+  _inherits(NativeVideoKernel, _CustEvent);
 
-/**
- * native player
- *
- * @export
- * @class Native
- */
+  _createClass(NativeVideoKernel, null, [{
+    key: 'isSupport',
 
-var Native = function (_CustEvent) {
-  _inherits(Native, _CustEvent);
+    /* istanbul ignore next  */
+    value: function isSupport() {
+      return true;
+    }
+  }]);
 
-  /**
-   * Creates an instance of Native.
-   * @param {any} videodom video dom
-   * @param {any} config 
-   * @memberof Native
-   */
-  function Native(videodom, config) {
-    _classCallCheck(this, Native);
+  function NativeVideoKernel(videoElement, config, customConfig) {
+    _classCallCheck(this, NativeVideoKernel);
 
-    var _this2 = _possibleConstructorReturn(this, (Native.__proto__ || _Object$getPrototypeOf(Native)).call(this));
+    var _this = _possibleConstructorReturn(this, (NativeVideoKernel.__proto__ || _Object$getPrototypeOf(NativeVideoKernel)).call(this));
 
-    _this2.video = videodom;
-    _this2.box = 'native';
-    _this2.config = defaultConfig;
-    chimeeHelper.deepAssign(_this2.config, config);
-    _this2.bindEvents();
-    return _this2;
+    if (!chimeeHelper.isElement(videoElement)) throw new Error('You must pass in an legal video element but not ' + (typeof videoElement === 'undefined' ? 'undefined' : _typeof(videoElement)));
+    _this.video = videoElement;
+    _this.config = config;
+    _this.customConfig = customConfig;
+    return _this;
   }
 
-  _createClass(Native, [{
-    key: 'internalPropertyHandle',
-    value: function internalPropertyHandle() {
-      if (!_Object$getOwnPropertyDescriptor) {
-        return;
-      }
-      var _this = this;
-      var time = _Object$getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');
-
-      Object.defineProperty(this.video, 'currentTime', {
-        get: function get() {
-          return time.get.call(_this.video);
-        },
-        set: function set(t) {
-          if (!_this.currentTimeLock) {
-            throw new Error('can not set currentTime by youself');
-          } else {
-            return time.set.call(_this.video, t);
-          }
-        }
-      });
-    }
-  }, {
-    key: 'bindEvents',
-    value: function bindEvents() {
-      var _this3 = this;
-
-      if (this.video && this.config.lockInternalProperty) {
-        this.video.addEventListener('canplay', function () {
-          _this3.internalPropertyHandle();
-        });
-      }
-    }
-  }, {
+  _createClass(NativeVideoKernel, [{
     key: 'load',
     value: function load(src) {
-      this.config.src = src || this.config.src;
-      this.video.setAttribute('src', this.config.src);
+      this.video.setAttribute('src', src);
     }
   }, {
     key: 'unload',
@@ -93,9 +55,8 @@ var Native = function (_CustEvent) {
   }, {
     key: 'destroy',
     value: function destroy() {
-      if (this.video) {
-        this.unload();
-      }
+      /* istanbul ignore next  */
+      if (chimeeHelper.isElement(this.video)) this.unload();
     }
   }, {
     key: 'play',
@@ -118,304 +79,216 @@ var Native = function (_CustEvent) {
   }, {
     key: 'seek',
     value: function seek(seconds) {
-      this.currentTimeLock = true;
       this.video.currentTime = seconds;
-      this.currentTimeLock = false;
     }
   }]);
 
-  return Native;
+  return NativeVideoKernel;
 }(chimeeHelper.CustEvent);
 
-var defaultConfig$1 = {
-  isLive: true, // vod or live
-  box: 'native', // box type : native mp4 hls flv
-  lockInternalProperty: false,
-  reloadTime: 1500 // video can't play when this time to reload
+var defaultConfig = {
+  isLive: false, // vod or live
+  box: '', // box type : native mp4 hls flv
+  preset: {},
+  presetConfig: {}
 };
 
-var $const = {
-  kernelEvent: ['mediaInfo', 'heartbeat', 'error']
+var LOG_TAG = 'chimee-kernel';
+var kernelEvents = ['mediaInfo', 'heartbeat', 'error'];
+var boxSuffixMap = {
+  flv: '.flv',
+  hls: '.m3u8',
+  mp4: '.mp4'
 };
 
-var Kernel = function (_CustEvent) {
-	_inherits(Kernel, _CustEvent);
+var ChimeeKernel = function (_CustEvent) {
+  _inherits(ChimeeKernel, _CustEvent);
 
-	/**
+  /**
   * kernelWrapper
   * @param {any} wrap videoElement
   * @param {any} option
   * @class kernel
   */
-	function Kernel(videoElement, config) {
-		_classCallCheck(this, Kernel);
+  function ChimeeKernel(videoElement, config) {
+    _classCallCheck(this, ChimeeKernel);
 
-		var _this = _possibleConstructorReturn(this, (Kernel.__proto__ || _Object$getPrototypeOf(Kernel)).call(this));
+    var _this = _possibleConstructorReturn(this, (ChimeeKernel.__proto__ || _Object$getPrototypeOf(ChimeeKernel)).call(this));
 
-		_this.tag = 'kernel';
-		_this.config = chimeeHelper.deepAssign({}, defaultConfig$1, config);
-		_this.video = videoElement;
-		_this.videokernel = _this.selectKernel();
-		_this.bindEvents(_this.videokernel, _this.video);
-		return _this;
-	}
+    _this.VERSION = '1.3.0';
 
-	/**
-  * bind events
-  * @memberof kernel
-  */
+    if (!chimeeHelper.isElement(videoElement)) throw new Error('You must pass in an video element to the chimee-kernel');
+    // copy and maintain only one config for chimee-kernel
+    // actually kernel is disposable in most situation nowaday
+    _this.config = chimeeHelper.deepAssign({}, defaultConfig, config);
+    _this.videoElement = videoElement;
+    _this.initVideoKernel();
+    _this.bindEvents(_this.videoKernel);
+    return _this;
+  }
 
+  _createClass(ChimeeKernel, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.bindEvents(this.videoKernel, true);
+      this.videoKernel.destroy();
+    }
+  }, {
+    key: 'initVideoKernel',
+    value: function initVideoKernel() {
+      var config = this.config;
+      var box = this.chooseBox(config);
+      this.box = box;
+      var VideoKernel = this.chooseVideoKernel(this.box, config.preset);
 
-	_createClass(Kernel, [{
-		key: 'bindEvents',
-		value: function bindEvents(videokernel, video) {
-			var _this2 = this;
+      if (!chimeeHelper.isFunction(VideoKernel)) throw new Error('We can\'t find video kernel for ' + box + '. Please check your config and make sure it\'s installed or provided');
 
-			if (!videokernel) {
-				return;
-			}
-			$const.kernelEvent.forEach(function (item) {
-				videokernel.on(item, function (msg) {
-					_this2.emit(item, msg.data);
-				});
-			});
-		}
+      var customConfig = config.presetConfig[this.box] || {};
 
-		/**
-   * select kernel
-   * @memberof kernel
-   */
+      // TODO: nowaday, kernels all get config from one config
+      // it's not a good way, because custom config may override kernel config
+      // so we may remove this code later
+      chimeeHelper.deepAssign(config, customConfig);
 
-	}, {
-		key: 'selectKernel',
-		value: function selectKernel() {
-			var config = this.config;
-			chimeeHelper.isObject(config.preset) || (config.preset = {});
-			var box = config.box;
-			var src = config.src.toLowerCase();
-			// 根据 src 判断 box
-			if (!box) {
-				if (src.indexOf('.flv') !== -1) {
-					box = 'flv';
-				} else if (src.indexOf('.m3u8') !== -1) {
-					box = 'hls';
-				} else if (src.indexOf('.mp4') !== -1) {
-					box = 'mp4';
-				} else {
-					// 如果 src 不存在或无法判断，继续采用 native 方案。
-					box = 'native';
-				}
-			}
-			// 如果是自定义 box，就检测 box 有没有安装
-			// 因为 native 和 mp4 都可以有原生方案支持，所以不用检测。
-			if (box !== 'native' && box !== 'mp4' && !config.preset[box]) {
-				chimeeHelper.Log.error(this.tag, 'You want to play for ' + box + ', but you have not installed the kernel.');
-				return;
-			}
-			if (box === 'mp4') {
-				if (!config.preset[box] || !config.preset[box].isSupport()) {
-					chimeeHelper.Log.verbose(this.tag, 'browser is not support mp4 decode, auto switch native player');
-					box = 'native';
-				}
-			}
+      this.videoKernel = new VideoKernel(this.videoElement, config, customConfig);
+    }
 
-			// 将盒子信息注入实例用于后期比对
-			this.box = box;
+    // return the config box
+    // or choose the right one according to the src
 
-			// 将 kernel 中的相关的 presetConfig 取出
-			// 写入本实例的配置中
-			// 但其实这种方式感觉不是很好，因为这很容易有重复定义的问题
-			var boxConfig = config.presetConfig[box] || {};
-			chimeeHelper.deepAssign(config, boxConfig);
+  }, {
+    key: 'chooseBox',
+    value: function chooseBox(_ref) {
+      var src = _ref.src,
+          box = _ref.box;
 
-			// 调用各个 box
-			switch (box) {
-				case 'native':
-					return new Native(this.video, config);
-				case 'mp4':
-				case 'flv':
-				case 'hls':
-					return new config.preset[box](this.video, config);
-				default:
-					chimeeHelper.Log.error(this.tag, 'not mactch any player, please check your config');
-					return;
-			}
-		}
+      if (chimeeHelper.isString(box) && box) return box;
+      src = src.toLowerCase();
+      for (var key in boxSuffixMap) {
+        var suffix = boxSuffixMap[key];
+        if (src.indexOf(suffix) > -1) return key;
+      }
+      return 'native';
+    }
 
-		/**
-   * select attachMedia
-   * @memberof kernel
-   */
+    // choose the right video kernel according to the box setting
 
-	}, {
-		key: 'attachMedia',
-		value: function attachMedia() {
-			if (!this.videokernel) {
-				return chimeeHelper.Log.error(this.tag, 'videokernel is not already, must init player');
-			}
+  }, {
+    key: 'chooseVideoKernel',
+    value: function chooseVideoKernel(box, preset) {
+      switch (box) {
+        case 'native':
+          // $FlowFixMe: it's the same as videoKernel
+          return NativeVideoKernel;
+        case 'mp4':
+          return this.getMp4Kernel(preset.mp4);
+        case 'flv':
+        case 'hls':
+          return preset[box];
+        default:
+          throw new Error('We currently do not support box ' + box + ', please contact us through https://github.com/Chimeejs/chimee/issues.');
+      }
+    }
 
-			this.videokernel.attachMedia();
-		}
-		/**
-   * load source
-   * @param {string} src 
-   * @memberof kernel
-   */
+    // fetch the legal mp4 kernel
+    // if it's not exist or not support
+    // we will fall back to the native video kernel
 
-	}, {
-		key: 'load',
-		value: function load(src) {
-			this.config.src = src || this.config.src;
-			if (!this.videokernel || !this.config.src) {
-				return chimeeHelper.Log.error(this.tag, 'videokernel is not already, must init player');
-			}
+  }, {
+    key: 'getMp4Kernel',
+    value: function getMp4Kernel(mp4Kernel) {
+      var hasLegalMp4Kernel = mp4Kernel && chimeeHelper.isFunction(mp4Kernel.isSupport);
+      // $FlowFixMe: we have make sure it's an kernel now
+      var supportMp4Kernel = hasLegalMp4Kernel && mp4Kernel.isSupport();
+      // $FlowFixMe: we have make sure it's an kernel now
+      if (supportMp4Kernel) return mp4Kernel;
+      if (hasLegalMp4Kernel) this.warnLog('mp4 decode is not support in this browser, we will switch to the native video kernel');
+      this.box = 'native';
+      // $FlowFixMe: it's the same as videoKernel
+      return NativeVideoKernel;
+    }
+  }, {
+    key: 'errorLog',
+    value: function errorLog() {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
 
-			this.videokernel.load(this.config.src);
-		}
-		/**
-   * destory kernel
-   * @memberof kernel
-   */
+      this.emit('error', new Error(args[0]));
+      return chimeeHelper.Log.error.apply(chimeeHelper.Log, [LOG_TAG].concat(args));
+    }
+  }, {
+    key: 'warnLog',
+    value: function warnLog() {
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
 
-	}, {
-		key: 'destroy',
-		value: function destroy() {
-			if (!this.videokernel) {
-				return chimeeHelper.Log.error(this.tag, 'videokernel is not exit');
-			}
+      return chimeeHelper.Log.warn.apply(chimeeHelper.Log, [LOG_TAG].concat(args));
+    }
+  }, {
+    key: 'bindEvents',
+    value: function bindEvents(videoKernel) {
+      var _this2 = this;
 
-			this.videokernel.destroy();
-		}
-		/**
-   * to play
-   * @memberof kernel
-   */
+      var remove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-	}, {
-		key: 'play',
-		value: function play() {
-			if (!this.videokernel) {
-				return chimeeHelper.Log.error(this.tag, 'videokernel is not already, must init player');
-			}
+      kernelEvents.forEach(function (eventName) {
+        /* istanbul ignore next  */
+        // $FlowFixMe: we have make sure it's legal now
+        videoKernel[remove ? 'off' : 'on'](eventName, function () {
+          var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+              data = _ref2.data;
 
-			this.videokernel.play();
-		}
-		/**
-   * pause
-   * @memberof kernel
-   */
+          _this2.emit(eventName, data);
+        });
+      });
+    }
+  }, {
+    key: 'attachMedia',
+    value: function attachMedia() {
+      this.videoKernel.attachMedia();
+    }
+  }, {
+    key: 'load',
+    value: function load() {
+      var src = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.config.src;
 
-	}, {
-		key: 'pause',
-		value: function pause() {
-			if (!this.videokernel || !this.config.src) {
-				return chimeeHelper.Log.error(this.tag, 'videokernel is not already, must init player');
-			}
-			this.videokernel.pause();
-		}
-		/**
-   * get video currentTime
-   * @memberof kernel
-   */
+      this.config.src = src;
+      this.videoKernel.load(src);
+    }
+  }, {
+    key: 'play',
+    value: function play() {
+      this.videoKernel.play();
+    }
+  }, {
+    key: 'pause',
+    value: function pause() {
+      this.videoKernel.pause();
+    }
+  }, {
+    key: 'seek',
+    value: function seek(seconds) {
+      if (!chimeeHelper.isNumber(seconds)) {
+        this.errorLog('When you try to seek, you must offer us a number, but not ' + (typeof seconds === 'undefined' ? 'undefined' : _typeof(seconds)));
+        return;
+      }
+      this.videoKernel.seek(seconds);
+    }
+  }, {
+    key: 'refresh',
+    value: function refresh() {
+      this.videoKernel.refresh();
+    }
+  }, {
+    key: 'currentTime',
+    get: function get() {
+      return this.videoElement.currentTime || 0;
+    }
+  }]);
 
-	}, {
-		key: 'seek',
-
-		/**
-   * seek to a point
-   * @memberof kernel
-   */
-		value: function seek(seconds) {
-			if (!chimeeHelper.isNumber(seconds)) {
-				chimeeHelper.Log.error(this.tag, 'seek params must be a number');
-				return;
-			}
-			if (this.videokernel) {
-				return this.videokernel.seek(seconds);
-			} else {
-				chimeeHelper.Log.error(this.tag, 'videokernel is not already, must init player');
-			}
-		}
-		/**
-   * refresh kernel
-   * @memberof kernel
-   */
-
-	}, {
-		key: 'refresh',
-		value: function refresh() {
-			if (!this.videokernel) {
-				return chimeeHelper.Log.error(this.tag, 'videokernel is not already, must init player');
-			}
-			this.videokernel.refresh();
-		}
-		/**
-   * get video duration
-   * @memberof kernel
-   */
-
-	}, {
-		key: 'currentTime',
-		get: function get() {
-			if (this.videokernel) {
-				return this.video.currentTime;
-			}
-			return 0;
-		}
-	}, {
-		key: 'duration',
-		get: function get() {
-			return this.video.duration;
-		}
-		/**
-   * get video volume
-   * @memberof kernel
-   */
-
-	}, {
-		key: 'volume',
-		get: function get() {
-			return this.video.volume;
-		}
-		/**
-  * set video volume
-  * @memberof kernel
-  */
-		,
-		set: function set(value) {
-			this.video.volume = value;
-		}
-		/**
-   * get video muted
-   * @memberof kernel
-   */
-
-	}, {
-		key: 'muted',
-		get: function get() {
-			return this.video.muted;
-		}
-		/**
-   * set video muted
-   * @memberof kernel
-   */
-		,
-		set: function set(muted) {
-			this.video.muted = muted;
-		}
-		/**
-  * get video buffer
-  * @memberof kernel
-  */
-
-	}, {
-		key: 'buffered',
-		get: function get() {
-			return this.video.buffered;
-		}
-	}]);
-
-	return Kernel;
+  return ChimeeKernel;
 }(chimeeHelper.CustEvent);
 
-module.exports = Kernel;
+module.exports = ChimeeKernel;

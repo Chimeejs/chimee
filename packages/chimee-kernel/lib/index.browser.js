@@ -1,7 +1,14 @@
+
+/**
+ * chimee-kernel v1.3.0
+ * (c) 2017 songguangyu
+ * Released under MIT
+ */
+
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
-	(global.chimeeKernel = factory());
+	(global.ChimeeKernel = factory());
 }(this, (function () { 'use strict';
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -16,22 +23,36 @@ function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
 
+// 7.1.4 ToInteger
+var ceil = Math.ceil;
+var floor = Math.floor;
+var _toInteger = function (it) {
+  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+};
+
 // 7.2.1 RequireObjectCoercible(argument)
 var _defined = function (it) {
   if (it == undefined) throw TypeError("Can't call method on  " + it);
   return it;
 };
 
-// 7.1.13 ToObject(argument)
-
-var _toObject = function (it) {
-  return Object(_defined(it));
+// true  -> String#at
+// false -> String#codePointAt
+var _stringAt = function (TO_STRING) {
+  return function (that, pos) {
+    var s = String(_defined(that));
+    var i = _toInteger(pos);
+    var l = s.length;
+    var a, b;
+    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
+    a = s.charCodeAt(i);
+    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
+      ? TO_STRING ? s.charAt(i) : a
+      : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
+  };
 };
 
-var hasOwnProperty = {}.hasOwnProperty;
-var _has = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
+var _library = true;
 
 var _global = createCommonjsModule(function (module) {
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -42,40 +63,8 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
-var SHARED = '__core-js_shared__';
-var store = _global[SHARED] || (_global[SHARED] = {});
-var _shared = function (key) {
-  return store[key] || (store[key] = {});
-};
-
-var id = 0;
-var px = Math.random();
-var _uid = function (key) {
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-var shared = _shared('keys');
-
-var _sharedKey = function (key) {
-  return shared[key] || (shared[key] = _uid(key));
-};
-
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-
-
-var IE_PROTO = _sharedKey('IE_PROTO');
-var ObjectProto = Object.prototype;
-
-var _objectGpo = Object.getPrototypeOf || function (O) {
-  O = _toObject(O);
-  if (_has(O, IE_PROTO)) return O[IE_PROTO];
-  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
-    return O.constructor.prototype;
-  } return O instanceof Object ? ObjectProto : null;
-};
-
 var _core = createCommonjsModule(function (module) {
-var core = module.exports = { version: '2.5.2' };
+var core = module.exports = { version: '2.5.3' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
 
@@ -245,117 +234,12 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 var _export = $export;
 
-// most Object methods by ES6 should accept primitives
-
-
-
-var _objectSap = function (KEY, exec) {
-  var fn = (_core.Object || {})[KEY] || Object[KEY];
-  var exp = {};
-  exp[KEY] = exec(fn);
-  _export(_export.S + _export.F * _fails(function () { fn(1); }), 'Object', exp);
-};
-
-// 19.1.2.9 Object.getPrototypeOf(O)
-
-
-
-_objectSap('getPrototypeOf', function () {
-  return function getPrototypeOf(it) {
-    return _objectGpo(_toObject(it));
-  };
-});
-
-var getPrototypeOf$1 = _core.Object.getPrototypeOf;
-
-var getPrototypeOf = createCommonjsModule(function (module) {
-module.exports = { "default": getPrototypeOf$1, __esModule: true };
-});
-
-var _Object$getPrototypeOf = unwrapExports(getPrototypeOf);
-
-var classCallCheck = createCommonjsModule(function (module, exports) {
-exports.__esModule = true;
-
-exports.default = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-});
-
-var _classCallCheck = unwrapExports(classCallCheck);
-
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-_export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
-
-var $Object = _core.Object;
-var defineProperty$2 = function defineProperty(it, key, desc) {
-  return $Object.defineProperty(it, key, desc);
-};
-
-var defineProperty = createCommonjsModule(function (module) {
-module.exports = { "default": defineProperty$2, __esModule: true };
-});
-
-unwrapExports(defineProperty);
-
-var createClass = createCommonjsModule(function (module, exports) {
-exports.__esModule = true;
-
-
-
-var _defineProperty2 = _interopRequireDefault(defineProperty);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
-    }
-  }
-
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-}();
-});
-
-var _createClass = unwrapExports(createClass);
-
-// 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-var _toInteger = function (it) {
-  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-};
-
-// true  -> String#at
-// false -> String#codePointAt
-var _stringAt = function (TO_STRING) {
-  return function (that, pos) {
-    var s = String(_defined(that));
-    var i = _toInteger(pos);
-    var l = s.length;
-    var a, b;
-    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
-    a = s.charCodeAt(i);
-    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
-      ? TO_STRING ? s.charAt(i) : a
-      : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
-  };
-};
-
-var _library = true;
-
 var _redefine = _hide;
+
+var hasOwnProperty = {}.hasOwnProperty;
+var _has = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
 
 var _iterators = {};
 
@@ -417,15 +301,33 @@ var _arrayIncludes = function (IS_INCLUDES) {
   };
 };
 
+var SHARED = '__core-js_shared__';
+var store = _global[SHARED] || (_global[SHARED] = {});
+var _shared = function (key) {
+  return store[key] || (store[key] = {});
+};
+
+var id = 0;
+var px = Math.random();
+var _uid = function (key) {
+  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+};
+
+var shared = _shared('keys');
+
+var _sharedKey = function (key) {
+  return shared[key] || (shared[key] = _uid(key));
+};
+
 var arrayIndexOf = _arrayIncludes(false);
-var IE_PROTO$2 = _sharedKey('IE_PROTO');
+var IE_PROTO$1 = _sharedKey('IE_PROTO');
 
 var _objectKeysInternal = function (object, names) {
   var O = _toIobject(object);
   var i = 0;
   var result = [];
   var key;
-  for (key in O) if (key != IE_PROTO$2) _has(O, key) && result.push(key);
+  for (key in O) if (key != IE_PROTO$1) _has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
   while (names.length > i) if (_has(O, key = names[i++])) {
     ~arrayIndexOf(result, key) || result.push(key);
@@ -463,7 +365,7 @@ var _html = document$2 && document$2.documentElement;
 
 
 
-var IE_PROTO$1 = _sharedKey('IE_PROTO');
+var IE_PROTO = _sharedKey('IE_PROTO');
 var Empty = function () { /* empty */ };
 var PROTOTYPE$1 = 'prototype';
 
@@ -496,7 +398,7 @@ var _objectCreate = Object.create || function create(O, Properties) {
     result = new Empty();
     Empty[PROTOTYPE$1] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
-    result[IE_PROTO$1] = O;
+    result[IE_PROTO] = O;
   } else result = createDict();
   return Properties === undefined ? result : _objectDps(result, Properties);
 };
@@ -533,6 +435,26 @@ var _iterCreate = function (Constructor, NAME, next) {
   _setToStringTag(Constructor, NAME + ' Iterator');
 };
 
+// 7.1.13 ToObject(argument)
+
+var _toObject = function (it) {
+  return Object(_defined(it));
+};
+
+// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+
+
+var IE_PROTO$2 = _sharedKey('IE_PROTO');
+var ObjectProto = Object.prototype;
+
+var _objectGpo = Object.getPrototypeOf || function (O) {
+  O = _toObject(O);
+  if (_has(O, IE_PROTO$2)) return O[IE_PROTO$2];
+  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+    return O.constructor.prototype;
+  } return O instanceof Object ? ObjectProto : null;
+};
+
 var ITERATOR = _wks('iterator');
 var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
 var FF_ITERATOR = '@@iterator';
@@ -555,7 +477,7 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
   var VALUES_BUG = false;
   var proto = Base.prototype;
   var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = $native || getMethod(DEFAULT);
+  var $default = (!BUGGY && $native) || getMethod(DEFAULT);
   var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
   var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
   var methods, key, IteratorPrototype;
@@ -732,10 +654,10 @@ var _meta_3 = _meta.fastKey;
 var _meta_4 = _meta.getWeak;
 var _meta_5 = _meta.onFreeze;
 
-var defineProperty$4 = _objectDp.f;
+var defineProperty = _objectDp.f;
 var _wksDefine = function (name) {
   var $Symbol = _core.Symbol || (_core.Symbol = _library ? {} : _global.Symbol || {});
-  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$4($Symbol, name, { value: _wksExt.f(name) });
+  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: _wksExt.f(name) });
 };
 
 var f$2 = Object.getOwnPropertySymbols;
@@ -1040,7 +962,7 @@ $JSON && _export(_export.S + _export.F * (!USE_NATIVE || _fails(function () {
     $replacer = replacer = args[1];
     if (!_isObject(replacer) && it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
     if (!_isArray(replacer)) replacer = function (key, value) {
-      if ($replacer) value = $replacer.call(this, key, value);
+      if (typeof $replacer == 'function') value = $replacer.call(this, key, value);
       if (!isSymbol(value)) return value;
     };
     args[1] = replacer;
@@ -1092,6 +1014,91 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 });
 
 var _typeof = unwrapExports(_typeof_1);
+
+// most Object methods by ES6 should accept primitives
+
+
+
+var _objectSap = function (KEY, exec) {
+  var fn = (_core.Object || {})[KEY] || Object[KEY];
+  var exp = {};
+  exp[KEY] = exec(fn);
+  _export(_export.S + _export.F * _fails(function () { fn(1); }), 'Object', exp);
+};
+
+// 19.1.2.9 Object.getPrototypeOf(O)
+
+
+
+_objectSap('getPrototypeOf', function () {
+  return function getPrototypeOf(it) {
+    return _objectGpo(_toObject(it));
+  };
+});
+
+var getPrototypeOf$1 = _core.Object.getPrototypeOf;
+
+var getPrototypeOf = createCommonjsModule(function (module) {
+module.exports = { "default": getPrototypeOf$1, __esModule: true };
+});
+
+var _Object$getPrototypeOf = unwrapExports(getPrototypeOf);
+
+var classCallCheck = createCommonjsModule(function (module, exports) {
+exports.__esModule = true;
+
+exports.default = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+});
+
+var _classCallCheck = unwrapExports(classCallCheck);
+
+// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+_export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
+
+var $Object = _core.Object;
+var defineProperty$3 = function defineProperty(it, key, desc) {
+  return $Object.defineProperty(it, key, desc);
+};
+
+var defineProperty$1 = createCommonjsModule(function (module) {
+module.exports = { "default": defineProperty$3, __esModule: true };
+});
+
+unwrapExports(defineProperty$1);
+
+var createClass = createCommonjsModule(function (module, exports) {
+exports.__esModule = true;
+
+
+
+var _defineProperty2 = _interopRequireDefault(defineProperty$1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+});
+
+var _createClass = unwrapExports(createClass);
 
 var possibleConstructorReturn = createCommonjsModule(function (module, exports) {
 exports.__esModule = true;
@@ -1345,6 +1352,12 @@ function isBoolean(bool) {
  */
 function isPrimitive(val) {
   return isVoid(val) || isBoolean(val) || isString(val) || isNumber(val);
+}
+/**
+ * to test if a HTML element
+ */
+function isElement(obj) {
+  return !!((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? obj instanceof HTMLElement : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string');
 }
 
 /**
@@ -2693,7 +2706,7 @@ exports.default = function (arr) {
 unwrapExports(toConsumableArray);
 
 /**
- * toxic-utils v0.1.6
+ * toxic-utils v0.2.0
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -2704,12 +2717,19 @@ unwrapExports(toConsumableArray);
  * @return {Function}    the handler
  */
 function genTraversalHandler(fn) {
+  var setter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function (target, key, value) {
+    target[key] = value;
+  };
+
+  // use recursive to move what in source to the target
+  // if you do not provide a target, we will create a new target
   function recursiveFn(source, target, key) {
     if (isArray$1(source) || isObject$1(source)) {
       target = isPrimitive(target) ? isObject$1(source) ? {} : [] : target;
       for (var _key in source) {
         // $FlowFixMe: support computed key here
-        target[_key] = recursiveFn(source[_key], target[_key], _key);
+        setter(target, _key, recursiveFn(source[_key], target[_key], _key));
+        // target[key] = recursiveFn(source[key], target[key], key);
       }
       return target;
     }
@@ -3104,14 +3124,7 @@ var onUnhandled = function (promise) {
   });
 };
 var isUnhandled = function (promise) {
-  if (promise._h == 1) return false;
-  var chain = promise._a || promise._c;
-  var i = 0;
-  var reaction;
-  while (chain.length > i) {
-    reaction = chain[i++];
-    if (reaction.fail || !isUnhandled(reaction.promise)) return false;
-  } return true;
+  return promise._h !== 1 && (promise._a || promise._c).length === 0;
 };
 var onHandleUnhandled = function (promise) {
   task.call(_global, function () {
@@ -4588,105 +4601,39 @@ var NodeWrap = function () {
 }();
 
 /**
- * chimee-helper v0.2.8
+ * chimee-helper v0.2.9
  * (c) 2017 toxic-johann
  * Released under MIT
  */
 
-// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+var NativeVideoKernel = function (_CustEvent) {
+  _inherits(NativeVideoKernel, _CustEvent);
 
-var $getOwnPropertyDescriptor$1 = _objectGopd.f;
+  _createClass(NativeVideoKernel, null, [{
+    key: 'isSupport',
 
-_objectSap('getOwnPropertyDescriptor', function () {
-  return function getOwnPropertyDescriptor(it, key) {
-    return $getOwnPropertyDescriptor$1(_toIobject(it), key);
-  };
-});
+    /* istanbul ignore next  */
+    value: function isSupport() {
+      return true;
+    }
+  }]);
 
-var $Object$2 = _core.Object;
-var getOwnPropertyDescriptor$1 = function getOwnPropertyDescriptor(it, key) {
-  return $Object$2.getOwnPropertyDescriptor(it, key);
-};
+  function NativeVideoKernel(videoElement, config, customConfig) {
+    _classCallCheck(this, NativeVideoKernel);
 
-var getOwnPropertyDescriptor = createCommonjsModule(function (module) {
-module.exports = { "default": getOwnPropertyDescriptor$1, __esModule: true };
-});
+    var _this = _possibleConstructorReturn(this, (NativeVideoKernel.__proto__ || _Object$getPrototypeOf(NativeVideoKernel)).call(this));
 
-var _Object$getOwnPropertyDescriptor = unwrapExports(getOwnPropertyDescriptor);
-
-var defaultConfig = {
-  type: 'vod',
-  box: 'native',
-  lockInternalProperty: false
-};
-
-/**
- * native player
- *
- * @export
- * @class Native
- */
-
-var Native = function (_CustEvent) {
-  _inherits(Native, _CustEvent);
-
-  /**
-   * Creates an instance of Native.
-   * @param {any} videodom video dom
-   * @param {any} config 
-   * @memberof Native
-   */
-  function Native(videodom, config) {
-    _classCallCheck(this, Native);
-
-    var _this2 = _possibleConstructorReturn(this, (Native.__proto__ || _Object$getPrototypeOf(Native)).call(this));
-
-    _this2.video = videodom;
-    _this2.box = 'native';
-    _this2.config = defaultConfig;
-    deepAssign(_this2.config, config);
-    _this2.bindEvents();
-    return _this2;
+    if (!isElement(videoElement)) throw new Error('You must pass in an legal video element but not ' + (typeof videoElement === 'undefined' ? 'undefined' : _typeof(videoElement)));
+    _this.video = videoElement;
+    _this.config = config;
+    _this.customConfig = customConfig;
+    return _this;
   }
 
-  _createClass(Native, [{
-    key: 'internalPropertyHandle',
-    value: function internalPropertyHandle() {
-      if (!_Object$getOwnPropertyDescriptor) {
-        return;
-      }
-      var _this = this;
-      var time = _Object$getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');
-
-      Object.defineProperty(this.video, 'currentTime', {
-        get: function get() {
-          return time.get.call(_this.video);
-        },
-        set: function set(t) {
-          if (!_this.currentTimeLock) {
-            throw new Error('can not set currentTime by youself');
-          } else {
-            return time.set.call(_this.video, t);
-          }
-        }
-      });
-    }
-  }, {
-    key: 'bindEvents',
-    value: function bindEvents() {
-      var _this3 = this;
-
-      if (this.video && this.config.lockInternalProperty) {
-        this.video.addEventListener('canplay', function () {
-          _this3.internalPropertyHandle();
-        });
-      }
-    }
-  }, {
+  _createClass(NativeVideoKernel, [{
     key: 'load',
     value: function load(src) {
-      this.config.src = src || this.config.src;
-      this.video.setAttribute('src', this.config.src);
+      this.video.setAttribute('src', src);
     }
   }, {
     key: 'unload',
@@ -4697,9 +4644,8 @@ var Native = function (_CustEvent) {
   }, {
     key: 'destroy',
     value: function destroy() {
-      if (this.video) {
-        this.unload();
-      }
+      /* istanbul ignore next  */
+      if (isElement(this.video)) this.unload();
     }
   }, {
     key: 'play',
@@ -4722,306 +4668,218 @@ var Native = function (_CustEvent) {
   }, {
     key: 'seek',
     value: function seek(seconds) {
-      this.currentTimeLock = true;
       this.video.currentTime = seconds;
-      this.currentTimeLock = false;
     }
   }]);
 
-  return Native;
+  return NativeVideoKernel;
 }(CustEvent);
 
-var defaultConfig$1 = {
-  isLive: true, // vod or live
-  box: 'native', // box type : native mp4 hls flv
-  lockInternalProperty: false,
-  reloadTime: 1500 // video can't play when this time to reload
+var defaultConfig = {
+  isLive: false, // vod or live
+  box: '', // box type : native mp4 hls flv
+  preset: {},
+  presetConfig: {}
 };
 
-var $const = {
-  kernelEvent: ['mediaInfo', 'heartbeat', 'error']
+var LOG_TAG = 'chimee-kernel';
+var kernelEvents = ['mediaInfo', 'heartbeat', 'error'];
+var boxSuffixMap = {
+  flv: '.flv',
+  hls: '.m3u8',
+  mp4: '.mp4'
 };
 
-var Kernel = function (_CustEvent) {
-	_inherits(Kernel, _CustEvent);
+var ChimeeKernel = function (_CustEvent) {
+  _inherits(ChimeeKernel, _CustEvent);
 
-	/**
+  /**
   * kernelWrapper
   * @param {any} wrap videoElement
   * @param {any} option
   * @class kernel
   */
-	function Kernel(videoElement, config) {
-		_classCallCheck(this, Kernel);
+  function ChimeeKernel(videoElement, config) {
+    _classCallCheck(this, ChimeeKernel);
 
-		var _this = _possibleConstructorReturn(this, (Kernel.__proto__ || _Object$getPrototypeOf(Kernel)).call(this));
+    var _this = _possibleConstructorReturn(this, (ChimeeKernel.__proto__ || _Object$getPrototypeOf(ChimeeKernel)).call(this));
 
-		_this.tag = 'kernel';
-		_this.config = deepAssign({}, defaultConfig$1, config);
-		_this.video = videoElement;
-		_this.videokernel = _this.selectKernel();
-		_this.bindEvents(_this.videokernel, _this.video);
-		return _this;
-	}
+    _this.VERSION = '1.3.0';
 
-	/**
-  * bind events
-  * @memberof kernel
-  */
+    if (!isElement(videoElement)) throw new Error('You must pass in an video element to the chimee-kernel');
+    // copy and maintain only one config for chimee-kernel
+    // actually kernel is disposable in most situation nowaday
+    _this.config = deepAssign({}, defaultConfig, config);
+    _this.videoElement = videoElement;
+    _this.initVideoKernel();
+    _this.bindEvents(_this.videoKernel);
+    return _this;
+  }
 
+  _createClass(ChimeeKernel, [{
+    key: 'destroy',
+    value: function destroy() {
+      this.bindEvents(this.videoKernel, true);
+      this.videoKernel.destroy();
+    }
+  }, {
+    key: 'initVideoKernel',
+    value: function initVideoKernel() {
+      var config = this.config;
+      var box = this.chooseBox(config);
+      this.box = box;
+      var VideoKernel = this.chooseVideoKernel(this.box, config.preset);
 
-	_createClass(Kernel, [{
-		key: 'bindEvents',
-		value: function bindEvents(videokernel, video) {
-			var _this2 = this;
+      if (!isFunction(VideoKernel)) throw new Error('We can\'t find video kernel for ' + box + '. Please check your config and make sure it\'s installed or provided');
 
-			if (!videokernel) {
-				return;
-			}
-			$const.kernelEvent.forEach(function (item) {
-				videokernel.on(item, function (msg) {
-					_this2.emit(item, msg.data);
-				});
-			});
-		}
+      var customConfig = config.presetConfig[this.box] || {};
 
-		/**
-   * select kernel
-   * @memberof kernel
-   */
+      // TODO: nowaday, kernels all get config from one config
+      // it's not a good way, because custom config may override kernel config
+      // so we may remove this code later
+      deepAssign(config, customConfig);
 
-	}, {
-		key: 'selectKernel',
-		value: function selectKernel() {
-			var config = this.config;
-			isObject$1(config.preset) || (config.preset = {});
-			var box = config.box;
-			var src = config.src.toLowerCase();
-			// 根据 src 判断 box
-			if (!box) {
-				if (src.indexOf('.flv') !== -1) {
-					box = 'flv';
-				} else if (src.indexOf('.m3u8') !== -1) {
-					box = 'hls';
-				} else if (src.indexOf('.mp4') !== -1) {
-					box = 'mp4';
-				} else {
-					// 如果 src 不存在或无法判断，继续采用 native 方案。
-					box = 'native';
-				}
-			}
-			// 如果是自定义 box，就检测 box 有没有安装
-			// 因为 native 和 mp4 都可以有原生方案支持，所以不用检测。
-			if (box !== 'native' && box !== 'mp4' && !config.preset[box]) {
-				Log.error(this.tag, 'You want to play for ' + box + ', but you have not installed the kernel.');
-				return;
-			}
-			if (box === 'mp4') {
-				if (!config.preset[box] || !config.preset[box].isSupport()) {
-					Log.verbose(this.tag, 'browser is not support mp4 decode, auto switch native player');
-					box = 'native';
-				}
-			}
+      this.videoKernel = new VideoKernel(this.videoElement, config, customConfig);
+    }
 
-			// 将盒子信息注入实例用于后期比对
-			this.box = box;
+    // return the config box
+    // or choose the right one according to the src
 
-			// 将 kernel 中的相关的 presetConfig 取出
-			// 写入本实例的配置中
-			// 但其实这种方式感觉不是很好，因为这很容易有重复定义的问题
-			var boxConfig = config.presetConfig[box] || {};
-			deepAssign(config, boxConfig);
+  }, {
+    key: 'chooseBox',
+    value: function chooseBox(_ref) {
+      var src = _ref.src,
+          box = _ref.box;
 
-			// 调用各个 box
-			switch (box) {
-				case 'native':
-					return new Native(this.video, config);
-				case 'mp4':
-				case 'flv':
-				case 'hls':
-					return new config.preset[box](this.video, config);
-				default:
-					Log.error(this.tag, 'not mactch any player, please check your config');
-					return;
-			}
-		}
+      if (isString(box) && box) return box;
+      src = src.toLowerCase();
+      for (var key in boxSuffixMap) {
+        var suffix = boxSuffixMap[key];
+        if (src.indexOf(suffix) > -1) return key;
+      }
+      return 'native';
+    }
 
-		/**
-   * select attachMedia
-   * @memberof kernel
-   */
+    // choose the right video kernel according to the box setting
 
-	}, {
-		key: 'attachMedia',
-		value: function attachMedia() {
-			if (!this.videokernel) {
-				return Log.error(this.tag, 'videokernel is not already, must init player');
-			}
+  }, {
+    key: 'chooseVideoKernel',
+    value: function chooseVideoKernel(box, preset) {
+      switch (box) {
+        case 'native':
+          // $FlowFixMe: it's the same as videoKernel
+          return NativeVideoKernel;
+        case 'mp4':
+          return this.getMp4Kernel(preset.mp4);
+        case 'flv':
+        case 'hls':
+          return preset[box];
+        default:
+          throw new Error('We currently do not support box ' + box + ', please contact us through https://github.com/Chimeejs/chimee/issues.');
+      }
+    }
 
-			this.videokernel.attachMedia();
-		}
-		/**
-   * load source
-   * @param {string} src 
-   * @memberof kernel
-   */
+    // fetch the legal mp4 kernel
+    // if it's not exist or not support
+    // we will fall back to the native video kernel
 
-	}, {
-		key: 'load',
-		value: function load(src) {
-			this.config.src = src || this.config.src;
-			if (!this.videokernel || !this.config.src) {
-				return Log.error(this.tag, 'videokernel is not already, must init player');
-			}
+  }, {
+    key: 'getMp4Kernel',
+    value: function getMp4Kernel(mp4Kernel) {
+      var hasLegalMp4Kernel = mp4Kernel && isFunction(mp4Kernel.isSupport);
+      // $FlowFixMe: we have make sure it's an kernel now
+      var supportMp4Kernel = hasLegalMp4Kernel && mp4Kernel.isSupport();
+      // $FlowFixMe: we have make sure it's an kernel now
+      if (supportMp4Kernel) return mp4Kernel;
+      if (hasLegalMp4Kernel) this.warnLog('mp4 decode is not support in this browser, we will switch to the native video kernel');
+      this.box = 'native';
+      // $FlowFixMe: it's the same as videoKernel
+      return NativeVideoKernel;
+    }
+  }, {
+    key: 'errorLog',
+    value: function errorLog() {
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
 
-			this.videokernel.load(this.config.src);
-		}
-		/**
-   * destory kernel
-   * @memberof kernel
-   */
+      this.emit('error', new Error(args[0]));
+      return Log.error.apply(Log, [LOG_TAG].concat(args));
+    }
+  }, {
+    key: 'warnLog',
+    value: function warnLog() {
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
 
-	}, {
-		key: 'destroy',
-		value: function destroy() {
-			if (!this.videokernel) {
-				return Log.error(this.tag, 'videokernel is not exit');
-			}
+      return Log.warn.apply(Log, [LOG_TAG].concat(args));
+    }
+  }, {
+    key: 'bindEvents',
+    value: function bindEvents(videoKernel) {
+      var _this2 = this;
 
-			this.videokernel.destroy();
-		}
-		/**
-   * to play
-   * @memberof kernel
-   */
+      var remove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-	}, {
-		key: 'play',
-		value: function play() {
-			if (!this.videokernel) {
-				return Log.error(this.tag, 'videokernel is not already, must init player');
-			}
+      kernelEvents.forEach(function (eventName) {
+        /* istanbul ignore next  */
+        // $FlowFixMe: we have make sure it's legal now
+        videoKernel[remove ? 'off' : 'on'](eventName, function () {
+          var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+              data = _ref2.data;
 
-			this.videokernel.play();
-		}
-		/**
-   * pause
-   * @memberof kernel
-   */
+          _this2.emit(eventName, data);
+        });
+      });
+    }
+  }, {
+    key: 'attachMedia',
+    value: function attachMedia() {
+      this.videoKernel.attachMedia();
+    }
+  }, {
+    key: 'load',
+    value: function load() {
+      var src = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.config.src;
 
-	}, {
-		key: 'pause',
-		value: function pause() {
-			if (!this.videokernel || !this.config.src) {
-				return Log.error(this.tag, 'videokernel is not already, must init player');
-			}
-			this.videokernel.pause();
-		}
-		/**
-   * get video currentTime
-   * @memberof kernel
-   */
+      this.config.src = src;
+      this.videoKernel.load(src);
+    }
+  }, {
+    key: 'play',
+    value: function play() {
+      this.videoKernel.play();
+    }
+  }, {
+    key: 'pause',
+    value: function pause() {
+      this.videoKernel.pause();
+    }
+  }, {
+    key: 'seek',
+    value: function seek(seconds) {
+      if (!isNumber(seconds)) {
+        this.errorLog('When you try to seek, you must offer us a number, but not ' + (typeof seconds === 'undefined' ? 'undefined' : _typeof(seconds)));
+        return;
+      }
+      this.videoKernel.seek(seconds);
+    }
+  }, {
+    key: 'refresh',
+    value: function refresh() {
+      this.videoKernel.refresh();
+    }
+  }, {
+    key: 'currentTime',
+    get: function get() {
+      return this.videoElement.currentTime || 0;
+    }
+  }]);
 
-	}, {
-		key: 'seek',
-
-		/**
-   * seek to a point
-   * @memberof kernel
-   */
-		value: function seek(seconds) {
-			if (!isNumber(seconds)) {
-				Log.error(this.tag, 'seek params must be a number');
-				return;
-			}
-			if (this.videokernel) {
-				return this.videokernel.seek(seconds);
-			} else {
-				Log.error(this.tag, 'videokernel is not already, must init player');
-			}
-		}
-		/**
-   * refresh kernel
-   * @memberof kernel
-   */
-
-	}, {
-		key: 'refresh',
-		value: function refresh() {
-			if (!this.videokernel) {
-				return Log.error(this.tag, 'videokernel is not already, must init player');
-			}
-			this.videokernel.refresh();
-		}
-		/**
-   * get video duration
-   * @memberof kernel
-   */
-
-	}, {
-		key: 'currentTime',
-		get: function get() {
-			if (this.videokernel) {
-				return this.video.currentTime;
-			}
-			return 0;
-		}
-	}, {
-		key: 'duration',
-		get: function get() {
-			return this.video.duration;
-		}
-		/**
-   * get video volume
-   * @memberof kernel
-   */
-
-	}, {
-		key: 'volume',
-		get: function get() {
-			return this.video.volume;
-		}
-		/**
-  * set video volume
-  * @memberof kernel
-  */
-		,
-		set: function set(value) {
-			this.video.volume = value;
-		}
-		/**
-   * get video muted
-   * @memberof kernel
-   */
-
-	}, {
-		key: 'muted',
-		get: function get() {
-			return this.video.muted;
-		}
-		/**
-   * set video muted
-   * @memberof kernel
-   */
-		,
-		set: function set(muted) {
-			this.video.muted = muted;
-		}
-		/**
-  * get video buffer
-  * @memberof kernel
-  */
-
-	}, {
-		key: 'buffered',
-		get: function get() {
-			return this.video.buffered;
-		}
-	}]);
-
-	return Kernel;
+  return ChimeeKernel;
 }(CustEvent);
 
-return Kernel;
+return ChimeeKernel;
 
 })));
