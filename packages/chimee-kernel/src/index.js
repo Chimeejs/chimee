@@ -103,7 +103,7 @@ export default class ChimeeKernel extends CustEvent {
   }
 
   errorLog(...args: Array<string>) {
-    this.emit('error', new Error(args[0] || 'We have bump into a kernel error'));
+    this.emit('error', new Error(args[0]));
     return Log.error(LOG_TAG, ...args);
   }
 
@@ -113,6 +113,7 @@ export default class ChimeeKernel extends CustEvent {
 
   bindEvents(videoKernel: VideoKernel, remove: boolean = false) {
     kernelEvents.forEach(eventName => {
+      /* istanbul ignore next  */
       // $FlowFixMe: we have make sure it's legal now
       videoKernel[remove ? 'off' : 'on'](eventName, ({ data } = {}) => {
         this.emit(eventName, data);

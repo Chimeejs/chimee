@@ -1,14 +1,19 @@
 import ChimeeKernel from '../src/index';
 import NativeVideoKernel from '../src/native/index';
 import { Log } from 'chimee-helper';
+import ChimeeKernelFlv from 'chimee-kernel-flv';
 
 describe('chimee-kernel index.js', () => {
   let videoElement;
+  let originURLrevoke;
   beforeEach(() => {
     videoElement = document.createElement('video');
+    originURLrevoke = global.URL.revokeObjectURL;
+    global.URL.revokeObjectURL = () => {};
   });
   afterEach(() => {
     videoElement = null;
+    global.URL.revokeObjectURL = originURLrevoke;
   });
   test('normal create', () => {
     const config = {
@@ -113,5 +118,112 @@ describe('chimee-kernel index.js', () => {
       kernel.videoKernel.emit('error', 'test');
       expect(fn).toHaveBeenCalledTimes(1);
     });
+    test('getMp4Kernel, provide nothing and got native', () => {
+      const videoKernel = kernel.getMp4Kernel();
+      expect(videoKernel).toBe(NativeVideoKernel);
+    });
+    test('getMp4Kernel, provide illegal class and got native', () => {
+      const videoKernel = kernel.getMp4Kernel({});
+      expect(videoKernel).toBe(NativeVideoKernel);
+    });
+    test('getMp4Kernel, provide legal class and got native', () => {
+      class MP4 {
+        static isSupport() {
+          return false;
+        }
+      }
+      const videoKernel = kernel.getMp4Kernel(MP4);
+      expect(videoKernel).toBe(NativeVideoKernel);
+    });
+    test('getMp4Kernel, provide legal class and got mp4', () => {
+      class MP4 {
+        static isSupport() {
+          return true;
+        }
+      }
+      const videoKernel = kernel.getMp4Kernel(MP4);
+      expect(videoKernel).toBe(MP4);
+    });
+  });
+  test('flv create', () => {
+    const config = {
+      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+      box: 'flv',
+      isLive: false,
+      preset: {
+        flv: ChimeeKernelFlv,
+      },
+      presetConfig: {},
+    };
+    const kernel = new ChimeeKernel(videoElement, config);
+    expect(kernel.videoElement).toBe(videoElement);
+    expect(kernel.box).toBe('flv');
+    expect(kernel.videoKernel instanceof ChimeeKernelFlv).toBe(true);
+    expect(kernel.config).toEqual(config);
+    expect(() => kernel.destroy()).not.toThrow();
+  });
+  test('mp4 create', () => {
+    const config = {
+      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+      box: 'mp4',
+      isLive: false,
+      preset: {},
+      presetConfig: {},
+    };
+    const kernel = new ChimeeKernel(videoElement, config);
+    expect(kernel.videoElement).toBe(videoElement);
+    expect(kernel.box).toBe('native');
+    expect(kernel.videoKernel instanceof NativeVideoKernel).toBe(true);
+    expect(kernel.config).toEqual(config);
+    expect(() => kernel.destroy()).not.toThrow();
+  });
+  test('not support box', () => {
+    const config = {
+      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+      box: 'hahah',
+      isLive: false,
+      preset: {},
+      presetConfig: {},
+    };
+    expect(() => new ChimeeKernel(videoElement, config)).toThrow('We currently do not support box hahah, please contact us through https://github.com/Chimeejs/chimee/issues.');
+  });
+  test('auto box detect', () => {
+    const config = {
+      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+      isLive: false,
+      preset: {},
+      presetConfig: {},
+    };
+    const kernel = new ChimeeKernel(videoElement, config);
+    expect(kernel.videoElement).toBe(videoElement);
+    expect(kernel.box).toBe('native');
+    expect(kernel.videoKernel instanceof NativeVideoKernel).toBe(true);
+    expect(() => kernel.destroy()).not.toThrow();
+  });
+  test('auto box detect', () => {
+    const config = {
+      src: 'http://cdn.toxicjohann.com/lostStar',
+      isLive: false,
+      preset: {},
+      presetConfig: {},
+    };
+    const kernel = new ChimeeKernel(videoElement, config);
+    expect(kernel.videoElement).toBe(videoElement);
+    expect(kernel.box).toBe('native');
+    expect(kernel.videoKernel instanceof NativeVideoKernel).toBe(true);
+    expect(() => kernel.destroy()).not.toThrow();
+  });
+  test('must start with a video element', () => {
+    expect(() => new ChimeeKernel()).toThrow('You must pass in an video element to the chimee-kernel');
+  });
+  test('must pass in with legal videoKernel', () => {
+    const config = {
+      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+      box: 'flv',
+      isLive: false,
+      preset: {},
+      presetConfig: {},
+    };
+    expect(() => new ChimeeKernel(videoElement, config)).toThrow("We can't find video kernel for flv. Please check your config and make sure it's installed or provided");
   });
 });

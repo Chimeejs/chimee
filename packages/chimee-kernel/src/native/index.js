@@ -4,6 +4,7 @@ export default class NativeVideoKernel extends CustEvent {
   video: HTMLVideoElement;
   config: KernelConfig;
   customConfig: Object;
+  /* istanbul ignore next  */
   static isSupport() {
     return true;
   }
@@ -25,6 +26,7 @@ export default class NativeVideoKernel extends CustEvent {
   }
 
   destroy() {
+    /* istanbul ignore next  */
     if (isElement(this.video)) this.unload();
   }
 
