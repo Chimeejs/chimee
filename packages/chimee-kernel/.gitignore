@@ -60,3 +60,4 @@ typings/
 demo/dist/*
 .DS_Store
 package-lock.json
+lib/index.dev.js

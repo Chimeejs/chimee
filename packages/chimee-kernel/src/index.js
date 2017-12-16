@@ -1,230 +1,156 @@
-import { Log } from 'chimee-helper';
-import { CustEvent, isObject } from 'chimee-helper';
-import { isNumber, deepAssign } from 'chimee-helper';
-import Native from './native/index';
+// @flow
+import { Log, CustEvent, isNumber, deepAssign, isString, isFunction, isElement } from 'chimee-helper';
+import NativeVideoKernel from './native/index';
 import defaultConfig from './config';
-import $const from './const';
+
+const LOG_TAG = 'chimee-kernel';
+const kernelEvents = [ 'mediaInfo', 'heartbeat', 'error' ];
+const boxSuffixMap = {
+  flv: '.flv',
+  hls: '.m3u8',
+  mp4: '.mp4',
+};
 
 export default class Kernel extends CustEvent {
-	/**
+  box: string;
+  boxConfig: Object;
+  config: KernelConfig;
+  videoElement: HTMLVideoElement;
+  videoKernel: VideoKernel;
+  VERSION: string;
+  VERSION = process.env.KERNEL_VERSION;
+  /**
 	 * kernelWrapper
 	 * @param {any} wrap videoElement
 	 * @param {any} option
 	 * @class kernel
 	 */
-	constructor (videoElement, config) {
-		super();
-		this.tag = 'kernel';
-		this.config = deepAssign({}, defaultConfig, config);
-		this.video = videoElement;
-		this.videokernel = this.selectKernel();
-		this.bindEvents(this.videokernel, this.video);
-	}
+  constructor(videoElement: HTMLVideoElement, config: KernelConfig) {
+    super();
+    if (!isElement(videoElement)) throw new Error('You must pass in an video element to the chimee-kernel');
+    // copy and maintain only one config for chimee-kernel
+    // actually kernel is disposable in most situation nowaday
+    this.config = deepAssign({}, defaultConfig, config);
+    this.videoElement = videoElement;
+    this.initVideoKernel();
+    this.bindEvents(this.videoKernel);
+  }
 
-	/**
-	 * bind events
-	 * @memberof kernel
-	 */
-	bindEvents (videokernel, video) {
-		if(!videokernel) {
-			return;
-		}
-		$const.kernelEvent.forEach((item)=>{
-			videokernel.on(item, (msg) => {
-				this.emit(item, msg.data);
-			});
-		});
-	}
+  destroy() {
+    this.bindEvents(this.videoKernel, true);
+    this.videoKernel.destroy();
+  }
 
-	/**
-	 * select kernel
-	 * @memberof kernel
-	 */
-	selectKernel () {
-		const config = this.config;
-		isObject(config.preset) || (config.preset = {});
-		let box = config.box;
-		const src = config.src.toLowerCase();
-		// 根据 src 判断 box
-		if(!box) {
-			if(src.indexOf('.flv') !== -1) {
-				box = 'flv';
-			} else if(src.indexOf('.m3u8') !== -1) {
-				box = 'hls';
-			} else if(src.indexOf('.mp4') !== -1) {
-				box = 'mp4';
-			} else {
-				// 如果 src 不存在或无法判断，继续采用 native 方案。
-				box = 'native';
-			}
-		}
-		// 如果是自定义 box，就检测 box 有没有安装
-		// 因为 native 和 mp4 都可以有原生方案支持，所以不用检测。
-		if((box !== 'native' && box !== 'mp4') && !config.preset[box]) {
-			Log.error(this.tag, `You want to play for ${box}, but you have not installed the kernel.`);
-			return;
-		}
-		if(box === 'mp4') {
-			if(!config.preset[box] || !config.preset[box].isSupport()) {
-				Log.verbose(this.tag, 'browser is not support mp4 decode, auto switch native player');
-				box = 'native';
-			}
-		}
+  initVideoKernel() {
+    const config = this.config;
+    const box = this.chooseBox(config);
+    this.box = box;
+    const VideoKernel = this.chooseVideoKernel(this.box, config.preset);
 
-		// 将盒子信息注入实例用于后期比对
-		this.box = box;
+    if (!isFunction(VideoKernel)) throw new Error(`We can't find video kernel for ${box}. Please check your config and make sure it's installed or provided`);
 
-		// 将 kernel 中的相关的 presetConfig 取出
-		// 写入本实例的配置中
-		// 但其实这种方式感觉不是很好，因为这很容易有重复定义的问题
-		const boxConfig = config.presetConfig[box] || {};
-		deepAssign(config, boxConfig);
+    const customConfig = config.presetConfig[this.box] || {};
 
-		// 调用各个 box
-		switch(box) {
-			case 'native':
-				return new Native(this.video, config);
-			case 'mp4':
-			case 'flv':
-			case 'hls':
-				return new config.preset[box](this.video, config);
-			default:
-				Log.error(this.tag, 'not mactch any player, please check your config');
-				return;
-		}
-	}
+    // TODO: nowaday, kernels all get config from one config
+    // it's not a good way, because custom config may override kernel config
+    // so we may remove this code later
+    deepAssign(config, customConfig);
 
-	/**
-	 * select attachMedia
-	 * @memberof kernel
-	 */
-	attachMedia () {
-		if(!this.videokernel) {
-			return Log.error(this.tag, 'videokernel is not already, must init player');
-		}
+    this.videoKernel = new VideoKernel(this.videoElement, config, customConfig);
+  }
 
-		this.videokernel.attachMedia();
-	}
-	/**
-	 * load source
-	 * @param {string} src 
-	 * @memberof kernel
-	 */
-	load (src) {
-		this.config.src = src || this.config.src;
-		if(!this.videokernel || !this.config.src) {
-			return Log.error(this.tag, 'videokernel is not already, must init player');
-		}
+  // return the config box
+  // or choose the right one according to the src
+  chooseBox({ src, box }: { src: string, box: string }): string {
+    if (isString(box) && box) return box;
+    src = src.toLowerCase();
+    for (const key in boxSuffixMap) {
+      const suffix = boxSuffixMap[key];
+      if (src.indexOf(suffix) > -1) return key;
+    }
+    return 'native';
+  }
 
-		this.videokernel.load(this.config.src);
-	}
-	/**
-	 * destory kernel
-	 * @memberof kernel
-	 */
-	destroy () {
-		if(!this.videokernel) {
-			return Log.error(this.tag, 'videokernel is not exit');
-		}
+  // choose the right video kernel according to the box setting
+  chooseVideoKernel(box: string, preset: { [string]: Function }): VideoKernel {
+    switch (box) {
+      case 'native':
+        return NativeVideoKernel;
+      case 'mp4':
+        return this.getMp4Kernel(preset.mp4);
+      case 'flv':
+      case 'hls':
+        return preset[box];
+      default:
+        throw new Error(`We currently do not support box ${box}, please contact us through https://github.com/Chimeejs/chimee/issues.`);
+    }
+  }
 
-		this.videokernel.destroy();
-	}
-	/**
-	 * to play
-	 * @memberof kernel
-	 */
-	play () {
-		if(!this.videokernel) {
-			return Log.error(this.tag, 'videokernel is not already, must init player');
-		}
+  // fetch the legal mp4 kernel
+  // if it's not exist or not support
+  // we will fall back to the native video kernel
+  getMp4Kernel(mp4Kernel: VideoKernel | void): VideoKernel {
+    const hasLegalMp4Kernel = mp4Kernel && isFunction(mp4Kernel.isSupport);
+    // $FlowFixMe: we have make sure it's an kernel now
+    const supportMp4Kernel = hasLegalMp4Kernel && mp4Kernel.isSupport();
+    // $FlowFixMe: we have make sure it's an kernel now
+    if (supportMp4Kernel) return mp4Kernel;
+    if (hasLegalMp4Kernel) this.warnLog('mp4 decode is not support in this browser, we will switch to the native video kernel');
+    this.box = 'native';
+    return NativeVideoKernel;
+  }
 
-		this.videokernel.play();
-	}
-	/**
-	 * pause
-	 * @memberof kernel
-	 */
-	pause () {
-		if(!this.videokernel || !this.config.src) {
-			return Log.error(this.tag, 'videokernel is not already, must init player');
-		}
-		this.videokernel.pause();
-	}
-	/**
-	 * get video currentTime
-	 * @memberof kernel
-	 */
-	get currentTime () {
-		if (this.videokernel) {
-			return this.video.currentTime;
-		}
-		return 0;
-	}
-	/**
-	 * seek to a point
-	 * @memberof kernel
-	 */
-	seek (seconds) {
-		if (!isNumber(seconds)) {
-			Log.error(this.tag, 'seek params must be a number');
-			return;
-		}
-		if(this.videokernel) {
-			return this.videokernel.seek(seconds);
-		} else {
-			Log.error(this.tag, 'videokernel is not already, must init player');
-		}
-	}
-	/**
+  errorLog(...args: Array<string>) {
+    this.emit('error', new Error(args[0] || 'We have bump into a kernel error'));
+    return Log.error(LOG_TAG, ...args);
+  }
+
+  warnLog(...args: Array<string>) {
+    return Log.warn(LOG_TAG, ...args);
+  }
+
+  bindEvents(videoKernel: VideoKernel, remove: boolean = false) {
+    kernelEvents.forEach(eventName => {
+      // $FlowFixMe: we have make sure it's legal now
+      videoKernel[remove ? 'off' : 'on'](eventName, ({ data } = {}) => {
+        this.emit(eventName, data);
+      });
+    });
+  }
+
+  attachMedia() {
+    this.videoKernel.attachMedia();
+  }
+
+  load(src: string = this.config.src) {
+    this.config.src = src;
+    this.videoKernel.load(src);
+  }
+
+  play() {
+    this.videoKernel.play();
+  }
+
+  pause() {
+    this.videoKernel.pause();
+  }
+
+  get currentTime(): number {
+    return this.videoElement.currentTime || 0;
+  }
+
+  seek(seconds: number) {
+    if (!isNumber(seconds)) {
+      this.errorLog(`When you try to seek, you must offer us a number, but not ${typeof seconds}`);
+      return;
+    }
+    this.videoKernel.seek(seconds);
+  }
+  /**
 	 * refresh kernel
 	 * @memberof kernel
 	 */
-	refresh () {
-		if(!this.videokernel) {
-			return Log.error(this.tag, 'videokernel is not already, must init player');
-		}
-		this.videokernel.refresh();
-	}
-	/**
-	 * get video duration
-	 * @memberof kernel
-	 */
-	get duration () {
-		return this.video.duration;
-	}
-	/**
-	 * get video volume
-	 * @memberof kernel
-	 */
-	get volume () {
-		return this.video.volume;
-	}
-	 /**
-	 * set video volume
-	 * @memberof kernel
-	 */
-	set volume (value) {
-		this.video.volume = value;
-	}
-	/**
-	 * get video muted
-	 * @memberof kernel
-	 */
-	get muted () {
-		return this.video.muted;
-	}
-	/**
-	 * set video muted
-	 * @memberof kernel
-	 */
-	set muted (muted) {
-		this.video.muted = muted;
-	}
-	 /**
-	 * get video buffer
-	 * @memberof kernel
-	 */
-	get buffered () {
-		return this.video.buffered;
-	}
+  refresh() {
+    this.videoKernel.refresh();
+  }
 }

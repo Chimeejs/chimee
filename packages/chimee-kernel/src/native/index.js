@@ -7,14 +7,14 @@ import { deepAssign } from 'chimee-helper';
  * @export
  * @class Native
  */
-export default class Native extends CustEvent {
+export default class NativeVideoKernel extends CustEvent {
   /**
    * Creates an instance of Native.
    * @param {any} videodom video dom
-   * @param {any} config 
+   * @param {any} config
    * @memberof Native
    */
-  constructor (videodom, config) {
+  constructor(videodom, config) {
     super();
     this.video = videodom;
     this.box = 'native';
@@ -23,7 +23,7 @@ export default class Native extends CustEvent {
     this.bindEvents();
   }
 
-  internalPropertyHandle () {
+  internalPropertyHandle() {
     if (!Object.getOwnPropertyDescriptor) {
       return;
     }
@@ -34,17 +34,17 @@ export default class Native extends CustEvent {
       get: () => {
         return time.get.call(_this.video);
       },
-      set: (t) => {
+      set: t => {
         if (!_this.currentTimeLock) {
           throw new Error('can not set currentTime by youself');
         } else {
           return time.set.call(_this.video, t);
         }
-      }
+      },
     });
   }
 
-  bindEvents () {
+  bindEvents() {
     if (this.video && this.config.lockInternalProperty) {
       this.video.addEventListener('canplay', () => {
         this.internalPropertyHandle();
@@ -52,39 +52,39 @@ export default class Native extends CustEvent {
     }
   }
 
-  load (src) {
+  load(src) {
     this.config.src = src || this.config.src;
     this.video.setAttribute('src', this.config.src);
   }
 
-  unload () {
+  unload() {
     this.video.src = '';
     this.video.removeAttribute('src');
   }
 
-  destroy () {
+  destroy() {
     if (this.video) {
-        this.unload();
+      this.unload();
     }
   }
 
-  play () {
+  play() {
     return this.video.play();
   }
 
-  pause () {
+  pause() {
     return this.video.pause();
   }
 
-  refresh () {
+  refresh() {
     this.video.src = this.config.src;
   }
 
-  attachMedia () {
+  attachMedia() {
 
   }
 
-  seek (seconds) {
+  seek(seconds) {
     this.currentTimeLock = true;
     this.video.currentTime = seconds;
     this.currentTimeLock = false;
