@@ -12,11 +12,9 @@ declare type KernelConfig = {
 
 declare export class VideoKernel extends Custevent {
   static isSupport(): boolean;
-  constructor(videoElement: HTMLVideoElement, config: Object, boxConfig: Object): void;
-  box: string;
+  constructor(videoElement: HTMLVideoElement, config: Object, customConfig: Object): void;
   video: HTMLVideoElement;
   config: Object;
-  currentTime: number;
   load(src: string): void;
   unload(): void;
   play(): void;

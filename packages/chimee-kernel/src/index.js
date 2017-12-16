@@ -75,6 +75,7 @@ export default class Kernel extends CustEvent {
   chooseVideoKernel(box: string, preset: { [string]: Function }): VideoKernel {
     switch (box) {
       case 'native':
+        // $FlowFixMe: it's the same as videoKernel
         return NativeVideoKernel;
       case 'mp4':
         return this.getMp4Kernel(preset.mp4);
@@ -97,6 +98,7 @@ export default class Kernel extends CustEvent {
     if (supportMp4Kernel) return mp4Kernel;
     if (hasLegalMp4Kernel) this.warnLog('mp4 decode is not support in this browser, we will switch to the native video kernel');
     this.box = 'native';
+    // $FlowFixMe: it's the same as videoKernel
     return NativeVideoKernel;
   }
 
@@ -146,10 +148,6 @@ export default class Kernel extends CustEvent {
     }
     this.videoKernel.seek(seconds);
   }
-  /**
-	 * refresh kernel
-	 * @memberof kernel
-	 */
   refresh() {
     this.videoKernel.refresh();
   }

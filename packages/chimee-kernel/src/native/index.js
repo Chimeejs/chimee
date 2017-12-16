@@ -1,60 +1,22 @@
-import { CustEvent } from 'chimee-helper';
-import defaultConfig from './config';
-import { deepAssign } from 'chimee-helper';
-/**
- * native player
- *
- * @export
- * @class Native
- */
+// @flow
+import { CustEvent, isElement } from 'chimee-helper';
 export default class NativeVideoKernel extends CustEvent {
-  /**
-   * Creates an instance of Native.
-   * @param {any} videodom video dom
-   * @param {any} config
-   * @memberof Native
-   */
-  constructor(videodom, config) {
+  video: HTMLVideoElement;
+  config: KernelConfig;
+  customConfig: Object;
+  static isSupport() {
+    return true;
+  }
+  constructor(videoElement: HTMLVideoElement, config: KernelConfig, customConfig: Object) {
     super();
-    this.video = videodom;
-    this.box = 'native';
-    this.config = defaultConfig;
-    deepAssign(this.config, config);
-    this.bindEvents();
+    if (!isElement(videoElement)) throw new Error(`You must pass in an legal video element but not ${typeof videoElement}`);
+    this.video = videoElement;
+    this.config = config;
+    this.customConfig = customConfig;
   }
 
-  internalPropertyHandle() {
-    if (!Object.getOwnPropertyDescriptor) {
-      return;
-    }
-    const _this = this;
-    const time = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');
-
-    Object.defineProperty(this.video, 'currentTime', {
-      get: () => {
-        return time.get.call(_this.video);
-      },
-      set: t => {
-        if (!_this.currentTimeLock) {
-          throw new Error('can not set currentTime by youself');
-        } else {
-          return time.set.call(_this.video, t);
-        }
-      },
-    });
-  }
-
-  bindEvents() {
-    if (this.video && this.config.lockInternalProperty) {
-      this.video.addEventListener('canplay', () => {
-        this.internalPropertyHandle();
-      });
-    }
-  }
-
-  load(src) {
-    this.config.src = src || this.config.src;
-    this.video.setAttribute('src', this.config.src);
+  load(src: string) {
+    this.video.setAttribute('src', src);
   }
 
   unload() {
@@ -63,9 +25,7 @@ export default class NativeVideoKernel extends CustEvent {
   }
 
   destroy() {
-    if (this.video) {
-      this.unload();
-    }
+    if (isElement(this.video)) this.unload();
   }
 
   play() {
@@ -80,13 +40,9 @@ export default class NativeVideoKernel extends CustEvent {
     this.video.src = this.config.src;
   }
 
-  attachMedia() {
+  attachMedia() {}
 
-  }
-
-  seek(seconds) {
-    this.currentTimeLock = true;
+  seek(seconds: number) {
     this.video.currentTime = seconds;
-    this.currentTimeLock = false;
   }
 }

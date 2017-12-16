@@ -14,7 +14,8 @@
     "b-min": "rollup -c build/rollup.config.min.js",
     "start": "rollup -c build/rollup.config.dev.js -w",
     "lint": "eslint . --fix && flow",
-    "flow": "flow"
+    "flow": "flow",
+    "test": "flow"
   },
   "repository": {
     "type": "git",
