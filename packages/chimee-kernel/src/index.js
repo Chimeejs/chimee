@@ -11,7 +11,7 @@ const boxSuffixMap = {
   mp4: '.mp4',
 };
 
-export default class Kernel extends CustEvent {
+export default class ChimeeKernel extends CustEvent {
   box: string;
   boxConfig: Object;
   config: KernelConfig;
@@ -126,7 +126,6 @@ export default class Kernel extends CustEvent {
 
   load(src: string = this.config.src) {
     this.config.src = src;
-    console.log(src);
     this.videoKernel.load(src);
   }
 
