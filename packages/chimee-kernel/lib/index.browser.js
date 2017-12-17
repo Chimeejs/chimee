@@ -1,6 +1,6 @@
 
 /**
- * chimee-kernel v1.3.0
+ * chimee-kernel v1.3.1
  * (c) 2017 songguangyu
  * Released under MIT
  */
@@ -4601,7 +4601,7 @@ var NodeWrap = function () {
 }();
 
 /**
- * chimee-helper v0.2.9
+ * chimee-helper v0.2.10
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -4704,7 +4704,7 @@ var ChimeeKernel = function (_CustEvent) {
 
     var _this = _possibleConstructorReturn(this, (ChimeeKernel.__proto__ || _Object$getPrototypeOf(ChimeeKernel)).call(this));
 
-    _this.VERSION = '1.3.0';
+    _this.VERSION = '1.3.1';
 
     if (!isElement(videoElement)) throw new Error('You must pass in an video element to the chimee-kernel');
     // copy and maintain only one config for chimee-kernel
