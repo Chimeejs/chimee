@@ -1,6 +1,6 @@
 {
   "name": "chimee",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "a video-player aims to bring wonderful experience on browser",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
