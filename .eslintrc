@@ -1,10 +1,6 @@
 {
   "globals": {
-    "process": true,
-    "test": true,
-    "expect": true,
-    "jest": true,
-    "describe": true
+    "process": true
   },
   "env": {
     "browser": true,

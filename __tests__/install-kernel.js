@@ -199,8 +199,9 @@ describe('_createkernel', () => {
     expect(chimee.presetConfig.flv).toEqual(flvConfig);
   });
   test('array<SingleKernelConfig> kernels, handler is function without name', () => {
+    class flv extends chimeeKernelFlv {}
     const flvConfig = {
-      handler: chimeeKernelFlv,
+      handler: flv,
       stashSize: 77,
     };
     const chimee = new Chimee({
@@ -215,7 +216,7 @@ describe('_createkernel', () => {
       kernels: [ flvConfig ],
     });
     expect(Log.data.warn.length).toBe(0);
-    expect(chimee.presetConfig.Flv).toEqual(flvConfig);
+    expect(chimee.presetConfig.flv).toEqual(flvConfig);
   });
   test('object<SingleKernelConfig> kernels, handler is string', () => {
     const flvConfig = {
@@ -253,9 +254,9 @@ describe('_createkernel', () => {
       // dom容器
       wrapper: document.createElement('div'),
       kernels: {
-        flv: hlsConfig,
+        hls: hlsConfig,
       },
-    })).not.toThrow();
+    })).toThrow("We can't find video kernel for flv. Please check your config and make sure it's installed or provided");
     expect(Log.data.warn[0]).toEqual([ 'chimee', 'You have not installed kernel for hls.' ]);
   });
   test('object<SingleKernelConfig> kernels, handler is error type', () => {
@@ -275,7 +276,7 @@ describe('_createkernel', () => {
       kernels: {
         flv: flvConfig,
       },
-    })).not.toThrow();
+    })).toThrow("We can't find video kernel for flv. Please check your config and make sure it's installed or provided");
     expect(Log.data.warn[0]).toEqual([ 'chimee', "When you pass in an SingleKernelConfig in Object, you must clarify it's handler, we only support handler in string or function but not number" ]);
   });
   test('error type in object kernels', () => {

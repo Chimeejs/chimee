@@ -1,5 +1,5 @@
 const player = new window.Chimee({
-  src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/79_3041054cc65-ae8c-4b63-8937-5ccb05f79720.m3u8',
+  src: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8',
   // 编解码容器
   box: 'hls', // flv hls mp4
   // dom容器

@@ -302,7 +302,7 @@ export default class Dispatcher {
               const {
                 errmsg: message,
               } = evt.data;
-              Log.error("chimee's silent bump into a kernel error", message);
+              Log.error("chimee's silentload bump into a kernel error", message);
               error = new Error(message);
             } else {
               error = !isEmpty(video.error)

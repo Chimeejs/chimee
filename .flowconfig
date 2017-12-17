@@ -6,6 +6,10 @@
 .*/src/.*
 [libs]
 flow
+[lints]
+all=warn
+untyped-type-import=error
+sketchy-null-bool=off
 [options]
 unsafe.enable_getters_and_setters=true
 module.name_mapper='^helper/\(.*\)$' -> '<PROJECT_ROOT>/src/helper/\1'

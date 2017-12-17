@@ -109,7 +109,7 @@ declare module 'chimee-helper' {
     appendTo (childEls: Node): NodeWrap;
     text (val: string): NodeWrap;
     html (html: string): NodeWrap;
-    attr  (name: string, val: string | number | boolean): NodeWrap;
+    attr (name: string, val: string | number | boolean): NodeWrap;
     data (key: string, val?: string | number | boolean | void): NodeWrap;
     css (key: string, val?: string): NodeWrap;
     addClass (cls: string): NodeWrap;
