@@ -242,7 +242,7 @@ describe('$silentLoad', () => {
     expect(player.__dispatcher.kernel).toBe(oldKernel);
     expect(player.__dispatcher.dom.videoElement).toBe(oldVideo);
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
-    expect(Log.data.error).toEqual([[ "chimee's silent bump into a kernel error", 'test error' ]]);
+    expect(Log.data.error).toEqual([[ "chimee's silentload bump into a kernel error", 'test error' ]]);
   });
   test('error in repeat times', async () => {
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', { repeatTimes: 1 });
