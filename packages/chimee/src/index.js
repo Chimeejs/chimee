@@ -9,7 +9,7 @@ import GlobalConfig from 'config/global';
 export default class Chimee extends VideoWrapper {
   __id: string;
   __dispatcher: Dispatcher;
-  __kernel: Kernel;
+  __kernel: ChimeeKernel;
   __bus: Bus;
   ready: Promise<*>;
   readySync: boolean;

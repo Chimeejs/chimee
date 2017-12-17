@@ -1,6 +1,6 @@
 // @flow
 import { isString, camelize, deepAssign, isObject, isEmpty, isArray, isFunction, transObjectAttrIntoArray, isPromise, Log, runRejectableQueue, addEvent, removeEvent, isError, deepClone } from 'chimee-helper';
-import Kernel from 'chimee-kernel';
+import ChimeeKernel from 'chimee-kernel';
 import Bus from './bus';
 import Plugin from './plugin';
 import Dom from './dom';
@@ -37,7 +37,7 @@ export default class Dispatcher {
   plugins: plugins;
   bus: Bus;
   order: Array<string>;
-  kernel: Kernel;
+  kernel: ChimeeKernel;
   dom: Dom;
   vm: Chimee;
   ready: Promise<*>;
@@ -48,7 +48,7 @@ export default class Dispatcher {
   zIndexMap: Object;
   changeWatchable: boolean;
   kernelEventHandlerList: Array<Function>;
-  _silentLoadTempKernel: Kernel;
+  _silentLoadTempKernel: ChimeeKernel | void;
   /**
    * all plugins instance set
    * @type {Object}
@@ -408,7 +408,7 @@ export default class Dispatcher {
   }
   switchKernel({ video, kernel, config }: {
     video: HTMLVideoElement,
-    kernel: Kernel,
+    kernel: ChimeeKernel,
     config: {
       src: string,
       isLive: boolean,
@@ -608,10 +608,10 @@ export default class Dispatcher {
     }
     config.preset = Object.assign(newPreset, preset);
     config.presetConfig = presetConfig;
-    const kernel = new Kernel(video, config);
+    const kernel = new ChimeeKernel(video, config);
     return kernel;
   }
-  _bindKernelEvents(kernel: Kernel, remove?: boolean = false) {
+  _bindKernelEvents(kernel: ChimeeKernel, remove?: boolean = false) {
     kernelEvents.forEach((key, index) => {
       if (!remove) {
         const fn = (...args: any) => this.bus.triggerSync(key, ...args);

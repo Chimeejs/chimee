@@ -45,8 +45,7 @@
   "homepage": "https://github.com/Chimeejs/chimee#readme",
   "dependencies": {
     "babel-runtime": "^6.26.0",
-    "chimee-helper": "^0.2.9",
-    "chimee-kernel": "^1.3.0",
+    "chimee-helper": "^0.2.10",
     "es-fullscreen": "^0.2.1",
     "toxic-decorators": "^0.3.8"
   },
@@ -61,6 +60,7 @@
     "babel-preset-es2015-rollup": "^3.0.0",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-0": "^6.24.1",
+    "chimee-kernel": "^1.3.2",
     "chimee-kernel-flv": "^1.3.0",
     "chimee-kernel-hls": "^1.0.7",
     "chimee-plugin-center-state": "0.0.8",
