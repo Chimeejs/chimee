@@ -3,10 +3,10 @@ import type Dispatcher from 'dispatcher/index';
 import type Bus from 'dispatcher/bus';
 import type Dom from 'dispatcher/dom';
 import type Chimee from '../src/index';
-import type Kernel from 'kernel/index';
 import type VideoConfig from 'dispatcher/video-config';
 import type VideoWrapper from 'dispatcher/video-wrapper';
 import type GlobalConfig from 'global/config';
+import type ChimeeKernel from 'chimee-kernel';
 declare type PluginConfig = {
   id: string,
   name: string,
