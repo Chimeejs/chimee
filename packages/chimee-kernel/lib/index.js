@@ -1,6 +1,6 @@
 
 /**
- * chimee-kernel v1.3.1
+ * chimee-kernel v1.3.2
  * (c) 2017 songguangyu
  * Released under MIT
  */
@@ -115,7 +115,7 @@ var ChimeeKernel = function (_CustEvent) {
 
     var _this = _possibleConstructorReturn(this, (ChimeeKernel.__proto__ || _Object$getPrototypeOf(ChimeeKernel)).call(this));
 
-    _this.VERSION = '1.3.1';
+    _this.VERSION = '1.3.2';
 
     if (!chimeeHelper.isElement(videoElement)) throw new Error('You must pass in an video element to the chimee-kernel');
     // copy and maintain only one config for chimee-kernel
