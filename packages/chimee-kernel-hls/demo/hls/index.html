@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>hls test demo</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Chimee Player Demo">
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" type="text/css" href="./index.css">
+</head>
+<body>
+  <header>
+      <h1>hls Demo</h1>
+  </header>
+	<video id="player" controls="controls" width="800" height="500" autoplay muted></video>
+</body>
+<script type="text/javascript" src="/node_modules/chimee-kernel/lib/index.browser.js"></script>
+<script type="text/javascript" src="../../lib/index.dev.js"></script>
+<script type="text/javascript" src="../base.js"></script>
+<script type="text/javascript">
+	// mp4 http://cdn.toxicjohann.com/lostStar.mp4
+	// hls http://yunxianchang.live.ujne7.com/vod-system-bj/44_176_20170224113626af3a75cd-3508-4bc3-b51f-366fca3c7e39.m3u8
+  
+	// flv直播 http://pf.live.360vcloud.net/live_customers3/6818c55761856069a0ce
+	// flv直播 http://flv.jia.360.cn/live_jia_public/_LC_RE_non_3605375765815007736131516144_BX.flv
+	// flv点播 http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv
+	// flv点播 http://yunxianchang.live.ujne7.com/vod-system-bj/TL2791e64b69ea0bea234c284c694986aa.flv
+  window.kernelConfig = {
+    src: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8',
+    box: 'hls',
+    isLive: false,
+    preset: {
+      hls: window.ChimeeKernelHls
+    }
+  };
+  window.start();
+</script>
+</html>
