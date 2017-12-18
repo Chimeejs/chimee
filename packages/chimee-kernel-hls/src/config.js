@@ -1,3 +1,4 @@
+// 考虑一下都废弃掉。。。。
 export default {
   type: 'vod',
   autoPlay: false,

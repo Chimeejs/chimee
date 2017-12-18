@@ -134,7 +134,7 @@ export default function(mode) {
       }),
       commonjs(),
       replace({
-        'process.env.PLAYER_VERSION': `'${version}'`,
+        'process.env.VERSION': `'${version}'`,
       }),
     ],
   };

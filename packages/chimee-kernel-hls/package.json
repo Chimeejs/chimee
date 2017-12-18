@@ -47,6 +47,7 @@
     "eslint-config-egg": "^5.1.1",
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-jest": "^21.5.0",
+    "flow-bin": "^0.61.0",
     "rollup": "^0.52.2",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.0.2",

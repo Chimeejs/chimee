@@ -1,19 +1,23 @@
+// @flow
 import HlsCore from 'hls.js';
 import { CustEvent } from 'chimee-helper';
 import defaultConfig from './config';
 import { deepAssign } from 'chimee-helper';
 
+const LOG_TAG = 'chimee-kernel-hls';
+
 export default class Hls extends CustEvent {
+  version: string;
+  video: HTMLVideoElement;
+  config: Object;
+  customConfig: Object;
+  version = process.env.VERSION;
 
   static isSupport() {
     return HlsCore.isSupported();
   }
 
-  static get version() {
-    return __VERSION__;
-  }
-
-  constructor(videodom, config) {
+  constructor(videodom, config, customConfig) {
     super();
     this.tag = 'HLS-player';
     this.video = videodom;
