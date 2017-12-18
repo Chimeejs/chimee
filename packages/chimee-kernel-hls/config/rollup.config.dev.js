@@ -7,15 +7,15 @@ config.plugins.push(
   serve({
     open: false,
     verbose: true,
-    contentBase: "",
+    contentBase: '',
     historyApiFallback: false,
     host: 'localhost',
-    port: 10002
+    port: 10002,
   }),
   livereload()
 );
 export default Object.assign(config, {
   format: 'umd',
   dest: 'lib/index.dev.js',
-  moduleName: 'chimeeKernelHls'
+  moduleName: 'chimeeKernelHls',
 });

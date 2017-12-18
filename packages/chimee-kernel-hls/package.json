@@ -12,7 +12,8 @@
     "b-es": "rollup -c config/rollup.config.es.js",
     "b-umd": "rollup -c config/rollup.config.umd.js",
     "b-min": "rollup -c config/rollup.config.min.js",
-    "start": "rollup -c config/rollup.config.dev.js -w"
+    "start": "rollup -c config/rollup.config.dev.js -w",
+    "lint": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "eslint": "^4.0.0",
+    "eslint-config-egg": "^5.1.1",
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-jest": "^21.5.0",
     "rollup": "^0.52.2",

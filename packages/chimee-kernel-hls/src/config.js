@@ -4,5 +4,5 @@ export default {
   box: 'hls',
   lockInternalProperty: false,
   debug: true,
-  enableWorker: true
+  enableWorker: true,
 };
