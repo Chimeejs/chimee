@@ -1,62 +1,140 @@
+const { version, name, author, license, dependencies } = require('../package.json');
+const banner = `
+/**
+ * ${name} v${version}
+ * (c) 2017 ${author}
+ * Released under ${license}
+ */
+`;
+import flow from 'rollup-plugin-flow-no-whitespace';
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
-
-const { version, name, author, license, dependencies } = require('../package.json');
 const babelConfig = {
   common: {
     presets: [
-      [ 'latest', { es2015: { modules: false } }],
+      'flow',
+      [ 'env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
+      'stage-0',
     ],
-    plugins: [ 'transform-runtime' ],
     exclude: 'node_modules/**',
+    plugins: [
+      'external-helpers',
+      'transform-decorators-legacy',
+      'transform-runtime',
+    ],
+    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false,
   },
   es: {
     presets: [
-      [ 'latest', { es2015: { modules: false } }],
+      'flow',
+      [ 'env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
+      'stage-0',
     ],
-    plugins: [ 'transform-runtime' ],
     exclude: 'node_modules/**',
+    plugins: [
+      'external-helpers',
+      'transform-decorators-legacy',
+      'transform-runtime',
+    ],
+    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false,
   },
   umd: {
-    presets: [ 'es2015-rollup' ],
-    plugins: [ 'transform-runtime' ],
+    presets: [
+      'flow',
+      [ 'env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
+      'stage-0',
+    ],
     exclude: 'node_modules/**',
+    plugins: [
+      'external-helpers',
+      'transform-decorators-legacy',
+      'transform-runtime',
+    ],
+    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false,
   },
   iife: {
-    presets: [ 'es2015-rollup', 'stage-0' ],
-    plugins: [ 'transform-decorators-legacy' ],
+    presets: [
+      'flow',
+      [ 'env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
+      'stage-0',
+    ],
     exclude: 'node_modules/**',
+    plugins: [
+      'external-helpers',
+      'transform-decorators-legacy',
+      'transform-runtime',
+    ],
+    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false,
   },
   min: {
-    presets: [ 'es2015-rollup' ],
+    presets: [
+      'flow',
+      [ 'env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
+      'stage-0',
+    ],
     exclude: 'node_modules/**',
-    plugins: [],
+    plugins: [
+      'external-helpers',
+      'transform-decorators-legacy',
+    ],
+    runtimeHelpers: true,
     babelrc: false,
   },
 };
 const externalRegExp = new RegExp(Object.keys(dependencies).join('|'));
 export default function(mode) {
   return {
-    entry: 'src/index.js',
+    input: 'src/index.js',
+    banner,
     external(id) {
       return !/min|umd|iife/.test(mode) && externalRegExp.test(id);
     },
     plugins: [
       babel(babelConfig[mode]),
-      resolve(),
+      flow(),
+      resolve({
+        customResolveOptions: {
+          moduleDirectory: [ 'src', 'node_modules' ],
+        },
+      }),
       commonjs(),
       replace({
-        __VERSION__: `'${version}'`,
+        'process.env.PLAYER_VERSION': `'${version}'`,
       }),
     ],
   };
