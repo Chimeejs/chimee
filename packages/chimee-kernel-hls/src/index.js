@@ -1,8 +1,7 @@
 // @flow
 import HlsCore from 'hls.js';
-import { CustEvent } from 'chimee-helper';
-import defaultConfig from './config';
-import { deepAssign } from 'chimee-helper';
+import { CustEvent, deepAssign, Log } from 'chimee-helper';
+import defaultCustomConfig from './custom-config.js';
 
 const LOG_TAG = 'chimee-kernel-hls';
 
@@ -12,84 +11,47 @@ export default class Hls extends CustEvent {
   config: Object;
   customConfig: Object;
   version = process.env.VERSION;
+  hlsKernel: any
 
   static isSupport() {
     return HlsCore.isSupported();
   }
 
-  constructor(videodom, config, customConfig) {
+  constructor(videoElement: HTMLVideoElement, config: Object, customConfig: Object) {
     super();
-    this.tag = 'HLS-player';
-    this.video = videodom;
-    this.box = 'hls';
-    this.config = deepAssign({}, defaultConfig, config);
-    this.hls = new HlsCore();
-    this.bindEvents(this.hls);
+    this.video = videoElement;
+    this.config = config;
+    this.customConfig = deepAssign({}, defaultCustomConfig, customConfig);
+    this.hlsKernel = new HlsCore(this.customConfig);
+    this.bindEvents();
     this.attachMedia();
   }
 
-  internalPropertyHandle() {
-    if (!Object.getOwnPropertyDescriptor) {
-      return;
-    }
-    const _this = this;
-    const time = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');
-
-    Object.defineProperty(this.video, 'currentTime', {
-    	get: () => {
-		    return time.get.call(_this.video);
-		  },
-      set: t => {
-        if (!_this.currentTimeLock) {
-          throw new Error('can not set currentTime by youself');
-        } else {
-          return time.set.call(_this.video, t);
-        }
-      },
-    });
-  }
-
-  bindEvents(hlsKernel) {
+  bindEvents(remove: boolean = false) {
+    const hlsKernel = this.hlsKernel;
     if (hlsKernel) {
-      hlsKernel.on(HlsCore.Events.ERROR, (event, data) => {
-        // this.emit(this.tag, data);
-      });
-
-      hlsKernel.on(HlsCore.Events.LEVEL, (event, data) => {
-
-      });
-    }
-    if (this.video && this.config.lockInternalProperty) {
-      this.video.addEventListener('canplay', () => {
-        this.internalPropertyHandle();
-      });
+      hlsKernel[remove ? 'off' : 'on'](HlsCore.Events.ERROR, this.hlsErrorHandler);
     }
   }
 
   load() {
-  	this.hls.loadSource(this.config.src);
+    return this.hlsKernel.loadSource(this.config.src);
   }
 
   attachMedia() {
-  	this.hls.attachMedia(this.video);
+    return this.hlsKernel.attachMedia(this.video);
   }
 
   play() {
-  	return this.video.play();
+    return this.video.play();
   }
 
   destroy() {
-  	return this.hls.destroy();
+    this.bindEvents(true);
+    return this.hlsKernel.destroy();
   }
 
-  seek(seconds) {
-  	this.currentTimeLock = true;
-    // throttle(this._seek.bind(this, seconds), 200, {leading: false});
-    this._seek(seconds);
-  	this.currentTimeLock = false;
-  }
-
-  _seek(seconds) {
+  seek(seconds: number) {
     this.video.currentTime = seconds;
   }
 
@@ -98,7 +60,12 @@ export default class Hls extends CustEvent {
   }
 
   refresh() {
-    this.hls.stopLoad();
-    this.hls.loadSource(this.config.src);
+    this.hlsKernel.stopLoad();
+    return this.hlsKernel.loadSource(this.config.src);
+  }
+
+  hlsErrorHandler(event: Event, data: Object) {
+    this.emit('error', data);
+    Log.error(LOG_TAG, JSON.stringify(data));
   }
 }

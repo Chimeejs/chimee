@@ -13,7 +13,8 @@
     "b-umd": "rollup -c config/rollup.config.umd.js",
     "b-min": "rollup -c config/rollup.config.min.js",
     "start": "rollup -c config/rollup.config.dev.js -w",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix && flow",
+    "flow": "flow"
   },
   "repository": {
     "type": "git",
