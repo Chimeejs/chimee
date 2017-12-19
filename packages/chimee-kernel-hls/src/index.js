@@ -8,7 +8,7 @@ const LOG_TAG = 'chimee-kernel-hls';
 export default class Hls extends CustEvent {
   version: string;
   video: HTMLVideoElement;
-  config: Object;
+  config: KernelConfig;
   customConfig: Object;
   version = process.env.VERSION;
   hlsKernel: any
@@ -17,7 +17,7 @@ export default class Hls extends CustEvent {
     return HlsCore.isSupported();
   }
 
-  constructor(videoElement: HTMLVideoElement, config: Object, customConfig: Object) {
+  constructor(videoElement: HTMLVideoElement, config: KernelConfig, customConfig: Object) {
     super();
     this.video = videoElement;
     this.config = config;
