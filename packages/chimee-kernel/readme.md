@@ -15,10 +15,9 @@ In chimee, we call these decoder as `VideoKernel`. As a `VideoKernel`, it should
 | isSupport   | A method to tell us whether the decoder can be runned in this browser | static method | none                                     | Must be a staic method |
 | constructor | The constructor of `VideoKernel`, we will passed in with three arguments, an HTMLVideoElement, an Object as `KernelConfig`, another Object as `CustomConfig` | method        | videoElement: HTMLVideoElement, kernelConfig: Object, customConfig: Object |                        |
 | load        | A method to load src                     | method        | src: string                              |                        |
-| unload      | A method to clear src attribute on the video element | method        | none                                     |                        |
 | play        | A method to play the vidoe               | method        | None                                     |                        |
 | pause       | A method to pause the playing            | method        | None                                     |                        |
-| refresh     | A method to reload the src               | method        | none                                     |                        |
+| refresh     | A method to reload the src               | method        | none                                     | not ready to use yet   |
 | attachMedia |                                          | method        | none                                     |                        |
 | seek        | A method to seek to a specific point     | method        | second: number                           |                        |
 | destroy     | A method which will be called when we destroy the kernel | method        | none                                     |                        |

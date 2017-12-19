@@ -20,14 +20,12 @@ export default class NativeVideoKernel extends CustEvent {
     this.video.setAttribute('src', src);
   }
 
-  unload() {
-    this.video.src = '';
-    this.video.removeAttribute('src');
-  }
-
   destroy() {
     /* istanbul ignore next  */
-    if (isElement(this.video)) this.unload();
+    if (isElement(this.video)) {
+      this.video.src = '';
+      this.video.removeAttribute('src');
+    }
   }
 
   play() {
