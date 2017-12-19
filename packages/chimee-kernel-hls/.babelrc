@@ -1,6 +1,20 @@
 {
- "presets": [
-    "latest"
+  "presets": [
+    "flow",
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": [
+            "last 2 versions",
+            "not ie <= 8"
+          ]
+        }
+      }
+    ],
+    "stage-0"
   ],
-  "plugins": []
+  "plugins": [
+    "transform-decorators-legacy"
+  ]
 }

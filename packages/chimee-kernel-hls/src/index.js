@@ -2,6 +2,7 @@
 import HlsCore from 'hls.js';
 import { CustEvent, deepAssign, Log } from 'chimee-helper';
 import defaultCustomConfig from './custom-config.js';
+import { autobind } from 'toxic-decorators';
 
 const LOG_TAG = 'chimee-kernel-hls';
 
@@ -9,7 +10,7 @@ export default class Hls extends CustEvent {
   version: string;
   video: HTMLVideoElement;
   config: KernelConfig;
-  customConfig: Object;
+  customConfig: CustomConfig;
   version = process.env.VERSION;
   hlsKernel: any
 
@@ -17,7 +18,7 @@ export default class Hls extends CustEvent {
     return HlsCore.isSupported();
   }
 
-  constructor(videoElement: HTMLVideoElement, config: KernelConfig, customConfig: Object) {
+  constructor(videoElement: HTMLVideoElement, config: KernelConfig, customConfig: CustomConfig) {
     super();
     this.video = videoElement;
     this.config = config;
@@ -64,8 +65,10 @@ export default class Hls extends CustEvent {
     return this.hlsKernel.loadSource(this.config.src);
   }
 
-  hlsErrorHandler(event: Event, data: Object) {
+  @autobind
+  hlsErrorHandler(event: string, data: Object) {
     this.emit('error', data);
-    Log.error(LOG_TAG, JSON.stringify(data));
+    this.emit(event, data);
+    Log.error(LOG_TAG + (event ? ' ' + event : ''), JSON.stringify(data, null, 2));
   }
 }

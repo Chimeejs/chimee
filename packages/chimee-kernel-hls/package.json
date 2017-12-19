@@ -14,7 +14,9 @@
     "b-min": "rollup -c build/rollup.config.min.js",
     "start": "rollup -c build/rollup.config.dev.js -w",
     "lint": "eslint . --fix && flow",
-    "flow": "flow"
+    "flow": "flow",
+    "test": "jest --coverage",
+    "unit": "jest --coverage --watch"
   },
   "repository": {
     "type": "git",
@@ -53,6 +55,7 @@
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-jest": "^21.5.0",
     "flow-bin": "^0.61.0",
+    "jest": "^22.0.1",
     "rollup": "^0.52.2",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.0.2",
@@ -63,6 +66,7 @@
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-serve": "^0.4.0",
     "rollup-plugin-uglify": "^2.0.1",
-    "rollup-watch": "^4.3.1"
+    "rollup-watch": "^4.3.1",
+    "toxic-decorators": "^0.3.8"
   }
 }
