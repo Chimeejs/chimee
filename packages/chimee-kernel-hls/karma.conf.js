@@ -1,4 +1,5 @@
 const path = require('path');
+process.env.CHROME_BIN = require('puppeteer').executablePath();
 const { version, name } = require('./package.json');
 const { camelize } = require('toxic-utils');
 
@@ -12,7 +13,9 @@ module.exports = function(config) {
     frameworks: [ 'mocha' ],
 
     // list of files / patterns to load in the browser
-    files: [ 'tests/index.js' ],
+    files: [
+      'tests/**/*.js',
+    ],
 
     // list of files to exclude
     exclude: [],
@@ -20,21 +23,47 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'tests/index.js': [ 'rollup', 'sourcemap' ],
+      'tests/**/*.js': [ 'rollup' ],
+      'src/**/*.js': [ 'coverage' ],
     },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: [ 'mocha', 'coverage-istanbul' ],
+    reporters: [ 'mocha', 'coverage-istanbul', 'progress', 'coverage' ],
 
     coverageIstanbulReporter: {
       reports: [ 'lcov', 'text-summary' ],
     },
 
+    coverageReporter: {
+      type: 'html',
+      dir: 'coverage/',
+    },
+
     rollupPreprocessor: {
       plugins: [
-        require('rollup-plugin-babel')(),
+        require('rollup-plugin-babel')({
+          presets: [
+            'flow',
+            [ 'env', {
+              modules: false,
+              targets: {
+                browsers: [ 'last 2 versions', 'not ie <= 8' ],
+              },
+            }],
+            'stage-0',
+          ],
+          exclude: 'node_modules/**',
+          plugins: [
+            'external-helpers',
+            'transform-decorators-legacy',
+            'transform-runtime',
+          ],
+          externalHelpers: true,
+          runtimeHelpers: true,
+          babelrc: false,
+        }),
         require('rollup-plugin-flow-no-whitespace')(),
         require('rollup-plugin-node-resolve')({
           customResolveOptions: {

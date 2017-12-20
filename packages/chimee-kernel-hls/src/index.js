@@ -1,6 +1,6 @@
 // @flow
 import HlsCore from 'hls.js';
-import { CustEvent, deepAssign, Log } from 'chimee-helper';
+import { CustEvent, deepAssign, Log, isElement, isObject } from 'chimee-helper';
 import defaultCustomConfig from './custom-config.js';
 import { autobind } from 'toxic-decorators';
 
@@ -18,8 +18,10 @@ export default class Hls extends CustEvent {
     return HlsCore.isSupported();
   }
 
-  constructor(videoElement: HTMLVideoElement, config: KernelConfig, customConfig: CustomConfig) {
+  constructor(videoElement: HTMLVideoElement, config: KernelConfig, customConfig: CustomConfig = {}) {
     super();
+    if (!isElement(videoElement)) throw new Error(`video element passed in ${LOG_TAG} must be a HTMLVideoElement, but not ${typeof videoElement}`);
+    if (!isObject(config)) throw new Error(`config of ${LOG_TAG} must be an Object but not ${typeof config}`);
     this.video = videoElement;
     this.config = config;
     this.customConfig = deepAssign({}, defaultCustomConfig, customConfig);
