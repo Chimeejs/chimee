@@ -58,3 +58,5 @@ typings/
 .env
 
 package-lock.json
+.DS_Store
+lib/index.dev.js

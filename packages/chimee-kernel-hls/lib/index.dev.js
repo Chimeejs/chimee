@@ -269,76 +269,6 @@ module.exports = { "default": getOwnPropertyDescriptor$1, __esModule: true };
 
 var _Object$getOwnPropertyDescriptor = unwrapExports(getOwnPropertyDescriptor);
 
-var $JSON = _core.JSON || (_core.JSON = { stringify: JSON.stringify });
-var stringify$1 = function stringify(it) { // eslint-disable-line no-unused-vars
-  return $JSON.stringify.apply($JSON, arguments);
-};
-
-var stringify = createCommonjsModule(function (module) {
-module.exports = { "default": stringify$1, __esModule: true };
-});
-
-var _JSON$stringify = unwrapExports(stringify);
-
-var _toObject = function (it) {
-  return Object(_defined(it));
-};
-
-var SHARED = '__core-js_shared__';
-var store = _global[SHARED] || (_global[SHARED] = {});
-var _shared = function (key) {
-  return store[key] || (store[key] = {});
-};
-
-var id = 0;
-var px = Math.random();
-var _uid = function (key) {
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-var shared = _shared('keys');
-
-var _sharedKey = function (key) {
-  return shared[key] || (shared[key] = _uid(key));
-};
-
-var IE_PROTO = _sharedKey('IE_PROTO');
-var ObjectProto = Object.prototype;
-
-var _objectGpo = Object.getPrototypeOf || function (O) {
-  O = _toObject(O);
-  if (_has(O, IE_PROTO)) return O[IE_PROTO];
-  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
-    return O.constructor.prototype;
-  } return O instanceof Object ? ObjectProto : null;
-};
-
-_objectSap('getPrototypeOf', function () {
-  return function getPrototypeOf(it) {
-    return _objectGpo(_toObject(it));
-  };
-});
-
-var getPrototypeOf$1 = _core.Object.getPrototypeOf;
-
-var getPrototypeOf = createCommonjsModule(function (module) {
-module.exports = { "default": getPrototypeOf$1, __esModule: true };
-});
-
-var _Object$getPrototypeOf = unwrapExports(getPrototypeOf);
-
-var classCallCheck = createCommonjsModule(function (module, exports) {
-exports.__esModule = true;
-
-exports.default = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-});
-
-var _classCallCheck = unwrapExports(classCallCheck);
-
 // 7.1.4 ToInteger
 var ceil = Math.ceil;
 var floor = Math.floor;
@@ -397,15 +327,33 @@ var _arrayIncludes = function (IS_INCLUDES) {
   };
 };
 
+var SHARED = '__core-js_shared__';
+var store = _global[SHARED] || (_global[SHARED] = {});
+var _shared = function (key) {
+  return store[key] || (store[key] = {});
+};
+
+var id = 0;
+var px = Math.random();
+var _uid = function (key) {
+  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+};
+
+var shared = _shared('keys');
+
+var _sharedKey = function (key) {
+  return shared[key] || (shared[key] = _uid(key));
+};
+
 var arrayIndexOf = _arrayIncludes(false);
-var IE_PROTO$2 = _sharedKey('IE_PROTO');
+var IE_PROTO$1 = _sharedKey('IE_PROTO');
 
 var _objectKeysInternal = function (object, names) {
   var O = _toIobject(object);
   var i = 0;
   var result = [];
   var key;
-  for (key in O) if (key != IE_PROTO$2) _has(O, key) && result.push(key);
+  for (key in O) if (key != IE_PROTO$1) _has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
   while (names.length > i) if (_has(O, key = names[i++])) {
     ~arrayIndexOf(result, key) || result.push(key);
@@ -435,7 +383,7 @@ var _objectDps = _descriptors ? Object.defineProperties : function definePropert
 var document$2 = _global.document;
 var _html = document$2 && document$2.documentElement;
 
-var IE_PROTO$1 = _sharedKey('IE_PROTO');
+var IE_PROTO = _sharedKey('IE_PROTO');
 var Empty = function () { /* empty */ };
 var PROTOTYPE$1 = 'prototype';
 
@@ -468,7 +416,7 @@ var _objectCreate = Object.create || function create(O, Properties) {
     result = new Empty();
     Empty[PROTOTYPE$1] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
-    result[IE_PROTO$1] = O;
+    result[IE_PROTO] = O;
   } else result = createDict();
   return Properties === undefined ? result : _objectDps(result, Properties);
 };
@@ -503,6 +451,21 @@ _hide(IteratorPrototype, _wks('iterator'), function () { return this; });
 var _iterCreate = function (Constructor, NAME, next) {
   Constructor.prototype = _objectCreate(IteratorPrototype, { next: _propertyDesc(1, next) });
   _setToStringTag(Constructor, NAME + ' Iterator');
+};
+
+var _toObject = function (it) {
+  return Object(_defined(it));
+};
+
+var IE_PROTO$2 = _sharedKey('IE_PROTO');
+var ObjectProto = Object.prototype;
+
+var _objectGpo = Object.getPrototypeOf || function (O) {
+  O = _toObject(O);
+  if (_has(O, IE_PROTO$2)) return O[IE_PROTO$2];
+  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+    return O.constructor.prototype;
+  } return O instanceof Object ? ObjectProto : null;
 };
 
 var ITERATOR = _wks('iterator');
@@ -784,8 +747,8 @@ var gOPD$2 = _objectGopd.f;
 var dP$1 = _objectDp.f;
 var gOPN = _objectGopnExt.f;
 var $Symbol = _global.Symbol;
-var $JSON$1 = _global.JSON;
-var _stringify = $JSON$1 && $JSON$1.stringify;
+var $JSON = _global.JSON;
+var _stringify = $JSON && $JSON.stringify;
 var PROTOTYPE$2 = 'prototype';
 var HIDDEN = _wks('_hidden');
 var TO_PRIMITIVE = _wks('toPrimitive');
@@ -956,7 +919,7 @@ _export(_export.S + _export.F * !USE_NATIVE, 'Object', {
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
-$JSON$1 && _export(_export.S + _export.F * (!USE_NATIVE || _fails(function () {
+$JSON && _export(_export.S + _export.F * (!USE_NATIVE || _fails(function () {
   var S = $Symbol();
   // MS Edge converts symbol values to JSON as {}
   // WebKit converts symbol values to JSON as null
@@ -975,7 +938,7 @@ $JSON$1 && _export(_export.S + _export.F * (!USE_NATIVE || _fails(function () {
       if (!isSymbol(value)) return value;
     };
     args[1] = replacer;
-    return _stringify.apply($JSON$1, args);
+    return _stringify.apply($JSON, args);
   }
 });
 
@@ -1023,6 +986,32 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 });
 
 var _typeof = unwrapExports(_typeof_1);
+
+_objectSap('getPrototypeOf', function () {
+  return function getPrototypeOf(it) {
+    return _objectGpo(_toObject(it));
+  };
+});
+
+var getPrototypeOf$1 = _core.Object.getPrototypeOf;
+
+var getPrototypeOf = createCommonjsModule(function (module) {
+module.exports = { "default": getPrototypeOf$1, __esModule: true };
+});
+
+var _Object$getPrototypeOf = unwrapExports(getPrototypeOf);
+
+var classCallCheck = createCommonjsModule(function (module, exports) {
+exports.__esModule = true;
+
+exports.default = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+});
+
+var _classCallCheck = unwrapExports(classCallCheck);
 
 var possibleConstructorReturn = createCommonjsModule(function (module, exports) {
 exports.__esModule = true;
@@ -6219,8 +6208,13 @@ var mp4_remuxer_MP4Remuxer = function () {
     // if we don't remove these negative samples, they will shift all audio samples forward.
     // leading to audio overlap between current / next fragment
     inputSamples = inputSamples.filter(function (sample) {
-      return sample.pts > 0;
+      return sample.pts >= 0;
     });
+
+    // in case all samples have negative PTS, and have been filtered out, return now
+    if (inputSamples.length === 0) {
+      return;
+    }
 
     if (!contiguous) {
       if (!accurateTimeOffset) {
@@ -6664,7 +6658,7 @@ var demuxer_inline_DemuxerInline = function () {
       var typeSupported = this.typeSupported;
       var config = this.config;
       // probing order is TS/AAC/MP3/MP4
-      var muxConfig = [{ demux: tsdemuxer, remux: mp4_remuxer }, { demux: aacdemuxer, remux: mp4_remuxer }, { demux: mp3demuxer, remux: mp4_remuxer }, { demux: mp4demuxer, remux: passthrough_remuxer }];
+      var muxConfig = [{ demux: tsdemuxer, remux: mp4_remuxer }, { demux: mp4demuxer, remux: passthrough_remuxer }, { demux: aacdemuxer, remux: mp4_remuxer }, { demux: mp3demuxer, remux: mp4_remuxer }];
 
       // probe for content type
       for (var i = 0, len = muxConfig.length; i < len; i++) {
@@ -10317,7 +10311,8 @@ var level_controller_LevelController = function (_EventHandler) {
 
     var level = this._levels[levelIndex];
     var redundantLevels = void 0,
-        delay = void 0;
+        delay = void 0,
+        nextLevel = void 0;
 
     level.loadError++;
     level.fragmentError = fragmentError;
@@ -10355,10 +10350,12 @@ var level_controller_LevelController = function (_EventHandler) {
         level.urlId = (level.urlId + 1) % redundantLevels;
         level.details = undefined;
       } else {
-        // Switch-down if more renditions are available
-        if (this.manualLevelIndex === -1 && levelIndex !== 0) {
-          logger["b" /* logger */].warn('level controller, ' + errorDetails + ': switch-down to ' + (levelIndex - 1));
-          this.hls.nextAutoLevel = this.currentLevelIndex = levelIndex - 1;
+        // Search for available level
+        if (this.manualLevelIndex === -1) {
+          // When lowest level has been reached, let's start hunt from the top
+          nextLevel = levelIndex === 0 ? this._levels.length - 1 : levelIndex - 1;
+          logger["b" /* logger */].warn('level controller, ' + errorDetails + ': switch to ' + nextLevel);
+          this.hls.nextAutoLevel = this.currentLevelIndex = nextLevel;
         } else if (fragmentError === true) {
           // Allow fragment retry as long as configuration allows.
           // reset this._level so that another call to set level() will trigger again a frag load
@@ -16417,7 +16414,7 @@ var hls_Hls = function () {
   hls__createClass(Hls, null, [{
     key: 'version',
     get: function get() {
-      return "0.8.8";
+      return "0.8.9";
     }
   }, {
     key: 'Events',
@@ -17250,6 +17247,12 @@ function isPrimitive(val) {
 }
 /**
  * is it an url, but this test require the url to have an protocol
+ */
+function isElement(obj) {
+  return !!((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? obj instanceof HTMLElement : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string');
+}
+/**
+ * check if node A is node B's parent or not
  */
 
 /**
@@ -21202,13 +21205,17 @@ var Hls = (_class = function (_CustEvent) {
     }
   }]);
 
-  function Hls(videoElement, config, customConfig) {
+  function Hls(videoElement, config) {
+    var customConfig = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
     _classCallCheck(this, Hls);
 
     var _this = _possibleConstructorReturn(this, (Hls.__proto__ || _Object$getPrototypeOf(Hls)).call(this));
 
     _this.version = '1.0.7';
 
+    if (!isElement(videoElement)) throw new Error('video element passed in ' + LOG_TAG + ' must be a HTMLVideoElement, but not ' + (typeof videoElement === 'undefined' ? 'undefined' : _typeof(videoElement)));
+    if (!isObject$1(config)) throw new Error('config of ' + LOG_TAG + ' must be an Object but not ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
     _this.video = videoElement;
     _this.config = config;
     _this.customConfig = deepAssign({}, defaultCustomConfig, customConfig);
@@ -21270,7 +21277,7 @@ var Hls = (_class = function (_CustEvent) {
     value: function hlsErrorHandler(event, data) {
       this.emit('error', data);
       this.emit(event, data);
-      Log.error(LOG_TAG + (event ? ' ' + event : ''), _JSON$stringify(data, null, 2));
+      Log.error(LOG_TAG + (event ? ' ' + event : ''), data.details);
     }
   }]);
 

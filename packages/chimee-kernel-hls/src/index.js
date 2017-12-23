@@ -71,6 +71,6 @@ export default class Hls extends CustEvent {
   hlsErrorHandler(event: string, data: Object) {
     this.emit('error', data);
     this.emit(event, data);
-    Log.error(LOG_TAG + (event ? ' ' + event : ''), JSON.stringify(data, null, 2));
+    Log.error(LOG_TAG + (event ? ' ' + event : ''), data.details);
   }
 }

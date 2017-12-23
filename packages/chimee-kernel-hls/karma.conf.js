@@ -56,6 +56,7 @@ module.exports = function(config) {
           ],
           exclude: 'node_modules/**',
           plugins: [
+            'istanbul',
             'external-helpers',
             'transform-decorators-legacy',
             'transform-runtime',
@@ -84,7 +85,7 @@ module.exports = function(config) {
     port: 9876,
 
     // enable / disable colors in the output (reporters and logs)
-    colors: true,
+    // colors: true,
 
     // level of logging
     // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
@@ -95,7 +96,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [ 'ChromeHeadless' ],
+    browsers: [ 'Firefox' ],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
