@@ -111,7 +111,8 @@ describe('error branch', () => {
     const kernel = new ChimeeKernelHls(videoElement, config, {
       debug: true,
     });
-    kernel.on('error', () => {
+    kernel.on('error', evt => {
+      console.log(evt);
       done();
     });
     expect(() => kernel.load()).not.to.throw();
