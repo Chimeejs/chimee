@@ -111,10 +111,9 @@ describe('error branch', () => {
     const kernel = new ChimeeKernelHls(videoElement, config, {
       debug: true,
     });
-    kernel.on('error', evt => {
-      console.log(evt);
+    kernel.on('error', () => {
       done();
     });
-    expect(() => kernel.load()).not.to.throw();
+    expect(() => kernel.hlsKernel.trigger('hlsError', { type: 'test', details: 'something wrong', fatal: false })).not.to.throw();
   });
 });
