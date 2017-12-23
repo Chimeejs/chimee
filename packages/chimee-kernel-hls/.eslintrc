@@ -12,8 +12,7 @@
     "plugin:flowtype/recommended"
   ],
   "plugins": [
-    "flowtype",
-    "jest"
+    "flowtype"
   ],
   "parser": "babel-eslint",
   "parserOptions": {

@@ -1,4 +1,2 @@
-declare type CustomConfig = {
-  debug: boolean,
-  enableWorker: boolean,
-};
+import type CustomConfig from '../src/custom-config.js';
+

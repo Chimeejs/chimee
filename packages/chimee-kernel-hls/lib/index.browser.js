@@ -1,7 +1,14 @@
+
+/**
+ * chimee-kernel-hls v1.1.0
+ * (c) 2017 songguangyu
+ * Released under MIT
+ */
+
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
-	(global.chimeeKernelHls = factory());
+	(global.ChimeeKernelHls = factory());
 }(this, (function () { 'use strict';
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -9,7 +16,7 @@ var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 
 
 
 function unwrapExports (x) {
-	return x && x.__esModule ? x['default'] : x;
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
 function createCommonjsModule(fn, module) {
@@ -18,25 +25,27 @@ function createCommonjsModule(fn, module) {
 
 var toString = {}.toString;
 
-var _cof = function(it){
+var _cof = function (it) {
   return toString.call(it).slice(8, -1);
 };
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 
-var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+// eslint-disable-next-line no-prototype-builtins
+var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return _cof(it) == 'String' ? it.split('') : Object(it);
 };
 
 // 7.2.1 RequireObjectCoercible(argument)
-var _defined = function(it){
-  if(it == undefined)throw TypeError("Can't call method on  " + it);
+var _defined = function (it) {
+  if (it == undefined) throw TypeError("Can't call method on  " + it);
   return it;
 };
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 
-var _toIobject = function(it){
+
+var _toIobject = function (it) {
   return _iobject(_defined(it));
 };
 
@@ -46,16 +55,16 @@ var _objectPie = {
 	f: f$1
 };
 
-var _propertyDesc = function(bitmap, value){
+var _propertyDesc = function (bitmap, value) {
   return {
-    enumerable  : !(bitmap & 1),
+    enumerable: !(bitmap & 1),
     configurable: !(bitmap & 2),
-    writable    : !(bitmap & 4),
-    value       : value
+    writable: !(bitmap & 4),
+    value: value
   };
 };
 
-var _isObject = function(it){
+var _isObject = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
@@ -63,59 +72,62 @@ var _isObject = function(it){
 
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-var _toPrimitive = function(it, S){
-  if(!_isObject(it))return it;
+var _toPrimitive = function (it, S) {
+  if (!_isObject(it)) return it;
   var fn, val;
-  if(S && typeof (fn = it.toString) == 'function' && !_isObject(val = fn.call(it)))return val;
-  if(typeof (fn = it.valueOf) == 'function' && !_isObject(val = fn.call(it)))return val;
-  if(!S && typeof (fn = it.toString) == 'function' && !_isObject(val = fn.call(it)))return val;
+  if (S && typeof (fn = it.toString) == 'function' && !_isObject(val = fn.call(it))) return val;
+  if (typeof (fn = it.valueOf) == 'function' && !_isObject(val = fn.call(it))) return val;
+  if (!S && typeof (fn = it.toString) == 'function' && !_isObject(val = fn.call(it))) return val;
   throw TypeError("Can't convert object to primitive value");
 };
 
 var hasOwnProperty = {}.hasOwnProperty;
-var _has = function(it, key){
+var _has = function (it, key) {
   return hasOwnProperty.call(it, key);
 };
 
-var _fails = function(exec){
+var _fails = function (exec) {
   try {
     return !!exec();
-  } catch(e){
+  } catch (e) {
     return true;
   }
 };
 
 // Thank's IE8 for his funny defineProperty
-var _descriptors = !_fails(function(){
-  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+var _descriptors = !_fails(function () {
+  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
 var _global = createCommonjsModule(function (module) {
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
-if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+  ? window : typeof self != 'undefined' && self.Math == Math ? self
+  // eslint-disable-next-line no-new-func
+  : Function('return this')();
+if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
 var document$1 = _global.document;
+// typeof document.createElement is 'object' in old IE
 var is = _isObject(document$1) && _isObject(document$1.createElement);
-var _domCreate = function(it){
+var _domCreate = function (it) {
   return is ? document$1.createElement(it) : {};
 };
 
-var _ie8DomDefine = !_descriptors && !_fails(function(){
-  return Object.defineProperty(_domCreate('div'), 'a', {get: function(){ return 7; }}).a != 7;
+var _ie8DomDefine = !_descriptors && !_fails(function () {
+  return Object.defineProperty(_domCreate('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
-var gOPD           = Object.getOwnPropertyDescriptor;
+var gOPD = Object.getOwnPropertyDescriptor;
 
-var f = _descriptors ? gOPD : function getOwnPropertyDescriptor(O, P){
+var f = _descriptors ? gOPD : function getOwnPropertyDescriptor(O, P) {
   O = _toIobject(O);
   P = _toPrimitive(P, true);
-  if(_ie8DomDefine)try {
+  if (_ie8DomDefine) try {
     return gOPD(O, P);
-  } catch(e){ /* empty */ }
-  if(_has(O, P))return _propertyDesc(!_objectPie.f.call(O, P), O[P]);
+  } catch (e) { /* empty */ }
+  if (_has(O, P)) return _propertyDesc(!_objectPie.f.call(O, P), O[P]);
 };
 
 var _objectGopd = {
@@ -123,52 +135,54 @@ var _objectGopd = {
 };
 
 var _core = createCommonjsModule(function (module) {
-var core = module.exports = {version: '2.4.0'};
-if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+var core = module.exports = { version: '2.5.3' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
 
-var _aFunction = function(it){
-  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+var _core_1 = _core.version;
+
+var _aFunction = function (it) {
+  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
 
 // optional / simple context binding
 
-var _ctx = function(fn, that, length){
+var _ctx = function (fn, that, length) {
   _aFunction(fn);
-  if(that === undefined)return fn;
-  switch(length){
-    case 1: return function(a){
+  if (that === undefined) return fn;
+  switch (length) {
+    case 1: return function (a) {
       return fn.call(that, a);
     };
-    case 2: return function(a, b){
+    case 2: return function (a, b) {
       return fn.call(that, a, b);
     };
-    case 3: return function(a, b, c){
+    case 3: return function (a, b, c) {
       return fn.call(that, a, b, c);
     };
   }
-  return function(/* ...args */){
+  return function (/* ...args */) {
     return fn.apply(that, arguments);
   };
 };
 
-var _anObject = function(it){
-  if(!_isObject(it))throw TypeError(it + ' is not an object!');
+var _anObject = function (it) {
+  if (!_isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
 
-var dP             = Object.defineProperty;
+var dP = Object.defineProperty;
 
-var f$2 = _descriptors ? Object.defineProperty : function defineProperty(O, P, Attributes){
+var f$2 = _descriptors ? Object.defineProperty : function defineProperty(O, P, Attributes) {
   _anObject(O);
   P = _toPrimitive(P, true);
   _anObject(Attributes);
-  if(_ie8DomDefine)try {
+  if (_ie8DomDefine) try {
     return dP(O, P, Attributes);
-  } catch(e){ /* empty */ }
-  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
-  if('value' in Attributes)O[P] = Attributes.value;
+  } catch (e) { /* empty */ }
+  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+  if ('value' in Attributes) O[P] = Attributes.value;
   return O;
 };
 
@@ -176,31 +190,31 @@ var _objectDp = {
 	f: f$2
 };
 
-var _hide = _descriptors ? function(object, key, value){
+var _hide = _descriptors ? function (object, key, value) {
   return _objectDp.f(object, key, _propertyDesc(1, value));
-} : function(object, key, value){
+} : function (object, key, value) {
   object[key] = value;
   return object;
 };
 
 var PROTOTYPE = 'prototype';
 
-var $export = function(type, name, source){
-  var IS_FORCED = type & $export.F
-    , IS_GLOBAL = type & $export.G
-    , IS_STATIC = type & $export.S
-    , IS_PROTO  = type & $export.P
-    , IS_BIND   = type & $export.B
-    , IS_WRAP   = type & $export.W
-    , exports   = IS_GLOBAL ? _core : _core[name] || (_core[name] = {})
-    , expProto  = exports[PROTOTYPE]
-    , target    = IS_GLOBAL ? _global : IS_STATIC ? _global[name] : (_global[name] || {})[PROTOTYPE]
-    , key, own, out;
-  if(IS_GLOBAL)source = name;
-  for(key in source){
+var $export = function (type, name, source) {
+  var IS_FORCED = type & $export.F;
+  var IS_GLOBAL = type & $export.G;
+  var IS_STATIC = type & $export.S;
+  var IS_PROTO = type & $export.P;
+  var IS_BIND = type & $export.B;
+  var IS_WRAP = type & $export.W;
+  var exports = IS_GLOBAL ? _core : _core[name] || (_core[name] = {});
+  var expProto = exports[PROTOTYPE];
+  var target = IS_GLOBAL ? _global : IS_STATIC ? _global[name] : (_global[name] || {})[PROTOTYPE];
+  var key, own, out;
+  if (IS_GLOBAL) source = name;
+  for (key in source) {
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if(own && key in exports)continue;
+    if (own && key in exports) continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
@@ -208,11 +222,11 @@ var $export = function(type, name, source){
     // bind timers to global for call from export context
     : IS_BIND && own ? _ctx(out, _global)
     // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function(C){
-      var F = function(a, b, c){
-        if(this instanceof C){
-          switch(arguments.length){
-            case 0: return new C;
+    : IS_WRAP && target[key] == out ? (function (C) {
+      var F = function (a, b, c) {
+        if (this instanceof C) {
+          switch (arguments.length) {
+            case 0: return new C();
             case 1: return new C(a);
             case 2: return new C(a, b);
           } return new C(a, b, c);
@@ -223,10 +237,10 @@ var $export = function(type, name, source){
     // make static versions for prototype methods
     })(out) : IS_PROTO && typeof out == 'function' ? _ctx(Function.call, out) : out;
     // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if(IS_PROTO){
+    if (IS_PROTO) {
       (exports.virtual || (exports.virtual = {}))[key] = out;
       // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if(type & $export.R && expProto && !expProto[key])_hide(expProto, key, out);
+      if (type & $export.R && expProto && !expProto[key]) _hide(expProto, key, out);
     }
   }
 };
@@ -238,29 +252,32 @@ $export.P = 8;   // proto
 $export.B = 16;  // bind
 $export.W = 32;  // wrap
 $export.U = 64;  // safe
-$export.R = 128; // real proto method for `library` 
+$export.R = 128; // real proto method for `library`
 var _export = $export;
 
 // most Object methods by ES6 should accept primitives
 
-var _objectSap = function(KEY, exec){
-  var fn  = (_core.Object || {})[KEY] || Object[KEY]
-    , exp = {};
+
+
+var _objectSap = function (KEY, exec) {
+  var fn = (_core.Object || {})[KEY] || Object[KEY];
+  var exp = {};
   exp[KEY] = exec(fn);
-  _export(_export.S + _export.F * _fails(function(){ fn(1); }), 'Object', exp);
+  _export(_export.S + _export.F * _fails(function () { fn(1); }), 'Object', exp);
 };
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+
 var $getOwnPropertyDescriptor = _objectGopd.f;
 
-_objectSap('getOwnPropertyDescriptor', function(){
-  return function getOwnPropertyDescriptor(it, key){
+_objectSap('getOwnPropertyDescriptor', function () {
+  return function getOwnPropertyDescriptor(it, key) {
     return $getOwnPropertyDescriptor(_toIobject(it), key);
   };
 });
 
 var $Object = _core.Object;
-var getOwnPropertyDescriptor$1 = function getOwnPropertyDescriptor(it, key){
+var getOwnPropertyDescriptor$1 = function getOwnPropertyDescriptor(it, key) {
   return $Object.getOwnPropertyDescriptor(it, key);
 };
 
@@ -270,88 +287,22 @@ module.exports = { "default": getOwnPropertyDescriptor$1, __esModule: true };
 
 var _Object$getOwnPropertyDescriptor = unwrapExports(getOwnPropertyDescriptor);
 
-// 7.1.13 ToObject(argument)
-
-var _toObject = function(it){
-  return Object(_defined(it));
-};
-
-var SHARED = '__core-js_shared__';
-var store  = _global[SHARED] || (_global[SHARED] = {});
-var _shared = function(key){
-  return store[key] || (store[key] = {});
-};
-
-var id = 0;
-var px = Math.random();
-var _uid = function(key){
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-var shared = _shared('keys');
-var _sharedKey = function(key){
-  return shared[key] || (shared[key] = _uid(key));
-};
-
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var IE_PROTO    = _sharedKey('IE_PROTO');
-var ObjectProto = Object.prototype;
-
-var _objectGpo = Object.getPrototypeOf || function(O){
-  O = _toObject(O);
-  if(_has(O, IE_PROTO))return O[IE_PROTO];
-  if(typeof O.constructor == 'function' && O instanceof O.constructor){
-    return O.constructor.prototype;
-  } return O instanceof Object ? ObjectProto : null;
-};
-
-// 19.1.2.9 Object.getPrototypeOf(O)
-
-
-_objectSap('getPrototypeOf', function(){
-  return function getPrototypeOf(it){
-    return _objectGpo(_toObject(it));
-  };
-});
-
-var getPrototypeOf$1 = _core.Object.getPrototypeOf;
-
-var getPrototypeOf = createCommonjsModule(function (module) {
-module.exports = { "default": getPrototypeOf$1, __esModule: true };
-});
-
-var _Object$getPrototypeOf = unwrapExports(getPrototypeOf);
-
-var classCallCheck = createCommonjsModule(function (module, exports) {
-"use strict";
-
-exports.__esModule = true;
-
-exports.default = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-});
-
-var _classCallCheck = unwrapExports(classCallCheck);
-
 // 7.1.4 ToInteger
-var ceil  = Math.ceil;
+var ceil = Math.ceil;
 var floor = Math.floor;
-var _toInteger = function(it){
+var _toInteger = function (it) {
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
 
 // true  -> String#at
 // false -> String#codePointAt
-var _stringAt = function(TO_STRING){
-  return function(that, pos){
-    var s = String(_defined(that))
-      , i = _toInteger(pos)
-      , l = s.length
-      , a, b;
-    if(i < 0 || i >= l)return TO_STRING ? '' : undefined;
+var _stringAt = function (TO_STRING) {
+  return function (that, pos) {
+    var s = String(_defined(that));
+    var i = _toInteger(pos);
+    var l = s.length;
+    var a, b;
+    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
     a = s.charCodeAt(i);
     return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
       ? TO_STRING ? s.charAt(i) : a
@@ -366,14 +317,15 @@ var _redefine = _hide;
 var _iterators = {};
 
 // 7.1.15 ToLength
-var min       = Math.min;
-var _toLength = function(it){
+
+var min = Math.min;
+var _toLength = function (it) {
   return it > 0 ? min(_toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
 
-var max       = Math.max;
-var min$1       = Math.min;
-var _toIndex = function(index, length){
+var max = Math.max;
+var min$1 = Math.min;
+var _toAbsoluteIndex = function (index, length) {
   index = _toInteger(index);
   return index < 0 ? max(index + length, 0) : min$1(index, length);
 };
@@ -381,34 +333,56 @@ var _toIndex = function(index, length){
 // false -> Array#indexOf
 // true  -> Array#includes
 
-var _arrayIncludes = function(IS_INCLUDES){
-  return function($this, el, fromIndex){
-    var O      = _toIobject($this)
-      , length = _toLength(O.length)
-      , index  = _toIndex(fromIndex, length)
-      , value;
+
+
+var _arrayIncludes = function (IS_INCLUDES) {
+  return function ($this, el, fromIndex) {
+    var O = _toIobject($this);
+    var length = _toLength(O.length);
+    var index = _toAbsoluteIndex(fromIndex, length);
+    var value;
     // Array#includes uses SameValueZero equality algorithm
-    if(IS_INCLUDES && el != el)while(length > index){
+    // eslint-disable-next-line no-self-compare
+    if (IS_INCLUDES && el != el) while (length > index) {
       value = O[index++];
-      if(value != value)return true;
-    // Array#toIndex ignores holes, Array#includes - not
-    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
-      if(O[index] === el)return IS_INCLUDES || index || 0;
+      // eslint-disable-next-line no-self-compare
+      if (value != value) return true;
+    // Array#indexOf ignores holes, Array#includes - not
+    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
+      if (O[index] === el) return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
   };
 };
 
-var arrayIndexOf = _arrayIncludes(false);
-var IE_PROTO$2     = _sharedKey('IE_PROTO');
+var SHARED = '__core-js_shared__';
+var store = _global[SHARED] || (_global[SHARED] = {});
+var _shared = function (key) {
+  return store[key] || (store[key] = {});
+};
 
-var _objectKeysInternal = function(object, names){
-  var O      = _toIobject(object)
-    , i      = 0
-    , result = []
-    , key;
-  for(key in O)if(key != IE_PROTO$2)_has(O, key) && result.push(key);
+var id = 0;
+var px = Math.random();
+var _uid = function (key) {
+  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+};
+
+var shared = _shared('keys');
+
+var _sharedKey = function (key) {
+  return shared[key] || (shared[key] = _uid(key));
+};
+
+var arrayIndexOf = _arrayIncludes(false);
+var IE_PROTO$1 = _sharedKey('IE_PROTO');
+
+var _objectKeysInternal = function (object, names) {
+  var O = _toIobject(object);
+  var i = 0;
+  var result = [];
+  var key;
+  for (key in O) if (key != IE_PROTO$1) _has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
-  while(names.length > i)if(_has(O, key = names[i++])){
+  while (names.length > i) if (_has(O, key = names[i++])) {
     ~arrayIndexOf(result, key) || result.push(key);
   }
   return result;
@@ -422,35 +396,40 @@ var _enumBugKeys = (
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
 
 
-var _objectKeys = Object.keys || function keys(O){
+
+var _objectKeys = Object.keys || function keys(O) {
   return _objectKeysInternal(O, _enumBugKeys);
 };
 
-var _objectDps = _descriptors ? Object.defineProperties : function defineProperties(O, Properties){
+var _objectDps = _descriptors ? Object.defineProperties : function defineProperties(O, Properties) {
   _anObject(O);
-  var keys   = _objectKeys(Properties)
-    , length = keys.length
-    , i = 0
-    , P;
-  while(length > i)_objectDp.f(O, P = keys[i++], Properties[P]);
+  var keys = _objectKeys(Properties);
+  var length = keys.length;
+  var i = 0;
+  var P;
+  while (length > i) _objectDp.f(O, P = keys[i++], Properties[P]);
   return O;
 };
 
-var _html = _global.document && document.documentElement;
+var document$2 = _global.document;
+var _html = document$2 && document$2.documentElement;
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var IE_PROTO$1    = _sharedKey('IE_PROTO');
-var Empty       = function(){ /* empty */ };
-var PROTOTYPE$1   = 'prototype';
+
+
+
+var IE_PROTO = _sharedKey('IE_PROTO');
+var Empty = function () { /* empty */ };
+var PROTOTYPE$1 = 'prototype';
 
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function(){
+var createDict = function () {
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = _domCreate('iframe')
-    , i      = _enumBugKeys.length
-    , lt     = '<'
-    , gt     = '>'
-    , iframeDocument;
+  var iframe = _domCreate('iframe');
+  var i = _enumBugKeys.length;
+  var lt = '<';
+  var gt = '>';
+  var iframeDocument;
   iframe.style.display = 'none';
   _html.appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
@@ -461,28 +440,29 @@ var createDict = function(){
   iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
   iframeDocument.close();
   createDict = iframeDocument.F;
-  while(i--)delete createDict[PROTOTYPE$1][_enumBugKeys[i]];
+  while (i--) delete createDict[PROTOTYPE$1][_enumBugKeys[i]];
   return createDict();
 };
 
-var _objectCreate = Object.create || function create(O, Properties){
+var _objectCreate = Object.create || function create(O, Properties) {
   var result;
-  if(O !== null){
+  if (O !== null) {
     Empty[PROTOTYPE$1] = _anObject(O);
-    result = new Empty;
+    result = new Empty();
     Empty[PROTOTYPE$1] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
-    result[IE_PROTO$1] = O;
+    result[IE_PROTO] = O;
   } else result = createDict();
   return Properties === undefined ? result : _objectDps(result, Properties);
 };
 
 var _wks = createCommonjsModule(function (module) {
-var store      = _shared('wks')
-  , Symbol     = _global.Symbol
-  , USE_SYMBOL = typeof Symbol == 'function';
+var store = _shared('wks');
 
-var $exports = module.exports = function(name){
+var Symbol = _global.Symbol;
+var USE_SYMBOL = typeof Symbol == 'function';
+
+var $exports = module.exports = function (name) {
   return store[name] || (store[name] =
     USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : _uid)('Symbol.' + name));
 };
@@ -491,142 +471,163 @@ $exports.store = store;
 });
 
 var def = _objectDp.f;
+
 var TAG = _wks('toStringTag');
 
-var _setToStringTag = function(it, tag, stat){
-  if(it && !_has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
+var _setToStringTag = function (it, tag, stat) {
+  if (it && !_has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
 
 var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-_hide(IteratorPrototype, _wks('iterator'), function(){ return this; });
+_hide(IteratorPrototype, _wks('iterator'), function () { return this; });
 
-var _iterCreate = function(Constructor, NAME, next){
-  Constructor.prototype = _objectCreate(IteratorPrototype, {next: _propertyDesc(1, next)});
+var _iterCreate = function (Constructor, NAME, next) {
+  Constructor.prototype = _objectCreate(IteratorPrototype, { next: _propertyDesc(1, next) });
   _setToStringTag(Constructor, NAME + ' Iterator');
 };
 
-var ITERATOR       = _wks('iterator');
-var BUGGY          = !([].keys && 'next' in [].keys());
-var FF_ITERATOR    = '@@iterator';
-var KEYS           = 'keys';
-var VALUES         = 'values';
+// 7.1.13 ToObject(argument)
 
-var returnThis = function(){ return this; };
+var _toObject = function (it) {
+  return Object(_defined(it));
+};
 
-var _iterDefine = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
+// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+
+
+var IE_PROTO$2 = _sharedKey('IE_PROTO');
+var ObjectProto = Object.prototype;
+
+var _objectGpo = Object.getPrototypeOf || function (O) {
+  O = _toObject(O);
+  if (_has(O, IE_PROTO$2)) return O[IE_PROTO$2];
+  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+    return O.constructor.prototype;
+  } return O instanceof Object ? ObjectProto : null;
+};
+
+var ITERATOR = _wks('iterator');
+var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
+var FF_ITERATOR = '@@iterator';
+var KEYS = 'keys';
+var VALUES = 'values';
+
+var returnThis = function () { return this; };
+
+var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
   _iterCreate(Constructor, NAME, next);
-  var getMethod = function(kind){
-    if(!BUGGY && kind in proto)return proto[kind];
-    switch(kind){
-      case KEYS: return function keys(){ return new Constructor(this, kind); };
-      case VALUES: return function values(){ return new Constructor(this, kind); };
-    } return function entries(){ return new Constructor(this, kind); };
+  var getMethod = function (kind) {
+    if (!BUGGY && kind in proto) return proto[kind];
+    switch (kind) {
+      case KEYS: return function keys() { return new Constructor(this, kind); };
+      case VALUES: return function values() { return new Constructor(this, kind); };
+    } return function entries() { return new Constructor(this, kind); };
   };
-  var TAG        = NAME + ' Iterator'
-    , DEF_VALUES = DEFAULT == VALUES
-    , VALUES_BUG = false
-    , proto      = Base.prototype
-    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
-    , $default   = $native || getMethod(DEFAULT)
-    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
-    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
-    , methods, key, IteratorPrototype;
+  var TAG = NAME + ' Iterator';
+  var DEF_VALUES = DEFAULT == VALUES;
+  var VALUES_BUG = false;
+  var proto = Base.prototype;
+  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
+  var $default = (!BUGGY && $native) || getMethod(DEFAULT);
+  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
+  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
+  var methods, key, IteratorPrototype;
   // Fix native
-  if($anyNative){
-    IteratorPrototype = _objectGpo($anyNative.call(new Base));
-    if(IteratorPrototype !== Object.prototype){
+  if ($anyNative) {
+    IteratorPrototype = _objectGpo($anyNative.call(new Base()));
+    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
       // Set @@toStringTag to native iterators
       _setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if(!_library && !_has(IteratorPrototype, ITERATOR))_hide(IteratorPrototype, ITERATOR, returnThis);
+      if (!_library && !_has(IteratorPrototype, ITERATOR)) _hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
-  if(DEF_VALUES && $native && $native.name !== VALUES){
+  if (DEF_VALUES && $native && $native.name !== VALUES) {
     VALUES_BUG = true;
-    $default = function values(){ return $native.call(this); };
+    $default = function values() { return $native.call(this); };
   }
   // Define iterator
-  if((!_library || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
+  if ((!_library || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
     _hide(proto, ITERATOR, $default);
   }
   // Plug for library
   _iterators[NAME] = $default;
-  _iterators[TAG]  = returnThis;
-  if(DEFAULT){
+  _iterators[TAG] = returnThis;
+  if (DEFAULT) {
     methods = {
-      values:  DEF_VALUES ? $default : getMethod(VALUES),
-      keys:    IS_SET     ? $default : getMethod(KEYS),
+      values: DEF_VALUES ? $default : getMethod(VALUES),
+      keys: IS_SET ? $default : getMethod(KEYS),
       entries: $entries
     };
-    if(FORCED)for(key in methods){
-      if(!(key in proto))_redefine(proto, key, methods[key]);
+    if (FORCED) for (key in methods) {
+      if (!(key in proto)) _redefine(proto, key, methods[key]);
     } else _export(_export.P + _export.F * (BUGGY || VALUES_BUG), NAME, methods);
   }
   return methods;
 };
 
-var $at  = _stringAt(true);
+var $at = _stringAt(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
-_iterDefine(String, 'String', function(iterated){
+_iterDefine(String, 'String', function (iterated) {
   this._t = String(iterated); // target
   this._i = 0;                // next index
 // 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function(){
-  var O     = this._t
-    , index = this._i
-    , point;
-  if(index >= O.length)return {value: undefined, done: true};
+}, function () {
+  var O = this._t;
+  var index = this._i;
+  var point;
+  if (index >= O.length) return { value: undefined, done: true };
   point = $at(O, index);
   this._i += point.length;
-  return {value: point, done: false};
+  return { value: point, done: false };
 });
 
-var _addToUnscopables = function(){ /* empty */ };
-
-var _iterStep = function(done, value){
-  return {value: value, done: !!done};
+var _iterStep = function (done, value) {
+  return { value: value, done: !!done };
 };
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
 // 22.1.3.29 Array.prototype.values()
 // 22.1.3.30 Array.prototype[@@iterator]()
-var es6_array_iterator = _iterDefine(Array, 'Array', function(iterated, kind){
+var es6_array_iterator = _iterDefine(Array, 'Array', function (iterated, kind) {
   this._t = _toIobject(iterated); // target
   this._i = 0;                   // next index
   this._k = kind;                // kind
 // 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-}, function(){
-  var O     = this._t
-    , kind  = this._k
-    , index = this._i++;
-  if(!O || index >= O.length){
+}, function () {
+  var O = this._t;
+  var kind = this._k;
+  var index = this._i++;
+  if (!O || index >= O.length) {
     this._t = undefined;
     return _iterStep(1);
   }
-  if(kind == 'keys'  )return _iterStep(0, index);
-  if(kind == 'values')return _iterStep(0, O[index]);
+  if (kind == 'keys') return _iterStep(0, index);
+  if (kind == 'values') return _iterStep(0, O[index]);
   return _iterStep(0, [index, O[index]]);
 }, 'values');
 
 // argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
 _iterators.Arguments = _iterators.Array;
 
-_addToUnscopables('keys');
-_addToUnscopables('values');
-_addToUnscopables('entries');
-
 var TO_STRING_TAG = _wks('toStringTag');
 
-for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
-  var NAME       = collections[i]
-    , Collection = _global[NAME]
-    , proto      = Collection && Collection.prototype;
-  if(proto && !proto[TO_STRING_TAG])_hide(proto, TO_STRING_TAG, NAME);
+var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
+  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
+  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
+  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
+  'TextTrackList,TouchList').split(',');
+
+for (var i = 0; i < DOMIterables.length; i++) {
+  var NAME = DOMIterables[i];
+  var Collection = _global[NAME];
+  var proto = Collection && Collection.prototype;
+  if (proto && !proto[TO_STRING_TAG]) _hide(proto, TO_STRING_TAG, NAME);
   _iterators[NAME] = _iterators.Array;
 }
 
@@ -642,73 +643,74 @@ var iterator = createCommonjsModule(function (module) {
 module.exports = { "default": iterator$2, __esModule: true };
 });
 
+unwrapExports(iterator);
+
 var _meta = createCommonjsModule(function (module) {
-var META     = _uid('meta')
-  , setDesc  = _objectDp.f
-  , id       = 0;
-var isExtensible = Object.isExtensible || function(){
+var META = _uid('meta');
+
+
+var setDesc = _objectDp.f;
+var id = 0;
+var isExtensible = Object.isExtensible || function () {
   return true;
 };
-var FREEZE = !_fails(function(){
+var FREEZE = !_fails(function () {
   return isExtensible(Object.preventExtensions({}));
 });
-var setMeta = function(it){
-  setDesc(it, META, {value: {
+var setMeta = function (it) {
+  setDesc(it, META, { value: {
     i: 'O' + ++id, // object ID
     w: {}          // weak collections IDs
-  }});
+  } });
 };
-var fastKey = function(it, create){
+var fastKey = function (it, create) {
   // return primitive with prefix
-  if(!_isObject(it))return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-  if(!_has(it, META)){
+  if (!_isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if (!_has(it, META)) {
     // can't set metadata to uncaught frozen object
-    if(!isExtensible(it))return 'F';
+    if (!isExtensible(it)) return 'F';
     // not necessary to add metadata
-    if(!create)return 'E';
+    if (!create) return 'E';
     // add missing metadata
     setMeta(it);
   // return object ID
   } return it[META].i;
 };
-var getWeak = function(it, create){
-  if(!_has(it, META)){
+var getWeak = function (it, create) {
+  if (!_has(it, META)) {
     // can't set metadata to uncaught frozen object
-    if(!isExtensible(it))return true;
+    if (!isExtensible(it)) return true;
     // not necessary to add metadata
-    if(!create)return false;
+    if (!create) return false;
     // add missing metadata
     setMeta(it);
   // return hash weak collections IDs
   } return it[META].w;
 };
 // add metadata on freeze-family methods calling
-var onFreeze = function(it){
-  if(FREEZE && meta.NEED && isExtensible(it) && !_has(it, META))setMeta(it);
+var onFreeze = function (it) {
+  if (FREEZE && meta.NEED && isExtensible(it) && !_has(it, META)) setMeta(it);
   return it;
 };
 var meta = module.exports = {
-  KEY:      META,
-  NEED:     false,
-  fastKey:  fastKey,
-  getWeak:  getWeak,
+  KEY: META,
+  NEED: false,
+  fastKey: fastKey,
+  getWeak: getWeak,
   onFreeze: onFreeze
 };
 });
 
-var defineProperty = _objectDp.f;
-var _wksDefine = function(name){
-  var $Symbol = _core.Symbol || (_core.Symbol = _library ? {} : _global.Symbol || {});
-  if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty($Symbol, name, {value: _wksExt.f(name)});
-};
+var _meta_1 = _meta.KEY;
+var _meta_2 = _meta.NEED;
+var _meta_3 = _meta.fastKey;
+var _meta_4 = _meta.getWeak;
+var _meta_5 = _meta.onFreeze;
 
-var _keyof = function(object, el){
-  var O      = _toIobject(object)
-    , keys   = _objectKeys(O)
-    , length = keys.length
-    , index  = 0
-    , key;
-  while(length > index)if(O[key = keys[index++]] === el)return key;
+var defineProperty = _objectDp.f;
+var _wksDefine = function (name) {
+  var $Symbol = _core.Symbol || (_core.Symbol = _library ? {} : _global.Symbol || {});
+  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: _wksExt.f(name) });
 };
 
 var f$4 = Object.getOwnPropertySymbols;
@@ -719,28 +721,31 @@ var _objectGops = {
 
 // all enumerable object keys, includes symbols
 
-var _enumKeys = function(it){
-  var result     = _objectKeys(it)
-    , getSymbols = _objectGops.f;
-  if(getSymbols){
-    var symbols = getSymbols(it)
-      , isEnum  = _objectPie.f
-      , i       = 0
-      , key;
-    while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
+
+
+var _enumKeys = function (it) {
+  var result = _objectKeys(it);
+  var getSymbols = _objectGops.f;
+  if (getSymbols) {
+    var symbols = getSymbols(it);
+    var isEnum = _objectPie.f;
+    var i = 0;
+    var key;
+    while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
   } return result;
 };
 
 // 7.2.2 IsArray(argument)
 
-var _isArray = Array.isArray || function isArray(arg){
+var _isArray = Array.isArray || function isArray(arg) {
   return _cof(arg) == 'Array';
 };
 
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
+
 var hiddenKeys = _enumBugKeys.concat('length', 'prototype');
 
-var f$6 = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
+var f$6 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return _objectKeysInternal(O, hiddenKeys);
 };
 
@@ -749,21 +754,22 @@ var _objectGopn = {
 };
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var gOPN$1      = _objectGopn.f;
-var toString$1  = {}.toString;
+
+var gOPN$1 = _objectGopn.f;
+var toString$1 = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
   ? Object.getOwnPropertyNames(window) : [];
 
-var getWindowNames = function(it){
+var getWindowNames = function (it) {
   try {
     return gOPN$1(it);
-  } catch(e){
+  } catch (e) {
     return windowNames.slice();
   }
 };
 
-var f$5 = function getOwnPropertyNames(it){
+var f$5 = function getOwnPropertyNames(it) {
   return windowNames && toString$1.call(it) == '[object Window]' ? getWindowNames(it) : gOPN$1(_toIobject(it));
 };
 
@@ -772,165 +778,189 @@ var _objectGopnExt = {
 };
 
 // ECMAScript 6 symbols shim
-var META           = _meta.KEY;
-var gOPD$1           = _objectGopd.f;
-var dP$2             = _objectDp.f;
-var gOPN           = _objectGopnExt.f;
-var $Symbol        = _global.Symbol;
-var $JSON          = _global.JSON;
-var _stringify     = $JSON && $JSON.stringify;
-var PROTOTYPE$2      = 'prototype';
-var HIDDEN         = _wks('_hidden');
-var TO_PRIMITIVE   = _wks('toPrimitive');
-var isEnum         = {}.propertyIsEnumerable;
+
+
+
+
+
+var META = _meta.KEY;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var gOPD$2 = _objectGopd.f;
+var dP$1 = _objectDp.f;
+var gOPN = _objectGopnExt.f;
+var $Symbol = _global.Symbol;
+var $JSON = _global.JSON;
+var _stringify = $JSON && $JSON.stringify;
+var PROTOTYPE$2 = 'prototype';
+var HIDDEN = _wks('_hidden');
+var TO_PRIMITIVE = _wks('toPrimitive');
+var isEnum = {}.propertyIsEnumerable;
 var SymbolRegistry = _shared('symbol-registry');
-var AllSymbols     = _shared('symbols');
-var OPSymbols      = _shared('op-symbols');
-var ObjectProto$1    = Object[PROTOTYPE$2];
-var USE_NATIVE     = typeof $Symbol == 'function';
-var QObject        = _global.QObject;
+var AllSymbols = _shared('symbols');
+var OPSymbols = _shared('op-symbols');
+var ObjectProto$1 = Object[PROTOTYPE$2];
+var USE_NATIVE = typeof $Symbol == 'function';
+var QObject = _global.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 var setter = !QObject || !QObject[PROTOTYPE$2] || !QObject[PROTOTYPE$2].findChild;
 
 // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-var setSymbolDesc = _descriptors && _fails(function(){
-  return _objectCreate(dP$2({}, 'a', {
-    get: function(){ return dP$2(this, 'a', {value: 7}).a; }
+var setSymbolDesc = _descriptors && _fails(function () {
+  return _objectCreate(dP$1({}, 'a', {
+    get: function () { return dP$1(this, 'a', { value: 7 }).a; }
   })).a != 7;
-}) ? function(it, key, D){
-  var protoDesc = gOPD$1(ObjectProto$1, key);
-  if(protoDesc)delete ObjectProto$1[key];
-  dP$2(it, key, D);
-  if(protoDesc && it !== ObjectProto$1)dP$2(ObjectProto$1, key, protoDesc);
-} : dP$2;
+}) ? function (it, key, D) {
+  var protoDesc = gOPD$2(ObjectProto$1, key);
+  if (protoDesc) delete ObjectProto$1[key];
+  dP$1(it, key, D);
+  if (protoDesc && it !== ObjectProto$1) dP$1(ObjectProto$1, key, protoDesc);
+} : dP$1;
 
-var wrap = function(tag){
+var wrap = function (tag) {
   var sym = AllSymbols[tag] = _objectCreate($Symbol[PROTOTYPE$2]);
   sym._k = tag;
   return sym;
 };
 
-var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function(it){
+var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
   return typeof it == 'symbol';
-} : function(it){
+} : function (it) {
   return it instanceof $Symbol;
 };
 
-var $defineProperty = function defineProperty(it, key, D){
-  if(it === ObjectProto$1)$defineProperty(OPSymbols, key, D);
+var $defineProperty = function defineProperty(it, key, D) {
+  if (it === ObjectProto$1) $defineProperty(OPSymbols, key, D);
   _anObject(it);
   key = _toPrimitive(key, true);
   _anObject(D);
-  if(_has(AllSymbols, key)){
-    if(!D.enumerable){
-      if(!_has(it, HIDDEN))dP$2(it, HIDDEN, _propertyDesc(1, {}));
+  if (_has(AllSymbols, key)) {
+    if (!D.enumerable) {
+      if (!_has(it, HIDDEN)) dP$1(it, HIDDEN, _propertyDesc(1, {}));
       it[HIDDEN][key] = true;
     } else {
-      if(_has(it, HIDDEN) && it[HIDDEN][key])it[HIDDEN][key] = false;
-      D = _objectCreate(D, {enumerable: _propertyDesc(0, false)});
+      if (_has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
+      D = _objectCreate(D, { enumerable: _propertyDesc(0, false) });
     } return setSymbolDesc(it, key, D);
-  } return dP$2(it, key, D);
+  } return dP$1(it, key, D);
 };
-var $defineProperties = function defineProperties(it, P){
+var $defineProperties = function defineProperties(it, P) {
   _anObject(it);
-  var keys = _enumKeys(P = _toIobject(P))
-    , i    = 0
-    , l = keys.length
-    , key;
-  while(l > i)$defineProperty(it, key = keys[i++], P[key]);
+  var keys = _enumKeys(P = _toIobject(P));
+  var i = 0;
+  var l = keys.length;
+  var key;
+  while (l > i) $defineProperty(it, key = keys[i++], P[key]);
   return it;
 };
-var $create = function create(it, P){
+var $create = function create(it, P) {
   return P === undefined ? _objectCreate(it) : $defineProperties(_objectCreate(it), P);
 };
-var $propertyIsEnumerable = function propertyIsEnumerable(key){
+var $propertyIsEnumerable = function propertyIsEnumerable(key) {
   var E = isEnum.call(this, key = _toPrimitive(key, true));
-  if(this === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key))return false;
+  if (this === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key)) return false;
   return E || !_has(this, key) || !_has(AllSymbols, key) || _has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
 };
-var $getOwnPropertyDescriptor$1 = function getOwnPropertyDescriptor(it, key){
-  it  = _toIobject(it);
+var $getOwnPropertyDescriptor$1 = function getOwnPropertyDescriptor(it, key) {
+  it = _toIobject(it);
   key = _toPrimitive(key, true);
-  if(it === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key))return;
-  var D = gOPD$1(it, key);
-  if(D && _has(AllSymbols, key) && !(_has(it, HIDDEN) && it[HIDDEN][key]))D.enumerable = true;
+  if (it === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key)) return;
+  var D = gOPD$2(it, key);
+  if (D && _has(AllSymbols, key) && !(_has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
   return D;
 };
-var $getOwnPropertyNames = function getOwnPropertyNames(it){
-  var names  = gOPN(_toIobject(it))
-    , result = []
-    , i      = 0
-    , key;
-  while(names.length > i){
-    if(!_has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META)result.push(key);
+var $getOwnPropertyNames = function getOwnPropertyNames(it) {
+  var names = gOPN(_toIobject(it));
+  var result = [];
+  var i = 0;
+  var key;
+  while (names.length > i) {
+    if (!_has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
   } return result;
 };
-var $getOwnPropertySymbols = function getOwnPropertySymbols(it){
-  var IS_OP  = it === ObjectProto$1
-    , names  = gOPN(IS_OP ? OPSymbols : _toIobject(it))
-    , result = []
-    , i      = 0
-    , key;
-  while(names.length > i){
-    if(_has(AllSymbols, key = names[i++]) && (IS_OP ? _has(ObjectProto$1, key) : true))result.push(AllSymbols[key]);
+var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
+  var IS_OP = it === ObjectProto$1;
+  var names = gOPN(IS_OP ? OPSymbols : _toIobject(it));
+  var result = [];
+  var i = 0;
+  var key;
+  while (names.length > i) {
+    if (_has(AllSymbols, key = names[i++]) && (IS_OP ? _has(ObjectProto$1, key) : true)) result.push(AllSymbols[key]);
   } return result;
 };
 
 // 19.4.1.1 Symbol([description])
-if(!USE_NATIVE){
-  $Symbol = function Symbol(){
-    if(this instanceof $Symbol)throw TypeError('Symbol is not a constructor!');
+if (!USE_NATIVE) {
+  $Symbol = function Symbol() {
+    if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
     var tag = _uid(arguments.length > 0 ? arguments[0] : undefined);
-    var $set = function(value){
-      if(this === ObjectProto$1)$set.call(OPSymbols, value);
-      if(_has(this, HIDDEN) && _has(this[HIDDEN], tag))this[HIDDEN][tag] = false;
+    var $set = function (value) {
+      if (this === ObjectProto$1) $set.call(OPSymbols, value);
+      if (_has(this, HIDDEN) && _has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
       setSymbolDesc(this, tag, _propertyDesc(1, value));
     };
-    if(_descriptors && setter)setSymbolDesc(ObjectProto$1, tag, {configurable: true, set: $set});
+    if (_descriptors && setter) setSymbolDesc(ObjectProto$1, tag, { configurable: true, set: $set });
     return wrap(tag);
   };
-  _redefine($Symbol[PROTOTYPE$2], 'toString', function toString(){
+  _redefine($Symbol[PROTOTYPE$2], 'toString', function toString() {
     return this._k;
   });
 
   _objectGopd.f = $getOwnPropertyDescriptor$1;
-  _objectDp.f   = $defineProperty;
+  _objectDp.f = $defineProperty;
   _objectGopn.f = _objectGopnExt.f = $getOwnPropertyNames;
-  _objectPie.f  = $propertyIsEnumerable;
+  _objectPie.f = $propertyIsEnumerable;
   _objectGops.f = $getOwnPropertySymbols;
 
-  if(_descriptors && !_library){
+  if (_descriptors && !_library) {
     _redefine(ObjectProto$1, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
-  _wksExt.f = function(name){
+  _wksExt.f = function (name) {
     return wrap(_wks(name));
   };
 }
 
-_export(_export.G + _export.W + _export.F * !USE_NATIVE, {Symbol: $Symbol});
+_export(_export.G + _export.W + _export.F * !USE_NATIVE, { Symbol: $Symbol });
 
-for(var symbols = (
+for (var es6Symbols = (
   // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
   'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
-).split(','), i$1 = 0; symbols.length > i$1; )_wks(symbols[i$1++]);
+).split(','), j = 0; es6Symbols.length > j;)_wks(es6Symbols[j++]);
 
-for(var symbols = _objectKeys(_wks.store), i$1 = 0; symbols.length > i$1; )_wksDefine(symbols[i$1++]);
+for (var wellKnownSymbols = _objectKeys(_wks.store), k = 0; wellKnownSymbols.length > k;) _wksDefine(wellKnownSymbols[k++]);
 
 _export(_export.S + _export.F * !USE_NATIVE, 'Symbol', {
   // 19.4.2.1 Symbol.for(key)
-  'for': function(key){
+  'for': function (key) {
     return _has(SymbolRegistry, key += '')
       ? SymbolRegistry[key]
       : SymbolRegistry[key] = $Symbol(key);
   },
   // 19.4.2.5 Symbol.keyFor(sym)
-  keyFor: function keyFor(key){
-    if(isSymbol(key))return _keyof(SymbolRegistry, key);
-    throw TypeError(key + ' is not a symbol!');
+  keyFor: function keyFor(sym) {
+    if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!');
+    for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key;
   },
-  useSetter: function(){ setter = true; },
-  useSimple: function(){ setter = false; }
+  useSetter: function () { setter = true; },
+  useSimple: function () { setter = false; }
 });
 
 _export(_export.S + _export.F * !USE_NATIVE, 'Object', {
@@ -949,24 +979,23 @@ _export(_export.S + _export.F * !USE_NATIVE, 'Object', {
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
-$JSON && _export(_export.S + _export.F * (!USE_NATIVE || _fails(function(){
+$JSON && _export(_export.S + _export.F * (!USE_NATIVE || _fails(function () {
   var S = $Symbol();
   // MS Edge converts symbol values to JSON as {}
   // WebKit converts symbol values to JSON as null
   // V8 throws on boxed symbols
-  return _stringify([S]) != '[null]' || _stringify({a: S}) != '{}' || _stringify(Object(S)) != '{}';
+  return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
 })), 'JSON', {
-  stringify: function stringify(it){
-    if(it === undefined || isSymbol(it))return; // IE8 returns string on undefined
-    var args = [it]
-      , i    = 1
-      , replacer, $replacer;
-    while(arguments.length > i)args.push(arguments[i++]);
-    replacer = args[1];
-    if(typeof replacer == 'function')$replacer = replacer;
-    if($replacer || !_isArray(replacer))replacer = function(key, value){
-      if($replacer)value = $replacer.call(this, key, value);
-      if(!isSymbol(value))return value;
+  stringify: function stringify(it) {
+    var args = [it];
+    var i = 1;
+    var replacer, $replacer;
+    while (arguments.length > i) args.push(arguments[i++]);
+    $replacer = replacer = args[1];
+    if (!_isObject(replacer) && it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
+    if (!_isArray(replacer)) replacer = function (key, value) {
+      if (typeof $replacer == 'function') value = $replacer.call(this, key, value);
+      if (!isSymbol(value)) return value;
     };
     args[1] = replacer;
     return _stringify.apply($JSON, args);
@@ -992,9 +1021,9 @@ var symbol = createCommonjsModule(function (module) {
 module.exports = { "default": symbol$2, __esModule: true };
 });
 
-var _typeof_1 = createCommonjsModule(function (module, exports) {
-"use strict";
+unwrapExports(symbol);
 
+var _typeof_1 = createCommonjsModule(function (module, exports) {
 exports.__esModule = true;
 
 
@@ -1018,9 +1047,37 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 
 var _typeof = unwrapExports(_typeof_1);
 
-var possibleConstructorReturn = createCommonjsModule(function (module, exports) {
-"use strict";
+// 19.1.2.9 Object.getPrototypeOf(O)
 
+
+
+_objectSap('getPrototypeOf', function () {
+  return function getPrototypeOf(it) {
+    return _objectGpo(_toObject(it));
+  };
+});
+
+var getPrototypeOf$1 = _core.Object.getPrototypeOf;
+
+var getPrototypeOf = createCommonjsModule(function (module) {
+module.exports = { "default": getPrototypeOf$1, __esModule: true };
+});
+
+var _Object$getPrototypeOf = unwrapExports(getPrototypeOf);
+
+var classCallCheck = createCommonjsModule(function (module, exports) {
+exports.__esModule = true;
+
+exports.default = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+});
+
+var _classCallCheck = unwrapExports(classCallCheck);
+
+var possibleConstructorReturn = createCommonjsModule(function (module, exports) {
 exports.__esModule = true;
 
 
@@ -1041,20 +1098,20 @@ exports.default = function (self, call) {
 var _possibleConstructorReturn = unwrapExports(possibleConstructorReturn);
 
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-_export(_export.S + _export.F * !_descriptors, 'Object', {defineProperty: _objectDp.f});
+_export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
 
 var $Object$1 = _core.Object;
-var defineProperty$3 = function defineProperty(it, key, desc){
+var defineProperty$2 = function defineProperty(it, key, desc) {
   return $Object$1.defineProperty(it, key, desc);
 };
 
 var defineProperty$1 = createCommonjsModule(function (module) {
-module.exports = { "default": defineProperty$3, __esModule: true };
+module.exports = { "default": defineProperty$2, __esModule: true };
 });
 
-var createClass = createCommonjsModule(function (module, exports) {
-"use strict";
+var _Object$defineProperty = unwrapExports(defineProperty$1);
 
+var createClass = createCommonjsModule(function (module, exports) {
 exports.__esModule = true;
 
 
@@ -1087,21 +1144,22 @@ var _createClass = unwrapExports(createClass);
 // Works with __proto__ only. Old v8 can't work with null proto objects.
 /* eslint-disable no-proto */
 
-var check = function(O, proto){
+
+var check = function (O, proto) {
   _anObject(O);
-  if(!_isObject(proto) && proto !== null)throw TypeError(proto + ": can't set as prototype!");
+  if (!_isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
 };
 var _setProto = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
-    function(test, buggy, set){
+    function (test, buggy, set) {
       try {
         set = _ctx(Function.call, _objectGopd.f(Object.prototype, '__proto__').set, 2);
         set(test, []);
         buggy = !(test instanceof Array);
-      } catch(e){ buggy = true; }
-      return function setPrototypeOf(O, proto){
+      } catch (e) { buggy = true; }
+      return function setPrototypeOf(O, proto) {
         check(O, proto);
-        if(buggy)O.__proto__ = proto;
+        if (buggy) O.__proto__ = proto;
         else set(O, proto);
         return O;
       };
@@ -1111,7 +1169,7 @@ var _setProto = {
 
 // 19.1.3.19 Object.setPrototypeOf(O, proto)
 
-_export(_export.S, 'Object', {setPrototypeOf: _setProto.set});
+_export(_export.S, 'Object', { setPrototypeOf: _setProto.set });
 
 var setPrototypeOf$2 = _core.Object.setPrototypeOf;
 
@@ -1119,11 +1177,13 @@ var setPrototypeOf = createCommonjsModule(function (module) {
 module.exports = { "default": setPrototypeOf$2, __esModule: true };
 });
 
+unwrapExports(setPrototypeOf);
+
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-_export(_export.S, 'Object', {create: _objectCreate});
+_export(_export.S, 'Object', { create: _objectCreate });
 
 var $Object$2 = _core.Object;
-var create$1 = function create(P, D){
+var create$1 = function create(P, D) {
   return $Object$2.create(P, D);
 };
 
@@ -1134,8 +1194,6 @@ module.exports = { "default": create$1, __esModule: true };
 var _Object$create = unwrapExports(create);
 
 var inherits = createCommonjsModule(function (module, exports) {
-"use strict";
-
 exports.__esModule = true;
 
 
@@ -1237,15 +1295,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return enableLogs; });
+__webpack_require__.d(__webpack_exports__, "a", function() { return enableLogs; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return logger; });
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -1329,8 +1386,7 @@ var logger = exportedLogger;
 /* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
+__webpack_exports__["a"] = ({
   // fired before MediaSource is attaching to media element - data: { media }
   MEDIA_ATTACHING: 'hlsMediaAttaching',
   // fired when MediaSource has been succesfully attached to media element - data: { }
@@ -1407,7 +1463,7 @@ var logger = exportedLogger;
   FRAG_LOAD_EMERGENCY_ABORTED: 'hlsFragLoadEmergencyAborted',
   // fired when a fragment loading is completed - data: { frag : fragment object, payload : fragment payload, stats : { trequest, tfirst, tload, length } }
   FRAG_LOADED: 'hlsFragLoaded',
-  // fired when a fragment has finished decrypting - data: { id : demuxer id, frag: fragment object, stats : { tstart, tdecrypt } }
+  // fired when a fragment has finished decrypting - data: { id : demuxer id, frag: fragment object, payload : fragment payload, stats : { tstart, tdecrypt } }
   FRAG_DECRYPTED: 'hlsFragDecrypted',
   // fired when Init Segment has been extracted from fragment - data: { id : demuxer id, frag: fragment object, moov : moov MP4 box, codecs : codecs found while parsing fragment }
   FRAG_PARSING_INIT_SEGMENT: 'hlsFragParsingInitSegment',
@@ -1443,8 +1499,7 @@ var logger = exportedLogger;
 /* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ErrorTypes; });
+__webpack_require__.d(__webpack_exports__, "b", function() { return ErrorTypes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ErrorDetails; });
 var ErrorTypes = {
   // Identifier for a network error (loading error / timeout ...)
@@ -1515,7 +1570,7 @@ var ErrorDetails = {
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
+__webpack_require__.d(__webpack_exports__, "b", function() { return utf8ArrayToStr; });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -1751,7 +1806,7 @@ var ID3 = function () {
       return undefined;
     }
 
-    var owner = ID3._utf8ArrayToStr(frame.data);
+    var owner = ID3._utf8ArrayToStr(frame.data, true);
     var privateData = new Uint8Array(frame.data.subarray(owner.length + 1));
 
     return { key: frame.type, info: owner, data: privateData.buffer };
@@ -1826,19 +1881,25 @@ var ID3 = function () {
 
 
   ID3._utf8ArrayToStr = function _utf8ArrayToStr(array) {
+    var exitOnNull = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
+
+    var len = array.length;
+    var c = void 0;
     var char2 = void 0;
     var char3 = void 0;
     var out = '';
     var i = 0;
-    var length = array.length;
-
-    while (i < length) {
-      var c = array[i++];
+    while (i < len) {
+      c = array[i++];
+      if (c === 0x00 && exitOnNull) {
+        return out;
+      } else if (c === 0x00 || c === 0x03) {
+        // If the character is 3 (END_OF_TEXT) or 0 (NULL) then skip it
+        continue;
+      }
       switch (c >> 4) {
-        case 0:
-          return out;
-        case 1:case 2:case 3:case 4:case 5:case 6:case 7:
+        case 0:case 1:case 2:case 3:case 4:case 5:case 6:case 7:
           // 0xxxxxxx
           out += String.fromCharCode(c);
           break;
@@ -1853,500 +1914,25 @@ var ID3 = function () {
           char3 = array[i++];
           out += String.fromCharCode((c & 0x0F) << 12 | (char2 & 0x3F) << 6 | (char3 & 0x3F) << 0);
           break;
+        default:
       }
     }
-
     return out;
   };
 
   return ID3;
 }();
 
+var utf8ArrayToStr = ID3._utf8ArrayToStr;
+
 /* harmony default export */ __webpack_exports__["a"] = (ID3);
+
+
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
-
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-function EventEmitter() {
-  this._events = this._events || {};
-  this._maxListeners = this._maxListeners || undefined;
-}
-module.exports = EventEmitter;
-
-// Backwards-compat with node 0.10.x
-EventEmitter.EventEmitter = EventEmitter;
-
-EventEmitter.prototype._events = undefined;
-EventEmitter.prototype._maxListeners = undefined;
-
-// By default EventEmitters will print a warning if more than 10 listeners are
-// added to it. This is a useful default which helps finding memory leaks.
-EventEmitter.defaultMaxListeners = 10;
-
-// Obviously not all Emitters should be limited to 10. This function allows
-// that to be increased. Set to zero for unlimited.
-EventEmitter.prototype.setMaxListeners = function(n) {
-  if (!isNumber(n) || n < 0 || isNaN(n))
-    throw TypeError('n must be a positive number');
-  this._maxListeners = n;
-  return this;
-};
-
-EventEmitter.prototype.emit = function(type) {
-  var er, handler, len, args, i, listeners;
-
-  if (!this._events)
-    this._events = {};
-
-  // If there is no 'error' event listener then throw.
-  if (type === 'error') {
-    if (!this._events.error ||
-        (isObject(this._events.error) && !this._events.error.length)) {
-      er = arguments[1];
-      if (er instanceof Error) {
-        throw er; // Unhandled 'error' event
-      } else {
-        // At least give some kind of context to the user
-        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
-        err.context = er;
-        throw err;
-      }
-    }
-  }
-
-  handler = this._events[type];
-
-  if (isUndefined(handler))
-    return false;
-
-  if (isFunction(handler)) {
-    switch (arguments.length) {
-      // fast cases
-      case 1:
-        handler.call(this);
-        break;
-      case 2:
-        handler.call(this, arguments[1]);
-        break;
-      case 3:
-        handler.call(this, arguments[1], arguments[2]);
-        break;
-      // slower
-      default:
-        args = Array.prototype.slice.call(arguments, 1);
-        handler.apply(this, args);
-    }
-  } else if (isObject(handler)) {
-    args = Array.prototype.slice.call(arguments, 1);
-    listeners = handler.slice();
-    len = listeners.length;
-    for (i = 0; i < len; i++)
-      listeners[i].apply(this, args);
-  }
-
-  return true;
-};
-
-EventEmitter.prototype.addListener = function(type, listener) {
-  var m;
-
-  if (!isFunction(listener))
-    throw TypeError('listener must be a function');
-
-  if (!this._events)
-    this._events = {};
-
-  // To avoid recursion in the case that type === "newListener"! Before
-  // adding it to the listeners, first emit "newListener".
-  if (this._events.newListener)
-    this.emit('newListener', type,
-              isFunction(listener.listener) ?
-              listener.listener : listener);
-
-  if (!this._events[type])
-    // Optimize the case of one listener. Don't need the extra array object.
-    this._events[type] = listener;
-  else if (isObject(this._events[type]))
-    // If we've already got an array, just append.
-    this._events[type].push(listener);
-  else
-    // Adding the second element, need to change to array.
-    this._events[type] = [this._events[type], listener];
-
-  // Check for listener leak
-  if (isObject(this._events[type]) && !this._events[type].warned) {
-    if (!isUndefined(this._maxListeners)) {
-      m = this._maxListeners;
-    } else {
-      m = EventEmitter.defaultMaxListeners;
-    }
-
-    if (m && m > 0 && this._events[type].length > m) {
-      this._events[type].warned = true;
-      console.error('(node) warning: possible EventEmitter memory ' +
-                    'leak detected. %d listeners added. ' +
-                    'Use emitter.setMaxListeners() to increase limit.',
-                    this._events[type].length);
-      if (typeof console.trace === 'function') {
-        // not supported in IE 10
-        console.trace();
-      }
-    }
-  }
-
-  return this;
-};
-
-EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-
-EventEmitter.prototype.once = function(type, listener) {
-  if (!isFunction(listener))
-    throw TypeError('listener must be a function');
-
-  var fired = false;
-
-  function g() {
-    this.removeListener(type, g);
-
-    if (!fired) {
-      fired = true;
-      listener.apply(this, arguments);
-    }
-  }
-
-  g.listener = listener;
-  this.on(type, g);
-
-  return this;
-};
-
-// emits a 'removeListener' event iff the listener was removed
-EventEmitter.prototype.removeListener = function(type, listener) {
-  var list, position, length, i;
-
-  if (!isFunction(listener))
-    throw TypeError('listener must be a function');
-
-  if (!this._events || !this._events[type])
-    return this;
-
-  list = this._events[type];
-  length = list.length;
-  position = -1;
-
-  if (list === listener ||
-      (isFunction(list.listener) && list.listener === listener)) {
-    delete this._events[type];
-    if (this._events.removeListener)
-      this.emit('removeListener', type, listener);
-
-  } else if (isObject(list)) {
-    for (i = length; i-- > 0;) {
-      if (list[i] === listener ||
-          (list[i].listener && list[i].listener === listener)) {
-        position = i;
-        break;
-      }
-    }
-
-    if (position < 0)
-      return this;
-
-    if (list.length === 1) {
-      list.length = 0;
-      delete this._events[type];
-    } else {
-      list.splice(position, 1);
-    }
-
-    if (this._events.removeListener)
-      this.emit('removeListener', type, listener);
-  }
-
-  return this;
-};
-
-EventEmitter.prototype.removeAllListeners = function(type) {
-  var key, listeners;
-
-  if (!this._events)
-    return this;
-
-  // not listening for removeListener, no need to emit
-  if (!this._events.removeListener) {
-    if (arguments.length === 0)
-      this._events = {};
-    else if (this._events[type])
-      delete this._events[type];
-    return this;
-  }
-
-  // emit removeListener for all listeners on all events
-  if (arguments.length === 0) {
-    for (key in this._events) {
-      if (key === 'removeListener') continue;
-      this.removeAllListeners(key);
-    }
-    this.removeAllListeners('removeListener');
-    this._events = {};
-    return this;
-  }
-
-  listeners = this._events[type];
-
-  if (isFunction(listeners)) {
-    this.removeListener(type, listeners);
-  } else if (listeners) {
-    // LIFO order
-    while (listeners.length)
-      this.removeListener(type, listeners[listeners.length - 1]);
-  }
-  delete this._events[type];
-
-  return this;
-};
-
-EventEmitter.prototype.listeners = function(type) {
-  var ret;
-  if (!this._events || !this._events[type])
-    ret = [];
-  else if (isFunction(this._events[type]))
-    ret = [this._events[type]];
-  else
-    ret = this._events[type].slice();
-  return ret;
-};
-
-EventEmitter.prototype.listenerCount = function(type) {
-  if (this._events) {
-    var evlistener = this._events[type];
-
-    if (isFunction(evlistener))
-      return 1;
-    else if (evlistener)
-      return evlistener.length;
-  }
-  return 0;
-};
-
-EventEmitter.listenerCount = function(emitter, type) {
-  return emitter.listenerCount(type);
-};
-
-function isFunction(arg) {
-  return typeof arg === 'function';
-}
-
-function isNumber(arg) {
-  return typeof arg === 'number';
-}
-
-function isObject(arg) {
-  return typeof arg === 'object' && arg !== null;
-}
-
-function isUndefined(arg) {
-  return arg === void 0;
-}
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// see https://tools.ietf.org/html/rfc1808
-
-/* jshint ignore:start */
-(function(root) { 
-/* jshint ignore:end */
-
-  var URL_REGEX = /^((?:[^\/;?#]+:)?)(\/\/[^\/\;?#]*)?(.*?)??(;.*?)?(\?.*?)?(#.*?)?$/;
-  var FIRST_SEGMENT_REGEX = /^([^\/;?#]*)(.*)$/;
-  var SLASH_DOT_REGEX = /(?:\/|^)\.(?=\/)/g;
-  var SLASH_DOT_DOT_REGEX = /(?:\/|^)\.\.\/(?!\.\.\/).*?(?=\/)/g;
-
-  var URLToolkit = { // jshint ignore:line
-    // If opts.alwaysNormalize is true then the path will always be normalized even when it starts with / or //
-    // E.g
-    // With opts.alwaysNormalize = false (default, spec compliant)
-    // http://a.com/b/cd + /e/f/../g => http://a.com/e/f/../g
-    // With opts.alwaysNormalize = true (default, not spec compliant)
-    // http://a.com/b/cd + /e/f/../g => http://a.com/e/g
-    buildAbsoluteURL: function(baseURL, relativeURL, opts) {
-      opts = opts || {};
-      // remove any remaining space and CRLF
-      baseURL = baseURL.trim();
-      relativeURL = relativeURL.trim();
-      if (!relativeURL) {
-        // 2a) If the embedded URL is entirely empty, it inherits the
-        // entire base URL (i.e., is set equal to the base URL)
-        // and we are done.
-        if (!opts.alwaysNormalize) {
-          return baseURL;
-        }
-        var basePartsForNormalise = this.parseURL(baseURL);
-        if (!baseParts) {
-          throw new Error('Error trying to parse base URL.');
-        }
-        basePartsForNormalise.path = URLToolkit.normalizePath(basePartsForNormalise.path);
-        return URLToolkit.buildURLFromParts(basePartsForNormalise);
-      }
-      var relativeParts = this.parseURL(relativeURL);
-      if (!relativeParts) {
-        throw new Error('Error trying to parse relative URL.');
-      }
-      if (relativeParts.scheme) {
-        // 2b) If the embedded URL starts with a scheme name, it is
-        // interpreted as an absolute URL and we are done.
-        if (!opts.alwaysNormalize) {
-          return relativeURL;
-        }
-        relativeParts.path = URLToolkit.normalizePath(relativeParts.path);
-        return URLToolkit.buildURLFromParts(relativeParts);
-      }
-      var baseParts = this.parseURL(baseURL);
-      if (!baseParts) {
-        throw new Error('Error trying to parse base URL.');
-      }
-      if (!baseParts.netLoc && baseParts.path && baseParts.path[0] !== '/') {
-        // If netLoc missing and path doesn't start with '/', assume everthing before the first '/' is the netLoc
-        // This causes 'example.com/a' to be handled as '//example.com/a' instead of '/example.com/a'
-        var pathParts = FIRST_SEGMENT_REGEX.exec(baseParts.path);
-        baseParts.netLoc = pathParts[1];
-        baseParts.path = pathParts[2];
-      }
-      if (baseParts.netLoc && !baseParts.path) {
-        baseParts.path = '/';
-      }
-      var builtParts = {
-        // 2c) Otherwise, the embedded URL inherits the scheme of
-        // the base URL.
-        scheme: baseParts.scheme,
-        netLoc: relativeParts.netLoc,
-        path: null,
-        params: relativeParts.params,
-        query: relativeParts.query,
-        fragment: relativeParts.fragment
-      };
-      if (!relativeParts.netLoc) {
-        // 3) If the embedded URL's <net_loc> is non-empty, we skip to
-        // Step 7.  Otherwise, the embedded URL inherits the <net_loc>
-        // (if any) of the base URL.
-        builtParts.netLoc = baseParts.netLoc;
-        // 4) If the embedded URL path is preceded by a slash "/", the
-        // path is not relative and we skip to Step 7.
-        if (relativeParts.path[0] !== '/') {
-          if (!relativeParts.path) {
-            // 5) If the embedded URL path is empty (and not preceded by a
-            // slash), then the embedded URL inherits the base URL path
-            builtParts.path = baseParts.path;
-            // 5a) if the embedded URL's <params> is non-empty, we skip to
-            // step 7; otherwise, it inherits the <params> of the base
-            // URL (if any) and
-            if (!relativeParts.params) {
-              builtParts.params = baseParts.params;
-              // 5b) if the embedded URL's <query> is non-empty, we skip to
-              // step 7; otherwise, it inherits the <query> of the base
-              // URL (if any) and we skip to step 7.
-              if (!relativeParts.query) {
-                builtParts.query = baseParts.query;
-              }
-            }
-          } else {
-            // 6) The last segment of the base URL's path (anything
-            // following the rightmost slash "/", or the entire path if no
-            // slash is present) is removed and the embedded URL's path is
-            // appended in its place.
-            var baseURLPath = baseParts.path;
-            var newPath = baseURLPath.substring(0, baseURLPath.lastIndexOf('/') + 1) + relativeParts.path;
-            builtParts.path = URLToolkit.normalizePath(newPath);
-          }
-        }
-      }
-      if (builtParts.path === null) {
-        builtParts.path = opts.alwaysNormalize ? URLToolkit.normalizePath(relativeParts.path) : relativeParts.path;
-      }
-      return URLToolkit.buildURLFromParts(builtParts);
-    },
-    parseURL: function(url) {
-      var parts = URL_REGEX.exec(url);
-      if (!parts) {
-        return null;
-      }
-      return {
-        scheme: parts[1] || '',
-        netLoc: parts[2] || '',
-        path: parts[3] || '',
-        params: parts[4] || '',
-        query: parts[5] || '',
-        fragment: parts[6] || ''
-      };
-    },
-    normalizePath: function(path) {
-      // The following operations are
-      // then applied, in order, to the new path:
-      // 6a) All occurrences of "./", where "." is a complete path
-      // segment, are removed.
-      // 6b) If the path ends with "." as a complete path segment,
-      // that "." is removed.
-      path = path.split('').reverse().join('').replace(SLASH_DOT_REGEX, '');
-      // 6c) All occurrences of "<segment>/../", where <segment> is a
-      // complete path segment not equal to "..", are removed.
-      // Removal of these path segments is performed iteratively,
-      // removing the leftmost matching pattern on each iteration,
-      // until no matching pattern remains.
-      // 6d) If the path ends with "<segment>/..", where <segment> is a
-      // complete path segment not equal to "..", that
-      // "<segment>/.." is removed.
-      while (path.length !== (path = path.replace(SLASH_DOT_DOT_REGEX, '')).length) {} // jshint ignore:line
-      return path.split('').reverse().join('');
-    },
-    buildURLFromParts: function(parts) {
-      return parts.scheme + parts.netLoc + parts.path + parts.params + parts.query + parts.fragment;
-    }
-  };
-
-/* jshint ignore:start */
-  module.exports = URLToolkit;
-})(this);
-/* jshint ignore:end */
-
-
-/***/ }),
-/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
-
-// EXTERNAL MODULE: ./src/events.js
-var events = __webpack_require__(1);
-
-// EXTERNAL MODULE: ./src/errors.js
-var errors = __webpack_require__(2);
-
-// CONCATENATED MODULE: ./src/crypt/aes-crypto.js
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var AESCrypto = function () {
@@ -2674,6 +2260,9 @@ var AESDecryptor = function () {
 }();
 
 /* harmony default export */ var aes_decryptor = (AESDecryptor);
+// EXTERNAL MODULE: ./src/errors.js
+var errors = __webpack_require__(2);
+
 // EXTERNAL MODULE: ./src/utils/logger.js
 var logger = __webpack_require__(0);
 
@@ -2769,7 +2358,493 @@ var decrypter_Decrypter = function () {
   return Decrypter;
 }();
 
-/* harmony default export */ var crypt_decrypter = (decrypter_Decrypter);
+/* harmony default export */ var decrypter = __webpack_exports__["a"] = (decrypter_Decrypter);
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+function EventEmitter() {
+  this._events = this._events || {};
+  this._maxListeners = this._maxListeners || undefined;
+}
+module.exports = EventEmitter;
+
+// Backwards-compat with node 0.10.x
+EventEmitter.EventEmitter = EventEmitter;
+
+EventEmitter.prototype._events = undefined;
+EventEmitter.prototype._maxListeners = undefined;
+
+// By default EventEmitters will print a warning if more than 10 listeners are
+// added to it. This is a useful default which helps finding memory leaks.
+EventEmitter.defaultMaxListeners = 10;
+
+// Obviously not all Emitters should be limited to 10. This function allows
+// that to be increased. Set to zero for unlimited.
+EventEmitter.prototype.setMaxListeners = function(n) {
+  if (!isNumber(n) || n < 0 || isNaN(n))
+    throw TypeError('n must be a positive number');
+  this._maxListeners = n;
+  return this;
+};
+
+EventEmitter.prototype.emit = function(type) {
+  var er, handler, len, args, i, listeners;
+
+  if (!this._events)
+    this._events = {};
+
+  // If there is no 'error' event listener then throw.
+  if (type === 'error') {
+    if (!this._events.error ||
+        (isObject(this._events.error) && !this._events.error.length)) {
+      er = arguments[1];
+      if (er instanceof Error) {
+        throw er; // Unhandled 'error' event
+      } else {
+        // At least give some kind of context to the user
+        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+        err.context = er;
+        throw err;
+      }
+    }
+  }
+
+  handler = this._events[type];
+
+  if (isUndefined(handler))
+    return false;
+
+  if (isFunction(handler)) {
+    switch (arguments.length) {
+      // fast cases
+      case 1:
+        handler.call(this);
+        break;
+      case 2:
+        handler.call(this, arguments[1]);
+        break;
+      case 3:
+        handler.call(this, arguments[1], arguments[2]);
+        break;
+      // slower
+      default:
+        args = Array.prototype.slice.call(arguments, 1);
+        handler.apply(this, args);
+    }
+  } else if (isObject(handler)) {
+    args = Array.prototype.slice.call(arguments, 1);
+    listeners = handler.slice();
+    len = listeners.length;
+    for (i = 0; i < len; i++)
+      listeners[i].apply(this, args);
+  }
+
+  return true;
+};
+
+EventEmitter.prototype.addListener = function(type, listener) {
+  var m;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events)
+    this._events = {};
+
+  // To avoid recursion in the case that type === "newListener"! Before
+  // adding it to the listeners, first emit "newListener".
+  if (this._events.newListener)
+    this.emit('newListener', type,
+              isFunction(listener.listener) ?
+              listener.listener : listener);
+
+  if (!this._events[type])
+    // Optimize the case of one listener. Don't need the extra array object.
+    this._events[type] = listener;
+  else if (isObject(this._events[type]))
+    // If we've already got an array, just append.
+    this._events[type].push(listener);
+  else
+    // Adding the second element, need to change to array.
+    this._events[type] = [this._events[type], listener];
+
+  // Check for listener leak
+  if (isObject(this._events[type]) && !this._events[type].warned) {
+    if (!isUndefined(this._maxListeners)) {
+      m = this._maxListeners;
+    } else {
+      m = EventEmitter.defaultMaxListeners;
+    }
+
+    if (m && m > 0 && this._events[type].length > m) {
+      this._events[type].warned = true;
+      console.error('(node) warning: possible EventEmitter memory ' +
+                    'leak detected. %d listeners added. ' +
+                    'Use emitter.setMaxListeners() to increase limit.',
+                    this._events[type].length);
+      if (typeof console.trace === 'function') {
+        // not supported in IE 10
+        console.trace();
+      }
+    }
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+
+EventEmitter.prototype.once = function(type, listener) {
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  var fired = false;
+
+  function g() {
+    this.removeListener(type, g);
+
+    if (!fired) {
+      fired = true;
+      listener.apply(this, arguments);
+    }
+  }
+
+  g.listener = listener;
+  this.on(type, g);
+
+  return this;
+};
+
+// emits a 'removeListener' event iff the listener was removed
+EventEmitter.prototype.removeListener = function(type, listener) {
+  var list, position, length, i;
+
+  if (!isFunction(listener))
+    throw TypeError('listener must be a function');
+
+  if (!this._events || !this._events[type])
+    return this;
+
+  list = this._events[type];
+  length = list.length;
+  position = -1;
+
+  if (list === listener ||
+      (isFunction(list.listener) && list.listener === listener)) {
+    delete this._events[type];
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+
+  } else if (isObject(list)) {
+    for (i = length; i-- > 0;) {
+      if (list[i] === listener ||
+          (list[i].listener && list[i].listener === listener)) {
+        position = i;
+        break;
+      }
+    }
+
+    if (position < 0)
+      return this;
+
+    if (list.length === 1) {
+      list.length = 0;
+      delete this._events[type];
+    } else {
+      list.splice(position, 1);
+    }
+
+    if (this._events.removeListener)
+      this.emit('removeListener', type, listener);
+  }
+
+  return this;
+};
+
+EventEmitter.prototype.removeAllListeners = function(type) {
+  var key, listeners;
+
+  if (!this._events)
+    return this;
+
+  // not listening for removeListener, no need to emit
+  if (!this._events.removeListener) {
+    if (arguments.length === 0)
+      this._events = {};
+    else if (this._events[type])
+      delete this._events[type];
+    return this;
+  }
+
+  // emit removeListener for all listeners on all events
+  if (arguments.length === 0) {
+    for (key in this._events) {
+      if (key === 'removeListener') continue;
+      this.removeAllListeners(key);
+    }
+    this.removeAllListeners('removeListener');
+    this._events = {};
+    return this;
+  }
+
+  listeners = this._events[type];
+
+  if (isFunction(listeners)) {
+    this.removeListener(type, listeners);
+  } else if (listeners) {
+    // LIFO order
+    while (listeners.length)
+      this.removeListener(type, listeners[listeners.length - 1]);
+  }
+  delete this._events[type];
+
+  return this;
+};
+
+EventEmitter.prototype.listeners = function(type) {
+  var ret;
+  if (!this._events || !this._events[type])
+    ret = [];
+  else if (isFunction(this._events[type]))
+    ret = [this._events[type]];
+  else
+    ret = this._events[type].slice();
+  return ret;
+};
+
+EventEmitter.prototype.listenerCount = function(type) {
+  if (this._events) {
+    var evlistener = this._events[type];
+
+    if (isFunction(evlistener))
+      return 1;
+    else if (evlistener)
+      return evlistener.length;
+  }
+  return 0;
+};
+
+EventEmitter.listenerCount = function(emitter, type) {
+  return emitter.listenerCount(type);
+};
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// see https://tools.ietf.org/html/rfc1808
+
+/* jshint ignore:start */
+(function(root) { 
+/* jshint ignore:end */
+
+  var URL_REGEX = /^((?:[^\/;?#]+:)?)(\/\/[^\/\;?#]*)?(.*?)??(;.*?)?(\?.*?)?(#.*?)?$/;
+  var FIRST_SEGMENT_REGEX = /^([^\/;?#]*)(.*)$/;
+  var SLASH_DOT_REGEX = /(?:\/|^)\.(?=\/)/g;
+  var SLASH_DOT_DOT_REGEX = /(?:\/|^)\.\.\/(?!\.\.\/).*?(?=\/)/g;
+
+  var URLToolkit = { // jshint ignore:line
+    // If opts.alwaysNormalize is true then the path will always be normalized even when it starts with / or //
+    // E.g
+    // With opts.alwaysNormalize = false (default, spec compliant)
+    // http://a.com/b/cd + /e/f/../g => http://a.com/e/f/../g
+    // With opts.alwaysNormalize = true (default, not spec compliant)
+    // http://a.com/b/cd + /e/f/../g => http://a.com/e/g
+    buildAbsoluteURL: function(baseURL, relativeURL, opts) {
+      opts = opts || {};
+      // remove any remaining space and CRLF
+      baseURL = baseURL.trim();
+      relativeURL = relativeURL.trim();
+      if (!relativeURL) {
+        // 2a) If the embedded URL is entirely empty, it inherits the
+        // entire base URL (i.e., is set equal to the base URL)
+        // and we are done.
+        if (!opts.alwaysNormalize) {
+          return baseURL;
+        }
+        var basePartsForNormalise = this.parseURL(baseURL);
+        if (!baseParts) {
+          throw new Error('Error trying to parse base URL.');
+        }
+        basePartsForNormalise.path = URLToolkit.normalizePath(basePartsForNormalise.path);
+        return URLToolkit.buildURLFromParts(basePartsForNormalise);
+      }
+      var relativeParts = this.parseURL(relativeURL);
+      if (!relativeParts) {
+        throw new Error('Error trying to parse relative URL.');
+      }
+      if (relativeParts.scheme) {
+        // 2b) If the embedded URL starts with a scheme name, it is
+        // interpreted as an absolute URL and we are done.
+        if (!opts.alwaysNormalize) {
+          return relativeURL;
+        }
+        relativeParts.path = URLToolkit.normalizePath(relativeParts.path);
+        return URLToolkit.buildURLFromParts(relativeParts);
+      }
+      var baseParts = this.parseURL(baseURL);
+      if (!baseParts) {
+        throw new Error('Error trying to parse base URL.');
+      }
+      if (!baseParts.netLoc && baseParts.path && baseParts.path[0] !== '/') {
+        // If netLoc missing and path doesn't start with '/', assume everthing before the first '/' is the netLoc
+        // This causes 'example.com/a' to be handled as '//example.com/a' instead of '/example.com/a'
+        var pathParts = FIRST_SEGMENT_REGEX.exec(baseParts.path);
+        baseParts.netLoc = pathParts[1];
+        baseParts.path = pathParts[2];
+      }
+      if (baseParts.netLoc && !baseParts.path) {
+        baseParts.path = '/';
+      }
+      var builtParts = {
+        // 2c) Otherwise, the embedded URL inherits the scheme of
+        // the base URL.
+        scheme: baseParts.scheme,
+        netLoc: relativeParts.netLoc,
+        path: null,
+        params: relativeParts.params,
+        query: relativeParts.query,
+        fragment: relativeParts.fragment
+      };
+      if (!relativeParts.netLoc) {
+        // 3) If the embedded URL's <net_loc> is non-empty, we skip to
+        // Step 7.  Otherwise, the embedded URL inherits the <net_loc>
+        // (if any) of the base URL.
+        builtParts.netLoc = baseParts.netLoc;
+        // 4) If the embedded URL path is preceded by a slash "/", the
+        // path is not relative and we skip to Step 7.
+        if (relativeParts.path[0] !== '/') {
+          if (!relativeParts.path) {
+            // 5) If the embedded URL path is empty (and not preceded by a
+            // slash), then the embedded URL inherits the base URL path
+            builtParts.path = baseParts.path;
+            // 5a) if the embedded URL's <params> is non-empty, we skip to
+            // step 7; otherwise, it inherits the <params> of the base
+            // URL (if any) and
+            if (!relativeParts.params) {
+              builtParts.params = baseParts.params;
+              // 5b) if the embedded URL's <query> is non-empty, we skip to
+              // step 7; otherwise, it inherits the <query> of the base
+              // URL (if any) and we skip to step 7.
+              if (!relativeParts.query) {
+                builtParts.query = baseParts.query;
+              }
+            }
+          } else {
+            // 6) The last segment of the base URL's path (anything
+            // following the rightmost slash "/", or the entire path if no
+            // slash is present) is removed and the embedded URL's path is
+            // appended in its place.
+            var baseURLPath = baseParts.path;
+            var newPath = baseURLPath.substring(0, baseURLPath.lastIndexOf('/') + 1) + relativeParts.path;
+            builtParts.path = URLToolkit.normalizePath(newPath);
+          }
+        }
+      }
+      if (builtParts.path === null) {
+        builtParts.path = opts.alwaysNormalize ? URLToolkit.normalizePath(relativeParts.path) : relativeParts.path;
+      }
+      return URLToolkit.buildURLFromParts(builtParts);
+    },
+    parseURL: function(url) {
+      var parts = URL_REGEX.exec(url);
+      if (!parts) {
+        return null;
+      }
+      return {
+        scheme: parts[1] || '',
+        netLoc: parts[2] || '',
+        path: parts[3] || '',
+        params: parts[4] || '',
+        query: parts[5] || '',
+        fragment: parts[6] || ''
+      };
+    },
+    normalizePath: function(path) {
+      // The following operations are
+      // then applied, in order, to the new path:
+      // 6a) All occurrences of "./", where "." is a complete path
+      // segment, are removed.
+      // 6b) If the path ends with "." as a complete path segment,
+      // that "." is removed.
+      path = path.split('').reverse().join('').replace(SLASH_DOT_REGEX, '');
+      // 6c) All occurrences of "<segment>/../", where <segment> is a
+      // complete path segment not equal to "..", are removed.
+      // Removal of these path segments is performed iteratively,
+      // removing the leftmost matching pattern on each iteration,
+      // until no matching pattern remains.
+      // 6d) If the path ends with "<segment>/..", where <segment> is a
+      // complete path segment not equal to "..", that
+      // "<segment>/.." is removed.
+      while (path.length !== (path = path.replace(SLASH_DOT_DOT_REGEX, '')).length) {} // jshint ignore:line
+      return path.split('').reverse().join('');
+    },
+    buildURLFromParts: function(parts) {
+      return parts.scheme + parts.netLoc + parts.path + parts.params + parts.query + parts.fragment;
+    }
+  };
+
+/* jshint ignore:start */
+  module.exports = URLToolkit;
+})(this);
+/* jshint ignore:end */
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+var events = __webpack_require__(1);
+
+// EXTERNAL MODULE: ./src/errors.js
+var errors = __webpack_require__(2);
+
+// EXTERNAL MODULE: ./src/crypt/decrypter.js + 3 modules
+var crypt_decrypter = __webpack_require__(4);
+
+// EXTERNAL MODULE: ./src/utils/logger.js
+var logger = __webpack_require__(0);
+
 // CONCATENATED MODULE: ./src/demux/adts.js
 /**
  *  ADTS parser helper
@@ -2997,7 +3072,7 @@ function appendFrame(track, data, offset, pts, frameIndex) {
 var id3 = __webpack_require__(3);
 
 // CONCATENATED MODULE: ./src/demux/aacdemuxer.js
-function aacdemuxer__classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * AAC demuxer
@@ -3008,7 +3083,7 @@ function aacdemuxer__classCallCheck(instance, Constructor) { if (!(instance inst
 
 var aacdemuxer_AACDemuxer = function () {
   function AACDemuxer(observer, remuxer, config) {
-    aacdemuxer__classCallCheck(this, AACDemuxer);
+    _classCallCheck(this, AACDemuxer);
 
     this.observer = observer;
     this.config = config;
@@ -3022,18 +3097,20 @@ var aacdemuxer_AACDemuxer = function () {
   AACDemuxer.prototype.resetTimeStamp = function resetTimeStamp() {};
 
   AACDemuxer.probe = function probe(data) {
-    // check if data contains ID3 timestamp and ADTS sync word
-    var offset, length;
-    var id3Data = id3["a" /* default */].getID3Data(data, 0);
-    if (id3Data && id3["a" /* default */].getTimeStamp(id3Data) !== undefined) {
-      // Look for ADTS header | 1111 1111 | 1111 X00X | where X can be either 0 or 1
-      // Layer bits (position 14 and 15) in header should be always 0 for ADTS
-      // More info https://wiki.multimedia.cx/index.php?title=ADTS
-      for (offset = id3Data.length, length = Math.min(data.length - 1, offset + 100); offset < length; offset++) {
-        if (adts_probe(data, offset)) {
-          logger["b" /* logger */].log('ADTS sync word found !');
-          return true;
-        }
+    if (!data) {
+      return false;
+    }
+    // Check for the ADTS sync word
+    // Look for ADTS header | 1111 1111 | 1111 X00X | where X can be either 0 or 1
+    // Layer bits (position 14 and 15) in header should be always 0 for ADTS
+    // More info https://wiki.multimedia.cx/index.php?title=ADTS
+    var id3Data = id3["a" /* default */].getID3Data(data, 0) || [];
+    var offset = id3Data.length;
+
+    for (var length = data.length; offset < length; offset++) {
+      if (adts_probe(data, offset)) {
+        logger["b" /* logger */].log('ADTS sync word found !');
+        return true;
       }
     }
     return false;
@@ -3043,13 +3120,14 @@ var aacdemuxer_AACDemuxer = function () {
 
 
   AACDemuxer.prototype.append = function append(data, timeOffset, contiguous, accurateTimeOffset) {
-    var track = this._audioTrack,
-        id3Data = id3["a" /* default */].getID3Data(data, 0),
-        pts = 90 * id3["a" /* default */].getTimeStamp(id3Data),
-        frameIndex = 0,
-        stamp = pts,
-        length = data.length,
-        offset = id3Data.length;
+    var track = this._audioTrack;
+    var id3Data = id3["a" /* default */].getID3Data(data, 0) || [];
+    var timestamp = id3["a" /* default */].getTimeStamp(id3Data);
+    var pts = timestamp ? 90 * timestamp : timeOffset * 90000;
+    var frameIndex = 0;
+    var stamp = pts;
+    var length = data.length;
+    var offset = id3Data.length;
 
     var id3Samples = [{ pts: stamp, dts: stamp, data: id3Data }];
 
@@ -3090,7 +3168,7 @@ function mp4demuxer__classCallCheck(instance, Constructor) { if (!(instance inst
 /**
  * MP4 demuxer
  */
-//import {logger} from '../utils/logger';
+
 
 
 var UINT32_MAX = Math.pow(2, 32) - 1;
@@ -3111,6 +3189,15 @@ var mp4demuxer_MP4Demuxer = function () {
     //jshint unused:false
     if (initSegment && initSegment.byteLength) {
       var initData = this.initData = MP4Demuxer.parseInitSegment(initSegment);
+
+      // default audio codec if nothing specified
+      // TODO : extract that from initsegment
+      if (audioCodec == null) {
+        audioCodec = 'mp4a.40.5';
+      }
+      if (videoCodec == null) {
+        videoCodec = 'avc1.42e01e';
+      }
       var tracks = {};
       if (initData.audio && initData.video) {
         tracks.audiovideo = { container: 'video/mp4', codec: audioCodec + ',' + videoCodec, initSegment: duration ? initSegment : null };
@@ -3134,11 +3221,8 @@ var mp4demuxer_MP4Demuxer = function () {
   };
 
   MP4Demuxer.probe = function probe(data) {
-    if (data.length >= 8) {
-      var dataType = MP4Demuxer.bin2str(data.subarray(4, 8));
-      return ['moof', 'ftyp', 'styp'].indexOf(dataType) >= 0;
-    }
-    return false;
+    // ensure we find a moof box in the first 16 kB
+    return MP4Demuxer.findBox({ data: data, start: 0, end: Math.min(data.length, 16384) }, ['moof']).length > 0;
   };
 
   MP4Demuxer.bin2str = function bin2str(buffer) {
@@ -3262,6 +3346,13 @@ var mp4demuxer_MP4Demuxer = function () {
             var hdlrType = MP4Demuxer.bin2str(hdlr.data.subarray(hdlr.start + 8, hdlr.start + 12));
             var type = { 'soun': 'audio', 'vide': 'video' }[hdlrType];
             if (type) {
+              // extract codec info. TODO : parse codec details to be able to build MIME type
+              var codecBox = MP4Demuxer.findBox(trak, ['mdia', 'minf', 'stbl', 'stsd']);
+              if (codecBox.length) {
+                codecBox = codecBox[0];
+                var codecType = MP4Demuxer.bin2str(codecBox.data.subarray(codecBox.start + 12, codecBox.start + 16));
+                logger["b" /* logger */].log('MP4Demuxer:' + type + ':' + codecType + ' found');
+              }
               result[trackId] = { timescale: timescale, type: type };
               result[type] = { timescale: timescale, id: trackId };
             }
@@ -3347,6 +3438,7 @@ var mp4demuxer_MP4Demuxer = function () {
             baseMediaDecodeTime *= Math.pow(2, 32);
             baseMediaDecodeTime += MP4Demuxer.readUint32(tfdt, 8);
             baseMediaDecodeTime -= timeOffset * timescale;
+            baseMediaDecodeTime = Math.max(baseMediaDecodeTime, 0);
             var upper = Math.floor(baseMediaDecodeTime / (UINT32_MAX + 1));
             var lower = Math.floor(baseMediaDecodeTime % (UINT32_MAX + 1));
             MP4Demuxer.writeUint32(tfdt, 4, upper);
@@ -3395,6 +3487,38 @@ var MpegAudio = {
 
     SamplingRateMap: [44100, 48000, 32000, 22050, 24000, 16000, 11025, 12000, 8000],
 
+    SamplesCoefficients: [
+    // MPEG 2.5
+    [0, // Reserved
+    72, // Layer3
+    144, // Layer2
+    12 // Layer1
+    ],
+    // Reserved
+    [0, // Reserved
+    0, // Layer3
+    0, // Layer2
+    0 // Layer1
+    ],
+    // MPEG 2
+    [0, // Reserved
+    72, // Layer3
+    144, // Layer2
+    12 // Layer1
+    ],
+    // MPEG 1
+    [0, // Reserved
+    144, // Layer3
+    144, // Layer2
+    12 // Layer1
+    ]],
+
+    BytesInSlot: [0, // Reserved
+    1, // Layer3
+    1, // Layer2
+    4 // Layer1
+    ],
+
     appendFrame: function appendFrame(track, data, offset, pts, frameIndex) {
         // Using http://www.datavoyage.com/mpgscript/mpeghdr.htm as a reference
         if (offset + 24 > data.length) {
@@ -3403,7 +3527,7 @@ var MpegAudio = {
 
         var header = this.parseHeader(data, offset);
         if (header && offset + header.frameLength <= data.length) {
-            var frameDuration = 1152 * 90000 / header.sampleRate;
+            var frameDuration = header.samplesPerFrame * 90000 / header.sampleRate;
             var stamp = pts + frameIndex * frameDuration;
             var sample = { unit: data.subarray(offset, offset + header.frameLength), pts: stamp, dts: stamp };
 
@@ -3424,17 +3548,19 @@ var MpegAudio = {
         var headerC = data[offset + 1] >> 1 & 3;
         var headerE = data[offset + 2] >> 4 & 15;
         var headerF = data[offset + 2] >> 2 & 3;
-        var headerG = !!(data[offset + 2] & 2);
+        var headerG = data[offset + 2] >> 1 & 1;
         if (headerB !== 1 && headerE !== 0 && headerE !== 15 && headerF !== 3) {
             var columnInBitrates = headerB === 3 ? 3 - headerC : headerC === 3 ? 3 : 4;
             var bitRate = MpegAudio.BitratesMap[columnInBitrates * 14 + headerE - 1] * 1000;
             var columnInSampleRates = headerB === 3 ? 0 : headerB === 2 ? 1 : 2;
             var sampleRate = MpegAudio.SamplingRateMap[columnInSampleRates * 3 + headerF];
-            var padding = headerG ? 1 : 0;
             var channelCount = data[offset + 3] >> 6 === 3 ? 1 : 2; // If bits of channel mode are `11` then it is a single channel (Mono)
-            var frameLength = headerC === 3 ? (headerB === 3 ? 12 : 6) * bitRate / sampleRate + padding << 2 : (headerB === 3 ? 144 : 72) * bitRate / sampleRate + padding | 0;
+            var sampleCoefficient = MpegAudio.SamplesCoefficients[headerB][headerC];
+            var bytesInSlot = MpegAudio.BytesInSlot[headerC];
+            var samplesPerFrame = sampleCoefficient * 8 * bytesInSlot;
+            var frameLength = parseInt(sampleCoefficient * bitRate / sampleRate + headerG, 10) * bytesInSlot;
 
-            return { sampleRate: sampleRate, channelCount: channelCount, frameLength: frameLength };
+            return { sampleRate: sampleRate, channelCount: channelCount, frameLength: frameLength, samplesPerFrame: samplesPerFrame };
         }
 
         return undefined;
@@ -3839,7 +3965,7 @@ var sample_aes_SampleAesDecrypter = function () {
 
     this.decryptdata = decryptdata;
     this.discardEPB = discardEPB;
-    this.decrypter = new crypt_decrypter(observer, config);
+    this.decrypter = new crypt_decrypter["a" /* default */](observer, config);
   }
 
   SampleAesDecrypter.prototype.decryptBuffer = function decryptBuffer(encryptedData, callback) {
@@ -3978,6 +4104,21 @@ function tsdemuxer__classCallCheck(instance, Constructor) { if (!(instance insta
 
 
 
+// We are using fixed track IDs for driving the MP4 remuxer
+// instead of following the TS PIDs.
+// There is no reason not to do this and some browsers/SourceBuffer-demuxers
+// may not like if there are TrackID "switches"
+// See https://github.com/video-dev/hls.js/issues/1331
+// Here we are mapping our internal track types to constant MP4 track IDs
+// With MSE currently one can only have one track of each, and we are muxing
+// whatever video/audio rendition in them.
+var RemuxerTrackIdConfig = {
+  video: 0,
+  audio: 1,
+  id3: 2,
+  text: 3
+};
+
 var tsdemuxer_TSDemuxer = function () {
   function TSDemuxer(observer, remuxer, config, typeSupported) {
     tsdemuxer__classCallCheck(this, TSDemuxer);
@@ -3998,21 +4139,78 @@ var tsdemuxer_TSDemuxer = function () {
   };
 
   TSDemuxer.probe = function probe(data) {
-    // a TS fragment should contain at least 3 TS packets, a PAT, a PMT, and one PID, each starting with 0x47
-    if (data.length >= 3 * 188 && data[0] === 0x47 && data[188] === 0x47 && data[2 * 188] === 0x47) {
-      return true;
-    } else {
+    var syncOffset = TSDemuxer._syncOffset(data);
+    if (syncOffset < 0) {
       return false;
+    } else {
+      if (syncOffset) {
+        logger["b" /* logger */].warn('MPEG2-TS detected but first sync word found @ offset ' + syncOffset + ', junk ahead ?');
+      }
+      return true;
     }
   };
+
+  TSDemuxer._syncOffset = function _syncOffset(data) {
+    // scan 1000 first bytes
+    var scanwindow = Math.min(1000, data.length - 3 * 188);
+    var i = 0;
+    while (i < scanwindow) {
+      // a TS fragment should contain at least 3 TS packets, a PAT, a PMT, and one PID, each starting with 0x47
+      if (data[i] === 0x47 && data[i + 188] === 0x47 && data[i + 2 * 188] === 0x47) {
+        return i;
+      } else {
+        i++;
+      }
+    }
+    return -1;
+  };
+
+  /**
+   * Creates a track model internal to demuxer used to drive remuxing input
+   *
+   * @param {string} type 'audio' | 'video' | 'id3' | 'text'
+   * @param {number} duration
+   * @return {object} TSDemuxer's internal track model
+   */
+
+
+  TSDemuxer.createTrack = function createTrack(type, duration) {
+    return {
+      container: type === 'video' || type === 'audio' ? 'video/mp2t' : undefined,
+      type: type,
+      id: RemuxerTrackIdConfig[type],
+      pid: -1,
+      inputTimeScale: 90000,
+      sequenceNumber: 0,
+      samples: [],
+      len: 0,
+      dropped: type === 'video' ? 0 : undefined,
+      isAAC: type === 'audio' ? true : undefined,
+      duration: type === 'audio' ? duration : undefined
+    };
+  };
+
+  /**
+   * Initializes a new init segment on the demuxer/remuxer interface. Needed for discontinuities/track-switches (or at stream start) 
+   * Resets all internal track instances of the demuxer.
+   *
+   * @override Implements generic demuxing/remuxing interface (see DemuxerInline)
+   * @param {object} initSegment
+   * @param {string} audioCodec
+   * @param {string} videoCodec
+   * @param {number} duration (in TS timescale = 90kHz)
+   */
+
 
   TSDemuxer.prototype.resetInitSegment = function resetInitSegment(initSegment, audioCodec, videoCodec, duration) {
     this.pmtParsed = false;
     this._pmtId = -1;
-    this._avcTrack = { container: 'video/mp2t', type: 'video', id: -1, inputTimeScale: 90000, sequenceNumber: 0, samples: [], len: 0, dropped: 0 };
-    this._audioTrack = { container: 'video/mp2t', type: 'audio', id: -1, inputTimeScale: 90000, duration: duration, sequenceNumber: 0, samples: [], len: 0, isAAC: true };
-    this._id3Track = { type: 'id3', id: -1, inputTimeScale: 90000, sequenceNumber: 0, samples: [], len: 0 };
-    this._txtTrack = { type: 'text', id: -1, inputTimeScale: 90000, sequenceNumber: 0, samples: [], len: 0 };
+
+    this._avcTrack = TSDemuxer.createTrack('video', duration);
+    this._audioTrack = TSDemuxer.createTrack('audio', duration);
+    this._id3Track = TSDemuxer.createTrack('id3', duration);
+    this._txtTrack = TSDemuxer.createTrack('text', duration);
+
     // flush any partial content
     this.aacOverFlow = null;
     this.aacLastPTS = null;
@@ -4021,6 +4219,12 @@ var tsdemuxer_TSDemuxer = function () {
     this.videoCodec = videoCodec;
     this._duration = duration;
   };
+
+  /**
+   * 
+   * @override
+   */
+
 
   TSDemuxer.prototype.resetTimeStamp = function resetTimeStamp() {};
 
@@ -4041,9 +4245,9 @@ var tsdemuxer_TSDemuxer = function () {
         avcTrack = this._avcTrack,
         audioTrack = this._audioTrack,
         id3Track = this._id3Track,
-        avcId = avcTrack.id,
-        audioId = audioTrack.id,
-        id3Id = id3Track.id,
+        avcId = avcTrack.pid,
+        audioId = audioTrack.pid,
+        id3Id = id3Track.pid,
         pmtId = this._pmtId,
         avcData = avcTrack.pesData,
         audioData = audioTrack.pesData,
@@ -4056,10 +4260,13 @@ var tsdemuxer_TSDemuxer = function () {
         parseMPEGPES = this._parseMPEGPES.bind(this),
         parseID3PES = this._parseID3PES.bind(this);
 
+    var syncOffset = TSDemuxer._syncOffset(data);
+
     // don't parse last TS packet if incomplete
-    len -= len % 188;
+    len -= (len + syncOffset) % 188;
+
     // loop through TS packets
-    for (start = 0; start < len; start += 188) {
+    for (start = syncOffset; start < len; start += 188) {
       if (data[start] === 0x47) {
         stt = !!(data[start + 1] & 0x40);
         // pid is a 13-bit field starting at the last bit of TS[1]
@@ -4132,24 +4339,26 @@ var tsdemuxer_TSDemuxer = function () {
             // this is to avoid resetting the PID to -1 in case
             // track PID transiently disappears from the stream
             // this could happen in case of transient missing audio samples for example
+            // NOTE this is only the PID of the track as found in TS,
+            // but we are not using this for MP4 track IDs.
             avcId = parsedPIDs.avc;
             if (avcId > 0) {
-              avcTrack.id = avcId;
+              avcTrack.pid = avcId;
             }
             audioId = parsedPIDs.audio;
             if (audioId > 0) {
-              audioTrack.id = audioId;
+              audioTrack.pid = audioId;
               audioTrack.isAAC = parsedPIDs.isAAC;
             }
             id3Id = parsedPIDs.id3;
             if (id3Id > 0) {
-              id3Track.id = id3Id;
+              id3Track.pid = id3Id;
             }
             if (unknownPIDs && !pmtParsed) {
               logger["b" /* logger */].log('reparse from beginning');
               unknownPIDs = false;
               // we set it to -188, the += 188 in the for loop will reset start to 0
-              start = -188;
+              start = syncOffset - 188;
             }
             pmtParsed = this.pmtParsed = true;
             break;
@@ -5005,7 +5214,8 @@ var mp3demuxer_MP3Demuxer = function () {
 
   MP3Demuxer.prototype.append = function append(data, timeOffset, contiguous, accurateTimeOffset) {
     var id3Data = id3["a" /* default */].getID3Data(data, 0);
-    var pts = 90 * id3["a" /* default */].getTimeStamp(id3Data);
+    var timestamp = id3["a" /* default */].getTimeStamp(id3Data);
+    var pts = timestamp ? 90 * timestamp : timeOffset * 90000;
     var offset = id3Data.length;
     var length = data.length;
     var frameIndex = 0,
@@ -5640,18 +5850,31 @@ var mp4_remuxer_MP4Remuxer = function () {
     }
 
     if (this.ISGenerated) {
+      var nbAudioSamples = audioTrack.samples.length;
+      var nbVideoSamples = videoTrack.samples.length;
+      var audioTimeOffset = timeOffset;
+      var videoTimeOffset = timeOffset;
+      if (nbAudioSamples && nbVideoSamples) {
+        // timeOffset is expected to be the offset of the first timestamp of this fragment (first DTS)
+        // if first audio DTS is not aligned with first video DTS then we need to take that into account
+        // when providing timeOffset to remuxAudio / remuxVideo. if we don't do that, there might be a permanent / small
+        // drift between audio and video streams
+        var audiovideoDeltaDts = (audioTrack.samples[0].dts - videoTrack.samples[0].dts) / videoTrack.inputTimeScale;
+        audioTimeOffset += Math.max(0, audiovideoDeltaDts);
+        videoTimeOffset += Math.max(0, -audiovideoDeltaDts);
+      }
       // Purposefully remuxing audio before video, so that remuxVideo can use nextAudioPts, which is
       // calculated in remuxAudio.
       //logger.log('nb AAC samples:' + audioTrack.samples.length);
-      if (audioTrack.samples.length) {
+      if (nbAudioSamples) {
         // if initSegment was generated without video samples, regenerate it again
         if (!audioTrack.timescale) {
           logger["b" /* logger */].warn('regenerate InitSegment as audio detected');
           this.generateIS(audioTrack, videoTrack, timeOffset);
         }
-        var audioData = this.remuxAudio(audioTrack, timeOffset, contiguous, accurateTimeOffset);
+        var audioData = this.remuxAudio(audioTrack, audioTimeOffset, contiguous, accurateTimeOffset);
         //logger.log('nb AVC samples:' + videoTrack.samples.length);
-        if (videoTrack.samples.length) {
+        if (nbVideoSamples) {
           var audioTrackLength = void 0;
           if (audioData) {
             audioTrackLength = audioData.endPTS - audioData.startPTS;
@@ -5661,16 +5884,16 @@ var mp4_remuxer_MP4Remuxer = function () {
             logger["b" /* logger */].warn('regenerate InitSegment as video detected');
             this.generateIS(audioTrack, videoTrack, timeOffset);
           }
-          this.remuxVideo(videoTrack, timeOffset, contiguous, audioTrackLength, accurateTimeOffset);
+          this.remuxVideo(videoTrack, videoTimeOffset, contiguous, audioTrackLength, accurateTimeOffset);
         }
       } else {
         var videoData = void 0;
         //logger.log('nb AVC samples:' + videoTrack.samples.length);
-        if (videoTrack.samples.length) {
-          videoData = this.remuxVideo(videoTrack, timeOffset, contiguous, accurateTimeOffset);
+        if (nbVideoSamples) {
+          videoData = this.remuxVideo(videoTrack, videoTimeOffset, contiguous, accurateTimeOffset);
         }
         if (videoData && audioTrack.codec) {
-          this.remuxEmptyAudio(audioTrack, timeOffset, contiguous, videoData);
+          this.remuxEmptyAudio(audioTrack, audioTimeOffset, contiguous, videoData);
         }
       }
     }
@@ -5864,9 +6087,6 @@ var mp4_remuxer_MP4Remuxer = function () {
         logger["b" /* logger */].log('Video/PTS/DTS adjusted: ' + Math.round(firstPTS / 90) + '/' + Math.round(firstDTS / 90) + ',delta:' + delta + ' ms');
       }
     }
-    nextDTS = firstDTS;
-
-    // compute lastPTS/lastDTS
     sample = inputSamples[inputSamples.length - 1];
     lastDTS = Math.max(sample.dts, 0);
     lastPTS = Math.max(sample.pts, 0, lastDTS);
@@ -6051,21 +6271,32 @@ var mp4_remuxer_MP4Remuxer = function () {
     // and this also avoids audio glitches/cut when switching quality, or reporting wrong duration on first audio frame
     contiguous |= inputSamples.length && nextAudioPts && (accurateTimeOffset && Math.abs(timeOffset - nextAudioPts / inputTimeScale) < 0.1 || Math.abs(inputSamples[0].pts - nextAudioPts - initDTS) < 20 * inputSampleDuration);
 
-    if (!contiguous) {
-      // if fragments are not contiguous, let's use timeOffset to compute next Audio PTS
-      nextAudioPts = timeOffset * inputTimeScale;
-    }
-
     // compute normalized PTS
     inputSamples.forEach(function (sample) {
-      sample.pts = sample.dts = ptsNormalize(sample.pts - initDTS, nextAudioPts);
+      sample.pts = sample.dts = ptsNormalize(sample.pts - initDTS, timeOffset * inputTimeScale);
     });
 
-    // sort based on normalized PTS (this is to avoid sorting issues in case timestamp
-    // reloop in the middle of our samples array)
-    inputSamples.sort(function (a, b) {
-      return a.pts - b.pts;
+    // filter out sample with negative PTS that are not playable anyway
+    // if we don't remove these negative samples, they will shift all audio samples forward.
+    // leading to audio overlap between current / next fragment
+    inputSamples = inputSamples.filter(function (sample) {
+      return sample.pts >= 0;
     });
+
+    // in case all samples have negative PTS, and have been filtered out, return now
+    if (inputSamples.length === 0) {
+      return;
+    }
+
+    if (!contiguous) {
+      if (!accurateTimeOffset) {
+        // if frag are mot contiguous and if we cant trust time offset, let's use first sample PTS as next audio PTS
+        nextAudioPts = inputSamples[0].pts;
+      } else {
+        // if timeOffset is accurate, let's use it as predicted next audio PTS
+        nextAudioPts = timeOffset * inputTimeScale;
+      }
+    }
 
     // If the audio track is missing samples, the frames seem to get "left-shifted" within the
     // resulting mp4 segment, causing sync issues and leaving gaps at the end of the audio segment.
@@ -6073,8 +6304,8 @@ var mp4_remuxer_MP4Remuxer = function () {
     // When possible, we inject a silent frame; when that's not possible, we duplicate the last
     // frame.
 
-    // only inject/drop audio frames in case time offset is accurate
-    if (accurateTimeOffset && track.isAAC) {
+    if (track.isAAC) {
+      var maxAudioFramesDrift = this.config.maxAudioFramesDrift;
       for (var i = 0, nextPts = nextAudioPts; i < inputSamples.length;) {
         // First, let's see how far off this frame is from where we expect it to be
         var sample = inputSamples[i],
@@ -6082,21 +6313,22 @@ var mp4_remuxer_MP4Remuxer = function () {
         var pts = sample.pts;
         delta = pts - nextPts;
 
+        //console.log(Math.round(pts) + '/' + Math.round(nextPts) + '/' + Math.round(delta));
         var duration = Math.abs(1000 * delta / inputTimeScale);
 
         // If we're overlapping by more than a duration, drop this sample
-        if (delta <= -inputSampleDuration) {
-          logger["b" /* logger */].warn('Dropping 1 audio frame @ ' + (nextPts / inputTimeScale).toFixed(3) + 's due to ' + duration + ' ms overlap.');
+        if (delta <= -maxAudioFramesDrift * inputSampleDuration) {
+          logger["b" /* logger */].warn('Dropping 1 audio frame @ ' + (nextPts / inputTimeScale).toFixed(3) + 's due to ' + Math.round(duration) + ' ms overlap.');
           inputSamples.splice(i, 1);
           track.len -= sample.unit.length;
           // Don't touch nextPtsNorm or i
         }
 
         // Insert missing frames if:
-        // 1: We're more than one frame away
+        // 1: We're more than maxAudioFramesDrift frame away
         // 2: Not more than MAX_SILENT_FRAME_DURATION away
         // 3: currentTime (aka nextPtsNorm) is not 0
-        else if (delta >= inputSampleDuration && duration < MAX_SILENT_FRAME_DURATION && nextPts) {
+        else if (delta >= maxAudioFramesDrift * inputSampleDuration && duration < MAX_SILENT_FRAME_DURATION && nextPts) {
             var missing = Math.round(delta / inputSampleDuration);
             logger["b" /* logger */].warn('Injecting ' + missing + ' audio frame @ ' + (nextPts / inputTimeScale).toFixed(3) + 's due to ' + Math.round(1000 * delta / inputTimeScale) + ' ms gap.');
             for (var j = 0; j < missing; j++) {
@@ -6118,9 +6350,6 @@ var mp4_remuxer_MP4Remuxer = function () {
             i++;
           } else {
             // Otherwise, just adjust pts
-            if (Math.abs(delta) > 0.1 * inputSampleDuration) {
-              //logger.log(`Invalid frame delta ${Math.round(delta + inputSampleDuration)} at PTS ${Math.round(pts / 90)} (should be ${Math.round(inputSampleDuration)}).`);
-            }
             sample.pts = sample.dts = nextPts;
             nextPts += inputSampleDuration;
             i++;
@@ -6165,8 +6394,8 @@ var mp4_remuxer_MP4Remuxer = function () {
             _pts = nextAudioPts;
           }
         }
-        // remember first PTS of our audioSamples, ensure value is positive
-        firstPTS = Math.max(0, _pts);
+        // remember first PTS of our audioSamples
+        firstPTS = _pts;
         if (track.len > 0) {
           /* concatenate the audio data and construct the mdat in place
             (need 8 more bytes to fill length and mdat type) */
@@ -6466,7 +6695,7 @@ var demuxer_inline_DemuxerInline = function () {
     if (data.byteLength > 0 && decryptdata != null && decryptdata.key != null && decryptdata.method === 'AES-128') {
       var decrypter = this.decrypter;
       if (decrypter == null) {
-        decrypter = this.decrypter = new crypt_decrypter(this.observer, this.config);
+        decrypter = this.decrypter = new crypt_decrypter["a" /* default */](this.observer, this.config);
       }
       var localthis = this;
       // performance.now() not available on WebWorker, at least on Safari Desktop
@@ -6500,8 +6729,8 @@ var demuxer_inline_DemuxerInline = function () {
       var observer = this.observer;
       var typeSupported = this.typeSupported;
       var config = this.config;
-      // probing order is AAC/MP3/TS/MP4
-      var muxConfig = [{ demux: aacdemuxer, remux: mp4_remuxer }, { demux: mp3demuxer, remux: mp4_remuxer }, { demux: tsdemuxer, remux: mp4_remuxer }, { demux: mp4demuxer, remux: passthrough_remuxer }];
+      // probing order is TS/AAC/MP3/MP4
+      var muxConfig = [{ demux: tsdemuxer, remux: mp4_remuxer }, { demux: mp4demuxer, remux: passthrough_remuxer }, { demux: aacdemuxer, remux: mp4_remuxer }, { demux: mp3demuxer, remux: mp4_remuxer }];
 
       // probe for content type
       for (var i = 0, len = muxConfig.length; i < len; i++) {
@@ -6542,16 +6771,15 @@ var demuxer_inline_DemuxerInline = function () {
 /* harmony default export */ var demuxer_inline = __webpack_exports__["a"] = (demuxer_inline_DemuxerInline);
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var cues_namespaceObject = {};
 __webpack_require__.d(cues_namespaceObject, "newCue", function() { return newCue; });
 
 // EXTERNAL MODULE: ./node_modules/url-toolkit/src/url-toolkit.js
-var url_toolkit = __webpack_require__(5);
+var url_toolkit = __webpack_require__(6);
 var url_toolkit_default = /*#__PURE__*/__webpack_require__.n(url_toolkit);
 
 // EXTERNAL MODULE: ./src/events.js
@@ -6814,8 +7042,8 @@ function isCodecType(codec, type) {
     return !!typeCodes && typeCodes[codec.slice(0, 4)] === true;
 }
 
-function isCodecSupportedInMp4(codec) {
-    return MediaSource.isTypeSupported('video/mp4;codecs="' + codec + '"');
+function isCodecSupportedInMp4(codec, type) {
+    return MediaSource.isTypeSupported((type || 'video') + '/mp4;codecs="' + codec + '"');
 }
 
 
@@ -6844,7 +7072,7 @@ function playlist_loader__classCallCheck(instance, Constructor) { if (!(instance
 var MASTER_PLAYLIST_REGEX = /#EXT-X-STREAM-INF:([^\n\r]*)[\r\n]+([^\r\n]+)/g;
 var MASTER_PLAYLIST_MEDIA_REGEX = /#EXT-X-MEDIA:(.*)/g;
 
-var LEVEL_PLAYLIST_REGEX_FAST = new RegExp([/#EXTINF:(\d*(?:\.\d+)?)(?:,(.*)\s+)?/.source, // duration (#EXTINF:<duration>,<title>), group 1 => duration, group 2 => title
+var LEVEL_PLAYLIST_REGEX_FAST = new RegExp([/#EXTINF:\s*(\d*(?:\.\d+)?)(?:,(.*)\s+)?/.source, // duration (#EXTINF:<duration>,<title>), group 1 => duration, group 2 => title
 /|(?!#)(\S+)/.source, // segment URI, group 3 => the URI (note newline is not eaten)
 /|#EXT-X-BYTERANGE:*(.+)/.source, // next segment's byterange, group 4 => range spec (x@y)
 /|#EXT-X-PROGRAM-DATE-TIME:(.+)/.source, // next segment's program date/time group 5 => the datetime spec
@@ -6986,6 +7214,23 @@ var playlist_loader_Fragment = function () {
   return Fragment;
 }();
 
+function findGroup(groups, mediaGroupId) {
+  if (!groups) {
+    return null;
+  }
+
+  var matchingGroup = null;
+
+  for (var i = 0; i < groups.length; i++) {
+    var group = groups[i];
+    if (group.id === mediaGroupId) {
+      matchingGroup = group;
+    }
+  }
+
+  return matchingGroup;
+}
+
 var playlist_loader_PlaylistLoader = function (_EventHandler) {
   _inherits(PlaylistLoader, _EventHandler);
 
@@ -7027,7 +7272,7 @@ var playlist_loader_PlaylistLoader = function (_EventHandler) {
 
   PlaylistLoader.prototype.load = function load(url, context) {
     var loader = this.loaders[context.type];
-    if (loader) {
+    if (loader !== undefined) {
       var loaderContext = loader.context;
       if (loaderContext && loaderContext.url === url) {
         logger["b" /* logger */].trace('playlist request ongoing');
@@ -7038,17 +7283,22 @@ var playlist_loader_PlaylistLoader = function (_EventHandler) {
       }
     }
     var config = this.hls.config,
-        retry = void 0,
+        maxRetry = void 0,
         timeout = void 0,
         retryDelay = void 0,
         maxRetryDelay = void 0;
     if (context.type === 'manifest') {
-      retry = config.manifestLoadingMaxRetry;
+      maxRetry = config.manifestLoadingMaxRetry;
       timeout = config.manifestLoadingTimeOut;
       retryDelay = config.manifestLoadingRetryDelay;
       maxRetryDelay = config.manifestLoadingMaxRetryTimeout;
+    } else if (context.type === 'level') {
+      // Disable internal loader retry logic, since we are managing retries in Level Controller
+      maxRetry = 0;
+      timeout = config.levelLoadingTimeOut;
     } else {
-      retry = config.levelLoadingMaxRetry;
+      // TODO Introduce retry settings for audio-track and subtitle-track, it should not use level retry config
+      maxRetry = config.levelLoadingMaxRetry;
       timeout = config.levelLoadingTimeOut;
       retryDelay = config.levelLoadingRetryDelay;
       maxRetryDelay = config.levelLoadingMaxRetryTimeout;
@@ -7060,7 +7310,7 @@ var playlist_loader_PlaylistLoader = function (_EventHandler) {
 
     var loaderConfig = void 0,
         loaderCallbacks = void 0;
-    loaderConfig = { timeout: timeout, maxRetry: retry, retryDelay: retryDelay, maxRetryDelay: maxRetryDelay };
+    loaderConfig = { timeout: timeout, maxRetry: maxRetry, retryDelay: retryDelay, maxRetryDelay: maxRetryDelay };
     loaderCallbacks = { onSuccess: this.loadsuccess.bind(this), onError: this.loaderror.bind(this), onTimeout: this.loadtimeout.bind(this) };
     loader.load(context, loaderConfig, loaderCallbacks);
   };
@@ -7121,13 +7371,13 @@ var playlist_loader_PlaylistLoader = function (_EventHandler) {
   };
 
   PlaylistLoader.prototype.parseMasterPlaylistMedia = function parseMasterPlaylistMedia(string, baseurl, type) {
-    var audioCodec = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+    var audioGroups = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
 
-    var result = void 0,
-        medias = [],
-        id = 0;
+    var result = void 0;
+    var medias = [];
+    var id = 0;
     MASTER_PLAYLIST_MEDIA_REGEX.lastIndex = 0;
-    while ((result = MASTER_PLAYLIST_MEDIA_REGEX.exec(string)) != null) {
+    while ((result = MASTER_PLAYLIST_MEDIA_REGEX.exec(string)) !== null) {
       var media = {};
       var attrs = new attr_list(result[1]);
       if (attrs.TYPE === type) {
@@ -7144,8 +7394,9 @@ var playlist_loader_PlaylistLoader = function (_EventHandler) {
         if (!media.name) {
           media.name = media.lang;
         }
-        if (audioCodec) {
-          media.audioCodec = audioCodec;
+        if (audioGroups.length) {
+          var groupCodec = findGroup(audioGroups, media.groupId);
+          media.audioCodec = groupCodec ? groupCodec.codec : audioGroups[0].codec;
         }
         media.id = id++;
         medias.push(media);
@@ -7373,7 +7624,10 @@ var playlist_loader_PlaylistLoader = function (_EventHandler) {
         var levels = this.parseMasterPlaylist(string, url);
         // multi level playlist, parse level info
         if (levels.length) {
-          var audioTracks = this.parseMasterPlaylistMedia(string, url, 'AUDIO', levels[0].audioCodec);
+          var audioGroups = levels.map(function (l) {
+            return { id: l.attrs.AUDIO, codec: l.audioCodec };
+          });
+          var audioTracks = this.parseMasterPlaylistMedia(string, url, 'AUDIO', audioGroups);
           var subtitles = this.parseMasterPlaylistMedia(string, url, 'SUBTITLES');
           if (audioTracks.length) {
             // check if we have found an audio track embedded in main playlist (audio track without URI attribute)
@@ -7729,29 +7983,40 @@ var BinarySearch = {
 
 var BufferHelper = {
   isBuffered: function isBuffered(media, position) {
-    if (media) {
-      var buffered = media.buffered;
-      for (var i = 0; i < buffered.length; i++) {
-        if (position >= buffered.start(i) && position <= buffered.end(i)) {
-          return true;
+    try {
+      if (media) {
+        var buffered = media.buffered;
+        for (var i = 0; i < buffered.length; i++) {
+          if (position >= buffered.start(i) && position <= buffered.end(i)) {
+            return true;
+          }
         }
       }
+    } catch (error) {
+      // this is to catch
+      // InvalidStateError: Failed to read the 'buffered' property from 'SourceBuffer':
+      // This SourceBuffer has been removed from the parent media source
     }
     return false;
   },
 
   bufferInfo: function bufferInfo(media, pos, maxHoleDuration) {
-    if (media) {
-      var vbuffered = media.buffered,
-          buffered = [],
-          i;
-      for (i = 0; i < vbuffered.length; i++) {
-        buffered.push({ start: vbuffered.start(i), end: vbuffered.end(i) });
+    try {
+      if (media) {
+        var vbuffered = media.buffered,
+            buffered = [],
+            i;
+        for (i = 0; i < vbuffered.length; i++) {
+          buffered.push({ start: vbuffered.start(i), end: vbuffered.end(i) });
+        }
+        return this.bufferedInfo(buffered, pos, maxHoleDuration);
       }
-      return this.bufferedInfo(buffered, pos, maxHoleDuration);
-    } else {
-      return { len: 0, start: pos, end: pos, nextStart: undefined };
+    } catch (error) {
+      // this is to catch
+      // InvalidStateError: Failed to read the 'buffered' property from 'SourceBuffer':
+      // This SourceBuffer has been removed from the parent media source
     }
+    return { len: 0, start: pos, end: pos, nextStart: undefined };
   },
 
   bufferedInfo: function bufferedInfo(buffered, pos, maxHoleDuration) {
@@ -7816,17 +8081,27 @@ var BufferHelper = {
 };
 
 /* harmony default export */ var buffer_helper = (BufferHelper);
-// EXTERNAL MODULE: ./src/demux/demuxer-inline.js + 16 modules
-var demuxer_inline = __webpack_require__(6);
+// EXTERNAL MODULE: ./src/demux/demuxer-inline.js + 12 modules
+var demuxer_inline = __webpack_require__(7);
 
 // EXTERNAL MODULE: ./node_modules/events/events.js
-var events_events = __webpack_require__(4);
+var events_events = __webpack_require__(5);
 var events_default = /*#__PURE__*/__webpack_require__.n(events_events);
 
 // EXTERNAL MODULE: ./node_modules/webworkify-webpack/index.js
-var webworkify_webpack = __webpack_require__(8);
+var webworkify_webpack = __webpack_require__(9);
 var webworkify_webpack_default = /*#__PURE__*/__webpack_require__.n(webworkify_webpack);
 
+// CONCATENATED MODULE: ./src/helper/mediasource-helper.js
+/**
+ * MediaSource helper
+ */
+
+function getMediaSource() {
+  if (typeof window !== 'undefined') {
+    return window.MediaSource || window.WebKitMediaSource;
+  }
+}
 // CONCATENATED MODULE: ./src/demux/demuxer.js
 function demuxer__classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -7836,6 +8111,9 @@ function demuxer__classCallCheck(instance, Constructor) { if (!(instance instanc
 
 
 
+
+
+var demuxer_MediaSource = getMediaSource();
 
 var demuxer_Demuxer = function () {
   function Demuxer(hls, id) {
@@ -7880,9 +8158,9 @@ var demuxer_Demuxer = function () {
     observer.on(events["a" /* default */].INIT_PTS_FOUND, forwardMessage);
 
     var typeSupported = {
-      mp4: MediaSource.isTypeSupported('video/mp4'),
-      mpeg: MediaSource.isTypeSupported('audio/mpeg'),
-      mp3: MediaSource.isTypeSupported('audio/mp4; codecs="mp3"')
+      mp4: demuxer_MediaSource.isTypeSupported('video/mp4'),
+      mpeg: demuxer_MediaSource.isTypeSupported('audio/mpeg'),
+      mp3: demuxer_MediaSource.isTypeSupported('audio/mp4; codecs="mp3"')
     };
     // navigator.vendor is not always available in Web Worker
     // refer to https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/navigator
@@ -7891,7 +8169,7 @@ var demuxer_Demuxer = function () {
       logger["b" /* logger */].log('demuxing in webworker');
       var w = void 0;
       try {
-        w = this.w = webworkify_webpack_default()(/*require.resolve*/(9));
+        w = this.w = webworkify_webpack_default()(/*require.resolve*/(10));
         this.onwmsg = this.onWorkerMessage.bind(this);
         w.addEventListener('message', this.onwmsg);
         w.onerror = function (event) {
@@ -7949,8 +8227,8 @@ var demuxer_Demuxer = function () {
     }
     this.frag = frag;
     if (w) {
-      // post fragment payload as transferable objects (no copy)
-      w.postMessage({ cmd: 'demux', data: data, decryptdata: decryptdata, initSegment: initSegment, audioCodec: audioCodec, videoCodec: videoCodec, timeOffset: timeOffset, discontinuity: discontinuity, trackSwitch: trackSwitch, contiguous: contiguous, duration: duration, accurateTimeOffset: accurateTimeOffset, defaultInitPTS: defaultInitPTS }, [data]);
+      // post fragment payload as transferable objects for ArrayBuffer (no copy)
+      w.postMessage({ cmd: 'demux', data: data, decryptdata: decryptdata, initSegment: initSegment, audioCodec: audioCodec, videoCodec: videoCodec, timeOffset: timeOffset, discontinuity: discontinuity, trackSwitch: trackSwitch, contiguous: contiguous, duration: duration, accurateTimeOffset: accurateTimeOffset, defaultInitPTS: defaultInitPTS }, data instanceof ArrayBuffer ? [data] : []);
     } else {
       var demuxer = this.demuxer;
       if (demuxer) {
@@ -8026,6 +8304,7 @@ function updatePTS(fragments, fromIdx, toIdx) {
 
 function updateFragPTSDTS(details, frag, startPTS, endPTS, startDTS, endDTS) {
   // update frag PTS/DTS
+  var maxStartPTS = startPTS;
   if (!isNaN(frag.startPTS)) {
     // delta PTS between audio and video
     var deltaPTS = Math.abs(frag.startPTS - startPTS);
@@ -8034,6 +8313,7 @@ function updateFragPTSDTS(details, frag, startPTS, endPTS, startDTS, endDTS) {
     } else {
       frag.deltaPTS = Math.max(deltaPTS, frag.deltaPTS);
     }
+    maxStartPTS = Math.max(startPTS, frag.startPTS);
     startPTS = Math.min(startPTS, frag.startPTS);
     endPTS = Math.max(endPTS, frag.endPTS);
     startDTS = Math.min(startDTS, frag.startDTS);
@@ -8042,6 +8322,7 @@ function updateFragPTSDTS(details, frag, startPTS, endPTS, startDTS, endDTS) {
 
   var drift = startPTS - frag.start;
   frag.start = frag.startPTS = startPTS;
+  frag.maxStartPTS = maxStartPTS;
   frag.endPTS = endPTS;
   frag.startDTS = startDTS;
   frag.endDTS = endDTS;
@@ -8270,6 +8551,7 @@ function stream_controller__inherits(subClass, superClass) { if (typeof superCla
 
 
 
+
 var State = {
   STOPPED: 'STOPPED',
   IDLE: 'IDLE',
@@ -8429,11 +8711,10 @@ var stream_controller_StreamController = function (_EventHandler) {
         config = hls.config,
         media = this.media;
 
-    // if video not attached AND
-    // start fragment already requested OR start frag prefetch disable
-    // exit loop
-    // => if start level loaded and media not attached but start frag prefetch is enabled and start frag not requested yet, we will not exit loop
-    if (this.levelLastLoaded !== undefined && !media && (this.startFragRequested || !config.startFragPrefetch)) {
+    // if start level not parsed yet OR
+    // if video not attached AND start fragment already requested OR start frag prefetch disable
+    // exit loop, as we either need more info (level not parsed) or we need media to be attached to load new fragment
+    if (this.levelLastLoaded === undefined || !media && (this.startFragRequested || !config.startFragPrefetch)) {
       return;
     }
 
@@ -8483,7 +8764,7 @@ var stream_controller_StreamController = function (_EventHandler) {
     // if level info not retrieved yet, switch state and wait for level retrieval
     // if live playlist, ensure that new playlist has been refreshed to avoid loading/try to load
     // a useless and outdated fragment (that might even introduce load error if it is already out of the live playlist)
-    if (typeof levelDetails === 'undefined' || levelDetails.live && this.levelLastLoaded !== level) {
+    if (levelDetails === undefined || levelDetails.live === true && this.levelLastLoaded !== level) {
       this.state = State.WAITING_LEVEL;
       return;
     }
@@ -8491,8 +8772,9 @@ var stream_controller_StreamController = function (_EventHandler) {
     // we just got done loading the final fragment and there is no other buffered range after ...
     // rationale is that in case there are any buffered ranges after, it means that there are unbuffered portion in between
     // so we should not switch to ENDED in that case, to be able to buffer them
+    // dont switch to ENDED if we need to backtrack last fragment
     var fragPrevious = this.fragPrevious;
-    if (!levelDetails.live && fragPrevious && fragPrevious.sn === levelDetails.endSN && !bufferInfo.nextStart) {
+    if (!levelDetails.live && fragPrevious && !fragPrevious.backtracked && fragPrevious.sn === levelDetails.endSN && !bufferInfo.nextStart) {
       // fragPrevious is last fragment. retrieve level duration using last frag start offset + duration
       // real duration might be lower than initial duration if there are drifts between real frag duration and playlist signaling
       var duration = Math.min(media.duration, fragPrevious.start + fragPrevious.duration);
@@ -8656,7 +8938,7 @@ var stream_controller_StreamController = function (_EventHandler) {
       //  return -1             return 0                 return 1
       //logger.log(`level/sn/start/end/bufEnd:${level}/${candidate.sn}/${candidate.start}/${(candidate.start+candidate.duration)}/${bufferEnd}`);
       // Set the lookup tolerance to be small enough to detect the current segment - ensures we don't skip over very small segments
-      var candidateLookupTolerance = Math.min(maxFragLookUpTolerance, candidate.duration);
+      var candidateLookupTolerance = Math.min(maxFragLookUpTolerance, candidate.duration + (candidate.deltaPTS ? candidate.deltaPTS : 0));
       if (candidate.start + candidate.duration - candidateLookupTolerance <= bufferEnd) {
         return 1;
       } // if maxFragLookUpTolerance will have negative value then don't return -1 for first element
@@ -8909,8 +9191,10 @@ var stream_controller_StreamController = function (_EventHandler) {
       var fetchdelay = void 0,
           fragPlayingCurrent = void 0,
           nextBufferedFrag = void 0;
-      // increase fragment load Index to avoid frag loop loading error after buffer flush
-      this.fragLoadIdx += 2 * this.config.fragLoadingLoopThreshold;
+      if (this.fragLoadIdx !== undefined) {
+        // increase fragment load Index to avoid frag loop loading error after buffer flush
+        this.fragLoadIdx += 2 * this.config.fragLoadingLoopThreshold;
+      }
       fragPlayingCurrent = this.getBufferedFrag(media.currentTime);
       if (fragPlayingCurrent && fragPlayingCurrent.startPTS > 1) {
         // flush buffer preceding current fragment (flush until current fragment start offset)
@@ -9107,7 +9391,6 @@ var stream_controller_StreamController = function (_EventHandler) {
       logger["b" /* logger */].log('both AAC/HE-AAC audio found in levels; declaring level codec as HE-AAC');
     }
     this.levels = data.levels;
-    this.startLevelLoaded = false;
     this.startFragRequested = false;
     var config = this.config;
     if (config.autoStartLoad || this.forceStartLoad) {
@@ -9345,16 +9628,21 @@ var stream_controller_StreamController = function (_EventHandler) {
         frag.dropped = data.dropped;
         if (frag.dropped) {
           if (!frag.backtracked) {
-            logger["b" /* logger */].warn('missing video frame(s), backtracking fragment');
-            // Return back to the IDLE state without appending to buffer
-            // Causes findFragments to backtrack a segment and find the keyframe
-            // Audio fragments arriving before video sets the nextLoadPosition, causing _findFragments to skip the backtracked fragment
-            frag.backtracked = true;
-            this.nextLoadPosition = data.startPTS;
-            this.state = State.IDLE;
-            this.fragPrevious = frag;
-            this.tick();
-            return;
+            var levelDetails = level.details;
+            if (levelDetails && frag.sn === levelDetails.startSN) {
+              logger["b" /* logger */].warn('missing video frame(s) on first frag, appending with gap');
+            } else {
+              logger["b" /* logger */].warn('missing video frame(s), backtracking fragment');
+              // Return back to the IDLE state without appending to buffer
+              // Causes findFragments to backtrack a segment and find the keyframe
+              // Audio fragments arriving before video sets the nextLoadPosition, causing _findFragments to skip the backtracked fragment
+              frag.backtracked = true;
+              this.nextLoadPosition = data.startPTS;
+              this.state = State.IDLE;
+              this.fragPrevious = frag;
+              this.tick();
+              return;
+            }
           } else {
             logger["b" /* logger */].warn('Already backtracked on this fragment, appending with the gap');
           }
@@ -9613,8 +9901,10 @@ var stream_controller_StreamController = function (_EventHandler) {
       // reduce max buffer length as it might be too high. we do this to avoid loop flushing ...
       config.maxMaxBufferLength /= 2;
       logger["b" /* logger */].warn('main:reduce max buffer length to ' + config.maxMaxBufferLength + 's');
-      // increase fragment load Index to avoid frag loop loading error after buffer flush
-      this.fragLoadIdx += 2 * config.fragLoadingLoopThreshold;
+      if (this.fragLoadIdx !== undefined) {
+        // increase fragment load Index to avoid frag loop loading error after buffer flush
+        this.fragLoadIdx += 2 * config.fragLoadingLoopThreshold;
+      }
     }
   };
 
@@ -9633,12 +9923,13 @@ var stream_controller_StreamController = function (_EventHandler) {
         // at that stage, there should be only one buffered range, as we reach that code after first fragment has been buffered
         var startPosition = media.seeking ? currentTime : this.startPosition,
             startPositionBuffered = buffer_helper.isBuffered(mediaBuffer, startPosition),
-            firstbufferedPosition = buffered.start(0);
-        // if currentTime not matching with expected startPosition or startPosition not buffered
-        if (currentTime !== startPosition || !startPositionBuffered && Math.abs(startPosition - firstbufferedPosition) < config.maxSeekHole) {
+            firstbufferedPosition = buffered.start(0),
+            startNotBufferedButClose = !startPositionBuffered && Math.abs(startPosition - firstbufferedPosition) < config.maxSeekHole;
+        // if currentTime not matching with expected startPosition or startPosition not buffered but close to first buffered
+        if (currentTime !== startPosition || startNotBufferedButClose) {
           logger["b" /* logger */].log('target start position:' + startPosition);
           // if startPosition not buffered, let's seek to buffered.start(0)
-          if (!startPositionBuffered) {
+          if (startNotBufferedButClose) {
             startPosition = firstbufferedPosition;
             logger["b" /* logger */].log('target start position not buffered, seek to buffered.start(0) ' + startPosition);
           }
@@ -9753,8 +10044,10 @@ var stream_controller_StreamController = function (_EventHandler) {
       return buffer_helper.isBuffered(media, (frag.startPTS + frag.endPTS) / 2);
     });
 
-    // increase fragment load Index to avoid frag loop loading error after buffer flush
-    this.fragLoadIdx += 2 * this.config.fragLoadingLoopThreshold;
+    if (this.fragLoadIdx !== undefined) {
+      // increase fragment load Index to avoid frag loop loading error after buffer flush
+      this.fragLoadIdx += 2 * this.config.fragLoadingLoopThreshold;
+    }
     // move to IDLE once flush complete. this should trigger new fragment loading
     this.state = State.IDLE;
     // reset reference to frag
@@ -9849,7 +10142,6 @@ function level_controller__inherits(subClass, superClass) { if (typeof superClas
 
 
 
-
 var level_controller_LevelController = function (_EventHandler) {
   level_controller__inherits(LevelController, _EventHandler);
 
@@ -9858,26 +10150,31 @@ var level_controller_LevelController = function (_EventHandler) {
 
     var _this = level_controller__possibleConstructorReturn(this, _EventHandler.call(this, hls, events["a" /* default */].MANIFEST_LOADED, events["a" /* default */].LEVEL_LOADED, events["a" /* default */].FRAG_LOADED, events["a" /* default */].ERROR));
 
-    _this.ontick = _this.tick.bind(_this);
-    _this._manualLevel = -1;
+    _this.canload = false;
+    _this.currentLevelIndex = null;
+    _this.manualLevelIndex = -1;
+    _this.timer = null;
     return _this;
   }
 
   LevelController.prototype.destroy = function destroy() {
     this.cleanTimer();
-    this._manualLevel = -1;
+    this.manualLevelIndex = -1;
   };
 
   LevelController.prototype.cleanTimer = function cleanTimer() {
-    if (this.timer) {
+    if (this.timer !== null) {
       clearTimeout(this.timer);
       this.timer = null;
     }
   };
 
   LevelController.prototype.startLoad = function startLoad() {
-    this.canload = true;
     var levels = this._levels;
+
+    this.canload = true;
+    this.levelRetryCount = 0;
+
     // clean up live level details to force reload them, and reset load errors
     if (levels) {
       levels.forEach(function (level) {
@@ -9889,8 +10186,8 @@ var level_controller_LevelController = function (_EventHandler) {
       });
     }
     // speed up live playlist refresh if timer exists
-    if (this.timer) {
-      this.tick();
+    if (this.timer !== null) {
+      this.loadLevel();
     }
   };
 
@@ -9899,56 +10196,64 @@ var level_controller_LevelController = function (_EventHandler) {
   };
 
   LevelController.prototype.onManifestLoaded = function onManifestLoaded(data) {
-    var levels0 = [],
-        levels = [],
-        bitrateStart,
-        bitrateSet = {},
-        videoCodecFound = false,
-        audioCodecFound = false,
-        hls = this.hls,
-        brokenmp4inmp3 = /chrome|firefox/.test(navigator.userAgent.toLowerCase());
+    var levels = [];
+    var bitrateStart = void 0;
+    var levelSet = {};
+    var levelFromSet = null;
+    var videoCodecFound = false;
+    var audioCodecFound = false;
+    var chromeOrFirefox = /chrome|firefox/.test(navigator.userAgent.toLowerCase());
+    var audioTracks = [];
 
-    // regroup redundant level together
+    // regroup redundant levels together
     data.levels.forEach(function (level) {
-      if (level.videoCodec) {
-        videoCodecFound = true;
-      }
-      // erase audio codec info if browser does not support mp4a.40.34. demuxer will autodetect codec and fallback to mpeg/audio
-      if (brokenmp4inmp3 && level.audioCodec && level.audioCodec.indexOf('mp4a.40.34') !== -1) {
+      level.loadError = 0;
+      level.fragmentError = false;
+
+      videoCodecFound = videoCodecFound || !!level.videoCodec;
+      audioCodecFound = audioCodecFound || !!level.audioCodec || !!(level.attrs && level.attrs.AUDIO);
+
+      // erase audio codec info if browser does not support mp4a.40.34.
+      // demuxer will autodetect codec and fallback to mpeg/audio
+      if (chromeOrFirefox === true && level.audioCodec && level.audioCodec.indexOf('mp4a.40.34') !== -1) {
         level.audioCodec = undefined;
       }
-      if (level.audioCodec || level.attrs && level.attrs.AUDIO) {
-        audioCodecFound = true;
-      }
-      var redundantLevelId = bitrateSet[level.bitrate];
-      if (redundantLevelId === undefined) {
-        bitrateSet[level.bitrate] = levels0.length;
+
+      levelFromSet = levelSet[level.bitrate];
+
+      if (levelFromSet === undefined) {
         level.url = [level.url];
         level.urlId = 0;
-        levels0.push(level);
+        levelSet[level.bitrate] = level;
+        levels.push(level);
       } else {
-        levels0[redundantLevelId].url.push(level.url);
+        levelFromSet.url.push(level.url);
       }
     });
 
     // remove audio-only level if we also have levels with audio+video codecs signalled
-    if (videoCodecFound && audioCodecFound) {
-      levels0.forEach(function (level) {
-        if (level.videoCodec) {
-          levels.push(level);
-        }
+    if (videoCodecFound === true && audioCodecFound === true) {
+      levels = levels.filter(function (_ref) {
+        var videoCodec = _ref.videoCodec;
+        return !!videoCodec;
       });
-    } else {
-      levels = levels0;
     }
-    // only keep level with supported audio/video codecs
-    levels = levels.filter(function (level) {
-      var audioCodec = level.audioCodec,
-          videoCodec = level.videoCodec;
+
+    // only keep levels with supported audio/video codecs
+    levels = levels.filter(function (_ref2) {
+      var audioCodec = _ref2.audioCodec,
+          videoCodec = _ref2.videoCodec;
+
       return (!audioCodec || isCodecSupportedInMp4(audioCodec)) && (!videoCodec || isCodecSupportedInMp4(videoCodec));
     });
 
-    if (levels.length) {
+    if (data.audioTracks) {
+      audioTracks = data.audioTracks.filter(function (track) {
+        return !track.audioCodec || isCodecSupportedInMp4(track.audioCodec, 'audio');
+      });
+    }
+
+    if (levels.length > 0) {
       // start bitrate is the first bitrate of the manifest
       bitrateStart = levels[0].bitrate;
       // sort level on bitrate
@@ -9964,11 +10269,24 @@ var level_controller_LevelController = function (_EventHandler) {
           break;
         }
       }
-      hls.trigger(events["a" /* default */].MANIFEST_PARSED, { levels: levels, firstLevel: this._firstLevel, stats: data.stats, audio: audioCodecFound, video: videoCodecFound, altAudio: data.audioTracks.length > 0 });
+      this.hls.trigger(events["a" /* default */].MANIFEST_PARSED, {
+        levels: levels,
+        audioTracks: audioTracks,
+        firstLevel: this._firstLevel,
+        stats: data.stats,
+        audio: audioCodecFound,
+        video: videoCodecFound,
+        altAudio: audioTracks.length > 0
+      });
     } else {
-      hls.trigger(events["a" /* default */].ERROR, { type: errors["b" /* ErrorTypes */].MEDIA_ERROR, details: errors["a" /* ErrorDetails */].MANIFEST_INCOMPATIBLE_CODECS_ERROR, fatal: true, url: hls.url, reason: 'no level with compatible codecs found in manifest' });
+      this.hls.trigger(events["a" /* default */].ERROR, {
+        type: errors["b" /* ErrorTypes */].MEDIA_ERROR,
+        details: errors["a" /* ErrorDetails */].MANIFEST_INCOMPATIBLE_CODECS_ERROR,
+        fatal: true,
+        url: this.hls.url,
+        reason: 'no level with compatible codecs found in manifest'
+      });
     }
-    return;
   };
 
   LevelController.prototype.setLevelInternal = function setLevelInternal(newLevel) {
@@ -9978,9 +10296,9 @@ var level_controller_LevelController = function (_EventHandler) {
     if (newLevel >= 0 && newLevel < levels.length) {
       // stopping live reloading timer if any
       this.cleanTimer();
-      if (this._level !== newLevel) {
+      if (this.currentLevelIndex !== newLevel) {
         logger["b" /* logger */].log('switching to level ' + newLevel);
-        this._level = newLevel;
+        this.currentLevelIndex = newLevel;
         var levelProperties = levels[newLevel];
         levelProperties.level = newLevel;
         // LEVEL_SWITCH to be deprecated in next major release
@@ -9997,118 +10315,157 @@ var level_controller_LevelController = function (_EventHandler) {
       }
     } else {
       // invalid level id given, trigger error
-      hls.trigger(events["a" /* default */].ERROR, { type: errors["b" /* ErrorTypes */].OTHER_ERROR, details: errors["a" /* ErrorDetails */].LEVEL_SWITCH_ERROR, level: newLevel, fatal: false, reason: 'invalid level idx' });
+      hls.trigger(events["a" /* default */].ERROR, {
+        type: errors["b" /* ErrorTypes */].OTHER_ERROR,
+        details: errors["a" /* ErrorDetails */].LEVEL_SWITCH_ERROR,
+        level: newLevel,
+        fatal: false,
+        reason: 'invalid level idx'
+      });
     }
   };
 
   LevelController.prototype.onError = function onError(data) {
-    if (data.fatal) {
+    if (data.fatal === true) {
       if (data.type === errors["b" /* ErrorTypes */].NETWORK_ERROR) {
         this.cleanTimer();
       }
       return;
     }
 
-    var details = data.details,
-        hls = this.hls,
-        levelId = void 0,
-        level = void 0,
-        levelError = false;
+    var levelError = false,
+        fragmentError = false;
+    var levelIndex = void 0;
+
     // try to recover not fatal errors
-    switch (details) {
+    switch (data.details) {
       case errors["a" /* ErrorDetails */].FRAG_LOAD_ERROR:
       case errors["a" /* ErrorDetails */].FRAG_LOAD_TIMEOUT:
       case errors["a" /* ErrorDetails */].FRAG_LOOP_LOADING_ERROR:
       case errors["a" /* ErrorDetails */].KEY_LOAD_ERROR:
       case errors["a" /* ErrorDetails */].KEY_LOAD_TIMEOUT:
-        levelId = data.frag.level;
+        levelIndex = data.frag.level;
+        fragmentError = true;
         break;
       case errors["a" /* ErrorDetails */].LEVEL_LOAD_ERROR:
       case errors["a" /* ErrorDetails */].LEVEL_LOAD_TIMEOUT:
-        levelId = data.context.level;
+        levelIndex = data.context.level;
         levelError = true;
         break;
       case errors["a" /* ErrorDetails */].REMUX_ALLOC_ERROR:
-        levelId = data.level;
-        break;
-      default:
+        levelIndex = data.level;
+        levelError = true;
         break;
     }
-    /* try to switch to a redundant stream if any available.
-     * if no redundant stream available, emergency switch down (if in auto mode and current level not 0)
-     * otherwise, we cannot recover this network error ...
-     */
-    if (levelId !== undefined) {
-      level = this._levels[levelId];
-      if (!level.loadError) {
-        level.loadError = 1;
-      } else {
-        level.loadError++;
-      }
-      // if any redundant streams available and if we haven't try them all (level.loadError is reseted on successful frag/level load.
-      // if level.loadError reaches nbRedundantLevel it means that we tried them all, no hope  => let's switch down
-      var nbRedundantLevel = level.url.length;
-      if (nbRedundantLevel > 1 && level.loadError < nbRedundantLevel) {
-        level.urlId = (level.urlId + 1) % nbRedundantLevel;
-        level.details = undefined;
-        logger["b" /* logger */].warn('level controller,' + details + ' for level ' + levelId + ': switching to redundant stream id ' + level.urlId);
-      } else {
-        // we could try to recover if in auto mode and current level not lowest level (0)
-        var recoverable = this._manualLevel === -1 && levelId;
-        if (recoverable) {
-          logger["b" /* logger */].warn('level controller,' + details + ': switch-down for next fragment');
-          hls.nextAutoLevel = Math.max(0, levelId - 1);
-        } else if (level && level.details && level.details.live) {
-          logger["b" /* logger */].warn('level controller,' + details + ' on live stream, discard');
-          if (levelError) {
-            // reset this._level so that another call to set level() will retrigger a frag load
-            this._level = undefined;
-          }
-          // other errors are handled by stream controller
-        } else if (details === errors["a" /* ErrorDetails */].LEVEL_LOAD_ERROR || details === errors["a" /* ErrorDetails */].LEVEL_LOAD_TIMEOUT) {
-          var media = hls.media,
 
-          // 0.5 : tolerance needed as some browsers stalls playback before reaching buffered end
-          mediaBuffered = media && buffer_helper.isBuffered(media, media.currentTime) && buffer_helper.isBuffered(media, media.currentTime + 0.5);
-          if (mediaBuffered) {
-            var retryDelay = hls.config.levelLoadingRetryDelay;
-            logger["b" /* logger */].warn('level controller,' + details + ', but media buffered, retry in ' + retryDelay + 'ms');
-            this.timer = setTimeout(this.ontick, retryDelay);
-            // boolean used to inform stream controller not to switch back to IDLE on non fatal error
-            data.levelRetry = true;
-          } else {
-            logger["b" /* logger */].error('cannot recover ' + details + ' error');
-            this._level = undefined;
-            // stopping live reloading timer if any
-            this.cleanTimer();
-            // switch error to fatal
-            data.fatal = true;
-          }
+    if (levelIndex !== undefined) {
+      this.recoverLevel(data, levelIndex, levelError, fragmentError);
+    }
+  };
+
+  /**
+   * Switch to a redundant stream if any available.
+   * If redundant stream is not available, emergency switch down if ABR mode is enabled.
+   *
+   * @param {Object} errorEvent
+   * @param {Number} levelIndex current level index
+   * @param {Boolean} levelError
+   * @param {Boolean} fragmentError
+   */
+  // FIXME Find a better abstraction where fragment/level retry management is well decoupled
+
+
+  LevelController.prototype.recoverLevel = function recoverLevel(errorEvent, levelIndex, levelError, fragmentError) {
+    var _this2 = this;
+
+    var config = this.hls.config;
+    var errorDetails = errorEvent.details;
+
+    var level = this._levels[levelIndex];
+    var redundantLevels = void 0,
+        delay = void 0,
+        nextLevel = void 0;
+
+    level.loadError++;
+    level.fragmentError = fragmentError;
+
+    if (levelError === true) {
+      if (this.levelRetryCount + 1 <= config.levelLoadingMaxRetry) {
+        // exponential backoff capped to max retry timeout
+        delay = Math.min(Math.pow(2, this.levelRetryCount) * config.levelLoadingRetryDelay, config.levelLoadingMaxRetryTimeout);
+        // Schedule level reload
+        this.timer = setTimeout(function () {
+          return _this2.loadLevel();
+        }, delay);
+        // boolean used to inform stream controller not to switch back to IDLE on non fatal error
+        errorEvent.levelRetry = true;
+        this.levelRetryCount++;
+        logger["b" /* logger */].warn('level controller, ' + errorDetails + ', retry in ' + delay + ' ms, current retry count is ' + this.levelRetryCount);
+      } else {
+        logger["b" /* logger */].error('level controller, cannot recover from ' + errorDetails + ' error');
+        this.currentLevelIndex = null;
+        // stopping live reloading timer if any
+        this.cleanTimer();
+        // switch error to fatal
+        errorEvent.fatal = true;
+        return;
+      }
+    }
+
+    // Try any redundant streams if available for both errors: level and fragment
+    // If level.loadError reaches redundantLevels it means that we tried them all, no hope  => let's switch down
+    if (levelError === true || fragmentError === true) {
+      redundantLevels = level.url.length;
+
+      if (redundantLevels > 1 && level.loadError < redundantLevels) {
+        logger["b" /* logger */].warn('level controller, ' + errorDetails + ' for level ' + levelIndex + ': switching to redundant stream id ' + level.urlId);
+        level.urlId = (level.urlId + 1) % redundantLevels;
+        level.details = undefined;
+      } else {
+        // Search for available level
+        if (this.manualLevelIndex === -1) {
+          // When lowest level has been reached, let's start hunt from the top
+          nextLevel = levelIndex === 0 ? this._levels.length - 1 : levelIndex - 1;
+          logger["b" /* logger */].warn('level controller, ' + errorDetails + ': switch to ' + nextLevel);
+          this.hls.nextAutoLevel = this.currentLevelIndex = nextLevel;
+        } else if (fragmentError === true) {
+          // Allow fragment retry as long as configuration allows.
+          // reset this._level so that another call to set level() will trigger again a frag load
+          logger["b" /* logger */].warn('level controller, ' + errorDetails + ': reload a fragment');
+          this.currentLevelIndex = null;
         }
       }
     }
   };
 
-  // reset level load error counter on successful frag loaded
+  // reset errors on the successful load of a fragment
 
 
-  LevelController.prototype.onFragLoaded = function onFragLoaded(data) {
-    var fragLoaded = data.frag;
-    if (fragLoaded && fragLoaded.type === 'main') {
-      var level = this._levels[fragLoaded.level];
-      if (level) {
+  LevelController.prototype.onFragLoaded = function onFragLoaded(_ref3) {
+    var frag = _ref3.frag;
+
+    if (frag !== undefined && frag.type === 'main') {
+      var level = this._levels[frag.level];
+      if (level !== undefined) {
+        level.fragmentError = false;
         level.loadError = 0;
+        this.levelRetryCount = 0;
       }
     }
   };
 
   LevelController.prototype.onLevelLoaded = function onLevelLoaded(data) {
+    var _this3 = this;
+
     var levelId = data.level;
     // only process level loaded events matching with expected level
-    if (levelId === this._level) {
+    if (levelId === this.currentLevelIndex) {
       var curLevel = this._levels[levelId];
-      // reset level load error counter on successful level loaded
-      curLevel.loadError = 0;
+      // reset level load error counter on successful level loaded only if there is no issues with fragments
+      if (curLevel.fragmentError === false) {
+        curLevel.loadError = 0;
+        this.levelRetryCount = 0;
+      }
       var newDetails = data.details;
       // if current playlist is a live playlist, arm a timer to reload it
       if (newDetails.live) {
@@ -10126,20 +10483,24 @@ var level_controller_LevelController = function (_EventHandler) {
         // in any case, don't reload more than every second
         reloadInterval = Math.max(1000, Math.round(reloadInterval));
         logger["b" /* logger */].log('live playlist, reload in ' + reloadInterval + ' ms');
-        this.timer = setTimeout(this.ontick, reloadInterval);
+        this.timer = setTimeout(function () {
+          return _this3.loadLevel();
+        }, reloadInterval);
       } else {
-        this.timer = null;
+        this.cleanTimer();
       }
     }
   };
 
-  LevelController.prototype.tick = function tick() {
-    var levelId = this._level;
-    if (levelId !== undefined && this.canload) {
-      var level = this._levels[levelId];
-      if (level && level.url) {
-        var urlId = level.urlId;
-        this.hls.trigger(events["a" /* default */].LEVEL_LOADING, { url: level.url[urlId], level: levelId, id: urlId });
+  LevelController.prototype.loadLevel = function loadLevel() {
+    var level = void 0,
+        urlIndex = void 0;
+
+    if (this.currentLevelIndex !== null && this.canload === true) {
+      level = this._levels[this.currentLevelIndex];
+      if (level !== undefined && level.url.length > 0) {
+        urlIndex = level.urlId;
+        this.hls.trigger(events["a" /* default */].LEVEL_LOADING, { url: level.url[urlIndex], level: this.currentLevelIndex, id: urlIndex });
       }
     }
   };
@@ -10152,12 +10513,13 @@ var level_controller_LevelController = function (_EventHandler) {
   }, {
     key: 'level',
     get: function get() {
-      return this._level;
+      return this.currentLevelIndex;
     },
     set: function set(newLevel) {
       var levels = this._levels;
-      if (levels && levels.length > newLevel) {
-        if (this._level !== newLevel || levels[newLevel].details === undefined) {
+      if (levels) {
+        newLevel = Math.min(newLevel, levels.length - 1);
+        if (this.currentLevelIndex !== newLevel || levels[newLevel].details === undefined) {
           this.setLevelInternal(newLevel);
         }
       }
@@ -10165,10 +10527,10 @@ var level_controller_LevelController = function (_EventHandler) {
   }, {
     key: 'manualLevel',
     get: function get() {
-      return this._manualLevel;
+      return this.manualLevelIndex;
     },
     set: function set(newLevel) {
-      this._manualLevel = newLevel;
+      this.manualLevelIndex = newLevel;
       if (this._startLevel === undefined) {
         this._startLevel = newLevel;
       }
@@ -10206,15 +10568,15 @@ var level_controller_LevelController = function (_EventHandler) {
   }, {
     key: 'nextLoadLevel',
     get: function get() {
-      if (this._manualLevel !== -1) {
-        return this._manualLevel;
+      if (this.manualLevelIndex !== -1) {
+        return this.manualLevelIndex;
       } else {
         return this.hls.nextAutoLevel;
       }
     },
     set: function set(nextLevel) {
       this.level = nextLevel;
-      if (this._manualLevel === -1) {
+      if (this.manualLevelIndex === -1) {
         this.hls.nextAutoLevel = nextLevel;
       }
     }
@@ -10316,6 +10678,19 @@ var id3_track_controller_ID3TrackController = function (_EventHandler) {
 }(event_handler);
 
 /* harmony default export */ var id3_track_controller = (id3_track_controller_ID3TrackController);
+// CONCATENATED MODULE: ./src/helper/is-supported.js
+
+
+function is_supported_isSupported() {
+  var mediaSource = getMediaSource();
+  var sourceBuffer = window.SourceBuffer || window.WebKitSourceBuffer;
+  var isTypeSupported = mediaSource && typeof mediaSource.isTypeSupported === 'function' && mediaSource.isTypeSupported('video/mp4; codecs="avc1.42E01E,mp4a.40.2"');
+
+  // if SourceBuffer is exposed ensure its API is valid
+  // safari and old version of Chrome doe not expose SourceBuffer globally so checking SourceBuffer.prototype is impossible
+  var sourceBufferValidAPI = !sourceBuffer || sourceBuffer.prototype && typeof sourceBuffer.prototype.appendBuffer === 'function' && typeof sourceBuffer.prototype.remove === 'function';
+  return !!isTypeSupported && !!sourceBufferValidAPI;
+}
 // CONCATENATED MODULE: ./src/utils/ewma.js
 function ewma__classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10508,6 +10883,8 @@ var abr_controller_AbrController = function (_EventHandler) {
     if (!loader || loader.stats && loader.stats.aborted) {
       logger["b" /* logger */].warn('frag loader destroy or aborted, disarm abandonRules');
       this.clearTimer();
+      // reset forced auto level value so that next level will be selected
+      this._nextAutoLevel = -1;
       return;
     }
     var stats = loader.stats;
@@ -10767,6 +11144,9 @@ function buffer_controller__inherits(subClass, superClass) { if (typeof superCla
 
 
 
+
+var buffer_controller_MediaSource = getMediaSource();
+
 var buffer_controller_BufferController = function (_EventHandler) {
   buffer_controller__inherits(BufferController, _EventHandler);
 
@@ -10780,6 +11160,10 @@ var buffer_controller_BufferController = function (_EventHandler) {
     _this._msDuration = null;
     // the value that we want to set mediaSource.duration to
     _this._levelDuration = null;
+    // current stream state: true - for live broadcast, false - for VoD content
+    _this._live = null;
+    // cache the self generated object url to detect hijack of video tag
+    _this._objectUrl = null;
 
     // Source Buffer listeners
     _this.onsbue = _this.onSBUpdateEnd.bind(_this);
@@ -10849,7 +11233,7 @@ var buffer_controller_BufferController = function (_EventHandler) {
     var media = this.media = data.media;
     if (media) {
       // setup the media source
-      var ms = this.mediaSource = new MediaSource();
+      var ms = this.mediaSource = new buffer_controller_MediaSource();
       //Media Source listeners
       this.onmso = this.onMediaSourceOpen.bind(this);
       this.onmse = this.onMediaSourceEnded.bind(this);
@@ -10859,6 +11243,8 @@ var buffer_controller_BufferController = function (_EventHandler) {
       ms.addEventListener('sourceclose', this.onmsc);
       // link video and media Source
       media.src = URL.createObjectURL(ms);
+      // cache the locally generated object url
+      this._objectUrl = media.src;
     }
   };
 
@@ -10884,13 +11270,21 @@ var buffer_controller_BufferController = function (_EventHandler) {
       // Detach properly the MediaSource from the HTMLMediaElement as
       // suggested in https://github.com/w3c/media-source/issues/53.
       if (this.media) {
-        URL.revokeObjectURL(this.media.src);
-        this.media.removeAttribute('src');
-        this.media.load();
+        URL.revokeObjectURL(this._objectUrl);
+
+        // clean up video tag src only if it's our own url. some external libraries might
+        // hijack the video tag and change its 'src' without destroying the Hls instance first
+        if (this.media.src === this._objectUrl) {
+          this.media.removeAttribute('src');
+          this.media.load();
+        } else {
+          logger["b" /* logger */].warn('media.src was changed by a third party - skip cleanup');
+        }
       }
 
       this.mediaSource = null;
       this.media = null;
+      this._objectUrl = null;
       this.pendingTracks = {};
       this.tracks = {};
       this.sourceBuffer = {};
@@ -11101,49 +11495,61 @@ var buffer_controller_BufferController = function (_EventHandler) {
 
   BufferController.prototype.onBufferFlushing = function onBufferFlushing(data) {
     this.flushRange.push({ start: data.startOffset, end: data.endOffset, type: data.type });
-    // attempt flush immediatly
+    // attempt flush immediately
     this.flushBufferCounter = 0;
     this.doFlush();
   };
 
-  BufferController.prototype.onLevelUpdated = function onLevelUpdated(event) {
-    var details = event.details;
-    if (details.fragments.length === 0) {
-      return;
+  BufferController.prototype.onLevelUpdated = function onLevelUpdated(_ref) {
+    var details = _ref.details;
+
+    if (details.fragments.length > 0) {
+      this._levelDuration = details.totalduration + details.fragments[0].start;
+      this._live = details.live;
+      this.updateMediaElementDuration();
     }
-    this._levelDuration = details.totalduration + details.fragments[0].start;
-    this.updateMediaElementDuration();
   };
 
-  // https://github.com/video-dev/hls.js/issues/355
+  /**
+   * Update Media Source duration to current level duration or override to Infinity if configuration parameter
+   * 'liveDurationInfinity` is set to `true`
+   * More details: https://github.com/video-dev/hls.js/issues/355
+   */
 
 
   BufferController.prototype.updateMediaElementDuration = function updateMediaElementDuration() {
-    var media = this.media,
-        mediaSource = this.mediaSource,
-        sourceBuffer = this.sourceBuffer,
-        levelDuration = this._levelDuration;
-    if (levelDuration === null || !media || !mediaSource || !sourceBuffer || media.readyState === 0 || mediaSource.readyState !== 'open') {
+    var config = this.hls.config;
+
+    var duration = void 0;
+
+    if (this._levelDuration === null || !this.media || !this.mediaSource || !this.sourceBuffer || this.media.readyState === 0 || this.mediaSource.readyState !== 'open') {
       return;
     }
-    for (var type in sourceBuffer) {
-      if (sourceBuffer[type].updating) {
+
+    for (var type in this.sourceBuffer) {
+      if (this.sourceBuffer[type].updating === true) {
         // can't set duration whilst a buffer is updating
         return;
       }
     }
+
+    duration = this.media.duration;
+    // initialise to the value that the media source is reporting
     if (this._msDuration === null) {
-      // initialise to the value that the media source is reporting
-      this._msDuration = mediaSource.duration;
+      this._msDuration = this.mediaSource.duration;
     }
-    var duration = media.duration;
-    // levelDuration was the last value we set.
-    // not using mediaSource.duration as the browser may tweak this value
-    // only update mediasource duration if its value increase, this is to avoid
-    // flushing already buffered portion when switching between quality level
-    if (levelDuration > this._msDuration && levelDuration > duration || duration === Infinity || isNaN(duration)) {
-      logger["b" /* logger */].log('Updating mediasource duration to ' + levelDuration.toFixed(3));
-      this._msDuration = mediaSource.duration = levelDuration;
+
+    if (this._live === true && config.liveDurationInfinity === true) {
+      // Override duration to Infinity
+      logger["b" /* logger */].log('Media Source duration is set to Infinity');
+      this._msDuration = this.mediaSource.duration = Infinity;
+    } else if (this._levelDuration > this._msDuration && this._levelDuration > duration || duration === Infinity || isNaN(duration)) {
+      // levelDuration was the last value we set.
+      // not using mediaSource.duration as the browser may tweak this value
+      // only update Media Source duration if its value increase, this is to avoid
+      // flushing already buffered portion when switching between quality level
+      logger["b" /* logger */].log('Updating Media Source duration to ' + this._levelDuration.toFixed(3));
+      this._msDuration = this.mediaSource.duration = this._levelDuration;
     }
   };
 
@@ -11640,12 +12046,8 @@ var xhr_loader_XhrLoader = function () {
   XhrLoader.prototype.loadInternal = function loadInternal() {
     var xhr,
         context = this.context;
+    xhr = this.loader = new XMLHttpRequest();
 
-    if (typeof XDomainRequest !== 'undefined') {
-      xhr = this.loader = new XDomainRequest();
-    } else {
-      xhr = this.loader = new XMLHttpRequest();
-    }
     var stats = this.stats;
     stats.tfirst = 0;
     stats.loaded = 0;
@@ -11791,7 +12193,7 @@ var audio_track_controller_AudioTrackController = function (_EventHandler) {
   function AudioTrackController(hls) {
     audio_track_controller__classCallCheck(this, AudioTrackController);
 
-    var _this = audio_track_controller__possibleConstructorReturn(this, _EventHandler.call(this, hls, events["a" /* default */].MANIFEST_LOADING, events["a" /* default */].MANIFEST_LOADED, events["a" /* default */].AUDIO_TRACK_LOADED, events["a" /* default */].ERROR));
+    var _this = audio_track_controller__possibleConstructorReturn(this, _EventHandler.call(this, hls, events["a" /* default */].MANIFEST_LOADING, events["a" /* default */].MANIFEST_PARSED, events["a" /* default */].AUDIO_TRACK_LOADED, events["a" /* default */].ERROR));
 
     _this.ticks = 0;
     _this.ontick = _this.tick.bind(_this);
@@ -11837,7 +12239,7 @@ var audio_track_controller_AudioTrackController = function (_EventHandler) {
     this.trackId = -1;
   };
 
-  AudioTrackController.prototype.onManifestLoaded = function onManifestLoaded(data) {
+  AudioTrackController.prototype.onManifestParsed = function onManifestParsed(data) {
     var _this2 = this;
 
     var tracks = data.audioTracks || [];
@@ -11997,7 +12399,7 @@ var audio_stream_controller_AudioStreamController = function (_EventHandler) {
   function AudioStreamController(hls) {
     audio_stream_controller__classCallCheck(this, AudioStreamController);
 
-    var _this = audio_stream_controller__possibleConstructorReturn(this, _EventHandler.call(this, hls, events["a" /* default */].MEDIA_ATTACHED, events["a" /* default */].MEDIA_DETACHING, events["a" /* default */].AUDIO_TRACKS_UPDATED, events["a" /* default */].AUDIO_TRACK_SWITCHING, events["a" /* default */].AUDIO_TRACK_LOADED, events["a" /* default */].KEY_LOADED, events["a" /* default */].FRAG_LOADED, events["a" /* default */].FRAG_PARSING_INIT_SEGMENT, events["a" /* default */].FRAG_PARSING_DATA, events["a" /* default */].FRAG_PARSED, events["a" /* default */].ERROR, events["a" /* default */].BUFFER_CREATED, events["a" /* default */].BUFFER_APPENDED, events["a" /* default */].BUFFER_FLUSHED, events["a" /* default */].INIT_PTS_FOUND));
+    var _this = audio_stream_controller__possibleConstructorReturn(this, _EventHandler.call(this, hls, events["a" /* default */].MEDIA_ATTACHED, events["a" /* default */].MEDIA_DETACHING, events["a" /* default */].AUDIO_TRACKS_UPDATED, events["a" /* default */].AUDIO_TRACK_SWITCHING, events["a" /* default */].AUDIO_TRACK_LOADED, events["a" /* default */].KEY_LOADED, events["a" /* default */].FRAG_LOADED, events["a" /* default */].FRAG_PARSING_INIT_SEGMENT, events["a" /* default */].FRAG_PARSING_DATA, events["a" /* default */].FRAG_PARSED, events["a" /* default */].ERROR, events["a" /* default */].BUFFER_RESET, events["a" /* default */].BUFFER_CREATED, events["a" /* default */].BUFFER_APPENDED, events["a" /* default */].BUFFER_FLUSHED, events["a" /* default */].INIT_PTS_FOUND));
 
     _this.config = hls.config;
     _this.audioCodecSwap = false;
@@ -12135,11 +12537,16 @@ var audio_stream_controller_AudioStreamController = function (_EventHandler) {
           }
         }
         var media = this.mediaBuffer ? this.mediaBuffer : this.media,
+            videoBuffer = this.videoBuffer ? this.videoBuffer : this.media,
             bufferInfo = buffer_helper.bufferInfo(media, pos, config.maxBufferHole),
+            mainBufferInfo = buffer_helper.bufferInfo(videoBuffer, pos, config.maxBufferHole),
             bufferLen = bufferInfo.len,
             bufferEnd = bufferInfo.end,
             fragPrevious = this.fragPrevious,
-            maxBufLen = config.maxMaxBufferLength,
+
+        // ensure we buffer at least config.maxBufferLength (default 30s)
+        // once we reach that threshold, don't buffer more than video (mainBufferInfo.len)
+        maxBufLen = Math.max(config.maxBufferLength, mainBufferInfo.len),
             audioSwitch = this.audioSwitch,
             trackId = this.trackId;
 
@@ -12152,8 +12559,11 @@ var audio_stream_controller_AudioStreamController = function (_EventHandler) {
             break;
           }
 
-          // we just got done loading the final fragment, check if we need to finalize media stream
-          if (!audioSwitch && !trackDetails.live && fragPrevious && fragPrevious.sn === trackDetails.endSN) {
+          // check if we need to finalize media stream
+          // we just got done loading the final fragment and there is no other buffered range after ...
+          // rationale is that in case there are any buffered ranges after, it means that there are unbuffered portion in between
+          // so we should not switch to ENDED in that case, to be able to buffer them
+          if (!audioSwitch && !trackDetails.live && fragPrevious && fragPrevious.sn === trackDetails.endSN && !bufferInfo.nextStart) {
             // if we are not seeking or if we are seeking but everything (almost) til the end is buffered, let's signal eos
             // we don't compare exactly media.duration === bufferInfo.end as there could be some subtle media duration difference when switching
             // between different renditions. using half frag duration should help cope with these cases.
@@ -12396,7 +12806,7 @@ var audio_stream_controller_AudioStreamController = function (_EventHandler) {
       media.removeEventListener('ended', this.onvended);
       this.onvseeking = this.onvseeked = this.onvended = null;
     }
-    this.media = this.mediaBuffer = null;
+    this.media = this.mediaBuffer = this.videoBuffer = null;
     this.loadedmetadata = false;
     this.stopLoad();
   };
@@ -12683,11 +13093,20 @@ var audio_stream_controller_AudioStreamController = function (_EventHandler) {
     }
   };
 
+  AudioStreamController.prototype.onBufferReset = function onBufferReset() {
+    // reset reference to sourcebuffers
+    this.mediaBuffer = this.videoBuffer = null;
+    this.loadedmetadata = false;
+  };
+
   AudioStreamController.prototype.onBufferCreated = function onBufferCreated(data) {
     var audioTrack = data.tracks.audio;
     if (audioTrack) {
       this.mediaBuffer = audioTrack.buffer;
       this.loadedmetadata = true;
+    }
+    if (data.tracks.video) {
+      this.videoBuffer = data.tracks.video.buffer;
     }
   };
 
@@ -13281,7 +13700,7 @@ function parseOptions(input, callback, keyValueDelim, groupDelim) {
 
 var defaults = new vttcue(0, 0, 0);
 // 'middle' was changed to 'center' in the spec: https://github.com/w3c/webvtt/pull/244
-// Chrome and Safari don't yet support this change, but FF does
+//  Safari doesn't yet support this change, but FF and Chrome do.
 var center = defaults.align === 'middle' ? 'middle' : 'center';
 
 function parseCue(input, cue, regionList) {
@@ -14426,14 +14845,14 @@ var Cea608Channel = function () {
         // Erase Displayed Memory
         cea_608_parser_logger.log('INFO', 'EDM - Erase Displayed Memory');
         this.displayedMemory.reset();
-        this.outputDataUpdate();
+        this.outputDataUpdate(true);
     };
 
     Cea608Channel.prototype.ccCR = function ccCR() {
         // Carriage Return
         cea_608_parser_logger.log('CR - Carriage Return');
         this.writeScreen.rollUp();
-        this.outputDataUpdate();
+        this.outputDataUpdate(true);
     };
 
     Cea608Channel.prototype.ccENM = function ccENM() {
@@ -14452,7 +14871,7 @@ var Cea608Channel = function () {
             this.writeScreen = this.nonDisplayedMemory;
             cea_608_parser_logger.log('TEXT', 'DISP: ' + this.displayedMemory.getDisplayText());
         }
-        this.outputDataUpdate();
+        this.outputDataUpdate(true);
     };
 
     Cea608Channel.prototype.ccTO = function ccTO(nrCols) {
@@ -14478,14 +14897,13 @@ var Cea608Channel = function () {
     };
 
     Cea608Channel.prototype.outputDataUpdate = function outputDataUpdate() {
+        var dispatch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
         var t = cea_608_parser_logger.time;
         if (t === null) {
             return;
         }
         if (this.outputFilter) {
-            if (this.outputFilter.updateData) {
-                this.outputFilter.updateData(t, this.displayedMemory);
-            }
             if (this.cueStartTime === null && !this.displayedMemory.isEmpty()) {
                 // Start of a new cue
                 this.cueStartTime = t;
@@ -14493,6 +14911,9 @@ var Cea608Channel = function () {
                 if (!this.displayedMemory.equals(this.lastOutputScreen)) {
                     if (this.outputFilter.newCue) {
                         this.outputFilter.newCue(this.cueStartTime, t, this.lastOutputScreen);
+                        if (dispatch === true && this.outputFilter.dispatchCue) {
+                            this.outputFilter.dispatchCue();
+                        }
                     }
                     this.cueStartTime = this.displayedMemory.isEmpty() ? null : t;
                 }
@@ -14873,7 +15294,43 @@ var Cea608Parser = function () {
 }();
 
 /* harmony default export */ var cea_608_parser = (Cea608Parser);
+// CONCATENATED MODULE: ./src/utils/output-filter.js
+function output_filter__classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var OutputFilter = function () {
+  function OutputFilter(timelineController, track) {
+    output_filter__classCallCheck(this, OutputFilter);
+
+    this.timelineController = timelineController;
+    this.track = track;
+    this.startTime = null;
+    this.endTime = null;
+    this.screen = null;
+  }
+
+  OutputFilter.prototype.dispatchCue = function dispatchCue() {
+    if (this.startTime === null) {
+      return;
+    }
+    this.timelineController.addCues('textTrack' + this.track, this.startTime, this.endTime, this.screen);
+    this.startTime = null;
+  };
+
+  OutputFilter.prototype.newCue = function newCue(startTime, endTime, screen) {
+    if (this.startTime === null || this.startTime > startTime) {
+      this.startTime = startTime;
+    }
+    this.endTime = endTime;
+    this.screen = screen;
+    this.timelineController.createCaptionsTrack(this.track);
+  };
+
+  return OutputFilter;
+}();
+
+/* harmony default export */ var output_filter = (OutputFilter);
 // CONCATENATED MODULE: ./src/utils/webvtt-parser.js
+
 
 
 // String.prototype.startsWith is not supported in IE11
@@ -14936,7 +15393,9 @@ var WebVTTParser = {
     parse: function parse(vttByteArray, syncPTS, vttCCs, cc, callBack, errorCallBack) {
         // Convert byteArray into string, replacing any somewhat exotic linefeeds with "\n", then split on that character.
         var re = /\r\n|\n\r|\n|\r/g;
-        var vttLines = String.fromCharCode.apply(null, new Uint8Array(vttByteArray)).trim().replace(re, '\n').split('\n');
+        // Uint8Array.prototype.reduce is not implemented in IE11
+        var vttLines = Object(id3["b" /* utf8ArrayToStr */])(new Uint8Array(vttByteArray)).trim().replace(re, '\n').split('\n');
+
         var cueTime = '00:00.000';
         var mpegTs = 0;
         var localTime = 0;
@@ -14974,10 +15433,10 @@ var WebVTTParser = {
 
             // Create a unique hash id for a cue based on start/end times and text.
             // This helps timeline-controller to avoid showing repeated captions.
-            cue.id = hash(cue.startTime) + hash(cue.endTime) + hash(cue.text);
+            cue.id = hash(cue.startTime.toString()) + hash(cue.endTime.toString()) + hash(cue.text);
 
             // Fix encoding of special characters. TODO: Test with all sorts of weird characters.
-            cue.text = decodeURIComponent(escape(cue.text));
+            cue.text = decodeURIComponent(encodeURIComponent(cue.text));
             if (cue.endTime > 0) {
                 cues.push(cue);
             }
@@ -15059,6 +15518,7 @@ function timeline_controller__inherits(subClass, superClass) { if (typeof superC
 
 
 
+
 function clearCurrentCues(track) {
   if (track && track.cues) {
     while (track.cues.length > 0) {
@@ -15081,7 +15541,7 @@ var timeline_controller_TimelineController = function (_EventHandler) {
   function TimelineController(hls) {
     timeline_controller__classCallCheck(this, TimelineController);
 
-    var _this = timeline_controller__possibleConstructorReturn(this, _EventHandler.call(this, hls, events["a" /* default */].MEDIA_ATTACHING, events["a" /* default */].MEDIA_DETACHING, events["a" /* default */].FRAG_PARSING_USERDATA, events["a" /* default */].MANIFEST_LOADING, events["a" /* default */].MANIFEST_LOADED, events["a" /* default */].FRAG_LOADED, events["a" /* default */].LEVEL_SWITCHING, events["a" /* default */].INIT_PTS_FOUND));
+    var _this = timeline_controller__possibleConstructorReturn(this, _EventHandler.call(this, hls, events["a" /* default */].MEDIA_ATTACHING, events["a" /* default */].MEDIA_DETACHING, events["a" /* default */].FRAG_PARSING_USERDATA, events["a" /* default */].FRAG_DECRYPTED, events["a" /* default */].MANIFEST_LOADING, events["a" /* default */].MANIFEST_LOADED, events["a" /* default */].FRAG_LOADED, events["a" /* default */].LEVEL_SWITCHING, events["a" /* default */].INIT_PTS_FOUND));
 
     _this.hls = hls;
     _this.config = hls.config;
@@ -15094,63 +15554,8 @@ var timeline_controller_TimelineController = function (_EventHandler) {
     _this.cueRanges = [];
 
     if (_this.config.enableCEA708Captions) {
-      var self = _this;
-      var sendAddTrackEvent = function sendAddTrackEvent(track, media) {
-        var e = null;
-        try {
-          e = new window.Event('addtrack');
-        } catch (err) {
-          //for IE11
-          e = document.createEvent('Event');
-          e.initEvent('addtrack', false, false);
-        }
-        e.track = track;
-        media.dispatchEvent(e);
-      };
-
-      var channel1 = {
-        'newCue': function newCue(startTime, endTime, screen) {
-          if (!self.textTrack1) {
-            //Enable reuse of existing text track.
-            var existingTrack1 = self.getExistingTrack('1');
-            if (!existingTrack1) {
-              var textTrack1 = self.createTextTrack('captions', self.config.captionsTextTrack1Label, self.config.captionsTextTrack1LanguageCode);
-              if (textTrack1) {
-                textTrack1.textTrack1 = true;
-                self.textTrack1 = textTrack1;
-              }
-            } else {
-              self.textTrack1 = existingTrack1;
-              clearCurrentCues(self.textTrack1);
-
-              sendAddTrackEvent(self.textTrack1, self.media);
-            }
-          }
-          self.addCues('textTrack1', startTime, endTime, screen);
-        }
-      };
-
-      var channel2 = {
-        'newCue': function newCue(startTime, endTime, screen) {
-          if (!self.textTrack2) {
-            //Enable reuse of existing text track.
-            var existingTrack2 = self.getExistingTrack('2');
-            if (!existingTrack2) {
-              var textTrack2 = self.createTextTrack('captions', self.config.captionsTextTrack2Label, self.config.captionsTextTrack1LanguageCode);
-              if (textTrack2) {
-                textTrack2.textTrack2 = true;
-                self.textTrack2 = textTrack2;
-              }
-            } else {
-              self.textTrack2 = existingTrack2;
-              clearCurrentCues(self.textTrack2);
-
-              sendAddTrackEvent(self.textTrack2, self.media);
-            }
-          }
-          self.addCues('textTrack2', startTime, endTime, screen);
-        }
-      };
+      var channel1 = new output_filter(_this, 1);
+      var channel2 = new output_filter(_this, 2);
 
       _this.cea608Parser = new cea_608_parser(0, channel1, channel2);
     }
@@ -15213,6 +15618,39 @@ var timeline_controller_TimelineController = function (_EventHandler) {
     return null;
   };
 
+  TimelineController.prototype.sendAddTrackEvent = function sendAddTrackEvent(track, media) {
+    var e = null;
+    try {
+      e = new window.Event('addtrack');
+    } catch (err) {
+      //for IE11
+      e = document.createEvent('Event');
+      e.initEvent('addtrack', false, false);
+    }
+    e.track = track;
+    media.dispatchEvent(e);
+  };
+
+  TimelineController.prototype.createCaptionsTrack = function createCaptionsTrack(track) {
+    var trackVar = 'textTrack' + track;
+    if (!this[trackVar]) {
+      //Enable reuse of existing text track.
+      var existingTrack = this.getExistingTrack(track);
+      if (!existingTrack) {
+        var textTrack = this.createTextTrack('captions', this.config['captionsTextTrack' + track + 'Label'], this.config.captionsTextTrack1LanguageCode);
+        if (textTrack) {
+          textTrack[trackVar] = true;
+          this[trackVar] = textTrack;
+        }
+      } else {
+        this[trackVar] = existingTrack;
+        clearCurrentCues(this[trackVar]);
+
+        this.sendAddTrackEvent(this[trackVar], this.media);
+      }
+    }
+  };
+
   TimelineController.prototype.createTextTrack = function createTextTrack(kind, label, lang) {
     var media = this.media;
     if (media) {
@@ -15226,6 +15664,7 @@ var timeline_controller_TimelineController = function (_EventHandler) {
 
   TimelineController.prototype.onMediaAttaching = function onMediaAttaching(data) {
     this.media = data.media;
+    this._cleanTracks();
   };
 
   TimelineController.prototype.onMediaDetaching = function onMediaDetaching() {
@@ -15237,7 +15676,10 @@ var timeline_controller_TimelineController = function (_EventHandler) {
     this.lastSn = -1; // Detect discontiguity in fragment parsing
     this.prevCC = -1;
     this.vttCCs = { ccOffset: 0, presentationOffset: 0 }; // Detect discontinuity in subtitle manifests
+    this._cleanTracks();
+  };
 
+  TimelineController.prototype._cleanTracks = function _cleanTracks() {
     // clear outdated subtitles
     var media = this.media;
     if (media) {
@@ -15306,43 +15748,66 @@ var timeline_controller_TimelineController = function (_EventHandler) {
             this.unparsedVttFrags.push(data);
             return;
           }
-          var vttCCs = this.vttCCs;
-          if (!vttCCs[frag.cc]) {
-            vttCCs[frag.cc] = { start: frag.start, prevCC: this.prevCC, new: true };
-            this.prevCC = frag.cc;
-          }
-          var textTracks = this.textTracks,
-              hls = this.hls;
 
-          // Parse the WebVTT file contents.
-          webvtt_parser.parse(payload, this.initPTS, vttCCs, frag.cc, function (cues) {
-            var currentTrack = textTracks[frag.trackId];
-            // Add cues and trigger event with success true.
-            cues.forEach(function (cue) {
-              // Sometimes there are cue overlaps on segmented vtts so the same
-              // cue can appear more than once in different vtt files.
-              // This avoid showing duplicated cues with same timecode and text.
-              if (!currentTrack.cues.getCueById(cue.id)) {
-                try {
-                  currentTrack.addCue(cue);
-                } catch (err) {
-                  var textTrackCue = new window.TextTrackCue(cue.startTime, cue.endTime, cue.text);
-                  textTrackCue.id = cue.id;
-                  currentTrack.addCue(textTrackCue);
-                }
-              }
-            });
-            hls.trigger(events["a" /* default */].SUBTITLE_FRAG_PROCESSED, { success: true, frag: frag });
-          }, function (e) {
-            // Something went wrong while parsing. Trigger event with success false.
-            logger["b" /* logger */].log('Failed to parse VTT cue: ' + e);
-            hls.trigger(events["a" /* default */].SUBTITLE_FRAG_PROCESSED, { success: false, frag: frag });
-          });
+          var decryptData = frag.decryptdata;
+          // If the subtitles are not encrypted, parse VTTs now. Otherwise, we need to wait.
+          if (decryptData == null || decryptData.key == null || decryptData.method !== 'AES-128') {
+            this._parseVTTs(frag, payload);
+          }
         } else {
           // In case there is no payload, finish unsuccessfully.
           this.hls.trigger(events["a" /* default */].SUBTITLE_FRAG_PROCESSED, { success: false, frag: frag });
         }
       }
+  };
+
+  TimelineController.prototype._parseVTTs = function _parseVTTs(frag, payload) {
+    var vttCCs = this.vttCCs;
+    if (!vttCCs[frag.cc]) {
+      vttCCs[frag.cc] = { start: frag.start, prevCC: this.prevCC, new: true };
+      this.prevCC = frag.cc;
+    }
+    var textTracks = this.textTracks,
+        hls = this.hls;
+
+    // Parse the WebVTT file contents.
+    webvtt_parser.parse(payload, this.initPTS, vttCCs, frag.cc, function (cues) {
+      var currentTrack = textTracks[frag.trackId];
+      // Add cues and trigger event with success true.
+      cues.forEach(function (cue) {
+        // Sometimes there are cue overlaps on segmented vtts so the same
+        // cue can appear more than once in different vtt files.
+        // This avoid showing duplicated cues with same timecode and text.
+        if (!currentTrack.cues.getCueById(cue.id)) {
+          try {
+            currentTrack.addCue(cue);
+          } catch (err) {
+            var textTrackCue = new window.TextTrackCue(cue.startTime, cue.endTime, cue.text);
+            textTrackCue.id = cue.id;
+            currentTrack.addCue(textTrackCue);
+          }
+        }
+      });
+      hls.trigger(events["a" /* default */].SUBTITLE_FRAG_PROCESSED, { success: true, frag: frag });
+    }, function (e) {
+      // Something went wrong while parsing. Trigger event with success false.
+      logger["b" /* logger */].log('Failed to parse VTT cue: ' + e);
+      hls.trigger(events["a" /* default */].SUBTITLE_FRAG_PROCESSED, { success: false, frag: frag });
+    });
+  };
+
+  TimelineController.prototype.onFragDecrypted = function onFragDecrypted(data) {
+    var decryptedData = data.payload,
+        frag = data.frag;
+
+    if (frag.type === 'subtitle') {
+      if (typeof this.initPTS === 'undefined') {
+        this.unparsedVttFrags.push(data);
+        return;
+      }
+
+      this._parseVTTs(frag, decryptedData);
+    }
   };
 
   TimelineController.prototype.onFragParsingUserdata = function onFragParsingUserdata(data) {
@@ -15426,6 +15891,7 @@ var subtitle_track_controller_SubtitleTrackController = function (_EventHandler)
     _this.tracks = [];
     _this.trackId = -1;
     _this.media = undefined;
+    _this.subtitleDisplay = false;
     return _this;
   }
 
@@ -15460,6 +15926,11 @@ var subtitle_track_controller_SubtitleTrackController = function (_EventHandler)
     this.media = data.media;
     if (!this.media) {
       return;
+    }
+
+    if (this.queuedDefaultTrack !== undefined) {
+      this.subtitleTrack = this.queuedDefaultTrack;
+      delete this.queuedDefaultTrack;
     }
 
     this.trackChangeListener = this._onTextTracksChanged.bind(this);
@@ -15502,7 +15973,6 @@ var subtitle_track_controller_SubtitleTrackController = function (_EventHandler)
     var _this3 = this;
 
     var tracks = data.subtitles || [];
-    var defaultFound = false;
     this.tracks = tracks;
     this.trackId = -1;
     this.hls.trigger(events["a" /* default */].SUBTITLE_TRACKS_UPDATED, { subtitleTracks: tracks });
@@ -15511,8 +15981,15 @@ var subtitle_track_controller_SubtitleTrackController = function (_EventHandler)
     // TODO: improve selection logic to handle forced, etc
     tracks.forEach(function (track) {
       if (track.default) {
-        _this3.subtitleTrack = track.id;
-        defaultFound = true;
+        // setting this.subtitleTrack will trigger internal logic
+        // if media has not been attached yet, it will fail
+        // we keep a reference to the default track id
+        // and we'll set subtitleTrack when onMediaAttached is triggered
+        if (_this3.media) {
+          _this3.subtitleTrack = track.id;
+        } else {
+          _this3.queuedDefaultTrack = track.id;
+        }
       }
     });
   };
@@ -15563,23 +16040,42 @@ var subtitle_track_controller_SubtitleTrackController = function (_EventHandler)
 
   SubtitleTrackController.prototype.setSubtitleTrackInternal = function setSubtitleTrackInternal(newId) {
     // check if level idx is valid
-    if (newId >= 0 && newId < this.tracks.length) {
-      // stopping live reloading timer if any
-      if (this.timer) {
-        clearInterval(this.timer);
-        this.timer = null;
-      }
-      this.trackId = newId;
-      logger["b" /* logger */].log('switching to subtitle track ' + newId);
-      var subtitleTrack = this.tracks[newId];
-      this.hls.trigger(events["a" /* default */].SUBTITLE_TRACK_SWITCH, { id: newId });
-      // check if we need to load playlist for this subtitle Track
-      var details = subtitleTrack.details;
-      if (details === undefined || details.live === true) {
-        // track not retrieved yet, or live playlist we need to (re)load it
-        logger["b" /* logger */].log('(re)loading playlist for subtitle track ' + newId);
-        this.hls.trigger(events["a" /* default */].SUBTITLE_TRACK_LOADING, { url: subtitleTrack.url, id: newId });
-      }
+    if (newId < -1 || newId >= this.tracks.length) {
+      return;
+    }
+
+    // stopping live reloading timer if any
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+
+    var textTracks = filterSubtitleTracks(this.media.textTracks);
+
+    // hide currently enabled subtitle track
+    if (this.trackId !== -1 && this.subtitleDisplay) {
+      textTracks[this.trackId].mode = 'hidden';
+    }
+
+    this.trackId = newId;
+    logger["b" /* logger */].log('switching to subtitle track ' + newId);
+    this.hls.trigger(events["a" /* default */].SUBTITLE_TRACK_SWITCH, { id: newId });
+
+    if (newId === -1) {
+      return;
+    }
+
+    var subtitleTrack = this.tracks[newId];
+    if (this.subtitleDisplay) {
+      textTracks[newId].mode = 'showing';
+    }
+
+    // check if we need to load playlist for this subtitle Track
+    var details = subtitleTrack.details;
+    if (details === undefined || details.live === true) {
+      // track not retrieved yet, or live playlist we need to (re)load it
+      logger["b" /* logger */].log('(re)loading playlist for subtitle track ' + newId);
+      this.hls.trigger(events["a" /* default */].SUBTITLE_TRACK_LOADING, { url: subtitleTrack.url, id: newId });
     }
   };
 
@@ -15611,6 +16107,9 @@ var subtitle_track_controller_SubtitleTrackController = function (_EventHandler)
 }(event_handler);
 
 /* harmony default export */ var subtitle_track_controller = (subtitle_track_controller_SubtitleTrackController);
+// EXTERNAL MODULE: ./src/crypt/decrypter.js + 3 modules
+var decrypter = __webpack_require__(4);
+
 // CONCATENATED MODULE: ./src/controller/subtitle-stream-controller.js
 function subtitle_stream_controller__classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -15626,24 +16125,36 @@ function subtitle_stream_controller__inherits(subClass, superClass) { if (typeof
 
 
 
+
+var subtitle_stream_controller_State = {
+  STOPPED: 'STOPPED',
+  IDLE: 'IDLE',
+  KEY_LOADING: 'KEY_LOADING',
+  FRAG_LOADING: 'FRAG_LOADING'
+};
+
 var subtitle_stream_controller_SubtitleStreamController = function (_EventHandler) {
   subtitle_stream_controller__inherits(SubtitleStreamController, _EventHandler);
 
   function SubtitleStreamController(hls) {
     subtitle_stream_controller__classCallCheck(this, SubtitleStreamController);
 
-    var _this = subtitle_stream_controller__possibleConstructorReturn(this, _EventHandler.call(this, hls, events["a" /* default */].ERROR, events["a" /* default */].SUBTITLE_TRACKS_UPDATED, events["a" /* default */].SUBTITLE_TRACK_SWITCH, events["a" /* default */].SUBTITLE_TRACK_LOADED, events["a" /* default */].SUBTITLE_FRAG_PROCESSED));
+    var _this = subtitle_stream_controller__possibleConstructorReturn(this, _EventHandler.call(this, hls, events["a" /* default */].MEDIA_ATTACHED, events["a" /* default */].ERROR, events["a" /* default */].KEY_LOADED, events["a" /* default */].FRAG_LOADED, events["a" /* default */].SUBTITLE_TRACKS_UPDATED, events["a" /* default */].SUBTITLE_TRACK_SWITCH, events["a" /* default */].SUBTITLE_TRACK_LOADED, events["a" /* default */].SUBTITLE_FRAG_PROCESSED));
 
     _this.config = hls.config;
     _this.vttFragSNsProcessed = {};
     _this.vttFragQueues = undefined;
     _this.currentlyProcessing = null;
+    _this.state = subtitle_stream_controller_State.STOPPED;
     _this.currentTrackId = -1;
+    _this.ticks = 0;
+    _this.decrypter = new decrypter["a" /* default */](hls.observer, hls.config);
     return _this;
   }
 
   SubtitleStreamController.prototype.destroy = function destroy() {
     event_handler.prototype.destroy.call(this);
+    this.state = subtitle_stream_controller_State.STOPPED;
   };
 
   // Remove all queued items and create a new, empty queue for each track.
@@ -15664,7 +16175,9 @@ var subtitle_stream_controller_SubtitleStreamController = function (_EventHandle
   SubtitleStreamController.prototype.nextFrag = function nextFrag() {
     if (this.currentlyProcessing === null && this.currentTrackId > -1 && this.vttFragQueues[this.currentTrackId].length) {
       var frag = this.currentlyProcessing = this.vttFragQueues[this.currentTrackId].shift();
+      this.fragCurrent = frag;
       this.hls.trigger(events["a" /* default */].FRAG_LOADING, { frag: frag });
+      this.state = subtitle_stream_controller_State.FRAG_LOADING;
     }
   };
 
@@ -15676,7 +16189,12 @@ var subtitle_stream_controller_SubtitleStreamController = function (_EventHandle
       this.vttFragSNsProcessed[data.frag.trackId].push(data.frag.sn);
     }
     this.currentlyProcessing = null;
+    this.state = subtitle_stream_controller_State.IDLE;
     this.nextFrag();
+  };
+
+  SubtitleStreamController.prototype.onMediaAttached = function onMediaAttached() {
+    this.state = subtitle_stream_controller_State.IDLE;
   };
 
   // If something goes wrong, procede to next frag, if we were processing one.
@@ -15694,18 +16212,88 @@ var subtitle_stream_controller_SubtitleStreamController = function (_EventHandle
     }
   };
 
+  SubtitleStreamController.prototype.tick = function tick() {
+    var _this3 = this;
+
+    this.ticks++;
+    if (this.ticks === 1) {
+      this.doTick();
+      if (this.ticks > 1) {
+        setTimeout(function () {
+          _this3.tick();
+        }, 1);
+      }
+      this.ticks = 0;
+    }
+  };
+
+  SubtitleStreamController.prototype.doTick = function doTick() {
+    var _this4 = this;
+
+    switch (this.state) {
+      case subtitle_stream_controller_State.IDLE:
+        var tracks = this.tracks;
+        var trackId = this.currentTrackId;
+
+        var processedFragSNs = this.vttFragSNsProcessed[trackId],
+            fragQueue = this.vttFragQueues[trackId],
+            currentFragSN = !!this.currentlyProcessing ? this.currentlyProcessing.sn : -1;
+
+        var alreadyProcessed = function alreadyProcessed(frag) {
+          return processedFragSNs.indexOf(frag.sn) > -1;
+        };
+
+        var alreadyInQueue = function alreadyInQueue(frag) {
+          return fragQueue.some(function (fragInQueue) {
+            return fragInQueue.sn === frag.sn;
+          });
+        };
+
+        // exit if tracks don't exist
+        if (!tracks) {
+          break;
+        }
+        var trackDetails;
+
+        if (trackId < tracks.length) {
+          trackDetails = tracks[trackId].details;
+        }
+
+        if (typeof trackDetails === 'undefined') {
+          break;
+        }
+
+        // Add all fragments that haven't been, aren't currently being and aren't waiting to be processed, to queue.
+        trackDetails.fragments.forEach(function (frag) {
+          if (!(alreadyProcessed(frag) || frag.sn === currentFragSN || alreadyInQueue(frag))) {
+            // Load key if subtitles are encrypted
+            if (frag.decryptdata && frag.decryptdata.uri != null && frag.decryptdata.key == null) {
+              logger["b" /* logger */].log('Loading key for ' + frag.sn);
+              _this4.state = subtitle_stream_controller_State.KEY_LOADING;
+              _this4.hls.trigger(events["a" /* default */].KEY_LOADING, { frag: frag });
+            } else {
+              // Frags don't know their subtitle track ID, so let's just add that...
+              frag.trackId = trackId;
+              fragQueue.push(frag);
+              _this4.nextFrag();
+            }
+          }
+        });
+    }
+  };
+
   // Got all new subtitle tracks.
 
 
   SubtitleStreamController.prototype.onSubtitleTracksUpdated = function onSubtitleTracksUpdated(data) {
-    var _this3 = this;
+    var _this5 = this;
 
     logger["b" /* logger */].log('subtitle tracks updated');
     this.tracks = data.subtitleTracks;
     this.clearVttFragQueues();
     this.vttFragSNsProcessed = {};
     this.tracks.forEach(function (track) {
-      _this3.vttFragSNsProcessed[track.id] = [];
+      _this5.vttFragSNsProcessed[track.id] = [];
     });
   };
 
@@ -15717,31 +16305,43 @@ var subtitle_stream_controller_SubtitleStreamController = function (_EventHandle
   // Got a new set of subtitle fragments.
 
 
-  SubtitleStreamController.prototype.onSubtitleTrackLoaded = function onSubtitleTrackLoaded(data) {
-    var processedFragSNs = this.vttFragSNsProcessed[data.id],
-        fragQueue = this.vttFragQueues[data.id],
-        currentFragSN = !!this.currentlyProcessing ? this.currentlyProcessing.sn : -1;
+  SubtitleStreamController.prototype.onSubtitleTrackLoaded = function onSubtitleTrackLoaded() {
+    this.tick();
+  };
 
-    var alreadyProcessed = function alreadyProcessed(frag) {
-      return processedFragSNs.indexOf(frag.sn) > -1;
-    };
+  SubtitleStreamController.prototype.onKeyLoaded = function onKeyLoaded() {
+    if (this.state === subtitle_stream_controller_State.KEY_LOADING) {
+      this.state = subtitle_stream_controller_State.IDLE;
+      this.tick();
+    }
+  };
 
-    var alreadyInQueue = function alreadyInQueue(frag) {
-      return fragQueue.some(function (fragInQueue) {
-        return fragInQueue.sn === frag.sn;
-      });
-    };
-
-    // Add all fragments that haven't been, aren't currently being and aren't waiting to be processed, to queue.
-    data.details.fragments.forEach(function (frag) {
-      if (!(alreadyProcessed(frag) || frag.sn === currentFragSN || alreadyInQueue(frag))) {
-        // Frags don't know their subtitle track ID, so let's just add that...
-        frag.trackId = data.id;
-        fragQueue.push(frag);
+  SubtitleStreamController.prototype.onFragLoaded = function onFragLoaded(data) {
+    var fragCurrent = this.fragCurrent,
+        decryptData = data.frag.decryptdata;
+    var fragLoaded = data.frag,
+        hls = this.hls;
+    if (this.state === subtitle_stream_controller_State.FRAG_LOADING && fragCurrent && data.frag.type === 'subtitle' && fragCurrent.sn === data.frag.sn) {
+      // check to see if the payload needs to be decrypted
+      if (data.payload.byteLength > 0 && decryptData != null && decryptData.key != null && decryptData.method === 'AES-128') {
+        var startTime;
+        try {
+          startTime = performance.now();
+        } catch (error) {
+          startTime = Date.now();
+        }
+        // decrypt the subtitles
+        this.decrypter.decrypt(data.payload, decryptData.key.buffer, decryptData.iv.buffer, function (decryptedData) {
+          var endTime;
+          try {
+            endTime = performance.now();
+          } catch (error) {
+            endTime = Date.now();
+          }
+          hls.trigger(events["a" /* default */].FRAG_DECRYPTED, { frag: fragLoaded, payload: decryptedData, stats: { tstart: startTime, tdecrypt: endTime } });
+        });
       }
-    });
-
-    this.nextFrag();
+    }
   };
 
   return SubtitleStreamController;
@@ -15784,11 +16384,12 @@ var hlsDefaultConfig = {
   highBufferWatchdogPeriod: 3, // used by stream-controller
   nudgeOffset: 0.1, // used by stream-controller
   nudgeMaxRetry: 3, // used by stream-controller
-  maxFragLookUpTolerance: 0.2, // used by stream-controller
+  maxFragLookUpTolerance: 0.25, // used by stream-controller
   liveSyncDurationCount: 3, // used by stream-controller
   liveMaxLatencyDurationCount: Infinity, // used by stream-controller
   liveSyncDuration: undefined, // used by stream-controller
   liveMaxLatencyDuration: undefined, // used by stream-controller
+  liveDurationInfinity: false, // used by buffer-controller
   maxMaxBufferLength: 600, // used by stream-controller
   enableWorker: true, // used by demuxer
   enableSoftwareAES: true, // used by decrypter
@@ -15821,6 +16422,7 @@ var hlsDefaultConfig = {
   capLevelController: cap_level_controller,
   fpsController: fps_controller,
   stretchShortVideoTrack: false, // used by mp4-remuxer
+  maxAudioFramesDrift: 1, // used by mp4-remuxer
   forceKeyFrameOnDiscontinuity: true, // used by ts-demuxer
   abrEwmaFastLive: 3, // used by abr-controller
   abrEwmaSlowLive: 9, // used by abr-controller
@@ -15875,22 +16477,16 @@ function hls__classCallCheck(instance, Constructor) { if (!(instance instanceof 
 
 
 
+
 var hls_Hls = function () {
   Hls.isSupported = function isSupported() {
-    var mediaSource = window.MediaSource = window.MediaSource || window.WebKitMediaSource;
-    var sourceBuffer = window.SourceBuffer = window.SourceBuffer || window.WebKitSourceBuffer;
-    var isTypeSupported = mediaSource && typeof mediaSource.isTypeSupported === 'function' && mediaSource.isTypeSupported('video/mp4; codecs="avc1.42E01E,mp4a.40.2"');
-
-    // if SourceBuffer is exposed ensure its API is valid
-    // safari and old version of Chrome doe not expose SourceBuffer globally so checking SourceBuffer.prototype is impossible
-    var sourceBufferValidAPI = !sourceBuffer || sourceBuffer.prototype && typeof sourceBuffer.prototype.appendBuffer === 'function' && typeof sourceBuffer.prototype.remove === 'function';
-    return isTypeSupported && sourceBufferValidAPI;
+    return is_supported_isSupported();
   };
 
   hls__createClass(Hls, null, [{
     key: 'version',
     get: function get() {
-      return "0.8.2";
+      return "0.8.9";
     }
   }, {
     key: 'Events',
@@ -16336,6 +16932,18 @@ var hls_Hls = function () {
         subtitleTrackController.subtitleTrack = subtitleTrackId;
       }
     }
+  }, {
+    key: 'subtitleDisplay',
+    get: function get() {
+      var subtitleTrackController = this.subtitleTrackController;
+      return subtitleTrackController ? subtitleTrackController.subtitleDisplay : false;
+    },
+    set: function set(value) {
+      var subtitleTrackController = this.subtitleTrackController;
+      if (subtitleTrackController) {
+        subtitleTrackController.subtitleDisplay = value;
+      }
+    }
   }]);
 
   return Hls;
@@ -16344,7 +16952,7 @@ var hls_Hls = function () {
 /* harmony default export */ var src_hls = __webpack_exports__["default"] = (hls_Hls);
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function webpackBootstrapFunc (modules) {
@@ -16475,15 +17083,14 @@ module.exports = function (moduleId, options) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__demux_demuxer_inline__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__demux_demuxer_inline__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__events__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_logger__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_events__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_events__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_events___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_events__);
 /* demuxer web worker.
  *  - listen to worker message, and trigger DemuxerInline upon reception of Fragments.
@@ -16581,8 +17188,9 @@ var HlsCore = unwrapExports(hls);
 // 19.1.2.14 Object.keys(O)
 
 
-_objectSap('keys', function(){
-  return function keys(it){
+
+_objectSap('keys', function () {
+  return function keys(it) {
     return _objectKeys(_toObject(it));
   };
 });
@@ -16593,16 +17201,19 @@ var keys = createCommonjsModule(function (module) {
 module.exports = { "default": keys$1, __esModule: true };
 });
 
+unwrapExports(keys);
+
 // 20.1.2.3 Number.isInteger(number)
-var floor$1    = Math.floor;
-var _isInteger = function isInteger(it){
+
+var floor$1 = Math.floor;
+var _isInteger = function isInteger(it) {
   return !_isObject(it) && isFinite(it) && floor$1(it) === it;
 };
 
 // 20.1.2.3 Number.isInteger(number)
 
 
-_export(_export.S, 'Number', {isInteger: _isInteger});
+_export(_export.S, 'Number', { isInteger: _isInteger });
 
 var isInteger$2 = _core.Number.isInteger;
 
@@ -16610,47 +17221,49 @@ var isInteger$1 = createCommonjsModule(function (module) {
 module.exports = { "default": isInteger$2, __esModule: true };
 });
 
+unwrapExports(isInteger$1);
+
 var _stringWs = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
   '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
 
-var space   = '[' + _stringWs + ']';
-var non     = '\u200b\u0085';
-var ltrim   = RegExp('^' + space + space + '*');
-var rtrim   = RegExp(space + space + '*$');
+var space = '[' + _stringWs + ']';
+var non = '\u200b\u0085';
+var ltrim = RegExp('^' + space + space + '*');
+var rtrim = RegExp(space + space + '*$');
 
-var exporter = function(KEY, exec, ALIAS){
-  var exp   = {};
-  var FORCE = _fails(function(){
+var exporter = function (KEY, exec, ALIAS) {
+  var exp = {};
+  var FORCE = _fails(function () {
     return !!_stringWs[KEY]() || non[KEY]() != non;
   });
   var fn = exp[KEY] = FORCE ? exec(trim) : _stringWs[KEY];
-  if(ALIAS)exp[ALIAS] = fn;
+  if (ALIAS) exp[ALIAS] = fn;
   _export(_export.P + _export.F * FORCE, 'String', exp);
 };
 
 // 1 -> String#trimLeft
 // 2 -> String#trimRight
 // 3 -> String#trim
-var trim = exporter.trim = function(string, TYPE){
+var trim = exporter.trim = function (string, TYPE) {
   string = String(_defined(string));
-  if(TYPE & 1)string = string.replace(ltrim, '');
-  if(TYPE & 2)string = string.replace(rtrim, '');
+  if (TYPE & 1) string = string.replace(ltrim, '');
+  if (TYPE & 2) string = string.replace(rtrim, '');
   return string;
 };
 
 var _stringTrim = exporter;
 
 var $parseFloat = _global.parseFloat;
-var $trim       = _stringTrim.trim;
+var $trim = _stringTrim.trim;
 
-var _parseFloat$3 = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function parseFloat(str){
-  var string = $trim(String(str), 3)
-    , result = $parseFloat(string);
+var _parseFloat$3 = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function parseFloat(str) {
+  var string = $trim(String(str), 3);
+  var result = $parseFloat(string);
   return result === 0 && string.charAt(0) == '-' ? -0 : result;
 } : $parseFloat;
 
 // 20.1.2.12 Number.parseFloat(string)
-_export(_export.S + _export.F * (Number.parseFloat != _parseFloat$3), 'Number', {parseFloat: _parseFloat$3});
+_export(_export.S + _export.F * (Number.parseFloat != _parseFloat$3), 'Number', { parseFloat: _parseFloat$3 });
 
 var _parseFloat$1 = parseFloat;
 
@@ -16658,8 +17271,10 @@ var _parseFloat = createCommonjsModule(function (module) {
 module.exports = { "default": _parseFloat$1, __esModule: true };
 });
 
+unwrapExports(_parseFloat);
+
 /**
- * toxic-predicate-functions v0.1.4
+ * toxic-predicate-functions v0.1.5
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -16714,6 +17329,12 @@ function isBoolean(bool) {
  */
 function isPrimitive(val) {
   return isVoid(val) || isBoolean(val) || isString(val) || isNumber(val);
+}
+/**
+ * to test if a HTML element
+ */
+function isElement(obj) {
+  return !!((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? obj instanceof HTMLElement : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string');
 }
 
 /**
@@ -16851,7 +17472,7 @@ Log.ENABLE_VERBOSE = true;
 
 var uaParser = createCommonjsModule(function (module, exports) {
 /**
- * UAParser.js v0.7.14
+ * UAParser.js v0.7.17
  * Lightweight JavaScript-based User-Agent string parser
  * https://github.com/faisalman/ua-parser-js
  *
@@ -16861,14 +17482,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
 
 (function (window, undefined) {
 
-    'use strict';
-
-    //////////////
-    // Constants
-    /////////////
-
-
-    var LIBVERSION  = '0.7.14',
+    var LIBVERSION  = '0.7.17',
         EMPTY       = '',
         UNKNOWN     = '?',
         FUNC_TYPE   = 'function',
@@ -16990,7 +17604,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
                 }
                 i += 2;
             }
-            //console.log(this);
+            // console.log(this);
             //return this;
         },
 
@@ -17144,7 +17758,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /;fbav\/([\w\.]+);/i                                                // Facebook App for iOS & Android
             ], [VERSION, [NAME, 'Facebook']], [
 
-            /(headlesschrome) ([\w\.]+)/i                                       // Chrome Headless
+            /headlesschrome(?:\/([\w\.]+)|\s)/i                                 // Chrome Headless
             ], [VERSION, [NAME, 'Chrome Headless']], [
 
             /\swv\).+(chrome)\/([\w\.]+)/i                                      // Chrome WebView
@@ -17177,6 +17791,9 @@ var uaParser = createCommonjsModule(function (module, exports) {
 
             /version\/([\w\.]+).+?(mobile\s?safari|safari)/i                    // Safari & Safari Mobile
             ], [VERSION, NAME], [
+
+            /webkit.+?(gsa)\/([\w\.]+).+?(mobile\s?safari|safari)(\/[\w\.]+)/i  // Google Search Appliance on iOS
+            ], [[NAME, 'GSA'], VERSION], [
 
             /webkit.+?(mobile\s?safari|safari)(\/[\w\.]+)/i                     // Safari < 3.0
             ], [NAME, [VERSION, mapper.str, maps.browser.oldsafari.version]], [
@@ -17501,9 +18118,11 @@ var uaParser = createCommonjsModule(function (module, exports) {
 
             /android.+(\w+)\s+build\/hm\1/i,                                    // Xiaomi Hongmi 'numeric' models
             /android.+(hm[\s\-_]*note?[\s_]*(?:\d\w)?)\s+build/i,               // Xiaomi Hongmi
-            /android.+(mi[\s\-_]*(?:one|one[\s_]plus|note lte)?[\s_]*(?:\d\w)?)\s+build/i    // Xiaomi Mi
+            /android.+(mi[\s\-_]*(?:one|one[\s_]plus|note lte)?[\s_]*(?:\d\w)?)\s+build/i,    // Xiaomi Mi
+            /android.+(redmi[\s\-_]*(?:note)?(?:[\s_]*[\w\s]+)?)\s+build/i      // Redmi Phones
             ], [[MODEL, /_/g, ' '], [VENDOR, 'Xiaomi'], [TYPE, MOBILE]], [
-
+            /android.+(mi[\s\-_]*(?:pad)?(?:[\s_]*[\w\s]+)?)\s+build/i          // Mi Pad tablets
+            ],[[MODEL, /_/g, ' '], [VENDOR, 'Xiaomi'], [TYPE, TABLET]], [
             /android.+;\s(m[1-5]\snote)\sbuild/i                                // Meizu Tablet
             ], [MODEL, [VENDOR, 'Meizu'], [TYPE, TABLET]], [
 
@@ -17705,7 +18324,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
             ], [NAME, VERSION],[
 
             /cfnetwork\/.+darwin/i,
-            /ip[honead]+(?:.*os\s([\w]+)*\slike\smac|;\sopera)/i                // iOS
+            /ip[honead]+(?:.*os\s([\w]+)\slike\smac|;\sopera)/i                 // iOS
             ], [[VERSION, /_/g, '.'], [NAME, 'iOS']], [
 
             /(mac\sos\sx)\s?([\w\s\.]+\w)*/i,
@@ -17726,7 +18345,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
     /////////////////
     // Constructor
     ////////////////
-
+    /*
     var Browser = function (name, version) {
         this[NAME] = name;
         this[VERSION] = version;
@@ -17741,7 +18360,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
     };
     var Engine = Browser;
     var OS = Browser;
-
+    */
     var UAParser = function (uastring, extensions) {
 
         if (typeof uastring === 'object') {
@@ -17755,30 +18374,35 @@ var uaParser = createCommonjsModule(function (module, exports) {
 
         var ua = uastring || ((window && window.navigator && window.navigator.userAgent) ? window.navigator.userAgent : EMPTY);
         var rgxmap = extensions ? util.extend(regexes, extensions) : regexes;
-        var browser = new Browser();
-        var cpu = new CPU();
-        var device = new Device();
-        var engine = new Engine();
-        var os = new OS();
+        //var browser = new Browser();
+        //var cpu = new CPU();
+        //var device = new Device();
+        //var engine = new Engine();
+        //var os = new OS();
 
         this.getBrowser = function () {
+            var browser = { name: undefined, version: undefined };
             mapper.rgx.call(browser, ua, rgxmap.browser);
             browser.major = util.major(browser.version); // deprecated
             return browser;
         };
         this.getCPU = function () {
+            var cpu = { architecture: undefined };
             mapper.rgx.call(cpu, ua, rgxmap.cpu);
             return cpu;
         };
         this.getDevice = function () {
+            var device = { vendor: undefined, model: undefined, type: undefined };
             mapper.rgx.call(device, ua, rgxmap.device);
             return device;
         };
         this.getEngine = function () {
+            var engine = { name: undefined, version: undefined };
             mapper.rgx.call(engine, ua, rgxmap.engine);
             return engine;
         };
         this.getOS = function () {
+            var os = { name: undefined, version: undefined };
             mapper.rgx.call(os, ua, rgxmap.os);
             return os;
         };
@@ -17797,11 +18421,11 @@ var uaParser = createCommonjsModule(function (module, exports) {
         };
         this.setUA = function (uastring) {
             ua = uastring;
-            browser = new Browser();
-            cpu = new CPU();
-            device = new Device();
-            engine = new Engine();
-            os = new OS();
+            //browser = new Browser();
+            //cpu = new CPU();
+            //device = new Device();
+            //engine = new Engine();
+            //os = new OS();
             return this;
         };
         return this;
@@ -17848,6 +18472,35 @@ var uaParser = createCommonjsModule(function (module, exports) {
         if ('object' !== UNDEF_TYPE && module.exports) {
             exports = module.exports = UAParser;
         }
+        // TODO: test!!!!!!!!
+        /*
+        if (require && require.main === module && process) {
+            // cli
+            var jsonize = function (arr) {
+                var res = [];
+                for (var i in arr) {
+                    res.push(new UAParser(arr[i]).getResult());
+                }
+                process.stdout.write(JSON.stringify(res, null, 2) + '\n');
+            };
+            if (process.stdin.isTTY) {
+                // via args
+                jsonize(process.argv.slice(2));
+            } else {
+                // via pipe
+                var str = '';
+                process.stdin.on('readable', function() {
+                    var read = process.stdin.read();
+                    if (read !== null) {
+                        str += read;
+                    }
+                });
+                process.stdin.on('end', function () {
+                    jsonize(str.replace(/\n$/, '').split('\n'));
+                });
+            }
+        }
+        */
         exports.UAParser = UAParser;
     } else {
         // requirejs env (optional)
@@ -17885,44 +18538,49 @@ var uaParser = createCommonjsModule(function (module, exports) {
 })(typeof window === 'object' ? window : commonjsGlobal);
 });
 
+var uaParser_1 = uaParser.UAParser;
+
 // call something on iterator step with safe closing on error
 
-var _iterCall = function(iterator, fn, value, entries){
+var _iterCall = function (iterator, fn, value, entries) {
   try {
     return entries ? fn(_anObject(value)[0], value[1]) : fn(value);
   // 7.4.6 IteratorClose(iterator, completion)
-  } catch(e){
+  } catch (e) {
     var ret = iterator['return'];
-    if(ret !== undefined)_anObject(ret.call(iterator));
+    if (ret !== undefined) _anObject(ret.call(iterator));
     throw e;
   }
 };
 
 // check on default Array iterator
-var ITERATOR$1   = _wks('iterator');
+
+var ITERATOR$1 = _wks('iterator');
 var ArrayProto = Array.prototype;
 
-var _isArrayIter = function(it){
+var _isArrayIter = function (it) {
   return it !== undefined && (_iterators.Array === it || ArrayProto[ITERATOR$1] === it);
 };
 
-var _createProperty = function(object, index, value){
-  if(index in object)_objectDp.f(object, index, _propertyDesc(0, value));
+var _createProperty = function (object, index, value) {
+  if (index in object) _objectDp.f(object, index, _propertyDesc(0, value));
   else object[index] = value;
 };
 
 // getting tag from 19.1.3.6 Object.prototype.toString()
+
 var TAG$1 = _wks('toStringTag');
-var ARG = _cof(function(){ return arguments; }()) == 'Arguments';
+// ES3 wrong here
+var ARG = _cof(function () { return arguments; }()) == 'Arguments';
 
 // fallback for IE11 Script Access Denied error
-var tryGet = function(it, key){
+var tryGet = function (it, key) {
   try {
     return it[key];
-  } catch(e){ /* empty */ }
+  } catch (e) { /* empty */ }
 };
 
-var _classof = function(it){
+var _classof = function (it) {
   var O, T, B;
   return it === undefined ? 'Undefined' : it === null ? 'Null'
     // @@toStringTag case
@@ -17933,55 +18591,57 @@ var _classof = function(it){
     : (B = _cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
 };
 
-var ITERATOR$2  = _wks('iterator');
-var core_getIteratorMethod = _core.getIteratorMethod = function(it){
-  if(it != undefined)return it[ITERATOR$2]
+var ITERATOR$2 = _wks('iterator');
+
+var core_getIteratorMethod = _core.getIteratorMethod = function (it) {
+  if (it != undefined) return it[ITERATOR$2]
     || it['@@iterator']
     || _iterators[_classof(it)];
 };
 
-var ITERATOR$3     = _wks('iterator');
+var ITERATOR$3 = _wks('iterator');
 var SAFE_CLOSING = false;
 
 try {
   var riter = [7][ITERATOR$3]();
-  riter['return'] = function(){ SAFE_CLOSING = true; };
-  Array.from(riter, function(){ throw 2; });
-} catch(e){ /* empty */ }
+  riter['return'] = function () { SAFE_CLOSING = true; };
+  // eslint-disable-next-line no-throw-literal
+  
+} catch (e) { /* empty */ }
 
-var _iterDetect = function(exec, skipClosing){
-  if(!skipClosing && !SAFE_CLOSING)return false;
+var _iterDetect = function (exec, skipClosing) {
+  if (!skipClosing && !SAFE_CLOSING) return false;
   var safe = false;
   try {
-    var arr  = [7]
-      , iter = arr[ITERATOR$3]();
-    iter.next = function(){ return {done: safe = true}; };
-    arr[ITERATOR$3] = function(){ return iter; };
+    var arr = [7];
+    var iter = arr[ITERATOR$3]();
+    iter.next = function () { return { done: safe = true }; };
+    arr[ITERATOR$3] = function () { return iter; };
     exec(arr);
-  } catch(e){ /* empty */ }
+  } catch (e) { /* empty */ }
   return safe;
 };
 
-_export(_export.S + _export.F * !_iterDetect(function(iter){ Array.from(iter); }), 'Array', {
+_export(_export.S + _export.F * !_iterDetect(function (iter) {  }), 'Array', {
   // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
-  from: function from(arrayLike/*, mapfn = undefined, thisArg = undefined*/){
-    var O       = _toObject(arrayLike)
-      , C       = typeof this == 'function' ? this : Array
-      , aLen    = arguments.length
-      , mapfn   = aLen > 1 ? arguments[1] : undefined
-      , mapping = mapfn !== undefined
-      , index   = 0
-      , iterFn  = core_getIteratorMethod(O)
-      , length, result, step, iterator;
-    if(mapping)mapfn = _ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
+  from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
+    var O = _toObject(arrayLike);
+    var C = typeof this == 'function' ? this : Array;
+    var aLen = arguments.length;
+    var mapfn = aLen > 1 ? arguments[1] : undefined;
+    var mapping = mapfn !== undefined;
+    var index = 0;
+    var iterFn = core_getIteratorMethod(O);
+    var length, result, step, iterator;
+    if (mapping) mapfn = _ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
     // if object isn't iterable or it's array with default iterator - use simple case
-    if(iterFn != undefined && !(C == Array && _isArrayIter(iterFn))){
-      for(iterator = iterFn.call(O), result = new C; !(step = iterator.next()).done; index++){
+    if (iterFn != undefined && !(C == Array && _isArrayIter(iterFn))) {
+      for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
         _createProperty(result, index, mapping ? _iterCall(iterator, mapfn, [step.value, index], true) : step.value);
       }
     } else {
       length = _toLength(O.length);
-      for(result = new C(length); length > index; index++){
+      for (result = new C(length); length > index; index++) {
         _createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
       }
     }
@@ -17999,8 +18659,6 @@ module.exports = { "default": from$1, __esModule: true };
 var _Array$from = unwrapExports(from);
 
 var toConsumableArray = createCommonjsModule(function (module, exports) {
-"use strict";
-
 exports.__esModule = true;
 
 
@@ -18025,7 +18683,7 @@ exports.default = function (arr) {
 var _toConsumableArray = unwrapExports(toConsumableArray);
 
 /**
- * toxic-utils v0.1.6
+ * toxic-utils v0.2.0
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -18036,12 +18694,19 @@ var _toConsumableArray = unwrapExports(toConsumableArray);
  * @return {Function}    the handler
  */
 function genTraversalHandler(fn) {
+  var setter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function (target, key, value) {
+    target[key] = value;
+  };
+
+  // use recursive to move what in source to the target
+  // if you do not provide a target, we will create a new target
   function recursiveFn(source, target, key) {
     if (isArray$1(source) || isObject$1(source)) {
       target = isPrimitive(target) ? isObject$1(source) ? {} : [] : target;
       for (var _key in source) {
         // $FlowFixMe: support computed key here
-        target[_key] = recursiveFn(source[_key], target[_key], _key);
+        setter(target, _key, recursiveFn(source[_key], target[_key], _key));
+        // target[key] = recursiveFn(source[key], target[key], key);
       }
       return target;
     }
@@ -18077,45 +18742,48 @@ function deepAssign() {
   return target;
 }
 
-var _anInstance = function(it, Constructor, name, forbiddenField){
-  if(!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)){
+var _anInstance = function (it, Constructor, name, forbiddenField) {
+  if (!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)) {
     throw TypeError(name + ': incorrect invocation!');
   } return it;
 };
 
 var _forOf = createCommonjsModule(function (module) {
-var BREAK       = {}
-  , RETURN      = {};
-var exports = module.exports = function(iterable, entries, fn, that, ITERATOR){
-  var iterFn = ITERATOR ? function(){ return iterable; } : core_getIteratorMethod(iterable)
-    , f      = _ctx(fn, that, entries ? 2 : 1)
-    , index  = 0
-    , length, step, iterator, result;
-  if(typeof iterFn != 'function')throw TypeError(iterable + ' is not iterable!');
+var BREAK = {};
+var RETURN = {};
+var exports = module.exports = function (iterable, entries, fn, that, ITERATOR) {
+  var iterFn = ITERATOR ? function () { return iterable; } : core_getIteratorMethod(iterable);
+  var f = _ctx(fn, that, entries ? 2 : 1);
+  var index = 0;
+  var length, step, iterator, result;
+  if (typeof iterFn != 'function') throw TypeError(iterable + ' is not iterable!');
   // fast case for arrays with default iterator
-  if(_isArrayIter(iterFn))for(length = _toLength(iterable.length); length > index; index++){
+  if (_isArrayIter(iterFn)) for (length = _toLength(iterable.length); length > index; index++) {
     result = entries ? f(_anObject(step = iterable[index])[0], step[1]) : f(iterable[index]);
-    if(result === BREAK || result === RETURN)return result;
-  } else for(iterator = iterFn.call(iterable); !(step = iterator.next()).done; ){
+    if (result === BREAK || result === RETURN) return result;
+  } else for (iterator = iterFn.call(iterable); !(step = iterator.next()).done;) {
     result = _iterCall(iterator, f, step.value, entries);
-    if(result === BREAK || result === RETURN)return result;
+    if (result === BREAK || result === RETURN) return result;
   }
 };
-exports.BREAK  = BREAK;
+exports.BREAK = BREAK;
 exports.RETURN = RETURN;
 });
 
 // 7.3.20 SpeciesConstructor(O, defaultConstructor)
-var SPECIES   = _wks('species');
-var _speciesConstructor = function(O, D){
-  var C = _anObject(O).constructor, S;
+
+
+var SPECIES = _wks('species');
+var _speciesConstructor = function (O, D) {
+  var C = _anObject(O).constructor;
+  var S;
   return C === undefined || (S = _anObject(C)[SPECIES]) == undefined ? D : _aFunction(S);
 };
 
 // fast apply, http://jsperf.lnkit.com/fast-apply/5
-var _invoke = function(fn, args, that){
+var _invoke = function (fn, args, that) {
   var un = that === undefined;
-  switch(args.length){
+  switch (args.length) {
     case 0: return un ? fn()
                       : fn.call(that);
     case 1: return un ? fn(args[0])
@@ -18126,125 +18794,134 @@ var _invoke = function(fn, args, that){
                       : fn.call(that, args[0], args[1], args[2]);
     case 4: return un ? fn(args[0], args[1], args[2], args[3])
                       : fn.call(that, args[0], args[1], args[2], args[3]);
-  } return              fn.apply(that, args);
+  } return fn.apply(that, args);
 };
 
-var process$1            = _global.process;
-var setTask            = _global.setImmediate;
-var clearTask          = _global.clearImmediate;
-var MessageChannel     = _global.MessageChannel;
-var counter            = 0;
-var queue              = {};
+var process$1 = _global.process;
+var setTask = _global.setImmediate;
+var clearTask = _global.clearImmediate;
+var MessageChannel = _global.MessageChannel;
+var Dispatch = _global.Dispatch;
+var counter = 0;
+var queue = {};
 var ONREADYSTATECHANGE = 'onreadystatechange';
 var defer;
 var channel;
 var port;
-var run = function(){
+var run = function () {
   var id = +this;
-  if(queue.hasOwnProperty(id)){
+  // eslint-disable-next-line no-prototype-builtins
+  if (queue.hasOwnProperty(id)) {
     var fn = queue[id];
     delete queue[id];
     fn();
   }
 };
-var listener = function(event){
+var listener = function (event) {
   run.call(event.data);
 };
 // Node.js 0.9+ & IE10+ has setImmediate, otherwise:
-if(!setTask || !clearTask){
-  setTask = function setImmediate(fn){
-    var args = [], i = 1;
-    while(arguments.length > i)args.push(arguments[i++]);
-    queue[++counter] = function(){
+if (!setTask || !clearTask) {
+  setTask = function setImmediate(fn) {
+    var args = [];
+    var i = 1;
+    while (arguments.length > i) args.push(arguments[i++]);
+    queue[++counter] = function () {
+      // eslint-disable-next-line no-new-func
       _invoke(typeof fn == 'function' ? fn : Function(fn), args);
     };
     defer(counter);
     return counter;
   };
-  clearTask = function clearImmediate(id){
+  clearTask = function clearImmediate(id) {
     delete queue[id];
   };
   // Node.js 0.8-
-  if(_cof(process$1) == 'process'){
-    defer = function(id){
+  if (_cof(process$1) == 'process') {
+    defer = function (id) {
       process$1.nextTick(_ctx(run, id, 1));
     };
+  // Sphere (JS game engine) Dispatch API
+  } else if (Dispatch && Dispatch.now) {
+    defer = function (id) {
+      Dispatch.now(_ctx(run, id, 1));
+    };
   // Browsers with MessageChannel, includes WebWorkers
-  } else if(MessageChannel){
-    channel = new MessageChannel;
-    port    = channel.port2;
+  } else if (MessageChannel) {
+    channel = new MessageChannel();
+    port = channel.port2;
     channel.port1.onmessage = listener;
     defer = _ctx(port.postMessage, port, 1);
   // Browsers with postMessage, skip WebWorkers
   // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
-  } else if(_global.addEventListener && typeof postMessage == 'function' && !_global.importScripts){
-    defer = function(id){
+  } else if (_global.addEventListener && typeof postMessage == 'function' && !_global.importScripts) {
+    defer = function (id) {
       _global.postMessage(id + '', '*');
     };
     _global.addEventListener('message', listener, false);
   // IE8-
-  } else if(ONREADYSTATECHANGE in _domCreate('script')){
-    defer = function(id){
-      _html.appendChild(_domCreate('script'))[ONREADYSTATECHANGE] = function(){
+  } else if (ONREADYSTATECHANGE in _domCreate('script')) {
+    defer = function (id) {
+      _html.appendChild(_domCreate('script'))[ONREADYSTATECHANGE] = function () {
         _html.removeChild(this);
         run.call(id);
       };
     };
   // Rest old browsers
   } else {
-    defer = function(id){
+    defer = function (id) {
       setTimeout(_ctx(run, id, 1), 0);
     };
   }
 }
 var _task = {
-  set:   setTask,
+  set: setTask,
   clear: clearTask
 };
 
 var macrotask = _task.set;
-var Observer  = _global.MutationObserver || _global.WebKitMutationObserver;
-var process$2   = _global.process;
-var Promise   = _global.Promise;
-var isNode$2    = _cof(process$2) == 'process';
+var Observer = _global.MutationObserver || _global.WebKitMutationObserver;
+var process$2 = _global.process;
+var Promise = _global.Promise;
+var isNode$2 = _cof(process$2) == 'process';
 
-var _microtask = function(){
+var _microtask = function () {
   var head, last, notify;
 
-  var flush = function(){
+  var flush = function () {
     var parent, fn;
-    if(isNode$2 && (parent = process$2.domain))parent.exit();
-    while(head){
-      fn   = head.fn;
+    if (isNode$2 && (parent = process$2.domain)) parent.exit();
+    while (head) {
+      fn = head.fn;
       head = head.next;
       try {
         fn();
-      } catch(e){
-        if(head)notify();
+      } catch (e) {
+        if (head) notify();
         else last = undefined;
         throw e;
       }
     } last = undefined;
-    if(parent)parent.enter();
+    if (parent) parent.enter();
   };
 
   // Node.js
-  if(isNode$2){
-    notify = function(){
+  if (isNode$2) {
+    notify = function () {
       process$2.nextTick(flush);
     };
-  // browsers with MutationObserver
-  } else if(Observer){
-    var toggle = true
-      , node   = document.createTextNode('');
-    new Observer(flush).observe(node, {characterData: true}); // eslint-disable-line no-new
-    notify = function(){
+  // browsers with MutationObserver, except iOS Safari - https://github.com/zloirock/core-js/issues/339
+  } else if (Observer && !(_global.navigator && _global.navigator.standalone)) {
+    var toggle = true;
+    var node = document.createTextNode('');
+    new Observer(flush).observe(node, { characterData: true }); // eslint-disable-line no-new
+    notify = function () {
       node.data = toggle = !toggle;
     };
   // environments with maybe non-completely correct, but existent Promise
-  } else if(Promise && Promise.resolve){
+  } else if (Promise && Promise.resolve) {
     var promise = Promise.resolve();
-    notify = function(){
+    notify = function () {
       promise.then(flush);
     };
   // for other environments - macrotask based on:
@@ -18254,199 +18931,212 @@ var _microtask = function(){
   // - onreadystatechange
   // - setTimeout
   } else {
-    notify = function(){
+    notify = function () {
       // strange IE + webpack dev server bug - use .call(global)
       macrotask.call(_global, flush);
     };
   }
 
-  return function(fn){
-    var task = {fn: fn, next: undefined};
-    if(last)last.next = task;
-    if(!head){
+  return function (fn) {
+    var task = { fn: fn, next: undefined };
+    if (last) last.next = task;
+    if (!head) {
       head = task;
       notify();
     } last = task;
   };
 };
 
-var _redefineAll = function(target, src, safe){
-  for(var key in src){
-    if(safe && target[key])target[key] = src[key];
+// 25.4.1.5 NewPromiseCapability(C)
+
+
+function PromiseCapability(C) {
+  var resolve, reject;
+  this.promise = new C(function ($$resolve, $$reject) {
+    if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
+    resolve = $$resolve;
+    reject = $$reject;
+  });
+  this.resolve = _aFunction(resolve);
+  this.reject = _aFunction(reject);
+}
+
+var f$7 = function (C) {
+  return new PromiseCapability(C);
+};
+
+var _newPromiseCapability = {
+	f: f$7
+};
+
+var _perform = function (exec) {
+  try {
+    return { e: false, v: exec() };
+  } catch (e) {
+    return { e: true, v: e };
+  }
+};
+
+var _promiseResolve = function (C, x) {
+  _anObject(C);
+  if (_isObject(x) && x.constructor === C) return x;
+  var promiseCapability = _newPromiseCapability.f(C);
+  var resolve = promiseCapability.resolve;
+  resolve(x);
+  return promiseCapability.promise;
+};
+
+var _redefineAll = function (target, src, safe) {
+  for (var key in src) {
+    if (safe && target[key]) target[key] = src[key];
     else _hide(target, key, src[key]);
   } return target;
 };
 
-var SPECIES$1     = _wks('species');
+var SPECIES$1 = _wks('species');
 
-var _setSpecies = function(KEY){
+var _setSpecies = function (KEY) {
   var C = typeof _core[KEY] == 'function' ? _core[KEY] : _global[KEY];
-  if(_descriptors && C && !C[SPECIES$1])_objectDp.f(C, SPECIES$1, {
+  if (_descriptors && C && !C[SPECIES$1]) _objectDp.f(C, SPECIES$1, {
     configurable: true,
-    get: function(){ return this; }
+    get: function () { return this; }
   });
 };
 
-var task               = _task.set;
-var microtask          = _microtask();
-var PROMISE            = 'Promise';
-var TypeError$1          = _global.TypeError;
-var process            = _global.process;
-var $Promise           = _global[PROMISE];
-var process            = _global.process;
-var isNode$1             = _classof(process) == 'process';
-var empty              = function(){ /* empty */ };
-var Internal;
-var GenericPromiseCapability;
-var Wrapper;
+var task = _task.set;
+var microtask = _microtask();
 
-var USE_NATIVE$1 = !!function(){
+
+
+var PROMISE = 'Promise';
+var TypeError$1 = _global.TypeError;
+var process = _global.process;
+var $Promise = _global[PROMISE];
+var isNode$1 = _classof(process) == 'process';
+var empty = function () { /* empty */ };
+var Internal;
+var newGenericPromiseCapability;
+var OwnPromiseCapability;
+var Wrapper;
+var newPromiseCapability = newGenericPromiseCapability = _newPromiseCapability.f;
+
+var USE_NATIVE$1 = !!function () {
   try {
     // correct subclassing with @@species support
-    var promise     = $Promise.resolve(1)
-      , FakePromise = (promise.constructor = {})[_wks('species')] = function(exec){ exec(empty, empty); };
+    var promise = $Promise.resolve(1);
+    var FakePromise = (promise.constructor = {})[_wks('species')] = function (exec) {
+      exec(empty, empty);
+    };
     // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
     return (isNode$1 || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise;
-  } catch(e){ /* empty */ }
+  } catch (e) { /* empty */ }
 }();
 
 // helpers
-var sameConstructor = function(a, b){
-  // with library wrapper special case
-  return a === b || a === $Promise && b === Wrapper;
-};
-var isThenable = function(it){
+var isThenable = function (it) {
   var then;
   return _isObject(it) && typeof (then = it.then) == 'function' ? then : false;
 };
-var newPromiseCapability = function(C){
-  return sameConstructor($Promise, C)
-    ? new PromiseCapability(C)
-    : new GenericPromiseCapability(C);
-};
-var PromiseCapability = GenericPromiseCapability = function(C){
-  var resolve, reject;
-  this.promise = new C(function($$resolve, $$reject){
-    if(resolve !== undefined || reject !== undefined)throw TypeError$1('Bad Promise constructor');
-    resolve = $$resolve;
-    reject  = $$reject;
-  });
-  this.resolve = _aFunction(resolve);
-  this.reject  = _aFunction(reject);
-};
-var perform = function(exec){
-  try {
-    exec();
-  } catch(e){
-    return {error: e};
-  }
-};
-var notify = function(promise, isReject){
-  if(promise._n)return;
+var notify = function (promise, isReject) {
+  if (promise._n) return;
   promise._n = true;
   var chain = promise._c;
-  microtask(function(){
-    var value = promise._v
-      , ok    = promise._s == 1
-      , i     = 0;
-    var run = function(reaction){
-      var handler = ok ? reaction.ok : reaction.fail
-        , resolve = reaction.resolve
-        , reject  = reaction.reject
-        , domain  = reaction.domain
-        , result, then;
+  microtask(function () {
+    var value = promise._v;
+    var ok = promise._s == 1;
+    var i = 0;
+    var run = function (reaction) {
+      var handler = ok ? reaction.ok : reaction.fail;
+      var resolve = reaction.resolve;
+      var reject = reaction.reject;
+      var domain = reaction.domain;
+      var result, then;
       try {
-        if(handler){
-          if(!ok){
-            if(promise._h == 2)onHandleUnhandled(promise);
+        if (handler) {
+          if (!ok) {
+            if (promise._h == 2) onHandleUnhandled(promise);
             promise._h = 1;
           }
-          if(handler === true)result = value;
+          if (handler === true) result = value;
           else {
-            if(domain)domain.enter();
+            if (domain) domain.enter();
             result = handler(value);
-            if(domain)domain.exit();
+            if (domain) domain.exit();
           }
-          if(result === reaction.promise){
+          if (result === reaction.promise) {
             reject(TypeError$1('Promise-chain cycle'));
-          } else if(then = isThenable(result)){
+          } else if (then = isThenable(result)) {
             then.call(result, resolve, reject);
           } else resolve(result);
         } else reject(value);
-      } catch(e){
+      } catch (e) {
         reject(e);
       }
     };
-    while(chain.length > i)run(chain[i++]); // variable length - can't use forEach
+    while (chain.length > i) run(chain[i++]); // variable length - can't use forEach
     promise._c = [];
     promise._n = false;
-    if(isReject && !promise._h)onUnhandled(promise);
+    if (isReject && !promise._h) onUnhandled(promise);
   });
 };
-var onUnhandled = function(promise){
-  task.call(_global, function(){
-    var value = promise._v
-      , abrupt, handler, console;
-    if(isUnhandled(promise)){
-      abrupt = perform(function(){
-        if(isNode$1){
+var onUnhandled = function (promise) {
+  task.call(_global, function () {
+    var value = promise._v;
+    var unhandled = isUnhandled(promise);
+    var result, handler, console;
+    if (unhandled) {
+      result = _perform(function () {
+        if (isNode$1) {
           process.emit('unhandledRejection', value, promise);
-        } else if(handler = _global.onunhandledrejection){
-          handler({promise: promise, reason: value});
-        } else if((console = _global.console) && console.error){
+        } else if (handler = _global.onunhandledrejection) {
+          handler({ promise: promise, reason: value });
+        } else if ((console = _global.console) && console.error) {
           console.error('Unhandled promise rejection', value);
         }
       });
       // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
       promise._h = isNode$1 || isUnhandled(promise) ? 2 : 1;
     } promise._a = undefined;
-    if(abrupt)throw abrupt.error;
+    if (unhandled && result.e) throw result.v;
   });
 };
-var isUnhandled = function(promise){
-  if(promise._h == 1)return false;
-  var chain = promise._a || promise._c
-    , i     = 0
-    , reaction;
-  while(chain.length > i){
-    reaction = chain[i++];
-    if(reaction.fail || !isUnhandled(reaction.promise))return false;
-  } return true;
+var isUnhandled = function (promise) {
+  return promise._h !== 1 && (promise._a || promise._c).length === 0;
 };
-var onHandleUnhandled = function(promise){
-  task.call(_global, function(){
+var onHandleUnhandled = function (promise) {
+  task.call(_global, function () {
     var handler;
-    if(isNode$1){
+    if (isNode$1) {
       process.emit('rejectionHandled', promise);
-    } else if(handler = _global.onrejectionhandled){
-      handler({promise: promise, reason: promise._v});
+    } else if (handler = _global.onrejectionhandled) {
+      handler({ promise: promise, reason: promise._v });
     }
   });
 };
-var $reject = function(value){
+var $reject = function (value) {
   var promise = this;
-  if(promise._d)return;
+  if (promise._d) return;
   promise._d = true;
   promise = promise._w || promise; // unwrap
   promise._v = value;
   promise._s = 2;
-  if(!promise._a)promise._a = promise._c.slice();
+  if (!promise._a) promise._a = promise._c.slice();
   notify(promise, true);
 };
-var $resolve = function(value){
-  var promise = this
-    , then;
-  if(promise._d)return;
+var $resolve = function (value) {
+  var promise = this;
+  var then;
+  if (promise._d) return;
   promise._d = true;
   promise = promise._w || promise; // unwrap
   try {
-    if(promise === value)throw TypeError$1("Promise can't be resolved itself");
-    if(then = isThenable(value)){
-      microtask(function(){
-        var wrapper = {_w: promise, _d: false}; // wrap
+    if (promise === value) throw TypeError$1("Promise can't be resolved itself");
+    if (then = isThenable(value)) {
+      microtask(function () {
+        var wrapper = { _w: promise, _d: false }; // wrap
         try {
           then.call(value, _ctx($resolve, wrapper, 1), _ctx($reject, wrapper, 1));
-        } catch(e){
+        } catch (e) {
           $reject.call(wrapper, e);
         }
       });
@@ -18455,25 +19145,26 @@ var $resolve = function(value){
       promise._s = 1;
       notify(promise, false);
     }
-  } catch(e){
-    $reject.call({_w: promise, _d: false}, e); // wrap
+  } catch (e) {
+    $reject.call({ _w: promise, _d: false }, e); // wrap
   }
 };
 
 // constructor polyfill
-if(!USE_NATIVE$1){
+if (!USE_NATIVE$1) {
   // 25.4.3.1 Promise(executor)
-  $Promise = function Promise(executor){
+  $Promise = function Promise(executor) {
     _anInstance(this, $Promise, PROMISE, '_h');
     _aFunction(executor);
     Internal.call(this);
     try {
       executor(_ctx($resolve, this, 1), _ctx($reject, this, 1));
-    } catch(err){
+    } catch (err) {
       $reject.call(this, err);
     }
   };
-  Internal = function Promise(executor){
+  // eslint-disable-next-line no-unused-vars
+  Internal = function Promise(executor) {
     this._c = [];             // <- awaiting reactions
     this._a = undefined;      // <- checked in isUnhandled reactions
     this._s = 0;              // <- state
@@ -18484,30 +19175,35 @@ if(!USE_NATIVE$1){
   };
   Internal.prototype = _redefineAll($Promise.prototype, {
     // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
-    then: function then(onFulfilled, onRejected){
-      var reaction    = newPromiseCapability(_speciesConstructor(this, $Promise));
-      reaction.ok     = typeof onFulfilled == 'function' ? onFulfilled : true;
-      reaction.fail   = typeof onRejected == 'function' && onRejected;
+    then: function then(onFulfilled, onRejected) {
+      var reaction = newPromiseCapability(_speciesConstructor(this, $Promise));
+      reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
+      reaction.fail = typeof onRejected == 'function' && onRejected;
       reaction.domain = isNode$1 ? process.domain : undefined;
       this._c.push(reaction);
-      if(this._a)this._a.push(reaction);
-      if(this._s)notify(this, false);
+      if (this._a) this._a.push(reaction);
+      if (this._s) notify(this, false);
       return reaction.promise;
     },
     // 25.4.5.1 Promise.prototype.catch(onRejected)
-    'catch': function(onRejected){
+    'catch': function (onRejected) {
       return this.then(undefined, onRejected);
     }
   });
-  PromiseCapability = function(){
-    var promise  = new Internal;
+  OwnPromiseCapability = function () {
+    var promise = new Internal();
     this.promise = promise;
     this.resolve = _ctx($resolve, promise, 1);
-    this.reject  = _ctx($reject, promise, 1);
+    this.reject = _ctx($reject, promise, 1);
+  };
+  _newPromiseCapability.f = newPromiseCapability = function (C) {
+    return C === $Promise || C === Wrapper
+      ? new OwnPromiseCapability(C)
+      : newGenericPromiseCapability(C);
   };
 }
 
-_export(_export.G + _export.W + _export.F * !USE_NATIVE$1, {Promise: $Promise});
+_export(_export.G + _export.W + _export.F * !USE_NATIVE$1, { Promise: $Promise });
 _setToStringTag($Promise, PROMISE);
 _setSpecies(PROMISE);
 Wrapper = _core[PROMISE];
@@ -18515,74 +19211,96 @@ Wrapper = _core[PROMISE];
 // statics
 _export(_export.S + _export.F * !USE_NATIVE$1, PROMISE, {
   // 25.4.4.5 Promise.reject(r)
-  reject: function reject(r){
-    var capability = newPromiseCapability(this)
-      , $$reject   = capability.reject;
+  reject: function reject(r) {
+    var capability = newPromiseCapability(this);
+    var $$reject = capability.reject;
     $$reject(r);
     return capability.promise;
   }
 });
 _export(_export.S + _export.F * (_library || !USE_NATIVE$1), PROMISE, {
   // 25.4.4.6 Promise.resolve(x)
-  resolve: function resolve(x){
-    // instanceof instead of internal slot check because we should fix it without replacement native Promise core
-    if(x instanceof $Promise && sameConstructor(x.constructor, this))return x;
-    var capability = newPromiseCapability(this)
-      , $$resolve  = capability.resolve;
-    $$resolve(x);
-    return capability.promise;
+  resolve: function resolve(x) {
+    return _promiseResolve(_library && this === Wrapper ? $Promise : this, x);
   }
 });
-_export(_export.S + _export.F * !(USE_NATIVE$1 && _iterDetect(function(iter){
+_export(_export.S + _export.F * !(USE_NATIVE$1 && _iterDetect(function (iter) {
   $Promise.all(iter)['catch'](empty);
 })), PROMISE, {
   // 25.4.4.1 Promise.all(iterable)
-  all: function all(iterable){
-    var C          = this
-      , capability = newPromiseCapability(C)
-      , resolve    = capability.resolve
-      , reject     = capability.reject;
-    var abrupt = perform(function(){
-      var values    = []
-        , index     = 0
-        , remaining = 1;
-      _forOf(iterable, false, function(promise){
-        var $index        = index++
-          , alreadyCalled = false;
+  all: function all(iterable) {
+    var C = this;
+    var capability = newPromiseCapability(C);
+    var resolve = capability.resolve;
+    var reject = capability.reject;
+    var result = _perform(function () {
+      var values = [];
+      var index = 0;
+      var remaining = 1;
+      _forOf(iterable, false, function (promise) {
+        var $index = index++;
+        var alreadyCalled = false;
         values.push(undefined);
         remaining++;
-        C.resolve(promise).then(function(value){
-          if(alreadyCalled)return;
-          alreadyCalled  = true;
+        C.resolve(promise).then(function (value) {
+          if (alreadyCalled) return;
+          alreadyCalled = true;
           values[$index] = value;
           --remaining || resolve(values);
         }, reject);
       });
       --remaining || resolve(values);
     });
-    if(abrupt)reject(abrupt.error);
+    if (result.e) reject(result.v);
     return capability.promise;
   },
   // 25.4.4.4 Promise.race(iterable)
-  race: function race(iterable){
-    var C          = this
-      , capability = newPromiseCapability(C)
-      , reject     = capability.reject;
-    var abrupt = perform(function(){
-      _forOf(iterable, false, function(promise){
+  race: function race(iterable) {
+    var C = this;
+    var capability = newPromiseCapability(C);
+    var reject = capability.reject;
+    var result = _perform(function () {
+      _forOf(iterable, false, function (promise) {
         C.resolve(promise).then(capability.resolve, reject);
       });
     });
-    if(abrupt)reject(abrupt.error);
+    if (result.e) reject(result.v);
     return capability.promise;
   }
 });
+
+_export(_export.P + _export.R, 'Promise', { 'finally': function (onFinally) {
+  var C = _speciesConstructor(this, _core.Promise || _global.Promise);
+  var isFunction = typeof onFinally == 'function';
+  return this.then(
+    isFunction ? function (x) {
+      return _promiseResolve(C, onFinally()).then(function () { return x; });
+    } : onFinally,
+    isFunction ? function (e) {
+      return _promiseResolve(C, onFinally()).then(function () { throw e; });
+    } : onFinally
+  );
+} });
+
+// https://github.com/tc39/proposal-promise-try
+
+
+
+
+_export(_export.S, 'Promise', { 'try': function (callbackfn) {
+  var promiseCapability = _newPromiseCapability.f(this);
+  var result = _perform(callbackfn);
+  (result.e ? promiseCapability.reject : promiseCapability.resolve)(result.v);
+  return promiseCapability.promise;
+} });
 
 var promise$1 = _core.Promise;
 
 var promise = createCommonjsModule(function (module) {
 module.exports = { "default": promise$1, __esModule: true };
 });
+
+unwrapExports(promise);
 
 /**
  * chimee-helper-utils v0.2.0
@@ -18597,38 +19315,54 @@ module.exports = { "default": promise$1, __esModule: true };
  */
 var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
 
+// requestAnimationFrame
+var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function (cb) {
+  return setTimeout(cb, 17);
+};
+
+// cancelAnimationFrame
+var caf = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame || window.msCancelAnimationFrame || window.oCancelAnimationFrame || function (id) {
+  clearTimeout(id);
+};
+
 // 19.1.2.1 Object.assign(target, source, ...)
-var $assign  = Object.assign;
+
+
+
+
+
+var $assign = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
-var _objectAssign = !$assign || _fails(function(){
-  var A = {}
-    , B = {}
-    , S = Symbol()
-    , K = 'abcdefghijklmnopqrst';
+var _objectAssign = !$assign || _fails(function () {
+  var A = {};
+  var B = {};
+  // eslint-disable-next-line no-undef
+  var S = Symbol();
+  var K = 'abcdefghijklmnopqrst';
   A[S] = 7;
-  K.split('').forEach(function(k){ B[k] = k; });
+  K.split('').forEach(function (k) { B[k] = k; });
   return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
-}) ? function assign(target, source){ // eslint-disable-line no-unused-vars
-  var T     = _toObject(target)
-    , aLen  = arguments.length
-    , index = 1
-    , getSymbols = _objectGops.f
-    , isEnum     = _objectPie.f;
-  while(aLen > index){
-    var S      = _iobject(arguments[index++])
-      , keys   = getSymbols ? _objectKeys(S).concat(getSymbols(S)) : _objectKeys(S)
-      , length = keys.length
-      , j      = 0
-      , key;
-    while(length > j)if(isEnum.call(S, key = keys[j++]))T[key] = S[key];
+}) ? function assign(target, source) { // eslint-disable-line no-unused-vars
+  var T = _toObject(target);
+  var aLen = arguments.length;
+  var index = 1;
+  var getSymbols = _objectGops.f;
+  var isEnum = _objectPie.f;
+  while (aLen > index) {
+    var S = _iobject(arguments[index++]);
+    var keys = getSymbols ? _objectKeys(S).concat(getSymbols(S)) : _objectKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
+    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
   } return T;
 } : $assign;
 
 // 19.1.3.1 Object.assign(target, source)
 
 
-_export(_export.S + _export.F, 'Object', {assign: _objectAssign});
+_export(_export.S + _export.F, 'Object', { assign: _objectAssign });
 
 var assign$1 = _core.Object.assign;
 
@@ -18885,7 +19619,7 @@ var CustEvent = function () {
 }();
 
 /**
- * chimee-helper-dom v0.1.2
+ * chimee-helper-dom v0.1.7
  * (c) 2017 huzunjie
  * Released under MIT
  */
@@ -19137,7 +19871,7 @@ var CustEvent$1 = function () {
 }();
 
 /**
- * chimee-helper-utils v0.1.3
+ * chimee-helper-utils v0.2.0
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -19253,6 +19987,20 @@ function hasClassName(el, className) {
 }
 
 /**
+ * addEventListener 是否已支持 passive
+ * @return {Boolean}
+ */
+var supportsPassive = false;
+try {
+  var opts = Object.defineProperty({}, 'passive', {
+    get: function get() {
+      supportsPassive = true;
+    }
+  });
+  window.addEventListener('test', null, opts);
+} catch (e) {}
+
+/**
  * 为HTML元素移除事件监听
  * @param {HTMLElement} el 目标元素
  * @param {String} type 事件名称
@@ -19264,6 +20012,9 @@ function removeEvent(el, type, handler) {
   var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
   var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
+  if (capture !== undefined && !isBoolean(capture) && supportsPassive) {
+    capture = { passive: true };
+  }
   if (once) {
     /* 尝试从缓存中读取包装后的方法 */
     var handlerWrap = removeEventCache$1(el, type + '_once', handler);
@@ -19286,6 +20037,9 @@ function addEvent(el, type, handler) {
   var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
   var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
+  if (capture !== undefined && !isBoolean(capture) && supportsPassive) {
+    capture = { passive: true };
+  }
   if (once) {
     var oldHandler = handler;
     handler = function () {
@@ -19316,15 +20070,30 @@ function addEvent(el, type, handler) {
 function addDelegate(el, selector, type, handler) {
   var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
-
+  if (capture !== undefined && !isBoolean(capture) && supportsPassive) {
+    capture = { passive: true };
+  }
   var handlerWrap = function handlerWrap(e) {
-    var targetEls = findParents(e.target || e.srcElement, el, true);
-    var targetEl = query(selector, el, true).find(function (seEl) {
-      return targetEls.find(function (tgEl) {
-        return seEl === tgEl;
+    var targetElsArr = findParents(e.target || e.srcElement, el, true);
+    var targetElArr = query(selector, el, true);
+    var retEl = void 0;
+    if (targetElArr.find) {
+      retEl = targetElArr.find(function (seEl) {
+        return targetElsArr.find(function (tgEl) {
+          return seEl === tgEl;
+        });
       });
-    });
-    targetEl && handler.apply(targetEl, arguments);
+    } else {
+      // Fixed IE11 Array.find not defined bug
+      targetElArr.forEach(function (seEl) {
+        return !retEl && targetElsArr.forEach(function (tgEl) {
+          if (!retEl && seEl === tgEl) {
+            retEl = tgEl;
+          }
+        });
+      });
+    }
+    retEl && handler.apply(retEl, arguments);
   };
   /* 将包装后的方法记录到缓存中 */
   addEventCache$1(el, type + '_delegate_' + selector, handler, handlerWrap);
@@ -19342,6 +20111,9 @@ function addDelegate(el, selector, type, handler) {
 function removeDelegate(el, selector, type, handler) {
   var capture = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
+  if (capture !== undefined && !isBoolean(capture) && supportsPassive) {
+    capture = { passive: true };
+  }
   /* 尝试从缓存中读取包装后的方法 */
   var handlerWrap = removeEventCache$1(el, type + '_delegate_' + selector, handler);
   handlerWrap && el.removeEventListener(type, handlerWrap, capture);
@@ -19806,21 +20578,789 @@ var NodeWrap = function () {
 }();
 
 /**
- * chimee-helper v0.2.5
+ * chimee-helper v0.2.10
  * (c) 2017 toxic-johann
  * Released under MIT
  */
 
-var defaultConfig = {
-  type: 'vod',
-  autoPlay: false,
-  box: 'hls',
-  lockInternalProperty: false,
-  debug: true,
+var defaultCustomConfig = {
+  debug: false,
   enableWorker: true
 };
 
-var Hls = function (_CustEvent) {
+// all object keys, includes non-enumerable and symbols
+
+
+
+var Reflect = _global.Reflect;
+var _ownKeys = Reflect && Reflect.ownKeys || function ownKeys(it) {
+  var keys = _objectGopn.f(_anObject(it));
+  var getSymbols = _objectGops.f;
+  return getSymbols ? keys.concat(getSymbols(it)) : keys;
+};
+
+// https://github.com/tc39/proposal-object-getownpropertydescriptors
+
+
+
+
+
+
+_export(_export.S, 'Object', {
+  getOwnPropertyDescriptors: function getOwnPropertyDescriptors(object) {
+    var O = _toIobject(object);
+    var getDesc = _objectGopd.f;
+    var keys = _ownKeys(O);
+    var result = {};
+    var i = 0;
+    var key, desc;
+    while (keys.length > i) {
+      desc = getDesc(O, key = keys[i++]);
+      if (desc !== undefined) _createProperty(result, key, desc);
+    }
+    return result;
+  }
+});
+
+var getOwnPropertyDescriptors$2 = _core.Object.getOwnPropertyDescriptors;
+
+var getOwnPropertyDescriptors$1 = createCommonjsModule(function (module) {
+module.exports = { "default": getOwnPropertyDescriptors$2, __esModule: true };
+});
+
+var _Object$getOwnPropertyDescriptors = unwrapExports(getOwnPropertyDescriptors$1);
+
+var getOwnPropertySymbols$1 = _core.Object.getOwnPropertySymbols;
+
+var getOwnPropertySymbols = createCommonjsModule(function (module) {
+module.exports = { "default": getOwnPropertySymbols$1, __esModule: true };
+});
+
+var _Object$getOwnPropertySymbols = unwrapExports(getOwnPropertySymbols);
+
+// 19.1.2.7 Object.getOwnPropertyNames(O)
+_objectSap('getOwnPropertyNames', function () {
+  return _objectGopnExt.f;
+});
+
+var $Object$3 = _core.Object;
+var getOwnPropertyNames$1 = function getOwnPropertyNames(it) {
+  return $Object$3.getOwnPropertyNames(it);
+};
+
+var getOwnPropertyNames = createCommonjsModule(function (module) {
+module.exports = { "default": getOwnPropertyNames$1, __esModule: true };
+});
+
+var _Object$getOwnPropertyNames = unwrapExports(getOwnPropertyNames);
+
+/**
+ * toxic-utils v0.1.6
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
+
+/**
+ * bind the function with some context. we have some fallback strategy here
+ * @param {function} fn the function which we need to bind the context on
+ * @param {any} context the context object
+ */
+function bind$1(fn, context) {
+  if (fn.bind) {
+    return fn.bind(context);
+  } else if (fn.apply) {
+    return function __autobind__() {
+      for (var _len2 = arguments.length, args = Array(_len2), _key3 = 0; _key3 < _len2; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+
+      return fn.apply(context, args);
+    };
+  } else {
+    return function __autobind__() {
+      for (var _len3 = arguments.length, args = Array(_len3), _key4 = 0; _key4 < _len3; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+
+      return fn.call.apply(fn, [context].concat(_toConsumableArray(args)));
+    };
+  }
+}
+
+var ITERATOR$4 = _wks('iterator');
+
+var core_isIterable = _core.isIterable = function (it) {
+  var O = Object(it);
+  return O[ITERATOR$4] !== undefined
+    || '@@iterator' in O
+    // eslint-disable-next-line no-prototype-builtins
+    || _iterators.hasOwnProperty(_classof(O));
+};
+
+var isIterable$2 = core_isIterable;
+
+var isIterable = createCommonjsModule(function (module) {
+module.exports = { "default": isIterable$2, __esModule: true };
+});
+
+unwrapExports(isIterable);
+
+var core_getIterator = _core.getIterator = function (it) {
+  var iterFn = core_getIteratorMethod(it);
+  if (typeof iterFn != 'function') throw TypeError(it + ' is not iterable!');
+  return _anObject(iterFn.call(it));
+};
+
+var getIterator$2 = core_getIterator;
+
+var getIterator = createCommonjsModule(function (module) {
+module.exports = { "default": getIterator$2, __esModule: true };
+});
+
+unwrapExports(getIterator);
+
+var slicedToArray = createCommonjsModule(function (module, exports) {
+exports.__esModule = true;
+
+
+
+var _isIterable3 = _interopRequireDefault(isIterable);
+
+
+
+var _getIterator3 = _interopRequireDefault(getIterator);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function () {
+  function sliceIterator(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = (0, _getIterator3.default)(arr), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"]) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  return function (arr, i) {
+    if (Array.isArray(arr)) {
+      return arr;
+    } else if ((0, _isIterable3.default)(Object(arr))) {
+      return sliceIterator(arr, i);
+    } else {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    }
+  };
+}();
+});
+
+unwrapExports(slicedToArray);
+
+var SPECIES$2 = _wks('species');
+
+var _arraySpeciesConstructor = function (original) {
+  var C;
+  if (_isArray(original)) {
+    C = original.constructor;
+    // cross-realm fallback
+    if (typeof C == 'function' && (C === Array || _isArray(C.prototype))) C = undefined;
+    if (_isObject(C)) {
+      C = C[SPECIES$2];
+      if (C === null) C = undefined;
+    }
+  } return C === undefined ? Array : C;
+};
+
+// 9.4.2.3 ArraySpeciesCreate(originalArray, length)
+
+
+var _arraySpeciesCreate = function (original, length) {
+  return new (_arraySpeciesConstructor(original))(length);
+};
+
+// 0 -> Array#forEach
+// 1 -> Array#map
+// 2 -> Array#filter
+// 3 -> Array#some
+// 4 -> Array#every
+// 5 -> Array#find
+// 6 -> Array#findIndex
+
+
+
+
+
+var _arrayMethods = function (TYPE, $create) {
+  var IS_MAP = TYPE == 1;
+  var IS_FILTER = TYPE == 2;
+  var IS_SOME = TYPE == 3;
+  var IS_EVERY = TYPE == 4;
+  var IS_FIND_INDEX = TYPE == 6;
+  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
+  var create = $create || _arraySpeciesCreate;
+  return function ($this, callbackfn, that) {
+    var O = _toObject($this);
+    var self = _iobject(O);
+    var f = _ctx(callbackfn, that, 3);
+    var length = _toLength(self.length);
+    var index = 0;
+    var result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
+    var val, res;
+    for (;length > index; index++) if (NO_HOLES || index in self) {
+      val = self[index];
+      res = f(val, index, O);
+      if (TYPE) {
+        if (IS_MAP) result[index] = res;   // map
+        else if (res) switch (TYPE) {
+          case 3: return true;             // some
+          case 5: return val;              // find
+          case 6: return index;            // findIndex
+          case 2: result.push(val);        // filter
+        } else if (IS_EVERY) return false; // every
+      }
+    }
+    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
+  };
+};
+
+var _validateCollection = function (it, TYPE) {
+  if (!_isObject(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
+  return it;
+};
+
+var getWeak = _meta.getWeak;
+
+
+
+
+
+
+
+var arrayFind = _arrayMethods(5);
+var arrayFindIndex = _arrayMethods(6);
+var id$1 = 0;
+
+// fallback for uncaught frozen keys
+var uncaughtFrozenStore = function (that) {
+  return that._l || (that._l = new UncaughtFrozenStore());
+};
+var UncaughtFrozenStore = function () {
+  this.a = [];
+};
+var findUncaughtFrozen = function (store, key) {
+  return arrayFind(store.a, function (it) {
+    return it[0] === key;
+  });
+};
+UncaughtFrozenStore.prototype = {
+  get: function (key) {
+    var entry = findUncaughtFrozen(this, key);
+    if (entry) return entry[1];
+  },
+  has: function (key) {
+    return !!findUncaughtFrozen(this, key);
+  },
+  set: function (key, value) {
+    var entry = findUncaughtFrozen(this, key);
+    if (entry) entry[1] = value;
+    else this.a.push([key, value]);
+  },
+  'delete': function (key) {
+    var index = arrayFindIndex(this.a, function (it) {
+      return it[0] === key;
+    });
+    if (~index) this.a.splice(index, 1);
+    return !!~index;
+  }
+};
+
+var _collectionWeak = {
+  getConstructor: function (wrapper, NAME, IS_MAP, ADDER) {
+    var C = wrapper(function (that, iterable) {
+      _anInstance(that, C, NAME, '_i');
+      that._t = NAME;      // collection type
+      that._i = id$1++;      // collection id
+      that._l = undefined; // leak store for uncaught frozen objects
+      if (iterable != undefined) _forOf(iterable, IS_MAP, that[ADDER], that);
+    });
+    _redefineAll(C.prototype, {
+      // 23.3.3.2 WeakMap.prototype.delete(key)
+      // 23.4.3.3 WeakSet.prototype.delete(value)
+      'delete': function (key) {
+        if (!_isObject(key)) return false;
+        var data = getWeak(key);
+        if (data === true) return uncaughtFrozenStore(_validateCollection(this, NAME))['delete'](key);
+        return data && _has(data, this._i) && delete data[this._i];
+      },
+      // 23.3.3.4 WeakMap.prototype.has(key)
+      // 23.4.3.4 WeakSet.prototype.has(value)
+      has: function has(key) {
+        if (!_isObject(key)) return false;
+        var data = getWeak(key);
+        if (data === true) return uncaughtFrozenStore(_validateCollection(this, NAME)).has(key);
+        return data && _has(data, this._i);
+      }
+    });
+    return C;
+  },
+  def: function (that, key, value) {
+    var data = getWeak(_anObject(key), true);
+    if (data === true) uncaughtFrozenStore(that).set(key, value);
+    else data[that._i] = value;
+    return that;
+  },
+  ufstore: uncaughtFrozenStore
+};
+
+var dP$2 = _objectDp.f;
+var each = _arrayMethods(0);
+
+
+var _collection = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
+  var Base = _global[NAME];
+  var C = Base;
+  var ADDER = IS_MAP ? 'set' : 'add';
+  var proto = C && C.prototype;
+  var O = {};
+  if (!_descriptors || typeof C != 'function' || !(IS_WEAK || proto.forEach && !_fails(function () {
+    new C().entries().next();
+  }))) {
+    // create collection constructor
+    C = common.getConstructor(wrapper, NAME, IS_MAP, ADDER);
+    _redefineAll(C.prototype, methods);
+    _meta.NEED = true;
+  } else {
+    C = wrapper(function (target, iterable) {
+      _anInstance(target, C, NAME, '_c');
+      target._c = new Base();
+      if (iterable != undefined) _forOf(iterable, IS_MAP, target[ADDER], target);
+    });
+    each('add,clear,delete,forEach,get,has,set,keys,values,entries,toJSON'.split(','), function (KEY) {
+      var IS_ADDER = KEY == 'add' || KEY == 'set';
+      if (KEY in proto && !(IS_WEAK && KEY == 'clear')) _hide(C.prototype, KEY, function (a, b) {
+        _anInstance(this, C, KEY);
+        if (!IS_ADDER && IS_WEAK && !_isObject(a)) return KEY == 'get' ? undefined : false;
+        var result = this._c[KEY](a === 0 ? 0 : a, b);
+        return IS_ADDER ? this : result;
+      });
+    });
+    IS_WEAK || dP$2(C.prototype, 'size', {
+      get: function () {
+        return this._c.size;
+      }
+    });
+  }
+
+  _setToStringTag(C, NAME);
+
+  O[NAME] = C;
+  _export(_export.G + _export.W + _export.F, O);
+
+  if (!IS_WEAK) common.setStrong(C, NAME, IS_MAP);
+
+  return C;
+};
+
+var es6_weakMap = createCommonjsModule(function (module) {
+var each = _arrayMethods(0);
+
+
+
+
+
+
+
+var WEAK_MAP = 'WeakMap';
+var getWeak = _meta.getWeak;
+var isExtensible = Object.isExtensible;
+var uncaughtFrozenStore = _collectionWeak.ufstore;
+var tmp = {};
+var InternalMap;
+
+var wrapper = function (get) {
+  return function WeakMap() {
+    return get(this, arguments.length > 0 ? arguments[0] : undefined);
+  };
+};
+
+var methods = {
+  // 23.3.3.3 WeakMap.prototype.get(key)
+  get: function get(key) {
+    if (_isObject(key)) {
+      var data = getWeak(key);
+      if (data === true) return uncaughtFrozenStore(_validateCollection(this, WEAK_MAP)).get(key);
+      return data ? data[this._i] : undefined;
+    }
+  },
+  // 23.3.3.5 WeakMap.prototype.set(key, value)
+  set: function set(key, value) {
+    return _collectionWeak.def(_validateCollection(this, WEAK_MAP), key, value);
+  }
+};
+
+// 23.3 WeakMap Objects
+var $WeakMap = module.exports = _collection(WEAK_MAP, wrapper, methods, _collectionWeak, true, true);
+
+// IE11 WeakMap frozen keys fix
+if (_fails(function () { return new $WeakMap().set((Object.freeze || Object)(tmp), 7).get(tmp) != 7; })) {
+  InternalMap = _collectionWeak.getConstructor(wrapper, WEAK_MAP);
+  _objectAssign(InternalMap.prototype, methods);
+  _meta.NEED = true;
+  each(['delete', 'has', 'get', 'set'], function (key) {
+    var proto = $WeakMap.prototype;
+    var method = proto[key];
+    _redefine(proto, key, function (a, b) {
+      // store frozen objects on internal weakmap shim
+      if (_isObject(a) && !isExtensible(a)) {
+        if (!this._f) this._f = new InternalMap();
+        var result = this._f[key](a, b);
+        return key == 'set' ? this : result;
+      // store all the rest on native weakmap
+      } return method.call(this, a, b);
+    });
+  });
+}
+});
+
+// https://tc39.github.io/proposal-setmap-offrom/
+
+
+var _setCollectionOf = function (COLLECTION) {
+  _export(_export.S, COLLECTION, { of: function of() {
+    var length = arguments.length;
+    var A = new Array(length);
+    while (length--) A[length] = arguments[length];
+    return new this(A);
+  } });
+};
+
+// https://tc39.github.io/proposal-setmap-offrom/#sec-weakmap.of
+_setCollectionOf('WeakMap');
+
+// https://tc39.github.io/proposal-setmap-offrom/
+
+
+
+
+
+var _setCollectionFrom = function (COLLECTION) {
+  _export(_export.S, COLLECTION, { from: function from(source /* , mapFn, thisArg */) {
+    var mapFn = arguments[1];
+    var mapping, A, n, cb;
+    _aFunction(this);
+    mapping = mapFn !== undefined;
+    if (mapping) _aFunction(mapFn);
+    if (source == undefined) return new this();
+    A = [];
+    if (mapping) {
+      n = 0;
+      cb = _ctx(mapFn, arguments[2], 2);
+      _forOf(source, false, function (nextItem) {
+        A.push(cb(nextItem, n++));
+      });
+    } else {
+      _forOf(source, false, A.push, A);
+    }
+    return new this(A);
+  } });
+};
+
+// https://tc39.github.io/proposal-setmap-offrom/#sec-weakmap.from
+_setCollectionFrom('WeakMap');
+
+var weakMap$1 = _core.WeakMap;
+
+var weakMap = createCommonjsModule(function (module) {
+module.exports = { "default": weakMap$1, __esModule: true };
+});
+
+var _WeakMap = unwrapExports(weakMap);
+
+var defineProperty$5$1 = createCommonjsModule(function (module, exports) {
+exports.__esModule = true;
+
+
+
+var _defineProperty2 = _interopRequireDefault(defineProperty$1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (obj, key, value) {
+  if (key in obj) {
+    (0, _defineProperty2.default)(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+};
+});
+
+unwrapExports(defineProperty$5$1);
+
+// 19.1.2.15 Object.preventExtensions(O)
+
+var meta = _meta.onFreeze;
+
+_objectSap('preventExtensions', function ($preventExtensions) {
+  return function preventExtensions(it) {
+    return $preventExtensions && _isObject(it) ? $preventExtensions(meta(it)) : it;
+  };
+});
+
+var preventExtensions$2 = _core.Object.preventExtensions;
+
+var preventExtensions$1 = createCommonjsModule(function (module) {
+module.exports = { "default": preventExtensions$2, __esModule: true };
+});
+
+unwrapExports(preventExtensions$1);
+
+/**
+ * toxic-decorators v0.3.8
+ * (c) 2017 toxic-johann
+ * Released under GPL-3.0
+ */
+
+var getOwnPropertyDescriptor$3 = _Object$getOwnPropertyDescriptor;
+/**
+ * to check if the descirptor is an data descriptor
+ * @param {descriptor} desc it should be a descriptor better
+ */
+function isDataDescriptor(desc) {
+  return !!desc && desc.hasOwnProperty('value') && isBoolean(desc.configurable) && isBoolean(desc.enumerable) && isBoolean(desc.writable);
+}
+/**
+ * set one value on the object
+ * @param {string} key
+ */
+function createDefaultSetter(key) {
+  return function set(newValue) {
+    _Object$defineProperty(this, key, {
+      configurable: true,
+      writable: true,
+      // IS enumerable when reassigned by the outside word
+      enumerable: true,
+      value: newValue
+    });
+    return newValue;
+  };
+}
+
+function getOwnKeysFn() {
+  var getOwnPropertyNames$$1 = _Object$getOwnPropertyNames,
+      getOwnPropertySymbols$$1 = _Object$getOwnPropertySymbols;
+
+  return isFunction(getOwnPropertySymbols$$1) ? function (obj) {
+    // $FlowFixMe: do not support symwbol yet
+    return _Array$from(getOwnPropertyNames$$1(obj).concat(getOwnPropertySymbols$$1(obj)));
+  } : getOwnPropertyNames$$1;
+}
+
+var getOwnKeys = getOwnKeysFn();
+
+function getOwnPropertyDescriptorsFn() {
+  // $FlowFixMe: In some environment, Object.getOwnPropertyDescriptors has been implemented;
+  return isFunction(_Object$getOwnPropertyDescriptors) ? _Object$getOwnPropertyDescriptors : function (obj) {
+    return getOwnKeys(obj).reduce(function (descs, key) {
+      descs[key] = getOwnPropertyDescriptor$3(obj, key);
+      return descs;
+    }, {});
+  };
+}
+
+var getOwnPropertyDescriptors = getOwnPropertyDescriptorsFn();
+
+var defineProperty$1$1 = _Object$defineProperty;
+
+function classify(decorator) {
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      requirement = _ref.requirement,
+      _ref$customArgs = _ref.customArgs,
+      customArgs = _ref$customArgs === undefined ? false : _ref$customArgs;
+
+  return function () {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        _ref2$exclude = _ref2.exclude,
+        exclude = _ref2$exclude === undefined ? [] : _ref2$exclude,
+        _ref2$include = _ref2.include,
+        include = _ref2$include === undefined ? [] : _ref2$include,
+        _ref2$construct = _ref2.construct,
+        construct = _ref2$construct === undefined ? false : _ref2$construct,
+        _ref2$self = _ref2.self,
+        self = _ref2$self === undefined ? false : _ref2$self;
+
+    if (!isArray$1(exclude)) throw new TypeError('options.exclude must be an array');
+    if (!isArray$1(include)) throw new TypeError('options.include must be an array');
+    return function (Klass) {
+      var isClass = isFunction(Klass);
+      if (!self && !isClass) throw new TypeError('@' + decorator.name + 'Class can only be used on class');
+      if (self && isPrimitive(Klass)) throw new TypeError('@' + decorator.name + 'Class must be used on non-primitive type value in \'self\' mode');
+      var prototype = self ? Klass : Klass.prototype;
+      if (isVoid(prototype)) throw new Error('The prototype of the ' + Klass.name + ' is empty, please check it');
+      var descs = getOwnPropertyDescriptors(prototype);
+      getOwnKeys(prototype).concat(include).forEach(function (key) {
+        var desc = descs[key];
+        if (key === 'constructor' && !construct || self && isClass && ['name', 'length', 'prototype'].indexOf(key) > -1 || exclude.indexOf(key) > -1 || isFunction(requirement) && requirement(prototype, key, desc, { self: self }) === false) return;
+        defineProperty$1$1(prototype, key, (customArgs ? decorator.apply(undefined, _toConsumableArray(args)) : decorator)(prototype, key, desc));
+      });
+    };
+  };
+}
+
+var autobindClass = classify(autobind, {
+  requirement: function requirement(obj, prop, desc) {
+    // $FlowFixMe: it's data descriptor now
+    return isDataDescriptor(desc) && isFunction(desc.value);
+  }
+});
+
+var mapStore = void 0;
+// save bound function for super
+function getBoundSuper(obj, fn) {
+  if (typeof _WeakMap === 'undefined') {
+    throw new Error('Using @autobind on ' + fn.name + '() requires WeakMap support due to its use of super.' + fn.name + '()');
+  }
+
+  if (!mapStore) {
+    mapStore = new _WeakMap();
+  }
+
+  if (mapStore.has(obj) === false) {
+    mapStore.set(obj, new _WeakMap());
+  }
+
+  var superStore = mapStore.get(obj);
+  // $FlowFixMe: already insure superStore is not undefined
+  if (superStore.has(fn) === false) {
+    // $FlowFixMe: already insure superStore is not undefined
+    superStore.set(fn, bind$1(fn, obj));
+  }
+  // $FlowFixMe: already insure superStore is not undefined
+  return superStore.get(fn);
+}
+/**
+ * auto bind the function on the class, just support function
+ * @param {Object} obj Target Object
+ * @param {string} prop prop strong
+ * @param {Object} descriptor
+ */
+function autobind(obj, prop, descriptor) {
+  if (arguments.length === 1) return autobindClass()(obj);
+
+  var _ref = descriptor || {},
+      fn = _ref.value,
+      configurable = _ref.configurable;
+
+  if (!isFunction(fn)) {
+    throw new TypeError('@autobind can only be used on functions, not "' + fn + '" in ' + (typeof fn === 'undefined' ? 'undefined' : _typeof(fn)) + ' on property "' + prop + '"');
+  }
+  var constructor = obj.constructor;
+
+  return {
+    configurable: configurable,
+    enumerable: false,
+    get: function get() {
+      var _this = this;
+
+      var boundFn = function boundFn() {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return fn.call.apply(fn, [_this].concat(_toConsumableArray(args)));
+      };
+      // Someone accesses the property directly on the prototype on which it is
+      // actually defined on, i.e. Class.prototype.hasOwnProperty(key)
+      if (this === obj) {
+        return fn;
+      }
+      // Someone accesses the property directly on a prototype,
+      // but it was found up the chain, not defined directly on it
+      // i.e. Class.prototype.hasOwnProperty(key) == false && key in Class.prototype
+      if (this.constructor !== constructor && _Object$getPrototypeOf(this).constructor === constructor) {
+        return fn;
+      }
+
+      // Autobound method calling super.sameMethod() which is also autobound and so on.
+      if (this.constructor !== constructor && prop in this.constructor.prototype) {
+        return getBoundSuper(this, fn);
+      }
+      _Object$defineProperty(this, prop, {
+        configurable: true,
+        writable: true,
+        // NOT enumerable when it's a bound method
+        enumerable: false,
+        value: boundFn
+      });
+
+      return boundFn;
+    },
+
+    set: createDefaultSetter(prop)
+  };
+}
+
+var _class;
+
+function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+  var desc = {};
+  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+    desc[key] = descriptor[key];
+  });
+  desc.enumerable = !!desc.enumerable;
+  desc.configurable = !!desc.configurable;
+
+  if ('value' in desc || desc.initializer) {
+    desc.writable = true;
+  }
+
+  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+    return decorator(target, property, desc) || desc;
+  }, desc);
+
+  if (context && desc.initializer !== void 0) {
+    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+    desc.initializer = undefined;
+  }
+
+  if (desc.initializer === void 0) {
+    Object['define' + 'Property'](target, property, desc);
+    desc = null;
+  }
+
+  return desc;
+}
+
+var LOG_TAG = 'chimee-kernel-hls';
+
+var Hls = (_class = function (_CustEvent) {
   _inherits(Hls, _CustEvent);
 
   _createClass(Hls, null, [{
@@ -19828,77 +21368,47 @@ var Hls = function (_CustEvent) {
     value: function isSupport() {
       return HlsCore.isSupported();
     }
-  }, {
-    key: 'version',
-    get: function get() {
-      return '1.0.6';
-    }
   }]);
 
-  function Hls(videodom, config) {
+  function Hls(videoElement, config) {
+    var customConfig = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
     _classCallCheck(this, Hls);
 
-    var _this2 = _possibleConstructorReturn(this, (Hls.__proto__ || _Object$getPrototypeOf(Hls)).call(this));
+    var _this = _possibleConstructorReturn(this, (Hls.__proto__ || _Object$getPrototypeOf(Hls)).call(this));
 
-    _this2.tag = 'HLS-player';
-    _this2.video = videodom;
-    _this2.box = 'hls';
-    _this2.config = deepAssign({}, defaultConfig, config);
-    _this2.hls = new HlsCore();
-    _this2.bindEvents(_this2.hls);
-    _this2.attachMedia();
-    return _this2;
+    _this.version = '1.1.0';
+
+    if (!isElement(videoElement)) throw new Error('video element passed in ' + LOG_TAG + ' must be a HTMLVideoElement, but not ' + (typeof videoElement === 'undefined' ? 'undefined' : _typeof(videoElement)));
+    if (!isObject$1(config)) throw new Error('config of ' + LOG_TAG + ' must be an Object but not ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
+    _this.video = videoElement;
+    _this.config = config;
+    _this.customConfig = deepAssign({}, defaultCustomConfig, customConfig);
+    _this.hlsKernel = new HlsCore(_this.customConfig);
+    _this.bindEvents();
+    _this.attachMedia();
+    return _this;
   }
 
   _createClass(Hls, [{
-    key: 'internalPropertyHandle',
-    value: function internalPropertyHandle() {
-      if (!_Object$getOwnPropertyDescriptor) {
-        return;
-      }
-      var _this = this;
-      var time = _Object$getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');
-
-      Object.defineProperty(this.video, 'currentTime', {
-        get: function get() {
-          return time.get.call(_this.video);
-        },
-        set: function set(t) {
-          if (!_this.currentTimeLock) {
-            throw new Error('can not set currentTime by youself');
-          } else {
-            return time.set.call(_this.video, t);
-          }
-        }
-      });
-    }
-  }, {
     key: 'bindEvents',
-    value: function bindEvents(hlsKernel) {
-      var _this3 = this;
+    value: function bindEvents() {
+      var remove = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
+      var hlsKernel = this.hlsKernel;
       if (hlsKernel) {
-        hlsKernel.on(HlsCore.Events.ERROR, function (event, data) {
-          // this.emit(this.tag, data);
-        });
-
-        hlsKernel.on(HlsCore.Events.LEVEL, function (event, data) {});
-      }
-      if (this.video && this.config.lockInternalProperty) {
-        this.video.addEventListener('canplay', function () {
-          _this3.internalPropertyHandle();
-        });
+        hlsKernel[remove ? 'off' : 'on'](HlsCore.Events.ERROR, this.hlsErrorHandler);
       }
     }
   }, {
     key: 'load',
     value: function load() {
-      this.hls.loadSource(this.config.src);
+      return this.hlsKernel.loadSource(this.config.src);
     }
   }, {
     key: 'attachMedia',
     value: function attachMedia() {
-      this.hls.attachMedia(this.video);
+      return this.hlsKernel.attachMedia(this.video);
     }
   }, {
     key: 'play',
@@ -19908,19 +21418,12 @@ var Hls = function (_CustEvent) {
   }, {
     key: 'destroy',
     value: function destroy() {
-      return this.hls.destroy();
+      this.bindEvents(true);
+      return this.hlsKernel.destroy();
     }
   }, {
     key: 'seek',
     value: function seek(seconds) {
-      this.currentTimeLock = true;
-      // throttle(this._seek.bind(this, seconds), 200, {leading: false});
-      this._seek(seconds);
-      this.currentTimeLock = false;
-    }
-  }, {
-    key: '_seek',
-    value: function _seek(seconds) {
       this.video.currentTime = seconds;
     }
   }, {
@@ -19931,13 +21434,20 @@ var Hls = function (_CustEvent) {
   }, {
     key: 'refresh',
     value: function refresh() {
-      this.hls.stopLoad();
-      this.hls.loadSource(this.config.src);
+      this.hlsKernel.stopLoad();
+      return this.hlsKernel.loadSource(this.config.src);
+    }
+  }, {
+    key: 'hlsErrorHandler',
+    value: function hlsErrorHandler(event, data) {
+      this.emit('error', data);
+      this.emit(event, data);
+      Log.error(LOG_TAG + (event ? ' ' + event : ''), data.details);
     }
   }]);
 
   return Hls;
-}(CustEvent);
+}(CustEvent), _applyDecoratedDescriptor(_class.prototype, 'hlsErrorHandler', [autobind], _Object$getOwnPropertyDescriptor(_class.prototype, 'hlsErrorHandler'), _class.prototype), _class);
 
 return Hls;
 

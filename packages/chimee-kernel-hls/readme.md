@@ -12,6 +12,8 @@ It's based on [hls.js](https://github.com/video-dev/hls.js).
 
 It totally fit the requirement of [chimee-kernel](https://github.com/Chimeejs/chimee-kernel).
 
+It should only be used in the PC, as most of mobile browser support m3u8.
+
 ## Installation
 ```
 npm install --save chimee-kernel-hls

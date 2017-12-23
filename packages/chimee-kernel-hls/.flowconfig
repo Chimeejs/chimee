@@ -8,6 +8,7 @@
 flow
 node_modules/chimee-helper/lib/index.flow.js
 node_modules/chimee-kernel/lib/index.flow.js
+node_modules/toxic-decorators/lib/index.flow.js
 [lints]
 all=warn
 untyped-type-import=error

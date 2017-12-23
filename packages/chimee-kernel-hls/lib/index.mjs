@@ -1,22 +1,346 @@
+
+/**
+ * chimee-kernel-hls v1.1.0
+ * (c) 2017 songguangyu
+ * Released under MIT
+ */
+
 import _Object$getOwnPropertyDescriptor from 'babel-runtime/core-js/object/get-own-property-descriptor';
+import _typeof from 'babel-runtime/helpers/typeof';
 import _Object$getPrototypeOf from 'babel-runtime/core-js/object/get-prototype-of';
 import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
 import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
 import _createClass from 'babel-runtime/helpers/createClass';
 import _inherits from 'babel-runtime/helpers/inherits';
 import HlsCore from 'hls.js';
-import { CustEvent, deepAssign } from 'chimee-helper';
+import { CustEvent, Log, deepAssign, isElement, isObject } from 'chimee-helper';
+import _Object$getOwnPropertyDescriptors from 'babel-runtime/core-js/object/get-own-property-descriptors';
+import _Array$from from 'babel-runtime/core-js/array/from';
+import _Object$getOwnPropertySymbols from 'babel-runtime/core-js/object/get-own-property-symbols';
+import _Object$getOwnPropertyNames from 'babel-runtime/core-js/object/get-own-property-names';
+import _Object$defineProperty from 'babel-runtime/core-js/object/define-property';
+import _Object$keys from 'babel-runtime/core-js/object/keys';
+import _Number$isInteger from 'babel-runtime/core-js/number/is-integer';
+import _Number$parseFloat from 'babel-runtime/core-js/number/parse-float';
+import _toConsumableArray from 'babel-runtime/helpers/toConsumableArray';
+import _slicedToArray from 'babel-runtime/helpers/slicedToArray';
+import _WeakMap from 'babel-runtime/core-js/weak-map';
+import _Promise from 'babel-runtime/core-js/promise';
+import _defineProperty from 'babel-runtime/helpers/defineProperty';
+import _Object$preventExtensions from 'babel-runtime/core-js/object/prevent-extensions';
 
-var defaultConfig = {
-  type: 'vod',
-  autoPlay: false,
-  box: 'hls',
-  lockInternalProperty: false,
-  debug: true,
+var defaultCustomConfig = {
+  debug: false,
   enableWorker: true
 };
 
-var Hls = function (_CustEvent) {
+/**
+ * toxic-predicate-functions v0.1.5
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
+
+/**
+ * is void element or not ? Means it will return true when val is undefined or null
+ */
+function isVoid(obj) {
+  return obj === undefined || obj === null;
+}
+/**
+ * to check whether a variable is array
+ */
+function isArray(arr) {
+  return Array.isArray(arr);
+}
+
+/**
+ * is it a function or not
+ */
+function isFunction(obj) {
+  return typeof obj === 'function';
+}
+
+/**
+ * to tell you if it's a real number
+ */
+function isNumber(obj) {
+  return typeof obj === 'number';
+}
+/**
+ * is it a string
+ */
+function isString(str) {
+  return typeof str === 'string' || str instanceof String;
+}
+/**
+ * is Boolean or not
+ */
+function isBoolean(bool) {
+  return typeof bool === 'boolean';
+}
+/**
+ * is Primitive type or not, whick means it will return true when data is number/string/boolean/undefined/null
+ */
+function isPrimitive(val) {
+  return isVoid(val) || isBoolean(val) || isString(val) || isNumber(val);
+}
+
+/**
+ * toxic-utils v0.1.6
+ * (c) 2017 toxic-johann
+ * Released under MIT
+ */
+
+/**
+ * bind the function with some context. we have some fallback strategy here
+ * @param {function} fn the function which we need to bind the context on
+ * @param {any} context the context object
+ */
+function bind(fn, context) {
+  if (fn.bind) {
+    return fn.bind(context);
+  } else if (fn.apply) {
+    return function __autobind__() {
+      for (var _len2 = arguments.length, args = Array(_len2), _key3 = 0; _key3 < _len2; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+
+      return fn.apply(context, args);
+    };
+  } else {
+    return function __autobind__() {
+      for (var _len3 = arguments.length, args = Array(_len3), _key4 = 0; _key4 < _len3; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+
+      return fn.call.apply(fn, [context].concat(_toConsumableArray(args)));
+    };
+  }
+}
+
+/**
+ * toxic-decorators v0.3.8
+ * (c) 2017 toxic-johann
+ * Released under GPL-3.0
+ */
+
+var getOwnPropertyDescriptor = _Object$getOwnPropertyDescriptor;
+/**
+ * to check if the descirptor is an data descriptor
+ * @param {descriptor} desc it should be a descriptor better
+ */
+function isDataDescriptor(desc) {
+  return !!desc && desc.hasOwnProperty('value') && isBoolean(desc.configurable) && isBoolean(desc.enumerable) && isBoolean(desc.writable);
+}
+/**
+ * set one value on the object
+ * @param {string} key
+ */
+function createDefaultSetter(key) {
+  return function set(newValue) {
+    _Object$defineProperty(this, key, {
+      configurable: true,
+      writable: true,
+      // IS enumerable when reassigned by the outside word
+      enumerable: true,
+      value: newValue
+    });
+    return newValue;
+  };
+}
+
+function getOwnKeysFn() {
+  var getOwnPropertyNames = _Object$getOwnPropertyNames,
+      getOwnPropertySymbols = _Object$getOwnPropertySymbols;
+
+  return isFunction(getOwnPropertySymbols) ? function (obj) {
+    // $FlowFixMe: do not support symwbol yet
+    return _Array$from(getOwnPropertyNames(obj).concat(getOwnPropertySymbols(obj)));
+  } : getOwnPropertyNames;
+}
+
+var getOwnKeys = getOwnKeysFn();
+
+function getOwnPropertyDescriptorsFn() {
+  // $FlowFixMe: In some environment, Object.getOwnPropertyDescriptors has been implemented;
+  return isFunction(_Object$getOwnPropertyDescriptors) ? _Object$getOwnPropertyDescriptors : function (obj) {
+    return getOwnKeys(obj).reduce(function (descs, key) {
+      descs[key] = getOwnPropertyDescriptor(obj, key);
+      return descs;
+    }, {});
+  };
+}
+
+var getOwnPropertyDescriptors = getOwnPropertyDescriptorsFn();
+
+var defineProperty$1 = _Object$defineProperty;
+
+function classify(decorator) {
+  var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+      requirement = _ref.requirement,
+      _ref$customArgs = _ref.customArgs,
+      customArgs = _ref$customArgs === undefined ? false : _ref$customArgs;
+
+  return function () {
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        _ref2$exclude = _ref2.exclude,
+        exclude = _ref2$exclude === undefined ? [] : _ref2$exclude,
+        _ref2$include = _ref2.include,
+        include = _ref2$include === undefined ? [] : _ref2$include,
+        _ref2$construct = _ref2.construct,
+        construct = _ref2$construct === undefined ? false : _ref2$construct,
+        _ref2$self = _ref2.self,
+        self = _ref2$self === undefined ? false : _ref2$self;
+
+    if (!isArray(exclude)) throw new TypeError('options.exclude must be an array');
+    if (!isArray(include)) throw new TypeError('options.include must be an array');
+    return function (Klass) {
+      var isClass = isFunction(Klass);
+      if (!self && !isClass) throw new TypeError('@' + decorator.name + 'Class can only be used on class');
+      if (self && isPrimitive(Klass)) throw new TypeError('@' + decorator.name + 'Class must be used on non-primitive type value in \'self\' mode');
+      var prototype = self ? Klass : Klass.prototype;
+      if (isVoid(prototype)) throw new Error('The prototype of the ' + Klass.name + ' is empty, please check it');
+      var descs = getOwnPropertyDescriptors(prototype);
+      getOwnKeys(prototype).concat(include).forEach(function (key) {
+        var desc = descs[key];
+        if (key === 'constructor' && !construct || self && isClass && ['name', 'length', 'prototype'].indexOf(key) > -1 || exclude.indexOf(key) > -1 || isFunction(requirement) && requirement(prototype, key, desc, { self: self }) === false) return;
+        defineProperty$1(prototype, key, (customArgs ? decorator.apply(undefined, _toConsumableArray(args)) : decorator)(prototype, key, desc));
+      });
+    };
+  };
+}
+
+var autobindClass = classify(autobind, {
+  requirement: function requirement(obj, prop, desc) {
+    // $FlowFixMe: it's data descriptor now
+    return isDataDescriptor(desc) && isFunction(desc.value);
+  }
+});
+
+var mapStore = void 0;
+// save bound function for super
+function getBoundSuper(obj, fn) {
+  if (typeof _WeakMap === 'undefined') {
+    throw new Error('Using @autobind on ' + fn.name + '() requires WeakMap support due to its use of super.' + fn.name + '()');
+  }
+
+  if (!mapStore) {
+    mapStore = new _WeakMap();
+  }
+
+  if (mapStore.has(obj) === false) {
+    mapStore.set(obj, new _WeakMap());
+  }
+
+  var superStore = mapStore.get(obj);
+  // $FlowFixMe: already insure superStore is not undefined
+  if (superStore.has(fn) === false) {
+    // $FlowFixMe: already insure superStore is not undefined
+    superStore.set(fn, bind(fn, obj));
+  }
+  // $FlowFixMe: already insure superStore is not undefined
+  return superStore.get(fn);
+}
+/**
+ * auto bind the function on the class, just support function
+ * @param {Object} obj Target Object
+ * @param {string} prop prop strong
+ * @param {Object} descriptor
+ */
+function autobind(obj, prop, descriptor) {
+  if (arguments.length === 1) return autobindClass()(obj);
+
+  var _ref = descriptor || {},
+      fn = _ref.value,
+      configurable = _ref.configurable;
+
+  if (!isFunction(fn)) {
+    throw new TypeError('@autobind can only be used on functions, not "' + fn + '" in ' + (typeof fn === 'undefined' ? 'undefined' : _typeof(fn)) + ' on property "' + prop + '"');
+  }
+  var constructor = obj.constructor;
+
+  return {
+    configurable: configurable,
+    enumerable: false,
+    get: function get() {
+      var _this = this;
+
+      var boundFn = function boundFn() {
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+          args[_key] = arguments[_key];
+        }
+
+        return fn.call.apply(fn, [_this].concat(_toConsumableArray(args)));
+      };
+      // Someone accesses the property directly on the prototype on which it is
+      // actually defined on, i.e. Class.prototype.hasOwnProperty(key)
+      if (this === obj) {
+        return fn;
+      }
+      // Someone accesses the property directly on a prototype,
+      // but it was found up the chain, not defined directly on it
+      // i.e. Class.prototype.hasOwnProperty(key) == false && key in Class.prototype
+      if (this.constructor !== constructor && _Object$getPrototypeOf(this).constructor === constructor) {
+        return fn;
+      }
+
+      // Autobound method calling super.sameMethod() which is also autobound and so on.
+      if (this.constructor !== constructor && prop in this.constructor.prototype) {
+        return getBoundSuper(this, fn);
+      }
+      _Object$defineProperty(this, prop, {
+        configurable: true,
+        writable: true,
+        // NOT enumerable when it's a bound method
+        enumerable: false,
+        value: boundFn
+      });
+
+      return boundFn;
+    },
+
+    set: createDefaultSetter(prop)
+  };
+}
+
+var _class;
+
+function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+  var desc = {};
+  Object['ke' + 'ys'](descriptor).forEach(function (key) {
+    desc[key] = descriptor[key];
+  });
+  desc.enumerable = !!desc.enumerable;
+  desc.configurable = !!desc.configurable;
+
+  if ('value' in desc || desc.initializer) {
+    desc.writable = true;
+  }
+
+  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+    return decorator(target, property, desc) || desc;
+  }, desc);
+
+  if (context && desc.initializer !== void 0) {
+    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+    desc.initializer = undefined;
+  }
+
+  if (desc.initializer === void 0) {
+    Object['define' + 'Property'](target, property, desc);
+    desc = null;
+  }
+
+  return desc;
+}
+
+var LOG_TAG = 'chimee-kernel-hls';
+
+var Hls = (_class = function (_CustEvent) {
   _inherits(Hls, _CustEvent);
 
   _createClass(Hls, null, [{
@@ -24,77 +348,47 @@ var Hls = function (_CustEvent) {
     value: function isSupport() {
       return HlsCore.isSupported();
     }
-  }, {
-    key: 'version',
-    get: function get() {
-      return '1.0.6';
-    }
   }]);
 
-  function Hls(videodom, config) {
+  function Hls(videoElement, config) {
+    var customConfig = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
     _classCallCheck(this, Hls);
 
-    var _this2 = _possibleConstructorReturn(this, (Hls.__proto__ || _Object$getPrototypeOf(Hls)).call(this));
+    var _this = _possibleConstructorReturn(this, (Hls.__proto__ || _Object$getPrototypeOf(Hls)).call(this));
 
-    _this2.tag = 'HLS-player';
-    _this2.video = videodom;
-    _this2.box = 'hls';
-    _this2.config = deepAssign({}, defaultConfig, config);
-    _this2.hls = new HlsCore();
-    _this2.bindEvents(_this2.hls);
-    _this2.attachMedia();
-    return _this2;
+    _this.version = '1.1.0';
+
+    if (!isElement(videoElement)) throw new Error('video element passed in ' + LOG_TAG + ' must be a HTMLVideoElement, but not ' + (typeof videoElement === 'undefined' ? 'undefined' : _typeof(videoElement)));
+    if (!isObject(config)) throw new Error('config of ' + LOG_TAG + ' must be an Object but not ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
+    _this.video = videoElement;
+    _this.config = config;
+    _this.customConfig = deepAssign({}, defaultCustomConfig, customConfig);
+    _this.hlsKernel = new HlsCore(_this.customConfig);
+    _this.bindEvents();
+    _this.attachMedia();
+    return _this;
   }
 
   _createClass(Hls, [{
-    key: 'internalPropertyHandle',
-    value: function internalPropertyHandle() {
-      if (!_Object$getOwnPropertyDescriptor) {
-        return;
-      }
-      var _this = this;
-      var time = _Object$getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'currentTime');
-
-      Object.defineProperty(this.video, 'currentTime', {
-        get: function get() {
-          return time.get.call(_this.video);
-        },
-        set: function set(t) {
-          if (!_this.currentTimeLock) {
-            throw new Error('can not set currentTime by youself');
-          } else {
-            return time.set.call(_this.video, t);
-          }
-        }
-      });
-    }
-  }, {
     key: 'bindEvents',
-    value: function bindEvents(hlsKernel) {
-      var _this3 = this;
+    value: function bindEvents() {
+      var remove = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
+      var hlsKernel = this.hlsKernel;
       if (hlsKernel) {
-        hlsKernel.on(HlsCore.Events.ERROR, function (event, data) {
-          // this.emit(this.tag, data);
-        });
-
-        hlsKernel.on(HlsCore.Events.LEVEL, function (event, data) {});
-      }
-      if (this.video && this.config.lockInternalProperty) {
-        this.video.addEventListener('canplay', function () {
-          _this3.internalPropertyHandle();
-        });
+        hlsKernel[remove ? 'off' : 'on'](HlsCore.Events.ERROR, this.hlsErrorHandler);
       }
     }
   }, {
     key: 'load',
     value: function load() {
-      this.hls.loadSource(this.config.src);
+      return this.hlsKernel.loadSource(this.config.src);
     }
   }, {
     key: 'attachMedia',
     value: function attachMedia() {
-      this.hls.attachMedia(this.video);
+      return this.hlsKernel.attachMedia(this.video);
     }
   }, {
     key: 'play',
@@ -104,19 +398,12 @@ var Hls = function (_CustEvent) {
   }, {
     key: 'destroy',
     value: function destroy() {
-      return this.hls.destroy();
+      this.bindEvents(true);
+      return this.hlsKernel.destroy();
     }
   }, {
     key: 'seek',
     value: function seek(seconds) {
-      this.currentTimeLock = true;
-      // throttle(this._seek.bind(this, seconds), 200, {leading: false});
-      this._seek(seconds);
-      this.currentTimeLock = false;
-    }
-  }, {
-    key: '_seek',
-    value: function _seek(seconds) {
       this.video.currentTime = seconds;
     }
   }, {
@@ -127,12 +414,19 @@ var Hls = function (_CustEvent) {
   }, {
     key: 'refresh',
     value: function refresh() {
-      this.hls.stopLoad();
-      this.hls.loadSource(this.config.src);
+      this.hlsKernel.stopLoad();
+      return this.hlsKernel.loadSource(this.config.src);
+    }
+  }, {
+    key: 'hlsErrorHandler',
+    value: function hlsErrorHandler(event, data) {
+      this.emit('error', data);
+      this.emit(event, data);
+      Log.error(LOG_TAG + (event ? ' ' + event : ''), data.details);
     }
   }]);
 
   return Hls;
-}(CustEvent);
+}(CustEvent), _applyDecoratedDescriptor(_class.prototype, 'hlsErrorHandler', [autobind], _Object$getOwnPropertyDescriptor(_class.prototype, 'hlsErrorHandler'), _class.prototype), _class);
 
 export default Hls;

@@ -1,0 +1,16 @@
+tests/
+build/
+lib/index.dev.js
+coverage/
+demo/
+doc/
+flow/
+node_modules/
+tool/
+bundle-size/
+.babelrc
+.flowconfig
+.eslintignore
+.eslintrc
+karma.config.js
+src
