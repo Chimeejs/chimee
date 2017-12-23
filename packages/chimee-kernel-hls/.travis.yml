@@ -1,4 +1,8 @@
 language: node_js
+env:
+  - MOZ_HEADLESS=1
+addons:
+  firefox: latest
 node_js:
     - '8'
 script:
