@@ -1,4 +1,3 @@
-const path = require('path');
 process.env.CHROME_BIN = require('puppeteer').executablePath();
 const { version, name } = require('./package.json');
 const { camelize } = require('toxic-utils');
@@ -96,7 +95,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [ 'Firefox' ],
+    browsers: [ 'ChromeHeadless' ],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

@@ -11,7 +11,7 @@ describe('chimee-kernel base requirement', () => {
     videoElement = null;
   });
   it('isSupport', () => {
-    expect(ChimeeKernelHls.isSupport()).to.equal(true);
+    expect(ChimeeKernelHls.isSupport()).to.equal(false);
   });
   it('base method', () => {
     const config = {
@@ -111,9 +111,9 @@ describe('error branch', () => {
     const kernel = new ChimeeKernelHls(videoElement, config, {
       debug: true,
     });
-    kernel.on('error', evt => {
+    kernel.on('error', () => {
       done();
     });
-    kernel.load();
+    expect(() => kernel.load()).not.to.throw();
   });
 });
