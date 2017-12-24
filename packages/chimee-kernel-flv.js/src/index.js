@@ -1,7 +1,6 @@
 // @flow
 import FlvCore from 'flv.js';
 import { CustEvent, deepAssign, Log, isElement, isObject } from 'chimee-helper';
-import defaultCustomConfig from './custom-config.js';
 import { autobind } from 'toxic-decorators';
 
 const LOG_TAG = 'chimee-kernel-flv';
@@ -24,9 +23,27 @@ export default class Flv extends CustEvent {
     if (!isObject(config)) throw new Error(`config of ${LOG_TAG} must be an Object but not ${typeof config}`);
     this.video = videoElement;
     this.config = config;
-    this.customConfig = deepAssign({
-      url: config.src,
-    }, defaultCustomConfig, customConfig);
+    const { src, isLive, box } = config;
+    const {
+      withCredentials,
+      hasAudio,
+      hasVideo,
+      duration,
+      filesize,
+      segments,
+    } = this.customConfig;
+    const mediaDataSource = {
+      url: src,
+      type: box,
+      isLive,
+      withCredentials,
+      hasAudio,
+      hasVideo,
+      duration,
+      filesize,
+      segments,
+    };
+    this.customConfig = deepAssign(mediaDataSource, customConfig);
     this.flvKernel = FlvCore.createPlayer(this.customConfig);
     this.bindEvents();
     this.attachMedia();
