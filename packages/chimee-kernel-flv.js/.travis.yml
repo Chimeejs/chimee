@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+    - '8'
+script:
+    - 'npm test'
+after_success:
+    - 'npm install coveralls && npm install nyc && ./node_modules/.bin/nyc report --temp-directory=coverage --reporter=text-lcov | ./node_modules/.bin/coveralls'
+notifications:
+    webhooks:
+        urls:
+            - 'https://www.travisbuddy.com/'
+        on_success: never
+        on_failure: always
+        on_start: never
+        on_cancel: never
+        on_error: never

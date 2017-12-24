@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>hls test demo</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Chimee Player Demo">
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" type="text/css" href="./index.css">
+</head>
+<body>
+  <header>
+      <h1>hls Demo</h1>
+  </header>
+	<video id="player" controls="controls" width="800" height="500" autoplay muted></video>
+</body>
+<script src="https://s.ssl.qhres.com/static/af3c1d4b462cc178/jquery.js"></script>
+<script type="text/javascript" src="/node_modules/chimee-kernel/lib/index.browser.js"></script>
+<script type="text/javascript" src="../../lib/index.dev.js"></script>
+<script type="text/javascript" src="../base.js"></script>
+<script type="text/javascript">
+  window.kernelConfig = {
+    src: 'http://hls-live.jia.360.cn/live_jia_public/_LC_RE_non_3605277091515133292871369714_CX/index.m3u8',
+    box: 'hls',
+    isLive: true,
+    preset: {
+      hls: window.ChimeeKernelHls,
+    }
+  };
+  window.start();
+</script>
+</html>
