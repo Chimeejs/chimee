@@ -5,7 +5,7 @@ const { expect } = chai;
 describe('chimee-kernel base requirement', () => {
   let videoElement;
   beforeEach(() => {
-    videoElement = document.createElement('div');
+    videoElement = document.createElement('video');
   });
   afterEach(() => {
     videoElement = null;
