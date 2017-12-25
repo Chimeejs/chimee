@@ -91,7 +91,7 @@ describe('method it', () => {
 describe('error branch', () => {
   let videoElement;
   beforeEach(() => {
-    videoElement = document.createElement('div');
+    videoElement = document.createElement('video');
   });
   afterEach(() => {
     videoElement = null;
