@@ -1,25 +1,25 @@
-import ChimeeKernelHls from '../src/index';
+import ChimeeKernelFlvJs from '../src/index';
 import chai from 'chai';
 import { isFunction } from 'chimee-helper';
 const { expect } = chai;
 describe('chimee-kernel base requirement', () => {
   let videoElement;
   beforeEach(() => {
-    videoElement = document.createElement('div');
+    videoElement = document.createElement('video');
   });
   afterEach(() => {
     videoElement = null;
   });
   it('isSupport', () => {
-    expect(ChimeeKernelHls.isSupport()).to.equal(!process.env.TRAVIS);
+    expect(ChimeeKernelFlvJs.isSupport()).to.equal(!process.env.TRAVIS);
   });
   it('base method', () => {
     const config = {
       src: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8',
-      box: 'hls',
+      box: 'flv',
       isLive: false,
     };
-    const kernel = new ChimeeKernelHls(videoElement, config, {
+    const kernel = new ChimeeKernelFlvJs(videoElement, config, {
       debug: true,
     });
     expect(kernel.config).to.deep.equal(config);
@@ -46,11 +46,11 @@ describe('method it', () => {
   beforeEach(() => {
     videoElement = document.createElement('video');
     config = {
-      src: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8',
-      box: 'hls',
+      src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
+      box: 'flv',
       isLive: false,
     };
-    kernel = new ChimeeKernelHls(videoElement, config, {});
+    kernel = new ChimeeKernelFlvJs(videoElement, config, {});
   });
   afterEach(() => {
     kernel.destroy();
@@ -91,29 +91,29 @@ describe('method it', () => {
 describe('error branch', () => {
   let videoElement;
   beforeEach(() => {
-    videoElement = document.createElement('div');
+    videoElement = document.createElement('video');
   });
   afterEach(() => {
     videoElement = null;
   });
   it('no video element', () => {
-    expect(() => new ChimeeKernelHls()).to.throw('video element passed in chimee-kernel-hls must be a HTMLVideoElement, but not undefined');
+    expect(() => new ChimeeKernelFlvJs()).to.throw('video element passed in chimee-kernel-flv.js must be a HTMLVideoElement, but not undefined');
   });
   it('no config', () => {
-    expect(() => new ChimeeKernelHls(videoElement)).to.throw('config of chimee-kernel-hls must be an Object but not undefined');
+    expect(() => new ChimeeKernelFlvJs(videoElement)).to.throw('config of chimee-kernel-flv.js must be an Object but not undefined');
   });
   it('error handler', done => {
     const config = {
       src: 'http://cdn.toxicjohann.com',
-      box: 'hls',
+      box: '',
       isLive: false,
     };
-    const kernel = new ChimeeKernelHls(videoElement, config, {
+    const kernel = new ChimeeKernelFlvJs(videoElement, config, {
       debug: true,
     });
     kernel.on('error', () => {
       done();
     });
-    expect(() => kernel.hlsKernel.trigger('hlsError', { type: 'test', details: 'something wrong', fatal: false })).not.to.throw();
+    expect(() => kernel.flvKernel._emitter.emit('error', 'sth', 'sth')).not.to.throw();
   });
 });

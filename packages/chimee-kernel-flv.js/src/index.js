@@ -3,7 +3,7 @@ import FlvCore from 'flv.js';
 import { CustEvent, Log, isElement, isObject } from 'chimee-helper';
 import { autobind } from 'toxic-decorators';
 
-const LOG_TAG = 'chimee-kernel-flv';
+const LOG_TAG = 'chimee-kernel-flv.js';
 
 export default class Flv extends CustEvent {
   version: string;
