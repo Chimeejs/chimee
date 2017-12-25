@@ -73,6 +73,7 @@ module.exports = function(config) {
         require('rollup-plugin-commonjs')(),
         require('rollup-plugin-replace')({
           'process.env.VERSION': `'${version}'`,
+          'process.env.TRAVIS': `${process.env.TRAVIS}`,
         }),
       ],
       format: 'iife', // Helps prevent naming collisions.
