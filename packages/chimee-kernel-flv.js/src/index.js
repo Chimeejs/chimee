@@ -1,6 +1,6 @@
 // @flow
 import FlvCore from 'flv.js';
-import { CustEvent, deepAssign, Log, isElement, isObject } from 'chimee-helper';
+import { CustEvent, Log, isElement, isObject } from 'chimee-helper';
 import { autobind } from 'toxic-decorators';
 
 const LOG_TAG = 'chimee-kernel-flv';
@@ -9,15 +9,16 @@ export default class Flv extends CustEvent {
   version: string;
   video: HTMLVideoElement;
   config: KernelConfig;
-  customConfig: CustomConfig;
   version = process.env.VERSION;
-  flvKernel: any
+  flvKernel: FlvJs$Player;
+  mediaDataSource: FlvJs$MediaDataSource;
+  customConfig: FlvJs$Config;
 
   static isSupport() {
     return FlvCore.isSupported();
   }
 
-  constructor(videoElement: HTMLVideoElement, config: KernelConfig, customConfig: CustomConfig = {}) {
+  constructor(videoElement: HTMLVideoElement, config: KernelConfig, customConfig: Object = {}) {
     super();
     if (!isElement(videoElement)) throw new Error(`video element passed in ${LOG_TAG} must be a HTMLVideoElement, but not ${typeof videoElement}`);
     if (!isObject(config)) throw new Error(`config of ${LOG_TAG} must be an Object but not ${typeof config}`);
@@ -31,7 +32,7 @@ export default class Flv extends CustEvent {
       duration,
       filesize,
       segments,
-    } = this.customConfig;
+    } = customConfig;
     const mediaDataSource = {
       url: src,
       type: box,
@@ -41,10 +42,11 @@ export default class Flv extends CustEvent {
       hasVideo,
       duration,
       filesize,
-      segments,
     };
-    this.customConfig = deepAssign(mediaDataSource, customConfig);
-    this.flvKernel = FlvCore.createPlayer(this.customConfig);
+    if (box !== 'mp4') mediaDataSource.segments = segments;
+    this.mediaDataSource = mediaDataSource;
+    this.customConfig = customConfig;
+    this.flvKernel = FlvCore.createPlayer(mediaDataSource, customConfig);
     this.bindEvents();
     this.attachMedia();
   }
@@ -52,6 +54,7 @@ export default class Flv extends CustEvent {
   bindEvents(remove: boolean = false) {
     const flvKernel = this.flvKernel;
     if (flvKernel) {
+      // $FlowFixMe: support computed key here
       flvKernel[remove ? 'off' : 'on'](FlvCore.Events.ERROR, this.flvErrorHandler);
     }
   }

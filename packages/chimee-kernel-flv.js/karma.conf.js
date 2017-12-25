@@ -1,4 +1,3 @@
-process.env.CHROME_BIN = require('puppeteer').executablePath();
 const { version, name } = require('./package.json');
 const { camelize } = require('toxic-utils');
 
@@ -69,11 +68,14 @@ module.exports = function(config) {
           customResolveOptions: {
             moduleDirectory: [ 'src', 'node_modules' ],
           },
+          preferBuiltins: true,
         }),
         require('rollup-plugin-commonjs')(),
         require('rollup-plugin-replace')({
           'process.env.VERSION': `'${version}'`,
+          'process.env.TRAVIS': `${process.env.TRAVIS}`,
         }),
+        require('rollup-plugin-node-builtins')(),
       ],
       format: 'iife', // Helps prevent naming collisions.
       name: camelize(name), // Required for 'iife' format.
@@ -95,7 +97,14 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [ 'ChromeHeadless' ],
+    browsers: [ 'FirefoxHeadless' ],
+
+    customLaunchers: {
+      FirefoxHeadless: {
+        base: 'Firefox',
+        flags: [ '-headless' ],
+      },
+    },
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

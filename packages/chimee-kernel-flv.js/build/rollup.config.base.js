@@ -132,6 +132,7 @@ export default function(mode) {
         customResolveOptions: {
           moduleDirectory: [ 'src', 'node_modules' ],
         },
+        preferBuiltins: true,
       }),
       commonjs(),
       replace({
