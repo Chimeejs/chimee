@@ -11,7 +11,7 @@ describe('chimee-kernel base requirement', () => {
     videoElement = null;
   });
   it('isSupport', () => {
-    expect(ChimeeKernelHls.isSupport()).to.equal(false);
+    expect(ChimeeKernelHls.isSupport()).to.equal(true);
   });
   it('base method', () => {
     const config = {
