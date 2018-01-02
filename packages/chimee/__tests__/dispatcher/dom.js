@@ -1,6 +1,26 @@
 import Dom from 'dispatcher/dom';
-import { Log } from 'chimee-helper';
+import { Log, bind } from 'chimee-helper';
 describe('dispatcher/dom', () => {
+  let originCreateElement;
+  let originScrollTo;
+
+  beforeAll(() => {
+    originCreateElement = global.document.createElement;
+    global.document.createElement = function(tag) {
+      const element = bind(originCreateElement, document)(tag);
+      if (tag === 'video') {
+        element.play = function() {};
+      }
+      return element;
+    };
+    originScrollTo = global.window.scrollTo;
+    global.window.scrollTo = function() {};
+  });
+
+  afterAll(() => {
+    global.document.createElement = originCreateElement;
+    global.window.scrollTo = originScrollTo;
+  });
   test('dom needs wrapper and dispatcher if you pass in illegal desipatcher, it should throw error', () => {
     expect(() => new Dom()).toThrow('Wrapper can only be string or HTMLElement, but not undefined');
     expect(() => new Dom('hello')).toThrow('Can not get dom node accroding wrapper. Please check your wrapper');
@@ -104,12 +124,41 @@ describe('dispatcher/dom', () => {
 });
 
 describe('_getEventHanlder', () => {
-  const node = document.createElement('div');
-  const triggerSync = jest.fn();
-  const dom = new Dom(node, {
-    bus: {
-      triggerSync,
-    },
+  let dom;
+  let originCreateElement;
+  let originScrollTo;
+  let triggerSync;
+  beforeAll(() => {
+    originCreateElement = global.document.createElement;
+    global.document.createElement = function(tag) {
+      const element = bind(originCreateElement, document)(tag);
+      if (tag === 'video') {
+        element.play = function() {};
+      }
+      return element;
+    };
+    originScrollTo = global.window.scrollTo;
+    global.window.scrollTo = function() {};
+  });
+
+  afterAll(() => {
+    global.document.createElement = originCreateElement;
+    global.window.scrollTo = originScrollTo;
+  });
+
+  beforeEach(() => {
+    const node = document.createElement('div');
+    triggerSync = jest.fn();
+    dom = new Dom(node, {
+      bus: {
+        triggerSync,
+      },
+    });
+  });
+
+  afterEach(() => {
+    triggerSync = null;
+    dom.destroy();
   });
   test('normal click event', () => {
     const fn1 = dom._getEventHandler('click', {});
@@ -120,22 +169,32 @@ describe('_getEventHanlder', () => {
   test('normal mouseenter event', () => {
     const fn2 = dom._getEventHandler('mouseenter', {});
     fn2();
-    expect(triggerSync).toHaveBeenCalledTimes(2);
+    expect(triggerSync).toHaveBeenCalledTimes(1);
     expect(triggerSync).lastCalledWith('mouseenter');
   });
   describe('mouseenter and insidevideo judge', () => {
-    const insideVideoNode = document.createElement('div');
-    const insideVideoChildNode = document.createElement('div');
-    insideVideoNode.appendChild((insideVideoChildNode));
-    dom.__videoExtendedNodes.push(insideVideoNode);
-    dom.__videoExtendedNodes.push(document.createElement('div'));
-    const fn3 = dom._getEventHandler('mouseenter', { penetrate: true });
+    let fn3;
+    let insideVideoNode;
+    let insideVideoChildNode;
+    beforeEach(() => {
+      insideVideoNode = document.createElement('div');
+      insideVideoChildNode = document.createElement('div');
+      insideVideoNode.appendChild((insideVideoChildNode));
+      dom.__videoExtendedNodes.push(insideVideoNode);
+      dom.__videoExtendedNodes.push(document.createElement('div'));
+      fn3 = dom._getEventHandler('mouseenter', { penetrate: true });
+    });
+    afterEach(() => {
+      insideVideoNode = null;
+      insideVideoChildNode = null;
+      fn3 = null;
+    });
     test('mouseenter event, but not enter video area, should trigger nothing', () => {
       fn3({
         type: 'mouseenter',
         currentTarget: null,
       });
-      expect(triggerSync).toHaveBeenCalledTimes(2);
+      expect(triggerSync).toHaveBeenCalledTimes(0);
     });
     test('mouseener and enter video area on insideVideoNode, should trigger mouseenter', () => {
       const event1 = {
@@ -144,7 +203,7 @@ describe('_getEventHanlder', () => {
       };
       fn3(event1);
       expect(triggerSync).lastCalledWith('mouseenter', event1);
-      expect(triggerSync).toHaveBeenCalledTimes(3);
+      expect(triggerSync).toHaveBeenCalledTimes(1);
     });
     test('mouseleave, from inside video node to video itself, should trigger nothing', () => {
       fn3({
@@ -152,32 +211,44 @@ describe('_getEventHanlder', () => {
         currentTarget: insideVideoNode,
         toElement: dom.videoElement,
       });
-      expect(triggerSync).toHaveBeenCalledTimes(3);
+      expect(triggerSync).toHaveBeenCalledTimes(0);
     });
-    test('mouseenter video, should trigger nothing', () => {
+    test('mouseenter video from insideVideoNode, should trigger nothing', () => {
+      const event1 = {
+        type: 'mouseenter',
+        currentTarget: insideVideoNode,
+      };
+      fn3(event1);
+      expect(triggerSync).lastCalledWith('mouseenter', event1);
+      expect(triggerSync).toHaveBeenCalledTimes(1);
       fn3({
         type: 'mouseenter',
         currentTarget: dom.videoElement,
       });
-      expect(triggerSync).toHaveBeenCalledTimes(3);
+      expect(triggerSync).toHaveBeenCalledTimes(1);
     });
     test('mouseleave from video to outside, should trigger mouseleave', () => {
+      fn3({
+        type: 'mouseenter',
+        currentTarget: dom.videoElement,
+      });
+      expect(triggerSync).toHaveBeenCalledTimes(1);
       const event2 = {
         type: 'mouseleave',
         currentTarget: dom.videoElement,
         relatedTarget: null,
       };
       fn3(event2);
-      expect(triggerSync).toHaveBeenCalledTimes(4);
+      expect(triggerSync).toHaveBeenCalledTimes(2);
       expect(triggerSync).lastCalledWith('mouseleave', event2);
     });
-    test('mouseenter to inside video node child element', () => {
+    test('mouseenter to inside video node child element, should trigger', () => {
       const event3 = {
         type: 'mouseenter',
         currentTarget: insideVideoChildNode,
       };
       fn3(event3);
-      expect(triggerSync).toHaveBeenCalledTimes(5);
+      expect(triggerSync).toHaveBeenCalledTimes(1);
       expect(triggerSync).lastCalledWith('mouseenter', event3);
     });
     afterAll(() => {
@@ -185,15 +256,17 @@ describe('_getEventHanlder', () => {
     });
   });
   test('_focusToVideo should work', () => {
-    const node = document.createElement('div');
-    const dom = new Dom(node, {});
     dom._focusToVideo();
-    dom.destroy();
   });
   test('fullscreen should work', () => {
     const node = document.createElement('div');
     document.body.appendChild(node);
-    const dom = new Dom(node, { videoConfigReady: true });
+    const dom = new Dom(node, {
+      videoConfigReady: true,
+      bus: {
+        triggerSync,
+      },
+    });
     dom.container.mozRequestFullscreen = () => {};
     dom.fullscreen(true);
     document.mozCancelFullscreen = () => {};
@@ -206,7 +279,12 @@ describe('_getEventHanlder', () => {
 
   test('focus', () => {
     const node = document.createElement('div');
-    const dom = new Dom(node, { videoConfigReady: true });
+    const dom = new Dom(node, {
+      videoConfigReady: true,
+      bus: {
+        triggerSync,
+      },
+    });
     expect(document.activeElement).toBe(document.body);
     dom.focus();
     expect(document.activeElement).toBe(dom.videoElement);
@@ -215,6 +293,10 @@ describe('_getEventHanlder', () => {
   test('setStyle', () => {
     const node = document.createElement('div');
     const dom = new Dom(node, {
+      videoConfigReady: true,
+      bus: {
+        triggerSync,
+      },
       throwError(error) {
         throw error;
       },
