@@ -1,6 +1,6 @@
 {
   "name": "chimee",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "a video-player aims to bring wonderful experience on browser",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -11,7 +11,7 @@
     "prepush": "npm run test",
     "prepublishOnly": "npm t && pkg-ok",
     "postmerge": "sh tool/auto-npm-install.sh",
-    "test": "jest --coverage",
+    "test": "jest --coverage && node env-check.js",
     "unit": "jest --coverage --watch",
     "lint": "eslint . --fix && flow",
     "flow": "flow",
