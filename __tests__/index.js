@@ -1,5 +1,5 @@
 import Chimee from 'index';
-import { Log, getAttr, setAttr } from 'chimee-helper';
+import { Log, getAttr, setAttr, bind } from 'chimee-helper';
 import { videoReadOnlyProperties } from 'helper/const';
 // import chimeeKernelFlv from 'chimee-kernel-flv';
 
@@ -19,6 +19,22 @@ describe('Chimee', () => {
 
   let player;
   let originURLrevoke;
+  let originCreateElement;
+
+  beforeAll(() => {
+    originCreateElement = global.document.createElement;
+    global.document.createElement = function(tag) {
+      const element = bind(originCreateElement, document)(tag);
+      if (tag === 'video') {
+        element.play = function() {};
+      }
+      return element;
+    };
+  });
+
+  afterAll(() => {
+    global.document.createElement = originCreateElement;
+  });
 
   beforeEach(() => {
     Log.data.warn = [];
