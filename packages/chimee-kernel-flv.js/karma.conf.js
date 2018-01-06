@@ -77,9 +77,11 @@ module.exports = function(config) {
         }),
         require('rollup-plugin-node-builtins')(),
       ],
-      format: 'iife', // Helps prevent naming collisions.
-      name: camelize(name), // Required for 'iife' format.
-      sourcemap: 'inline', // Sensible for testing.
+      output: {
+        format: 'iife', // Helps prevent naming collisions.
+        name: camelize(name), // Required for 'iife' format.
+        sourcemap: 'inline', // Sensible for testing.
+      },
     },
 
     // web server port

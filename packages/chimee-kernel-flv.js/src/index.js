@@ -53,6 +53,7 @@ export default class Flv extends CustEvent {
 
   bindEvents(remove: boolean = false) {
     const flvKernel = this.flvKernel;
+    /* istanbul ignore else */
     if (flvKernel) {
       // $FlowFixMe: support computed key here
       flvKernel[remove ? 'off' : 'on'](FlvCore.Events.ERROR, this.flvErrorHandler);
@@ -94,6 +95,7 @@ export default class Flv extends CustEvent {
   flvErrorHandler(event: string, data: Object) {
     this.emit('error', data);
     this.emit(event, data);
+    /* istanbul ignore next */
     Log.error(LOG_TAG + (event ? ' ' + event : ''), data.details);
   }
 }

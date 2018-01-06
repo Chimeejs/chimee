@@ -104,8 +104,8 @@ describe('error branch', () => {
   });
   it('error handler', done => {
     const config = {
-      src: 'http://cdn.toxicjohann.com',
-      box: '',
+      src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
+      box: 'flv',
       isLive: false,
     };
     const kernel = new ChimeeKernelFlvJs(videoElement, config, {
@@ -115,5 +115,31 @@ describe('error branch', () => {
       done();
     });
     expect(() => kernel.flvKernel._emitter.emit('error', 'sth', 'sth')).not.to.throw();
+  });
+});
+
+describe('mp4 test', () => {
+  let videoElement;
+  beforeEach(() => {
+    videoElement = document.createElement('video');
+  });
+  afterEach(() => {
+    videoElement = null;
+  });
+  it('play mp4', () => {
+    const config = {
+      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+      box: 'mp4',
+      isLive: false,
+    };
+    const kernel = new ChimeeKernelFlvJs(videoElement, config, {
+      debug: true,
+    });
+    expect(() => {
+      kernel.attachMedia();
+      kernel.load();
+      kernel.play();
+      kernel.pause();
+    }).not.to.throw();
   });
 });
