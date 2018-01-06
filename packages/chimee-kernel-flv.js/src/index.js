@@ -33,7 +33,7 @@ export default class Flv extends CustEvent {
       filesize,
       segments,
     } = customConfig;
-    const mediaDataSource = {
+    const mediaDataSource: FlvJs$MediaDataSource = {
       url: src,
       type: box,
       isLive,

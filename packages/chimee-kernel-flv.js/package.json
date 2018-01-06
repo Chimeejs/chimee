@@ -4,6 +4,8 @@
   "description": "A flv decoder for chimee, using flv.js",
   "main": "lib/index.js",
   "scripts": {
+    "precommit": "npm run lint && npm t",
+    "prepush": "npm run test",
     "prepublishOnly": "npm run lint && npm t && pkg-ok",
     "build": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
     "b-common": "rollup -c build/rollup.config.common.js",
@@ -28,7 +30,7 @@
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "chimee-helper": "^0.2.10",
-    "flv.js": "^1.3.4"
+    "flv.js": "^1.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -71,6 +73,7 @@
     "rollup-plugin-serve": "^0.4.0",
     "rollup-plugin-uglify": "^2.0.1",
     "rollup-watch": "^4.3.1",
-    "toxic-decorators": "^0.3.8"
+    "toxic-decorators": "^0.3.8",
+    "uglify-es": "^3.3.4"
   }
 }
