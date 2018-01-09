@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.8.1
+ * chimee v0.8.2
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -7653,6 +7653,7 @@ var accessorMap = {
       var val = value ? '' : undefined;
       this.dom.setAttr('video', 'playsinline', val);
       this.dom.setAttr('video', 'webkit-playsinline', val);
+      // fix android wechat bug
       this.dom.setAttr('video', 'x5-playsinline', val);
       this.dom.setAttr('video', 'x5-video-player-type', value ? 'h5' : undefined);
       return value;
@@ -8365,7 +8366,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.8.1';
+    _this.VERSION = '0.8.2';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -10450,7 +10451,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.8.1';
+    return '0.8.2';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,
