@@ -484,7 +484,7 @@ describe('dispatcher/plugin', () => {
       expect(plugin.playsInline).toBe(true);
       expect(getAttr(dispatcher.dom.videoElement, 'playsinline')).toBe('');
       expect(getAttr(dispatcher.dom.videoElement, 'webkit-playsinline')).toBe('');
-      expect(getAttr(dispatcher.dom.videoElement, 'x5-video-player-type')).toBe('h5');
+      expect(getAttr(dispatcher.dom.videoElement, 'x5-playsinline')).toBe('');
     });
     test('x5VideoPlayerFullscreen', () => {
       plugin.x5VideoPlayerFullscreen = true;

@@ -419,12 +419,12 @@ describe('Chimee', () => {
       expect(player.playsInline).toBe(true);
       expect(getAttr(videoElement, 'playsinline')).toBe('');
       expect(getAttr(videoElement, 'webkit-playsinline')).toBe('');
-      expect(getAttr(videoElement, 'x5-video-player-type')).toBe('h5');
+      expect(getAttr(videoElement, 'x5-playsinline')).toBe('');
       videoElement.playsInline = false;
       expect(player.playsInline).toBe(false);
       expect(getAttr(videoElement, 'playsinline')).toBe('');
       expect(getAttr(videoElement, 'webkit-playsinline')).toBe('');
-      expect(getAttr(videoElement, 'x5-video-player-type')).toBe('h5');
+      expect(getAttr(videoElement, 'x5-playsinline')).toBe('');
     });
     test('playsinline with videoconfigready = false', () => {
       player.__dispatcher.videoConfigReady = false;
@@ -432,6 +432,24 @@ describe('Chimee', () => {
       expect(player.playsInline).toBe(true);
       expect(getAttr(videoElement, 'playsinline')).toBe(null);
       expect(getAttr(videoElement, 'webkit-playsinline')).toBe(null);
+      expect(getAttr(videoElement, 'x5-playsinline')).toBe(null);
+    });
+    test('x5VideoPlayerType', () => {
+      expect(player.x5VideoPlayerType).toBe();
+      expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
+      player.x5VideoPlayerType = 'h5';
+      expect(player.x5VideoPlayerType).toBe('h5');
+      expect(getAttr(videoElement, 'x5-video-player-type')).toBe('h5');
+      player.x5VideoPlayerType = false;
+      expect(player.x5VideoPlayerType).toBe();
+      expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
+    });
+    test('x5VideoPlayerType  with videoconfigready = false', () => {
+      expect(player.x5VideoPlayerType).toBe();
+      expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
+      player.__dispatcher.videoConfigReady = false;
+      player.x5VideoPlayerType = 'h5';
+      expect(player.x5VideoPlayerType).toBe();
       expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
     });
     test('get playsinline when playsInline of videoElement is undefined', () => {
