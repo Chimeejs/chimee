@@ -187,6 +187,8 @@ const accessorMap = {
         const val = value ? '' : undefined;
         this.dom.setAttr('video', 'playsinline', val);
         this.dom.setAttr('video', 'webkit-playsinline', val);
+        // fix android wechat bug
+        this.dom.setAttr('video', 'x5-playsinline', val);
         this.dom.setAttr('video', 'x5-video-player-type', value ? 'h5' : undefined);
         return value;
       },
