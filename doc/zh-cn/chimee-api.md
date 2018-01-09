@@ -223,10 +223,11 @@ const chimee = new Chimee({
 | muted                   | 是否静音                           | boolean          | false       |                                          |
 | preload                 | 是否预加载                          | boolean          | undefined   |                                          |
 | poster                  | 封面                             | string           | ''          |                                          |
-| playsInline             | 是否内联                           | boolean          | false       | 我们会为此添加 `playsinle="true" webkit-playsinline="true" x5-video-player-type="h5"` |
+| playsInline             | 是否内联                           | boolean          | false       | 我们会为此添加 `playsinle webkit-playsinline x5-playsinline` |
 | xWebkitAirplay          | 是否添加 `x-webkit-airplay`        | boolean          | false       |                                          |
 | x5VideoPlayerFullscreen | 是否添加`x5-video-play-fullscreen` | boolean          | false       |                                          |
 | x5VideoOrientation      | ` x5-video-orientation`        | string \| void   | undefined   | 可选 landscape 和 portrait                  |
+| x5VideoPlayerType       | ` x5-video-player-type`        | 'h5' \| void     | undefined   |                                          |
 | playbackRate            | 回放速率                           | number           | 1           | 大于1加速，小于1减速                              |
 | defaultPlaybackRate     | 默认回放速率                         | number           | 1           | 大于1加速，小于1减速                              |
 | autoload                | 设置`src`时是否进行自动加载               | boolean          | true        |                                          |
@@ -240,7 +241,7 @@ const chimee = new Chimee({
 >
 > 1. 在 iOS 下需要 inline 的模式下才能自动播放，因此在传入的时候需要设置 `inline: true`。我们会为你设置`playsinline="true" webkit-playsinline="true"`
 > 2. 然而并不是所有 iOS 的 webview 都支持该模式，如果你的 iOS 版本比较旧，请检查 webView 上有否设置 `webview.allowsInlineMediaPlayback = YES;`
-> 3. 在腾讯的 X5 浏览器也需要同理，设为 `inline: true`，我们会为你设置 `x5-video-player-type="h5"`
+> 3. 在腾讯的 X5 浏览器也需要同理，设为 `inline: true`，我们会为你设置 `x5-playsinline`
 > 4. 部分浏览器必须要一开始就添加 video 元素，此时，请将 wrapper 的 html 写成如下格式。
 >
 > ```html

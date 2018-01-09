@@ -2,7 +2,7 @@ const { version, name, author, license, dependencies } = require('../package.jso
 export const banner = `
 /**
  * ${name} v${version}
- * (c) 2017 ${author}
+ * (c) 2017-${(new Date().getFullYear())} ${author}
  * Released under ${license}
  */
 `;

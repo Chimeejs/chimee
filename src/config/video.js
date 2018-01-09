@@ -187,9 +187,7 @@ const accessorMap = {
         const val = value ? '' : undefined;
         this.dom.setAttr('video', 'playsinline', val);
         this.dom.setAttr('video', 'webkit-playsinline', val);
-        // fix android wechat bug
         this.dom.setAttr('video', 'x5-playsinline', val);
-        this.dom.setAttr('video', 'x5-video-player-type', value ? 'h5' : undefined);
         return value;
       },
     }),
@@ -202,6 +200,19 @@ const accessorMap = {
   x5VideoOrientation: [
     accessor({ set: stringOrVoid }),
     accessorCustomAttribute('x5-video-orientation'),
+  ],
+  x5VideoPlayerType: [
+    accessor({
+      set(value) {
+        if (!this.dispatcher.videoConfigReady) return value;
+        const val = value === 'h5' ? 'h5' : undefined;
+        this.dom.setAttr('video', 'x5-video-player-type', val);
+        return value;
+      },
+      get() {
+        return this.dom.getAttr('video', 'x5-video-player-type') ? 'h5' : undefined;
+      },
+    }),
   ],
   xWebkitAirplay: [
     accessor({ set(value) { return !!value; }, get(value) { return !!value; } }),
@@ -286,6 +297,8 @@ export default class VideoConfig {
 
   x5VideoOrientation = undefined;
 
+  x5VideoPlayerType = undefined;
+
   xWebkitAirplay = false;
 
   playbackRate = 1;
@@ -300,7 +313,7 @@ export default class VideoConfig {
   _kernelProperty = [ 'isLive', 'box', 'preset', 'kernels', 'presetConfig' ];
 
   @frozen
-  _realDomAttr = [ 'src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume' ];
+  _realDomAttr = [ 'src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume', 'x5VideoPlayerType' ];
 
   constructor(dispatcher: Dispatcher, config: Object) {
     applyDecorators(this, accessorMap, { self: true });
