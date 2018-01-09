@@ -1,7 +1,7 @@
 
 /**
- * chimee v0.8.2
- * (c) 2017 toxic-johann
+ * chimee v0.8.3
+ * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
 
@@ -7653,9 +7653,7 @@ var accessorMap = {
       var val = value ? '' : undefined;
       this.dom.setAttr('video', 'playsinline', val);
       this.dom.setAttr('video', 'webkit-playsinline', val);
-      // fix android wechat bug
       this.dom.setAttr('video', 'x5-playsinline', val);
-      this.dom.setAttr('video', 'x5-video-player-type', value ? 'h5' : undefined);
       return value;
     }
   }), boolean$1()],
@@ -7668,6 +7666,17 @@ var accessorMap = {
     }
   }), accessorCustomAttribute('x5-video-player-fullscreen', true)],
   x5VideoOrientation: [accessor({ set: stringOrVoid }), accessorCustomAttribute('x5-video-orientation')],
+  x5VideoPlayerType: [accessor({
+    set: function set(value) {
+      if (!this.dispatcher.videoConfigReady) return value;
+      var val = value === 'h5' ? 'h5' : undefined;
+      this.dom.setAttr('video', 'x5-video-player-type', val);
+      return value;
+    },
+    get: function get() {
+      return this.dom.getAttr('video', 'x5-video-player-type') ? 'h5' : undefined;
+    }
+  })],
   xWebkitAirplay: [accessor({
     set: function set(value) {
       return !!value;
@@ -7686,10 +7695,7 @@ var VideoConfig = (_dec$5 = boolean(), _dec2$3 = string(function (str) {
   return str.toLocaleLowerCase();
 }), _class$5 = function () {
 
-  // 此处 box 只能置空，因为 kernel 会自动根据你的安装 kernel 和相关地址作智能判断。
-  // 曾经 bug 详见 https://github.com/Chimeejs/chimee-kernel/issues/1
-
-  // kernels 不在 videoConfig 上设置默认值，防止判断出错
+  // 转为供 kernel 使用的内部参数
   function VideoConfig(dispatcher, config) {
     _classCallCheck(this, VideoConfig);
 
@@ -7721,6 +7727,7 @@ var VideoConfig = (_dec$5 = boolean(), _dec2$3 = string(function (str) {
     this.playsInline = false;
     this.x5VideoPlayerFullscreen = false;
     this.x5VideoOrientation = undefined;
+    this.x5VideoPlayerType = undefined;
     this.xWebkitAirplay = false;
     this.playbackRate = 1;
     this.defaultPlaybackRate = 1;
@@ -7747,7 +7754,10 @@ var VideoConfig = (_dec$5 = boolean(), _dec2$3 = string(function (str) {
     deepAssign(this, config);
   }
 
-  // 转为供 kernel 使用的内部参数
+  // 此处 box 只能置空，因为 kernel 会自动根据你的安装 kernel 和相关地址作智能判断。
+  // 曾经 bug 详见 https://github.com/Chimeejs/chimee-kernel/issues/1
+
+  // kernels 不在 videoConfig 上设置默认值，防止判断出错
 
 
   _createClass(VideoConfig, [{
@@ -7797,7 +7807,7 @@ var VideoConfig = (_dec$5 = boolean(), _dec2$3 = string(function (str) {
 }), _descriptor7 = _applyDecoratedDescriptor$4(_class$5.prototype, '_realDomAttr', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume'];
+    return ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume', 'x5VideoPlayerType'];
   }
 }), _class$5);
 
@@ -8366,7 +8376,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.8.2';
+    _this.VERSION = '0.8.3';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -10451,7 +10461,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.8.2';
+    return '0.8.3';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,
