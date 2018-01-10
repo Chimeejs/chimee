@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.8.3
+ * chimee v0.8.4
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -7559,6 +7559,8 @@ function accessorVideoAttribute(attribute) {
       this.dom.setAttr('video', _set, val);
       return value;
     }
+  }, {
+    preSet: false
   });
 }
 
@@ -7628,7 +7630,14 @@ var accessorMap = {
   loop: [boolean$1(), accessorVideoProperty('loop')],
   defaultMuted: [boolean$1(), accessorVideoAttribute({ get: 'defaultMuted', set: 'muted', isBoolean: true })],
   muted: [boolean$1(), accessorVideoProperty('muted')],
-  preload: [accessor({ set: stringOrVoid }), accessorVideoAttribute('preload')],
+  preload: [accessor({
+    set: function set(value) {
+      var options = ['none', 'auto', 'metadata', ''];
+      return options.indexOf(value) > -1 ? value : 'none';
+    }
+  }, {
+    preSet: true
+  }), accessorVideoAttribute('preload')],
   poster: [
   // 因为如果在 video 上随便加一个字符串，他会将其拼接到地址上，所以这里要避免
   // 单元测试无法检测
@@ -8376,7 +8385,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.8.3';
+    _this.VERSION = '0.8.4';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -10461,7 +10470,7 @@ var Chimee = (_dec = autobindClass(), _dec(_class = (_class2 = (_temp = _class3 
 }), _descriptor2 = _applyDecoratedDescriptor(_class2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.8.3';
+    return '0.8.4';
   }
 }), _descriptor3 = _applyDecoratedDescriptor(_class2.prototype, 'config', [frozen], {
   enumerable: true,
