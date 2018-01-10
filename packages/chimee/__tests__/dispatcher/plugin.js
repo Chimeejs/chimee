@@ -810,6 +810,13 @@ describe('dispatcher/plugin => $watch', () => {
     let index = 0;
     player.__dispatcher.videoConfig._realDomAttr.forEach(key => {
       if ([ 'src' ].indexOf(key) > -1) return;
+      if (key === 'preload') {
+        const origin = player[key];
+        player[key] = '123';
+        expect(fn).toHaveBeenCalledTimes(++index);
+        expect(fn).lastCalledWith('none', origin);
+        return;
+      }
       if (isBoolean(player[key])) {
         player[key] = !player[key];
         expect(fn).toHaveBeenCalledTimes(++index);

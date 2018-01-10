@@ -316,8 +316,15 @@ describe('Chimee', () => {
       expect(player.preload).toBe('auto');
       expect(videoElement.preload).toBe('auto');
       player.preload = null;
-      expect(player.preload).toBe('');
-      expect(videoElement.preload).toBe('');
+      expect(player.preload).toBe('none');
+      expect(videoElement.preload).toBe('none');
+      player.preload = 'metadata';
+      expect(player.preload).toBe('metadata');
+      expect(videoElement.preload).toBe('metadata');
+      // need to run in browser
+      // player.preload = '';
+      // expect(player.preload).toBe('auto');
+      // expect(videoElement.preload).toBe('auto');
     });
     describe('width', () => {
       test('player set', () => {

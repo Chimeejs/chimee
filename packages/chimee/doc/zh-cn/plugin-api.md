@@ -765,9 +765,10 @@ const player = new Chimee({
 
 ### preload
 
-- 类型：`string | void`
+- 类型：`string`
 - 含义：视频的预加载策略
-- 默认：`undefined`
+- 默认：`auto`
+- 可选项： `'auto'`, `'metadata'`, `'none'`, `''`
 
 ### poster
 
@@ -1271,7 +1272,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 | crossOrigin             | 是否跨域                           | boolean          | undefined |                                          |
 | loop                    | 是否循环                           | boolean          | false     |                                          |
 | muted                   | 是否静音                           | boolean          | false     |                                          |
-| preload                 | 是否预加载                          | boolean          | auto      |                                          |
+| preload                 | 是否预加载                          | string         | auto      |                                          |
 | poster                  | 封面                             | string           | ''        |                                          |
 | playsInline             | 是否内联                           | boolean          | false     | 我们会为此添加 `playsinle webkit-playsinline x5-playsinline` |
 | xWebkitAirplay          | 是否添加 `x-webkit-airplay`        | boolean          | false     |                                          |

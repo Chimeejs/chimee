@@ -47,6 +47,8 @@ function accessorVideoAttribute(attribute: string | {set: string, get: string, i
       this.dom.setAttr('video', set, val);
       return value;
     },
+  }, {
+    preSet: false,
   });
 }
 
@@ -151,7 +153,16 @@ const accessorMap = {
     accessorVideoProperty('muted'),
   ],
   preload: [
-    accessor({ set: stringOrVoid }),
+    accessor({
+      set(value) {
+        const options = [ 'none', 'auto', 'metadata', '' ];
+        return options.indexOf(value) > -1
+          ? value
+          : 'none';
+      },
+    }, {
+      preSet: true,
+    }),
     accessorVideoAttribute('preload'),
   ],
   poster: [
