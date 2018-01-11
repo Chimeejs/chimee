@@ -34,6 +34,7 @@ const hoverColorStyle = `
  */
 
 const defaultConfig = {
+  hideBarTime: 2000
 };
 
 const mobiControlbar = gestureFactory({
@@ -158,7 +159,7 @@ const mobiControlbar = gestureFactory({
         setStyle(this.$dom, {
           visibility: 'hidden'
         });
-      }, 2000);
+      }, this.config.hideBarTime);
     },
     _showItself () {
       window.clearTimeout(this.timeId);

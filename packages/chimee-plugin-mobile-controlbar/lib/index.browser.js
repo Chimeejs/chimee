@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-mobile-controlbar v0.0.2
+ * chimee-plugin-mobile-controlbar v0.0.9
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -29,7 +29,7 @@ function __$styleInject(css, returnValue) {
   return returnValue;
 }
 
-__$styleInject("container{position:relative;-webkit-tap-highlight-color:rgba(255,255,255,0)}container,video{display:block;width:100%;height:100%;background:#000;outline:none}video:focus{outline:none}.chimee-flex-component svg:hover g,.chimee-flex-component svg g{fill:#fff;stroke:#fff}chimee-clarity-list,chimee-control-state-pause,chimee-control-state-play,chimee-screen-full,chimee-screen-small{display:none}chimee-control.full chimee-screen-full,chimee-control.pause chimee-control-state-pause,chimee-control.play chimee-control-state-play,chimee-control.small chimee-screen-small{display:inline-block;width:1.4em;height:100%}chimee-control{position:absolute;bottom:0;left:0;display:block;width:100%;height:4em;font-size:10px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;overflow:hidden;font-family:Roboto,Arial,Helvetica,sans-serif;-webkit-transition:visibility .5s ease;transition:visibility .5s ease}chimee-control:focus{outline:none}chimee-control-wrap{position:absolute;left:0;bottom:0;width:100%;height:4em;line-height:4em;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-flow:row nowrap;flex-flow:row nowrap;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;background:rgba(0,0,0,.5);-webkit-transition:bottom .5s ease;transition:bottom .5s ease;pointer-events:auto}.chimee-flex-component{-webkit-box-ordinal-group:2;-ms-flex-order:1;order:1;-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;height:4em;cursor:pointer}.chimee-flex-component svg{vertical-align:middle;width:1.8em;height:1.8em}chimee-control-state.chimee-flex-component{-ms-flex-preferred-size:3em;flex-basis:3em;text-align:right;margin-right:1em}chimee-control-state .left,chimee-control-state .right{-webkit-transition:d .2s ease-in-out;transition:d .2s ease-in-out}chimee-current-time.chimee-flex-component,chimee-total-time.chimee-flex-component{color:#fff;font-size:1.5em;font-weight:400;text-align:center;white-space:nowrap}chimee-progressbar.chimee-flex-component{position:relative;-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;margin:0 1.5em}.chimee-progressbar-line{position:absolute;top:1.8em;left:0;display:inline-block;height:8px;border-radius:4px}chimee-progressbar-bg{width:100%;background:#4c4c4c}chimee-progressbar-buffer{width:0;background:#6f6f6f}chimee-progressbar-all{background:#de698c}chimee-progressbar-ball{content:\"\";position:absolute;right:-1em;top:-.4em;display:inline-block;width:1.4em;height:1.4em;border-radius:1.4em;background:#fff;pointer-events:none}chimee-screen.chimee-flex-component{-ms-flex-preferred-size:3em;flex-basis:3em;text-align:left;margin-left:1em}", undefined);
+__$styleInject("container{position:relative;-webkit-tap-highlight-color:rgba(255,255,255,0)}container,video{display:block;width:100%;height:100%;background:#000;outline:none}video:focus{outline:none}.chimee-flex-component svg:hover g,.chimee-flex-component svg g{fill:#fff;stroke:#fff}chimee-clarity-list,chimee-control-state-pause,chimee-control-state-play,chimee-screen-full,chimee-screen-small{display:none}chimee-control.full chimee-screen-full,chimee-control.pause chimee-control-state-pause,chimee-control.play chimee-control-state-play,chimee-control.small chimee-screen-small{display:inline-block;width:1.4em;height:100%}chimee-control{position:absolute;bottom:0;left:0;display:block;width:100%;height:4em;font-size:10px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;overflow:hidden;font-family:Roboto,Arial,Helvetica,sans-serif;-webkit-transition:visibility .5s ease;transition:visibility .5s ease}chimee-control:focus{outline:none}chimee-control-wrap{position:absolute;left:0;bottom:0;width:100%;height:4em;line-height:4em;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-flow:row nowrap;flex-flow:row nowrap;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;background:rgba(0,0,0,.5);-webkit-transition:bottom .5s ease;transition:bottom .5s ease;pointer-events:auto}.chimee-flex-component{-webkit-box-ordinal-group:2;-ms-flex-order:1;order:1;-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;height:4em;cursor:pointer}.chimee-flex-component svg{vertical-align:middle;width:1.8em;height:1.8em}chimee-control-state.chimee-flex-component{-ms-flex-preferred-size:3em;flex-basis:3em;text-align:right;margin-right:1em}chimee-control-state .left,chimee-control-state .right{-webkit-transition:d .2s ease-in-out;transition:d .2s ease-in-out}chimee-current-time.chimee-flex-component,chimee-total-time.chimee-flex-component{color:#fff;font-size:1.5em;font-weight:400;text-align:center;white-space:nowrap}chimee-current-time+chimee-total-time:before{content:\"/\";padding:4px}chimee-progressbar.chimee-flex-component{position:relative;-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;margin:0 1.5em}.chimee-progressbar-line{position:absolute;top:1.8em;left:0;display:inline-block;height:8px;border-radius:4px}chimee-progressbar-bg{width:100%;background:#4c4c4c}chimee-progressbar-buffer{width:0;background:#6f6f6f}chimee-progressbar-all{background:#de698c}chimee-progressbar-ball{content:\"\";position:absolute;right:-1em;top:-.4em;display:inline-block;width:1.4em;height:1.4em;border-radius:1.4em;background:#fff;pointer-events:none}chimee-screen.chimee-flex-component{-ms-flex-preferred-size:3em;flex-basis:3em;text-align:left;margin-left:1em}", undefined);
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -4556,7 +4556,7 @@ var NodeWrap = function () {
  */
 
 /**
- * chimee-plugin-gesture v0.0.5
+ * chimee-plugin-gesture v0.0.12
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -4791,7 +4791,7 @@ exports.default = function () {
       descriptor.enumerable = descriptor.enumerable || false;
       descriptor.configurable = true;
       if ("value" in descriptor) descriptor.writable = true;
-      (_defineProperty2.default)(target, descriptor.key, descriptor);
+      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
     }
   }
 
@@ -4820,14 +4820,11 @@ function isArray(arr) {
 
 /**
  * 手势判断组件
- * 
  * 目前判断的手势
- * 
  * 单点操作
- * 
  * tap
  * swipe
- * drag
+ * pan
  */
 
 var Gesture = function () {
@@ -4840,24 +4837,24 @@ var Gesture = function () {
     // })
 
     // 手势该有的几个状态
-    // none tapping pressing
+    // swipe tapping pressing
 
+    this.startTime = 0;
+    this.endTime = 0;
     this.event = {};
-    this.status = 'none';
+    this.status = '';
   }
 
   _createClass(Gesture, [{
     key: 'touchstart',
     value: function touchstart(evt) {
-
-      // 初始状态
-      this.status = 'tapping';
-
       // 当前 touch 点
       this.startTouch = evt.changedTouches[0];
 
       // 开始时间
       this.startTime = Date.now();
+
+      this.status = 'tapping';
     }
   }, {
     key: 'touchmove',
@@ -4880,25 +4877,28 @@ var Gesture = function () {
 
       this.endTouch = evt.changedTouches[0];
 
+      var time = Date.now();
       var distance = getDistance(this.startTouch.clientX, this.startTouch.clientY, this.endTouch.clientX, this.endTouch.clientY);
-
-      var interval = Date.now() - this.startTime;
+      var interval = time - this.startTime;
 
       // 时间 <= 250ms 距离小于 10 px 则认为是 tap
-      if (interval <= 250 && distance < 10) this.fire('tap', evt);
+      if (interval <= 250 && distance < 10) {
+        this.fire('tap', evt);
+        time - this.endTime < 300 && this.fire('doubletap', evt);
+      }
 
-      // 时间 > 250ms 距离小于 10 px 则认为是 press    
-      if (interval > 250 && distance < 10) this.fire('press', evt);
+      // 时间 > 250ms 距离小于 10 px 则认为是 press
+      interval > 250 && distance < 10 && this.fire('press', evt);
 
       var speed = getSpeed(distance, interval);
 
       // 距离大于 10 px , 速度大于 0.3 则认为是 swipe
-      if (speed > 0.3 && distance >= 10) this.fire('swipe', evt);
+      speed > 0.3 && distance >= 10 && this.fire('swipe', evt);
 
       // 处于 panning 则触发 panend 事件
-      if (this.status === 'panning') this.fire('panend', evt);
+      this.status === 'panning' && this.fire('panend', evt);
 
-      this.status = 'none';
+      this.endTime = Date.now();
     }
   }, {
     key: 'touchcancel',
@@ -4906,7 +4906,11 @@ var Gesture = function () {
   }, {
     key: 'on',
     value: function on(type, func) {
-      this.event[type] = this.event[type] ? this.event[type].push(func) : [func];
+      if (isArray(this.event[type])) {
+        this.event[type].push(func);
+      } else {
+        this.event[type] = [func];
+      }
     }
   }, {
     key: 'fire',
@@ -4922,12 +4926,7 @@ var Gesture = function () {
 }();
 
 var baseMobileEvent = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
-
-var gesture = new Gesture();
-var c_gesture = new Gesture();
-var w_gesture = new Gesture();
-var d_gesture = new Gesture();
-
+var supportGesture = ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press', 'doubletap'];
 function gestureFactory() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       _ref$name = _ref.name,
@@ -4967,32 +4966,36 @@ function gestureFactory() {
     beforeCreate: function beforeCreate(config) {
       var _this = this;
 
+      this.gesture = new Gesture();
+      this.c_gesture = new Gesture();
+      this.w_gesture = new Gesture();
+      this.d_gesture = new Gesture();
       baseMobileEvent.forEach(function (item) {
         config.events[item] = function (evt) {
-          gesture[item](evt);
+          _this.gesture[item](evt);
         };
         config.events['c_' + item] = function (evt) {
-          c_gesture[item](evt);
+          _this.c_gesture[item](evt);
         };
         config.events['w_' + item] = function (evt) {
-          w_gesture[item](evt);
+          _this.w_gesture[item](evt);
         };
       });
 
-      ['tap', 'swipe', 'panstart', 'panmove', 'panend', 'press'].forEach(function (item) {
-        gesture.on(item, function (evt) {
+      supportGesture.forEach(function (item) {
+        _this.gesture.on(item, function (evt) {
           var func = config.events[item];
           func && func.call(_this, evt);
         });
-        c_gesture.on(item, function (evt) {
+        _this.c_gesture.on(item, function (evt) {
           var func = config.events['c_' + item];
           func && func.call(_this, evt);
         });
-        w_gesture.on(item, function (evt) {
+        _this.w_gesture.on(item, function (evt) {
           var func = config.events['w_' + item];
           func && func.call(_this, evt);
         });
-        d_gesture.on(item, function (evt) {
+        _this.d_gesture.on(item, function (evt) {
           var func = config.events['d_' + item];
           func && func.call(_this, evt);
         });
@@ -5003,10 +5006,12 @@ function gestureFactory() {
     create: function create() {
       var _this2 = this;
 
+      this._i = this._i || 0;
+      this._i++;
       baseMobileEvent.forEach(function (item) {
         var key = '__' + item;
         _this2[key] = function (evt) {
-          d_gesture[item](evt);
+          _this2.d_gesture[item](evt);
         };
         addEvent(_this2.$dom, item, _this2[key]);
       });
@@ -6845,7 +6850,9 @@ var hoverColorStyle = '\n  .chimee-flex-component svg:hover *{\n    fill: hoverC
  * 插件默认配置
  */
 
-var defaultConfig = {};
+var defaultConfig = {
+  hideBarTime: 2000
+};
 
 var mobiControlbar = gestureFactory({
   name: 'chimeeMobiControlbar',
@@ -6971,7 +6978,7 @@ var mobiControlbar = gestureFactory({
         setStyle(_this2.$dom, {
           visibility: 'hidden'
         });
-      }, 2000);
+      }, this.config.hideBarTime);
     },
     _showItself: function _showItself() {
       window.clearTimeout(this.timeId);

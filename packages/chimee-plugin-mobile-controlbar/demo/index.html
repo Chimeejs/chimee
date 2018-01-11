@@ -26,12 +26,12 @@
   <script>
     const vConsole = new VConsole();
     Chimee.install(chimeePluginMobileControlbar);
-    const player = new Chimee({
+    var player = new Chimee({
       wrapper: '#wrap',
       src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/103_371ab0c0fda-143d-4755-8727-d3cd12dce02d.mp4',
       playbackRate: 0.5,
       volume: 0,
-      isLive: true,
+      isLive: false,
       playsInline: true,
       x5VideoPlayerFullscreen: true,
       x5VideoOrientation: true,
@@ -40,6 +40,12 @@
       plugin: [
         {
           name: chimeePluginMobileControlbar.name,
+          hideBarTime: 100,
+          children: {
+            play: {},
+            currentTime: {},
+            totalTime: {}
+          }
           // children: {
           //   play: {},
           //   currentTime: {},

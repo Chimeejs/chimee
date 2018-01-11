@@ -126,6 +126,11 @@ chimee-total-time.chimee-flex-component {
   white-space: nowrap;
 }
 
+chimee-current-time + chimee-total-time::before {
+  content: "/";
+  padding: 4px;
+}
+
 /* 播放器控制条 */
 chimee-progressbar.chimee-flex-component {
   position: relative;
