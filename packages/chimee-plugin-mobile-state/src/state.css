@@ -3,6 +3,25 @@
   --trackColor: #4c4c4c;
 }
 
+video::-webkit-media-controls-start-playback-button {
+  display: none;
+}
+
+chimee-state svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes loading {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 chimee-state {
   position: absolute;
   top: 0;
@@ -13,46 +32,31 @@ chimee-state {
 }
 
 /* 全部初始皆为隐藏状态 */
-chimee-state-error,
-chimee-state-loading,
-chimee-state-play {
-  display: none;
-}
-
-chimee-state.error chimee-state-error,
-chimee-state.loading chimee-state-loading,
-chimee-state.play chimee-state-play {
-  display: inline-block;
-}
 
 chimee-state-loading,
+chimee-state-pause,
 chimee-state-play,
 chimee-state-error {
+  display: none;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
 
+chimee-state-pause,
 chimee-state-play {
   width: 2em;
   height: 2em;
-  background-image: url('./image/play.svg');
-  background-origin: content-box;
-  background-size: auto 100%;
-  background-repeat: no-repeat;
-  background-position: 110% 50%;
   box-sizing: initial;
 }
 
 chimee-state-loading {
   width: 2em;
   height: 2em;
-  background-image: url('./image/loading.svg');
-  background-origin: content-box;
-  background-size: auto 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
+  transform: none;
+  margin: -1em;
+  animation: 900ms loading linear infinite;
 }
 
 chimee-state-error {
@@ -62,4 +66,10 @@ chimee-state-error {
   color: rgb(255, 207, 0);
   text-shadow: 0 0 3px rgb(255, 0, 0);
   font-weight: 100;
+}
+
+chimee-state.error chimee-state-error,
+chimee-state.loading chimee-state-loading,
+chimee-state.play chimee-state-play {
+  display: inline-block;
 }

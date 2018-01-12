@@ -11,6 +11,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 import uglify from 'rollup-plugin-uglify';
+import string from 'rollup-plugin-string';
 
 // PostCSS plugins
 import nested from 'postcss-nested';
@@ -77,10 +78,13 @@ export default function (modeConf) {
       return !/min|umd|iife/.test(mode) && externalRegExp.test(id);
     },
     plugins: [
+      string({
+        include: '**/image/*.svg'
+      }),
       postcss({
         plugins: [
           base64({
-            extensions: ['.svg'],
+            extensions: ['.svg', 'png'],
             root: './src/'
           }),
           cssnext(),

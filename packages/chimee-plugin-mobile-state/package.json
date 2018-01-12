@@ -1,6 +1,6 @@
 {
   "name": "chimee-plugin-mobile-state",
-  "version": "0.0.2",
+  "version": "0.0.10",
   "description": "state for chimee",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -33,6 +33,8 @@
   "dependencies": {
     "babel-runtime": "^6.23.0",
     "chimee-helper": "^0.2.8",
+    "chimee-plugin-gesture": "0.0.12",
+    "rollup-plugin-string": "^2.0.2",
     "toxic-decorators": "^0.3.3"
   },
   "devDependencies": {
@@ -44,7 +46,6 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "chimee": "^0.5.2",
-    "chimee-plugin-gesture": "0.0.4",
     "chimee-plugin-mobile-controlbar": "0.0.1",
     "cssnano": "^3.10.0",
     "eslint": "^4.2.0",
@@ -56,6 +57,7 @@
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-postcss": "^0.5.3",
+    "rollup-plugin-string": "^2.0.2",
     "rollup-plugin-uglify": "^2.0.1",
     "rollup-watch": "^4.3.1",
     "stylelint": "^8.3.0",

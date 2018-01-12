@@ -1,0 +1,140 @@
+<!DOCTYPE html> 
+<html>
+  <meta name="viewport">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,  user-scalable=no">
+  <meta charset="utf-8"> 
+  <head>
+    <title>test</title>
+    <style>
+      body{
+        margin: 0;
+      }
+      #wrap{
+        position: absolute;
+        top: 0;
+        height: 32vh;
+        left: 0;
+        width: 100%;
+        z-index: -1;
+      }
+      #wrap container, #wrap video{
+        background: #ffffff;
+      }
+      video{
+        object-position: 0px 0px;
+      }
+
+
+
+      .display{
+        position: absolute;
+        bottom: 0;
+        top: 30vh;
+        left: 0;
+        width: 100%;
+      }
+      #list{
+        position: absolute;
+        bottom: 10vh;
+        overflow: auto;
+        height: 80%;
+        margin-top: 0;
+      }
+      .operate{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 10vh;
+        width: 100%;
+        border-top: 1px solid #000000;
+      }
+      .operate input {
+        width: 70vw;
+      }
+      .operate input,
+      .operate button{
+        font-size: 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrap"></div>
+    <div class="display">
+      <ul id="list">
+      </ul>
+      <div class="operate">
+        <input id="text" type="text"> <button id="send" type="button">发送</button>  
+      </div>
+    </div>
+  </body>
+  <script src="https://s5.ssl.qhres.com/static/588b46b97caa0749.js"></script>  
+  <script src="../node_modules/chimee/lib/index.browser.js"></script>
+  <script src="../../chimee-plugin-mobile-controlbar/lib/index.browser.js"></script>
+  <script src="../lib/index.browser.js"></script>
+  <script>
+    // const vConsole = new VConsole();
+    Chimee.install(chimeePluginMobileControlbar);
+    Chimee.install(chimeePluginMobileState);
+    const player = new Chimee({
+      wrapper: '#wrap',
+      src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/103_371ab0c0fda-143d-4755-8727-d3cd12dce02d.mp4',
+      plugin: [chimeePluginMobileControlbar.name, chimeePluginMobileState.name],
+      box: 'native',
+      controls: true,
+      autoplay: true,
+      playsInline: true,
+      preload: true,
+      x5VideoPlayerFullscreen: true,
+      x5VideoOrientation: true,
+      xWebkitAirplay: true,
+      muted: true
+      // x5VideoOrientation: 'landscape'
+    });
+
+    // player.on('play', function () {
+    //   player.$fullscreen(false, 'container')
+    // })
+    // document.addEventListener("WeixinJSBridgeReady", function () {
+    //     player.load();
+    // }, false);
+    var video = document.querySelector('video');
+
+    
+    // 调用播放 -> 触发全屏
+
+    // document.addEventListener('WeixinJSBridgeReady', function () {
+    //   player.play();
+    // })
+    // setTimeout(function () {
+    //   WeixinJSBridge.invoke('getNetworkType', {}, function () {
+    //     player.play()
+    //   })
+    // }, 3000)
+
+    // 监听全屏事件，根据 autoplay 来决定是否暂停
+
+    !player.autoplay && video.addEventListener("x5videoenterfullscreen", function(){
+      player.pause();
+    })
+
+    // 退出全屏时调用微信 api 关闭窗口
+
+    video.addEventListener("x5videoexitfullscreen", function(){
+      WeixinJSBridge.invoke('closeWindow')
+    })
+
+    window.onresize = function(){
+      video.style.width = window.innerWidth + "px";
+      video.style.height = window.innerHeight + "px";
+    }
+    document.querySelector('.operate').addEventListener('touchend', function(e) {
+      // e.preventDefault();
+    })
+
+    document.getElementById('send').addEventListener('click', function () {
+      var li = document.createElement('li');
+      li.innerText = document.getElementById('text').value;
+      document.getElementById('list').appendChild(li);
+    })
+  </script>
+</html>

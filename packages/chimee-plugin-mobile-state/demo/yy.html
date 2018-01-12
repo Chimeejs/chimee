@@ -5,13 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <style>
+    video{
+      position: absolute;
+      z-index: -1;
+    }
+    .cover{
+      position: absolute;
+      top: 0;
+      height: 100px;
+      left: 0;
+      width: 100%;
+      pointer-events: none;
+      background: #f00;
+    }
+  </style>
 </head>
 <body>
-  <video src="http://yunxianchang.live.ujne7.com/vod-system-bj/103_371ab0c0fda-143d-4755-8727-d3cd12dce02d.mp4" preload="auto" playsinline="" webkit-playsinline="" x5-video-player-type="h5" x5-video-player-fullscreen="true" x-webkit-airplay="true" controls></video>
+  <div class="cover"></div>
+  <video src="http://yunxianchang.live.ujne7.com/vod-system-bj/103_371ab0c0fda-143d-4755-8727-d3cd12dce02d.mp4"  x5-video-player-type="xx" preload="metadata" controls></video>
   <script src="https://s5.ssl.qhres.com/static/588b46b97caa0749.js"></script>  
   <script>
         const vConsole = new VConsole();
 
+        // var video = document.querySelector('video');
+        // document.documentElement.addEventListener('touchstart', function () {
+        //   console.log('touchstart');
+        // })
+        // document.documentElement.addEventListener('touchmove', function () {
+        //   console.log('touchmove');
+        // })
+        // document.documentElement.addEventListener('touchend', function () {
+        //   console.log('touchend');
+        // })
+        // document.documentElement.addEventListener('click', function () {
+        //   console.log('click');
+        // })
+        // document.documentElement.addEventListener('mousemove', function () {
+        //   console.log('mousemove');
+        // })
   </script>  
 </body>
 </html>

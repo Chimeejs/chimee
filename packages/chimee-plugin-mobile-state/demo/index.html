@@ -2,44 +2,58 @@
 <html>
   <meta name="viewport">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,  user-scalable=no">
+  <meta charset="utf-8"> 
   <head>
     <title>test</title>
     <style>
       body{
         margin: 0;
       }
+      #wrap{
+        position: absolute;
+        top: 0;
+        height: 32vh;
+        left: 0;
+        width: 100%;
+        z-index: -1;
+      }
     </style>
   </head>
   <body>
-    <div id="wrap"></div>    
+    <div id="wrap"></div>
   </body>
   <script src="https://s5.ssl.qhres.com/static/588b46b97caa0749.js"></script>  
   <script src="../node_modules/chimee/lib/index.browser.js"></script>
   <script src="../../chimee-plugin-mobile-controlbar/lib/index.browser.js"></script>
   <script src="../lib/index.browser.js"></script>
   <script>
-    const vConsole = new VConsole();
+    // const vConsole = new VConsole();
     Chimee.install(chimeePluginMobileControlbar);
     Chimee.install(chimeePluginMobileState);
-    const player = new Chimee({
+    var player = new Chimee({
       wrapper: '#wrap',
       src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/103_371ab0c0fda-143d-4755-8727-d3cd12dce02d.mp4',
-      plugin: [chimeePluginMobileControlbar.name, chimeePluginMobileState.name],
+      plugin: [chimeePluginMobileControlbar.name, 
+      
+        {
+          name: chimeePluginMobileState.name,
+          errorTips: '错误提示',
+          icon: {
+            loading: '<div>loading</div>',
+            play: '<div>play</div>' 
+          }
+        }
+      ],
+      box: 'native',
       controls: true,
-      autoplay: false,
+      autoplay: true,
       playsInline: true,
       preload: true,
       x5VideoPlayerFullscreen: true,
       x5VideoOrientation: true,
       xWebkitAirplay: true,
-      x5VideoOrientation: 'landscape|portrait'
+      muted: true,
+      x5VideoOrientation: 'landscape'
     });
-    // player.on('play', function () {
-    //   player.$fullscreen(false, 'container')
-    // })
-    // document.addEventListener("WeixinJSBridgeReady", function () {
-    //     player.load();
-    // }, false);
-
   </script>
 </html>

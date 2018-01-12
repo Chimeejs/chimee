@@ -1,19 +1,29 @@
+import {$, deepAssign, isObject} from 'chimee-helper';
 import './state.css';
 import gestureFactory from 'chimee-plugin-gesture';
+import playStr from './image/play.svg';
+import loadingStr from './image/loading.svg';
+
+const defaultConfig = {
+  errorTips: '加载失败，请刷新重试',
+  icon: {
+    loading: loadingStr,
+    play: playStr
+  }
+};
 
 const chimeeState = gestureFactory({
   name: 'chimeeState',
   el: `
     <chimee-state>
       <chimee-state-loading></chimee-state-loading>
-      <chimee-state-play>
-      </chimee-state-play>
-      <chimee-state-error>加载失败，请刷新重试</chimee-state-error>
+      <chimee-state-play></chimee-state-play>
+      <chimee-state-error></chimee-state-error>
     </chimee-state>
   `,
-  create () {
-    this.volueArea = this.$dom.querySelector('chimee-state-volume');
-    this.volumeBar = this.$dom.querySelector('chimee-state-volume-bar-value');
+  init () {
+    this.config = isObject(this.$config) ? deepAssign(defaultConfig, this.$config) : defaultConfig;
+    this._addInnerHtml();
   },
   inited () {
     this.src && this.showState('loading', true);
@@ -83,6 +93,12 @@ const chimeeState = gestureFactory({
     },
     showState (state, show) {
       this.$dom.className = show ? state : '';
+    },
+    _addInnerHtml () {
+      const dom = $(this.$dom);
+      dom.find('chimee-state-loading').html(this.config.icon.loading);
+      dom.find('chimee-state-play').html(this.config.icon.play);
+      dom.find('chimee-state-error').html(this.config.errorTips);
     }
   }
 });
