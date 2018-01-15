@@ -79,7 +79,8 @@ plugin: [{
   
 ##### 目前支持的组件及配置
 
-  * play
+组件支持的事件： 'tap', 'swipe', 'panstart', 'panmove', 'panend', 'press', 'doubletap'
+  * play
     * 类型： Object
     * 含义： 配置播放暂停键 icon 及事件
     * 默认： {}
@@ -112,7 +113,7 @@ plugin: [{
       },
       // 可以指定 event 来绑定一些事件，默认 this 是该插件，而不是 dom
       event: {
-        click () {
+        tap () {
           console.log('');
         }
       }
@@ -132,7 +133,7 @@ plugin: [{
     {
       // 可以指定 event 来绑定一些事件，默认 this 是该插件，而不是 dom
       event: {
-        click () {
+        tap () {
           console.log('');
         }
       }
@@ -152,7 +153,7 @@ plugin: [{
     {
       // 可以指定 event 来绑定一些事件，默认 this 是该插件，而不是 dom
       event: {
-        click () {
+        tap () {
           console.log('');
         }
       }
@@ -172,7 +173,7 @@ plugin: [{
     {
       // 可以指定 event 来绑定一些事件，默认 this 是该插件，而不是 dom
       event: {
-        click () {
+        tap () {
           console.log('');
         }
       }
@@ -201,7 +202,7 @@ plugin: [{
 
       // 可以指定 event 来绑定一些事件，默认 this 是该插件，而不是 dom
       event: {
-        click () {
+        tap () {
           console.log('');
         }
       }
@@ -225,7 +226,7 @@ plugin: [{
       html: ``,
       // 可以指定 event 来绑定一些事件，默认 this 是该插件，而不是 dom
       event: {
-        click () {
+        tap () {
           console.log('');
         }
       }
