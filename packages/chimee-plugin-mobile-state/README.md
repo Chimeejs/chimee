@@ -24,11 +24,12 @@ const player = new chimee({
   // 使用插件
   plugin: [
     chimeePluginMobileState.name,
-    errorTips: '错误提示',
+    errorTips: '错误提示', // 也可以塞一个 dom 节点
     icon: {
       loading: ``, // 可传入 svg， 内部 innerHTML
       play: `` // svg
-    }
+    },
+    expectTime: 3e4 // 最长加载时间
   ]
 });
 ```

@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-mobile-state v0.0.10
+ * chimee-plugin-mobile-state v0.0.11
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -37,7 +37,8 @@ var defaultConfig = {
   icon: {
     loading: loadingStr,
     play: playStr
-  }
+  },
+  expectTime: 3e4 // 超过最长加载时间则报错
 };
 
 var chimeeState = gestureFactory({
@@ -48,7 +49,8 @@ var chimeeState = gestureFactory({
     this._addInnerHtml();
   },
   inited: function inited() {
-    this.src && this.showState('loading', true);
+    // 存在 src 并且 设置了 prelaod 的情况下， 显示 loading
+    this.src && this.preload !== 'none' && this.showState('loading', true);
   },
 
   penetrate: true,
@@ -89,10 +91,10 @@ var chimeeState = gestureFactory({
       this.emit('state_panstart', evt);
     },
     panmove: function panmove(evt) {
-      this.emit('state_panmove', evt);
+      this.emit('state-error');
     },
     panend: function panend(evt) {
-      this.emit('state_panend', evt);
+      this.emit('state-error');
     },
     d_tap: function d_tap(evt) {
       if (evt.target.tagName === 'CHIMEE-STATE-PLAY') this.play();
@@ -111,7 +113,7 @@ var chimeeState = gestureFactory({
       // 加载超过20秒则超时显示异常
       this._timeout = setTimeout(function () {
         return _this.showState('error', true);
-      }, 3e4);
+      }, this.config.expectTime);
       (status === 'loadstart' || !this.paused) && this.showState('loading', true);
     },
     clearTimeout: function (_clearTimeout) {
@@ -131,6 +133,7 @@ var chimeeState = gestureFactory({
       }
     }),
     showState: function showState(state, show) {
+      state === 'error' && show && this.emit('state-error');
       this.$dom.className = show ? state : '';
     },
     _addInnerHtml: function _addInnerHtml() {

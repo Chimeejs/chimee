@@ -9,7 +9,8 @@ const defaultConfig = {
   icon: {
     loading: loadingStr,
     play: playStr
-  }
+  },
+  expectTime: 3e4 // 超过最长加载时间则报错
 };
 
 const chimeeState = gestureFactory({
@@ -26,7 +27,8 @@ const chimeeState = gestureFactory({
     this._addInnerHtml();
   },
   inited () {
-    this.src && this.showState('loading', true);
+    // 存在 src 并且 设置了 prelaod 的情况下， 显示 loading
+    this.src && this.preload !== 'none' && this.showState('loading', true);
   },
   penetrate: true,
   operable: true,
@@ -64,10 +66,10 @@ const chimeeState = gestureFactory({
       this.emit('state_panstart', evt);
     },
     panmove (evt) {
-      this.emit('state_panmove', evt);
+      this.emit('state-error');
     },
     panend (evt) {
-      this.emit('state_panend', evt);
+      this.emit('state-error');
     },
     d_tap (evt) {
       if(evt.target.tagName === 'CHIMEE-STATE-PLAY') this.play();
@@ -82,7 +84,7 @@ const chimeeState = gestureFactory({
     waiting (status) {
       this.clearTimeout();
       // 加载超过20秒则超时显示异常
-      this._timeout = setTimeout(() => this.showState('error', true), 3e4);
+      this._timeout = setTimeout(() => this.showState('error', true), this.config.expectTime);
       (status === 'loadstart' || !this.paused) && this.showState('loading', true);
     },
     clearTimeout () {
@@ -92,6 +94,7 @@ const chimeeState = gestureFactory({
       }
     },
     showState (state, show) {
+      state === 'error' && show && this.emit('state-error');
       this.$dom.className = show ? state : '';
     },
     _addInnerHtml () {
