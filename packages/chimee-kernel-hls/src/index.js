@@ -41,6 +41,14 @@ export default class Hls extends CustEvent {
     return this.hlsKernel.loadSource(this.config.src);
   }
 
+  startLoad() {
+    return this.hlsKernel.startLoad();
+  }
+
+  stopLoad() {
+    return this.hlsKernel.stopLoad();
+  }
+
   attachMedia() {
     return this.hlsKernel.attachMedia(this.video);
   }

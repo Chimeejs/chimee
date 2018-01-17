@@ -1,4 +1,4 @@
-import base from './rollup.config.base';
+import base, { banner } from './rollup.config.base';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
 import replace from 'rollup-plugin-replace';
@@ -14,8 +14,9 @@ config.plugins.unshift(replace({
 }));
 export default Object.assign(config, {
   output: {
+    banner,
+    name: camelize(name, true),
     format: 'umd',
     file: 'lib/index.dev.js',
   },
-  name: camelize(name, true),
 });
