@@ -15,8 +15,8 @@ config.plugins.unshift(replace({
 export default Object.assign(config, {
   output: {
     banner,
-    name: camelize(name, true),
     format: 'umd',
     file: 'lib/index.dev.js',
+    name: camelize(name, true),
   },
 });

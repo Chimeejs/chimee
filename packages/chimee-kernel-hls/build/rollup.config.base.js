@@ -2,11 +2,10 @@ const { version, name, author, license, dependencies } = require('../package.jso
 export const banner = `
 /**
  * ${name} v${version}
- * (c) 2017 ${author}
+ * (c) 2017-${(new Date()).getFullYear()} ${author}
  * Released under ${license}
  */
 `;
-import flow from 'rollup-plugin-flow-no-whitespace';
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
@@ -125,11 +124,11 @@ export default function(mode) {
     },
     plugins: [
       babel(babelConfig[mode]),
-      flow(),
       resolve({
         customResolveOptions: {
           moduleDirectory: [ 'src', 'node_modules' ],
         },
+        preferBuiltins: true,
       }),
       commonjs(),
       replace({

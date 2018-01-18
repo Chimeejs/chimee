@@ -8,9 +8,9 @@ config.plugins.unshift(replace({
 }));
 export default Object.assign(config, {
   output: {
+    banner,
     format: 'umd',
     file: 'lib/index.browser.js',
-    banner,
     name: camelize(name, true),
   },
 });

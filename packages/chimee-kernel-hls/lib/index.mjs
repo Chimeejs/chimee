@@ -1,7 +1,7 @@
 
 /**
- * chimee-kernel-hls v1.1.0
- * (c) 2017 songguangyu
+ * chimee-kernel-hls v1.2.0
+ * (c) 2017-2018 songguangyu
  * Released under MIT
  */
 
@@ -357,7 +357,7 @@ var Hls = (_class = function (_CustEvent) {
 
     var _this = _possibleConstructorReturn(this, (Hls.__proto__ || _Object$getPrototypeOf(Hls)).call(this));
 
-    _this.version = '1.1.0';
+    _this.version = '1.2.0';
 
     if (!isElement(videoElement)) throw new Error('video element passed in ' + LOG_TAG + ' must be a HTMLVideoElement, but not ' + (typeof videoElement === 'undefined' ? 'undefined' : _typeof(videoElement)));
     if (!isObject(config)) throw new Error('config of ' + LOG_TAG + ' must be an Object but not ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
@@ -376,6 +376,7 @@ var Hls = (_class = function (_CustEvent) {
       var remove = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
       var hlsKernel = this.hlsKernel;
+      /* istanbul ignore else */
       if (hlsKernel) {
         hlsKernel[remove ? 'off' : 'on'](HlsCore.Events.ERROR, this.hlsErrorHandler);
       }
@@ -384,6 +385,16 @@ var Hls = (_class = function (_CustEvent) {
     key: 'load',
     value: function load() {
       return this.hlsKernel.loadSource(this.config.src);
+    }
+  }, {
+    key: 'startLoad',
+    value: function startLoad() {
+      return this.hlsKernel.startLoad();
+    }
+  }, {
+    key: 'stopLoad',
+    value: function stopLoad() {
+      return this.hlsKernel.stopLoad();
     }
   }, {
     key: 'attachMedia',
@@ -422,6 +433,7 @@ var Hls = (_class = function (_CustEvent) {
     value: function hlsErrorHandler(event, data) {
       this.emit('error', data);
       this.emit(event, data);
+      /* istanbul ignore next */
       Log.error(LOG_TAG + (event ? ' ' + event : ''), data.details);
     }
   }]);
