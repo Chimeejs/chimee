@@ -32,6 +32,7 @@ export default class Hls extends CustEvent {
 
   bindEvents(remove: boolean = false) {
     const hlsKernel = this.hlsKernel;
+    /* istanbul ignore else */
     if (hlsKernel) {
       hlsKernel[remove ? 'off' : 'on'](HlsCore.Events.ERROR, this.hlsErrorHandler);
     }
@@ -79,6 +80,7 @@ export default class Hls extends CustEvent {
   hlsErrorHandler(event: string, data: Object) {
     this.emit('error', data);
     this.emit(event, data);
+    /* istanbul ignore next */
     Log.error(LOG_TAG + (event ? ' ' + event : ''), data.details);
   }
 }

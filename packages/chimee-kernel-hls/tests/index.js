@@ -86,6 +86,14 @@ describe('method it', () => {
       kernel.pause();
     }).not.to.throw();
   });
+  it('startload & stopLoad', () => {
+    expect(() => {
+      kernel.attachMedia();
+      kernel.load();
+      kernel.stopLoad();
+      kernel.startLoad();
+    }).not.to.throw();
+  });
 });
 
 describe('error branch', () => {
