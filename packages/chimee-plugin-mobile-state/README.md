@@ -65,3 +65,8 @@ const player = new chimee({
   * 含义： 在这个插件上触发 panstend 手势
   * 回调参数：
     * evt: touch 对象
+
+## state-change
+  * 含义： 这个插件状态发生变化
+  * 回调参数：
+    * state: 当前状态

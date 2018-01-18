@@ -83,7 +83,7 @@ const chimeeState = gestureFactory({
     },
     waiting (status) {
       this.clearTimeout();
-      // 加载超过20秒则超时显示异常
+      // 加载超过30秒则超时显示异常
       this._timeout = setTimeout(() => this.showState('error', true), this.config.expectTime);
       (status === 'loadstart' || !this.paused) && this.showState('loading', true);
     },
@@ -94,7 +94,7 @@ const chimeeState = gestureFactory({
       }
     },
     showState (state, show) {
-      state === 'error' && show && this.emit('state-error');
+      show && this.emit('state-change', state);
       this.$dom.className = show ? state : '';
     },
     _addInnerHtml () {

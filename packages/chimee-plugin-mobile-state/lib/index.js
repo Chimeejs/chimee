@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-mobile-state v0.0.11
+ * chimee-plugin-mobile-state v0.0.12
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -114,7 +114,7 @@ var chimeeState = gestureFactory({
       var _this = this;
 
       this.clearTimeout();
-      // 加载超过20秒则超时显示异常
+      // 加载超过30秒则超时显示异常
       this._timeout = setTimeout(function () {
         return _this.showState('error', true);
       }, this.config.expectTime);
@@ -137,7 +137,7 @@ var chimeeState = gestureFactory({
       }
     }),
     showState: function showState(state, show) {
-      state === 'error' && show && this.emit('state-error');
+      show && this.emit('state-change', state);
       this.$dom.className = show ? state : '';
     },
     _addInnerHtml: function _addInnerHtml() {
