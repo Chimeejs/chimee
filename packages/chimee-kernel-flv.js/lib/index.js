@@ -1,6 +1,6 @@
 
 /**
- * chimee-kernel-flv.js v0.1.0
+ * chimee-kernel-flv.js v0.2.0
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -18,7 +18,7 @@ var _createClass = _interopDefault(require('babel-runtime/helpers/createClass'))
 var _inherits = _interopDefault(require('babel-runtime/helpers/inherits'));
 var FlvCore = _interopDefault(require('flv.js'));
 var chimeeHelper = require('chimee-helper');
-var toxicDecorators_mjs = require('../node_modules/toxic-decorators/lib/toxic-decorators.mjs');
+var toxicDecorators = require('toxic-decorators');
 
 var _class;
 
@@ -70,7 +70,7 @@ var Flv = (_class = function (_CustEvent) {
 
     var _this = _possibleConstructorReturn(this, (Flv.__proto__ || _Object$getPrototypeOf(Flv)).call(this));
 
-    _this.version = '0.1.0';
+    _this.version = '0.2.0';
 
     if (!chimeeHelper.isElement(videoElement)) throw new Error('video element passed in ' + LOG_TAG + ' must be a HTMLVideoElement, but not ' + (typeof videoElement === 'undefined' ? 'undefined' : _typeof(videoElement)));
     if (!chimeeHelper.isObject(config)) throw new Error('config of ' + LOG_TAG + ' must be an Object but not ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
@@ -123,6 +123,11 @@ var Flv = (_class = function (_CustEvent) {
       return this.flvKernel.load();
     }
   }, {
+    key: 'stopLoad',
+    value: function stopLoad() {
+      return this.flvKernel.unload();
+    }
+  }, {
     key: 'attachMedia',
     value: function attachMedia() {
       return this.flvKernel.attachMediaElement(this.video);
@@ -130,7 +135,7 @@ var Flv = (_class = function (_CustEvent) {
   }, {
     key: 'play',
     value: function play() {
-      return this.video.play();
+      return this.flvKernel.play();
     }
   }, {
     key: 'destroy',
@@ -142,12 +147,12 @@ var Flv = (_class = function (_CustEvent) {
   }, {
     key: 'seek',
     value: function seek(seconds) {
-      this.video.currentTime = seconds;
+      this.flvKernel.currentTime = seconds;
     }
   }, {
     key: 'pause',
     value: function pause() {
-      return this.video.pause();
+      return this.flvKernel.pause();
     }
   }, {
     key: 'refresh',
@@ -166,6 +171,6 @@ var Flv = (_class = function (_CustEvent) {
   }]);
 
   return Flv;
-}(chimeeHelper.CustEvent), _applyDecoratedDescriptor(_class.prototype, 'flvErrorHandler', [toxicDecorators_mjs.autobind], _Object$getOwnPropertyDescriptor(_class.prototype, 'flvErrorHandler'), _class.prototype), _class);
+}(chimeeHelper.CustEvent), _applyDecoratedDescriptor(_class.prototype, 'flvErrorHandler', [toxicDecorators.autobind], _Object$getOwnPropertyDescriptor(_class.prototype, 'flvErrorHandler'), _class.prototype), _class);
 
 module.exports = Flv;

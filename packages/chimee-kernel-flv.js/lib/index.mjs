@@ -1,6 +1,6 @@
 
 /**
- * chimee-kernel-flv.js v0.1.0
+ * chimee-kernel-flv.js v0.2.0
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -14,7 +14,7 @@ import _createClass from 'babel-runtime/helpers/createClass';
 import _inherits from 'babel-runtime/helpers/inherits';
 import FlvCore from 'flv.js';
 import { CustEvent, Log, isElement, isObject } from 'chimee-helper';
-import { autobind } from '../node_modules/toxic-decorators/lib/toxic-decorators.mjs';
+import { autobind } from 'toxic-decorators';
 
 var _class;
 
@@ -66,7 +66,7 @@ var Flv = (_class = function (_CustEvent) {
 
     var _this = _possibleConstructorReturn(this, (Flv.__proto__ || _Object$getPrototypeOf(Flv)).call(this));
 
-    _this.version = '0.1.0';
+    _this.version = '0.2.0';
 
     if (!isElement(videoElement)) throw new Error('video element passed in ' + LOG_TAG + ' must be a HTMLVideoElement, but not ' + (typeof videoElement === 'undefined' ? 'undefined' : _typeof(videoElement)));
     if (!isObject(config)) throw new Error('config of ' + LOG_TAG + ' must be an Object but not ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
@@ -119,6 +119,11 @@ var Flv = (_class = function (_CustEvent) {
       return this.flvKernel.load();
     }
   }, {
+    key: 'stopLoad',
+    value: function stopLoad() {
+      return this.flvKernel.unload();
+    }
+  }, {
     key: 'attachMedia',
     value: function attachMedia() {
       return this.flvKernel.attachMediaElement(this.video);
@@ -126,7 +131,7 @@ var Flv = (_class = function (_CustEvent) {
   }, {
     key: 'play',
     value: function play() {
-      return this.video.play();
+      return this.flvKernel.play();
     }
   }, {
     key: 'destroy',
@@ -138,12 +143,12 @@ var Flv = (_class = function (_CustEvent) {
   }, {
     key: 'seek',
     value: function seek(seconds) {
-      this.video.currentTime = seconds;
+      this.flvKernel.currentTime = seconds;
     }
   }, {
     key: 'pause',
     value: function pause() {
-      return this.video.pause();
+      return this.flvKernel.pause();
     }
   }, {
     key: 'refresh',
