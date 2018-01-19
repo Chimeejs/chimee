@@ -64,12 +64,16 @@ export default class Flv extends CustEvent {
     return this.flvKernel.load();
   }
 
+  stopLoad() {
+    return this.flvKernel.unload();
+  }
+
   attachMedia() {
     return this.flvKernel.attachMediaElement(this.video);
   }
 
   play() {
-    return this.video.play();
+    return this.flvKernel.play();
   }
 
   destroy() {
@@ -79,11 +83,11 @@ export default class Flv extends CustEvent {
   }
 
   seek(seconds: number) {
-    this.video.currentTime = seconds;
+    this.flvKernel.currentTime = seconds;
   }
 
   pause() {
-    return this.video.pause();
+    return this.flvKernel.pause();
   }
 
   refresh() {

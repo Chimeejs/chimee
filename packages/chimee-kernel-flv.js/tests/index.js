@@ -71,12 +71,14 @@ describe('method it', () => {
     expect(kernel.config.src).to.equal(config.src);
     expect(kernel.video.src).to.equal(videoSrc);
   });
-  it('seek', () => {
+  it('seek', async () => {
     expect(kernel.video.currentTime).to.equal(0);
     kernel.load();
     expect(kernel.video.currentTime).to.equal(0);
-    kernel.seek(10);
-    expect(kernel.video.currentTime).to.equal(10);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    expect(() => {
+      kernel.seek(10);
+    }).not.to.throw();
   });
   it('play & pause', () => {
     expect(() => {
@@ -84,6 +86,15 @@ describe('method it', () => {
       kernel.load();
       kernel.play();
       kernel.pause();
+    }).not.to.throw();
+  });
+  it('load & stopLoad', () => {
+    expect(() => {
+      kernel.attachMedia();
+      kernel.load();
+      kernel.play();
+      kernel.pause();
+      kernel.stopLoad();
     }).not.to.throw();
   });
 });

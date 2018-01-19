@@ -127,17 +127,21 @@ export default function(mode) {
     plugins: [
       babel(babelConfig[mode]),
       flow(),
-      resolve({
-        customResolveOptions: {
-          moduleDirectory: [ 'src', 'node_modules' ],
-        },
-        preferBuiltins: true,
-      }),
       commonjs(),
       replace({
         'process.env.VERSION': `'${version}'`,
       }),
       builtins(),
-    ],
+    ].concat(/min|umd|iife/.test(mode)
+      ? [
+        resolve({
+          customResolveOptions: {
+            moduleDirectory: [ 'src', 'node_modules' ],
+          },
+          preferBuiltins: true,
+        }),
+      ]
+      : []
+    ),
   };
 }
