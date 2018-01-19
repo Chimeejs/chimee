@@ -115,6 +115,7 @@ const babelConfig = {
     babelrc: false,
   },
 };
+// const externalRegExp = new RegExp(Object.keys(dependencies).concat(Object.keys(helperDependencies)).join('|'));
 const externalRegExp = new RegExp(Object.keys(dependencies).join('|'));
 export default function(mode) {
   return {
@@ -134,6 +135,16 @@ export default function(mode) {
       replace({
         'process.env.VERSION': `'${version}'`,
       }),
-    ],
+    ].concat(/min|umd|iife/.test(mode)
+      ? [
+        resolve({
+          customResolveOptions: {
+            moduleDirectory: [ 'src', 'node_modules' ],
+          },
+          preferBuiltins: true,
+        }),
+      ]
+      : []
+    ),
   };
 }
