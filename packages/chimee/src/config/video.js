@@ -41,6 +41,7 @@ function accessorVideoAttribute(attribute: string | {set: string, get: string, i
         ? value
           ? ''
           : undefined
+        /* istanbul ignore next */
         : value === null
           ? undefined
           : value;

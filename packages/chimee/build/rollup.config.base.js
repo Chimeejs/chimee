@@ -127,11 +127,6 @@ export default function(mode) {
     plugins: [
       babel(babelConfig[mode]),
       flow(),
-      resolve({
-        customResolveOptions: {
-          moduleDirectory: [ 'src', 'node_modules' ],
-        },
-      }),
       commonjs(),
       replace({
         'process.env.PLAYER_VERSION': `'${version}'`,
@@ -139,6 +134,15 @@ export default function(mode) {
       visualizer({
         filename: `bundle-size/${mode}.html`,
       }),
-    ],
+    ].concat(/min|umd|iife/.test(mode)
+      ? [
+        resolve({
+          customResolveOptions: {
+            moduleDirectory: [ 'src', 'node_modules' ],
+          },
+        }),
+      ]
+      : []
+    ),
   };
 }
