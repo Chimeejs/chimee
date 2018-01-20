@@ -131,18 +131,14 @@ export default function(mode) {
       replace({
         'process.env.PLAYER_VERSION': `'${version}'`,
       }),
+      resolve({
+        customResolveOptions: {
+          moduleDirectory: /min|umd|iife/.test(mode) ? [ 'src', 'node_modules' ] : [ 'src' ],
+        },
+      }),
       visualizer({
         filename: `bundle-size/${mode}.html`,
       }),
-    ].concat(/min|umd|iife/.test(mode)
-      ? [
-        resolve({
-          customResolveOptions: {
-            moduleDirectory: [ 'src', 'node_modules' ],
-          },
-        }),
-      ]
-      : []
-    ),
+    ],
   };
 }
