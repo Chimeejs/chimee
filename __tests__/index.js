@@ -197,8 +197,11 @@ describe('Chimee', () => {
   });
 
   test('kernel method', () => {
-    expect(player.play()).resolves.toBe();
+    expect(() => player.play()).not.toThrow();
+    expect(() => player.pause()).not.toThrow();
     expect(() => player.seek(1)).not.toThrow();
+    expect(() => player.stopLoad()).not.toThrow();
+    expect(() => player.startLoad()).not.toThrow();
   });
 
   describe('video attr', () => {

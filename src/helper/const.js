@@ -93,6 +93,8 @@ export const kernelMethods = [
   'play',
   'pause',
   'seek',
+  'startLoad',
+  'stopLoad',
 ];
 export const dispatcherMethods = [
   'load',
