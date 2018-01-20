@@ -39,7 +39,7 @@ npm install --save chimee
 
 ### cdn
 
-> 敬请期待
+> [https://github.com/cdnjs/cdnjs/pull/12157](https://github.com/cdnjs/cdnjs/pull/12157) cdnjs 审核中。
 
 ## 用法
 
@@ -152,6 +152,27 @@ const chimee = new ChimeePlayer({
   autoplay: true
 });
 ```
+
+如果你使用的是移动端，那么请使用为移动端设计的 [chimee-mobile-player](https://github.com/Chimeejs/chimee-mobile-player)。里面有移动端常用的基础 ui 与插件。
+
+```javascript
+import ChimeeMobilePlayer from 'chimee-mobile-player';
+
+const player = new ChimeeMobilePlayer({
+  wrapper: '#wrapper',  // video dom容器
+  src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+  autoplay: true,
+  controls: true,
+  playsInline: true,
+  preload: true,
+  x5VideoPlayerFullscreen: true,
+  x5VideoOrientation: true,
+  xWebkitAirplay: true,
+  muted: true
+});
+```
+
+
 
 ## 文档
 
