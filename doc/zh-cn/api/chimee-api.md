@@ -221,7 +221,7 @@ const chimee = new Chimee({
 | crossOrigin             | 是否跨域                           | boolean          | undefined   |                                          |
 | loop                    | 是否循环                           | boolean          | false       |                                          |
 | muted                   | 是否静音                           | boolean          | false       |                                          |
-| preload                 | 是否预加载                          | string         | 'auto'  |                                          |
+| preload                 | 是否预加载                          | string           | 'auto'      |                                          |
 | poster                  | 封面                             | string           | ''          |                                          |
 | playsInline             | 是否内联                           | boolean          | false       | 我们会为此添加 `playsinle webkit-playsinline x5-playsinline` |
 | xWebkitAirplay          | 是否添加 `x-webkit-airplay`        | boolean          | false       |                                          |
@@ -437,7 +437,7 @@ chimee.load({
   * 类型：`string`
   * 播放地址
 * option
-  * 类型：`Object`
+  * 类型：`Object`    
   * duration
     * 类型：`number`
     * 默认：3
