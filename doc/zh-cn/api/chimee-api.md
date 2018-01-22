@@ -405,6 +405,18 @@ chimee.load({
 
 > seek 方法会触发 seek 系列事件，你可以通过插件 `beforeSeek` 阻截事件，也可以通过`seek`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
 
+### startLoad
+
+开始视频源的加载（现在只有 hls 和 native 模式支持）
+
+### stopLoad
+
+暂停视频源的加载
+
+其中 chimee-kernel-flv.js 和 native 模式均是将 src 移除。
+
+而 chimee-kernel-flv 和 chimes-kernel-hls 则是暂停加载。
+
 ### focus
 
 自动聚焦到 `video` 元素上。

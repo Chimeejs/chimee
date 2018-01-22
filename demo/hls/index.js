@@ -7,11 +7,18 @@ const player = new window.Chimee({
   // video
   width: '100%',
   height: '100%',
-  preset: {
-    hls: window.chimeeKernelHls,
+  kernels: {
+    hls: window.ChimeeKernelHls,
   },
   autoplay: true,
   controls: true,
+  muted: true,
+});
+player.on('after_pause', function() {
+  this.stopLoad();
+});
+player.on('after_play', function() {
+  this.startLoad();
 });
 window.player = player;
 // player.play();

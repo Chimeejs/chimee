@@ -148,6 +148,23 @@ setTimeout(() => {
 
 > 动态加载主要依赖于 load 进行实现，[点击此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md#load)了解更多。
 
+另外要注意到，load 方法返回一个 Promise。
+
+因为 load 方法是允许插件异步处理的，所以如果希望在 load 成功后立即播放，应该按照如下方法编写：
+
+```javascript
+import Chimee from 'chimee';
+
+const chimee = new Chimee('#wrapper');
+
+async function loadAndPlay(src) {
+  await chimee.load(src);
+  chimee.play();
+}
+
+loadAndPlay('http://cdn.toxicjohann.com/lostStar.mp4');
+```
+
 ## 静默动态加载视频
 
 load 函数有一个缺点，他在加载的时候会移除掉原视频源。在某些场景下，我们希望原视频源能够正常播放，知道新视频源加载成功后才进行对应的切换。像切换清晰度就是常见的场景。
@@ -177,6 +194,36 @@ player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', {repeatT
 ```
 
 > 同样的 silentLoad 也支持多类型切换。并且可以设置重试机制。[点击此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md#-silentload)了解更多。
+
+## 精确控制加载流程
+
+对于如 hls.js 等内核，他们支持对加载流程更加精细的控制。例如 hls.js 支持 startLoad 和 stopLoad 方法。
+
+通过这些方法，我们可以实现诸如在用户暂停的时候停止拉流等精细化操作，节省用户的流量。
+
+```javascript
+import Chimee from 'chimee';
+import ChimeeKernelHls from 'chimee-kernel-hls';
+
+const chimee Chimee({
+  src: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8',
+  // 编解码容器
+  box: 'hls', // flv hls mp4
+  // dom容器
+  wrapper: '#wrapper',
+  kernels: {
+    hls: ChimeeKernelHls,
+  },
+  autoplay: true,
+  controls: true,
+});
+player.on('after_pause', function() {
+  this.stopLoad();
+});
+player.on('after_play', function() {
+  this.startLoad();
+});
+```
 
 ## 播放器属性
 
