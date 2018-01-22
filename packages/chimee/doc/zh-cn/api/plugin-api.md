@@ -1272,13 +1272,13 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 | crossOrigin             | 是否跨域                           | boolean          | undefined |                                          |
 | loop                    | 是否循环                           | boolean          | false     |                                          |
 | muted                   | 是否静音                           | boolean          | false     |                                          |
-| preload                 | 是否预加载                          | string         | auto      |                                          |
+| preload                 | 是否预加载                          | string           | auto      |                                          |
 | poster                  | 封面                             | string           | ''        |                                          |
 | playsInline             | 是否内联                           | boolean          | false     | 我们会为此添加 `playsinle webkit-playsinline x5-playsinline` |
 | xWebkitAirplay          | 是否添加 `x-webkit-airplay`        | boolean          | false     |                                          |
 | x5VideoPlayerFullscreen | 是否添加`x5-video-play-fullscreen` | boolean          | false     |                                          |
 | x5VideoOrientation      | ` x5-video-orientation`        | string \| void   | undefined | 可选 landscape 和 portrait                  |
-| x5VideoPlayerType       | ` x5-video-player-type`        | 'h5' \| void     | undefined   |                                          |
+| x5VideoPlayerType       | ` x5-video-player-type`        | 'h5' \| void     | undefined |                                          |
 | playbackRate            | 回放速率                           | number           | 1         | 大于1加速，小于1减速                              |
 | defaultPlaybackRate     | 默认回放速率                         | number           | 1         | 大于1加速，小于1减速                              |
 | autoload                | 设置`src`时是否进行自动加载               | boolean          | true      |                                          |
