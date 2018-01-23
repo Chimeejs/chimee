@@ -30,4 +30,8 @@ const player = new Chimee({
   muted: true,
 });
 
+setTimeout(() => {
+  player.$plugins.ccPopup.$bumpToTop();
+}, 2000);
+
 window.player = player;
