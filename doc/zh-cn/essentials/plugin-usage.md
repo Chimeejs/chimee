@@ -164,7 +164,11 @@ const player = new Chimee({
 const chimeePluginControllbar = play.$plugins[ChimeePluginControlbar.name];
 ```
 
-其中插件的是以对象的方式存储，我们可以通过其名字获取。
+其中插件的是以对象的方式存储，我们可以通过其 id 获取。
+
+id 一般是 name 的驼峰形式。
+
+id 会在 use 的时候返回。
 
 ## 插件的使用顺序问题
 
@@ -500,3 +504,45 @@ const player = new Chimee({
 ![](https://ws4.sinaimg.cn/large/006tNc79gy1fnpt4s1mkbg30o60cwu0x.gif)
 
 我们可以看到第一个弹窗在暂停后置顶了。
+
+当然我们也可以直接获取插件实例进行操作。
+
+```javascript
+import Chimee from 'chimee';
+import chimeePluginPopup from 'chimee-plugin-popup';
+
+Chimee.install(chimeePluginPopup({
+  name: 'cc_popup',
+  title: '第一个信息框',
+  body: '我是第一个信息框',
+  offset: '60% 50%',
+  width: '200px',
+}));
+
+Chimee.install(chimeePluginPopup({
+  name: 'cc_popup_2',
+  title: '第二个信息框',
+  body: '我是第二个信息框',
+  offset: '50% 50%',
+  width: '300px',
+}));
+
+const player = new Chimee({
+  src: 'http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4',
+  wrapper: '#wrapper',
+  plugin: [ 'cc_popup', 'cc_popup_2' ],
+  autoplay: true,
+  controls: true,
+  muted: true,
+});
+
+setTimeout(() => {
+  player.$plugins.ccPopup.$bumpToTop();
+}, 2000);
+```
+
+![](https://ws4.sinaimg.cn/large/006tNc79gy1fnptiumn3vg30o60cwu0x.gif)
+
+### 获取所有插件的顺序
+
+我们可以通过 `$pluginOrder` 获取所有插件的顺序列表。其中列表中储存的为插件 id 。
