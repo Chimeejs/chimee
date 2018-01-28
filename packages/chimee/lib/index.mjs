@@ -1,33 +1,33 @@
 
 /**
- * chimee v0.9.0
+ * chimee v0.9.1
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
 
-import _Object$defineProperty from 'babel-runtime/core-js/object/define-property';
 import _Object$getOwnPropertyDescriptor from 'babel-runtime/core-js/object/get-own-property-descriptor';
-import _Object$getPrototypeOf from 'babel-runtime/core-js/object/get-prototype-of';
+import _Map from 'babel-runtime/core-js/map';
+import _toConsumableArray from 'babel-runtime/helpers/toConsumableArray';
+import _Promise from 'babel-runtime/core-js/promise';
 import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
 import _createClass from 'babel-runtime/helpers/createClass';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _get from 'babel-runtime/helpers/get';
-import _inherits from 'babel-runtime/helpers/inherits';
-import _toConsumableArray from 'babel-runtime/helpers/toConsumableArray';
-import _slicedToArray from 'babel-runtime/helpers/slicedToArray';
-import _Object$entries from 'babel-runtime/core-js/object/entries';
-import _Object$assign from 'babel-runtime/core-js/object/assign';
-import _Promise from 'babel-runtime/core-js/promise';
-import _typeof from 'babel-runtime/helpers/typeof';
-import { $, Log, addClassName, addEvent, bind, camelize, deepAssign, deepClone, getAttr, getDeepProperty, getStyle, hypenate, isArray, isBoolean, isElement, isEmpty, isError, isEvent, isFunction, isHTMLString, isInteger, isNumber, isNumeric, isObject, isPosterityNode, isPromise, isString, isVoid, removeEvent, runRejectableQueue, runStoppableQueue, setAttr, setStyle, transObjectAttrIntoArray } from 'chimee-helper';
-import ChimeeKernel from 'chimee-kernel';
-import _Map from 'babel-runtime/core-js/map';
-import { accessor, alias, alwaysBoolean, alwaysNumber, alwaysString, applyDecorators, autobind, autobindClass, before, configurable, frozen, initBoolean, initString, nonenumerable, runnable, waituntil, watch } from 'toxic-decorators';
+import { isEmpty, isArray, runRejectableQueue, runStoppableQueue, camelize, bind, isError, isVoid, isFunction, deepClone, Log, isString, isNumber, deepAssign, isObject, isNumeric, getDeepProperty, isBoolean, isInteger, isPromise, isElement, isHTMLString, hypenate, isPosterityNode, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, isEvent, transObjectAttrIntoArray } from 'chimee-helper';
+import { runnable, alwaysString, initString, accessor, alwaysBoolean, frozen, alwaysNumber, nonenumerable, applyDecorators, configurable, initBoolean, watch, alias, before, autobindClass, autobind, waituntil } from 'toxic-decorators';
+import _Object$defineProperty from 'babel-runtime/core-js/object/define-property';
+import _Number$isNaN from 'babel-runtime/core-js/number/is-nan';
 import _Object$keys from 'babel-runtime/core-js/object/keys';
 import _JSON$stringify from 'babel-runtime/core-js/json/stringify';
 import _defineProperty from 'babel-runtime/helpers/defineProperty';
-import _Number$isNaN from 'babel-runtime/core-js/number/is-nan';
+import _typeof from 'babel-runtime/helpers/typeof';
+import _Object$getPrototypeOf from 'babel-runtime/core-js/object/get-prototype-of';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _get from 'babel-runtime/helpers/get';
+import _inherits from 'babel-runtime/helpers/inherits';
 import esFullscreen from 'es-fullscreen';
+import _slicedToArray from 'babel-runtime/helpers/slicedToArray';
+import _Object$entries from 'babel-runtime/core-js/object/entries';
+import _Object$assign from 'babel-runtime/core-js/object/assign';
+import ChimeeKernel from 'chimee-kernel';
 
 var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting'];
 var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'error', 'ended', 'networkState', 'paused', 'readyState', 'seekable', 'sinkId', 'controlsList', 'tabIndex', 'dataset', 'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth'];
@@ -1458,7 +1458,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.9.0';
+    _this.VERSION = '0.9.1';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -1856,7 +1856,9 @@ var Dom = (_dec$4 = waituntil('__dispatcher.videoConfigReady'), _dec2$3 = before
   _createClass(Dom, [{
     key: 'installVideo',
     value: function installVideo(videoElement) {
-      var _this2 = this;
+      var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+          _ref$bindEvent = _ref.bindEvent,
+          bindEvent = _ref$bindEvent === undefined ? true : _ref$bindEvent;
 
       this.__videoExtendedNodes.push(videoElement);
       setAttr(videoElement, 'tabindex', -1);
@@ -1881,6 +1883,15 @@ var Dom = (_dec$4 = waituntil('__dispatcher.videoConfigReady'), _dec2$3 = before
       if (this.container.parentElement !== this.wrapper) {
         $(this.wrapper).append(this.container);
       }
+      if (bindEvent) this.bindVideoEvents(videoElement);
+      this.videoElement = videoElement;
+      return videoElement;
+    }
+  }, {
+    key: 'bindVideoEvents',
+    value: function bindVideoEvents(videoElement) {
+      var _this2 = this;
+
       videoEvents.forEach(function (key) {
         var fn = function fn() {
           var _dispatcher$bus3;
@@ -1897,8 +1908,6 @@ var Dom = (_dec$4 = waituntil('__dispatcher.videoConfigReady'), _dec2$3 = before
       this._addDomEvents(videoElement, this.videoDomEventHandlerList, function (key) {
         return _this2._getEventHandler(key, { penetrate: true });
       });
-      this.videoElement = videoElement;
-      return videoElement;
     }
   }, {
     key: 'removeVideo',
@@ -2165,10 +2174,10 @@ var Dom = (_dec$4 = waituntil('__dispatcher.videoConfigReady'), _dec2$3 = before
 
   }, {
     key: '_getEventHandler',
-    value: function _getEventHandler(key, _ref) {
+    value: function _getEventHandler(key, _ref2) {
       var _this8 = this;
 
-      var penetrate = _ref.penetrate;
+      var penetrate = _ref2.penetrate;
 
       if (!penetrate || ['mouseenter', 'mouseleave'].indexOf(key) < 0) {
         return function () {
@@ -2692,7 +2701,7 @@ var Dispatcher = (_dec$5 = before(convertNameIntoId), _dec2$4 = before(checkPlug
       var oldKernel = this.kernel;
       var originVideoConfig = deepClone(this.videoConfig);
       this.dom.removeVideo();
-      this.dom.installVideo(video);
+      this.dom.installVideo(video, { bindEvent: false });
       // as we will reset the currentVideoConfig on the new video
       // it will trigger the watch function as they maybe differnet
       // because video config will return the real situation
@@ -2717,6 +2726,11 @@ var Dispatcher = (_dec$5 = before(convertNameIntoId), _dec2$4 = before(checkPlug
       _Object$assign(this.videoConfig, { isLive: isLive, box: box, preset: preset, kernels: kernels });
       // const config = {}
       oldKernel.destroy();
+      // delay video event binding
+      // so that people can't feel the default value change
+      setTimeout(function () {
+        return _this3.dom.bindVideoEvents(video);
+      });
     }
     /**
      * destroy function called when dispatcher destroyed
@@ -3227,6 +3241,15 @@ var Chimee = (_dec$6 = autobindClass(), _dec$6(_class$7 = (_class2$1 = (_temp = 
     value: function destroy() {
       _get(Chimee.prototype.__proto__ || _Object$getPrototypeOf(Chimee.prototype), '__destroy', this).call(this);
       this.__dispatcher.destroy();
+      // $FlowFixMe: normal obejct define
+      Object.defineProperty(this, '__dispatcher', {
+        get: function get() {
+          throw new Error('This instance has been destroyed.');
+        },
+
+        enumerable: true,
+        configurable: true
+      });
       this.destroyed = true;
     }
   }, {
@@ -3259,7 +3282,7 @@ var Chimee = (_dec$6 = autobindClass(), _dec$6(_class$7 = (_class2$1 = (_temp = 
 }), _descriptor2$1 = _applyDecoratedDescriptor$6(_class2$1.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.9.0';
+    return '0.9.1';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$6(_class2$1.prototype, 'config', [frozen], {
   enumerable: true,
