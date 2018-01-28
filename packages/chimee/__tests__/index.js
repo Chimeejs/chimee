@@ -591,6 +591,7 @@ describe('Chimee', () => {
     expect(player.destroyed).toBe(false);
     expect(() => player.destroy()).not.toThrow();
     expect(player.destroyed).toBe(true);
+    expect(player.pause()).rejects.toThrow();
   });
 
   describe('$attr & $css', () => {
