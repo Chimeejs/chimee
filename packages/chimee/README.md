@@ -18,12 +18,12 @@ Chimee helps developer to reach complex video capabilities from scratch easier a
 
 ## Features
 
-Chimee is a [web video player](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md).
+Chimee is a [web video player](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/chimee-api.md).
 
 1. It supports multiple video stream including mp4, m3u8, flv, and more.
 2. It solves most of the compatibility problems including cross-browser fullscreen, autoplay, and playing inline.
 
-What's more, it's also a [component framework](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/why-chimee-is-a-frame.md) based on the video element.
+What's more, it's also a [component framework](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/design/why-chimee-is-a-frame.md) based on the video element.
 
 1. It helps us to split complex functions off into multiple plugins.
 2. Each plugin can work on the video element directly and easily.
@@ -43,7 +43,7 @@ npm install --save chimee
 
 ### cdn
 
-> TODO: will be offered when we publish Chimee
+> [https://github.com/cdnjs/cdnjs/pull/12157](https://github.com/cdnjs/cdnjs/pull/12157) You can check this pr in cdn.js
 
 ## Usage
 
@@ -123,7 +123,7 @@ const chimee = new Chimee({
 chimee.play();
 ```
 
-If you want to know more about Chimee, please read more on our API docs, [here](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md).
+If you want to know more about Chimee, please read more on our API docs, [here](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/chimee-api.md).
 
 However, if you use Chimee directly, it's best to add this style to your page:
 
@@ -161,7 +161,7 @@ const chimee = new Chimee({
 });
 ```
 
-If you want to know more about Chimee's plugins, please read more [here](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md).
+If you want to know more about Chimee's plugins, please read more [here](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md).
 
 If you don't want more capabilities, and just need a useful video player, you can install `chimee-player`, which contains the base ui and a loggerL
 
@@ -180,11 +180,11 @@ const chimee = new ChimeePlayer({
 
 > TODO: more coming soon!~
 
-1. [What is Chimee?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md)
-2. [What is Chimee's plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)
-3. [How do I write a plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-plugin.md)
-4. [How do I write an advertising plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-an-ad-plugin.md)?
-5. [How do I write a UI plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-ui-plugin.md)
+1. [What is Chimee?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/chimee-api.md)
+2. [What is Chimee's plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md)
+3. [How do I write a plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/advanced/how-to-write-a-plugin.md)
+4. [How do I write an advertising plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/advanced/how-to-write-an-ad-plugin.md)?
+5. [How do I write a UI plugin?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/advanced/how-to-write-a-ui-plugin.md)
 
 ## Explanation of Different Builds
 

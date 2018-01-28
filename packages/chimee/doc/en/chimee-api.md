@@ -2,7 +2,7 @@
 
 Chimee is an encapsulation of native video element. So, it will consistent with the native video elements in many uses. This article will introduce Chimee at the video level of the specific usage.
 
-At the same time, Chimee is a component framework. To know more about it, please read [Why Chimee is designed as a componentized framework?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/why-chimee-is-a-frame.md).
+At the same time, Chimee is a component framework. To know more about it, please read [Why Chimee is designed as a componentized framework?](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/design/why-chimee-is-a-frame.md).
 
 This article will be divided into the following sections to elaborate:
 

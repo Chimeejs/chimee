@@ -14,12 +14,12 @@ Chimee 由奇舞团研制的 h5 播放器，它支持 mp4、m3u8、flv 等多种
 
 ## 特点
 
-Chimee 首先是一个[视频播放器](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md)。
+Chimee 首先是一个[视频播放器](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/chimee-api.md)。
 
 1. 它让我们可以播放 mp4、m3u8、flv 等多种格式的视频流。
 2. 它帮我们解决大部分的兼容性问题，能够解决包括全屏、自动播放、内联播放等常见视频需求。
 
-其次，Chimee 是一个基于 video 设计的[组件化框架](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/why-chimee-is-a-frame.md)。
+其次，Chimee 是一个基于 video 设计的[组件化框架](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/design/why-chimee-is-a-frame.md)。
 
 1. 它容许我们使用插件分割业务上与视频相关的功能。
 2. 对于每个组件来说，它们的编写都相当于直接操作 video 元素，简便快捷。
@@ -81,7 +81,7 @@ const chimee = new Chimee({
 });
 ```
 
-如果需要播放 `flv` 或者 `hls` 格式，请传入解码器，具体参数请查阅[此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md#-kernels)。
+如果需要播放 `flv` 或者 `hls` 格式，请传入解码器，具体参数请查阅[此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/chimee-api.md#-kernels)。
 
 ```javascript
 import Chimee from 'chimee';
@@ -100,7 +100,7 @@ const chimee = new Chimee({
 chimee.play();
 ```
 
-如果你想了解更多，请点击[此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md)。
+如果你想了解更多，请点击[此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/chimee-api.md)。
 
 如果你直接使用 chimee 的话，最好添加以下样式。
 
@@ -138,7 +138,7 @@ const chimee = new Chimee({
 });
 ```
 
-如果你想了解更多关于 chimee 插件的知识，请点击[此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)。
+如果你想了解更多关于 chimee 插件的知识，请点击[此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md)。
 
 可能你并不是太关心 chimee 是怎么运行的，你只是需要一个封装好的播放器。那么你可以直接下载 chimee-player。里面已经有基础 ui 和需要用的插件。
 
@@ -176,11 +176,30 @@ const player = new ChimeeMobilePlayer({
 
 ## 文档
 
-1. [Chimee API 介绍](http://chimee.org/docs/chimee_api.html)
-2. [为什么要将 Chimee 设计成一个组件化框架？](http://chimee.org/docs/why_chimee_is_a_frame.html)
-3. [Chimee 插件 API 介绍](http://chimee.org/docs/chimee_plugin_api.html)
-4. [如何编写一个插件?](http://chimee.org/docs/how_to_write_a_plugin.html)
-5. [如何编写一个弹窗插件](http://chimee.org/docs/how_to_write_a_popup_plugin.html)
+文档分为以下若干部分：
+
+### 指南
+
+1. [Chimee 的播放器特性介绍](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/essentials/video.md)
+2. [插件的使用方法](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/essentials/plugin-usage.md)
+3. [Chimee 的展示结构介绍](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/essentials/html.md)
+4. [Chimee 事件机制简介](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/essentials/event.md)——编写中
+5. [Chimee 数据监控简介](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/essentials/data.md)——编写中
+6. [Chimee 相关设置介绍](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/essentials/setting.md)——编写中
+
+### 设计理念
+
+1. [为什么要将 Chimee 设计成一个组件化框架？](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/design/why-chimee-is-a-frame.md)
+
+### 进阶
+
+1. [如何编写一个插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/advanced/how-to-write-a-plugin.md)
+2. [如何编写一个 UI 插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/advanced/how-to-write-a-popup-plugin.md)
+
+### API
+
+1. [Chimee API 介绍](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/chimee-api.md)
+2. [Chimee 插件 API 介绍](http://chimee.org/docs/how_to_write_a_popup_plugin.html)
 
 ## 不同的构建版本
 

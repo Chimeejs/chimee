@@ -292,7 +292,7 @@ Chimee 同时也会承担事件转发的功能。你可以通过 `autoFocus` 进
 
 ### 多种组件设置
 
-为了方面我们覆盖各式场景，我们提供了[透明插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#透明插件)、[穿透插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#穿透插件)、[内层插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#插件位置)和[外层插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#插件位置)四种概念，具体区别请查看[插件 Api](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)。
+为了方面我们覆盖各式场景，我们提供了[透明插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md#透明插件)、[穿透插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md#穿透插件)、[内层插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md#插件位置)和[外层插件](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md#插件位置)四种概念，具体区别请查看[插件 Api](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md)。
 
 ### 异步组件加载
 
