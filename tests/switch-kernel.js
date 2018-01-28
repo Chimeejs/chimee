@@ -2,7 +2,8 @@ import Chimee from '../src/index';
 import chai from 'chai';
 const { expect } = chai;
 describe('check for chimee switch kernel function', () => {
-  it('should not trigger volume change', async () => {
+  it('should not trigger volume change', async function() {
+    this.timeout(10000);
     let count = 0;
     const chimee = new Chimee({
       wrapper: document.createElement('wrapper'),
