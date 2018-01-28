@@ -52,7 +52,10 @@ const player = new Chimee({
   // src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/79_3041054cc65-ae8c-4b63-8937-5ccb05f79720.m3u8',
   // dom容器
   wrapper: '#wrapper',
-  plugin: [ 'controller' ],
+  plugin: [{
+    name: 'controller',
+    inner: false,
+  }],
   // preset: {
   //   flv: window.chimeeKernelFlv,
   //   hls: window.chimeeKernelHls
