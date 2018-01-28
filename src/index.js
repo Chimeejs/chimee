@@ -68,6 +68,14 @@ export default class Chimee extends VideoWrapper {
   destroy() {
     super.__destroy();
     this.__dispatcher.destroy();
+    // $FlowFixMe: normal obejct define
+    Object.defineProperty(this, '__dispatcher', {
+      get() {
+        throw new Error('This instance has been destroyed.');
+      },
+      enumerable: true,
+      configurable: true,
+    });
     this.destroyed = true;
   }
   use(option: string | PluginOption) {

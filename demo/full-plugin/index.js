@@ -17,54 +17,54 @@ const plugin = {
     afterReady() {
       log('afterReady');
     },
-    abort(...args) {
+    abort() {
       log('abort');
     },
-    canplay(...args) {
+    canplay() {
       log('canplay');
       this.$dom.innerHTML = '<h1>canplay</h1>';
     },
-    canplaythrough(...args) {
+    canplaythrough() {
       log('canplaythrough');
     },
-    durationchange(...args) {
+    durationchange() {
       log('durationchange');
     },
-    emptied(...args) {
+    emptied() {
       log('emptied');
     },
-    encrypted(...args) {
+    encrypted() {
       log('encrypted');
     },
-    ended(...args) {
+    ended() {
       log('ended');
       this.$dom.innerHTML = '<h1>ended</h1>';
     },
-    error(...args) {
+    error() {
       log('error');
     },
-    interruptbegin(...args) {
+    interruptbegin() {
       log('interruptbegin');
     },
-    interruptend(...args) {
+    interruptend() {
       log('interruptend');
     },
-    loadeddata(...args) {
+    loadeddata() {
       log('loadeddata');
     },
-    loadedmetadata(...args) {
+    loadedmetadata() {
       log('loadedmetadata');
     },
-    loadstart(...args) {
+    loadstart() {
       log('loadstart');
     },
-    mozaudioavailable(...args) {
+    mozaudioavailable() {
       log('mozaudioavailable');
     },
     beforePause() {
       log('beforePause', 'important');
     },
-    pause(...args) {
+    pause() {
       log('pause');
       this.$dom.innerHTML = '<h1>pause</h1>';
     },
@@ -74,43 +74,41 @@ const plugin = {
     beforePlay() {
       log('beforePlay', 'important');
     },
-    play(...args) {
+    play() {
       log('play');
       this.$dom.innerHTML = '<h1>play</h1>';
     },
     afterPlay() {
       log('afterPlay', 'important');
     },
-    playing(...args) {
+    playing() {
       log('playing');
     },
-    progress(...args) {
+    progress() {
       log('progress');
     },
-    ratechange(...args) {
+    ratechange() {
       log('ratechange');
     },
-    seeked(...args) {
-      for (let i = 0; i < this.buffered.length; i++) {
-      }
+    seeked() {
       log('seeked');
     },
-    seeking(...args) {
+    seeking() {
       log('seeking');
     },
-    stalled(...args) {
+    stalled() {
       log('stalled');
     },
-    suspend(...args) {
+    suspend() {
       log('suspend');
     },
-    timeupdate(...args) {
+    timeupdate() {
       log('timeupdate');
     },
-    volumechange(...args) {
+    volumechange() {
       log('volumechange');
     },
-    waiting(...args) {
+    waiting() {
       log('waiting');
     },
   },
