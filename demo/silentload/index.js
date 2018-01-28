@@ -41,21 +41,32 @@ Chimee.install(flvSwitch);
 Chimee.install(hlsSwitch);
 Chimee.installKernel({
   flv: window.chimeeKernelFlv,
-  hls: window.chimeeKernelHls,
+  hls: window.ChimeeKernelHls,
 });
 const player = new Chimee({
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
   wrapper: '#wrapper',
   plugin: [ 'nativeSwitch', 'nativeOneSwitch', 'flvSwitch', 'hlsSwitch' ],
-  volume: 0.1,
   kernels: [ 'flv', 'hls' ],
   autoplay: true,
   controls: true,
+  volume: 0.2,
+  muted: true,
 });
 window.player = player;
+
 player.on('heartbeat', evt => {
   console.log(evt);
 });
+
 player.on('error', evt => {
   console.error(evt);
+});
+
+player.on('volumechange', evt => {
+  console.error(evt);
+});
+
+player.on('pause', evt => {
+  console.log(evt);
 });

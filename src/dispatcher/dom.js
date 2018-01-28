@@ -107,7 +107,11 @@ export default class Dom {
     esFullscreen.on('fullscreenchange', this._fullscreenMonitor);
   }
 
-  installVideo(videoElement: HTMLVideoElement): HTMLVideoElement {
+  installVideo(videoElement: HTMLVideoElement, {
+    bindEvent = true,
+  }: {
+    bindEvent: boolean
+  } = {}): HTMLVideoElement {
     this.__videoExtendedNodes.push(videoElement);
     setAttr(videoElement, 'tabindex', -1);
     this._autoFocusToVideo(videoElement);
@@ -134,14 +138,18 @@ export default class Dom {
     if (this.container.parentElement !== this.wrapper) {
       $(this.wrapper).append(this.container);
     }
+    if (bindEvent) this.bindVideoEvents(videoElement);
+    this.videoElement = videoElement;
+    return videoElement;
+  }
+
+  bindVideoEvents(videoElement: HTMLVideoElement) {
     videoEvents.forEach(key => {
       const fn = (...args: any) => this.__dispatcher.bus.trigger(key, ...args);
       this.videoEventHandlerList.push(fn);
       addEvent(videoElement, key, fn);
     });
     this._addDomEvents(videoElement, this.videoDomEventHandlerList, key => this._getEventHandler(key, { penetrate: true }));
-    this.videoElement = videoElement;
-    return videoElement;
   }
 
   removeVideo(): HTMLVideoElement {
