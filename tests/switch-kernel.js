@@ -19,7 +19,7 @@ describe('check for chimee switch kernel function', () => {
     } catch (error) {
       console.error(error);
     }
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 500));
     expect(count).to.equal(0);
   });
 });

@@ -2,7 +2,7 @@
 
 Chimee 本质上是对原生 video 元素的一个封装。因此在许多用法上都会和原生 video 元素一致。本文会介绍 Chimee 在 video 层级上的具体用法。
 
-同时，Chimee 也是一个组件化框架，要理解这个框架的具体用法，请阅读[为什么要将 Chimee 设计成一个组件化框架？](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/why-chimee-is-a-frame.md)
+同时，Chimee 也是一个组件化框架，要理解这个框架的具体用法，请阅读[为什么要将 Chimee 设计成一个组件化框架？](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/design/why-chimee-is-a-frame.md)
 
 本文将分为以下几个部分进行阐述：
 
@@ -188,9 +188,9 @@ const chimee = new Chimee({
 
 优先级高的插件将在事件处理机制中优先获得事件，因此可以阻截后方插件获取事件。
 
-> 要理解插件的具体用法，请阅读[为什么要将 Chimee 设计成一个组件化框架？](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/why-chimee-is-a-frame.md)
+> 要理解插件的具体用法，请阅读[为什么要将 Chimee 设计成一个组件化框架？](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/design/why-chimee-is-a-frame.md)
 >
-> 要获知插件相关的 api， 请阅读[Chimee 插件 API 介绍](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)
+> 要获知插件相关的 api， 请阅读[Chimee 插件 API 介绍](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md)
 
 ### container (v0.5.0 后)
 
@@ -373,7 +373,7 @@ chimee.load({
 })
 ```
 
-> load 方法会触发 load 系列事件，你可以通过插件 `beforeLoad` 阻截或挂起事件，也可以通过`load`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
+> load 方法会触发 load 系列事件，你可以通过插件 `beforeLoad` 阻截或挂起事件，也可以通过`load`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
 
 > load 会在以下情况切换内部 kernel。
 >
@@ -386,13 +386,13 @@ chimee.load({
 
 播放视频的函数。
 
-> play 方法会触发 play 系列事件，你可以通过插件 `beforePlay` 阻截或挂起事件，也可以通过`play`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
+> play 方法会触发 play 系列事件，你可以通过插件 `beforePlay` 阻截或挂起事件，也可以通过`play`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
 
 ### pause
 
 暂停视频播放的函数
 
-> pause 方法会触发 pause 系列事件，你可以通过插件 `beforePasue` 阻截或挂起事件，也可以通过`pause`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
+> pause 方法会触发 pause 系列事件，你可以通过插件 `beforePasue` 阻截或挂起事件，也可以通过`pause`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
 
 ### seek
 
@@ -403,7 +403,7 @@ chimee.load({
 
 `seek`函数本质等同于设置 video 上的 `currentTime`。一般用于快进后退。在 chimee 上也可以直接设置 `currentTime`，并不一定需要运用此函数。
 
-> seek 方法会触发 seek 系列事件，你可以通过插件 `beforeSeek` 阻截事件，也可以通过`seek`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
+> seek 方法会触发 seek 系列事件，你可以通过插件 `beforeSeek` 阻截事件，也可以通过`seek`事件阻止冒泡等。要了解更多相关知识，可以阅读[插件的事件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md#%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6)。
 
 ### startLoad
 
@@ -787,7 +787,7 @@ chimee 作为 video 的映射，自然也是可以监听 video 上的事件。�
 >
 > 如果要监听 container 上的事件，请添加前缀 c_
 >
-> 要理解 chimee 的事件体系，请阅读[《为什么要将 Chimee 设计成一个组件化框架？》中的事件体系部分](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/why-chimee-is-a-frame.md)
+> 要理解 chimee 的事件体系，请阅读[《为什么要将 Chimee 设计成一个组件化框架？》中的事件体系部分](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/design/why-chimee-is-a-frame.md)
 
 ### off
 
@@ -989,7 +989,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 全屏和退出全屏的相关操作。
 
-> 关于全屏对象的设置可到[Chimee 插件 API 介绍中的插件位置部分](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E6%8F%92%E4%BB%B6%E4%BD%8D%E7%BD%AE)了解更多
+> 关于全屏对象的设置可到[Chimee 插件 API 介绍中的插件位置部分](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md#%E6%8F%92%E4%BB%B6%E4%BD%8D%E7%BD%AE)了解更多
 
 ### requestFullscreen
 
@@ -1178,5 +1178,5 @@ Chimee.errorHandler = error => console.log('wow, an error!!!', error.message)
 
 ## 进阶使用
 
-随着业务发展越来越复杂，我们会发现我们需要实现众多功能。这些功能彼此耦合关联，难以维护。这时候我们需要将功能模块化使用，那样便于我们进行灰度和 debug。此时我们需要使用 chimee 自身的插件体系。让我们进入下一部分，[为什么要将 Chimee 设计成一个组件化框架？](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/why-chimee-is-a-frame.md)。
+随着业务发展越来越复杂，我们会发现我们需要实现众多功能。这些功能彼此耦合关联，难以维护。这时候我们需要将功能模块化使用，那样便于我们进行灰度和 debug。此时我们需要使用 chimee 自身的插件体系。让我们进入下一部分，[为什么要将 Chimee 设计成一个组件化框架？](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/design/why-chimee-is-a-frame.md)。
 

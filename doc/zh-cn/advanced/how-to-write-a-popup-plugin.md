@@ -1,6 +1,6 @@
 # 如何编写一个 UI 插件
 
-本章节假设你已经大体了解了 [Chimee 插件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)，我们一起来看一下怎么编写一个UI插件。
+本章节假设你已经大体了解了 [Chimee 插件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md)，我们一起来看一下怎么编写一个UI插件。
 
 这里我们以比较通用的模态窗插件 `popup` 为例（[点击这里看示例效果](http://hzj.qihu.work/h5-videoplayer/demo/ui-popup/)）。
 
@@ -25,7 +25,7 @@
 
 ## 编码实现
 
-首先我们要结合上面的需求，编写一个符合 [PluginConfig](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#pluginConfig参数) 约定的插件配置：
+首先我们要结合上面的需求，编写一个符合 [PluginConfig](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md#pluginConfig参数) 约定的插件配置：
 ```javascript
 const popupPluginConfig = {
 	name: 'mypopup',
@@ -74,7 +74,7 @@ const popupPluginConfig = {
 };
 ```
 
-基于 `Chimee Plugin` 实现很简单对不对？让我们先结合前面章节的[插件应用](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#插件用法)使用起来看看。
+基于 `Chimee Plugin` 实现很简单对不对？让我们先结合前面章节的[插件应用](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md#插件用法)使用起来看看。
 
 ```javascript
 Chimee.install(popupPluginConfig);
@@ -129,7 +129,7 @@ chimee-popup pp-close{
 
 ## 小结
 
-当然，上面只是一个简单的例子，还有[很多功能](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md)是没有用上的。
+当然，上面只是一个简单的例子，还有[很多功能](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md)是没有用上的。
 
 基于 `Chimee PluginConfing` API可以非常方便的实现自己想要的UI插件，[比如广告控制](http://hzj.qihu.work/h5-videoplayer/demo/ui-ad/)。
 

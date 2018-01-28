@@ -1006,7 +1006,7 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 全屏和退出全屏的相关操作。
 
-> 关于全屏对象的设置可到[Chimee 插件 API 介绍中的插件位置部分](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/plugin-api.md#%E6%8F%92%E4%BB%B6%E4%BD%8D%E7%BD%AE)了解更多
+> 关于全屏对象的设置可到[Chimee 插件 API 介绍中的插件位置部分](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md#%E6%8F%92%E4%BB%B6%E4%BD%8D%E7%BD%AE)了解更多
 
 ### requestFullscreen
 
@@ -1497,5 +1497,5 @@ const chimee2 = new Chimee({
 chimee2.use(pluginConfig.name);
 ```
 
-> 要了解如看编写与使用弹窗组件，[请看这里](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/how-to-write-a-popup-plugin.md)。
+> 要了解如看编写与使用弹窗组件，[请看这里](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/advanced/how-to-write-a-popup-plugin.md)。
 
