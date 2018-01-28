@@ -16,10 +16,10 @@ describe('check for chimee switch kernel function', () => {
     });
     try {
       await chimee.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', { immediate: true });
+      await new Promise(resolve => setTimeout(resolve, 500));
     } catch (error) {
       console.error(error);
     }
-    await new Promise(resolve => setTimeout(resolve, 500));
     expect(count).to.equal(0);
   });
 });
