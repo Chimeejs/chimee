@@ -43,7 +43,7 @@ npm install --save chimee
 
 ### cdn
 
-> [https://github.com/cdnjs/cdnjs/pull/12157](https://github.com/cdnjs/cdnjs/pull/12157) You can check this pr in cdn.js
+You can get the cdn url on [https://cdnjs.com/libraries/chimee](https://cdnjs.com/libraries/chimee).
 
 ## Usage
 
