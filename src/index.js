@@ -1,10 +1,12 @@
 // @flow
 import Dispatcher from './dispatcher/index';
-import { isString, isFunction, isElement, isObject } from 'chimee-helper';
+import { isString, isFunction, isElement, isObject, Log } from 'chimee-helper';
 import Plugin from './dispatcher/plugin';
 import { frozen, autobindClass } from 'toxic-decorators';
 import VideoWrapper from 'dispatcher/video-wrapper';
 import GlobalConfig from 'config/global';
+import global from 'core-js/es7/global';
+
 @autobindClass()
 export default class Chimee extends VideoWrapper {
   __id: string;
@@ -49,6 +51,16 @@ export default class Chimee extends VideoWrapper {
   static getPluginConfig = Dispatcher.getPluginConfig;
   constructor(config: UserConfig | string | Element) {
     super();
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'production' && !global.Object.defineProperty) {
+      /* istanbul ignore next */
+      Log.error('Chimee', "We detect that this browser lack of Object.defineProperty. Chimee can't run on this browser");
+    }
+    /* istanbul ignore if */
+    if (process.env.NODE_ENV !== 'production' && !global.Promise) {
+      /* istanbul ignore next */
+      Log.error('Chimee', 'We detect that this browser lack of Promise. If you are running Chimee in old browser. Please make sure you have import polyfill such as babel-polyfill.');
+    }
     if (isString(config) || isElement(config)) {
       config = {
         wrapper: config,

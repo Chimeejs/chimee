@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+// import 'babel-polyfill';
 const Chimee = window.Chimee;
 const plugin = {
   // 插件名为 controller

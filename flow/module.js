@@ -3,6 +3,10 @@ declare module 'toxic-decorators' {
   declare module.exports: any;
 }
 
+declare module 'core-js/es7/global' {
+  declare module.exports: any;
+}
+
 declare module 'es-fullscreen' {
   declare module.exports: {
     _fullscreenElement: HTMLElement | null;
