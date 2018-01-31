@@ -70,6 +70,7 @@
     "chimee-plugin-controlbar": "^0.4.0",
     "chimee-plugin-danmu": "0.0.9",
     "chimee-plugin-popup": "0.0.7",
+    "core-js": "^2.5.3",
     "eslint": "^4.16.0",
     "eslint-config-egg": "^6.0.0",
     "eslint-plugin-flowtype": "^2.42.0",
