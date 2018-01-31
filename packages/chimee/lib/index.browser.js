@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.9.1
+ * chimee v0.9.2
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -8482,7 +8482,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.9.1';
+    _this.VERSION = '0.9.2';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -10452,6 +10452,216 @@ var GlobalConfig = (_class$7 = function () {
   }
 }), _class$7);
 
+var _global$2 = createCommonjsModule(function (module) {
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+var global = module.exports = typeof window != 'undefined' && window.Math == Math
+  ? window : typeof self != 'undefined' && self.Math == Math ? self
+  // eslint-disable-next-line no-new-func
+  : Function('return this')();
+if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
+});
+
+var _core$2 = createCommonjsModule(function (module) {
+var core = module.exports = { version: '2.5.3' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+});
+
+var _core_1$1 = _core$2.version;
+
+var _isObject$2 = function (it) {
+  return typeof it === 'object' ? it !== null : typeof it === 'function';
+};
+
+var _anObject$2 = function (it) {
+  if (!_isObject$2(it)) throw TypeError(it + ' is not an object!');
+  return it;
+};
+
+var _fails$2 = function (exec) {
+  try {
+    return !!exec();
+  } catch (e) {
+    return true;
+  }
+};
+
+// Thank's IE8 for his funny defineProperty
+var _descriptors$2 = !_fails$2(function () {
+  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+});
+
+var document$3 = _global$2.document;
+// typeof document.createElement is 'object' in old IE
+var is$1 = _isObject$2(document$3) && _isObject$2(document$3.createElement);
+var _domCreate$2 = function (it) {
+  return is$1 ? document$3.createElement(it) : {};
+};
+
+var _ie8DomDefine$2 = !_descriptors$2 && !_fails$2(function () {
+  return Object.defineProperty(_domCreate$2('div'), 'a', { get: function () { return 7; } }).a != 7;
+});
+
+// 7.1.1 ToPrimitive(input [, PreferredType])
+
+// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+// and the second argument - flag - preferred type is a string
+var _toPrimitive$2 = function (it, S) {
+  if (!_isObject$2(it)) return it;
+  var fn, val;
+  if (S && typeof (fn = it.toString) == 'function' && !_isObject$2(val = fn.call(it))) return val;
+  if (typeof (fn = it.valueOf) == 'function' && !_isObject$2(val = fn.call(it))) return val;
+  if (!S && typeof (fn = it.toString) == 'function' && !_isObject$2(val = fn.call(it))) return val;
+  throw TypeError("Can't convert object to primitive value");
+};
+
+var dP$4 = Object.defineProperty;
+
+var f$8 = _descriptors$2 ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+  _anObject$2(O);
+  P = _toPrimitive$2(P, true);
+  _anObject$2(Attributes);
+  if (_ie8DomDefine$2) try {
+    return dP$4(O, P, Attributes);
+  } catch (e) { /* empty */ }
+  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+  if ('value' in Attributes) O[P] = Attributes.value;
+  return O;
+};
+
+var _objectDp$2 = {
+	f: f$8
+};
+
+var _propertyDesc$2 = function (bitmap, value) {
+  return {
+    enumerable: !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable: !(bitmap & 4),
+    value: value
+  };
+};
+
+var _hide$2 = _descriptors$2 ? function (object, key, value) {
+  return _objectDp$2.f(object, key, _propertyDesc$2(1, value));
+} : function (object, key, value) {
+  object[key] = value;
+  return object;
+};
+
+var hasOwnProperty$1 = {}.hasOwnProperty;
+var _has$2 = function (it, key) {
+  return hasOwnProperty$1.call(it, key);
+};
+
+var id$2 = 0;
+var px$1 = Math.random();
+var _uid$2 = function (key) {
+  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id$2 + px$1).toString(36));
+};
+
+var _redefine$2 = createCommonjsModule(function (module) {
+var SRC = _uid$2('src');
+var TO_STRING = 'toString';
+var $toString = Function[TO_STRING];
+var TPL = ('' + $toString).split(TO_STRING);
+
+_core$2.inspectSource = function (it) {
+  return $toString.call(it);
+};
+
+(module.exports = function (O, key, val, safe) {
+  var isFunction = typeof val == 'function';
+  if (isFunction) _has$2(val, 'name') || _hide$2(val, 'name', key);
+  if (O[key] === val) return;
+  if (isFunction) _has$2(val, SRC) || _hide$2(val, SRC, O[key] ? '' + O[key] : TPL.join(String(key)));
+  if (O === _global$2) {
+    O[key] = val;
+  } else if (!safe) {
+    delete O[key];
+    _hide$2(O, key, val);
+  } else if (O[key]) {
+    O[key] = val;
+  } else {
+    _hide$2(O, key, val);
+  }
+// add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
+})(Function.prototype, TO_STRING, function toString() {
+  return typeof this == 'function' && this[SRC] || $toString.call(this);
+});
+});
+
+var _aFunction$2 = function (it) {
+  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+  return it;
+};
+
+// optional / simple context binding
+
+var _ctx$2 = function (fn, that, length) {
+  _aFunction$2(fn);
+  if (that === undefined) return fn;
+  switch (length) {
+    case 1: return function (a) {
+      return fn.call(that, a);
+    };
+    case 2: return function (a, b) {
+      return fn.call(that, a, b);
+    };
+    case 3: return function (a, b, c) {
+      return fn.call(that, a, b, c);
+    };
+  }
+  return function (/* ...args */) {
+    return fn.apply(that, arguments);
+  };
+};
+
+var PROTOTYPE$3 = 'prototype';
+
+var $export$2 = function (type, name, source) {
+  var IS_FORCED = type & $export$2.F;
+  var IS_GLOBAL = type & $export$2.G;
+  var IS_STATIC = type & $export$2.S;
+  var IS_PROTO = type & $export$2.P;
+  var IS_BIND = type & $export$2.B;
+  var target = IS_GLOBAL ? _global$2 : IS_STATIC ? _global$2[name] || (_global$2[name] = {}) : (_global$2[name] || {})[PROTOTYPE$3];
+  var exports = IS_GLOBAL ? _core$2 : _core$2[name] || (_core$2[name] = {});
+  var expProto = exports[PROTOTYPE$3] || (exports[PROTOTYPE$3] = {});
+  var key, own, out, exp;
+  if (IS_GLOBAL) source = name;
+  for (key in source) {
+    // contains in native
+    own = !IS_FORCED && target && target[key] !== undefined;
+    // export native or passed
+    out = (own ? target : source)[key];
+    // bind timers to global for call from export context
+    exp = IS_BIND && own ? _ctx$2(out, _global$2) : IS_PROTO && typeof out == 'function' ? _ctx$2(Function.call, out) : out;
+    // extend global
+    if (target) _redefine$2(target, key, out, type & $export$2.U);
+    // export
+    if (exports[key] != out) _hide$2(exports, key, exp);
+    if (IS_PROTO && expProto[key] != out) expProto[key] = out;
+  }
+};
+_global$2.core = _core$2;
+// type bitmap
+$export$2.F = 1;   // forced
+$export$2.G = 2;   // global
+$export$2.S = 4;   // static
+$export$2.P = 8;   // proto
+$export$2.B = 16;  // bind
+$export$2.W = 32;  // wrap
+$export$2.U = 64;  // safe
+$export$2.R = 128; // real proto method for `library`
+var _export$2 = $export$2;
+
+// https://github.com/tc39/proposal-global
+
+
+_export$2(_export$2.G, { global: _global$2 });
+
+var global$2 = _core$2.global;
+
 var _dec$7;
 var _class$8;
 var _class2$2;
@@ -10516,6 +10726,7 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$2 = (_temp = 
   function Chimee(config) {
     _classCallCheck(this, Chimee);
 
+    /* istanbul ignore if */
     var _this = _possibleConstructorReturn(this, (Chimee.__proto__ || _Object$getPrototypeOf(Chimee)).call(this));
 
     _this.destroyed = false;
@@ -10526,6 +10737,15 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$2 = (_temp = 
 
     _initDefineProp$2(_this, 'config', _descriptor3$1, _this);
 
+    if ("development" !== 'production' && !global$2.Object.defineProperty) {
+      /* istanbul ignore next */
+      Log.error('Chimee', "We detect that this browser lack of Object.defineProperty. Chimee can't run on this browser");
+    }
+    /* istanbul ignore if */
+    if ("development" !== 'production' && !global$2.Promise) {
+      /* istanbul ignore next */
+      Log.error('Chimee', 'We detect that this browser lack of Promise. If you are running Chimee in old browser. Please make sure you have import polyfill such as babel-polyfill.');
+    }
     if (isString(config) || isElement(config)) {
       config = {
         wrapper: config,
@@ -10590,7 +10810,7 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$2 = (_temp = 
 }), _descriptor2$1 = _applyDecoratedDescriptor$7(_class2$2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.9.1';
+    return '0.9.2';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$7(_class2$2.prototype, 'config', [frozen], {
   enumerable: true,
