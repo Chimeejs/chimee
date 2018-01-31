@@ -39,7 +39,7 @@ npm install --save chimee
 
 ### cdn
 
-> [https://github.com/cdnjs/cdnjs/pull/12157](https://github.com/cdnjs/cdnjs/pull/12157) cdnjs 审核中。
+你可以前往 [https://cdnjs.com/libraries/chimee](https://cdnjs.com/libraries/chimee) 获取各个版本的 cdn 地址。
 
 ## 用法
 
