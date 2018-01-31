@@ -6,7 +6,7 @@
 [![dependency Status](https://david-dm.org/Chimeejs/chimee.svg)](https://david-dm.org/Chimeejs/chimee)
 [![devDependency Status](https://david-dm.org/Chimeejs/chimee/dev-status.svg)](https://david-dm.org/Chimeejs/chimee?type=dev)
 
-English | [中文](http://chimee.org/docs/index.html)
+English | [中文](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/README.md)
 
 ## Introduction
 
@@ -43,7 +43,7 @@ npm install --save chimee
 
 ### cdn
 
-> [https://github.com/cdnjs/cdnjs/pull/12157](https://github.com/cdnjs/cdnjs/pull/12157) You can check this pr in cdn.js
+You can get the cdn url on [https://cdnjs.com/libraries/chimee](https://cdnjs.com/libraries/chimee).
 
 ## Usage
 
