@@ -36,7 +36,7 @@ const player = new chimee({
 
 ```javascript
 plugin: [{
-  name: chimeePluginControlbar.name,
+  name: chimeePluginMobileControlbar.name,
   majorColor: '',
   hoverColor: '',
   children: {
