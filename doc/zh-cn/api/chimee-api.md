@@ -1035,6 +1035,16 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 若无全屏则为 `undefined`
 
+### fullscreenchange
+
+如果需要监听全屏事件。只要监听 `fullscreenchange` 即可。
+
+```javascript
+player.on('fullscreenchange', evt => {
+  console.log('wowo, fullscreen', evt);
+});
+```
+
 ## 插件操作
 
 在 chimee 中我们会使用插件来实现业务需求，因此我们要进行插件安装。在 chimee 上有以下几个方法。
