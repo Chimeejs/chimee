@@ -66,6 +66,7 @@
     "chai": "^4.1.2",
     "chimee-kernel-flv": "^1.4.7",
     "chimee-kernel-hls": "^1.2.0",
+    "chimee-mobile-player": "0.0.3",
     "chimee-plugin-center-state": "0.0.8",
     "chimee-plugin-controlbar": "^0.4.0",
     "chimee-plugin-danmu": "0.0.9",
