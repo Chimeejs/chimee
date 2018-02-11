@@ -1052,6 +1052,16 @@ player.$del(test, 'bar'); // {foo: 2}, {foo: 2}
 
 若无全屏则为 `undefined`
 
+### fullscreenchange
+
+如果需要监听全屏事件。只要监听 `fullscreenchange` 即可。
+
+```javascript
+player.on('fullscreenchange', evt => {
+  console.log('wowo, fullscreen', evt);
+});
+```
+
 ## PluginConfig参数
 
 开发者开发插件时可以设定的参数
