@@ -293,4 +293,4 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   get $level(): number {
     return this.__level;
   }
-};
+}
