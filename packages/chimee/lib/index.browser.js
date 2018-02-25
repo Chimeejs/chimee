@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.9.2
+ * chimee v0.9.3
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -12,8 +12,6 @@
 }(this, (function () { 'use strict';
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-
 
 function unwrapExports (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
@@ -36,7 +34,6 @@ var _core = createCommonjsModule(function (module) {
 var core = module.exports = { version: '2.5.3' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
-
 var _core_1 = _core.version;
 
 var _aFunction = function (it) {
@@ -358,6 +355,7 @@ module.exports = { "default": getPrototypeOf$1, __esModule: true };
 var _Object$getPrototypeOf = unwrapExports(getPrototypeOf$3);
 
 var classCallCheck = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 exports.default = function (instance, Constructor) {
@@ -370,6 +368,7 @@ exports.default = function (instance, Constructor) {
 var _classCallCheck = unwrapExports(classCallCheck);
 
 var createClass = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
@@ -774,7 +773,6 @@ var meta = module.exports = {
   onFreeze: onFreeze
 };
 });
-
 var _meta_1 = _meta.KEY;
 var _meta_2 = _meta.NEED;
 var _meta_3 = _meta.fastKey;
@@ -1098,6 +1096,7 @@ module.exports = { "default": symbol, __esModule: true };
 unwrapExports(symbol$2);
 
 var _typeof_1 = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
@@ -1122,6 +1121,7 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 var _typeof = unwrapExports(_typeof_1);
 
 var possibleConstructorReturn = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
@@ -1142,6 +1142,7 @@ exports.default = function (self, call) {
 var _possibleConstructorReturn = unwrapExports(possibleConstructorReturn);
 
 var get = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
@@ -1235,6 +1236,7 @@ module.exports = { "default": create$1, __esModule: true };
 var _Object$create = unwrapExports(create$3);
 
 var inherits = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
@@ -1335,8 +1337,6 @@ var SAFE_CLOSING = false;
 try {
   var riter = [7][ITERATOR$3]();
   riter['return'] = function () { SAFE_CLOSING = true; };
-  // eslint-disable-next-line no-throw-literal
-  
 } catch (e) { /* empty */ }
 
 var _iterDetect = function (exec, skipClosing) {
@@ -1352,7 +1352,7 @@ var _iterDetect = function (exec, skipClosing) {
   return safe;
 };
 
-_export(_export.S + _export.F * !_iterDetect(function (iter) {  }), 'Array', {
+_export(_export.S + _export.F * !_iterDetect(function (iter) { }), 'Array', {
   // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
   from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
     var O = _toObject(arrayLike);
@@ -1389,6 +1389,7 @@ module.exports = { "default": from, __esModule: true };
 var _Array$from = unwrapExports(from$2);
 
 var toConsumableArray = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
@@ -1445,6 +1446,7 @@ module.exports = { "default": getIterator, __esModule: true };
 unwrapExports(getIterator$2);
 
 var slicedToArray = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
@@ -1641,9 +1643,7 @@ var Dispatch = _global.Dispatch;
 var counter = 0;
 var queue = {};
 var ONREADYSTATECHANGE = 'onreadystatechange';
-var defer;
-var channel;
-var port;
+var defer, channel, port;
 var run = function () {
   var id = +this;
   // eslint-disable-next-line no-prototype-builtins
@@ -1850,10 +1850,7 @@ var process$2 = _global.process;
 var $Promise = _global[PROMISE];
 var isNode$1 = _classof(process$2) == 'process';
 var empty = function () { /* empty */ };
-var Internal;
-var newGenericPromiseCapability;
-var OwnPromiseCapability;
-var Wrapper;
+var Internal, newGenericPromiseCapability, OwnPromiseCapability, Wrapper;
 var newPromiseCapability$1 = newGenericPromiseCapability = _newPromiseCapability.f;
 
 var USE_NATIVE$1 = !!function () {
@@ -2227,12 +2224,6 @@ module.exports = { "default": _parseFloat$2, __esModule: true };
 var _Number$parseFloat = unwrapExports(_parseFloat$4);
 
 /**
- * toxic-predicate-functions v0.1.5
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-/**
  * to check whether the object is defined or not
  */
 function defined$1(obj) {
@@ -2366,12 +2357,6 @@ function isHTMLString(str) {
 function isError(val) {
   return val instanceof Error;
 }
-
-/**
- * chimee-helper-log v0.1.2
- * (c) 2017 toxic-johann
- * Released under MIT
- */
 
 function formatter(tag, msg) {
   if (!isString(tag)) throw new TypeError('Log\'s method only acccept string as argument, but not ' + tag + ' in ' + (typeof tag === 'undefined' ? 'undefined' : _typeof(tag)));
@@ -2511,6 +2496,11 @@ var uaParser = createCommonjsModule(function (module, exports) {
  */
 
 (function (window, undefined) {
+
+    //////////////
+    // Constants
+    /////////////
+
 
     var LIBVERSION  = '0.7.17',
         EMPTY       = '',
@@ -3567,14 +3557,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
 
 })(typeof window === 'object' ? window : commonjsGlobal);
 });
-
 var uaParser_1 = uaParser.UAParser;
-
-/**
- * toxic-utils v0.2.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
 
 /**
  * the handler to generate an deep traversal handler
@@ -3809,12 +3792,6 @@ var raf = inBrowser && (window.requestAnimationFrame || window.mozRequestAnimati
 var caf = inBrowser && (window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame || window.msCancelAnimationFrame || window.oCancelAnimationFrame) || function (id) {
   clearTimeout(id);
 };
-
-/**
- * chimee-helper-events v0.1.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
 
 /**
 * @module event
@@ -4738,18 +4715,6 @@ function $(selector, container) {
   return selector.constructor === NodeWrap ? selector : new NodeWrap(selector, container);
 }
 
-/**
- * chimee-helper v0.2.10
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-/**
- * chimee-kernel v1.4.0
- * (c) 2017-2018 songguangyu
- * Released under MIT
- */
-
 var tempCurrentTime = 0;
 
 var NativeVideoKernel = function (_CustEvent) {
@@ -5487,12 +5452,6 @@ module.exports = { "default": getOwnPropertyNames, __esModule: true };
 var _Object$getOwnPropertyNames = unwrapExports(getOwnPropertyNames$2);
 
 /**
- * toxic-utils v0.1.6
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-/**
  * bind the function with some context. we have some fallback strategy here
  * @param {function} fn the function which we need to bind the context on
  * @param {any} context the context object
@@ -5711,6 +5670,7 @@ module.exports = { "default": weakMap, __esModule: true };
 var _WeakMap = unwrapExports(weakMap$2);
 
 var defineProperty$4 = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
@@ -5754,12 +5714,6 @@ module.exports = { "default": preventExtensions, __esModule: true };
 });
 
 unwrapExports(preventExtensions$2);
-
-/**
- * toxic-decorators v0.3.8
- * (c) 2017 toxic-johann
- * Released under GPL-3.0
- */
 
 var getOwnPropertyDescriptor$3 = _Object$getOwnPropertyDescriptor;
 // **********************  对象操作  ************************
@@ -7035,11 +6989,7 @@ var waituntil$1 = classify(waituntil, {
   customArgs: true
 });
 
-var _dec;
-var _dec2;
-var _dec3;
-var _dec4;
-var _class;
+var _dec, _dec2, _dec3, _dec4, _class;
 
 function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -7069,7 +7019,6 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
 
   return desc;
 }
-
 var secondaryReg = /^(before|after|_)/;
 function secondaryChecker(key) {
   if (key.match(secondaryReg)) {
@@ -7566,16 +7515,7 @@ module.exports = { "default": isNan, __esModule: true };
 
 var _Number$isNaN = unwrapExports(isNan$2);
 
-var _dec$1;
-var _dec2$1;
-var _class$1;
-var _descriptor;
-var _descriptor2;
-var _descriptor3;
-var _descriptor4;
-var _descriptor5;
-var _descriptor6;
-var _descriptor7;
+var _dec$1, _dec2$1, _class$1, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
 
 function _initDefineProp(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -7642,7 +7582,7 @@ function accessorVideoAttribute(attribute) {
   },
       _set = _ref.set,
       _get = _ref.get,
-      isBoolean = _ref.isBoolean;
+      isBoolean$$1 = _ref.isBoolean;
 
   return accessor({
     get: function get(value) {
@@ -7650,7 +7590,7 @@ function accessorVideoAttribute(attribute) {
     },
     set: function set(value) {
       if (!this.dispatcher.videoConfigReady) return value;
-      var val = isBoolean ? value ? '' : undefined
+      var val = isBoolean$$1 ? value ? '' : undefined
       /* istanbul ignore next */
       : value === null ? undefined : value;
       this.dom.setAttr('video', _set, val);
@@ -7661,15 +7601,15 @@ function accessorVideoAttribute(attribute) {
   });
 }
 
-function accessorCustomAttribute(attribute, isBoolean) {
+function accessorCustomAttribute(attribute, isBoolean$$1) {
   return accessor({
     get: function get(value) {
       var attrValue = this.dom.getAttr('video', attribute);
-      return this.dispatcher.videoConfigReady && this.inited ? isBoolean ? !!attrValue : attrValue : value;
+      return this.dispatcher.videoConfigReady && this.inited ? isBoolean$$1 ? !!attrValue : attrValue : value;
     },
     set: function set(value) {
       if (!this.dispatcher.videoConfigReady) return value;
-      var val = isBoolean ? value || undefined : value === null ? undefined : value;
+      var val = isBoolean$$1 ? value || undefined : value === null ? undefined : value;
       this.dom.setAttr('video', attribute, val);
       return value;
     }
@@ -7917,27 +7857,7 @@ var VideoConfig = (_dec$1 = boolean(), _dec2$1 = string(function (str) {
   }
 }), _class$1);
 
-var _dec$2;
-var _dec2$2;
-var _dec3$1;
-var _dec4$1;
-var _dec5;
-var _dec6;
-var _dec7;
-var _dec8;
-var _dec9;
-var _dec10;
-var _dec11;
-var _dec12;
-var _dec13;
-var _dec14;
-var _dec15;
-var _dec16;
-var _dec17;
-var _dec18;
-var _dec19;
-var _class$2;
-var _class2;
+var _dec$2, _dec2$2, _dec3$1, _dec4$1, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _class$2, _class2;
 
 function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -7967,7 +7887,6 @@ function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, c
 
   return desc;
 }
-
 function propertyAccessibilityWarn(property) {
   /* istanbul ignore else  */
   Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
@@ -8406,8 +8325,7 @@ var VideoWrapper = (_dec$2 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
   return VideoWrapper;
 }(), _applyDecoratedDescriptor$2(_class2.prototype, '$silentLoad', [_dec2$2], _Object$getOwnPropertyDescriptor(_class2.prototype, '$silentLoad'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$fullscreen', [_dec3$1, _dec4$1, _dec5], _Object$getOwnPropertyDescriptor(_class2.prototype, '$fullscreen'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emit'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emitSync'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2.prototype, '$on'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2.prototype, '$off'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2.prototype, '$once'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2.prototype, '$css'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2.prototype, '$attr'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$plugins'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$pluginOrder'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$wrapper'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$container'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$video'), _class2.prototype), _class2)) || _class$2);
 
-var _dec$3;
-var _class$3;
+var _dec$3, _class$3;
 
 /**
  * <pre>
@@ -8482,7 +8400,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.9.2';
+    _this.VERSION = '0.9.3';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -8714,12 +8632,6 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
   return Plugin;
 }(VideoWrapper)) || _class$3);
 
-/**
- * es-fullscreen v0.2.5
- * (c) 2017-2018 toxic-johann
- * Released under MIT
- */
-
 var VENDOR_PREFIXES = ['', 'o', 'ms', 'moz', 'webkit', 'webkitCurrent'];
 
 var SYNONYMS = [['', ''], // empty
@@ -8830,13 +8742,7 @@ function dispatchEvent(element, name) {
   }
 }
 
-var _dec$4;
-var _dec2$3;
-var _dec3$2;
-var _dec4$2;
-var _dec5$1;
-var _class$4;
-var _class2$1;
+var _dec$4, _dec2$3, _dec3$2, _dec4$2, _dec5$1, _class$4, _class2$1;
 
 function _applyDecoratedDescriptor$3(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -8866,8 +8772,8 @@ function _applyDecoratedDescriptor$3(target, property, decorators, descriptor, c
 
   return desc;
 }
-
 var fullscreenEnabled = native('fullscreenEnabled');
+var useStyleFirst = false;
 
 var ESFullScreen = (_dec$4 = autobindClass(), _dec2$3 = alias('requestFullscreen'), _dec3$2 = alias('exitFullscreen'), _dec4$2 = alias('addEventListener'), _dec5$1 = alias('removeEventListener'), _dec$4(_class$4 = (_class2$1 = function () {
   function ESFullScreen() {
@@ -8877,6 +8783,8 @@ var ESFullScreen = (_dec$4 = autobindClass(), _dec2$3 = alias('requestFullscreen
     this.isNativelySupport = defined$1(native('fullscreenElement')) && (!defined$1(fullscreenEnabled) || fullscreenEnabled === true);
     this._openKey = supportDocument ? native(document.body || document.documentElement, 'requestFullscreen', { keyOnly: true }) : '';
     this._exitKey = native('exitFullscreen', { keyOnly: true });
+    this._useStyleFirst = false;
+    this.hasUsedStyle = false;
   }
 
   _createClass(ESFullScreen, [{
@@ -8900,11 +8808,24 @@ var ESFullScreen = (_dec$4 = autobindClass(), _dec2$3 = alias('requestFullscreen
         this.exit();
       }
 
-      if (this.isNativelySupport) {
-        // $FlowFixMe: support computed key on HTMLElment here
-        element[this._openKey]();
-        return true;
+      if (!this.useStyleFirst) {
+        if (this.isNativelySupport) {
+          // $FlowFixMe: support computed key on HTMLElment here
+          isFunction(element[this._openKey]) && element[this._openKey]();
+          return true;
+        }
+
+        // add wekitEnterFullscreen support as required in https://github.com/toxic-johann/es-fullscreen/issues/4
+        /* istanbul ignore if  */
+        if (element instanceof HTMLVideoElement && element.webkitSupportsFullscreen &&
+        // $FlowFixMe: support webkitEnterFullscreen on some werid safari
+        isFunction(element.webkitEnterFullscreen)) {
+          element.webkitEnterFullscreen();
+          this._fullscreenElement = element;
+          return true;
+        }
       }
+
       this._savedStyles = _Object$keys(DESKTOP_FULLSCREEN_STYLE).reduce(function (styles, key) {
         // $FlowFixMe: support string here
         styles[key] = element.style[key];
@@ -8923,6 +8844,7 @@ var ESFullScreen = (_dec$4 = autobindClass(), _dec2$3 = alias('requestFullscreen
         document.documentElement.style.overflow = 'hidden';
       }
       this._fullscreenElement = element;
+      this.hasUsedStyle = true;
       dispatchEvent(element, 'fullscreenchange');
       return true;
     }
@@ -8930,7 +8852,7 @@ var ESFullScreen = (_dec$4 = autobindClass(), _dec2$3 = alias('requestFullscreen
     key: 'exit',
     value: function exit() {
       if (!this.isFullscreen) return false;
-      if (this.isNativelySupport) {
+      if (this.isNativelySupport && !this.useStyleFirst && !this.hasUsedStyle) {
         // $FlowFixMe: support document computed key here
         document[this._exitKey]();
         return true;
@@ -8967,15 +8889,27 @@ var ESFullScreen = (_dec$4 = autobindClass(), _dec2$3 = alias('requestFullscreen
     value: function _handleEvent(element, behavior, name, fn) {
       /* istanbul ignore else  */
       {
-        if (name !== 'fullscreenchange' && name !== 'fullscreenerror') throw new Error(this.constructor.name + ' only handle "fullscreenchange" and "fullscreenerror" event, but not ' + name + '. Pleas pass in an right event name.');
+        if (name !== 'fullscreenchange' && name !== 'fullscreenerror' && name !== 'esfullscreenmethodchange') throw new Error(this.constructor.name + ' only handle "fullscreenchange", "fullscreenerror" and "esfullscreenmethodchange" event, but not ' + name + '. Pleas pass in an right event name.');
         if (!isFunction(fn)) throw new Error('You must pass in an legal function, but not ' + (typeof fn === 'undefined' ? 'undefined' : _typeof(fn)) + '.');
         if (!isElement(element) && element !== document) throw new Error('You should passed in a legal element, but not ' + (typeof element === 'undefined' ? 'undefined' : _typeof(element)) + '.');
       }
-      var names = name === 'fullscreenchange' ? FULLSCREEN_CHANGE : FULLSCREEN_ERROR;
+      var names = name === 'fullscreenchange' ? FULLSCREEN_CHANGE : name === 'fullscreenerror' ? FULLSCREEN_ERROR : [name];
       names.forEach(function (name) {
         // $FlowFixMe: support computed attribute here
         element[behavior](name, fn);
       });
+    }
+  }, {
+    key: 'useStyleFirst',
+    get: function get() {
+      return useStyleFirst;
+    },
+    set: function set(value) {
+      value = !!value;
+      if (value === useStyleFirst) return value;
+      useStyleFirst = value;
+      dispatchEvent(document, 'esfullscreenmethodchange');
+      return value;
     }
   }, {
     key: 'fullscreenElement',
@@ -8998,13 +8932,7 @@ var ESFullScreen = (_dec$4 = autobindClass(), _dec2$3 = alias('requestFullscreen
 
 var index = new ESFullScreen();
 
-var _dec$5;
-var _dec2$4;
-var _dec3$3;
-var _dec4$3;
-var _dec5$2;
-var _dec6$1;
-var _class$5;
+var _dec$5, _dec2$4, _dec3$3, _dec4$3, _dec5$2, _dec6$1, _class$5;
 
 function _applyDecoratedDescriptor$4(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -9034,7 +8962,6 @@ function _applyDecoratedDescriptor$4(target, property, decorators, descriptor, c
 
   return desc;
 }
-
 function targetCheck(target) {
   if (target === 'video') target = 'videoElement';
   if (!isElement(this[target])) throw new TypeError('Your target "' + target + '" is not a legal HTMLElement');
@@ -9574,12 +9501,7 @@ var Vessel = function Vessel(dispatcher, target, config) {
   deepAssign(this, config);
 };
 
-var _dec$6;
-var _dec2$5;
-var _dec3$4;
-var _dec4$4;
-var _dec5$3;
-var _class$6;
+var _dec$6, _dec2$5, _dec3$4, _dec4$4, _dec5$3, _class$6;
 
 function _applyDecoratedDescriptor$5(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -9609,7 +9531,6 @@ function _applyDecoratedDescriptor$5(target, property, decorators, descriptor, c
 
   return desc;
 }
-
 var pluginConfigSet = {};
 var kernelsSet = {};
 function convertNameIntoId(name) {
@@ -10351,8 +10272,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
   return Dispatcher;
 }(), _applyDecoratedDescriptor$5(_class$6.prototype, 'unuse', [_dec$6], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'unuse'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'throwError', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'throwError'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6, 'install', [_dec2$5], _Object$getOwnPropertyDescriptor(_class$6, 'install'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'hasInstalled', [_dec3$4], _Object$getOwnPropertyDescriptor(_class$6, 'hasInstalled'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'uninstall', [_dec4$4], _Object$getOwnPropertyDescriptor(_class$6, 'uninstall'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'getPluginConfig', [_dec5$3], _Object$getOwnPropertyDescriptor(_class$6, 'getPluginConfig'), _class$6), _class$6);
 
-var _class$7;
-var _descriptor$1;
+var _class$7, _descriptor$1;
 
 function _initDefineProp$1(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -10393,7 +10313,6 @@ function _applyDecoratedDescriptor$6(target, property, decorators, descriptor, c
 
   return desc;
 }
-
 var GlobalConfig = (_class$7 = function () {
   _createClass(GlobalConfig, [{
     key: 'silent',
@@ -10465,7 +10384,6 @@ var _core$2 = createCommonjsModule(function (module) {
 var core = module.exports = { version: '2.5.3' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
-
 var _core_1$1 = _core$2.version;
 
 var _isObject$2 = function (it) {
@@ -10662,23 +10580,7 @@ _export$2(_export$2.G, { global: _global$2 });
 
 var global$2 = _core$2.global;
 
-var _dec$7;
-var _class$8;
-var _class2$2;
-var _descriptor$2;
-var _descriptor2$1;
-var _descriptor3$1;
-var _init;
-var _init2;
-var _init3;
-var _init4;
-var _init5;
-var _init6;
-var _init7;
-var _init8;
-var _init9;
-var _class3;
-var _temp;
+var _dec$7, _class$8, _class2$2, _descriptor$2, _descriptor2$1, _descriptor3$1, _init, _init2, _init3, _init4, _init5, _init6, _init7, _init8, _init9, _class3, _temp;
 
 function _initDefineProp$2(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -10810,7 +10712,7 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$2 = (_temp = 
 }), _descriptor2$1 = _applyDecoratedDescriptor$7(_class2$2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.9.2';
+    return '0.9.3';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$7(_class2$2.prototype, 'config', [frozen], {
   enumerable: true,

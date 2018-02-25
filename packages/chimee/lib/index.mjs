@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.9.2
+ * chimee v0.9.3
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -41,11 +41,7 @@ var kernelEvents = ['mediaInfo', 'heartbeat', 'error'];
 var domMethods = ['focus', 'fullscreen', 'requestFullscreen', 'exitFullscreen'];
 var videoMethods = ['canPlayType', 'captureStream', 'setSinkId'];
 
-var _dec;
-var _dec2;
-var _dec3;
-var _dec4;
-var _class;
+var _dec, _dec2, _dec3, _dec4, _class;
 
 function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -75,7 +71,6 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
 
   return desc;
 }
-
 var secondaryReg = /^(before|after|_)/;
 function secondaryChecker(key) {
   if (key.match(secondaryReg)) {
@@ -543,16 +538,7 @@ function attrAndStyleCheck() {
   return ['get', 'container'].concat(args);
 }
 
-var _dec$1;
-var _dec2$1;
-var _class$1;
-var _descriptor;
-var _descriptor2;
-var _descriptor3;
-var _descriptor4;
-var _descriptor5;
-var _descriptor6;
-var _descriptor7;
+var _dec$1, _dec2$1, _class$1, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
 
 function _initDefineProp(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -894,27 +880,7 @@ var VideoConfig = (_dec$1 = initBoolean(), _dec2$1 = initString(function (str) {
   }
 }), _class$1);
 
-var _dec$2;
-var _dec2$2;
-var _dec3$1;
-var _dec4$1;
-var _dec5;
-var _dec6;
-var _dec7;
-var _dec8;
-var _dec9;
-var _dec10;
-var _dec11;
-var _dec12;
-var _dec13;
-var _dec14;
-var _dec15;
-var _dec16;
-var _dec17;
-var _dec18;
-var _dec19;
-var _class$2;
-var _class2;
+var _dec$2, _dec2$2, _dec3$1, _dec4$1, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _class$2, _class2;
 
 function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -944,7 +910,6 @@ function _applyDecoratedDescriptor$2(target, property, decorators, descriptor, c
 
   return desc;
 }
-
 function propertyAccessibilityWarn(property) {
   /* istanbul ignore else  */
   if (process.env.NODE_ENV !== 'production') Log.warn('chimee', 'You are trying to obtain ' + property + ', we will return you the DOM node. It\'s not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues');
@@ -1383,8 +1348,7 @@ var VideoWrapper = (_dec$2 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
   return VideoWrapper;
 }(), _applyDecoratedDescriptor$2(_class2.prototype, '$silentLoad', [_dec2$2], _Object$getOwnPropertyDescriptor(_class2.prototype, '$silentLoad'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$fullscreen', [_dec3$1, _dec4$1, _dec5], _Object$getOwnPropertyDescriptor(_class2.prototype, '$fullscreen'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emit'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emitSync'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2.prototype, '$on'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2.prototype, '$off'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2.prototype, '$once'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2.prototype, '$css'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2.prototype, '$attr'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$plugins'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$pluginOrder'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$wrapper'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$container'), _class2.prototype), _applyDecoratedDescriptor$2(_class2.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$video'), _class2.prototype), _class2)) || _class$2);
 
-var _dec$3;
-var _class$3;
+var _dec$3, _class$3;
 
 /**
  * <pre>
@@ -1459,7 +1423,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.9.2';
+    _this.VERSION = '0.9.3';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -1691,13 +1655,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
   return Plugin;
 }(VideoWrapper)) || _class$3);
 
-var _dec$4;
-var _dec2$3;
-var _dec3$2;
-var _dec4$2;
-var _dec5$1;
-var _dec6$1;
-var _class$4;
+var _dec$4, _dec2$3, _dec3$2, _dec4$2, _dec5$1, _dec6$1, _class$4;
 
 function _applyDecoratedDescriptor$3(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -1727,7 +1685,6 @@ function _applyDecoratedDescriptor$3(target, property, decorators, descriptor, c
 
   return desc;
 }
-
 function targetCheck(target) {
   if (target === 'video') target = 'videoElement';
   if (!isElement(this[target])) throw new TypeError('Your target "' + target + '" is not a legal HTMLElement');
@@ -2267,12 +2224,7 @@ var Vessel = function Vessel(dispatcher, target, config) {
   deepAssign(this, config);
 };
 
-var _dec$5;
-var _dec2$4;
-var _dec3$3;
-var _dec4$3;
-var _dec5$2;
-var _class$5;
+var _dec$5, _dec2$4, _dec3$3, _dec4$3, _dec5$2, _class$5;
 
 function _applyDecoratedDescriptor$4(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -2302,7 +2254,6 @@ function _applyDecoratedDescriptor$4(target, property, decorators, descriptor, c
 
   return desc;
 }
-
 var pluginConfigSet = {};
 var kernelsSet = {};
 function convertNameIntoId(name) {
@@ -3044,8 +2995,7 @@ var Dispatcher = (_dec$5 = before(convertNameIntoId), _dec2$4 = before(checkPlug
   return Dispatcher;
 }(), _applyDecoratedDescriptor$4(_class$5.prototype, 'unuse', [_dec$5], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'unuse'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'throwError', [autobind], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'throwError'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5, 'install', [_dec2$4], _Object$getOwnPropertyDescriptor(_class$5, 'install'), _class$5), _applyDecoratedDescriptor$4(_class$5, 'hasInstalled', [_dec3$3], _Object$getOwnPropertyDescriptor(_class$5, 'hasInstalled'), _class$5), _applyDecoratedDescriptor$4(_class$5, 'uninstall', [_dec4$3], _Object$getOwnPropertyDescriptor(_class$5, 'uninstall'), _class$5), _applyDecoratedDescriptor$4(_class$5, 'getPluginConfig', [_dec5$2], _Object$getOwnPropertyDescriptor(_class$5, 'getPluginConfig'), _class$5), _class$5);
 
-var _class$6;
-var _descriptor$1;
+var _class$6, _descriptor$1;
 
 function _initDefineProp$1(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -3086,7 +3036,6 @@ function _applyDecoratedDescriptor$5(target, property, decorators, descriptor, c
 
   return desc;
 }
-
 var GlobalConfig = (_class$6 = function () {
   _createClass(GlobalConfig, [{
     key: 'silent',
@@ -3145,23 +3094,7 @@ var GlobalConfig = (_class$6 = function () {
   }
 }), _class$6);
 
-var _dec$6;
-var _class$7;
-var _class2$1;
-var _descriptor$2;
-var _descriptor2$1;
-var _descriptor3$1;
-var _init;
-var _init2;
-var _init3;
-var _init4;
-var _init5;
-var _init6;
-var _init7;
-var _init8;
-var _init9;
-var _class3;
-var _temp;
+var _dec$6, _class$7, _class2$1, _descriptor$2, _descriptor2$1, _descriptor3$1, _init, _init2, _init3, _init4, _init5, _init6, _init7, _init8, _init9, _class3, _temp;
 
 function _initDefineProp$2(target, property, descriptor, context) {
   if (!descriptor) return;
@@ -3293,7 +3226,7 @@ var Chimee = (_dec$6 = autobindClass(), _dec$6(_class$7 = (_class2$1 = (_temp = 
 }), _descriptor2$1 = _applyDecoratedDescriptor$6(_class2$1.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.9.2';
+    return '0.9.3';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$6(_class2$1.prototype, 'config', [frozen], {
   enumerable: true,
