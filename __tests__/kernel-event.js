@@ -24,7 +24,7 @@ describe('kernel-events', () => {
   test('error check', () => {
     const fn = jest.fn();
     chimee.on('error', fn);
-    expect(() => chimee.__dispatcher.kernel.emit('error')).toThrow();
+    expect(() => chimee.__dispatcher.kernel.emit('error')).not.toThrow();
     expect(fn).toHaveBeenCalledTimes(1);
   });
 });
