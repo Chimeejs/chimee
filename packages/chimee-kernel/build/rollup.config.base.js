@@ -1,15 +1,15 @@
+const { version, name, author, license, dependencies } = require('../package.json');
+export const banner = `
+/**
+ * ${name} v${version}
+ * (c) 2017-${(new Date()).getFullYear()} ${author}
+ * Released under ${license}
+ */
+`;
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
-const { version, name, author, license, dependencies } = require('../package.json');
-const banner = `
-/**
- * ${name} v${version}
- * (c) 2017 ${author}
- * Released under ${license}
- */
-`;
 const babelConfig = {
   common: {
     presets: [
@@ -119,16 +119,20 @@ const externalRegExp = new RegExp(Object.keys(dependencies).join('|'));
 export default function(mode) {
   return {
     input: 'src/index.js',
-    banner,
     external(id) {
       return !/min|umd|iife/.test(mode) && externalRegExp.test(id);
     },
     plugins: [
       babel(babelConfig[mode]),
-      resolve(),
+      resolve({
+        customResolveOptions: {
+          moduleDirectory: [ 'src', 'node_modules' ],
+        },
+        preferBuiltins: true,
+      }),
       commonjs(),
       replace({
-        'process.env.KERNEL_VERSION': `'${version}'`,
+        'process.env.VERSION': `'${version}'`,
       }),
     ],
   };

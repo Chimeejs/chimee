@@ -1,7 +1,7 @@
 
 /**
- * chimee-kernel v1.3.2
- * (c) 2017 songguangyu
+ * chimee-kernel v1.4.0
+ * (c) 2017-2018 songguangyu
  * Released under MIT
  */
 
@@ -313,21 +313,21 @@ var _uid = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
 
-var shared = _shared('keys');
+var shared$1 = _shared('keys');
 
 var _sharedKey = function (key) {
-  return shared[key] || (shared[key] = _uid(key));
+  return shared$1[key] || (shared$1[key] = _uid(key));
 };
 
 var arrayIndexOf = _arrayIncludes(false);
-var IE_PROTO$1 = _sharedKey('IE_PROTO');
+var IE_PROTO = _sharedKey('IE_PROTO');
 
 var _objectKeysInternal = function (object, names) {
   var O = _toIobject(object);
   var i = 0;
   var result = [];
   var key;
-  for (key in O) if (key != IE_PROTO$1) _has(O, key) && result.push(key);
+  for (key in O) if (key != IE_PROTO) _has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
   while (names.length > i) if (_has(O, key = names[i++])) {
     ~arrayIndexOf(result, key) || result.push(key);
@@ -365,7 +365,7 @@ var _html = document$2 && document$2.documentElement;
 
 
 
-var IE_PROTO = _sharedKey('IE_PROTO');
+var IE_PROTO$1 = _sharedKey('IE_PROTO');
 var Empty = function () { /* empty */ };
 var PROTOTYPE$1 = 'prototype';
 
@@ -398,7 +398,7 @@ var _objectCreate = Object.create || function create(O, Properties) {
     result = new Empty();
     Empty[PROTOTYPE$1] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
-    result[IE_PROTO] = O;
+    result[IE_PROTO$1] = O;
   } else result = createDict();
   return Properties === undefined ? result : _objectDps(result, Properties);
 };
@@ -584,13 +584,13 @@ var _wksExt = {
 	f: f$1
 };
 
-var iterator$2 = _wksExt.f('iterator');
+var iterator = _wksExt.f('iterator');
 
-var iterator = createCommonjsModule(function (module) {
-module.exports = { "default": iterator$2, __esModule: true };
+var iterator$2 = createCommonjsModule(function (module) {
+module.exports = { "default": iterator, __esModule: true };
 });
 
-unwrapExports(iterator);
+unwrapExports(iterator$2);
 
 var _meta = createCommonjsModule(function (module) {
 var META = _uid('meta');
@@ -698,17 +698,17 @@ var _isArray = Array.isArray || function isArray(arg) {
 
 var hiddenKeys = _enumBugKeys.concat('length', 'prototype');
 
-var f$5 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+var f$4 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return _objectKeysInternal(O, hiddenKeys);
 };
 
 var _objectGopn = {
-	f: f$5
+	f: f$4
 };
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 
-var gOPN$1 = _objectGopn.f;
+var gOPN = _objectGopn.f;
 var toString$1 = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
@@ -716,27 +716,27 @@ var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNa
 
 var getWindowNames = function (it) {
   try {
-    return gOPN$1(it);
+    return gOPN(it);
   } catch (e) {
     return windowNames.slice();
   }
 };
 
-var f$4 = function getOwnPropertyNames(it) {
-  return windowNames && toString$1.call(it) == '[object Window]' ? getWindowNames(it) : gOPN$1(_toIobject(it));
+var f$5 = function getOwnPropertyNames(it) {
+  return windowNames && toString$1.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(_toIobject(it));
 };
 
 var _objectGopnExt = {
-	f: f$4
+	f: f$5
 };
 
-var gOPD$1 = Object.getOwnPropertyDescriptor;
+var gOPD = Object.getOwnPropertyDescriptor;
 
-var f$6 = _descriptors ? gOPD$1 : function getOwnPropertyDescriptor(O, P) {
+var f$6 = _descriptors ? gOPD : function getOwnPropertyDescriptor(O, P) {
   O = _toIobject(O);
   P = _toPrimitive(P, true);
   if (_ie8DomDefine) try {
-    return gOPD$1(O, P);
+    return gOPD(O, P);
   } catch (e) { /* empty */ }
   if (_has(O, P)) return _propertyDesc(!_objectPie.f.call(O, P), O[P]);
 };
@@ -771,9 +771,9 @@ var META = _meta.KEY;
 
 
 
-var gOPD = _objectGopd.f;
+var gOPD$1 = _objectGopd.f;
 var dP$2 = _objectDp.f;
-var gOPN = _objectGopnExt.f;
+var gOPN$1 = _objectGopnExt.f;
 var $Symbol = _global.Symbol;
 var $JSON = _global.JSON;
 var _stringify = $JSON && $JSON.stringify;
@@ -796,7 +796,7 @@ var setSymbolDesc = _descriptors && _fails(function () {
     get: function () { return dP$2(this, 'a', { value: 7 }).a; }
   })).a != 7;
 }) ? function (it, key, D) {
-  var protoDesc = gOPD(ObjectProto$1, key);
+  var protoDesc = gOPD$1(ObjectProto$1, key);
   if (protoDesc) delete ObjectProto$1[key];
   dP$2(it, key, D);
   if (protoDesc && it !== ObjectProto$1) dP$2(ObjectProto$1, key, protoDesc);
@@ -850,12 +850,12 @@ var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
   it = _toIobject(it);
   key = _toPrimitive(key, true);
   if (it === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key)) return;
-  var D = gOPD(it, key);
+  var D = gOPD$1(it, key);
   if (D && _has(AllSymbols, key) && !(_has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
   return D;
 };
 var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-  var names = gOPN(_toIobject(it));
+  var names = gOPN$1(_toIobject(it));
   var result = [];
   var i = 0;
   var key;
@@ -865,7 +865,7 @@ var $getOwnPropertyNames = function getOwnPropertyNames(it) {
 };
 var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
   var IS_OP = it === ObjectProto$1;
-  var names = gOPN(IS_OP ? OPSymbols : _toIobject(it));
+  var names = gOPN$1(IS_OP ? OPSymbols : _toIobject(it));
   var result = [];
   var i = 0;
   var key;
@@ -983,24 +983,24 @@ _wksDefine('asyncIterator');
 
 _wksDefine('observable');
 
-var symbol$2 = _core.Symbol;
+var symbol = _core.Symbol;
 
-var symbol = createCommonjsModule(function (module) {
-module.exports = { "default": symbol$2, __esModule: true };
+var symbol$2 = createCommonjsModule(function (module) {
+module.exports = { "default": symbol, __esModule: true };
 });
 
-unwrapExports(symbol);
+unwrapExports(symbol$2);
 
 var _typeof_1 = createCommonjsModule(function (module, exports) {
 exports.__esModule = true;
 
 
 
-var _iterator2 = _interopRequireDefault(iterator);
+var _iterator2 = _interopRequireDefault(iterator$2);
 
 
 
-var _symbol2 = _interopRequireDefault(symbol);
+var _symbol2 = _interopRequireDefault(symbol$2);
 
 var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
 
@@ -1036,13 +1036,13 @@ _objectSap('getPrototypeOf', function () {
   };
 });
 
-var getPrototypeOf$1 = _core.Object.getPrototypeOf;
+var getPrototypeOf = _core.Object.getPrototypeOf;
 
-var getPrototypeOf = createCommonjsModule(function (module) {
-module.exports = { "default": getPrototypeOf$1, __esModule: true };
+var getPrototypeOf$2 = createCommonjsModule(function (module) {
+module.exports = { "default": getPrototypeOf, __esModule: true };
 });
 
-var _Object$getPrototypeOf = unwrapExports(getPrototypeOf);
+var _Object$getPrototypeOf = unwrapExports(getPrototypeOf$2);
 
 var classCallCheck = createCommonjsModule(function (module, exports) {
 exports.__esModule = true;
@@ -1060,22 +1060,22 @@ var _classCallCheck = unwrapExports(classCallCheck);
 _export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
 
 var $Object = _core.Object;
-var defineProperty$3 = function defineProperty(it, key, desc) {
+var defineProperty$1 = function defineProperty(it, key, desc) {
   return $Object.defineProperty(it, key, desc);
 };
 
-var defineProperty$1 = createCommonjsModule(function (module) {
-module.exports = { "default": defineProperty$3, __esModule: true };
+var defineProperty$3 = createCommonjsModule(function (module) {
+module.exports = { "default": defineProperty$1, __esModule: true };
 });
 
-unwrapExports(defineProperty$1);
+unwrapExports(defineProperty$3);
 
 var createClass = createCommonjsModule(function (module, exports) {
 exports.__esModule = true;
 
 
 
-var _defineProperty2 = _interopRequireDefault(defineProperty$1);
+var _defineProperty2 = _interopRequireDefault(defineProperty$3);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1150,38 +1150,38 @@ var _setProto = {
 
 _export(_export.S, 'Object', { setPrototypeOf: _setProto.set });
 
-var setPrototypeOf$2 = _core.Object.setPrototypeOf;
+var setPrototypeOf = _core.Object.setPrototypeOf;
 
-var setPrototypeOf = createCommonjsModule(function (module) {
-module.exports = { "default": setPrototypeOf$2, __esModule: true };
+var setPrototypeOf$2 = createCommonjsModule(function (module) {
+module.exports = { "default": setPrototypeOf, __esModule: true };
 });
 
-unwrapExports(setPrototypeOf);
+unwrapExports(setPrototypeOf$2);
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 _export(_export.S, 'Object', { create: _objectCreate });
 
 var $Object$1 = _core.Object;
-var create$1 = function create(P, D) {
+var create = function create(P, D) {
   return $Object$1.create(P, D);
 };
 
-var create = createCommonjsModule(function (module) {
-module.exports = { "default": create$1, __esModule: true };
+var create$2 = createCommonjsModule(function (module) {
+module.exports = { "default": create, __esModule: true };
 });
 
-var _Object$create = unwrapExports(create);
+var _Object$create = unwrapExports(create$2);
 
 var inherits = createCommonjsModule(function (module, exports) {
 exports.__esModule = true;
 
 
 
-var _setPrototypeOf2 = _interopRequireDefault(setPrototypeOf);
+var _setPrototypeOf2 = _interopRequireDefault(setPrototypeOf$2);
 
 
 
-var _create2 = _interopRequireDefault(create);
+var _create2 = _interopRequireDefault(create$2);
 
 
 
@@ -1218,13 +1218,13 @@ _objectSap('keys', function () {
   };
 });
 
-var keys$1 = _core.Object.keys;
+var keys = _core.Object.keys;
 
-var keys = createCommonjsModule(function (module) {
-module.exports = { "default": keys$1, __esModule: true };
+var keys$2 = createCommonjsModule(function (module) {
+module.exports = { "default": keys, __esModule: true };
 });
 
-unwrapExports(keys);
+unwrapExports(keys$2);
 
 // 20.1.2.3 Number.isInteger(number)
 
@@ -1238,13 +1238,13 @@ var _isInteger = function isInteger(it) {
 
 _export(_export.S, 'Number', { isInteger: _isInteger });
 
-var isInteger$2 = _core.Number.isInteger;
+var isInteger = _core.Number.isInteger;
 
-var isInteger$1 = createCommonjsModule(function (module) {
-module.exports = { "default": isInteger$2, __esModule: true };
+var isInteger$2 = createCommonjsModule(function (module) {
+module.exports = { "default": isInteger, __esModule: true };
 });
 
-unwrapExports(isInteger$1);
+unwrapExports(isInteger$2);
 
 var _stringWs = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
   '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
@@ -1279,22 +1279,22 @@ var _stringTrim = exporter;
 var $parseFloat = _global.parseFloat;
 var $trim = _stringTrim.trim;
 
-var _parseFloat$3 = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function parseFloat(str) {
+var _parseFloat = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function parseFloat(str) {
   var string = $trim(String(str), 3);
   var result = $parseFloat(string);
   return result === 0 && string.charAt(0) == '-' ? -0 : result;
 } : $parseFloat;
 
 // 20.1.2.12 Number.parseFloat(string)
-_export(_export.S + _export.F * (Number.parseFloat != _parseFloat$3), 'Number', { parseFloat: _parseFloat$3 });
+_export(_export.S + _export.F * (Number.parseFloat != _parseFloat), 'Number', { parseFloat: _parseFloat });
 
-var _parseFloat$1 = parseFloat;
+var _parseFloat$2 = parseFloat;
 
-var _parseFloat = createCommonjsModule(function (module) {
-module.exports = { "default": _parseFloat$1, __esModule: true };
+var _parseFloat$4 = createCommonjsModule(function (module) {
+module.exports = { "default": _parseFloat$2, __esModule: true };
 });
 
-unwrapExports(_parseFloat);
+unwrapExports(_parseFloat$4);
 
 /**
  * toxic-predicate-functions v0.1.5
@@ -2673,20 +2673,20 @@ _export(_export.S + _export.F * !_iterDetect(function (iter) {  }), 'Array', {
   }
 });
 
-var from$1 = _core.Array.from;
+var from = _core.Array.from;
 
-var from = createCommonjsModule(function (module) {
-module.exports = { "default": from$1, __esModule: true };
+var from$2 = createCommonjsModule(function (module) {
+module.exports = { "default": from, __esModule: true };
 });
 
-var _Array$from = unwrapExports(from);
+var _Array$from = unwrapExports(from$2);
 
 var toConsumableArray = createCommonjsModule(function (module, exports) {
 exports.__esModule = true;
 
 
 
-var _from2 = _interopRequireDefault(from);
+var _from2 = _interopRequireDefault(from$2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2820,7 +2820,7 @@ var _invoke = function (fn, args, that) {
   } return fn.apply(that, args);
 };
 
-var process$1 = _global.process;
+var process = _global.process;
 var setTask = _global.setImmediate;
 var clearTask = _global.clearImmediate;
 var MessageChannel = _global.MessageChannel;
@@ -2860,9 +2860,9 @@ if (!setTask || !clearTask) {
     delete queue[id];
   };
   // Node.js 0.8-
-  if (_cof(process$1) == 'process') {
+  if (_cof(process) == 'process') {
     defer = function (id) {
-      process$1.nextTick(_ctx(run, id, 1));
+      process.nextTick(_ctx(run, id, 1));
     };
   // Sphere (JS game engine) Dispatch API
   } else if (Dispatch && Dispatch.now) {
@@ -2904,16 +2904,16 @@ var _task = {
 
 var macrotask = _task.set;
 var Observer = _global.MutationObserver || _global.WebKitMutationObserver;
-var process$2 = _global.process;
+var process$1 = _global.process;
 var Promise = _global.Promise;
-var isNode$2 = _cof(process$2) == 'process';
+var isNode$1 = _cof(process$1) == 'process';
 
 var _microtask = function () {
   var head, last, notify;
 
   var flush = function () {
     var parent, fn;
-    if (isNode$2 && (parent = process$2.domain)) parent.exit();
+    if (isNode$1 && (parent = process$1.domain)) parent.exit();
     while (head) {
       fn = head.fn;
       head = head.next;
@@ -2929,9 +2929,9 @@ var _microtask = function () {
   };
 
   // Node.js
-  if (isNode$2) {
+  if (isNode$1) {
     notify = function () {
-      process$2.nextTick(flush);
+      process$1.nextTick(flush);
     };
   // browsers with MutationObserver, except iOS Safari - https://github.com/zloirock/core-js/issues/339
   } else if (Observer && !(_global.navigator && _global.navigator.standalone)) {
@@ -3033,15 +3033,15 @@ var microtask = _microtask();
 
 var PROMISE = 'Promise';
 var TypeError$1 = _global.TypeError;
-var process = _global.process;
+var process$2 = _global.process;
 var $Promise = _global[PROMISE];
-var isNode$1 = _classof(process) == 'process';
+var isNode$2 = _classof(process$2) == 'process';
 var empty = function () { /* empty */ };
 var Internal;
 var newGenericPromiseCapability;
 var OwnPromiseCapability;
 var Wrapper;
-var newPromiseCapability = newGenericPromiseCapability = _newPromiseCapability.f;
+var newPromiseCapability$1 = newGenericPromiseCapability = _newPromiseCapability.f;
 
 var USE_NATIVE$1 = !!function () {
   try {
@@ -3051,7 +3051,7 @@ var USE_NATIVE$1 = !!function () {
       exec(empty, empty);
     };
     // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-    return (isNode$1 || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise;
+    return (isNode$2 || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise;
   } catch (e) { /* empty */ }
 }();
 
@@ -3109,8 +3109,8 @@ var onUnhandled = function (promise) {
     var result, handler, console;
     if (unhandled) {
       result = _perform(function () {
-        if (isNode$1) {
-          process.emit('unhandledRejection', value, promise);
+        if (isNode$2) {
+          process$2.emit('unhandledRejection', value, promise);
         } else if (handler = _global.onunhandledrejection) {
           handler({ promise: promise, reason: value });
         } else if ((console = _global.console) && console.error) {
@@ -3118,7 +3118,7 @@ var onUnhandled = function (promise) {
         }
       });
       // Browsers should not trigger `rejectionHandled` event if it was handled here, NodeJS - should
-      promise._h = isNode$1 || isUnhandled(promise) ? 2 : 1;
+      promise._h = isNode$2 || isUnhandled(promise) ? 2 : 1;
     } promise._a = undefined;
     if (unhandled && result.e) throw result.v;
   });
@@ -3129,8 +3129,8 @@ var isUnhandled = function (promise) {
 var onHandleUnhandled = function (promise) {
   task.call(_global, function () {
     var handler;
-    if (isNode$1) {
-      process.emit('rejectionHandled', promise);
+    if (isNode$2) {
+      process$2.emit('rejectionHandled', promise);
     } else if (handler = _global.onrejectionhandled) {
       handler({ promise: promise, reason: promise._v });
     }
@@ -3199,10 +3199,10 @@ if (!USE_NATIVE$1) {
   Internal.prototype = _redefineAll($Promise.prototype, {
     // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
     then: function then(onFulfilled, onRejected) {
-      var reaction = newPromiseCapability(_speciesConstructor(this, $Promise));
+      var reaction = newPromiseCapability$1(_speciesConstructor(this, $Promise));
       reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
       reaction.fail = typeof onRejected == 'function' && onRejected;
-      reaction.domain = isNode$1 ? process.domain : undefined;
+      reaction.domain = isNode$2 ? process$2.domain : undefined;
       this._c.push(reaction);
       if (this._a) this._a.push(reaction);
       if (this._s) notify(this, false);
@@ -3219,7 +3219,7 @@ if (!USE_NATIVE$1) {
     this.resolve = _ctx($resolve, promise, 1);
     this.reject = _ctx($reject, promise, 1);
   };
-  _newPromiseCapability.f = newPromiseCapability = function (C) {
+  _newPromiseCapability.f = newPromiseCapability$1 = function (C) {
     return C === $Promise || C === Wrapper
       ? new OwnPromiseCapability(C)
       : newGenericPromiseCapability(C);
@@ -3235,7 +3235,7 @@ Wrapper = _core[PROMISE];
 _export(_export.S + _export.F * !USE_NATIVE$1, PROMISE, {
   // 25.4.4.5 Promise.reject(r)
   reject: function reject(r) {
-    var capability = newPromiseCapability(this);
+    var capability = newPromiseCapability$1(this);
     var $$reject = capability.reject;
     $$reject(r);
     return capability.promise;
@@ -3253,7 +3253,7 @@ _export(_export.S + _export.F * !(USE_NATIVE$1 && _iterDetect(function (iter) {
   // 25.4.4.1 Promise.all(iterable)
   all: function all(iterable) {
     var C = this;
-    var capability = newPromiseCapability(C);
+    var capability = newPromiseCapability$1(C);
     var resolve = capability.resolve;
     var reject = capability.reject;
     var result = _perform(function () {
@@ -3280,7 +3280,7 @@ _export(_export.S + _export.F * !(USE_NATIVE$1 && _iterDetect(function (iter) {
   // 25.4.4.4 Promise.race(iterable)
   race: function race(iterable) {
     var C = this;
-    var capability = newPromiseCapability(C);
+    var capability = newPromiseCapability$1(C);
     var reject = capability.reject;
     var result = _perform(function () {
       _forOf(iterable, false, function (promise) {
@@ -3317,13 +3317,13 @@ _export(_export.S, 'Promise', { 'try': function (callbackfn) {
   return promiseCapability.promise;
 } });
 
-var promise$1 = _core.Promise;
+var promise = _core.Promise;
 
-var promise = createCommonjsModule(function (module) {
-module.exports = { "default": promise$1, __esModule: true };
+var promise$2 = createCommonjsModule(function (module) {
+module.exports = { "default": promise, __esModule: true };
 });
 
-unwrapExports(promise);
+unwrapExports(promise$2);
 
 /**
  * chimee-helper-utils v0.2.0
@@ -3387,13 +3387,13 @@ var _objectAssign = !$assign || _fails(function () {
 
 _export(_export.S + _export.F, 'Object', { assign: _objectAssign });
 
-var assign$1 = _core.Object.assign;
+var assign = _core.Object.assign;
 
-var assign = createCommonjsModule(function (module) {
-module.exports = { "default": assign$1, __esModule: true };
+var assign$2 = createCommonjsModule(function (module) {
+module.exports = { "default": assign, __esModule: true };
 });
 
-var _Object$assign = unwrapExports(assign);
+var _Object$assign = unwrapExports(assign$2);
 
 /**
  * chimee-helper-events v0.1.0
@@ -3547,7 +3547,7 @@ function removeEventCache(target, type, handler) {
  * @return {event}
  */
 var CustEvent = function () {
-  function CustEvent(target, assign$$1) {
+  function CustEvent(target, assign) {
     var _this = this;
 
     _classCallCheck(this, CustEvent);
@@ -3568,7 +3568,7 @@ var CustEvent = function () {
       this.__target = target;
 
       /* 为target实现on\once\off\emit */
-      if (assign$$1) {
+      if (assign) {
         ['on', 'once', 'off', 'emit'].forEach(function (mth) {
           target[mth] = _this[mth];
         });
@@ -3799,7 +3799,7 @@ function removeEventCache$1(target, type, handler) {
  * @return {event}
  */
 var CustEvent$1 = function () {
-  function CustEvent(target, assign$$1) {
+  function CustEvent(target, assign) {
     var _this = this;
 
     _classCallCheck(this, CustEvent);
@@ -3820,7 +3820,7 @@ var CustEvent$1 = function () {
       this.__target = target;
 
       /* 为target实现on\once\off\emit */
-      if (assign$$1) {
+      if (assign) {
         ['on', 'once', 'off', 'emit'].forEach(function (mth) {
           target[mth] = _this[mth];
         });
@@ -4606,6 +4606,8 @@ var NodeWrap = function () {
  * Released under MIT
  */
 
+var tempCurrentTime = 0;
+
 var NativeVideoKernel = function (_CustEvent) {
   _inherits(NativeVideoKernel, _CustEvent);
 
@@ -4634,10 +4636,23 @@ var NativeVideoKernel = function (_CustEvent) {
     key: 'load',
     value: function load(src) {
       this.video.setAttribute('src', src);
+      this.video.src = src;
     }
   }, {
-    key: 'unload',
-    value: function unload() {
+    key: 'startLoad',
+    value: function startLoad(src) {
+      /* istanbul ignore next */
+      var currentTime = this.video.currentTime || tempCurrentTime;
+      this.load(src);
+      this.seek(currentTime);
+    }
+
+    // https://developer.mozilla.org/de/docs/Web/HTML/Using_HTML5_audio_and_video#Stopping_the_download_of_media
+
+  }, {
+    key: 'stopLoad',
+    value: function stopLoad() {
+      tempCurrentTime = this.video.currentTime;
       this.video.src = '';
       this.video.removeAttribute('src');
     }
@@ -4645,7 +4660,7 @@ var NativeVideoKernel = function (_CustEvent) {
     key: 'destroy',
     value: function destroy() {
       /* istanbul ignore next  */
-      if (isElement(this.video)) this.unload();
+      if (isElement(this.video)) this.stopLoad();
     }
   }, {
     key: 'play',
@@ -4704,7 +4719,7 @@ var ChimeeKernel = function (_CustEvent) {
 
     var _this = _possibleConstructorReturn(this, (ChimeeKernel.__proto__ || _Object$getPrototypeOf(ChimeeKernel)).call(this));
 
-    _this.VERSION = '1.3.2';
+    _this.VERSION = '1.4.0';
 
     if (!isElement(videoElement)) throw new Error('You must pass in an video element to the chimee-kernel');
     // copy and maintain only one config for chimee-kernel
@@ -4845,6 +4860,19 @@ var ChimeeKernel = function (_CustEvent) {
 
       this.config.src = src;
       this.videoKernel.load(src);
+    }
+  }, {
+    key: 'startLoad',
+    value: function startLoad() {
+      /* istanbul ignore if */
+      if (!isFunction(this.videoKernel.startLoad)) throw new Error('This video kernel do not support startLoad, please contact us on https://github.com/Chimeejs/chimee/issues');
+      this.videoKernel.startLoad(this.config.src);
+    }
+  }, {
+    key: 'stopLoad',
+    value: function stopLoad() {
+      /* istanbul ignore else */
+      if (isFunction(this.videoKernel.stopLoad)) this.videoKernel.stopLoad();
     }
   }, {
     key: 'play',

@@ -18,7 +18,7 @@ export default class ChimeeKernel extends CustEvent {
   videoElement: HTMLVideoElement;
   videoKernel: VideoKernel;
   VERSION: string;
-  VERSION = process.env.KERNEL_VERSION;
+  VERSION = process.env.VERSION;
   /**
 	 * kernelWrapper
 	 * @param {any} wrap videoElement
@@ -128,6 +128,17 @@ export default class ChimeeKernel extends CustEvent {
   load(src: string = this.config.src) {
     this.config.src = src;
     this.videoKernel.load(src);
+  }
+
+  startLoad() {
+    /* istanbul ignore if */
+    if (!isFunction(this.videoKernel.startLoad)) throw new Error('This video kernel do not support startLoad, please contact us on https://github.com/Chimeejs/chimee/issues');
+    this.videoKernel.startLoad(this.config.src);
+  }
+
+  stopLoad() {
+    /* istanbul ignore else */
+    if (isFunction(this.videoKernel.stopLoad)) this.videoKernel.stopLoad();
   }
 
   play() {

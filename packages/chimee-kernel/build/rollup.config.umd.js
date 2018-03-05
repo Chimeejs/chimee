@@ -1,4 +1,4 @@
-import base from './rollup.config.base';
+import base, { banner } from './rollup.config.base';
 const { name } = require('../package.json');
 import { camelize } from 'toxic-utils';
 import replace from 'rollup-plugin-replace';
@@ -8,8 +8,9 @@ config.plugins.unshift(replace({
 }));
 export default Object.assign(config, {
   output: {
+    banner,
     format: 'umd',
     file: 'lib/index.browser.js',
+    name: camelize(name, true),
   },
-  name: camelize(name, true),
 });

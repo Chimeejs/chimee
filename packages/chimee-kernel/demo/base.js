@@ -25,14 +25,14 @@ window.start = function() {
   srcController.innerText = 'src: ';
 
   const srcInput = document.createElement('input');
-  srcInput.value = '';
+  srcInput.value = 'http://cdn.toxicjohann.com/lostStar.mp4';
   srcInput.type = 'text';
 
   srcController.appendChild(srcInput);
 
   document.body.appendChild(srcController);
 
-  const keys = [ 'play', 'pause', 'load', 'attachMedia', 'seek', 'refresh', 'destroy' ];
+  const keys = [ 'play', 'pause', 'load', 'startLoad', 'stopLoad', 'attachMedia', 'seek', 'refresh', 'destroy' ];
   const controller = document.createElement('div');
   keys.forEach(function(key) {
     const button = document.createElement('button');

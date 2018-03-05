@@ -1,7 +1,7 @@
 
 /**
- * chimee-kernel v1.3.2
- * (c) 2017 songguangyu
+ * chimee-kernel v1.4.0
+ * (c) 2017-2018 songguangyu
  * Released under MIT
  */
 
@@ -12,6 +12,8 @@ import _createClass from 'babel-runtime/helpers/createClass';
 import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
 import _inherits from 'babel-runtime/helpers/inherits';
 import { CustEvent, Log, deepAssign, isElement, isFunction, isNumber, isString } from 'chimee-helper';
+
+var tempCurrentTime = 0;
 
 var NativeVideoKernel = function (_CustEvent) {
   _inherits(NativeVideoKernel, _CustEvent);
@@ -41,10 +43,23 @@ var NativeVideoKernel = function (_CustEvent) {
     key: 'load',
     value: function load(src) {
       this.video.setAttribute('src', src);
+      this.video.src = src;
     }
   }, {
-    key: 'unload',
-    value: function unload() {
+    key: 'startLoad',
+    value: function startLoad(src) {
+      /* istanbul ignore next */
+      var currentTime = this.video.currentTime || tempCurrentTime;
+      this.load(src);
+      this.seek(currentTime);
+    }
+
+    // https://developer.mozilla.org/de/docs/Web/HTML/Using_HTML5_audio_and_video#Stopping_the_download_of_media
+
+  }, {
+    key: 'stopLoad',
+    value: function stopLoad() {
+      tempCurrentTime = this.video.currentTime;
       this.video.src = '';
       this.video.removeAttribute('src');
     }
@@ -52,7 +67,7 @@ var NativeVideoKernel = function (_CustEvent) {
     key: 'destroy',
     value: function destroy() {
       /* istanbul ignore next  */
-      if (isElement(this.video)) this.unload();
+      if (isElement(this.video)) this.stopLoad();
     }
   }, {
     key: 'play',
@@ -111,7 +126,7 @@ var ChimeeKernel = function (_CustEvent) {
 
     var _this = _possibleConstructorReturn(this, (ChimeeKernel.__proto__ || _Object$getPrototypeOf(ChimeeKernel)).call(this));
 
-    _this.VERSION = '1.3.2';
+    _this.VERSION = '1.4.0';
 
     if (!isElement(videoElement)) throw new Error('You must pass in an video element to the chimee-kernel');
     // copy and maintain only one config for chimee-kernel
@@ -252,6 +267,19 @@ var ChimeeKernel = function (_CustEvent) {
 
       this.config.src = src;
       this.videoKernel.load(src);
+    }
+  }, {
+    key: 'startLoad',
+    value: function startLoad() {
+      /* istanbul ignore if */
+      if (!isFunction(this.videoKernel.startLoad)) throw new Error('This video kernel do not support startLoad, please contact us on https://github.com/Chimeejs/chimee/issues');
+      this.videoKernel.startLoad(this.config.src);
+    }
+  }, {
+    key: 'stopLoad',
+    value: function stopLoad() {
+      /* istanbul ignore else */
+      if (isFunction(this.videoKernel.stopLoad)) this.videoKernel.stopLoad();
     }
   }, {
     key: 'play',

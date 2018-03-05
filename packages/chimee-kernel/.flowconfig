@@ -12,6 +12,5 @@ all=warn
 untyped-type-import=error
 sketchy-null-bool=off
 [options]
-unsafe.enable_getters_and_setters=true
 esproposal.decorators=ignore
 [strict]
