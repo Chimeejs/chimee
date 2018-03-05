@@ -1,6 +1,6 @@
 
 /**
- * chimee-kernel-hls v1.2.0
+ * chimee-kernel-hls v1.3.0
  * (c) 2017-2018 songguangyu
  * Released under MIT
  */
@@ -12,8 +12,6 @@
 }(this, (function () { 'use strict';
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-
 
 function unwrapExports (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
@@ -138,7 +136,6 @@ var _core = createCommonjsModule(function (module) {
 var core = module.exports = { version: '2.5.3' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
-
 var _core_1 = _core.version;
 
 var _aFunction = function (it) {
@@ -281,11 +278,11 @@ var getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
   return $Object.getOwnPropertyDescriptor(it, key);
 };
 
-var getOwnPropertyDescriptor$2 = createCommonjsModule(function (module) {
+var getOwnPropertyDescriptor$1 = createCommonjsModule(function (module) {
 module.exports = { "default": getOwnPropertyDescriptor, __esModule: true };
 });
 
-var _Object$getOwnPropertyDescriptor = unwrapExports(getOwnPropertyDescriptor$2);
+var _Object$getOwnPropertyDescriptor = unwrapExports(getOwnPropertyDescriptor$1);
 
 // 7.1.4 ToInteger
 var ceil = Math.ceil;
@@ -366,10 +363,10 @@ var _uid = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
 
-var shared$1 = _shared('keys');
+var shared = _shared('keys');
 
 var _sharedKey = function (key) {
-  return shared$1[key] || (shared$1[key] = _uid(key));
+  return shared[key] || (shared[key] = _uid(key));
 };
 
 var arrayIndexOf = _arrayIncludes(false);
@@ -639,11 +636,11 @@ var _wksExt = {
 
 var iterator = _wksExt.f('iterator');
 
-var iterator$2 = createCommonjsModule(function (module) {
+var iterator$1 = createCommonjsModule(function (module) {
 module.exports = { "default": iterator, __esModule: true };
 });
 
-unwrapExports(iterator$2);
+unwrapExports(iterator$1);
 
 var _meta = createCommonjsModule(function (module) {
 var META = _uid('meta');
@@ -700,7 +697,6 @@ var meta = module.exports = {
   onFreeze: onFreeze
 };
 });
-
 var _meta_1 = _meta.KEY;
 var _meta_2 = _meta.NEED;
 var _meta_3 = _meta.fastKey;
@@ -755,7 +751,7 @@ var _objectGopn = {
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 
-var gOPN$1 = _objectGopn.f;
+var gOPN = _objectGopn.f;
 var toString$1 = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
@@ -763,14 +759,14 @@ var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNa
 
 var getWindowNames = function (it) {
   try {
-    return gOPN$1(it);
+    return gOPN(it);
   } catch (e) {
     return windowNames.slice();
   }
 };
 
 var f$6 = function getOwnPropertyNames(it) {
-  return windowNames && toString$1.call(it) == '[object Window]' ? getWindowNames(it) : gOPN$1(_toIobject(it));
+  return windowNames && toString$1.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(_toIobject(it));
 };
 
 var _objectGopnExt = {
@@ -803,9 +799,9 @@ var META = _meta.KEY;
 
 
 
-var gOPD$2 = _objectGopd.f;
+var gOPD$1 = _objectGopd.f;
 var dP$1 = _objectDp.f;
-var gOPN$2 = _objectGopnExt.f;
+var gOPN$1 = _objectGopnExt.f;
 var $Symbol = _global.Symbol;
 var $JSON = _global.JSON;
 var _stringify = $JSON && $JSON.stringify;
@@ -828,7 +824,7 @@ var setSymbolDesc = _descriptors && _fails(function () {
     get: function () { return dP$1(this, 'a', { value: 7 }).a; }
   })).a != 7;
 }) ? function (it, key, D) {
-  var protoDesc = gOPD$2(ObjectProto$1, key);
+  var protoDesc = gOPD$1(ObjectProto$1, key);
   if (protoDesc) delete ObjectProto$1[key];
   dP$1(it, key, D);
   if (protoDesc && it !== ObjectProto$1) dP$1(ObjectProto$1, key, protoDesc);
@@ -882,12 +878,12 @@ var $getOwnPropertyDescriptor$1 = function getOwnPropertyDescriptor(it, key) {
   it = _toIobject(it);
   key = _toPrimitive(key, true);
   if (it === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key)) return;
-  var D = gOPD$2(it, key);
+  var D = gOPD$1(it, key);
   if (D && _has(AllSymbols, key) && !(_has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
   return D;
 };
 var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-  var names = gOPN$2(_toIobject(it));
+  var names = gOPN$1(_toIobject(it));
   var result = [];
   var i = 0;
   var key;
@@ -897,7 +893,7 @@ var $getOwnPropertyNames = function getOwnPropertyNames(it) {
 };
 var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
   var IS_OP = it === ObjectProto$1;
-  var names = gOPN$2(IS_OP ? OPSymbols : _toIobject(it));
+  var names = gOPN$1(IS_OP ? OPSymbols : _toIobject(it));
   var result = [];
   var i = 0;
   var key;
@@ -1017,22 +1013,23 @@ _wksDefine('observable');
 
 var symbol = _core.Symbol;
 
-var symbol$2 = createCommonjsModule(function (module) {
+var symbol$1 = createCommonjsModule(function (module) {
 module.exports = { "default": symbol, __esModule: true };
 });
 
-unwrapExports(symbol$2);
+unwrapExports(symbol$1);
 
 var _typeof_1 = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
 
-var _iterator2 = _interopRequireDefault(iterator$2);
+var _iterator2 = _interopRequireDefault(iterator$1);
 
 
 
-var _symbol2 = _interopRequireDefault(symbol$2);
+var _symbol2 = _interopRequireDefault(symbol$1);
 
 var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
 
@@ -1059,13 +1056,14 @@ _objectSap('getPrototypeOf', function () {
 
 var getPrototypeOf = _core.Object.getPrototypeOf;
 
-var getPrototypeOf$2 = createCommonjsModule(function (module) {
+var getPrototypeOf$1 = createCommonjsModule(function (module) {
 module.exports = { "default": getPrototypeOf, __esModule: true };
 });
 
-var _Object$getPrototypeOf = unwrapExports(getPrototypeOf$2);
+var _Object$getPrototypeOf = unwrapExports(getPrototypeOf$1);
 
 var classCallCheck = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 exports.default = function (instance, Constructor) {
@@ -1078,6 +1076,7 @@ exports.default = function (instance, Constructor) {
 var _classCallCheck = unwrapExports(classCallCheck);
 
 var possibleConstructorReturn = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
@@ -1105,18 +1104,19 @@ var defineProperty$1 = function defineProperty(it, key, desc) {
   return $Object$1.defineProperty(it, key, desc);
 };
 
-var defineProperty$3 = createCommonjsModule(function (module) {
+var defineProperty$2 = createCommonjsModule(function (module) {
 module.exports = { "default": defineProperty$1, __esModule: true };
 });
 
-var _Object$defineProperty = unwrapExports(defineProperty$3);
+var _Object$defineProperty = unwrapExports(defineProperty$2);
 
 var createClass = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
 
-var _defineProperty2 = _interopRequireDefault(defineProperty$3);
+var _defineProperty2 = _interopRequireDefault(defineProperty$2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1173,11 +1173,11 @@ _export(_export.S, 'Object', { setPrototypeOf: _setProto.set });
 
 var setPrototypeOf = _core.Object.setPrototypeOf;
 
-var setPrototypeOf$2 = createCommonjsModule(function (module) {
+var setPrototypeOf$1 = createCommonjsModule(function (module) {
 module.exports = { "default": setPrototypeOf, __esModule: true };
 });
 
-unwrapExports(setPrototypeOf$2);
+unwrapExports(setPrototypeOf$1);
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 _export(_export.S, 'Object', { create: _objectCreate });
@@ -1187,22 +1187,23 @@ var create = function create(P, D) {
   return $Object$2.create(P, D);
 };
 
-var create$2 = createCommonjsModule(function (module) {
+var create$1 = createCommonjsModule(function (module) {
 module.exports = { "default": create, __esModule: true };
 });
 
-var _Object$create = unwrapExports(create$2);
+var _Object$create = unwrapExports(create$1);
 
 var inherits = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
 
-var _setPrototypeOf2 = _interopRequireDefault(setPrototypeOf$2);
+var _setPrototypeOf2 = _interopRequireDefault(setPrototypeOf$1);
 
 
 
-var _create2 = _interopRequireDefault(create$2);
+var _create2 = _interopRequireDefault(create$1);
 
 
 
@@ -1301,8 +1302,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ([
 /* 0 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.d(__webpack_exports__, "a", function() { return enableLogs; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return enableLogs; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return logger; });
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -1385,8 +1385,7 @@ var logger = exportedLogger;
 /***/ }),
 /* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-__webpack_exports__["a"] = ({
+/* harmony default export */ __webpack_exports__["a"] = ({
   // fired before MediaSource is attaching to media element - data: { media }
   MEDIA_ATTACHING: 'hlsMediaAttaching',
   // fired when MediaSource has been succesfully attached to media element - data: { }
@@ -1498,8 +1497,7 @@ __webpack_exports__["a"] = ({
 /***/ }),
 /* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.d(__webpack_exports__, "b", function() { return ErrorTypes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ErrorTypes; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ErrorDetails; });
 var ErrorTypes = {
   // Identifier for a network error (loading error / timeout ...)
@@ -1569,8 +1567,7 @@ var ErrorDetails = {
 /***/ }),
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.d(__webpack_exports__, "b", function() { return utf8ArrayToStr; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return utf8ArrayToStr; });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -1933,6 +1930,7 @@ var utf8ArrayToStr = ID3._utf8ArrayToStr;
 /* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+// CONCATENATED MODULE: ./src/crypt/aes-crypto.js
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var AESCrypto = function () {
@@ -2834,6 +2832,7 @@ function isUndefined(arg) {
 /* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+// EXTERNAL MODULE: ./src/events.js
 var events = __webpack_require__(1);
 
 // EXTERNAL MODULE: ./src/errors.js
@@ -5996,7 +5995,6 @@ var mp4_remuxer_MP4Remuxer = function () {
         moof,
         firstPTS,
         firstDTS,
-        nextDTS,
         lastPTS,
         lastDTS,
         inputSamples = track.samples,
@@ -6087,6 +6085,8 @@ var mp4_remuxer_MP4Remuxer = function () {
         logger["b" /* logger */].log('Video/PTS/DTS adjusted: ' + Math.round(firstPTS / 90) + '/' + Math.round(firstDTS / 90) + ',delta:' + delta + ' ms');
       }
     }
+
+    // compute lastPTS/lastDTS
     sample = inputSamples[inputSamples.length - 1];
     lastDTS = Math.max(sample.dts, 0);
     lastPTS = Math.max(sample.pts, 0, lastDTS);
@@ -6349,7 +6349,6 @@ var mp4_remuxer_MP4Remuxer = function () {
             nextPts += inputSampleDuration;
             i++;
           } else {
-            // Otherwise, just adjust pts
             sample.pts = sample.dts = nextPts;
             nextPts += inputSampleDuration;
             i++;
@@ -6773,7 +6772,6 @@ var demuxer_inline_DemuxerInline = function () {
 /***/ }),
 /* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
-
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var cues_namespaceObject = {};
 __webpack_require__.d(cues_namespaceObject, "newCue", function() { return newCue; });
@@ -17085,7 +17083,6 @@ module.exports = function (moduleId, options) {
 /***/ }),
 /* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
-
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__demux_demuxer_inline__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__events__ = __webpack_require__(1);
@@ -17197,11 +17194,11 @@ _objectSap('keys', function () {
 
 var keys = _core.Object.keys;
 
-var keys$2 = createCommonjsModule(function (module) {
+var keys$1 = createCommonjsModule(function (module) {
 module.exports = { "default": keys, __esModule: true };
 });
 
-unwrapExports(keys$2);
+unwrapExports(keys$1);
 
 // 20.1.2.3 Number.isInteger(number)
 
@@ -17217,11 +17214,11 @@ _export(_export.S, 'Number', { isInteger: _isInteger });
 
 var isInteger = _core.Number.isInteger;
 
-var isInteger$2 = createCommonjsModule(function (module) {
+var isInteger$1 = createCommonjsModule(function (module) {
 module.exports = { "default": isInteger, __esModule: true };
 });
 
-unwrapExports(isInteger$2);
+unwrapExports(isInteger$1);
 
 var _stringWs = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
   '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
@@ -17265,19 +17262,13 @@ var _parseFloat = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function par
 // 20.1.2.12 Number.parseFloat(string)
 _export(_export.S + _export.F * (Number.parseFloat != _parseFloat), 'Number', { parseFloat: _parseFloat });
 
-var _parseFloat$2 = parseFloat;
+var _parseFloat$1 = parseFloat;
 
-var _parseFloat$4 = createCommonjsModule(function (module) {
-module.exports = { "default": _parseFloat$2, __esModule: true };
+var _parseFloat$2 = createCommonjsModule(function (module) {
+module.exports = { "default": _parseFloat$1, __esModule: true };
 });
 
-unwrapExports(_parseFloat$4);
-
-/**
- * toxic-predicate-functions v0.1.5
- * (c) 2017 toxic-johann
- * Released under MIT
- */
+unwrapExports(_parseFloat$2);
 
 /**
  * is void element or not ? Means it will return true when val is undefined or null
@@ -17288,7 +17279,7 @@ function isVoid(obj) {
 /**
  * to check whether a variable is array
  */
-function isArray$1(arr) {
+function isArray(arr) {
   return Array.isArray(arr);
 }
 
@@ -17302,9 +17293,9 @@ function isFunction(obj) {
 /**
  * is it an object or not
  */
-function isObject$1(obj) {
+function isObject(obj) {
   // incase of arrow function and array
-  return Object(obj) === obj && String(obj) === '[object Object]' && !isFunction(obj) && !isArray$1(obj);
+  return Object(obj) === obj && String(obj) === '[object Object]' && !isFunction(obj) && !isArray(obj);
 }
 /**
  * to tell you if it's a real number
@@ -17342,12 +17333,6 @@ function isPrimitive(val) {
 function isElement(obj) {
   return !!((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? obj instanceof HTMLElement : obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string');
 }
-
-/**
- * chimee-helper-log v0.1.2
- * (c) 2017 toxic-johann
- * Released under MIT
- */
 
 function formatter(tag, msg) {
   if (!isString(tag)) throw new TypeError('Log\'s method only acccept string as argument, but not ' + tag + ' in ' + (typeof tag === 'undefined' ? 'undefined' : _typeof(tag)));
@@ -17487,6 +17472,11 @@ var uaParser = createCommonjsModule(function (module, exports) {
  */
 
 (function (window, undefined) {
+
+    //////////////
+    // Constants
+    /////////////
+
 
     var LIBVERSION  = '0.7.17',
         EMPTY       = '',
@@ -18543,7 +18533,6 @@ var uaParser = createCommonjsModule(function (module, exports) {
 
 })(typeof window === 'object' ? window : commonjsGlobal);
 });
-
 var uaParser_1 = uaParser.UAParser;
 
 // call something on iterator step with safe closing on error
@@ -18611,8 +18600,6 @@ var SAFE_CLOSING = false;
 try {
   var riter = [7][ITERATOR$3]();
   riter['return'] = function () { SAFE_CLOSING = true; };
-  // eslint-disable-next-line no-throw-literal
-  
 } catch (e) { /* empty */ }
 
 var _iterDetect = function (exec, skipClosing) {
@@ -18628,7 +18615,7 @@ var _iterDetect = function (exec, skipClosing) {
   return safe;
 };
 
-_export(_export.S + _export.F * !_iterDetect(function (iter) {  }), 'Array', {
+_export(_export.S + _export.F * !_iterDetect(function (iter) { }), 'Array', {
   // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
   from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
     var O = _toObject(arrayLike);
@@ -18658,18 +18645,19 @@ _export(_export.S + _export.F * !_iterDetect(function (iter) {  }), 'Array', {
 
 var from = _core.Array.from;
 
-var from$2 = createCommonjsModule(function (module) {
+var from$1 = createCommonjsModule(function (module) {
 module.exports = { "default": from, __esModule: true };
 });
 
-var _Array$from = unwrapExports(from$2);
+var _Array$from = unwrapExports(from$1);
 
 var toConsumableArray = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
 
-var _from2 = _interopRequireDefault(from$2);
+var _from2 = _interopRequireDefault(from$1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -18689,12 +18677,6 @@ exports.default = function (arr) {
 var _toConsumableArray = unwrapExports(toConsumableArray);
 
 /**
- * toxic-utils v0.2.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-/**
  * the handler to generate an deep traversal handler
  * @param  {Function} fn the function you wanna run when you reach in the deep property
  * @return {Function}    the handler
@@ -18707,8 +18689,8 @@ function genTraversalHandler(fn) {
   // use recursive to move what in source to the target
   // if you do not provide a target, we will create a new target
   function recursiveFn(source, target, key) {
-    if (isArray$1(source) || isObject$1(source)) {
-      target = isPrimitive(target) ? isObject$1(source) ? {} : [] : target;
+    if (isArray(source) || isObject(source)) {
+      target = isPrimitive(target) ? isObject(source) ? {} : [] : target;
       for (var _key in source) {
         // $FlowFixMe: support computed key here
         setter(target, _key, recursiveFn(source[_key], target[_key], _key));
@@ -18811,9 +18793,7 @@ var Dispatch = _global.Dispatch;
 var counter = 0;
 var queue = {};
 var ONREADYSTATECHANGE = 'onreadystatechange';
-var defer;
-var channel;
-var port;
+var defer, channel, port;
 var run = function () {
   var id = +this;
   // eslint-disable-next-line no-prototype-builtins
@@ -19020,11 +19000,8 @@ var process$2 = _global.process;
 var $Promise = _global[PROMISE];
 var isNode$2 = _classof(process$2) == 'process';
 var empty = function () { /* empty */ };
-var Internal;
-var newGenericPromiseCapability;
-var OwnPromiseCapability;
-var Wrapper;
-var newPromiseCapability$1 = newGenericPromiseCapability = _newPromiseCapability.f;
+var Internal, newGenericPromiseCapability, OwnPromiseCapability, Wrapper;
+var newPromiseCapability = newGenericPromiseCapability = _newPromiseCapability.f;
 
 var USE_NATIVE$1 = !!function () {
   try {
@@ -19182,7 +19159,7 @@ if (!USE_NATIVE$1) {
   Internal.prototype = _redefineAll($Promise.prototype, {
     // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
     then: function then(onFulfilled, onRejected) {
-      var reaction = newPromiseCapability$1(_speciesConstructor(this, $Promise));
+      var reaction = newPromiseCapability(_speciesConstructor(this, $Promise));
       reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
       reaction.fail = typeof onRejected == 'function' && onRejected;
       reaction.domain = isNode$2 ? process$2.domain : undefined;
@@ -19202,7 +19179,7 @@ if (!USE_NATIVE$1) {
     this.resolve = _ctx($resolve, promise, 1);
     this.reject = _ctx($reject, promise, 1);
   };
-  _newPromiseCapability.f = newPromiseCapability$1 = function (C) {
+  _newPromiseCapability.f = newPromiseCapability = function (C) {
     return C === $Promise || C === Wrapper
       ? new OwnPromiseCapability(C)
       : newGenericPromiseCapability(C);
@@ -19218,7 +19195,7 @@ Wrapper = _core[PROMISE];
 _export(_export.S + _export.F * !USE_NATIVE$1, PROMISE, {
   // 25.4.4.5 Promise.reject(r)
   reject: function reject(r) {
-    var capability = newPromiseCapability$1(this);
+    var capability = newPromiseCapability(this);
     var $$reject = capability.reject;
     $$reject(r);
     return capability.promise;
@@ -19236,7 +19213,7 @@ _export(_export.S + _export.F * !(USE_NATIVE$1 && _iterDetect(function (iter) {
   // 25.4.4.1 Promise.all(iterable)
   all: function all(iterable) {
     var C = this;
-    var capability = newPromiseCapability$1(C);
+    var capability = newPromiseCapability(C);
     var resolve = capability.resolve;
     var reject = capability.reject;
     var result = _perform(function () {
@@ -19263,7 +19240,7 @@ _export(_export.S + _export.F * !(USE_NATIVE$1 && _iterDetect(function (iter) {
   // 25.4.4.4 Promise.race(iterable)
   race: function race(iterable) {
     var C = this;
-    var capability = newPromiseCapability$1(C);
+    var capability = newPromiseCapability(C);
     var reject = capability.reject;
     var result = _perform(function () {
       _forOf(iterable, false, function (promise) {
@@ -19302,17 +19279,11 @@ _export(_export.S, 'Promise', { 'try': function (callbackfn) {
 
 var promise = _core.Promise;
 
-var promise$2 = createCommonjsModule(function (module) {
+var promise$1 = createCommonjsModule(function (module) {
 module.exports = { "default": promise, __esModule: true };
 });
 
-var _Promise = unwrapExports(promise$2);
-
-/**
- * chimee-helper-utils v0.2.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
+var _Promise = unwrapExports(promise$1);
 
 // **********************  judgement   ************************
 /**
@@ -19321,13 +19292,21 @@ var _Promise = unwrapExports(promise$2);
  */
 var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
 
+// **********************  对象操作  ************************
+/**
+ * 转变一个类数组对象为数组
+ */
+function makeArray(obj) {
+  return _Array$from(obj);
+}
+
 // requestAnimationFrame
-var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function (cb) {
+var raf = inBrowser && (window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame) || function (cb) {
   return setTimeout(cb, 17);
 };
 
 // cancelAnimationFrame
-var caf = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame || window.msCancelAnimationFrame || window.oCancelAnimationFrame || function (id) {
+var caf = inBrowser && (window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame || window.msCancelAnimationFrame || window.oCancelAnimationFrame) || function (id) {
   clearTimeout(id);
 };
 
@@ -19370,19 +19349,13 @@ var _objectAssign = !$assign || _fails(function () {
 
 _export(_export.S + _export.F, 'Object', { assign: _objectAssign });
 
-var assign$1 = _core.Object.assign;
+var assign = _core.Object.assign;
 
-var assign$3 = createCommonjsModule(function (module) {
-module.exports = { "default": assign$1, __esModule: true };
+var assign$1 = createCommonjsModule(function (module) {
+module.exports = { "default": assign, __esModule: true };
 });
 
-var _Object$assign = unwrapExports(assign$3);
-
-/**
- * chimee-helper-events v0.1.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
+var _Object$assign = unwrapExports(assign$1);
 
 /**
 * @module event
@@ -19443,7 +19416,7 @@ function emitEventCache(target, type, eventObj) {
   evt.type = type;
   evt.target = target;
   if (eventObj) {
-    _Object$assign(evt, isObject$1(eventObj) ? eventObj : { data: eventObj });
+    _Object$assign(evt, isObject(eventObj) ? eventObj : { data: eventObj });
   }
   getEvtTypeCache(target, type).forEach(function (item) {
     (item[1] || item[0]).apply(target, [evt]);
@@ -19625,285 +19598,12 @@ var CustEvent = function () {
 }();
 
 /**
- * chimee-helper-dom v0.1.7
- * (c) 2017 huzunjie
- * Released under MIT
+ * @module dom
+ * @author huzunjie
+ * @description 一些常用的DOM判断及操作方法，可以使用dom.$('*')包装DOM，实现类jQuery的链式操作；当然这里的静态方法也可以直接使用。
  */
 
-/**
- * chimee-helper-events v0.1.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-/**
-* @module event
-* @author huzunjie
-* @description 自定义事件基础类
-*/
-
-/* 缓存事件监听方法及包装，内部数据格式：
- * targetIndex_<type:'click|mouseup|done'>: [ [
- *   function(){ ... handler ... },
- *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
- *   isOnce
- * ]]
- */
-var _evtListenerCache$1 = _Object$create(null);
-_evtListenerCache$1.count = 0;
-
-/**
- * 得到某对象的某事件类型对应的监听队列数组
- * @param  {Object}  target 发生事件的对象
- * @param {String} type 事件类型(这里的时间类型不只是名称，还是缓存标识，可以通过添加后缀来区分)
- * @return {Array}
- */
-function getEvtTypeCache$1(target, type) {
-
-  var evtId = target.__evt_id;
-  if (!evtId) {
-
-    /* 设置__evt_id不可枚举 */
-    Object.defineProperty(target, '__evt_id', {
-      writable: true,
-      enumerable: false,
-      configurable: true
-    });
-
-    /* 空对象初始化绑定索引 */
-    evtId = target.__evt_id = ++_evtListenerCache$1.count;
-  }
-
-  var typeCacheKey = evtId + '_' + type;
-  var evtTypeCache = _evtListenerCache$1[typeCacheKey];
-  if (!evtTypeCache) {
-    evtTypeCache = _evtListenerCache$1[typeCacheKey] = [];
-  }
-
-  return evtTypeCache;
-}
-
-/**
- * 触发事件监听方法
- * @param  {Object}  target 发生事件的对象
- * @param {String} type 事件类型
- * @param {Object} eventObj 触发事件时要传回的event对象
- * @return {undefined}
- */
-function emitEventCache$1(target, type, eventObj) {
-  var evt = _Object$create(null);
-  evt.type = type;
-  evt.target = target;
-  if (eventObj) {
-    _Object$assign(evt, isObject$1(eventObj) ? eventObj : { data: eventObj });
-  }
-  getEvtTypeCache$1(target, type).forEach(function (item) {
-    (item[1] || item[0]).apply(target, [evt]);
-  });
-}
-
-/**
- * 添加事件监听到缓存
- * @param  {Object}  target 发生事件的对象
- * @param {String} type 事件类型
- * @param {Function} handler 监听函数
- * @param {Boolean} isOnce 是否单次执行
- * @param {Function} handlerWrap
- * @return {undefined}
- */
-function addEventCache$1(target, type, handler) {
-  var isOnce = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  var handlerWrap = arguments[4];
-
-  if (isFunction(isOnce) && !handlerWrap) {
-    handlerWrap = isOnce;
-    isOnce = undefined;
-  }
-  var handlers = [handler, undefined, isOnce];
-  if (isOnce && !handlerWrap) {
-    handlerWrap = function handlerWrap() {
-      removeEventCache$1(target, type, handler, isOnce);
-
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      handler.apply(target, args);
-    };
-  }
-  if (handlerWrap) {
-    handlers[1] = handlerWrap;
-  }
-  getEvtTypeCache$1(target, type).push(handlers);
-}
-
-/**
- * 移除事件监听
- * @param  {Object}  target 发生事件的对象
- * @param {String} type 事件类型
- * @param {Function} handler 监听函数
- * @return {undefined}
- */
-function removeEventCache$1(target, type, handler) {
-  var isOnce = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-  var typeCache = getEvtTypeCache$1(target, type);
-
-  if (handler || isOnce) {
-    /* 有指定 handler 则清除对应监听 */
-    var handlerId = -1;
-    var handlerWrap = void 0;
-    typeCache.find(function (item, i) {
-      if ((!handler || item[0] === handler) && (!isOnce || item[2])) {
-        handlerId = i;
-        handlerWrap = item[1];
-        return true;
-      }
-    });
-    if (handlerId !== -1) {
-      typeCache.splice(handlerId, 1);
-    }
-    return handlerWrap;
-  } else {
-    /* 未指定 handler 则清除type对应的所有监听 */
-    typeCache.length = 0;
-  }
-}
-
-/**
- * @class CustEvent
- * @description
- * Event 自定义事件类
- * 1. 可以使用不传参得到的实例作为eventBus使用
- * 2. 可以通过指定target，用多个实例操作同一target对象的事件管理
- * 3. 当设定target时，可以通过设置assign为true，来给target实现"on\once\off\emit"方法
- * @param  {Object}  target 发生事件的对象（空则默认为event实例）
- * @param  {Boolean}  assign 是否将"on\once\off\emit"方法实现到target对象上
- * @return {event}
- */
-var CustEvent$1 = function () {
-  function CustEvent(target, assign) {
-    var _this = this;
-
-    _classCallCheck(this, CustEvent);
-
-    /* 设置__target不可枚举 */
-    Object.defineProperty(this, '__target', {
-      writable: true,
-      enumerable: false,
-      configurable: true
-    });
-    this.__target = this;
-
-    if (target) {
-
-      if ((typeof target === 'undefined' ? 'undefined' : _typeof(target)) !== 'object') {
-        throw new Error('CusEvent target are not object');
-      }
-      this.__target = target;
-
-      /* 为target实现on\once\off\emit */
-      if (assign) {
-        ['on', 'once', 'off', 'emit'].forEach(function (mth) {
-          target[mth] = _this[mth];
-        });
-      }
-    }
-  }
-
-  /**
-   * 添加事件监听
-   * @param {String} type 事件类型
-   * @param {Function} handler 监听函数
-   * @param {Boolean} isOnce 单次监听类型
-   * @return {event}
-   */
-
-
-  _createClass(CustEvent, [{
-    key: 'on',
-    value: function on(type, handler) {
-      var isOnce = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-      addEventCache$1(this.__target, type, handler, isOnce);
-      return this;
-    }
-
-    /**
-     * 添加事件监听,并且只执行一次
-     * @param {String} type 事件类型
-     * @param {Function} handler 监听函数
-     * @return {event}
-     */
-
-  }, {
-    key: 'once',
-    value: function once(type, handler) {
-      return this.on(type, handler, true);
-    }
-
-    /**
-     * 移除事件监听
-     * @param {String} type 事件类型
-     * @param {Function} handler 监听函数(不指定handler则清除type对应的所有事件监听)
-     * @param {Boolean} isOnce 单次监听类型
-     * @return {event}
-     */
-
-  }, {
-    key: 'off',
-    value: function off(type, handler) {
-      var isOnce = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-      removeEventCache$1(this.__target, type, handler, isOnce);
-      return this;
-    }
-
-    /**
-     * 触发事件监听函数
-     * @param {String} type 事件类型
-     * @return {event}
-     */
-
-  }, {
-    key: 'emit',
-    value: function emit(type, data) {
-      emitEventCache$1(this.__target, type, { data: data });
-      return this;
-    }
-  }]);
-
-  return CustEvent;
-}();
-
-/**
- * chimee-helper-utils v0.2.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-// **********************  judgement   ************************
-/**
- * check if the code running in browser environment (not include worker env)
- * @returns {Boolean}
- */
-var inBrowser$1 = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
-
-// **********************  对象操作  ************************
-/**
- * 转变一个类数组对象为数组
- */
-function makeArray$1(obj) {
-  return _Array$from(obj);
-}
-
-/**
-* @module dom
-* @author huzunjie
-* @description 一些常用的DOM判断及操作方法，可以使用dom.$('*')包装DOM，实现类jQuery的链式操作；当然这里的静态方法也可以直接使用。
-*/
-
-var _divEl = document.createElement('div');
+var _divEl = inBrowser ? document.createElement('div') : {};
 var _textAttrName = 'innerText';
 'textContent' in _divEl && (_textAttrName = 'textContent');
 var _arrPrototype = Array.prototype;
@@ -20003,8 +19703,10 @@ try {
       supportsPassive = true;
     }
   });
-  window.addEventListener('test', null, opts);
-} catch (e) {}
+  if (inBrowser) window.addEventListener('test', null, opts);
+} catch (e) {
+  console.error(e);
+}
 
 /**
  * 为HTML元素移除事件监听
@@ -20023,7 +19725,7 @@ function removeEvent(el, type, handler) {
   }
   if (once) {
     /* 尝试从缓存中读取包装后的方法 */
-    var handlerWrap = removeEventCache$1(el, type + '_once', handler);
+    var handlerWrap = removeEventCache(el, type + '_once', handler);
     if (handlerWrap) {
       handler = handlerWrap;
     }
@@ -20037,7 +19739,7 @@ function removeEvent(el, type, handler) {
  * @param {String} type 事件名称
  * @param {Function} handler 处理函数
  * @param {Boolean} once 是否只监听一次
- * @param {Boolean} capture 是否在捕获阶段监听
+ * @param {Boolean|Object} capture 是否在捕获阶段监听，这里也可以传入 { passive: true } 表示被动模式
  */
 function addEvent(el, type, handler) {
   var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
@@ -20059,7 +19761,7 @@ function addEvent(el, type, handler) {
       };
     }();
     /* 将包装后的方法记录到缓存中 */
-    addEventCache$1(el, type + '_once', oldHandler, handler);
+    addEventCache(el, type + '_once', oldHandler, handler);
   }
 
   el.addEventListener(type, handler, capture);
@@ -20102,7 +19804,7 @@ function addDelegate(el, selector, type, handler) {
     retEl && handler.apply(retEl, arguments);
   };
   /* 将包装后的方法记录到缓存中 */
-  addEventCache$1(el, type + '_delegate_' + selector, handler, handlerWrap);
+  addEventCache(el, type + '_delegate_' + selector, handler, handlerWrap);
   el.addEventListener(type, handlerWrap, capture);
 }
 
@@ -20121,7 +19823,7 @@ function removeDelegate(el, selector, type, handler) {
     capture = { passive: true };
   }
   /* 尝试从缓存中读取包装后的方法 */
-  var handlerWrap = removeEventCache$1(el, type + '_delegate_' + selector, handler);
+  var handlerWrap = removeEventCache(el, type + '_delegate_' + selector, handler);
   handlerWrap && el.removeEventListener(type, handlerWrap, capture);
 }
 
@@ -20142,7 +19844,7 @@ function getStyle(el, key) {
  * @param {String} val 样式值
  */
 function setStyle(el, key, val) {
-  if (isObject$1(key)) {
+  if (isObject(key)) {
     for (var k in key) {
       setStyle(el, k, key[k]);
     }
@@ -20201,16 +19903,6 @@ function findParents(el) {
 }
 
 /**
- * 根据选择器查询并得到目标元素的wrap包装器
- * @param {String} selector 选择器,另外支持 HTMLString||NodeList||NodeArray||HTMLElement
- * @param {HTMLElement} container 父容器
- * @return {Object}
- */
-function $(selector, container) {
-  return selector.constructor === NodeWrap ? selector : new NodeWrap(selector, container);
-}
-
-/**
  * @class NodeWrap
  * @description
  * NodeWrap DOM包装器，用以实现基本的链式操作
@@ -20233,8 +19925,8 @@ var NodeWrap = function () {
     var elsArr = void 0;
     if (selector && selector.constructor === NodeList) {
       /* 支持直接传入NodeList来构建包装器 */
-      elsArr = makeArray$1(selector);
-    } else if (isArray$1(selector)) {
+      elsArr = makeArray(selector);
+    } else if (isArray(selector)) {
       /* 支持直接传入Node数组来构建包装器 */
       elsArr = selector;
     } else if (isString(selector)) {
@@ -20273,15 +19965,15 @@ var NodeWrap = function () {
       _arrPrototype.forEach.apply(this, args);
       return this;
     }
-  }, {
-    key: 'push',
-
 
     /**
      * 添加元素到DOM集合
      * @param {HTMLElement} el 要加入的元素
      * @return {this}
      */
+
+  }, {
+    key: 'push',
     value: function push() {
       for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
         args[_key3] = arguments[_key3];
@@ -20290,9 +19982,6 @@ var NodeWrap = function () {
       _arrPrototype.push.apply(this, args);
       return this;
     }
-  }, {
-    key: 'splice',
-
 
     /**
      * 截取DOM集合片段，并得到新的包装器splice
@@ -20300,6 +19989,9 @@ var NodeWrap = function () {
      * @param {Nubmer} count
      * @return {NodeWrap} 新的DOM集合包装器
      */
+
+  }, {
+    key: 'splice',
     value: function splice() {
       for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
         args[_key4] = arguments[_key4];
@@ -20307,15 +19999,15 @@ var NodeWrap = function () {
 
       return $(_arrPrototype.splice.apply(this, args));
     }
-  }, {
-    key: 'find',
-
 
     /**
      * 查找子元素
      * @param {String} selector 选择器
      * @return {NodeWrap} 新的DOM集合包装器
      */
+
+  }, {
+    key: 'find',
     value: function find(selector) {
       var childs = [];
       this.each(function (el) {
@@ -20440,7 +20132,7 @@ var NodeWrap = function () {
   }, {
     key: 'css',
     value: function css(key, val) {
-      if (arguments.length === 1 && !isObject$1(key)) {
+      if (arguments.length === 1 && !isObject(key)) {
         return getStyle(this[0], key);
       }
       return this.each(function (el) {
@@ -20583,11 +20275,9 @@ var NodeWrap = function () {
   return NodeWrap;
 }();
 
-/**
- * chimee-helper v0.2.10
- * (c) 2017 toxic-johann
- * Released under MIT
- */
+function $(selector, container) {
+  return selector.constructor === NodeWrap ? selector : new NodeWrap(selector, container);
+}
 
 var defaultCustomConfig = {
   debug: false,
@@ -20630,19 +20320,19 @@ _export(_export.S, 'Object', {
 
 var getOwnPropertyDescriptors = _core.Object.getOwnPropertyDescriptors;
 
-var getOwnPropertyDescriptors$2 = createCommonjsModule(function (module) {
+var getOwnPropertyDescriptors$1 = createCommonjsModule(function (module) {
 module.exports = { "default": getOwnPropertyDescriptors, __esModule: true };
 });
 
-var _Object$getOwnPropertyDescriptors = unwrapExports(getOwnPropertyDescriptors$2);
+var _Object$getOwnPropertyDescriptors = unwrapExports(getOwnPropertyDescriptors$1);
 
 var getOwnPropertySymbols = _core.Object.getOwnPropertySymbols;
 
-var getOwnPropertySymbols$2 = createCommonjsModule(function (module) {
+var getOwnPropertySymbols$1 = createCommonjsModule(function (module) {
 module.exports = { "default": getOwnPropertySymbols, __esModule: true };
 });
 
-var _Object$getOwnPropertySymbols = unwrapExports(getOwnPropertySymbols$2);
+var _Object$getOwnPropertySymbols = unwrapExports(getOwnPropertySymbols$1);
 
 // 19.1.2.7 Object.getOwnPropertyNames(O)
 _objectSap('getOwnPropertyNames', function () {
@@ -20654,17 +20344,11 @@ var getOwnPropertyNames = function getOwnPropertyNames(it) {
   return $Object$3.getOwnPropertyNames(it);
 };
 
-var getOwnPropertyNames$2 = createCommonjsModule(function (module) {
+var getOwnPropertyNames$1 = createCommonjsModule(function (module) {
 module.exports = { "default": getOwnPropertyNames, __esModule: true };
 });
 
-var _Object$getOwnPropertyNames = unwrapExports(getOwnPropertyNames$2);
-
-/**
- * toxic-utils v0.1.6
- * (c) 2017 toxic-johann
- * Released under MIT
- */
+var _Object$getOwnPropertyNames = unwrapExports(getOwnPropertyNames$1);
 
 /**
  * bind the function with some context. we have some fallback strategy here
@@ -20705,7 +20389,7 @@ function getDeepProperty$1(obj, keys) {
   if (isString(keys)) {
     keys = keys.split('.');
   }
-  if (!isArray$1(keys)) {
+  if (!isArray(keys)) {
     throw new TypeError('keys of getDeepProperty must be string or Array<string>');
   }
   var read = [];
@@ -20737,11 +20421,11 @@ var core_isIterable = _core.isIterable = function (it) {
 
 var isIterable = core_isIterable;
 
-var isIterable$2 = createCommonjsModule(function (module) {
+var isIterable$1 = createCommonjsModule(function (module) {
 module.exports = { "default": isIterable, __esModule: true };
 });
 
-unwrapExports(isIterable$2);
+unwrapExports(isIterable$1);
 
 var core_getIterator = _core.getIterator = function (it) {
   var iterFn = core_getIteratorMethod(it);
@@ -20751,22 +20435,23 @@ var core_getIterator = _core.getIterator = function (it) {
 
 var getIterator = core_getIterator;
 
-var getIterator$2 = createCommonjsModule(function (module) {
+var getIterator$1 = createCommonjsModule(function (module) {
 module.exports = { "default": getIterator, __esModule: true };
 });
 
-unwrapExports(getIterator$2);
+unwrapExports(getIterator$1);
 
 var slicedToArray = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
 
-var _isIterable3 = _interopRequireDefault(isIterable$2);
+var _isIterable3 = _interopRequireDefault(isIterable$1);
 
 
 
-var _getIterator3 = _interopRequireDefault(getIterator$2);
+var _getIterator3 = _interopRequireDefault(getIterator$1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21125,18 +20810,19 @@ _setCollectionFrom('WeakMap');
 
 var weakMap = _core.WeakMap;
 
-var weakMap$2 = createCommonjsModule(function (module) {
+var weakMap$1 = createCommonjsModule(function (module) {
 module.exports = { "default": weakMap, __esModule: true };
 });
 
-var _WeakMap = unwrapExports(weakMap$2);
+var _WeakMap = unwrapExports(weakMap$1);
 
-var defineProperty$4 = createCommonjsModule(function (module, exports) {
+var defineProperty$3 = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
 
-var _defineProperty2 = _interopRequireDefault(defineProperty$3);
+var _defineProperty2 = _interopRequireDefault(defineProperty$2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21156,7 +20842,7 @@ exports.default = function (obj, key, value) {
 };
 });
 
-unwrapExports(defineProperty$4);
+unwrapExports(defineProperty$3);
 
 // 19.1.2.15 Object.preventExtensions(O)
 
@@ -21170,19 +20856,13 @@ _objectSap('preventExtensions', function ($preventExtensions) {
 
 var preventExtensions = _core.Object.preventExtensions;
 
-var preventExtensions$2 = createCommonjsModule(function (module) {
+var preventExtensions$1 = createCommonjsModule(function (module) {
 module.exports = { "default": preventExtensions, __esModule: true };
 });
 
-unwrapExports(preventExtensions$2);
+unwrapExports(preventExtensions$1);
 
-/**
- * toxic-decorators v0.3.8
- * (c) 2017 toxic-johann
- * Released under GPL-3.0
- */
-
-var getOwnPropertyDescriptor$3 = _Object$getOwnPropertyDescriptor;
+var getOwnPropertyDescriptor$2 = _Object$getOwnPropertyDescriptor;
 // **********************  对象操作  ************************
 /**
  * sort Object attributes by function
@@ -21257,7 +20937,7 @@ function createDefaultSetter(key) {
 function compressOneArgFnArray(fns) {
   var errmsg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'You must pass me an array of function';
 
-  if (!isArray$1(fns) || fns.length < 1) {
+  if (!isArray(fns) || fns.length < 1) {
     throw new TypeError(errmsg);
   }
   if (fns.length === 1) {
@@ -21298,13 +20978,13 @@ function getOwnPropertyDescriptorsFn() {
   // $FlowFixMe: In some environment, Object.getOwnPropertyDescriptors has been implemented;
   return isFunction(_Object$getOwnPropertyDescriptors) ? _Object$getOwnPropertyDescriptors : function (obj) {
     return getOwnKeys(obj).reduce(function (descs, key) {
-      descs[key] = getOwnPropertyDescriptor$3(obj, key);
+      descs[key] = getOwnPropertyDescriptor$2(obj, key);
       return descs;
     }, {});
   };
 }
 
-var getOwnPropertyDescriptors$3 = getOwnPropertyDescriptorsFn();
+var getOwnPropertyDescriptors$2 = getOwnPropertyDescriptorsFn();
 
 function accessor() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
@@ -21317,10 +20997,10 @@ function accessor() {
       _ref2$preSet = _ref2.preSet,
       preSet = _ref2$preSet === undefined ? true : _ref2$preSet;
 
-  if (!isFunction(get) && !isFunction(set) && !(isArray$1(get) && get.length > 0) && !(isArray$1(set) && set.length > 0)) throw new TypeError("@accessor need a getter or setter. If you don't need to add setter/getter. You should remove @accessor");
+  if (!isFunction(get) && !isFunction(set) && !(isArray(get) && get.length > 0) && !(isArray(set) && set.length > 0)) throw new TypeError("@accessor need a getter or setter. If you don't need to add setter/getter. You should remove @accessor");
   var errmsg = '@accessor only accept function or array of function as getter/setter';
-  get = isArray$1(get) ? compressOneArgFnArray(get, errmsg) : get;
-  set = isArray$1(set) ? compressOneArgFnArray(set, errmsg) : set;
+  get = isArray(get) ? compressOneArgFnArray(get, errmsg) : get;
+  set = isArray(set) ? compressOneArgFnArray(set, errmsg) : set;
   return function (obj, prop, descriptor) {
     var _ref3 = descriptor || {},
         _ref3$configurable = _ref3.configurable,
@@ -21466,7 +21146,7 @@ function before() {
 
       var paras = fns.reduce(function (paras, fn) {
         var result = bind$1(fn, _this).apply(undefined, _toConsumableArray(paras));
-        return result === undefined ? paras : isArray$1(result) ? result
+        return result === undefined ? paras : isArray(result) ? result
         // $FlowFixMe: what the hell, it can be anything
         : [result];
       }, args);
@@ -21535,15 +21215,15 @@ function classify(decorator) {
         _ref2$self = _ref2.self,
         self = _ref2$self === undefined ? false : _ref2$self;
 
-    if (!isArray$1(exclude)) throw new TypeError('options.exclude must be an array');
-    if (!isArray$1(include)) throw new TypeError('options.include must be an array');
+    if (!isArray(exclude)) throw new TypeError('options.exclude must be an array');
+    if (!isArray(include)) throw new TypeError('options.include must be an array');
     return function (Klass) {
       var isClass = isFunction(Klass);
       if (!self && !isClass) throw new TypeError('@' + decorator.name + 'Class can only be used on class');
       if (self && isPrimitive(Klass)) throw new TypeError('@' + decorator.name + 'Class must be used on non-primitive type value in \'self\' mode');
       var prototype = self ? Klass : Klass.prototype;
       if (isVoid(prototype)) throw new Error('The prototype of the ' + Klass.name + ' is empty, please check it');
-      var descs = getOwnPropertyDescriptors$3(prototype);
+      var descs = getOwnPropertyDescriptors$2(prototype);
       getOwnKeys(prototype).concat(include).forEach(function (key) {
         var desc = descs[key];
         if (key === 'constructor' && !construct || self && isClass && ['name', 'length', 'prototype'].indexOf(key) > -1 || exclude.indexOf(key) > -1 || isFunction(requirement) && requirement(prototype, key, desc, { self: self }) === false) return;
@@ -21858,10 +21538,10 @@ var Hls = (_class = function (_CustEvent) {
 
     var _this = _possibleConstructorReturn(this, (Hls.__proto__ || _Object$getPrototypeOf(Hls)).call(this));
 
-    _this.version = '1.2.0';
+    _this.version = '1.3.0';
 
     if (!isElement(videoElement)) throw new Error('video element passed in ' + LOG_TAG + ' must be a HTMLVideoElement, but not ' + (typeof videoElement === 'undefined' ? 'undefined' : _typeof(videoElement)));
-    if (!isObject$1(config)) throw new Error('config of ' + LOG_TAG + ' must be an Object but not ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
+    if (!isObject(config)) throw new Error('config of ' + LOG_TAG + ' must be an Object but not ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
     _this.video = videoElement;
     _this.config = config;
     _this.customConfig = deepAssign({}, defaultCustomConfig, customConfig);

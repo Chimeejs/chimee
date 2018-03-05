@@ -1,6 +1,6 @@
 
 /**
- * chimee-kernel-hls v1.2.0
+ * chimee-kernel-hls v1.3.0
  * (c) 2017-2018 songguangyu
  * Released under MIT
  */
@@ -75,7 +75,7 @@ var Hls = (_class = function (_CustEvent) {
 
     var _this = _possibleConstructorReturn(this, (Hls.__proto__ || _Object$getPrototypeOf(Hls)).call(this));
 
-    _this.version = '1.2.0';
+    _this.version = '1.3.0';
 
     if (!chimeeHelper.isElement(videoElement)) throw new Error('video element passed in ' + LOG_TAG + ' must be a HTMLVideoElement, but not ' + (typeof videoElement === 'undefined' ? 'undefined' : _typeof(videoElement)));
     if (!chimeeHelper.isObject(config)) throw new Error('config of ' + LOG_TAG + ' must be an Object but not ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
