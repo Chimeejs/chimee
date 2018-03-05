@@ -1,6 +1,6 @@
 // @flow
 import Dispatcher from './dispatcher/index';
-import { isString, isFunction, isElement, isObject, Log } from 'chimee-helper';
+import { isString, isFunction, isElement, isObject, Log, isError } from 'chimee-helper';
 import Plugin from './dispatcher/plugin';
 import { frozen, autobindClass } from 'toxic-decorators';
 import VideoWrapper from 'dispatcher/video-wrapper';
@@ -101,6 +101,7 @@ export default class Chimee extends VideoWrapper {
     const errorHandler = this.config.errorHandler || Chimee.config.errorHandler;
     if (isFunction(errorHandler)) return errorHandler(error);
     if (Chimee.config.silent) return;
-    throw error;
+    if (isError(error)) throw error;
+    else console.error(error);
   }
 }
