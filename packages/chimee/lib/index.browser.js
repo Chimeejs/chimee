@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.9.3
+ * chimee v0.9.4
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -208,11 +208,11 @@ var defineProperty = function defineProperty(it, key, desc) {
   return $Object.defineProperty(it, key, desc);
 };
 
-var defineProperty$2 = createCommonjsModule(function (module) {
+var defineProperty$1 = createCommonjsModule(function (module) {
 module.exports = { "default": defineProperty, __esModule: true };
 });
 
-var _Object$defineProperty = unwrapExports(defineProperty$2);
+var _Object$defineProperty = unwrapExports(defineProperty$1);
 
 var toString = {}.toString;
 
@@ -292,11 +292,11 @@ var getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
   return $Object$1.getOwnPropertyDescriptor(it, key);
 };
 
-var getOwnPropertyDescriptor$2 = createCommonjsModule(function (module) {
+var getOwnPropertyDescriptor$1 = createCommonjsModule(function (module) {
 module.exports = { "default": getOwnPropertyDescriptor, __esModule: true };
 });
 
-var _Object$getOwnPropertyDescriptor = unwrapExports(getOwnPropertyDescriptor$2);
+var _Object$getOwnPropertyDescriptor = unwrapExports(getOwnPropertyDescriptor$1);
 
 // 7.1.13 ToObject(argument)
 
@@ -316,10 +316,10 @@ var _uid = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
 
-var shared$1 = _shared('keys');
+var shared = _shared('keys');
 
 var _sharedKey = function (key) {
-  return shared$1[key] || (shared$1[key] = _uid(key));
+  return shared[key] || (shared[key] = _uid(key));
 };
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
@@ -346,13 +346,13 @@ _objectSap('getPrototypeOf', function () {
   };
 });
 
-var getPrototypeOf$1 = _core.Object.getPrototypeOf;
+var getPrototypeOf = _core.Object.getPrototypeOf;
 
-var getPrototypeOf$3 = createCommonjsModule(function (module) {
-module.exports = { "default": getPrototypeOf$1, __esModule: true };
+var getPrototypeOf$1 = createCommonjsModule(function (module) {
+module.exports = { "default": getPrototypeOf, __esModule: true };
 });
 
-var _Object$getPrototypeOf = unwrapExports(getPrototypeOf$3);
+var _Object$getPrototypeOf = unwrapExports(getPrototypeOf$1);
 
 var classCallCheck = createCommonjsModule(function (module, exports) {
 
@@ -373,7 +373,7 @@ exports.__esModule = true;
 
 
 
-var _defineProperty2 = _interopRequireDefault(defineProperty$2);
+var _defineProperty2 = _interopRequireDefault(defineProperty$1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -712,11 +712,11 @@ var _wksExt = {
 
 var iterator = _wksExt.f('iterator');
 
-var iterator$2 = createCommonjsModule(function (module) {
+var iterator$1 = createCommonjsModule(function (module) {
 module.exports = { "default": iterator, __esModule: true };
 });
 
-unwrapExports(iterator$2);
+unwrapExports(iterator$1);
 
 var _meta = createCommonjsModule(function (module) {
 var META = _uid('meta');
@@ -779,10 +779,10 @@ var _meta_3 = _meta.fastKey;
 var _meta_4 = _meta.getWeak;
 var _meta_5 = _meta.onFreeze;
 
-var defineProperty$3 = _objectDp.f;
+var defineProperty$2 = _objectDp.f;
 var _wksDefine = function (name) {
   var $Symbol = _core.Symbol || (_core.Symbol = _library ? {} : _global.Symbol || {});
-  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$3($Symbol, name, { value: _wksExt.f(name) });
+  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$2($Symbol, name, { value: _wksExt.f(name) });
 };
 
 var f$4 = Object.getOwnPropertySymbols;
@@ -827,7 +827,7 @@ var _objectGopn = {
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 
-var gOPN$1 = _objectGopn.f;
+var gOPN = _objectGopn.f;
 var toString$1 = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
@@ -835,14 +835,14 @@ var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNa
 
 var getWindowNames = function (it) {
   try {
-    return gOPN$1(it);
+    return gOPN(it);
   } catch (e) {
     return windowNames.slice();
   }
 };
 
 var f$6 = function getOwnPropertyNames(it) {
-  return windowNames && toString$1.call(it) == '[object Window]' ? getWindowNames(it) : gOPN$1(_toIobject(it));
+  return windowNames && toString$1.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(_toIobject(it));
 };
 
 var _objectGopnExt = {
@@ -875,9 +875,9 @@ var META = _meta.KEY;
 
 
 
-var gOPD$2 = _objectGopd.f;
+var gOPD$1 = _objectGopd.f;
 var dP$1 = _objectDp.f;
-var gOPN$2 = _objectGopnExt.f;
+var gOPN$1 = _objectGopnExt.f;
 var $Symbol = _global.Symbol;
 var $JSON = _global.JSON;
 var _stringify = $JSON && $JSON.stringify;
@@ -900,7 +900,7 @@ var setSymbolDesc = _descriptors && _fails(function () {
     get: function () { return dP$1(this, 'a', { value: 7 }).a; }
   })).a != 7;
 }) ? function (it, key, D) {
-  var protoDesc = gOPD$2(ObjectProto$1, key);
+  var protoDesc = gOPD$1(ObjectProto$1, key);
   if (protoDesc) delete ObjectProto$1[key];
   dP$1(it, key, D);
   if (protoDesc && it !== ObjectProto$1) dP$1(ObjectProto$1, key, protoDesc);
@@ -954,12 +954,12 @@ var $getOwnPropertyDescriptor$1 = function getOwnPropertyDescriptor(it, key) {
   it = _toIobject(it);
   key = _toPrimitive(key, true);
   if (it === ObjectProto$1 && _has(AllSymbols, key) && !_has(OPSymbols, key)) return;
-  var D = gOPD$2(it, key);
+  var D = gOPD$1(it, key);
   if (D && _has(AllSymbols, key) && !(_has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
   return D;
 };
 var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-  var names = gOPN$2(_toIobject(it));
+  var names = gOPN$1(_toIobject(it));
   var result = [];
   var i = 0;
   var key;
@@ -969,7 +969,7 @@ var $getOwnPropertyNames = function getOwnPropertyNames(it) {
 };
 var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
   var IS_OP = it === ObjectProto$1;
-  var names = gOPN$2(IS_OP ? OPSymbols : _toIobject(it));
+  var names = gOPN$1(IS_OP ? OPSymbols : _toIobject(it));
   var result = [];
   var i = 0;
   var key;
@@ -1089,11 +1089,11 @@ _wksDefine('observable');
 
 var symbol = _core.Symbol;
 
-var symbol$2 = createCommonjsModule(function (module) {
+var symbol$1 = createCommonjsModule(function (module) {
 module.exports = { "default": symbol, __esModule: true };
 });
 
-unwrapExports(symbol$2);
+unwrapExports(symbol$1);
 
 var _typeof_1 = createCommonjsModule(function (module, exports) {
 
@@ -1101,11 +1101,11 @@ exports.__esModule = true;
 
 
 
-var _iterator2 = _interopRequireDefault(iterator$2);
+var _iterator2 = _interopRequireDefault(iterator$1);
 
 
 
-var _symbol2 = _interopRequireDefault(symbol$2);
+var _symbol2 = _interopRequireDefault(symbol$1);
 
 var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
 
@@ -1147,11 +1147,11 @@ exports.__esModule = true;
 
 
 
-var _getPrototypeOf2 = _interopRequireDefault(getPrototypeOf$3);
+var _getPrototypeOf2 = _interopRequireDefault(getPrototypeOf$1);
 
 
 
-var _getOwnPropertyDescriptor2 = _interopRequireDefault(getOwnPropertyDescriptor$2);
+var _getOwnPropertyDescriptor2 = _interopRequireDefault(getOwnPropertyDescriptor$1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1215,25 +1215,25 @@ _export(_export.S, 'Object', { setPrototypeOf: _setProto.set });
 
 var setPrototypeOf = _core.Object.setPrototypeOf;
 
-var setPrototypeOf$2 = createCommonjsModule(function (module) {
+var setPrototypeOf$1 = createCommonjsModule(function (module) {
 module.exports = { "default": setPrototypeOf, __esModule: true };
 });
 
-unwrapExports(setPrototypeOf$2);
+unwrapExports(setPrototypeOf$1);
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 _export(_export.S, 'Object', { create: _objectCreate });
 
 var $Object$2 = _core.Object;
-var create$1 = function create(P, D) {
+var create = function create(P, D) {
   return $Object$2.create(P, D);
 };
 
-var create$3 = createCommonjsModule(function (module) {
-module.exports = { "default": create$1, __esModule: true };
+var create$1 = createCommonjsModule(function (module) {
+module.exports = { "default": create, __esModule: true };
 });
 
-var _Object$create = unwrapExports(create$3);
+var _Object$create = unwrapExports(create$1);
 
 var inherits = createCommonjsModule(function (module, exports) {
 
@@ -1241,11 +1241,11 @@ exports.__esModule = true;
 
 
 
-var _setPrototypeOf2 = _interopRequireDefault(setPrototypeOf$2);
+var _setPrototypeOf2 = _interopRequireDefault(setPrototypeOf$1);
 
 
 
-var _create2 = _interopRequireDefault(create$3);
+var _create2 = _interopRequireDefault(create$1);
 
 
 
@@ -1382,11 +1382,11 @@ _export(_export.S + _export.F * !_iterDetect(function (iter) { }), 'Array', {
 
 var from = _core.Array.from;
 
-var from$2 = createCommonjsModule(function (module) {
+var from$1 = createCommonjsModule(function (module) {
 module.exports = { "default": from, __esModule: true };
 });
 
-var _Array$from = unwrapExports(from$2);
+var _Array$from = unwrapExports(from$1);
 
 var toConsumableArray = createCommonjsModule(function (module, exports) {
 
@@ -1394,7 +1394,7 @@ exports.__esModule = true;
 
 
 
-var _from2 = _interopRequireDefault(from$2);
+var _from2 = _interopRequireDefault(from$1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1425,11 +1425,11 @@ var core_isIterable = _core.isIterable = function (it) {
 
 var isIterable = core_isIterable;
 
-var isIterable$2 = createCommonjsModule(function (module) {
+var isIterable$1 = createCommonjsModule(function (module) {
 module.exports = { "default": isIterable, __esModule: true };
 });
 
-unwrapExports(isIterable$2);
+unwrapExports(isIterable$1);
 
 var core_getIterator = _core.getIterator = function (it) {
   var iterFn = core_getIteratorMethod(it);
@@ -1439,11 +1439,11 @@ var core_getIterator = _core.getIterator = function (it) {
 
 var getIterator = core_getIterator;
 
-var getIterator$2 = createCommonjsModule(function (module) {
+var getIterator$1 = createCommonjsModule(function (module) {
 module.exports = { "default": getIterator, __esModule: true };
 });
 
-unwrapExports(getIterator$2);
+unwrapExports(getIterator$1);
 
 var slicedToArray = createCommonjsModule(function (module, exports) {
 
@@ -1451,11 +1451,11 @@ exports.__esModule = true;
 
 
 
-var _isIterable3 = _interopRequireDefault(isIterable$2);
+var _isIterable3 = _interopRequireDefault(isIterable$1);
 
 
 
-var _getIterator3 = _interopRequireDefault(getIterator$2);
+var _getIterator3 = _interopRequireDefault(getIterator$1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1527,11 +1527,11 @@ _export(_export.S, 'Object', {
 
 var entries = _core.Object.entries;
 
-var entries$2 = createCommonjsModule(function (module) {
+var entries$1 = createCommonjsModule(function (module) {
 module.exports = { "default": entries, __esModule: true };
 });
 
-var _Object$entries = unwrapExports(entries$2);
+var _Object$entries = unwrapExports(entries$1);
 
 // 19.1.2.1 Object.assign(target, source, ...)
 
@@ -1572,13 +1572,13 @@ var _objectAssign = !$assign || _fails(function () {
 
 _export(_export.S + _export.F, 'Object', { assign: _objectAssign });
 
-var assign$1 = _core.Object.assign;
+var assign = _core.Object.assign;
 
-var assign$3 = createCommonjsModule(function (module) {
-module.exports = { "default": assign$1, __esModule: true };
+var assign$1 = createCommonjsModule(function (module) {
+module.exports = { "default": assign, __esModule: true };
 });
 
-var _Object$assign = unwrapExports(assign$3);
+var _Object$assign = unwrapExports(assign$1);
 
 var _anInstance = function (it, Constructor, name, forbiddenField) {
   if (!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)) {
@@ -1851,7 +1851,7 @@ var $Promise = _global[PROMISE];
 var isNode$1 = _classof(process$2) == 'process';
 var empty = function () { /* empty */ };
 var Internal, newGenericPromiseCapability, OwnPromiseCapability, Wrapper;
-var newPromiseCapability$1 = newGenericPromiseCapability = _newPromiseCapability.f;
+var newPromiseCapability = newGenericPromiseCapability = _newPromiseCapability.f;
 
 var USE_NATIVE$1 = !!function () {
   try {
@@ -2009,7 +2009,7 @@ if (!USE_NATIVE$1) {
   Internal.prototype = _redefineAll($Promise.prototype, {
     // 25.4.5.3 Promise.prototype.then(onFulfilled, onRejected)
     then: function then(onFulfilled, onRejected) {
-      var reaction = newPromiseCapability$1(_speciesConstructor(this, $Promise));
+      var reaction = newPromiseCapability(_speciesConstructor(this, $Promise));
       reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
       reaction.fail = typeof onRejected == 'function' && onRejected;
       reaction.domain = isNode$1 ? process$2.domain : undefined;
@@ -2029,7 +2029,7 @@ if (!USE_NATIVE$1) {
     this.resolve = _ctx($resolve, promise, 1);
     this.reject = _ctx($reject, promise, 1);
   };
-  _newPromiseCapability.f = newPromiseCapability$1 = function (C) {
+  _newPromiseCapability.f = newPromiseCapability = function (C) {
     return C === $Promise || C === Wrapper
       ? new OwnPromiseCapability(C)
       : newGenericPromiseCapability(C);
@@ -2045,7 +2045,7 @@ Wrapper = _core[PROMISE];
 _export(_export.S + _export.F * !USE_NATIVE$1, PROMISE, {
   // 25.4.4.5 Promise.reject(r)
   reject: function reject(r) {
-    var capability = newPromiseCapability$1(this);
+    var capability = newPromiseCapability(this);
     var $$reject = capability.reject;
     $$reject(r);
     return capability.promise;
@@ -2063,7 +2063,7 @@ _export(_export.S + _export.F * !(USE_NATIVE$1 && _iterDetect(function (iter) {
   // 25.4.4.1 Promise.all(iterable)
   all: function all(iterable) {
     var C = this;
-    var capability = newPromiseCapability$1(C);
+    var capability = newPromiseCapability(C);
     var resolve = capability.resolve;
     var reject = capability.reject;
     var result = _perform(function () {
@@ -2090,7 +2090,7 @@ _export(_export.S + _export.F * !(USE_NATIVE$1 && _iterDetect(function (iter) {
   // 25.4.4.4 Promise.race(iterable)
   race: function race(iterable) {
     var C = this;
-    var capability = newPromiseCapability$1(C);
+    var capability = newPromiseCapability(C);
     var reject = capability.reject;
     var result = _perform(function () {
       _forOf(iterable, false, function (promise) {
@@ -2129,11 +2129,11 @@ _export(_export.S, 'Promise', { 'try': function (callbackfn) {
 
 var promise = _core.Promise;
 
-var promise$2 = createCommonjsModule(function (module) {
+var promise$1 = createCommonjsModule(function (module) {
 module.exports = { "default": promise, __esModule: true };
 });
 
-var _Promise = unwrapExports(promise$2);
+var _Promise = unwrapExports(promise$1);
 
 // 19.1.2.14 Object.keys(O)
 
@@ -2147,11 +2147,11 @@ _objectSap('keys', function () {
 
 var keys = _core.Object.keys;
 
-var keys$2 = createCommonjsModule(function (module) {
+var keys$1 = createCommonjsModule(function (module) {
 module.exports = { "default": keys, __esModule: true };
 });
 
-var _Object$keys = unwrapExports(keys$2);
+var _Object$keys = unwrapExports(keys$1);
 
 // 20.1.2.3 Number.isInteger(number)
 
@@ -2167,11 +2167,11 @@ _export(_export.S, 'Number', { isInteger: _isInteger });
 
 var isInteger = _core.Number.isInteger;
 
-var isInteger$2 = createCommonjsModule(function (module) {
+var isInteger$1 = createCommonjsModule(function (module) {
 module.exports = { "default": isInteger, __esModule: true };
 });
 
-var _Number$isInteger = unwrapExports(isInteger$2);
+var _Number$isInteger = unwrapExports(isInteger$1);
 
 var _stringWs = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
   '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
@@ -2215,18 +2215,18 @@ var _parseFloat = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function par
 // 20.1.2.12 Number.parseFloat(string)
 _export(_export.S + _export.F * (Number.parseFloat != _parseFloat), 'Number', { parseFloat: _parseFloat });
 
-var _parseFloat$2 = parseFloat;
+var _parseFloat$1 = parseFloat;
 
-var _parseFloat$4 = createCommonjsModule(function (module) {
-module.exports = { "default": _parseFloat$2, __esModule: true };
+var _parseFloat$2 = createCommonjsModule(function (module) {
+module.exports = { "default": _parseFloat$1, __esModule: true };
 });
 
-var _Number$parseFloat = unwrapExports(_parseFloat$4);
+var _Number$parseFloat = unwrapExports(_parseFloat$2);
 
 /**
  * to check whether the object is defined or not
  */
-function defined$1(obj) {
+function defined(obj) {
   return typeof obj !== 'undefined';
 }
 /**
@@ -2238,7 +2238,7 @@ function isVoid(obj) {
 /**
  * to check whether a variable is array
  */
-function isArray$1(arr) {
+function isArray(arr) {
   return Array.isArray(arr);
 }
 
@@ -2252,9 +2252,9 @@ function isFunction(obj) {
 /**
  * is it an object or not
  */
-function isObject$1(obj) {
+function isObject(obj) {
   // incase of arrow function and array
-  return Object(obj) === obj && String(obj) === '[object Object]' && !isFunction(obj) && !isArray$1(obj);
+  return Object(obj) === obj && String(obj) === '[object Object]' && !isFunction(obj) && !isArray(obj);
 }
 /**
  * to tell you if it's a real number
@@ -2266,12 +2266,12 @@ function isNumber(obj) {
  * to tell you if the val can be transfer into number
  */
 function isNumeric(obj) {
-  return !isArray$1(obj) && obj - _Number$parseFloat(obj) + 1 >= 0;
+  return !isArray(obj) && obj - _Number$parseFloat(obj) + 1 >= 0;
 }
 /**
  * is it an interget or not
  */
-function isInteger$3(num) {
+function isInteger$2(num) {
   return _Number$isInteger(num);
 }
 
@@ -2279,9 +2279,9 @@ function isInteger$3(num) {
  * return true when the value is "", {}, [], 0, null, undefined, false.
  */
 function isEmpty(obj) {
-  if (isArray$1(obj)) {
+  if (isArray(obj)) {
     return obj.length === 0;
-  } else if (isObject$1(obj)) {
+  } else if (isObject(obj)) {
     return _Object$keys(obj).length === 0;
   } else {
     return !obj;
@@ -3572,8 +3572,8 @@ function genTraversalHandler(fn) {
   // use recursive to move what in source to the target
   // if you do not provide a target, we will create a new target
   function recursiveFn(source, target, key) {
-    if (isArray$1(source) || isObject$1(source)) {
-      target = isPrimitive(target) ? isObject$1(source) ? {} : [] : target;
+    if (isArray(source) || isObject(source)) {
+      target = isPrimitive(target) ? isObject(source) ? {} : [] : target;
       for (var _key in source) {
         // $FlowFixMe: support computed key here
         setter(target, _key, recursiveFn(source[_key], target[_key], _key));
@@ -3684,7 +3684,7 @@ function getDeepProperty(obj, keys) {
   if (isString(keys)) {
     keys = keys.split('.');
   }
-  if (!isArray$1(keys)) {
+  if (!isArray(keys)) {
     throw new TypeError('keys of getDeepProperty must be string or Array<string>');
   }
   var read = [];
@@ -3852,7 +3852,7 @@ function emitEventCache(target, type, eventObj) {
   evt.type = type;
   evt.target = target;
   if (eventObj) {
-    _Object$assign(evt, isObject$1(eventObj) ? eventObj : { data: eventObj });
+    _Object$assign(evt, isObject(eventObj) ? eventObj : { data: eventObj });
   }
   getEvtTypeCache(target, type).forEach(function (item) {
     (item[1] || item[0]).apply(target, [evt]);
@@ -4280,7 +4280,7 @@ function getStyle(el, key) {
  * @param {String} val 样式值
  */
 function setStyle(el, key, val) {
-  if (isObject$1(key)) {
+  if (isObject(key)) {
     for (var k in key) {
       setStyle(el, k, key[k]);
     }
@@ -4362,7 +4362,7 @@ var NodeWrap = function () {
     if (selector && selector.constructor === NodeList) {
       /* 支持直接传入NodeList来构建包装器 */
       elsArr = makeArray(selector);
-    } else if (isArray$1(selector)) {
+    } else if (isArray(selector)) {
       /* 支持直接传入Node数组来构建包装器 */
       elsArr = selector;
     } else if (isString(selector)) {
@@ -4568,7 +4568,7 @@ var NodeWrap = function () {
   }, {
     key: 'css',
     value: function css(key, val) {
-      if (arguments.length === 1 && !isObject$1(key)) {
+      if (arguments.length === 1 && !isObject(key)) {
         return getStyle(this[0], key);
       }
       return this.each(function (el) {
@@ -5368,11 +5368,11 @@ _setCollectionFrom('Map');
 
 var map = _core.Map;
 
-var map$2 = createCommonjsModule(function (module) {
+var map$1 = createCommonjsModule(function (module) {
 module.exports = { "default": map, __esModule: true };
 });
 
-var _Map = unwrapExports(map$2);
+var _Map = unwrapExports(map$1);
 
 var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting'];
 var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'error', 'ended', 'networkState', 'paused', 'readyState', 'seekable', 'sinkId', 'controlsList', 'tabIndex', 'dataset', 'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth'];
@@ -5421,19 +5421,19 @@ _export(_export.S, 'Object', {
 
 var getOwnPropertyDescriptors = _core.Object.getOwnPropertyDescriptors;
 
-var getOwnPropertyDescriptors$2 = createCommonjsModule(function (module) {
+var getOwnPropertyDescriptors$1 = createCommonjsModule(function (module) {
 module.exports = { "default": getOwnPropertyDescriptors, __esModule: true };
 });
 
-var _Object$getOwnPropertyDescriptors = unwrapExports(getOwnPropertyDescriptors$2);
+var _Object$getOwnPropertyDescriptors = unwrapExports(getOwnPropertyDescriptors$1);
 
 var getOwnPropertySymbols = _core.Object.getOwnPropertySymbols;
 
-var getOwnPropertySymbols$2 = createCommonjsModule(function (module) {
+var getOwnPropertySymbols$1 = createCommonjsModule(function (module) {
 module.exports = { "default": getOwnPropertySymbols, __esModule: true };
 });
 
-var _Object$getOwnPropertySymbols = unwrapExports(getOwnPropertySymbols$2);
+var _Object$getOwnPropertySymbols = unwrapExports(getOwnPropertySymbols$1);
 
 // 19.1.2.7 Object.getOwnPropertyNames(O)
 _objectSap('getOwnPropertyNames', function () {
@@ -5445,11 +5445,11 @@ var getOwnPropertyNames = function getOwnPropertyNames(it) {
   return $Object$3.getOwnPropertyNames(it);
 };
 
-var getOwnPropertyNames$2 = createCommonjsModule(function (module) {
+var getOwnPropertyNames$1 = createCommonjsModule(function (module) {
 module.exports = { "default": getOwnPropertyNames, __esModule: true };
 });
 
-var _Object$getOwnPropertyNames = unwrapExports(getOwnPropertyNames$2);
+var _Object$getOwnPropertyNames = unwrapExports(getOwnPropertyNames$1);
 
 /**
  * bind the function with some context. we have some fallback strategy here
@@ -5490,7 +5490,7 @@ function getDeepProperty$1(obj, keys) {
   if (isString(keys)) {
     keys = keys.split('.');
   }
-  if (!isArray$1(keys)) {
+  if (!isArray(keys)) {
     throw new TypeError('keys of getDeepProperty must be string or Array<string>');
   }
   var read = [];
@@ -5663,19 +5663,19 @@ _setCollectionFrom('WeakMap');
 
 var weakMap = _core.WeakMap;
 
-var weakMap$2 = createCommonjsModule(function (module) {
+var weakMap$1 = createCommonjsModule(function (module) {
 module.exports = { "default": weakMap, __esModule: true };
 });
 
-var _WeakMap = unwrapExports(weakMap$2);
+var _WeakMap = unwrapExports(weakMap$1);
 
-var defineProperty$4 = createCommonjsModule(function (module, exports) {
+var defineProperty$3 = createCommonjsModule(function (module, exports) {
 
 exports.__esModule = true;
 
 
 
-var _defineProperty2 = _interopRequireDefault(defineProperty$2);
+var _defineProperty2 = _interopRequireDefault(defineProperty$1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5695,7 +5695,7 @@ exports.default = function (obj, key, value) {
 };
 });
 
-var _defineProperty$1 = unwrapExports(defineProperty$4);
+var _defineProperty = unwrapExports(defineProperty$3);
 
 // 19.1.2.15 Object.preventExtensions(O)
 
@@ -5709,13 +5709,13 @@ _objectSap('preventExtensions', function ($preventExtensions) {
 
 var preventExtensions = _core.Object.preventExtensions;
 
-var preventExtensions$2 = createCommonjsModule(function (module) {
+var preventExtensions$1 = createCommonjsModule(function (module) {
 module.exports = { "default": preventExtensions, __esModule: true };
 });
 
-unwrapExports(preventExtensions$2);
+unwrapExports(preventExtensions$1);
 
-var getOwnPropertyDescriptor$3 = _Object$getOwnPropertyDescriptor;
+var getOwnPropertyDescriptor$2 = _Object$getOwnPropertyDescriptor;
 // **********************  对象操作  ************************
 /**
  * sort Object attributes by function
@@ -5790,7 +5790,7 @@ function createDefaultSetter(key) {
 function compressOneArgFnArray(fns) {
   var errmsg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'You must pass me an array of function';
 
-  if (!isArray$1(fns) || fns.length < 1) {
+  if (!isArray(fns) || fns.length < 1) {
     throw new TypeError(errmsg);
   }
   if (fns.length === 1) {
@@ -5831,13 +5831,13 @@ function getOwnPropertyDescriptorsFn() {
   // $FlowFixMe: In some environment, Object.getOwnPropertyDescriptors has been implemented;
   return isFunction(_Object$getOwnPropertyDescriptors) ? _Object$getOwnPropertyDescriptors : function (obj) {
     return getOwnKeys(obj).reduce(function (descs, key) {
-      descs[key] = getOwnPropertyDescriptor$3(obj, key);
+      descs[key] = getOwnPropertyDescriptor$2(obj, key);
       return descs;
     }, {});
   };
 }
 
-var getOwnPropertyDescriptors$3 = getOwnPropertyDescriptorsFn();
+var getOwnPropertyDescriptors$2 = getOwnPropertyDescriptorsFn();
 
 function compressMultipleDecorators() {
   for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
@@ -5868,10 +5868,10 @@ function accessor() {
       _ref2$preSet = _ref2.preSet,
       preSet = _ref2$preSet === undefined ? true : _ref2$preSet;
 
-  if (!isFunction(get) && !isFunction(set) && !(isArray$1(get) && get.length > 0) && !(isArray$1(set) && set.length > 0)) throw new TypeError("@accessor need a getter or setter. If you don't need to add setter/getter. You should remove @accessor");
+  if (!isFunction(get) && !isFunction(set) && !(isArray(get) && get.length > 0) && !(isArray(set) && set.length > 0)) throw new TypeError("@accessor need a getter or setter. If you don't need to add setter/getter. You should remove @accessor");
   var errmsg = '@accessor only accept function or array of function as getter/setter';
-  get = isArray$1(get) ? compressOneArgFnArray(get, errmsg) : get;
-  set = isArray$1(set) ? compressOneArgFnArray(set, errmsg) : set;
+  get = isArray(get) ? compressOneArgFnArray(get, errmsg) : get;
+  set = isArray(set) ? compressOneArgFnArray(set, errmsg) : set;
   return function (obj, prop, descriptor) {
     var _ref3 = descriptor || {},
         _ref3$configurable = _ref3.configurable,
@@ -6017,7 +6017,7 @@ function before() {
 
       var paras = fns.reduce(function (paras, fn) {
         var result = bind$1(fn, _this).apply(undefined, _toConsumableArray(paras));
-        return result === undefined ? paras : isArray$1(result) ? result
+        return result === undefined ? paras : isArray(result) ? result
         // $FlowFixMe: what the hell, it can be anything
         : [result];
       }, args);
@@ -6132,7 +6132,7 @@ function initialize() {
 }
 
 var getOwnPropertyDescriptor$1$1 = _Object$getOwnPropertyDescriptor;
-var defineProperty$5 = _Object$defineProperty;
+var defineProperty$4 = _Object$defineProperty;
 
 function setAlias(root, prop, _ref, obj, key, _ref2) {
   var configurable = _ref.configurable,
@@ -6149,7 +6149,7 @@ function setAlias(root, prop, _ref, obj, key, _ref2) {
       throw new Error('property "' + prop + '" is unconfigurable.');
     }
   }
-  defineProperty$5(obj, key, {
+  defineProperty$4(obj, key, {
     get: function get() {
       return root[prop];
     },
@@ -6181,7 +6181,7 @@ function alias(other, key, option) {
   var illegalObjErrorMsg = 'If you want to use @alias to set alias on other instance, you must pass in a legal instance';
   if (other !== undefined && isPrimitive(other)) throw new TypeError(illegalObjErrorMsg);
 
-  var _ref3 = isObject$1(option) ? option : { force: false, omit: false },
+  var _ref3 = isObject(option) ? option : { force: false, omit: false },
       force = _ref3.force,
       omit = _ref3.omit;
 
@@ -6267,15 +6267,15 @@ function classify(decorator) {
         _ref2$self = _ref2.self,
         self = _ref2$self === undefined ? false : _ref2$self;
 
-    if (!isArray$1(exclude)) throw new TypeError('options.exclude must be an array');
-    if (!isArray$1(include)) throw new TypeError('options.include must be an array');
+    if (!isArray(exclude)) throw new TypeError('options.exclude must be an array');
+    if (!isArray(include)) throw new TypeError('options.include must be an array');
     return function (Klass) {
       var isClass = isFunction(Klass);
       if (!self && !isClass) throw new TypeError('@' + decorator.name + 'Class can only be used on class');
       if (self && isPrimitive(Klass)) throw new TypeError('@' + decorator.name + 'Class must be used on non-primitive type value in \'self\' mode');
       var prototype = self ? Klass : Klass.prototype;
       if (isVoid(prototype)) throw new Error('The prototype of the ' + Klass.name + ' is empty, please check it');
-      var descs = getOwnPropertyDescriptors$3(prototype);
+      var descs = getOwnPropertyDescriptors$2(prototype);
       getOwnKeys(prototype).concat(include).forEach(function (key) {
         var desc = descs[key];
         if (key === 'constructor' && !construct || self && isClass && ['name', 'length', 'prototype'].indexOf(key) > -1 || exclude.indexOf(key) > -1 || isFunction(requirement) && requirement(prototype, key, desc, { self: self }) === false) return;
@@ -6533,7 +6533,7 @@ function nonenumerable(obj, prop, descriptor) {
 }
 
 var defineProperty$6 = _Object$defineProperty;
-var getOwnPropertyDescriptor$3$1 = _Object$getOwnPropertyDescriptor;
+var getOwnPropertyDescriptor$3 = _Object$getOwnPropertyDescriptor;
 
 
 function applyDecorators(Class, props) {
@@ -6544,7 +6544,7 @@ function applyDecorators(Class, props) {
       omit = _ref$omit === undefined ? false : _ref$omit;
 
   var isPropsFunction = isFunction(props);
-  if (isPropsFunction || isArray$1(props)) {
+  if (isPropsFunction || isArray(props)) {
     // apply decorators on class
     if (!isFunction(Class)) throw new TypeError('If you want to decorator class, you must pass it a legal class');
     // $FlowFixMe: Terrible union, it's function now
@@ -6561,12 +6561,12 @@ function applyDecorators(Class, props) {
   }
   if (!self && !isFunction(Class)) throw new TypeError('applyDecorators only accept class as first arguments. If you want to modify instance, you should set options.self true.');
   if (self && isPrimitive(Class)) throw new TypeError("We can't apply docorators on a primitive value, even in self mode");
-  if (!isObject$1(props)) throw new TypeError('applyDecorators only accept object as second arguments');
+  if (!isObject(props)) throw new TypeError('applyDecorators only accept object as second arguments');
   var prototype = self ? Class : Class.prototype;
   if (isVoid(prototype)) throw new Error('The class muse have a prototype, please take a check');
   for (var key in props) {
     var value = props[key];
-    var decorators = isArray$1(value) ? value : [value];
+    var decorators = isArray(value) ? value : [value];
     var handler = void 0;
     try {
       handler = compressMultipleDecorators.apply(undefined, _toConsumableArray(decorators));
@@ -6575,7 +6575,7 @@ function applyDecorators(Class, props) {
       warn(err && err.message);
       throw new Error('The decorators set on props must be Function or Array of Function');
     }
-    var descriptor = getOwnPropertyDescriptor$3$1(prototype, key);
+    var descriptor = getOwnPropertyDescriptor$3(prototype, key);
     if (descriptor && !descriptor.configurable) {
       if (!omit) throw new Error(key + ' of ' + prototype + ' is unconfigurable');
       continue;
@@ -6598,7 +6598,7 @@ function deepProxy(value, hook, _ref) {
   var proxyValue = new Proxy(value, {
     get: function get(target, property, receiver) {
       var value = target[property];
-      if (isArray$1(target) && arrayChangeMethod.indexOf(property) > -1) {
+      if (isArray(target) && arrayChangeMethod.indexOf(property) > -1) {
         return function () {
           arrayChanging = true;
           bind$1(value, receiver).apply(undefined, arguments);
@@ -6607,7 +6607,7 @@ function deepProxy(value, hook, _ref) {
         };
       }
       if (mapStore[property] === true) return value;
-      if (isObject$1(value) || isArray$1(value)) {
+      if (isObject(value) || isArray(value)) {
         var _proxyValue = mapStore[property] || deepProxy(value, hook, { diff: diff, operationPrefix: operationPrefix });
         mapStore[property] = _proxyValue;
         return _proxyValue;
@@ -6617,7 +6617,7 @@ function deepProxy(value, hook, _ref) {
     },
     set: function set(target, property, value) {
       var oldVal = target[property];
-      var newVal = isObject$1(value) || isArray$1(value) ? deepProxy(value, hook, { diff: diff, operationPrefix: operationPrefix }) : value;
+      var newVal = isObject(value) || isArray(value) ? deepProxy(value, hook, { diff: diff, operationPrefix: operationPrefix }) : value;
       target[property] = newVal;
       mapStore[property] = true;
       if (arrayChanging || diff && oldVal === newVal) return true;
@@ -6632,12 +6632,12 @@ function deepProxy(value, hook, _ref) {
       return true;
     }
   });
-  var operateProps = (_operateProps = {}, _defineProperty$1(_operateProps, operationPrefix + 'set', [initialize(function (method) {
+  var operateProps = (_operateProps = {}, _defineProperty(_operateProps, operationPrefix + 'set', [initialize(function (method) {
     return function (property, val) {
       // $FlowFixMe: we have check the computed value
       proxyValue[property] = val;
     };
-  }), nonenumerable]), _defineProperty$1(_operateProps, operationPrefix + 'del', [initialize(function (method) {
+  }), nonenumerable]), _defineProperty(_operateProps, operationPrefix + 'del', [initialize(function (method) {
     return function (property) {
       // $FlowFixMe: we have check the computed value
       delete proxyValue[property];
@@ -6667,14 +6667,14 @@ function deepObserve(value, hook, _ref2) {
       }), accessor({
         get: function get(val) {
           if (mapStore[key]) return val;
-          if (isObject$1(val) || isArray$1(val)) {
+          if (isObject(val) || isArray(val)) {
             deepObserve(val, hook, { operationPrefix: operationPrefix, diff: diff });
           }
           mapStore[key] = true;
           return val;
         },
         set: function set(val) {
-          if (isObject$1(val) || isArray$1(val)) deepObserve(val, hook, { operationPrefix: operationPrefix, diff: diff });
+          if (isObject(val) || isArray(val)) deepObserve(val, hook, { operationPrefix: operationPrefix, diff: diff });
           mapStore[key] = true;
           if (!arrayChanging && (!diff || oldVal !== val)) hook();
           return val;
@@ -6685,7 +6685,7 @@ function deepObserve(value, hook, _ref2) {
   }
   var props = getPropertyDecorators(getOwnKeys(value));
   applyDecorators(value, props, { self: true, omit: true });
-  if (isArray$1(value)) {
+  if (isArray(value)) {
     var methodProps = arrayChangeMethod.reduce(function (props, key) {
       props[key] = [initialize(function (method) {
         method = isFunction(method) ? method
@@ -6710,7 +6710,7 @@ function deepObserve(value, hook, _ref2) {
     }, {});
     applyDecorators(value, methodProps, { self: true });
   }
-  var operateProps = (_operateProps2 = {}, _defineProperty$1(_operateProps2, operationPrefix + 'set', [initialize(function (method) {
+  var operateProps = (_operateProps2 = {}, _defineProperty(_operateProps2, operationPrefix + 'set', [initialize(function (method) {
     return function (property, val) {
       var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
           disable = _ref3.disable,
@@ -6728,7 +6728,7 @@ function deepObserve(value, hook, _ref2) {
         value[property] = val;
       }
     };
-  }), nonenumerable]), _defineProperty$1(_operateProps2, operationPrefix + 'del', [initialize(function (method) {
+  }), nonenumerable]), _defineProperty(_operateProps2, operationPrefix + 'del', [initialize(function (method) {
     return function (property) {
       if (isFunction(method)) {
         bind$1(method, _this)(property);
@@ -6747,7 +6747,7 @@ function watch() {
     args[_key] = arguments[_key];
   }
 
-  var option = isObject$1(args[args.length - 1]) ? args[args.length - 1] : {};
+  var option = isObject(args[args.length - 1]) ? args[args.length - 1] : {};
   // $FlowFixMe: we have check if it's an object
   var deep = option.deep,
       omit = option.omit,
@@ -6806,7 +6806,7 @@ function watch() {
         var hook = function hook() {
           return bind$1(handler, _this3)(newVal, oldVal);
         };
-        return deep && (isObject$1(value) || isArray$1(value)) ? proxy ? deepProxy(value, hook, { diff: diff, operationPrefix: operationPrefix }) : deepObserve(value, hook, { operationPrefix: operationPrefix, diff: diff }) : value;
+        return deep && (isObject(value) || isArray(value)) ? proxy ? deepProxy(value, hook, { diff: diff, operationPrefix: operationPrefix }) : deepObserve(value, hook, { operationPrefix: operationPrefix, diff: diff }) : value;
       },
       get: function get(value) {
         var _this4 = this;
@@ -6817,7 +6817,7 @@ function watch() {
           var hook = function hook() {
             return bind$1(handler, _this4)(newVal, oldVal);
           };
-          if (deep && (isObject$1(value) || isArray$1(value))) {
+          if (deep && (isObject(value) || isArray(value))) {
             if (proxy) {
               proxyValue = deepProxy(value, hook, { diff: diff, operationPrefix: operationPrefix });
               oldVal = proxyValue;
@@ -7376,9 +7376,9 @@ var Bus = (_dec = runnable(secondaryChecker), _dec2 = runnable(secondaryChecker,
     value: function _getEventQueue(handlerSet, order) {
       var _this3 = this;
 
-      order = isArray$1(order) ? order.concat(['_vm']) : ['_vm'];
+      order = isArray(order) ? order.concat(['_vm']) : ['_vm'];
       return isEmpty(handlerSet) ? [] : order.reduce(function (queue, id) {
-        if (isEmpty(handlerSet[id]) || !isArray$1(handlerSet[id]) ||
+        if (isEmpty(handlerSet[id]) || !isArray(handlerSet[id]) ||
         // in case plugins is missed
         // _vm indicate the user. This is the function for user
         !_this3.__dispatcher.plugins[id] && id !== '_vm') {
@@ -7462,11 +7462,11 @@ var stringify = function stringify(it) { // eslint-disable-line no-unused-vars
   return $JSON$1.stringify.apply($JSON$1, arguments);
 };
 
-var stringify$2 = createCommonjsModule(function (module) {
+var stringify$1 = createCommonjsModule(function (module) {
 module.exports = { "default": stringify, __esModule: true };
 });
 
-var _JSON$stringify = unwrapExports(stringify$2);
+var _JSON$stringify = unwrapExports(stringify$1);
 
 /**
  * checker for on, off, once function
@@ -7509,11 +7509,11 @@ _export(_export.S, 'Number', {
 
 var isNan = _core.Number.isNaN;
 
-var isNan$2 = createCommonjsModule(function (module) {
+var isNan$1 = createCommonjsModule(function (module) {
 module.exports = { "default": isNan, __esModule: true };
 });
 
-var _Number$isNaN = unwrapExports(isNan$2);
+var _Number$isNaN = unwrapExports(isNan$1);
 
 var _dec$1, _dec2$1, _class$1, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7;
 
@@ -7575,7 +7575,7 @@ function accessorVideoProperty(property) {
 }
 
 function accessorVideoAttribute(attribute) {
-  var _ref = isObject$1(attribute) ? attribute : {
+  var _ref = isObject(attribute) ? attribute : {
     set: attribute,
     get: attribute,
     isBoolean: false
@@ -7995,7 +7995,7 @@ var VideoWrapper = (_dec$2 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
           _ref$proxy = _ref.proxy,
           proxy = _ref$proxy === undefined ? false : _ref$proxy;
 
-      if (!isString(key) && !isArray$1(key)) throw new TypeError('$watch only accept string and Array<string> as key to find the target to spy on, but not ' + key + ', whose type is ' + (typeof key === 'undefined' ? 'undefined' : _typeof(key)));
+      if (!isString(key) && !isArray(key)) throw new TypeError('$watch only accept string and Array<string> as key to find the target to spy on, but not ' + key + ', whose type is ' + (typeof key === 'undefined' ? 'undefined' : _typeof(key)));
       var watching = true;
       var watcher = function watcher() {
         if (watching && (!(this instanceof VideoConfig) || this.dispatcher.changeWatchable)) bind(handler, this).apply(undefined, arguments);
@@ -8009,14 +8009,14 @@ var VideoWrapper = (_dec$2 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
       var property = keys.pop();
       var videoConfig = this.__dispatcher.videoConfig;
       var target = keys.length === 0 && !other && videoConfig._realDomAttr.indexOf(property) > -1 ? videoConfig : ['isFullscreen', 'fullscreenElement'].indexOf(property) > -1 ? this.__dispatcher.dom : getDeepProperty(other || this, keys, { throwError: true });
-      applyDecorators(target, _defineProperty$1({}, property, watch(watcher, { deep: deep, diff: diff, proxy: proxy })), { self: true });
+      applyDecorators(target, _defineProperty({}, property, watch(watcher, { deep: deep, diff: diff, proxy: proxy })), { self: true });
       this.__unwatchHandlers.push(unwatcher);
       return unwatcher;
     }
   }, {
     key: '$set',
     value: function $set(obj, property, value) {
-      if (!isObject$1(obj) && !isArray$1(obj)) throw new TypeError('$set only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
+      if (!isObject(obj) && !isArray(obj)) throw new TypeError('$set only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
       // $FlowFixMe: we have custom this function
       if (!isFunction(obj.__set)) {
         /* istanbul ignore else  */
@@ -8030,7 +8030,7 @@ var VideoWrapper = (_dec$2 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
   }, {
     key: '$del',
     value: function $del(obj, property) {
-      if (!isObject$1(obj) && !isArray$1(obj)) throw new TypeError('$del only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
+      if (!isObject(obj) && !isArray(obj)) throw new TypeError('$del only support Array or Object, but not ' + obj + ', whose type is ' + (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)));
       // $FlowFixMe: we have custom this function
       if (!isFunction(obj.__del)) {
         /* istanbul ignore else  */
@@ -8255,7 +8255,7 @@ var VideoWrapper = (_dec$2 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
         return unwatcher();
       });
       _Object$keys(this.__events).forEach(function (key) {
-        if (!isArray$1(_this6.__events[key])) return;
+        if (!isArray(_this6.__events[key])) return;
         _this6.__events[key].forEach(function (fn) {
           return _this6.$off(key, fn);
         });
@@ -8314,7 +8314,7 @@ var VideoWrapper = (_dec$2 = autobindClass(), _dec2$2 = alias('silentLoad'), _de
       return this.__dispatcher.containerConfig;
     },
     set: function set(config) {
-      if (!isObject$1(config)) {
+      if (!isObject(config)) {
         throw new Error('The config of container must be Object, but not ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)) + '.');
       }
       deepAssign(this.__dispatcher.containerConfig, config);
@@ -8400,7 +8400,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.9.3';
+    _this.VERSION = '0.9.4';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -8428,7 +8428,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
       _this.$throwError(error);
     }
     // bind plugin methods into instance
-    if (!isEmpty(methods) && isObject$1(methods)) {
+    if (!isEmpty(methods) && isObject(methods)) {
       _Object$keys(methods).forEach(function (key) {
         var fn = methods[key];
         if (!isFunction(fn)) throw new TypeError('plugins methods must be Function');
@@ -8441,25 +8441,25 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
       });
     }
     // hook plugin events on bus
-    if (!isEmpty(events) && isObject$1(events)) {
+    if (!isEmpty(events) && isObject(events)) {
       _Object$keys(events).forEach(function (key) {
         if (!isFunction(events[key])) throw new TypeError('plugins events hook must bind with Function');
         _this.$on(key, events[key]);
       });
     }
     // bind data into plugin instance
-    if (!isEmpty(data) && isObject$1(data)) {
+    if (!isEmpty(data) && isObject(data)) {
       deepAssign(_this, data);
     }
     // set the computed member by getter and setter
-    if (!isEmpty(computed) && isObject$1(computed)) {
+    if (!isEmpty(computed) && isObject(computed)) {
       var props = _Object$keys(computed).reduce(function (props, key) {
         var val = computed[key];
         if (isFunction(val)) {
           props[key] = accessor({ get: val });
           return props;
         }
-        if (isObject$1(val) && (isFunction(val.get) || isFunction(val.set))) {
+        if (isObject(val) && (isFunction(val.get) || isFunction(val.set))) {
           props[key] = accessor(val);
           return props;
         }
@@ -8511,7 +8511,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
      * @type {boolean}
      */
     _this.$operable = isBoolean(option.operable) ? option.operable : operable;
-    _this.__level = isInteger$3(option.level) ? option.level : level;
+    _this.__level = isInteger$2(option.level) ? option.level : level;
     /**
      * pluginOption, so it's easy for plugin developer to check the config
      * @type {Object}
@@ -8620,7 +8620,7 @@ var Plugin = (_dec$3 = autobindClass(), _dec$3(_class$3 = function (_VideoWrappe
   }, {
     key: '$level',
     set: function set(val) {
-      if (!isInteger$3(val)) return;
+      if (!isInteger$2(val)) return;
       this.__level = val;
       this.__dispatcher._sortZIndex();
     },
@@ -8657,7 +8657,7 @@ var FULLSCREEN_ERROR = ['fullscreenerror', 'webkitfullscreenerror', 'mozfullscre
 var supportDocument = typeof document !== 'undefined';
 
 function setStyle$1(el, key, val) {
-  if (isObject$1(key)) {
+  if (isObject(key)) {
     for (var k in key) {
       setStyle$1(el, k, key[k]);
     }
@@ -8670,7 +8670,7 @@ function setStyle$1(el, key, val) {
 function native(target, name) {
   var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-  if (isObject$1(name)) {
+  if (isObject(name)) {
     option = name;
   }
   if (isString(target)) {
@@ -8723,7 +8723,7 @@ function dispatchEvent(element, name) {
     event.eventName = name;
   }
   /* istanbul ignore next  */
-  if (!isObject$1(event) && !isEvent(event)) throw new Error("We can't create an object on this browser, please report to author");
+  if (!isObject(event) && !isEvent(event)) throw new Error("We can't create an object on this browser, please report to author");
   /* istanbul ignore else  */
   if (element.dispatchEvent) {
     element.dispatchEvent(event);
@@ -8780,7 +8780,7 @@ var ESFullScreen = (_dec$4 = autobindClass(), _dec2$3 = alias('requestFullscreen
     _classCallCheck(this, ESFullScreen);
 
     this._fullscreenElement = null;
-    this.isNativelySupport = defined$1(native('fullscreenElement')) && (!defined$1(fullscreenEnabled) || fullscreenEnabled === true);
+    this.isNativelySupport = defined(native('fullscreenElement')) && (!defined(fullscreenEnabled) || fullscreenEnabled === true);
     this._openKey = supportDocument ? native(document.body || document.documentElement, 'requestFullscreen', { keyOnly: true }) : '';
     this._exitKey = native('exitFullscreen', { keyOnly: true });
     this._useStyleFirst = false;
@@ -9194,7 +9194,7 @@ var Dom = (_dec$5 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
         } else {
           el = document.createElement(hypenate(el));
         }
-      } else if (isObject$1(el)) {
+      } else if (isObject(el)) {
         // $FlowFixMe: we have check el's type here and make sure it's an object
         option = el;
       }
@@ -9206,7 +9206,7 @@ var Dom = (_dec$5 = waituntil('__dispatcher.videoConfigReady'), _dec2$4 = before
           className = _option2.className;
 
       var node = el && isElement(el) ? el : document.createElement('div');
-      if (isArray$1(className)) {
+      if (isArray(className)) {
         className = className.join(' ');
       }
       if (isString(className)) {
@@ -9544,7 +9544,7 @@ function checkPluginConfig(config) {
     }
     return;
   }
-  if (!isObject$1(config) || isEmpty(config)) throw new TypeError('plugin\'s config must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
+  if (!isObject(config) || isEmpty(config)) throw new TypeError('plugin\'s config must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
   var name = config.name;
 
   if (!isString(name) || name.length < 1) throw new TypeError('plugin must have a legal namea, but not "' + name + '" in ' + (typeof name === 'undefined' ? 'undefined' : _typeof(name)));
@@ -9589,7 +9589,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
     this.changeWatchable = true;
     this.kernelEventHandlerList = [];
 
-    if (!isObject$1(config)) throw new TypeError('UserConfig must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
+    if (!isObject(config)) throw new TypeError('UserConfig must be an Object, but not "' + config + '" in ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
     /**
      * dom Manager
      * @type {Dom}
@@ -9614,7 +9614,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
     this.videoConfig = new VideoConfig(this, config);
     // support both plugin and plugins here as people often cofuse both
     // $FlowFixMe: we support plugins here, which should be illegal
-    if (isArray$1(config.plugins) && !isArray$1(config.plugin)) {
+    if (isArray(config.plugins) && !isArray(config.plugin)) {
       config.plugin = config.plugins;
       delete config.plugins;
     }
@@ -9677,7 +9677,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
     key: 'use',
     value: function use(option) {
       if (isString(option)) option = { name: option, alias: undefined };
-      if (!isObject$1(option) || isObject$1(option) && !isString(option.name)) {
+      if (!isObject(option) || isObject(option) && !isString(option.name)) {
         throw new TypeError('pluginConfig do not match requirement');
       }
       if (!isString(option.alias)) option.alias = undefined;
@@ -9692,7 +9692,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
       var pluginOption = option;
       var pluginConfig = Dispatcher.getPluginConfig(key);
       if (isEmpty(pluginConfig)) throw new TypeError('You have not installed plugin ' + key);
-      if (isObject$1(pluginConfig)) {
+      if (isObject(pluginConfig)) {
         pluginConfig.id = id;
       }
       var plugin = isFunction(pluginConfig) ? new pluginConfig({ id: id }, this, pluginOption) // eslint-disable-line 
@@ -9718,7 +9718,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
     key: 'unuse',
     value: function unuse(id) {
       var plugin = this.plugins[id];
-      if (!isObject$1(plugin) || !isFunction(plugin.$destroy)) {
+      if (!isObject(plugin) || !isFunction(plugin.$destroy)) {
         delete this.plugins[id];
         return;
       }
@@ -9889,8 +9889,8 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
     value: function load(srcOrOption) {
       var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-      var src = isString(srcOrOption) ? srcOrOption : isObject$1(srcOrOption) && isString(srcOrOption.src) ? srcOrOption.src : '';
-      if (isObject$1(srcOrOption)) {
+      var src = isString(srcOrOption) ? srcOrOption : isObject(srcOrOption) && isString(srcOrOption.src) ? srcOrOption.src : '';
+      if (isObject(srcOrOption)) {
         delete srcOrOption.src;
         option = srcOrOption;
       }
@@ -9995,7 +9995,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
 
       var configs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-      if (!isArray$1(configs)) {
+      if (!isArray(configs)) {
         /* istanbul ignore else  */
         Log.warn('Dispatcher', 'UserConfig.plugin can only by an Array, but not "' + configs + '" in ' + (typeof configs === 'undefined' ? 'undefined' : _typeof(configs)));
         configs = [];
@@ -10076,7 +10076,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
       if ("development" !== 'production' && isEmpty(kernels) && !isEmpty(preset)) Log.warn('preset will be deprecated in next major version, please use kernels instead.');
       var presetConfig = {};
       var newPreset = {};
-      if (isArray$1(kernels)) {
+      if (isArray(kernels)) {
         // SKC means SingleKernelConfig
         newPreset = kernels.reduce(function (kernels, keyOrSKC) {
           // if it is a string key, it means the kernel has been pre installed.
@@ -10093,7 +10093,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
           // so we need to extract the handler
           // get the name of the handler
           // and collect the config for the handler
-          if (isObject$1(keyOrSKC)) {
+          if (isObject(keyOrSKC)) {
             var name = keyOrSKC.name,
                 handler = keyOrSKC.handler;
             // if the handler is a pure string, it means the kernel has been pre installed
@@ -10125,7 +10125,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
         }, {});
       }
 
-      if (isObject$1(kernels)) {
+      if (isObject(kernels)) {
         // SKC means SingleKernelConfig
         _Object$entries(kernels).forEach(function (_ref2) {
           var _ref3 = _slicedToArray(_ref2, 2),
@@ -10137,7 +10137,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
             newPreset[key] = fnOrSKC;
             return;
           }
-          if (isObject$1(fnOrSKC)) {
+          if (isObject(fnOrSKC)) {
             var handler = fnOrSKC.handler;
             // if handler is an string, it means user has pre install it
 
@@ -10243,7 +10243,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
   }, {
     key: 'installKernel',
     value: function installKernel(key, value) {
-      var tasks = isObject$1(key) ? _Object$entries(key) : [[key, value]];
+      var tasks = isObject(key) ? _Object$entries(key) : [[key, value]];
       tasks.forEach(function (_ref4) {
         var _ref5 = _slicedToArray(_ref4, 2),
             key = _ref5[0],
@@ -10371,7 +10371,7 @@ var GlobalConfig = (_class$7 = function () {
   }
 }), _class$7);
 
-var _global$2 = createCommonjsModule(function (module) {
+var _global$1 = createCommonjsModule(function (module) {
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self
@@ -10380,22 +10380,22 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
-var _core$2 = createCommonjsModule(function (module) {
+var _core$1 = createCommonjsModule(function (module) {
 var core = module.exports = { version: '2.5.3' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
-var _core_1$1 = _core$2.version;
+var _core_1$1 = _core$1.version;
 
-var _isObject$2 = function (it) {
+var _isObject$1 = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
-var _anObject$2 = function (it) {
-  if (!_isObject$2(it)) throw TypeError(it + ' is not an object!');
+var _anObject$1 = function (it) {
+  if (!_isObject$1(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
 
-var _fails$2 = function (exec) {
+var _fails$1 = function (exec) {
   try {
     return !!exec();
   } catch (e) {
@@ -10404,41 +10404,41 @@ var _fails$2 = function (exec) {
 };
 
 // Thank's IE8 for his funny defineProperty
-var _descriptors$2 = !_fails$2(function () {
+var _descriptors$1 = !_fails$1(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
-var document$3 = _global$2.document;
+var document$3 = _global$1.document;
 // typeof document.createElement is 'object' in old IE
-var is$1 = _isObject$2(document$3) && _isObject$2(document$3.createElement);
-var _domCreate$2 = function (it) {
+var is$1 = _isObject$1(document$3) && _isObject$1(document$3.createElement);
+var _domCreate$1 = function (it) {
   return is$1 ? document$3.createElement(it) : {};
 };
 
-var _ie8DomDefine$2 = !_descriptors$2 && !_fails$2(function () {
-  return Object.defineProperty(_domCreate$2('div'), 'a', { get: function () { return 7; } }).a != 7;
+var _ie8DomDefine$1 = !_descriptors$1 && !_fails$1(function () {
+  return Object.defineProperty(_domCreate$1('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
 
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-var _toPrimitive$2 = function (it, S) {
-  if (!_isObject$2(it)) return it;
+var _toPrimitive$1 = function (it, S) {
+  if (!_isObject$1(it)) return it;
   var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !_isObject$2(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !_isObject$2(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !_isObject$2(val = fn.call(it))) return val;
+  if (S && typeof (fn = it.toString) == 'function' && !_isObject$1(val = fn.call(it))) return val;
+  if (typeof (fn = it.valueOf) == 'function' && !_isObject$1(val = fn.call(it))) return val;
+  if (!S && typeof (fn = it.toString) == 'function' && !_isObject$1(val = fn.call(it))) return val;
   throw TypeError("Can't convert object to primitive value");
 };
 
 var dP$4 = Object.defineProperty;
 
-var f$8 = _descriptors$2 ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  _anObject$2(O);
-  P = _toPrimitive$2(P, true);
-  _anObject$2(Attributes);
-  if (_ie8DomDefine$2) try {
+var f$8 = _descriptors$1 ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+  _anObject$1(O);
+  P = _toPrimitive$1(P, true);
+  _anObject$1(Attributes);
+  if (_ie8DomDefine$1) try {
     return dP$4(O, P, Attributes);
   } catch (e) { /* empty */ }
   if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
@@ -10446,11 +10446,11 @@ var f$8 = _descriptors$2 ? Object.defineProperty : function defineProperty(O, P,
   return O;
 };
 
-var _objectDp$2 = {
+var _objectDp$1 = {
 	f: f$8
 };
 
-var _propertyDesc$2 = function (bitmap, value) {
+var _propertyDesc$1 = function (bitmap, value) {
   return {
     enumerable: !(bitmap & 1),
     configurable: !(bitmap & 2),
@@ -10459,48 +10459,48 @@ var _propertyDesc$2 = function (bitmap, value) {
   };
 };
 
-var _hide$2 = _descriptors$2 ? function (object, key, value) {
-  return _objectDp$2.f(object, key, _propertyDesc$2(1, value));
+var _hide$1 = _descriptors$1 ? function (object, key, value) {
+  return _objectDp$1.f(object, key, _propertyDesc$1(1, value));
 } : function (object, key, value) {
   object[key] = value;
   return object;
 };
 
 var hasOwnProperty$1 = {}.hasOwnProperty;
-var _has$2 = function (it, key) {
+var _has$1 = function (it, key) {
   return hasOwnProperty$1.call(it, key);
 };
 
 var id$2 = 0;
 var px$1 = Math.random();
-var _uid$2 = function (key) {
+var _uid$1 = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id$2 + px$1).toString(36));
 };
 
-var _redefine$2 = createCommonjsModule(function (module) {
-var SRC = _uid$2('src');
+var _redefine$1 = createCommonjsModule(function (module) {
+var SRC = _uid$1('src');
 var TO_STRING = 'toString';
 var $toString = Function[TO_STRING];
 var TPL = ('' + $toString).split(TO_STRING);
 
-_core$2.inspectSource = function (it) {
+_core$1.inspectSource = function (it) {
   return $toString.call(it);
 };
 
 (module.exports = function (O, key, val, safe) {
   var isFunction = typeof val == 'function';
-  if (isFunction) _has$2(val, 'name') || _hide$2(val, 'name', key);
+  if (isFunction) _has$1(val, 'name') || _hide$1(val, 'name', key);
   if (O[key] === val) return;
-  if (isFunction) _has$2(val, SRC) || _hide$2(val, SRC, O[key] ? '' + O[key] : TPL.join(String(key)));
-  if (O === _global$2) {
+  if (isFunction) _has$1(val, SRC) || _hide$1(val, SRC, O[key] ? '' + O[key] : TPL.join(String(key)));
+  if (O === _global$1) {
     O[key] = val;
   } else if (!safe) {
     delete O[key];
-    _hide$2(O, key, val);
+    _hide$1(O, key, val);
   } else if (O[key]) {
     O[key] = val;
   } else {
-    _hide$2(O, key, val);
+    _hide$1(O, key, val);
   }
 // add fake Function#toString for correct work wrapped methods / constructors with methods like LoDash isNative
 })(Function.prototype, TO_STRING, function toString() {
@@ -10508,15 +10508,15 @@ _core$2.inspectSource = function (it) {
 });
 });
 
-var _aFunction$2 = function (it) {
+var _aFunction$1 = function (it) {
   if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
 
 // optional / simple context binding
 
-var _ctx$2 = function (fn, that, length) {
-  _aFunction$2(fn);
+var _ctx$1 = function (fn, that, length) {
+  _aFunction$1(fn);
   if (that === undefined) return fn;
   switch (length) {
     case 1: return function (a) {
@@ -10536,14 +10536,14 @@ var _ctx$2 = function (fn, that, length) {
 
 var PROTOTYPE$3 = 'prototype';
 
-var $export$2 = function (type, name, source) {
-  var IS_FORCED = type & $export$2.F;
-  var IS_GLOBAL = type & $export$2.G;
-  var IS_STATIC = type & $export$2.S;
-  var IS_PROTO = type & $export$2.P;
-  var IS_BIND = type & $export$2.B;
-  var target = IS_GLOBAL ? _global$2 : IS_STATIC ? _global$2[name] || (_global$2[name] = {}) : (_global$2[name] || {})[PROTOTYPE$3];
-  var exports = IS_GLOBAL ? _core$2 : _core$2[name] || (_core$2[name] = {});
+var $export$1 = function (type, name, source) {
+  var IS_FORCED = type & $export$1.F;
+  var IS_GLOBAL = type & $export$1.G;
+  var IS_STATIC = type & $export$1.S;
+  var IS_PROTO = type & $export$1.P;
+  var IS_BIND = type & $export$1.B;
+  var target = IS_GLOBAL ? _global$1 : IS_STATIC ? _global$1[name] || (_global$1[name] = {}) : (_global$1[name] || {})[PROTOTYPE$3];
+  var exports = IS_GLOBAL ? _core$1 : _core$1[name] || (_core$1[name] = {});
   var expProto = exports[PROTOTYPE$3] || (exports[PROTOTYPE$3] = {});
   var key, own, out, exp;
   if (IS_GLOBAL) source = name;
@@ -10553,32 +10553,32 @@ var $export$2 = function (type, name, source) {
     // export native or passed
     out = (own ? target : source)[key];
     // bind timers to global for call from export context
-    exp = IS_BIND && own ? _ctx$2(out, _global$2) : IS_PROTO && typeof out == 'function' ? _ctx$2(Function.call, out) : out;
+    exp = IS_BIND && own ? _ctx$1(out, _global$1) : IS_PROTO && typeof out == 'function' ? _ctx$1(Function.call, out) : out;
     // extend global
-    if (target) _redefine$2(target, key, out, type & $export$2.U);
+    if (target) _redefine$1(target, key, out, type & $export$1.U);
     // export
-    if (exports[key] != out) _hide$2(exports, key, exp);
+    if (exports[key] != out) _hide$1(exports, key, exp);
     if (IS_PROTO && expProto[key] != out) expProto[key] = out;
   }
 };
-_global$2.core = _core$2;
+_global$1.core = _core$1;
 // type bitmap
-$export$2.F = 1;   // forced
-$export$2.G = 2;   // global
-$export$2.S = 4;   // static
-$export$2.P = 8;   // proto
-$export$2.B = 16;  // bind
-$export$2.W = 32;  // wrap
-$export$2.U = 64;  // safe
-$export$2.R = 128; // real proto method for `library`
-var _export$2 = $export$2;
+$export$1.F = 1;   // forced
+$export$1.G = 2;   // global
+$export$1.S = 4;   // static
+$export$1.P = 8;   // proto
+$export$1.B = 16;  // bind
+$export$1.W = 32;  // wrap
+$export$1.U = 64;  // safe
+$export$1.R = 128; // real proto method for `library`
+var _export$1 = $export$1;
 
 // https://github.com/tc39/proposal-global
 
 
-_export$2(_export$2.G, { global: _global$2 });
+_export$1(_export$1.G, { global: _global$1 });
 
-var global$2 = _core$2.global;
+var global$1 = _core$1.global;
 
 var _dec$7, _class$8, _class2$2, _descriptor$2, _descriptor2$1, _descriptor3$1, _init, _init2, _init3, _init4, _init5, _init6, _init7, _init8, _init9, _class3, _temp;
 
@@ -10639,12 +10639,12 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$2 = (_temp = 
 
     _initDefineProp$2(_this, 'config', _descriptor3$1, _this);
 
-    if ("development" !== 'production' && !global$2.Object.defineProperty) {
+    if ("development" !== 'production' && !global$1.Object.defineProperty) {
       /* istanbul ignore next */
       Log.error('Chimee', "We detect that this browser lack of Object.defineProperty. Chimee can't run on this browser");
     }
     /* istanbul ignore if */
-    if ("development" !== 'production' && !global$2.Promise) {
+    if ("development" !== 'production' && !global$1.Promise) {
       /* istanbul ignore next */
       Log.error('Chimee', 'We detect that this browser lack of Promise. If you are running Chimee in old browser. Please make sure you have import polyfill such as babel-polyfill.');
     }
@@ -10653,7 +10653,7 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$2 = (_temp = 
         wrapper: config,
         controls: true
       };
-    } else if (isObject$1(config)) {
+    } else if (isObject(config)) {
       if (!config.wrapper) throw new Error('You must pass in an legal object');
     } else {
       throw new Error('You must pass in an Object containing wrapper or string or element to new a Chimee');
@@ -10699,7 +10699,7 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$2 = (_temp = 
       var errorHandler = this.config.errorHandler || Chimee.config.errorHandler;
       if (isFunction(errorHandler)) return errorHandler(error);
       if (Chimee.config.silent) return;
-      throw error;
+      if (isError(error)) throw error;else console.error(error);
     }
   }]);
 
@@ -10712,7 +10712,7 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$2 = (_temp = 
 }), _descriptor2$1 = _applyDecoratedDescriptor$7(_class2$2.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.9.3';
+    return '0.9.4';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$7(_class2$2.prototype, 'config', [frozen], {
   enumerable: true,
