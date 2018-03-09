@@ -578,7 +578,8 @@ export default class Dispatcher {
 
     if (isObject(kernels)) {
       // SKC means SingleKernelConfig
-      Object.entries(kernels).forEach(([ key: string, fnOrSKC: string | SingleKernelConfig ]) => {
+      Object.keys(kernels).forEach((key: string) => {
+        const fnOrSKC: string | SingleKernelConfig = kernels[key];
         // if it's a function, means we need to do nothing
         if (isFunction(fnOrSKC)) {
           newPreset[key] = fnOrSKC;
