@@ -23,7 +23,7 @@ export default class Vessel {
             throw new Error(`The value of ${key} in ${this.__target}Config must be string, but not ${typeof value}.`);
           }
           this.__dispatcher.dom.setStyle(this.__target, key, value);
-          return value;
+          // return value;
         },
         configurable: true,
         enumerable: true,
