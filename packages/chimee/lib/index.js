@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.9.4
+ * chimee v0.9.5
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -1427,7 +1427,7 @@ var Plugin = (_dec$3 = toxicDecorators.autobindClass(), _dec$3(_class$3 = functi
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.9.4';
+    _this.VERSION = '0.9.5';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -2218,7 +2218,7 @@ var Vessel = function Vessel(dispatcher, target, config) {
           throw new Error('The value of ' + key + ' in ' + this.__target + 'Config must be string, but not ' + (typeof value === 'undefined' ? 'undefined' : _typeof(value)) + '.');
         }
         this.__dispatcher.dom.setStyle(this.__target, key, value);
-        return value;
+        // return value;
       },
 
       configurable: true,
@@ -2854,11 +2854,8 @@ var Dispatcher = (_dec$5 = toxicDecorators.before(convertNameIntoId), _dec2$4 = 
 
       if (chimeeHelper.isObject(kernels)) {
         // SKC means SingleKernelConfig
-        _Object$entries(kernels).forEach(function (_ref2) {
-          var _ref3 = _slicedToArray(_ref2, 2),
-              key = _ref3[0],
-              fnOrSKC = _ref3[1];
-
+        _Object$keys(kernels).forEach(function (key) {
+          var fnOrSKC = kernels[key];
           // if it's a function, means we need to do nothing
           if (chimeeHelper.isFunction(fnOrSKC)) {
             newPreset[key] = fnOrSKC;
@@ -2971,10 +2968,10 @@ var Dispatcher = (_dec$5 = toxicDecorators.before(convertNameIntoId), _dec2$4 = 
     key: 'installKernel',
     value: function installKernel(key, value) {
       var tasks = chimeeHelper.isObject(key) ? _Object$entries(key) : [[key, value]];
-      tasks.forEach(function (_ref4) {
-        var _ref5 = _slicedToArray(_ref4, 2),
-            key = _ref5[0],
-            value = _ref5[1];
+      tasks.forEach(function (_ref2) {
+        var _ref3 = _slicedToArray(_ref2, 2),
+            key = _ref3[0],
+            value = _ref3[1];
 
         if (!chimeeHelper.isFunction(value)) throw new Error('The kernel you install on ' + key + ' must be a Function, but not ' + (typeof value === 'undefined' ? 'undefined' : _typeof(value)));
         if (chimeeHelper.isFunction(kernelsSet[key])) chimeeHelper.Log.warn('You have alrady install a kernel on ' + key + ', and now we will replace it');
@@ -3230,7 +3227,7 @@ var Chimee = (_dec$6 = toxicDecorators.autobindClass(), _dec$6(_class$7 = (_clas
 }), _descriptor2$1 = _applyDecoratedDescriptor$6(_class2$1.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.9.4';
+    return '0.9.5';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$6(_class2$1.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
