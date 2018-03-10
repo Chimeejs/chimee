@@ -47,4 +47,11 @@ const player = new Chimee({
   controls: true,
 });
 
+const button = document.createElement('button');
+button.innerText = 'destroy player';
+document.body.appendChild(button);
+button.addEventListener('click', () => {
+  player.destroy();
+});
+
 window.player = player;
