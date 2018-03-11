@@ -115,3 +115,21 @@ declare type UserConfig = {
   },
   container?: VesselConfig,
 }
+
+declare type binderTarget = 'kernel' | 'container' | 'wrapper' | 'video' | 'video-dom' | 'custom';
+
+declare type eventStage = 'before' | 'main' | 'after' | '_';
+
+declare type eventOptions = {
+  target?: binderTarget;
+  stage?: eventStage;
+  once?: boolean;
+}
+
+declare type eventInfo = {
+  name: string,
+  stage: eventStage,
+  target: binderTarget,
+  id: string,
+  fn: Function,
+}

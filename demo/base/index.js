@@ -38,6 +38,9 @@ const plugin = {
     c_click(evt) {
       console.warn(evt);
     },
+    after_c_click(evt) {
+      console.log(evt, 'after_c');
+    },
     click(evt) {
       console.log(evt);
     },

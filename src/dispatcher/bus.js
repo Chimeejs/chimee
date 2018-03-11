@@ -43,10 +43,6 @@ export default class Bus {
       [Function]: Array<Function>
     }
   };
-  videoEventHandlerList: Array<Function>;
-  videoDomEventHandlerList: Array<Function>;
-  containerDomEventHandlerList: Array<Function>;
-  wrapperDomEventHandlerList: Array<Function>;
   /**
    * the handler set of all events
    * @type {Object}
@@ -67,22 +63,14 @@ export default class Bus {
   }
   /**
    * [Can only be called in dispatcher]bind event on bus.
-   * @param  {string} id plugin's id
-   * @param  {string} key event's name
-   * @param  {fn} handler function
    */
-  on(id: string, key: string, fn: Function) {
-    const { stage, key: eventName } = this._getEventStage(key);
+  on(id: string, eventName: string, fn: Function, stage: eventStage) {
     this._addEvent([ eventName, stage, id ], fn);
   }
   /**
    * [Can only be called in dispatcher]remove event off bus. Only suggest one by one.
-   * @param  {string} id plugin's id
-   * @param  {string} key event's name
-   * @param  {fn} handler function
    */
-  off(id: string, key: string, fn: Function) {
-    const { stage, key: eventName } = this._getEventStage(key);
+  off(id: string, eventName: string, fn: Function, stage: eventStage) {
     const keys = [ eventName, stage, id ];
     const deleted = this._removeEvent(keys, fn);
     if (deleted) return;
@@ -93,12 +81,8 @@ export default class Bus {
   }
   /**
    * [Can only be called in dispatcher]bind event on bus and remove it once event is triggered.
-   * @param  {string} id plugin's id
-   * @param  {string} key event's name
-   * @param  {Function} fn handler function
    */
-  once(id: string, key: string, fn: Function) {
-    const { stage, key: eventName } = this._getEventStage(key);
+  once(id: string, eventName: string, fn: Function, stage: eventStage) {
     const bus = this;
     const keys = [ eventName, stage, id ];
     const handler = function(...args) {
@@ -213,9 +197,9 @@ export default class Bus {
    * @param {Array} keys keys map pointing to position to put event handler
    * @param {function} fn handler to put
    */
-  _addEvent(keys: Array<string>, fn: Function): void {
+  _addEvent(keys: Array<string | eventStage>, fn: Function): void {
     keys = deepClone(keys);
-    const id = keys.pop();
+    const id: string = keys.pop();
     const target = keys.reduce((target, key) => {
       target[key] = target[key] || {};
       return target[key];
@@ -284,9 +268,10 @@ export default class Bus {
    * @param  {key} key event's name
    * @return {stage}  event stage
    */
-  _getEventStage(key: string): {stage: string, key: string} {
+  _getEventStage(key: string): {stage: eventStage, key: string} {
     const secondaryCheck = key.match(secondaryReg);
-    const stage = (secondaryCheck && secondaryCheck[0]) || 'main';
+    // $FlowFixMe: make sure it's event stage here
+    const stage: eventStage = (secondaryCheck && secondaryCheck[0]) || 'main';
     if (secondaryCheck) {
       key = camelize(key.replace(secondaryReg, ''));
     }

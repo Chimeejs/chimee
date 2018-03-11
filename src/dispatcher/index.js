@@ -9,6 +9,7 @@ import defaultContainerConfig from 'config/container';
 import { before, autobind } from 'toxic-decorators';
 import Vessel from 'config/vessel';
 import { kernelEvents } from 'helper/const';
+import Binder from './binder';
 const pluginConfigSet: PluginConfigSet = {};
 const kernelsSet: KernelsSet = {};
 function convertNameIntoId(name: string): string {
@@ -40,6 +41,7 @@ export default class Dispatcher {
   kernel: ChimeeKernel;
   dom: Dom;
   vm: Chimee;
+  binder: Binder;
   ready: Promise<*>;
   readySync: boolean;
   videoConfig: VideoConfig;
@@ -114,6 +116,7 @@ export default class Dispatcher {
       config.plugin = config.plugins;
       delete config.plugins;
     }
+    this.binder = new Binder();
     // use the plugin user want to use
     this._initUserPlugin(config.plugin);
     // add default config for container
