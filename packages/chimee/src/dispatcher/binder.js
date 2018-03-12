@@ -48,7 +48,7 @@ function getEventTargetByEventName(name: string): binderTarget {
   return 'custom';
 }
 
-function getEventInfo(id: string, key: string, fn: Function, options: eventOptions = {}): eventInfo {
+function getEventInfo(key: string, options: eventOptions): rawEventInfo {
   const oldInfo = getEventTargetByOldLogic(key);
   if (oldInfo) {
     key = oldInfo.name;
@@ -61,11 +61,20 @@ function getEventInfo(id: string, key: string, fn: Function, options: eventOptio
   }
 
   return {
-    id,
     name,
-    fn,
     stage,
     target: options.target,
+  };
+}
+
+function prettifyEventParamter(id: string, key: string, fn: Function, options: eventOptions = {}): wholeEventInfo {
+  const { name, target, stage } = getEventInfo(key, options);
+  return {
+    id,
+    fn,
+    name,
+    target,
+    stage,
   };
 }
 
@@ -92,36 +101,36 @@ export default class Binder {
     }, {});
   }
 
-  @before(getEventInfo)
+  @before(prettifyEventParamter)
   on({
     target,
     id,
     name,
     fn,
     stage,
-  }: eventInfo) {
+  }: wholeEventInfo) {
     this.buses[target].on(id, name, fn, stage);
   }
 
-  @before(getEventInfo)
+  @before(prettifyEventParamter)
   off({
     target,
     id,
     name,
     fn,
     stage,
-  }: eventInfo) {
+  }: wholeEventInfo) {
     this.buses[target].off(id, name, fn, stage);
   }
 
-  @before(getEventInfo)
+  @before(prettifyEventParamter)
   once({
     target,
     id,
     name,
     fn,
     stage,
-  }: eventInfo) {
+  }: wholeEventInfo) {
     this.buses[target].once(id, name, fn, stage);
   }
 }
