@@ -6,8 +6,10 @@
 
 import Bus from './bus';
 import { videoEvents, domEvents, kernelEvents } from 'helper/const';
-import { camelize, Log } from 'chimee-helper';
-import { before } from 'toxic-decorators';
+import { camelize, Log, isString } from 'chimee-helper';
+import { before, runnable } from 'toxic-decorators';
+
+const secondaryReg = /^(before|after|_)/;
 
 /**
  * In logic before 0.10.0, we use 'c_' and 'w_' to mark event of container and wrapper
@@ -31,12 +33,11 @@ function getEventTargetByOldLogic(oldName: string): { name: string, target: bind
 }
 
 function getEventStage(name: string): { stage: eventStage, name: string } {
-  const stageKeyReg = /^(before|after|_)/;
-  const matches = name.match(stageKeyReg);
+  const matches = name.match(secondaryReg);
   // $FlowFixMe: We make sure it's event stage here
   const stage: eventStage = (matches && matches[0]) || 'manin';
   if (matches) {
-    name = camelize(name.replace(stageKeyReg, ''));
+    name = camelize(name.replace(secondaryReg, ''));
   }
   return { name, stage };
 }
@@ -67,7 +68,7 @@ function getEventInfo(key: string, options: eventOptions): rawEventInfo {
   };
 }
 
-function prettifyEventParamter(id: string, key: string, fn: Function, options: eventOptions = {}): wholeEventInfo {
+function prettifyEventParameter(id: string, key: string, fn: Function, options: eventOptions = {}): wholeEventInfo {
   const { name, target, stage } = getEventInfo(key, options);
   return {
     id,
@@ -76,6 +77,27 @@ function prettifyEventParamter(id: string, key: string, fn: Function, options: e
     target,
     stage,
   };
+}
+
+function isEventEmitalbe({
+  id,
+  name,
+}: emitEventInfo): boolean {
+  if (!name || !isString(name) || secondaryReg.test(name)) {
+    Log.error('You must provide a legal event name, which is string and could not started with before/after/_');
+    return false;
+  }
+  if (!id || !isString(id)) {
+    Log.error('You must provide the id of emitter');
+    return false;
+  }
+  return true;
+}
+
+function checkEventEmitParameter(info: emitEventInfo): emitEventInfo {
+  const { key } = info;
+  info.target = getEventInfo(key, info).target;
+  return info;
 }
 
 export default class Binder {
@@ -101,7 +123,7 @@ export default class Binder {
     }, {});
   }
 
-  @before(prettifyEventParamter)
+  @before(prettifyEventParameter)
   on({
     target,
     id,
@@ -112,7 +134,7 @@ export default class Binder {
     this.buses[target].on(id, name, fn, stage);
   }
 
-  @before(prettifyEventParamter)
+  @before(prettifyEventParameter)
   off({
     target,
     id,
@@ -123,7 +145,7 @@ export default class Binder {
     this.buses[target].off(id, name, fn, stage);
   }
 
-  @before(prettifyEventParamter)
+  @before(prettifyEventParameter)
   once({
     target,
     id,
@@ -132,5 +154,16 @@ export default class Binder {
     stage,
   }: wholeEventInfo) {
     this.buses[target].once(id, name, fn, stage);
+  }
+
+  @runnable(isEventEmitalbe)
+  @before(checkEventEmitParameter)
+  emit({
+    target = 'video',
+    name,
+    id,
+  }: emitEventInfo, ...args: any[]) {
+    console.log(id);
+    this.buses[target].emit(name, ...args);
   }
 }
