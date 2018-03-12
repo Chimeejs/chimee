@@ -1,6 +1,6 @@
 
 /**
- * chimee-helper-log v0.1.2
+ * chimee-helper-log v0.1.3
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -50,7 +50,7 @@ var Log = function () {
         return;
       }
 
-      (console.error || console.warn || console.log)(formatter(tag, msg));
+      (console.error || console.warn || console.log).call(console, formatter(tag, msg));
     }
     /**
      * equal to console.info, output `[${tag}] > {$msg}`
@@ -80,7 +80,7 @@ var Log = function () {
       if (!Log.ENABLE_INFO) {
         return;
       }
-      (console.info || console.log)(formatter(tag, msg));
+      (console.info || console.log).call(console, formatter(tag, msg));
     }
     /**
      * equal to console.warn, output `[${tag}] > {$msg}`
@@ -94,7 +94,7 @@ var Log = function () {
       if (!Log.ENABLE_WARN) {
         return;
       }
-      (console.warn || console.log)(formatter(tag, msg));
+      (console.warn || console.log).call(console, formatter(tag, msg));
     }
     /**
      * equal to console.debug, output `[${tag}] > {$msg}`
@@ -108,7 +108,7 @@ var Log = function () {
       if (!Log.ENABLE_DEBUG) {
         return;
       }
-      (console.debug || console.log)(formatter(tag, msg));
+      (console.debug || console.log).call(console, formatter(tag, msg));
     }
     /**
      * equal to console.verbose, output `[${tag}] > {$msg}`
