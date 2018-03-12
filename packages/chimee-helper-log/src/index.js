@@ -57,7 +57,7 @@ class Log {
       return;
     }
 
-    (console.error || console.warn || console.log)(formatter(tag, msg));
+    (console.error || console.warn || console.log).call(console, formatter(tag, msg));
   }
   /**
    * equal to console.info, output `[${tag}] > {$msg}`
@@ -68,7 +68,7 @@ class Log {
     if (!Log.ENABLE_INFO) {
       return;
     }
-    (console.info || console.log)(formatter(tag, msg));
+    (console.info || console.log).call(console, formatter(tag, msg));
   }
   /**
    * equal to console.warn, output `[${tag}] > {$msg}`
@@ -79,7 +79,7 @@ class Log {
     if (!Log.ENABLE_WARN) {
       return;
     }
-    (console.warn || console.log)(formatter(tag, msg));
+    (console.warn || console.log).call(console, formatter(tag, msg));
   }
   /**
    * equal to console.debug, output `[${tag}] > {$msg}`
@@ -90,7 +90,7 @@ class Log {
     if (!Log.ENABLE_DEBUG) {
       return;
     }
-    (console.debug || console.log)(formatter(tag, msg));
+    (console.debug || console.log).call(console, formatter(tag, msg));
   }
   /**
    * equal to console.verbose, output `[${tag}] > {$msg}`
