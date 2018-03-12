@@ -132,6 +132,12 @@ declare type rawEventInfo = {
   target: binderTarget,
 }
 
+declare type emitEventInfo = {
+  name: string,
+  id: string,
+  target: binderTarget,
+}
+
 declare type wholeEventInfo = {
   name: string,
   stage: eventStage,
