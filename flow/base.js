@@ -126,7 +126,13 @@ declare type eventOptions = {
   once?: boolean;
 }
 
-declare type eventInfo = {
+declare type rawEventInfo = {
+  name: string,
+  stage: eventStage,
+  target: binderTarget,
+}
+
+declare type wholeEventInfo = {
   name: string,
   stage: eventStage,
   target: binderTarget,
