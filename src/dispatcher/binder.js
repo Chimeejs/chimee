@@ -95,8 +95,9 @@ function isEventEmitalbe({
 }
 
 function checkEventEmitParameter(info: emitEventInfo): emitEventInfo {
-  const { key } = info;
-  info.target = getEventInfo(key, info).target;
+  const { name } = info;
+  // $FlowFixMe: the info match requirement here
+  info.target = getEventInfo(name, info).target;
   return info;
 }
 
@@ -165,5 +166,38 @@ export default class Binder {
   }: emitEventInfo, ...args: any[]) {
     console.log(id);
     this.buses[target].emit(name, ...args);
+  }
+
+  @runnable(isEventEmitalbe, { backup() { return false; } })
+  @before(checkEventEmitParameter)
+  emitSync({
+    target = 'video',
+    name,
+    id,
+  }: emitEventInfo, ...args: any[]) {
+    console.log(id);
+    this.buses[target].emitSync(name, ...args);
+  }
+
+  @runnable(isEventEmitalbe)
+  @before(checkEventEmitParameter)
+  trigger({
+    target = 'video',
+    name,
+    id,
+  }: emitEventInfo, ...args: any[]) {
+    console.log(id);
+    this.buses[target].trigger(name, ...args);
+  }
+
+  @runnable(isEventEmitalbe, { backup() { return false; } })
+  @before(checkEventEmitParameter)
+  triggerSync({
+    target = 'video',
+    name,
+    id,
+  }: emitEventInfo, ...args: any[]) {
+    console.log(id);
+    this.buses[target].triggerSync(name, ...args);
   }
 }
