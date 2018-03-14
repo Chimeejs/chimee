@@ -51,20 +51,25 @@ const player = new chimee({
 
 ## 事件
 
-### state_panstart
+### state-panstart
   * 含义： 在这个插件上触发 panstart 手势
   * 回调参数：
     * evt: touch 对象
 
-### state_panmove
+### state-panmove
   * 含义： 在这个插件上触发 panmove 手势
   * 回调参数：
     * evt: touch 对象
 
-### state_panend
+### state-panend
   * 含义： 在这个插件上触发 panstend 手势
   * 回调参数：
     * evt: touch 对象
+    
+### state-tap
+  * 含义： 在这个插件上触发 tap 手势
+    * 回调参数：
+      * evt: touch 对象
 
 ## state-change
   * 含义： 这个插件状态发生变化

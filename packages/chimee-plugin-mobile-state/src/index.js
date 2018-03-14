@@ -63,16 +63,19 @@ const chimeeState = gestureFactory({
       this.clearTimeout();
     },
     panstart (evt) {
-      this.emit('state_panstart', evt);
+      this.emit('state-panstart', evt);
     },
     panmove (evt) {
-      this.emit('state-error');
+      this.emit('state-panmove', evt);
     },
     panend (evt) {
-      this.emit('state-error');
+      this.emit('state-panend', evt);
+    },
+    tap (evt) {
+      this.emit('state-tap', evt);
     },
     d_tap (evt) {
-      if(evt.target.tagName === 'CHIMEE-STATE-PLAY') this.play();
+      if(evt.path.indexOf(this.$dom.querySelector('chimee-state-play') !== -1)) this.play();
     }
   },
   methods: {

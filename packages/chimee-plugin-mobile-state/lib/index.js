@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-mobile-state v0.0.12
+ * chimee-plugin-mobile-state v0.0.13
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -92,16 +92,19 @@ var chimeeState = gestureFactory({
       this.clearTimeout();
     },
     panstart: function panstart(evt) {
-      this.emit('state_panstart', evt);
+      this.emit('state-panstart', evt);
     },
     panmove: function panmove(evt) {
-      this.emit('state-error');
+      this.emit('state-panmove', evt);
     },
     panend: function panend(evt) {
-      this.emit('state-error');
+      this.emit('state-panend', evt);
+    },
+    tap: function tap(evt) {
+      this.emit('state-tap', evt);
     },
     d_tap: function d_tap(evt) {
-      if (evt.target.tagName === 'CHIMEE-STATE-PLAY') this.play();
+      if (evt.path.indexOf(this.$dom.querySelector('chimee-state-play') !== -1)) this.play();
     }
   },
   methods: {
