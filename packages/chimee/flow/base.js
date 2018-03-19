@@ -116,7 +116,7 @@ declare type UserConfig = {
   container?: VesselConfig,
 }
 
-declare type binderTarget = 'kernel' | 'container' | 'wrapper' | 'video' | 'video-dom' | 'custom';
+declare type binderTarget = 'kernel' | 'container' | 'wrapper' | 'video' | 'video-dom' | 'plugin';
 
 declare type eventStage = 'before' | 'main' | 'after' | '_';
 
