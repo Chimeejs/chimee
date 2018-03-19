@@ -8,6 +8,7 @@ import Bus from './bus';
 import { videoEvents, domEvents, kernelEvents } from 'helper/const';
 import { camelize, Log, isString } from 'chimee-helper';
 import { before, runnable } from 'toxic-decorators';
+import { addEvent } from 'chimee-helper-dom';
 
 const secondaryReg = /^(before|after|_)/;
 
@@ -46,7 +47,7 @@ function getEventTargetByEventName(name: string): binderTarget {
   if (videoEvents.indexOf(name) > -1) return 'video';
   if (kernelEvents.indexOf(name) > -1) return 'kernel';
   if (domEvents.indexOf(name) > -1) return 'video-dom';
-  return 'custom';
+  return 'plugin';
 }
 
 function getEventInfo(key: string, options: eventOptions): rawEventInfo {
@@ -103,7 +104,8 @@ function checkEventEmitParameter(info: emitEventInfo): emitEventInfo {
 
 export default class Binder {
   kinds: binderTarget[];
-  binedEventNames: { [binderTarget]: string[] };
+  bindedEventNames: { [binderTarget]: string[] };
+  bindedEventInfo: { [binderTarget]: Array<[string, Function]> };
   buses: { [binderTarget]: Bus };
   __dispatcher: Dispatcher;
 
@@ -115,9 +117,9 @@ export default class Binder {
       'wrapper',
       'video',
       'video-dom',
-      'custom',
+      'plugin',
     ];
-    this.binedEventNames = this.kinds.reduce((events, kind) => {
+    this.bindedEventNames = this.kinds.reduce((events, kind) => {
       events[kind] = [];
       this.buses[kind] = new Bus(dispatcher);
       return events;
@@ -199,5 +201,31 @@ export default class Binder {
   }: emitEventInfo, ...args: any[]) {
     console.log(id);
     this.buses[target].triggerSync(name, ...args);
+  }
+  // Some event needs us to transfer it from the real target
+  // such as dom event
+  _bindEventOnTarget(name: string, target: binderTarget) {
+    // the plugin target do not need us to transfer
+    // so we do not need to bind
+    if (target === 'plugin') return;
+    let fn;
+    // if this event has been binded, return;
+    if (this.bindedEventNames[target].indexOf(name)) return;
+    // choose the correspond method to bind
+    if (target === 'kernel') {
+      fn = (...args) => this.triggerSync({ target, name, id: 'kernel' }, ...args);
+      this.__dispatcher.kernel.on(name, fn);
+    } else if (target === 'container' || target === 'wrapper') {
+      const domElement = this.__dispatcher.dom[target];
+      fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
+      addEvent(domElement, name, fn);
+      // fn = this.__dispatcher.dom._getE
+    } else if (target === 'video') {
+      fn = (...args) => this.trigger({ target, name, id: target }, ...args);
+      addEvent(this.__dispatcher.dom.videoElement, name, fn);
+    } else if (target === 'video-dom') {
+      
+    }
+    this.bindedEventInfo[target].push([ name, fn ]);
   }
 }
