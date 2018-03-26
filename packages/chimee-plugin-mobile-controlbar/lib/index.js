@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-mobile-controlbar v0.0.9
+ * chimee-plugin-mobile-controlbar v0.1.0
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -1399,6 +1399,7 @@ var Base = function () {
       this.option.event && _Object$keys(this.option.event).forEach(function (item) {
         var key = '__' + item;
         _this[key] = chimeeHelper.bind(_this.option.event[item], _this);
+        console.log(_this[key]);
         addDelegate(_this.parent, _this.option.tag, item, _this[key], false, false);
       });
     }
@@ -1782,11 +1783,11 @@ var ProgressBar = (_class$1 = function (_Base) {
       this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$dom[0].offsetWidth * this.parent.duration;
       this.update();
       this.parent.currentTime = this._currentTime;
+      this._currentTime = undefined;
     }
   }, {
     key: 'mousedown',
     value: function mousedown(e) {
-
       this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$dom[0].offsetWidth * this.parent.duration;
       this.startX = e.clientX;
       this.startTime = this._currentTime;

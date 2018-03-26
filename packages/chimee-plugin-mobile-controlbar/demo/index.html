@@ -7,6 +7,8 @@
     <style>
       body{
         margin: 0;
+        /* transform: scale(0.5); */
+        /* zoom: 0.5; */
       }
       #wrap{
         margin: 0;
@@ -40,28 +42,35 @@
       plugin: [
         {
           name: chimeePluginMobileControlbar.name,
-          hideBarTime: 100,
-          children: {
-            play: {},
-            currentTime: {},
-            totalTime: {}
-          }
+          hideBarTime: 2000,
           // children: {
           //   play: {},
           //   currentTime: {},
-          //   progressBar: {},
-          //   totalTime: {},            
-          //   screen: {},
-          //   // ok: {
-          //   //   tag: 'chimee-control-ok',
-          //   //   html: `ok`,
-          //   //   event: {
-          //   //     tap() {
-          //   //       console.log(this)
-          //   //     }
-          //   //   }
-          //   // }
+          //   totalTime: {},
+          //   screen: {
+          //     event: {
+          //       tap() {
+          //         alert(1)
+          //       }
+          //     }
+          //   }
           // }
+          children: {
+            play: {},
+            currentTime: {},
+            progressBar: {},
+            totalTime: {},            
+            screen: {},
+            ok: {
+              tag: 'chimee-control-ok',
+              html: `ok`,
+              event: {
+                tap() {
+                  console.log(this)
+                }
+              }
+            }
+          }
         }
       ],
       controls: true,

@@ -75,11 +75,11 @@ export default class ProgressBar extends Base {
     this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$dom[0].offsetWidth * this.parent.duration;
     this.update();
     this.parent.currentTime = this._currentTime;
+    this._currentTime = undefined;
   }
 
   @autobind
   mousedown (e) {
-
     this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$dom[0].offsetWidth * this.parent.duration;
     this.startX = e.clientX;
     this.startTime = this._currentTime;
