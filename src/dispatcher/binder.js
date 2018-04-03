@@ -239,6 +239,8 @@ export default class Binder {
         fn = (...args) => {
           const { toElement, currentTarget, relatedTarget, type } = args[0];
           const to = toElement || relatedTarget;
+
+          // As we support penetrate plugin, the video dom event may be differnet.
           if (dom.mouseInVideo && type === 'mouseleave' && !dom.insideVideo(to)) {
             dom.mouseInVideo = false;
             return this.triggerSync({ target, name, id: target }, ...args);
@@ -248,6 +250,7 @@ export default class Binder {
             return this.triggerSync({ target, name, id: target }, ...args);
           }
         };
+        dom.__videoExtendedNodes.forEach(node => addEvent(node, name, fn));
       }
       addEvent(this.__dispatcher.dom.videoElement, name, fn);
     }
