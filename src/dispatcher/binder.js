@@ -204,7 +204,15 @@ export default class Binder {
   }
   // Some event needs us to transfer it from the real target
   // such as dom event
-  _bindEventOnTarget(name: string, target: binderTarget) {
+  _bindEventOnTarget({
+    name,
+    target,
+    id,
+  }: {
+    name: string,
+    target: binderTarget,
+    id: string,
+  }) {
     // the plugin target do not need us to transfer
     // so we do not need to bind
     if (target === 'plugin') return;
@@ -219,13 +227,31 @@ export default class Binder {
       const domElement = this.__dispatcher.dom[target];
       fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
       addEvent(domElement, name, fn);
-      // fn = this.__dispatcher.dom._getE
     } else if (target === 'video') {
       fn = (...args) => this.trigger({ target, name, id: target }, ...args);
       addEvent(this.__dispatcher.dom.videoElement, name, fn);
     } else if (target === 'video-dom') {
-      
+      const { $penetrate: penetrate } = this.__dispatcher.plugins[id];
+      if (!penetrate || [ 'mouseenter', 'mouseleave' ].indexOf(name) < 0) {
+        fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
+      } else {
+        const dom = this.__dispatcher.dom;
+        fn = (...args) => {
+          const { toElement, currentTarget, relatedTarget, type } = args[0];
+          const to = toElement || relatedTarget;
+          if (dom.mouseInVideo && type === 'mouseleave' && !dom.insideVideo(to)) {
+            dom.mouseInVideo = false;
+            return this.triggerSync({ target, name, id: target }, ...args);
+          }
+          if (!dom.mouseInVideo && type === 'mouseenter' && dom.insideVideo(currentTarget)) {
+            dom.mouseInVideo = true;
+            return this.triggerSync({ target, name, id: target }, ...args);
+          }
+        };
+      }
+      addEvent(this.__dispatcher.dom.videoElement, name, fn);
     }
+    // $FlowFixMe: fn must be function now
     this.bindedEventInfo[target].push([ name, fn ]);
   }
 }

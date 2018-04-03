@@ -67,6 +67,14 @@ export default class Dom {
    * to mark is the mouse in the video area
    */
   __mouseInVideo = false;
+
+  get mouseInVideo(): boolean {
+    return this.__mouseInVideo;
+  }
+
+  set mouseInVideo(val: boolean) {
+    this.__mouseInVideo = !!val;
+  }
   /**
    * collection of video extension nodes
    * some nodes can be regarded as part of video (such as penetrate element)
@@ -298,6 +306,14 @@ export default class Dom {
 
   focus() {
     this.videoElement.focus();
+  }
+
+  isNodeInsideVideo(node: Element): boolean {
+    return this.__videoExtendedNodes.indexOf(node) > -1 ||
+      this.__videoExtendedNodes.reduce((flag, video) => {
+        if (flag) return flag;
+        return isPosterityNode(video, node);
+      }, false);
   }
 
   /**
