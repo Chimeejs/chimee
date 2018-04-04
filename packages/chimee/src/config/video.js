@@ -116,7 +116,11 @@ const accessorMap = {
         if (this.needToLoadSrc) {
           // unlock it at first, to avoid deadlock
           this.needToLoadSrc = false;
-          this.dispatcher.bus.emit('load', val);
+          this.dispatcher.binder.emit({
+            name: 'load',
+            target: 'video',
+            id: 'dispatcher',
+          }, val);
         }
         return val;
       },
