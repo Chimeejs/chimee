@@ -215,6 +215,37 @@ export default class Binder {
     });
   }
 
+  // When we switch kernel, we need to rebind the events
+  migrateKernelEvent(oldKernel: ChimeeKernel, newKernel: ChimeeKernel) {
+    const bindedEventInfoList = this.bindedEventInfo.kernel;
+    bindedEventInfoList.forEach(([ name, fn ]) => {
+      oldKernel.off(name, fn);
+      newKernel.on(name, fn);
+    });
+  }
+
+  // when we destroy, we remove all binder
+  destroy() {
+    this.kinds.forEach(target => {
+      if (target === 'kernel') {
+        this.bindedEventInfo.kernel.forEach(([ name, fn ]) => {
+          this.__dispatcher.kernel.off(name, fn);
+        });
+      } else {
+        const targetDom = this._getTargetDom(target);
+        this.bindedEventInfo[target].forEach(([ name, fn ]) => {
+          removeEvent(targetDom, name, fn);
+
+          if (target === 'video-dom') {
+            this.__dispatcher.dom.videoExtendedNodes.forEach(node => removeEvent(node, name, fn));
+          }
+        });
+      }
+      this.bindedEventInfo.kernel = [];
+      this.bindedEventNames.kernel = [];
+    });
+  }
+
   // Some event needs us to transfer it from the real target
   // such as dom event
   _addEventListenerOnTarget({
@@ -226,6 +257,7 @@ export default class Binder {
     target: binderTarget,
     id: string,
   }) {
+    // TODO: add passvie event judge and put in one function for fn collect
     // the plugin target do not need us to transfer
     // so we do not need to bind
     if (target === 'plugin') return;
@@ -267,6 +299,7 @@ export default class Binder {
       }
       addEvent(targetDom, name, fn);
     }
+    this.bindedEventNames[target].push(name);
     // $FlowFixMe: fn must be function now
     this.bindedEventInfo[target].push([ name, fn ]);
   }

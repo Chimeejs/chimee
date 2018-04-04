@@ -131,7 +131,7 @@ export default class Dispatcher {
      * @type {Kernel}
      */
     this.kernel = this._createKernel(this.dom.videoElement, this.videoConfig);
-    this._bindKernelEvents(this.kernel);
+    // this._bindKernelEvents(this.kernel);
     // trigger auto load event
     const asyncInitedTasks: Array<Promise<*>> = [];
     this.order.forEach(key => {
@@ -147,7 +147,11 @@ export default class Dispatcher {
       : Promise.all(asyncInitedTasks)
         .then(() => {
           this.readySync = true;
-          this.bus.trigger('ready');
+          this.binder.trigger({
+            target: 'plugin',
+            name: 'ready',
+            id: 'dispatcher',
+          });
           this._autoloadVideoSrcAtFirst();
         });
     if (this.readySync) this._autoloadVideoSrcAtFirst();
@@ -436,8 +440,9 @@ export default class Dispatcher {
       if (key !== 'src') this.videoConfig[key] = originVideoConfig[key];
     });
     this.videoConfig.changeWatchable = true;
-    this._bindKernelEvents(oldKernel, true);
-    this._bindKernelEvents(kernel);
+    this.binder.migrateKernelEvent(oldKernel, kernel);
+    // this._bindKernelEvents(oldKernel, true);
+    // this._bindKernelEvents(kernel);
     this.kernel = kernel;
     this._silentLoadTempKernel = undefined;
     const { isLive, box, preset, kernels } = config;
@@ -455,11 +460,11 @@ export default class Dispatcher {
     for (const key in this.plugins) {
       this.unuse(key);
     }
-    this.bus.destroy();
+    this.binder.destroy();
     delete this.bus;
     this.dom.destroy();
     delete this.dom;
-    this._bindKernelEvents(this.kernel, true);
+    // this._bindKernelEvents(this.kernel, true);
     this.kernel.destroy();
     delete this.kernel;
     delete this.vm;
@@ -518,7 +523,11 @@ export default class Dispatcher {
         Log.warn('You have not set the src, so you better set autoload to be false. Accroding to https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md#src.');
         return;
       }
-      this.bus.emit('load', this.videoConfig.src);
+      this.binder.emit({
+        name: 'load',
+        target: 'video',
+        id: 'dispatcher',
+      }, this.videoConfig.src);
     }
   }
   _changeUnwatchable(object: Object, property: string, value: any) {
@@ -618,24 +627,24 @@ export default class Dispatcher {
     const kernel = new ChimeeKernel(video, config);
     return kernel;
   }
-  _bindKernelEvents(kernel: ChimeeKernel, remove?: boolean = false) {
-    kernelEvents.forEach((key, index) => {
-      if (!remove) {
-        const fn = (...args: any) => this.bus.triggerSync(key, ...args);
-        kernel.on(key, fn);
-        this.kernelEventHandlerList.push(fn);
-        return;
-      }
-      const fn = this.kernelEventHandlerList[index];
-      kernel.off(key, fn);
-    });
-    if (remove) {
-      this.kernelEventHandlerList = [];
-      kernel.off('error', this.throwError);
-    } else {
-      kernel.on('error', this.throwError);
-    }
-  }
+  // _bindKernelEvents(kernel: ChimeeKernel, remove?: boolean = false) {
+  //   kernelEvents.forEach((key, index) => {
+  //     if (!remove) {
+  //       const fn = (...args: any) => this.bus.triggerSync(key, ...args);
+  //       kernel.on(key, fn);
+  //       this.kernelEventHandlerList.push(fn);
+  //       return;
+  //     }
+  //     const fn = this.kernelEventHandlerList[index];
+  //     kernel.off(key, fn);
+  //   });
+  //   if (remove) {
+  //     this.kernelEventHandlerList = [];
+  //     kernel.off('error', this.throwError);
+  //   } else {
+  //     kernel.on('error', this.throwError);
+  //   }
+  // }
   /**
    * static method to install plugin
    * we will store the plugin config
