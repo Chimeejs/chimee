@@ -80,7 +80,10 @@ export default class Dom {
    * some nodes can be regarded as part of video (such as penetrate element)
    * so we store them here
    */
-  __videoExtendedNodes = [];
+  __videoExtendedNodes: Element[] = [];
+  get videoExtendedNodes(): Element[] {
+    return this.__videoExtendedNodes;
+  }
   isFullscreen = false;
   fullscreenElement = undefined;
 

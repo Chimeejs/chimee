@@ -6,9 +6,8 @@
 
 import Bus from './bus';
 import { videoEvents, domEvents, kernelEvents } from 'helper/const';
-import { camelize, Log, isString } from 'chimee-helper';
+import { camelize, Log, isString, addEvent, removeEvent, isEmpty, isFunction } from 'chimee-helper';
 import { before, runnable } from 'toxic-decorators';
-import { addEvent } from 'chimee-helper-dom';
 
 const secondaryReg = /^(before|after|_)/;
 
@@ -134,6 +133,11 @@ export default class Binder {
     fn,
     stage,
   }: wholeEventInfo) {
+    this._addEventListenerOnTarget({
+      name,
+      target,
+      id,
+    });
     this.buses[target].on(id, name, fn, stage);
   }
 
@@ -146,6 +150,7 @@ export default class Binder {
     stage,
   }: wholeEventInfo) {
     this.buses[target].off(id, name, fn, stage);
+    this._removeEventListenerOnTargetWhenIsUseless({ name, target });
   }
 
   @before(prettifyEventParameter)
@@ -202,9 +207,17 @@ export default class Binder {
     console.log(id);
     this.buses[target].triggerSync(name, ...args);
   }
+
+  // when we create a penetrate plugin, we need to rebind video events on it
+  rebindEventOnPenetrateNode(node: Element) {
+    this.bindedEventInfo['video-dom'].forEach(([ name, fn ]) => {
+      addEvent(node, name, fn);
+    });
+  }
+
   // Some event needs us to transfer it from the real target
   // such as dom event
-  _bindEventOnTarget({
+  _addEventListenerOnTarget({
     name,
     target,
     id,
@@ -218,18 +231,18 @@ export default class Binder {
     if (target === 'plugin') return;
     let fn;
     // if this event has been binded, return;
-    if (this.bindedEventNames[target].indexOf(name)) return;
+    if (this.bindedEventNames[target].indexOf(name) > -1) return;
+    const targetDom = this._getTargetDom(target);
     // choose the correspond method to bind
     if (target === 'kernel') {
       fn = (...args) => this.triggerSync({ target, name, id: 'kernel' }, ...args);
       this.__dispatcher.kernel.on(name, fn);
     } else if (target === 'container' || target === 'wrapper') {
-      const domElement = this.__dispatcher.dom[target];
       fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
-      addEvent(domElement, name, fn);
+      addEvent(targetDom, name, fn);
     } else if (target === 'video') {
       fn = (...args) => this.trigger({ target, name, id: target }, ...args);
-      addEvent(this.__dispatcher.dom.videoElement, name, fn);
+      addEvent(targetDom, name, fn);
     } else if (target === 'video-dom') {
       const { $penetrate: penetrate } = this.__dispatcher.plugins[id];
       if (!penetrate || [ 'mouseenter', 'mouseleave' ].indexOf(name) < 0) {
@@ -250,11 +263,77 @@ export default class Binder {
             return this.triggerSync({ target, name, id: target }, ...args);
           }
         };
-        dom.__videoExtendedNodes.forEach(node => addEvent(node, name, fn));
+        dom.videoExtendedNodes.forEach(node => addEvent(node, name, fn));
       }
-      addEvent(this.__dispatcher.dom.videoElement, name, fn);
+      addEvent(targetDom, name, fn);
     }
     // $FlowFixMe: fn must be function now
     this.bindedEventInfo[target].push([ name, fn ]);
+  }
+
+  // when we off one event, we can remove the useless binder
+  // actually we should remove on once event too
+  // but it seems ugliy
+  // TODO: add this function on once event too
+  _removeEventListenerOnTargetWhenIsUseless({
+    name,
+    target,
+  }: {
+    name: string,
+    target: binderTarget,
+  }) {
+    // plugin event do not need us to bind on the target
+    if (target === 'plugin') return;
+    const eventNamesList = this.bindedEventNames[target];
+    const nameIndex = eventNamesList.indexOf(name);
+    // if we have not bind this event before, we omit it
+    if (nameIndex < 0) return;
+    // if the buses still have another function on bind, we do not need to remove the binder
+    if (!isEmpty(this.buses[target].events[name])) return;
+
+    // we fetch the binded function from bindedEventInfo
+    const bindedEventInfoList = this.bindedEventInfo[target];
+    let fn;
+    let index;
+    for (index = 0; index < bindedEventInfoList.length; index++) {
+      if (bindedEventInfoList[index][0] === name) {
+        fn = bindedEventInfoList[index][1];
+        break;
+      }
+    }
+    if (!isFunction(fn)) return;
+
+    if (target === 'kernel') {
+      this.__dispatcher.kernel.off(name, fn);
+    } else {
+      const targetDom = this._getTargetDom(target);
+
+      removeEvent(targetDom, name, fn);
+
+      // When we remove something on video dom, we also need to remove event on penetrate plugin
+      if (target === 'video-dom') {
+        this.__dispatcher.dom.videoExtendedNodes.forEach(node => {
+          // $FlowFixMe: fn is function now
+          removeEvent(node, name, fn);
+        });
+      }
+    }
+
+    bindedEventInfoList.splice(index, 1);
+    eventNamesList.splice(nameIndex, 1);
+  }
+
+  _getTargetDom(target: binderTarget): Element {
+    let targetDom;
+    switch (target) {
+      case 'container':
+      case 'wrapper':
+        targetDom = this.__dispatcher.dom[target];
+        break;
+      default:
+        targetDom = this.__dispatcher.dom.videoElement;
+        break;
+    }
+    return targetDom;
   }
 }
