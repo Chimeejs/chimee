@@ -28,13 +28,8 @@ export default class Dom {
   isFullscreen: boolean | string;
   fullscreenElement: HTMLElement | string | void;
   __dispatcher: Dispatcher;
-  __domEventHandlerList: {|[string]: Array<Function>|};
   __mouseInVideo: boolean;
   __videoExtendedNodes: Array<Node>;
-  videoEventHandlerList: Array<Function>;
-  videoDomEventHandlerList: Array<Function>;
-  containerDomEventHandlerList: Array<Function>;
-  wrapperDomEventHandlerList: Array<Function>;
   /**
    * all plugin's dom element set
    */
@@ -43,26 +38,6 @@ export default class Dom {
    * the html to restore when we are destroyed
    */
   originHTML = '';
-  /**
-   * Array to store all video event handler
-   */
-  videoEventHandlerList = [];
-  /**
-   * Array to store all video dom event handler
-   */
-  videoDomEventHandlerList = [];
-  /**
-   * Array to store all container dom event handler
-   */
-  containerDomEventHandlerList = [];
-  /**
-   * Array to store all video dom event handler
-   */
-  wrapperDomEventHandlerList = [];
-  /**
-   * Object to store different plugin's dom event handlers
-   */
-  __domEventHandlerList = {};
   /**
    * to mark is the mouse in the video area
    */
@@ -112,17 +87,11 @@ export default class Dom {
      * referrence of video's dom element
      */
     this.installVideo(videoElement);
-    this._addDomEvents(this.container, this.containerDomEventHandlerList, key => (...args: any) => this.__dispatcher.bus.triggerSync('c_' + key, ...args));
-    this._addDomEvents(this.wrapper, this.wrapperDomEventHandlerList, key => (...args: any) => this.__dispatcher.bus.triggerSync('w_' + key, ...args));
     this._fullscreenMonitor();
     esFullscreen.on('fullscreenchange', this._fullscreenMonitor);
   }
 
-  installVideo(videoElement: HTMLVideoElement, {
-    bindEvent = true,
-  }: {
-    bindEvent: boolean
-  } = {}): HTMLVideoElement {
+  installVideo(videoElement: HTMLVideoElement): HTMLVideoElement {
     this.__videoExtendedNodes.push(videoElement);
     setAttr(videoElement, 'tabindex', -1);
     this._autoFocusToVideo(videoElement);
@@ -149,31 +118,14 @@ export default class Dom {
     if (this.container.parentElement !== this.wrapper) {
       $(this.wrapper).append(this.container);
     }
-    if (bindEvent) this.bindVideoEvents(videoElement);
     this.videoElement = videoElement;
     return videoElement;
-  }
-
-  bindVideoEvents(videoElement: HTMLVideoElement) {
-    videoEvents.forEach(key => {
-      const fn = (...args: any) => this.__dispatcher.bus.trigger(key, ...args);
-      this.videoEventHandlerList.push(fn);
-      addEvent(videoElement, key, fn);
-    });
-    this._addDomEvents(videoElement, this.videoDomEventHandlerList, key => this._getEventHandler(key, { penetrate: true }));
   }
 
   removeVideo(): HTMLVideoElement {
     const videoElement = this.videoElement;
     this._autoFocusToVideo(this.videoElement, false);
-    videoEvents.forEach((key, index) => {
-      removeEvent(this.videoElement, key, this.videoEventHandlerList[index]);
-    });
-    this.videoEventHandlerList = [];
-    domEvents.forEach((key, index) => {
-      removeEvent(this.videoElement, key, this.videoDomEventHandlerList[index]);
-    });
-    this.videoDomEventHandlerList = [];
+    this.__dispatcher.binder.bindEventOnVideo(videoElement, true);
     $(videoElement).remove();
     delete this.videoElement;
     return videoElement;
@@ -221,8 +173,7 @@ export default class Dom {
     if (isBoolean(autoFocus) ? autoFocus : inner) this._autoFocusToVideo(node);
     // auto forward the event if this plugin can be penetrate
     if (penetrate) {
-      this.__domEventHandlerList[id] = this.__domEventHandlerList[id] || [];
-      this._addDomEvents(node, this.__domEventHandlerList[id], key => this._getEventHandler(key, { penetrate }));
+      this.__dispatcher.binder.bindEventOnPenetrateNode(node);
       this.__videoExtendedNodes.push(node);
     }
     if (outerElement.lastChild === originElement) {
@@ -243,12 +194,7 @@ export default class Dom {
       dom.parentNode && dom.parentNode.removeChild(dom);
       this._autoFocusToVideo(dom, true);
     }
-    if (!isEmpty(this.__domEventHandlerList[id])) {
-      domEvents.forEach((key, index) => {
-        removeEvent(this.plugins[id], key, this.__domEventHandlerList[id][index]);
-      });
-      delete this.__domEventHandlerList[id];
-    }
+    this.__dispatcher.binder.bindEventOnPenetrateNode(this.plugins[id], true);
     delete this.plugins[id];
   }
 
@@ -324,30 +270,10 @@ export default class Dom {
    */
   destroy() {
     this.removeVideo();
-    domEvents.forEach((key, index) => {
-      removeEvent(this.container, key, this.containerDomEventHandlerList[index]);
-      removeEvent(this.wrapper, key, this.wrapperDomEventHandlerList[index]);
-    });
     esFullscreen.off('fullscreenchange', this._fullscreenMonitor);
     this.wrapper.innerHTML = this.originHTML;
     delete this.wrapper;
     delete this.plugins;
-  }
-
-  /**
-   * bind all dom events on one element
-   * we will use passive mode if it support
-   */
-  _addDomEvents(element: Element, handlerList: Array<Function>, handlerGenerate: Function) {
-    domEvents.forEach(key => {
-      const fn = handlerGenerate(key);
-      handlerList.push(fn);
-      if (passiveEvents.indexOf(key) > -1) {
-        addEvent(element, key, fn, false, { passive: true });
-        return;
-      }
-      addEvent(element, key, fn);
-    });
   }
 
   _autoFocusToVideo(element: Element, remove: boolean = false): void {

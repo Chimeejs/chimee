@@ -427,7 +427,7 @@ export default class Dispatcher {
     const oldKernel = this.kernel;
     const originVideoConfig = deepClone(this.videoConfig);
     this.dom.removeVideo();
-    this.dom.installVideo(video, { bindEvent: false });
+    this.dom.installVideo(video);
     // as we will reset the currentVideoConfig on the new video
     // it will trigger the watch function as they maybe differnet
     // because video config will return the real situation
@@ -451,7 +451,7 @@ export default class Dispatcher {
     oldKernel.destroy();
     // delay video event binding
     // so that people can't feel the default value change
-    setTimeout(() => this.dom.bindVideoEvents(video));
+    setTimeout(() => this.binder.bindEventOnVideo(video));
   }
   /**
    * destroy function called when dispatcher destroyed
