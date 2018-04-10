@@ -138,7 +138,7 @@ export default class Binder {
       target,
       id,
     });
-    this.buses[target].on(id, name, fn, stage);
+    return this.buses[target].on(id, name, fn, stage);
   }
 
   @before(prettifyEventParameter)
@@ -149,8 +149,9 @@ export default class Binder {
     fn,
     stage,
   }: wholeEventInfo) {
-    this.buses[target].off(id, name, fn, stage);
+    const ret = this.buses[target].off(id, name, fn, stage);
     this._removeEventListenerOnTargetWhenIsUseless({ name, target });
+    return ret;
   }
 
   @before(prettifyEventParameter)
@@ -161,7 +162,7 @@ export default class Binder {
     fn,
     stage,
   }: wholeEventInfo) {
-    this.buses[target].once(id, name, fn, stage);
+    return this.buses[target].once(id, name, fn, stage);
   }
 
   @runnable(isEventEmitalbe)
@@ -172,7 +173,7 @@ export default class Binder {
     id,
   }: emitEventInfo, ...args: any[]) {
     console.log(id);
-    this.buses[target].emit(name, ...args);
+    return this.buses[target].emit(name, ...args);
   }
 
   @runnable(isEventEmitalbe, { backup() { return false; } })
@@ -183,7 +184,7 @@ export default class Binder {
     id,
   }: emitEventInfo, ...args: any[]) {
     console.log(id);
-    this.buses[target].emitSync(name, ...args);
+    return this.buses[target].emitSync(name, ...args);
   }
 
   @runnable(isEventEmitalbe)
@@ -194,7 +195,7 @@ export default class Binder {
     id,
   }: emitEventInfo, ...args: any[]) {
     console.log(id);
-    this.buses[target].trigger(name, ...args);
+    return this.buses[target].trigger(name, ...args);
   }
 
   @runnable(isEventEmitalbe, { backup() { return false; } })
@@ -205,7 +206,7 @@ export default class Binder {
     id,
   }: emitEventInfo, ...args: any[]) {
     console.log(id);
-    this.buses[target].triggerSync(name, ...args);
+    return this.buses[target].triggerSync(name, ...args);
   }
 
   // when we create a penetrate plugin, we need to rebind video events on it
