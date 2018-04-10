@@ -1,6 +1,5 @@
 // @flow
-import { isArray, isElement, isString, isHTMLString, hypenate, isFunction, isEmpty, isPosterityNode, isObject, isBoolean, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log, isEvent } from 'chimee-helper';
-import { videoEvents, domEvents, passiveEvents } from 'helper/const';
+import { isArray, isElement, isString, isHTMLString, hypenate, isFunction, isPosterityNode, isObject, isBoolean, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log, isEvent } from 'chimee-helper';
 import esFullscreen from 'es-fullscreen';
 import { autobind, before, waituntil } from 'toxic-decorators';
 function targetCheck(target: string, ...args) {
@@ -308,37 +307,10 @@ export default class Dom {
             : element;
     }
     if (isEvent(evt) && original !== this.isFullscreen) {
-      this.__dispatcher.bus.triggerSync('fullscreenchange', evt);
+      this.__dispatcher.binder.triggerSync({
+        name: 'fullscreenchange',
+        target: 'video',
+      }, evt);
     }
-  }
-
-  /**
-   * get the event handler for dom to bind
-   */
-  _getEventHandler(key: string, { penetrate }: {penetrate: boolean}): Function {
-    if ((!penetrate) || [ 'mouseenter', 'mouseleave' ].indexOf(key) < 0) {
-      return (...args) => {
-        this.__dispatcher.bus.triggerSync(key, ...args);
-      };
-    }
-    const insideVideo = (node: Element): boolean => {
-      return this.__videoExtendedNodes.indexOf(node) > -1 ||
-        this.__videoExtendedNodes.reduce((flag, video) => {
-          if (flag) return flag;
-          return isPosterityNode(video, node);
-        }, false);
-    };
-    return (...args) => {
-      const { toElement, currentTarget, relatedTarget, type } = args[0];
-      const to = toElement || relatedTarget;
-      if (this.__mouseInVideo && type === 'mouseleave' && !insideVideo(to)) {
-        this.__mouseInVideo = false;
-        return this.__dispatcher.bus.triggerSync('mouseleave', ...args);
-      }
-      if (!this.__mouseInVideo && type === 'mouseenter' && insideVideo(currentTarget)) {
-        this.__mouseInVideo = true;
-        return this.__dispatcher.bus.triggerSync('mouseenter', ...args);
-      }
-    };
   }
 }
