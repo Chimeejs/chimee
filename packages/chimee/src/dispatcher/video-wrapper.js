@@ -63,8 +63,17 @@ export default @autobindClass() class VideoWrapper {
       Object.defineProperty(this, key, {
         value(...args: any) {
           return new Promise(resolve => {
-            this.__dispatcher.bus.once(this.__id, '_' + key, resolve);
-            this.__dispatcher.bus[/^(seek)$/.test(key) ? 'emitSync' : 'emit'](key, ...args);
+            const id = this.__id;
+            this.__dispatcher.binder.once({
+              id,
+              name: '_' + key,
+              fn: resolve,
+            });
+            this.__dispatcher.binder[/^(seek)$/.test(key) ? 'emitSync' : 'emit']({
+              target: 'video',
+              name: key,
+              id,
+            }, ...args);
           });
         },
         configurable: true,
@@ -89,7 +98,11 @@ export default @autobindClass() class VideoWrapper {
   }
 
   set currentTime(second: number) {
-    this.__dispatcher.bus.emitSync('seek', second);
+    this.__dispatcher.binder.emitSync({
+      name: 'seek',
+      target: 'video',
+      id: this.__id,
+    }, second);
   }
 
   $watch(key: string | Array<string>, handler: Function, {
@@ -162,18 +175,34 @@ export default @autobindClass() class VideoWrapper {
 
   load(...args: Array<*>): Promise<*> {
     return new Promise(resolve => {
-      this.__dispatcher.bus.once(this.__id, '_load', resolve);
-      this.__dispatcher.bus.emit('load', ...args);
+      this.__dispatcher.binder.once({
+        id: this.__id,
+        name: '_load',
+        target: 'video',
+      }, resolve);
+      this.__dispatcher.binder.emit({
+        name: 'load',
+        target: 'video',
+        id: this.__id,
+      }, ...args);
     });
   }
 
   @alias('silentLoad')
   $silentLoad(...args: Array<*>) {
-    return this.__dispatcher.bus.emit('silentLoad')
+    return this.__dispatcher.binder.emit({
+      name: 'silentLoad',
+      target: 'video',
+      id: this.__id,
+    })
       .then(() => {
         return this.__dispatcher.silentLoad(...args);
       }).then(result => {
-        this.__dispatcher.bus.trigger('silentLoad', result);
+        this.__dispatcher.binder.trigger({
+          name: 'silentLoad',
+          target: 'video',
+          id: this.__id,
+        }, result);
       });
   }
 
@@ -186,9 +215,17 @@ export default @autobindClass() class VideoWrapper {
   @alias('$fullScreen')
   @alias('fullscreen')
   $fullscreen(flag: boolean = true, element: string = 'container'): boolean {
-    if (!this.__dispatcher.bus.emitSync('fullscreen', flag, element)) return false;
+    if (!this.__dispatcher.binder.emitSync({
+      name: 'fullscreen',
+      id: this.__id,
+      target: 'video-dom',
+    }, flag, element)) return false;
     const result = this.__dispatcher.dom.fullscreen(flag, element);
-    this.__dispatcher.bus.triggerSync('fullscreen', flag, element);
+    this.__dispatcher.binder.triggerSync({
+      name: 'fullscreen',
+      id: this.__id,
+      target: 'video-dom',
+    }, flag, element);
     return result;
   }
 
@@ -204,7 +241,10 @@ export default @autobindClass() class VideoWrapper {
     if (process.env.NODE_ENV !== 'production' && domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
       Log.warn('plugin', `You are try to emit ${key} event. As emit is wrapped in Promise. It make you can't use event.preventDefault and event.stopPropagation. So we advice you to use emitSync`);
     }
-    this.__dispatcher.bus.emit(key, ...args);
+    this.__dispatcher.binder.emit({
+      name: key,
+      id: this.__id,
+    }, ...args);
   }
 
   /**
@@ -215,7 +255,10 @@ export default @autobindClass() class VideoWrapper {
   @alias('emitSync')
   $emitSync(key: string, ...args: any) {
     if (!isString(key)) throw new TypeError('emitSync key parameter must be String');
-    return this.__dispatcher.bus.emitSync(key, ...args);
+    return this.__dispatcher.binder.emitSync({
+      name: key,
+      id: this.__id,
+    }, ...args);
   }
 
   /**
@@ -227,7 +270,11 @@ export default @autobindClass() class VideoWrapper {
   @alias('addEventListener')
   @before(eventBinderCheck)
   $on(key: string, fn: Function) {
-    this.__dispatcher.bus.on(this.__id, key, fn);
+    this.__dispatcher.binder.on({
+      name: key,
+      id: this.__id,
+      fn,
+    });
     // set on __events as mark so that i can destroy it when i destroy
     this.__addEvents(key, fn);
   }
@@ -240,7 +287,11 @@ export default @autobindClass() class VideoWrapper {
   @alias('removeEventListener')
   @before(eventBinderCheck)
   $off(key: string, fn: Function) {
-    this.__dispatcher.bus.off(this.__id, key, fn);
+    this.__dispatcher.binder.off({
+      name: key,
+      id: this.__id,
+      fn,
+    });
     this.__removeEvents(key, fn);
   }
   /**
@@ -257,7 +308,11 @@ export default @autobindClass() class VideoWrapper {
       self.__removeEvents(key, boundFn);
     };
     self.__addEvents(key, boundFn);
-    this.__dispatcher.bus.once(this.__id, key, boundFn);
+    this.__dispatcher.binder.once({
+      name: key,
+      id: this.__id,
+      fn: boundFn,
+    });
   }
 
   /**
