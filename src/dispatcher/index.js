@@ -8,7 +8,6 @@ import VideoConfig from 'config/video';
 import defaultContainerConfig from 'config/container';
 import { before, autobind } from 'toxic-decorators';
 import Vessel from 'config/vessel';
-import { kernelEvents } from 'helper/const';
 import Binder from './binder';
 const pluginConfigSet: PluginConfigSet = {};
 const kernelsSet: KernelsSet = {};
@@ -116,7 +115,7 @@ export default class Dispatcher {
       config.plugin = config.plugins;
       delete config.plugins;
     }
-    this.binder = new Binder();
+    this.binder = new Binder(this);
     // use the plugin user want to use
     this._initUserPlugin(config.plugin);
     // add default config for container

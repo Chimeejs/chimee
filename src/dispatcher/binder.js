@@ -35,7 +35,7 @@ function getEventTargetByOldLogic(oldName: string): { name: string, target: bind
 function getEventStage(name: string): { stage: eventStage, name: string } {
   const matches = name.match(secondaryReg);
   // $FlowFixMe: We make sure it's event stage here
-  const stage: eventStage = (matches && matches[0]) || 'manin';
+  const stage: eventStage = (matches && matches[0]) || 'main';
   if (matches) {
     name = camelize(name.replace(secondaryReg, ''));
   }
@@ -49,27 +49,29 @@ function getEventTargetByEventName(name: string): binderTarget {
   return 'plugin';
 }
 
-function getEventInfo(key: string, options: eventOptions): rawEventInfo {
-  const oldInfo = getEventTargetByOldLogic(key);
+function getEventInfo({ name, target }: rawEventInfo): additionalEventInfo {
+  const oldInfo = getEventTargetByOldLogic(name);
   if (oldInfo) {
-    key = oldInfo.name;
-    options.target = oldInfo.target;
+    name = oldInfo.name;
+    target = oldInfo.target;
   }
-  const { stage, name } = getEventStage(key);
+  const { stage, name: newName } = getEventStage(name);
+  name = newName;
 
-  if (!options.target) {
-    options.target = getEventTargetByEventName(name);
+  if (!target) {
+    target = getEventTargetByEventName(name);
   }
 
   return {
     name,
     stage,
-    target: options.target,
+    target,
   };
 }
 
-function prettifyEventParameter(id: string, key: string, fn: Function, options: eventOptions = {}): wholeEventInfo {
-  const { name, target, stage } = getEventInfo(key, options);
+function prettifyEventParameter(info: rawEventInfo): wholeEventInfo {
+  const { id, fn } = info;
+  const { name, target, stage } = getEventInfo(info);
   return {
     id,
     fn,
@@ -95,9 +97,8 @@ function isEventEmitalbe({
 }
 
 function checkEventEmitParameter(info: emitEventInfo): emitEventInfo {
-  const { name } = info;
   // $FlowFixMe: the info match requirement here
-  info.target = getEventInfo(name, info).target;
+  info.target = getEventInfo(info).target;
   return info;
 }
 
@@ -118,11 +119,14 @@ export default class Binder {
       'video-dom',
       'plugin',
     ];
-    this.bindedEventNames = this.kinds.reduce((events, kind) => {
-      events[kind] = [];
+    this.buses = {};
+    this.bindedEventNames = {};
+    this.bindedEventInfo = {};
+    for (const kind of this.kinds) {
+      this.bindedEventNames[kind] = [];
+      this.bindedEventInfo[kind] = [];
       this.buses[kind] = new Bus(dispatcher);
-      return events;
-    }, {});
+    }
   }
 
   @before(prettifyEventParameter)

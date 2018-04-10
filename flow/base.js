@@ -123,10 +123,17 @@ declare type eventStage = 'before' | 'main' | 'after' | '_';
 declare type eventOptions = {
   target?: binderTarget;
   stage?: eventStage;
-  once?: boolean;
 }
 
 declare type rawEventInfo = {
+  fn: Function,
+  name: string,
+  id: string,
+  target?: binderTarget;
+  stage?: eventStage;
+}
+
+declare type additionalEventInfo = {
   name: string,
   stage: eventStage,
   target: binderTarget,
