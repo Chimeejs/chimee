@@ -627,24 +627,6 @@ export default class Dispatcher {
     const kernel = new ChimeeKernel(video, config);
     return kernel;
   }
-  // _bindKernelEvents(kernel: ChimeeKernel, remove?: boolean = false) {
-  //   kernelEvents.forEach((key, index) => {
-  //     if (!remove) {
-  //       const fn = (...args: any) => this.bus.triggerSync(key, ...args);
-  //       kernel.on(key, fn);
-  //       this.kernelEventHandlerList.push(fn);
-  //       return;
-  //     }
-  //     const fn = this.kernelEventHandlerList[index];
-  //     kernel.off(key, fn);
-  //   });
-  //   if (remove) {
-  //     this.kernelEventHandlerList = [];
-  //     kernel.off('error', this.throwError);
-  //   } else {
-  //     kernel.on('error', this.throwError);
-  //   }
-  // }
   /**
    * static method to install plugin
    * we will store the plugin config
