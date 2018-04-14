@@ -8,6 +8,7 @@ import Bus from './bus';
 import { videoEvents, domEvents, kernelEvents, passiveEvents } from 'helper/const';
 import { camelize, Log, isString, addEvent, removeEvent, isEmpty, isFunction } from 'chimee-helper';
 import { before, runnable } from 'toxic-decorators';
+import Dispatcher from './index';
 
 const secondaryReg = /^(before|after|_)/;
 
@@ -297,7 +298,7 @@ export default class Binder {
       fn = (...args) => this.trigger({ target, name, id: target }, ...args);
       this._addEventOnDom(targetDom, name, fn);
     } else if (target === 'video-dom') {
-      const { $penetrate: penetrate } = this.__dispatcher.plugins[id];
+      const { penetrate = false } = Dispatcher.getPluginConfig(id) || {};
       if (!penetrate || [ 'mouseenter', 'mouseleave' ].indexOf(name) < 0) {
         fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
       } else {
