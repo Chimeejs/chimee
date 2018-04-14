@@ -97,10 +97,10 @@ function isEventEmitalbe({
   return true;
 }
 
-function checkEventEmitParameter(info: emitEventInfo): emitEventInfo {
+function checkEventEmitParameter(info: emitEventInfo, ...args: any[]): Array<emitEventInfo | any[]> {
   // $FlowFixMe: the info match requirement here
   info.target = getEventInfo(info).target;
-  return info;
+  return [ info, ...args ];
 }
 
 export default class Binder {
@@ -177,7 +177,7 @@ export default class Binder {
     name,
     id,
   }: emitEventInfo, ...args: any[]) {
-    console.log(id);
+    console.log(id, target, name, ...args);
     return this.buses[target].emit(name, ...args);
   }
 
@@ -308,11 +308,11 @@ export default class Binder {
           const to = toElement || relatedTarget;
 
           // As we support penetrate plugin, the video dom event may be differnet.
-          if (dom.mouseInVideo && type === 'mouseleave' && !dom.insideVideo(to)) {
+          if (dom.mouseInVideo && type === 'mouseleave' && !dom.isNodeInsideVideo(to)) {
             dom.mouseInVideo = false;
             return this.triggerSync({ target, name, id: target }, ...args);
           }
-          if (!dom.mouseInVideo && type === 'mouseenter' && dom.insideVideo(currentTarget)) {
+          if (!dom.mouseInVideo && type === 'mouseenter' && dom.isNodeInsideVideo(currentTarget)) {
             dom.mouseInVideo = true;
             return this.triggerSync({ target, name, id: target }, ...args);
           }
