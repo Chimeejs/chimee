@@ -383,6 +383,7 @@ export default class Binder {
     switch (target) {
       case 'container':
       case 'wrapper':
+        // $FlowFixMe: fix dom index bug
         targetDom = this.__dispatcher.dom[target];
         break;
       default:
