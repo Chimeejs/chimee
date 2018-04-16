@@ -18,7 +18,7 @@ const secondaryReg = /^(before|after|_)/;
  * @param {string} name 事件名字
  */
 function getEventTargetByOldLogic(oldName: string): { name: string, target: binderTarget } | false {
-  const targetKeyReg = '^(c|w)_';
+  const targetKeyReg = new RegExp('^(c|w)_');
   const matches = oldName.match(targetKeyReg);
   if (matches) {
     const name = oldName.replace(targetKeyReg, '');
@@ -177,7 +177,6 @@ export default class Binder {
     name,
     id,
   }: emitEventInfo, ...args: any[]) {
-    console.log(id, target, name, ...args);
     return this.buses[target].emit(name, ...args);
   }
 
@@ -188,7 +187,6 @@ export default class Binder {
     name,
     id,
   }: emitEventInfo, ...args: any[]) {
-    console.log(id);
     return this.buses[target].emitSync(name, ...args);
   }
 
@@ -199,7 +197,6 @@ export default class Binder {
     name,
     id,
   }: emitEventInfo, ...args: any[]) {
-    console.log(id);
     return this.buses[target].trigger(name, ...args);
   }
 
@@ -210,7 +207,6 @@ export default class Binder {
     name,
     id,
   }: emitEventInfo, ...args: any[]) {
-    console.log(id);
     return this.buses[target].triggerSync(name, ...args);
   }
 
