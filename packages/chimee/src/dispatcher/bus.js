@@ -85,7 +85,6 @@ export default class Bus {
   once(id: string, eventName: string, fn: Function, stage: eventStage) {
     const bus = this;
     const keys = [ eventName, stage, id ];
-    console.log(id, eventName, fn, stage);
     const handler = function(...args) {
       // keep the this so that it can run
       bind(fn, this)(...args);

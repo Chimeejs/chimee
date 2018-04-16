@@ -112,28 +112,28 @@ describe('bus', () => {
       bus.events = {};
     });
     test('on main event handler', () => {
-      bus.on('a', 'play', fn);
+      bus.on('a', 'play', fn, 'main');
       expect(bus.events.play.main.a[0]).toBe(fn);
     });
     test('on another main event handler', () => {
-      bus.on('a', 'play', fn1);
+      bus.on('a', 'play', fn1, 'main');
       expect(bus.events.play.main.a).toEqual([ fn, fn1 ]);
     });
     test('on before event handler', () => {
-      bus.on('a', 'beforePlay', fn);
+      bus.on('a', 'play', fn, 'before');
       expect(bus.events.play.before.a[0]).toBe(fn);
     });
     test('on after event handler', () => {
-      bus.on('a', 'afterplay', fn);
+      bus.on('a', 'play', fn, 'after');
       expect(bus.events.play.after.a[0]).toBe(fn);
     });
     test('on side effect event handler', () => {
-      bus.on('a', '_play', fn);
+      bus.on('a', 'play', fn, '_');
       expect(bus.events.play._.a[0]).toBe(fn);
     });
     test('check events map', () => {
-      bus.on('b', 'play', fn);
-      bus.on('c', 'pause', fn);
+      bus.on('b', 'play', fn, 'main');
+      bus.on('c', 'pause', fn, 'main');
       expect(bus.events).toEqual({
         play: {
           before: {
@@ -158,11 +158,11 @@ describe('bus', () => {
       });
     });
     test('off event check', () => {
-      bus.off('a', 'play', fn);
+      bus.off('a', 'play', fn, 'main');
       expect(bus.events.play.main.a[0]).toBe(fn1);
-      bus.off('a', 'afterPlay', fn);
+      bus.off('a', 'play', fn, 'after');
       expect(bus.events.play.after).toEqual({});
-      bus.off('c', 'pause', fn);
+      bus.off('c', 'pause', fn, 'main');
       expect(bus.events.pause).toEqual({ main: {} });
     });
   });
@@ -383,6 +383,7 @@ describe('bus', () => {
       expect(bus.triggerSync('what')).toBe(false);
     });
   });
+
   describe('_eventProcessor', () => {
     let result;
     const fn = function() { result.push(this.id); };
@@ -437,6 +438,7 @@ describe('bus', () => {
       await bus._eventProcessor('focus', { sync: true });
     });
   });
+
   describe('emit', () => {
     const result = [];
     const fn = function() { result.push(this.id); };
@@ -517,8 +519,9 @@ describe('bus', () => {
         },
       };
     });
+
     test('once', async () => {
-      bus.once('b', 'run', fn);
+      bus.once('b', 'run', fn, 'main');
       await expect(bus.emit('run')).resolves.toBe(true);
       expect(result).toEqual([ 'a', 'b' ]);
       expect(bus.events).toEqual({
@@ -529,30 +532,33 @@ describe('bus', () => {
         },
       });
     });
+
     test('once but still can remove by yourself', () => {
-      bus.once('b', 'run', fn);
+      bus.once('b', 'run', fn, 'main');
       expect(bus.events.run.main.b.length).toBe(1);
       expect(bus.events.run.main.b[0]).not.toBe(fn);
-      bus.off('b', 'run', fn);
+      bus.off('b', 'run', fn, 'main');
       expect(bus.events.run.main.b).toBe();
     });
+
     test('multiple once and multiple remove', () => {
-      bus.once('b', 'run', fn);
+      bus.once('b', 'run', fn, 'main');
       expect(bus.events.run.main.b.length).toBe(1);
-      bus.once('b', 'run', fn);
+      bus.once('b', 'run', fn, 'main');
       expect(bus.events.run.main.b.length).toBe(2);
-      bus.off('b', 'run', fn);
+      bus.off('b', 'run', fn, 'main');
       expect(bus.events.run.main.b.length).toBe(1);
-      bus.off('b', 'run', fn);
+      bus.off('b', 'run', fn, 'main');
       expect(bus.events.run.main.b).toBe();
     });
+
     test('off from empty map', () => {
-      expect(() => bus.off('c', 'sth', fn)).not.toThrow();
+      expect(() => bus.off('c', 'sth', fn, 'main')).not.toThrow();
     });
   });
 
   test('off from empty', () => {
-    expect(() => bus.off('b', 'run', function() {})).not.toThrow();
+    expect(() => bus.off('b', 'run', function() {}, 'main')).not.toThrow();
   });
 
   describe('error handle', async () => {
@@ -563,7 +569,7 @@ describe('bus', () => {
       errcount = 0;
     });
     test('emit', async () => {
-      bus.on('b', 'beforeThrow', errorFn);
+      bus.on('b', 'throw', errorFn, 'before');
       try {
         await bus.emit('throw');
       } catch (error) {
@@ -571,10 +577,10 @@ describe('bus', () => {
         errcount++;
       }
       expect(errcount).toBe(1);
-      bus.off('b', 'beforeThrow', errorFn);
+      bus.off('b', 'throw', errorFn, 'before');
     });
     test('trigger', async () => {
-      bus.on('b', 'afterThrow', errorFn);
+      bus.on('b', 'throw', errorFn, 'after');
       try {
         await bus.trigger('throw');
       } catch (error) {
@@ -582,12 +588,12 @@ describe('bus', () => {
         errcount++;
       }
       expect(errcount).toBe(1);
-      bus.off('b', 'afterThrow', errorFn);
+      bus.off('b', 'throw', errorFn, 'after');
     });
     test('deep emit', async () => {
       const fn = function() {};
-      bus.on('b', 'beforeThrow', fn);
-      bus.on('b', 'beforeThrow', errorFn);
+      bus.on('b', 'throw', fn, 'before');
+      bus.on('b', 'throw', errorFn, 'before');
       try {
         await bus.emit('throw');
       } catch (error) {
@@ -595,13 +601,13 @@ describe('bus', () => {
         errcount++;
       }
       expect(errcount).toBe(1);
-      bus.off('b', 'beforeThrow', errorFn);
-      bus.off('b', 'beforeThrow', fn);
+      bus.off('b', 'throw', errorFn, 'before');
+      bus.off('b', 'throw', fn, 'before');
     });
     test('deep trigger', async () => {
       const fn = function() {};
-      bus.on('b', 'afterThrow', fn);
-      bus.on('b', 'afterThrow', errorFn);
+      bus.on('b', 'throw', fn, 'after');
+      bus.on('b', 'throw', errorFn, 'after');
       try {
         await bus.trigger('throw');
       } catch (error) {
@@ -609,8 +615,8 @@ describe('bus', () => {
         errcount++;
       }
       expect(errcount).toBe(1);
-      bus.off('b', 'afterThrow', errorFn);
-      bus.off('b', 'afterThrow', fn);
+      bus.off('b', 'throw', errorFn, 'after');
+      bus.off('b', 'throw', fn, 'after');
     });
   });
 
