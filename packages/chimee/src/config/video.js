@@ -118,7 +118,7 @@ const accessorMap = {
           this.needToLoadSrc = false;
           this.dispatcher.binder.emit({
             name: 'load',
-            target: 'video',
+            target: 'plugin',
             id: 'dispatcher',
           }, val);
         }

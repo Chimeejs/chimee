@@ -522,10 +522,9 @@ export default class Dispatcher {
         Log.warn('You have not set the src, so you better set autoload to be false. Accroding to https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md#src.');
         return;
       }
-      console.log('123', this.videoConfig.src);
       this.binder.emit({
         name: 'load',
-        target: 'video',
+        target: 'plugin',
         id: 'dispatcher',
       }, this.videoConfig.src);
     }

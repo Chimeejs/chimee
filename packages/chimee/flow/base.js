@@ -1,6 +1,7 @@
 import type Plugin from 'dispatcher/plugin';
 import type Dispatcher from 'dispatcher/index';
 import type Bus from 'dispatcher/bus';
+import type Binder from 'dispatcher/binder';
 import type Dom from 'dispatcher/dom';
 import type Chimee from '../src/index';
 import type VideoConfig from 'dispatcher/video-config';

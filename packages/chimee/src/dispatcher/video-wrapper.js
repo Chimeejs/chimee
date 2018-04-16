@@ -178,11 +178,12 @@ export default @autobindClass() class VideoWrapper {
       this.__dispatcher.binder.once({
         id: this.__id,
         name: '_load',
-        target: 'video',
-      }, resolve);
+        target: 'plugin',
+        fn: resolve,
+      });
       this.__dispatcher.binder.emit({
         name: 'load',
-        target: 'video',
+        target: 'plugin',
         id: this.__id,
       }, ...args);
     });
