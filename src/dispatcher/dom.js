@@ -26,6 +26,7 @@ export default class Dom {
   plugins: {[string]: Element};
   isFullscreen: boolean | string;
   fullscreenElement: HTMLElement | string | void;
+  destroyed: boolean;
   __dispatcher: Dispatcher;
   __mouseInVideo: boolean;
   __videoExtendedNodes: Array<Node>;
@@ -41,6 +42,8 @@ export default class Dom {
    * to mark is the mouse in the video area
    */
   __mouseInVideo = false;
+
+  destroyed = false;
 
   get mouseInVideo(): boolean {
     return this.__mouseInVideo;
@@ -273,6 +276,7 @@ export default class Dom {
     this.wrapper.innerHTML = this.originHTML;
     delete this.wrapper;
     delete this.plugins;
+    this.destroyed = true;
   }
 
   _autoFocusToVideo(element: Element, remove: boolean = false): void {

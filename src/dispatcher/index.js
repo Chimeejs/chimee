@@ -460,7 +460,7 @@ export default class Dispatcher {
       this.unuse(key);
     }
     this.binder.destroy();
-    delete this.bus;
+    delete this.binder;
     this.dom.destroy();
     delete this.dom;
     // this._bindKernelEvents(this.kernel, true);
