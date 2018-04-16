@@ -1,6 +1,6 @@
 import Chimee from 'index';
 
-describe('new Chimee', () => {
+describe('chimee life', () => {
   test('normal build', () => {
     expect(() => new Chimee({
       // 播放地址
@@ -32,5 +32,25 @@ describe('new Chimee', () => {
   test('error build', () => {
     expect(() => new Chimee({})).toThrow();
     expect(() => new Chimee(1)).toThrow();
+  });
+
+  test('destroy', () => {
+    const player = new Chimee({
+      // 播放地址
+      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+      // 直播:live 点播：vod
+      type: 'vod',
+      // 编解码容器
+      box: 'native',
+      // dom容器
+      wrapper: 'body',
+      plugin: [],
+      events: {},
+    });
+
+    expect(player.destroyed).toBe(false);
+    expect(() => player.destroy()).not.toThrow();
+    expect(player.destroyed).toBe(true);
+    expect(player.pause()).rejects.toThrow();
   });
 });

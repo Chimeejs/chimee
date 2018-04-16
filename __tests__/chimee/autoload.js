@@ -10,11 +10,14 @@ describe('chimee autoload attributes', () => {
       name: 'autoloadtest',
       events: {
         load() {
-          console.log('load????');
           resolveFn(++loadCount);
         },
       },
     });
+  });
+
+  afterAll(() => {
+    Chimee.uninstall('autoloadtest');
   });
 
   beforeEach(() => {

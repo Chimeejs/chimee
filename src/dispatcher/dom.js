@@ -309,7 +309,8 @@ export default class Dom {
     if (isEvent(evt) && original !== this.isFullscreen) {
       this.__dispatcher.binder.triggerSync({
         name: 'fullscreenchange',
-        target: 'video-dom',
+        target: 'esFullscreen',
+        id: 'dispatcher',
       }, evt);
     }
   }
