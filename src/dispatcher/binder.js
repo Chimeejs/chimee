@@ -75,6 +75,9 @@ function getEventInfo({ name, target }: rawEventInfo): additionalEventInfo {
 function prettifyEventParameter(info: rawEventInfo): wholeEventInfo {
   const { id, fn } = info;
   const { name, target, stage } = getEventInfo(info);
+  if (!isFunction(fn)) {
+    throw new Error(`You must provide a function to handle with event ${name}, but not ${typeof fn}`);
+  }
   return {
     id,
     fn,
