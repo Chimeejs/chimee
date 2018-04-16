@@ -29,6 +29,8 @@ function getEventTargetByOldLogic(oldName: string): { name: string, target: bind
       Log.warn(`We no longer support event names like ${oldName}. Please use ${name} and options like { target: '${target}' } instead`);
     }
     return { name, target };
+  } else if (oldName === 'error') {
+    return { name: 'error', target: 'kernel' };
   }
   return false;
 }
