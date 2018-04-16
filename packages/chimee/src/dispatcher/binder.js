@@ -5,7 +5,7 @@
  */
 
 import Bus from './bus';
-import { videoEvents, domEvents, kernelEvents, passiveEvents } from 'helper/const';
+import { videoEvents, domEvents, kernelEvents, passiveEvents,esFullscreenEvents } from 'helper/const';
 import { camelize, Log, isString, addEvent, removeEvent, isEmpty, isFunction } from 'chimee-helper';
 import { before, runnable } from 'toxic-decorators';
 import Dispatcher from './index';
@@ -49,6 +49,7 @@ function getEventTargetByEventName(name: string): binderTarget {
   if (videoEvents.indexOf(name) > -1) return 'video';
   if (kernelEvents.indexOf(name) > -1) return 'kernel';
   if (domEvents.indexOf(name) > -1) return 'video-dom';
+  if (esFullscreenEvents.indexOf(name) > -1) return 'esFullscreen';
   return 'plugin';
 }
 
@@ -124,6 +125,7 @@ export default class Binder {
       'video',
       'video-dom',
       'plugin',
+      'esFullscreen',
     ];
     this.buses = {};
     this.bindedEventNames = {};
@@ -283,7 +285,7 @@ export default class Binder {
   }) {
     // the plugin target do not need us to transfer
     // so we do not need to bind
-    if (target === 'plugin') return;
+    if (target === 'plugin' || target === 'esFullscreen') return;
     let fn;
     // if this event has been binded, return;
     if (this.bindedEventNames[target].indexOf(name) > -1) return;

@@ -73,11 +73,14 @@ export const domEvents = [
   'select',
   'wheel',
   'mousewheel',
-  'fullscreenchange',
   'contextmenu',
   'touchstart',
   'touchmove',
   'touchend',
+  'fullscreen',
+];
+export const esFullscreenEvents = [
+  'fullscreenchange',
 ];
 export const passiveEvents = [
   'wheel',
