@@ -126,4 +126,63 @@ describe("plugin's lifecycle", () => {
     plugin.$destroy();
     expect(createAndDestroyCall).toEqual([ 'create', 'inited', 'destroy' ]);
   });
+
+  describe('__removeEvents', () => {
+    let plugin;
+    beforeEach(() => {
+      plugin = new Plugin({ id: 're' }, dispatcher);
+    });
+    afterEach(() => {
+      plugin.$destroy();
+    });
+
+    test('empty event', () => {
+      expect(() => plugin.__removeEvents('wow', () => {})).not.toThrow();
+    });
+
+    test('remove function do not exist', () => {
+      plugin.__addEvents('wow', () => {});
+      expect(() => plugin.__removeEvents('wow', () => {})).not.toThrow();
+    });
+
+    test('remove but event is not empty', () => {
+      const fn = () => {};
+      plugin.__addEvents('wow', () => {});
+      plugin.__addEvents('wow', fn);
+      expect(() => plugin.__removeEvents('wow', fn)).not.toThrow();
+    });
+  });
+
+  describe('ready and readySync', () => {
+    test('synchronize', () => {
+      const plugin = new Plugin({ id: 'a' }, dispatcher);
+      plugin.__inited();
+      expect(plugin.readySync).toBe(true);
+      expect(plugin.ready).resolves.toBe();
+    });
+
+    test('asynchronize with resolve', async () => {
+      const plugin = new Plugin({
+        id: 'b',
+        inited() {
+          return Promise.resolve(1);
+        },
+      }, dispatcher);
+      plugin.__inited();
+      await expect(plugin.ready).resolves.toBe(1);
+      expect(plugin.readySync).toBe(true);
+    });
+
+    test('asynchronize with reject', async () => {
+      const plugin = new Plugin({
+        id: 'b',
+        inited() {
+          return Promise.reject();
+        },
+      }, dispatcher);
+      plugin.__inited();
+      await expect(plugin.ready).rejects.toBe();
+      expect(plugin.readySync).toBe(false);
+    });
+  });
 });

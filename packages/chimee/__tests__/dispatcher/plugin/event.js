@@ -1,7 +1,7 @@
 import Plugin from 'dispatcher/plugin';
 import Chimee from 'index';
 
-describe("plugin's method", () => {
+describe("plugin's event", () => {
   let dispatcher;
   let player;
 
@@ -99,5 +99,11 @@ describe("plugin's method", () => {
     expect(plugin.$emitSync('hi', 1)).toBe(true);
     expect(fn).toHaveBeenCalledTimes(1);
     expect(fn).lastCalledWith(1);
+  });
+
+  test('__checkArgsForOnAndOff', () => {
+    const plugin = new Plugin({ id: 'check' }, dispatcher);
+    expect(() => plugin.$on()).toThrow('key parameter must be String');
+    expect(() => plugin.$on('1')).toThrow('fn parameter must be Function');
   });
 });

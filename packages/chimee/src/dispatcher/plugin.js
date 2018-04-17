@@ -262,6 +262,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
    * we will call user destory function in this method
    */
   $destroy() {
+    if (this.destroyed) return;
     isFunction(this.destroy) && this.destroy();
     super.__destroy();
     this.__dispatcher.dom.removePlugin(this.__id);

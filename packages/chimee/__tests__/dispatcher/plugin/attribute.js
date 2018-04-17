@@ -1,6 +1,6 @@
 import Plugin from 'dispatcher/plugin';
 import Chimee from 'index';
-import { bind } from 'chimee-helper';
+import { bind, Log } from 'chimee-helper';
 
 describe("plugin's attributes", () => {
   let dispatcher;
@@ -28,6 +28,7 @@ describe("plugin's attributes", () => {
     dispatcher = null;
   });
 
+
   test('penetrate', done => {
     const plugin = new Plugin({
       id: 'p',
@@ -42,6 +43,7 @@ describe("plugin's attributes", () => {
     dispatcher.plugins.p = plugin;
     plugin.$dom.click();
   });
+
 
   test('set operable to be true and change it', () => {
     const plugin = new Plugin({
@@ -58,6 +60,7 @@ describe("plugin's attributes", () => {
     expect(plugin.$operable).toBe(true);
     plugin.$destroy();
   });
+
 
   test('use default operable', () => {
     const plugin = new Plugin({
@@ -103,5 +106,141 @@ describe("plugin's attributes", () => {
       expect(fn).toHaveBeenCalledTimes(0);
       plugin.$destroy();
     });
+    test('$fullscreen', () => {
+      const plugin = new Plugin({ id: 'normal' }, dispatcher);
+      plugin.$fullscreen();
+      plugin.$fullscreen(true);
+      plugin.$fullscreen(false);
+      plugin.$fullscreen();
+      plugin.$fullscreen(false, 'container');
+      plugin.$destroy();
+    });
+
+    test('fullscreen', () => {
+      const plugin = new Plugin({ id: 'normal' }, dispatcher);
+      plugin.fullscreen();
+      plugin.fullscreen(true);
+      plugin.fullscreen(false);
+      plugin.fullscreen();
+      plugin.fullscreen(false, 'container');
+      plugin.$destroy();
+    });
+
+    describe('$attr & $css', () => {
+      let plugin;
+
+      beforeEach(() => {
+        plugin = new Plugin({ id: 'normal' }, dispatcher);
+      });
+
+      afterEach(() => {
+        plugin.$destroy();
+      });
+
+      test('$attr', () => {
+        dispatcher.videoConfigReady = false;
+        plugin.$attr('container', 'data-id', 1);
+        expect(plugin.$attr('container', 'data-id')).toBe(null);
+        dispatcher.dom.__dispatcher.videoConfigReady = true;
+        plugin.$attr('data-id', '2');
+        expect(plugin.$attr('data-id')).toBe('2');
+      });
+
+      test('$css', () => {
+        expect(plugin.$css('container', 'z-index')).toBe('');
+        plugin.$css('container', 'z-index', 10);
+        expect(plugin.$css('container', 'z-index')).toBe('10');
+      });
+
+      test('$attr on video property', () => {
+        dispatcher.videoConfigReady = false;
+        plugin.$attr('video', 'controls', true);
+        expect(plugin.$attr('video', 'controls')).toBe(null);
+        expect(Log.data.warn[0]).toEqual([ 'chimee',
+          'normal is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger' ]);
+        dispatcher.videoConfigReady = true;
+        plugin.$attr('video', 'controls', true);
+        expect(plugin.$attr('video', 'controls')).toBe('');
+      });
+
+      test('$attr on video property but it is not in videoconfig', () => {
+        dispatcher.videoConfigReady = false;
+        plugin.$attr('video', 'data-controls', true);
+        expect(plugin.$attr('video', 'data-controls')).toBe(null);
+        dispatcher.videoConfigReady = true;
+        dispatcher.dom.__dispatcher.videoConfigReady = true;
+        plugin.__init(dispatcher.videoConfig);
+        plugin.$attr('video', 'data-controls', true);
+        expect(plugin.$attr('video', 'data-controls')).toBe('true');
+      });
+    });
+  });
+
+  test('$bump to top', () => {
+    const level1 = {
+      name: 'level1',
+      level: 1,
+    };
+    const level2 = {
+      name: 'level2',
+      level: 2,
+    };
+    const level3 = {
+      name: 'level3',
+      level: 3,
+    };
+    const olevel1 = {
+      name: 'olevel1',
+      level: 1,
+      inner: false,
+    };
+    const olevel2 = {
+      name: 'olevel2',
+      level: 2,
+      inner: false,
+    };
+    const olevel3 = {
+      name: 'olevel3',
+      level: 3,
+      inner: false,
+    };
+    Chimee.install(level1);
+    Chimee.install(level2);
+    Chimee.install(level3);
+    Chimee.install(olevel1);
+    Chimee.install(olevel2);
+    Chimee.install(olevel3);
+    dispatcher.use('level1');
+    dispatcher.use('level2');
+    dispatcher.use('level3');
+    dispatcher.use('olevel1');
+    dispatcher.use('olevel2');
+    dispatcher.use('olevel3');
+    expect(dispatcher._getTopLevel(true)).toBe(3);
+    expect(dispatcher._getTopLevel(false)).toBe(3);
+    expect(dispatcher.plugins.olevel3.$dom.style.zIndex).toBe('4');
+    expect(dispatcher.plugins.olevel1.$dom.style.zIndex).toBe('2');
+    expect(dispatcher.plugins.level3.$dom.style.zIndex).toBe('4');
+    expect(dispatcher.plugins.level1.$dom.style.zIndex).toBe('2');
+    dispatcher.plugins.level1.$bumpToTop();
+    dispatcher.plugins.olevel1.$bumpToTop();
+    expect(dispatcher.plugins.olevel3.$dom.style.zIndex).toBe('3');
+    expect(dispatcher.plugins.olevel1.$dom.style.zIndex).toBe('4');
+    expect(dispatcher.plugins.level3.$dom.style.zIndex).toBe('3');
+    expect(dispatcher.plugins.level1.$dom.style.zIndex).toBe('4');
+    expect(dispatcher._getTopLevel(true)).toBe(4);
+    expect(dispatcher._getTopLevel(false)).toBe(4);
+  });
+
+  test('$pluginOrder', () => {
+    dispatcher.order = [ 'a', 'b', 'c' ];
+    const plugin = new Plugin({ id: 'p' }, dispatcher);
+    expect(plugin.$pluginOrder).toBe(dispatcher.order);
+  });
+
+  test('$plugins', () => {
+    Chimee.install({ name: 'p' });
+    dispatcher.use('p');
+    expect(dispatcher.plugins.p.$plugins).toBe(dispatcher.plugins);
   });
 });
