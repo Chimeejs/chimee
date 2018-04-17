@@ -127,7 +127,10 @@ export default class Dom {
   removeVideo(): HTMLVideoElement {
     const videoElement = this.videoElement;
     this._autoFocusToVideo(this.videoElement, false);
-    this.__dispatcher.binder.bindEventOnVideo(videoElement, true);
+    // when we destroy the chimee
+    // binder is destroyed before dom
+    // so we need to make a check here
+    this.__dispatcher.binder && this.__dispatcher.binder.bindEventOnVideo(videoElement, true);
     $(videoElement).remove();
     delete this.videoElement;
     return videoElement;

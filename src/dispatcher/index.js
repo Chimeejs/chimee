@@ -1,7 +1,6 @@
 // @flow
 import { isString, camelize, deepAssign, isObject, isEmpty, isArray, isFunction, transObjectAttrIntoArray, isPromise, Log, runRejectableQueue, addEvent, removeEvent, isError, deepClone } from 'chimee-helper';
 import ChimeeKernel from 'chimee-kernel';
-import Bus from './bus';
 import Plugin from './plugin';
 import Dom from './dom';
 import VideoConfig from 'config/video';
@@ -35,7 +34,6 @@ function checkPluginConfig(config: any) {
  */
 export default class Dispatcher {
   plugins: plugins;
-  bus: Bus;
   order: Array<string>;
   kernel: ChimeeKernel;
   dom: Dom;
@@ -92,11 +90,6 @@ export default class Dispatcher {
      * @type {Dom}
      */
     this.dom = new Dom(config.wrapper, this);
-    /**
-     * eventBus
-     * @type {Bus}
-     */
-    this.bus = new Bus(this);
     /**
      * Chimee's referrence
      * @type {[type]}
