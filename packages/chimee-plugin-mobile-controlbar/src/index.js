@@ -42,8 +42,7 @@ const mobiControlbar = gestureFactory({
   el: 'chimee-control',
   data: {
     children: {},
-    show: false,
-    disabled: false
+    show: false
   },
   level: 99,
   operable: true,
@@ -95,13 +94,6 @@ const mobiControlbar = gestureFactory({
     }
   },
   events: {
-    // 视频事件
-    loadstart () {
-      this._disable(true);
-    },
-    loadedmetadata () {
-      this._disable(false);
-    },
     play () {
       this.children.play && this.children.play.changeState('play');
       this._hideItself();
@@ -181,13 +173,6 @@ const mobiControlbar = gestureFactory({
       if(this.paused) return;
       this._showItself();
       this._hideItself();
-    },
-    // controlbar 不可以点
-    // 键盘／鼠标事件不监听
-    _disable (disabled) {
-      if(!this.show) return;
-      this.disabled = disabled;
-      setStyle(this.$wrap, 'pointerEvents', disabled ? 'none' : 'auto');
     },
     _setStyle () {
       let css = '';

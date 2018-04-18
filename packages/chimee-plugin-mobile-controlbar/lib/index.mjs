@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-mobile-controlbar v0.1.0
+ * chimee-plugin-mobile-controlbar v0.1.1
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -1987,8 +1987,7 @@ var mobiControlbar = gestureFactory({
   el: 'chimee-control',
   data: {
     children: {},
-    show: false,
-    disabled: false
+    show: false
   },
   level: 99,
   operable: true,
@@ -2041,13 +2040,6 @@ var mobiControlbar = gestureFactory({
   },
 
   events: {
-    // 视频事件
-    loadstart: function loadstart() {
-      this._disable(true);
-    },
-    loadedmetadata: function loadedmetadata() {
-      this._disable(false);
-    },
     play: function play() {
       this.children.play && this.children.play.changeState('play');
       this._hideItself();
@@ -2127,14 +2119,6 @@ var mobiControlbar = gestureFactory({
       if (this.paused) return;
       this._showItself();
       this._hideItself();
-    },
-
-    // controlbar 不可以点
-    // 键盘／鼠标事件不监听
-    _disable: function _disable(disabled) {
-      if (!this.show) return;
-      this.disabled = disabled;
-      setStyle(this.$wrap, 'pointerEvents', disabled ? 'none' : 'auto');
     },
     _setStyle: function _setStyle() {
       var css = '';
