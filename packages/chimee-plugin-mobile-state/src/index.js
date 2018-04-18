@@ -27,7 +27,7 @@ const defaultConfig = {
 const chimeeState = gestureFactory({
   name: 'chimeeState',
   el: `
-    <chimee-state>
+    <chimee-state class="play">
       <chimee-state-loading></chimee-state-loading>
       <chimee-state-play></chimee-state-play>
       <chimee-state-error></chimee-state-error>

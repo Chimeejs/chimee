@@ -54,14 +54,14 @@ var defaultConfig = {
 
 var chimeeState = gestureFactory({
   name: 'chimeeState',
-  el: '\n    <chimee-state>\n      <chimee-state-loading></chimee-state-loading>\n      <chimee-state-play></chimee-state-play>\n      <chimee-state-error></chimee-state-error>\n    </chimee-state>\n  ',
+  el: '\n    <chimee-state class="play">\n      <chimee-state-loading></chimee-state-loading>\n      <chimee-state-play></chimee-state-play>\n      <chimee-state-error></chimee-state-error>\n    </chimee-state>\n  ',
   init: function init() {
     this.config = isObject(this.$config) ? deepAssign(defaultConfig, this.$config) : defaultConfig;
     this._addInnerHtml();
   },
   inited: function inited() {
     // 存在 src 并且 设置了 prelaod || autoplay 的情况下， 显示 loading
-    this.src && (this.preload === true || this.autoplay === true) && this.showState('loading', true);
+    this.src && (this.preload === 'auto' || this.preload === 'metadata' || this.autoplay === true) && this.showState('loading', true);
   },
 
   penetrate: true,
@@ -84,9 +84,10 @@ var chimeeState = gestureFactory({
     playing: function playing() {
       this.playing();
     },
-    loadstart: function loadstart() {
-      this.waiting('loadstart');
-    },
+
+    // loadstart () {
+    //   this.waiting('loadstart');
+    // },
     waiting: function waiting() {
       this.waiting();
     },
@@ -121,7 +122,7 @@ var chimeeState = gestureFactory({
       this.showState('loading', false);
       this.showState('error', false);
     },
-    waiting: function waiting(status) {
+    waiting: function waiting() {
       var _this = this;
 
       this.clearTimeout();
@@ -129,7 +130,7 @@ var chimeeState = gestureFactory({
       this._timeout = setTimeout(function () {
         return _this.showState('error', true);
       }, this.config.expectTime);
-      (status === 'loadstart' || !this.paused) && this.showState('loading', true);
+      !this.paused && this.showState('loading', true);
     },
     clearTimeout: function (_clearTimeout) {
       function clearTimeout() {
