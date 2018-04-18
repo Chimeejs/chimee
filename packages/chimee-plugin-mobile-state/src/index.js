@@ -39,7 +39,7 @@ const chimeeState = gestureFactory({
   },
   inited () {
     // 存在 src 并且 设置了 prelaod || autoplay 的情况下， 显示 loading
-    this.src && (this.preload === true || this.autoplay === true) && this.showState('loading', true);
+    this.src && (this.preload === 'auto' || this.preload === 'metadata' || this.autoplay === true) && this.showState('loading', true);
   },
   penetrate: true,
   operable: true,
@@ -60,9 +60,9 @@ const chimeeState = gestureFactory({
     playing () {
       this.playing();
     },
-    loadstart () {
-      this.waiting('loadstart');
-    },
+    // loadstart () {
+    //   this.waiting('loadstart');
+    // },
     waiting () {
       this.waiting();
     },
@@ -96,11 +96,11 @@ const chimeeState = gestureFactory({
       this.showState('loading', false);
       this.showState('error', false);
     },
-    waiting (status) {
+    waiting () {
       this.clearTimeout();
       // 加载超过30秒则超时显示异常
       this._timeout = setTimeout(() => this.showState('error', true), this.config.expectTime);
-      (status === 'loadstart' || !this.paused) && this.showState('loading', true);
+      !this.paused && this.showState('loading', true);
     },
     clearTimeout () {
       if (this._timeout) {
