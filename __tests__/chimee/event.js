@@ -1,7 +1,26 @@
 import Chimee from 'index';
+import { bind } from 'chimee-helper';
 
 describe('chimee event method', () => {
   let player;
+  let originCreateElement;
+
+  beforeAll(() => {
+    originCreateElement = global.document.createElement;
+    global.document.createElement = function(tag) {
+      const element = bind(originCreateElement, document)(tag);
+      if (tag === 'video') {
+        element.play = function() {};
+        element.pause = function() {};
+      }
+      return element;
+    };
+  });
+
+  afterAll(() => {
+    global.document.createElement = originCreateElement;
+  });
+
   beforeEach(() => {
     player = new Chimee({
       // 播放地址
