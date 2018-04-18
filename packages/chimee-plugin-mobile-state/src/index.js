@@ -38,8 +38,8 @@ const chimeeState = gestureFactory({
     this._addInnerHtml();
   },
   inited () {
-    // 存在 src 并且 设置了 prelaod 的情况下， 显示 loading
-    this.src && this.preload !== 'none' && this.showState('loading', true);
+    // 存在 src 并且 设置了 prelaod || autoplay 的情况下， 显示 loading
+    this.src && (this.preload === true || this.autoplay === true) && this.showState('loading', true);
   },
   penetrate: true,
   operable: true,
