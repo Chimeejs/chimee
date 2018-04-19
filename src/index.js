@@ -91,10 +91,10 @@ export default class Chimee extends VideoWrapper {
     this.destroyed = true;
   }
   use(option: string | PluginOption) {
-    this.__dispatcher.use(option);
+    return this.__dispatcher.use(option);
   }
   unuse(name: string) {
-    this.__dispatcher.unuse(name);
+    return this.__dispatcher.unuse(name);
   }
   __throwError(error: Error | string) {
     if (isString(error)) error = new Error(error);

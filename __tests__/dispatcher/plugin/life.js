@@ -111,7 +111,7 @@ describe("plugin's lifecycle", () => {
     });
   });
 
-  test('create & destroy & inited', () => {
+  test('create & destroy & inited', async () => {
     const createAndDestroyCall = [];
     const plugin = new Plugin({
       id: 'cd',
@@ -122,7 +122,7 @@ describe("plugin's lifecycle", () => {
     expect(createAndDestroyCall).toEqual([ 'create' ]);
     plugin.__inited();
     expect(createAndDestroyCall).toEqual([ 'create', 'inited' ]);
-    expect(plugin.ready).resolves.toBe();
+    await expect(plugin.ready).resolves.toBe(plugin);
     plugin.$destroy();
     expect(createAndDestroyCall).toEqual([ 'create', 'inited', 'destroy' ]);
   });
@@ -154,11 +154,11 @@ describe("plugin's lifecycle", () => {
   });
 
   describe('ready and readySync', () => {
-    test('synchronize', () => {
+    test('synchronize', async () => {
       const plugin = new Plugin({ id: 'a' }, dispatcher);
       plugin.__inited();
       expect(plugin.readySync).toBe(true);
-      expect(plugin.ready).resolves.toBe();
+      await expect(plugin.ready).resolves.toBe(plugin);
     });
 
     test('asynchronize with resolve', async () => {
@@ -169,7 +169,7 @@ describe("plugin's lifecycle", () => {
         },
       }, dispatcher);
       plugin.__inited();
-      await expect(plugin.ready).resolves.toBe(1);
+      await expect(plugin.ready).resolves.toBe(plugin);
       expect(plugin.readySync).toBe(true);
     });
 
