@@ -223,7 +223,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   /**
    * call for inited lifecycle hook, which just to tell the plugin we have inited.
    */
-  __inited(): Promise<*> | boolean {
+  __inited(): Promise<*> | Plugin {
     let result;
     try {
       result = isFunction(this.inited) && this.inited();
@@ -232,18 +232,20 @@ export default @autobindClass() class Plugin extends VideoWrapper {
     }
     this.readySync = !isPromise(result);
     this.ready = this.readySync
-      ? Promise.resolve()
+      ? Promise.resolve(this)
       // $FlowFixMe: it's promise now
       : result
-        .then(ret => {
+        .then(() => {
           this.readySync = true;
-          return ret;
+          return this;
         })
         .catch(error => {
           if (isError(error)) return this.$throwError(error);
           return Promise.reject(error);
         });
-    return this.readySync || this.ready;
+    return this.readySync
+      ? this
+      : this.ready;
   }
 
   /**
