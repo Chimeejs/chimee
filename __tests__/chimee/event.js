@@ -65,4 +65,10 @@ describe('chimee event method', () => {
   test('off', () => {
     expect(() => player.off('hello', function() {})).not.toThrow();
   });
+
+  test('off from real dom', () => {
+    expect(() => player.on('click', function() {})).not.toThrow();
+    expect(() => player.off('click', function() {})).not.toThrow();
+    expect(() => player.off('click', function() {})).not.toThrow();
+  });
 });

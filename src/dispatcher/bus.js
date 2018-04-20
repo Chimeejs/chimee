@@ -218,10 +218,12 @@ export default class Bus {
     keys = deepClone(keys);
     const id = keys.pop();
     let target = this.events;
+    const backtrackList = [];
     for (let i = 0, len = keys.length; i < len; i++) {
       const son = target[keys[i]];
       // if we can't find the event binder, just return
       if (isEmpty(son)) return;
+      backtrackList.push([ target, keys[i] ]);
       target = son;
     }
     const queue = target[id] || [];
@@ -234,6 +236,12 @@ export default class Bus {
     // if this plugin has no event binding, we remove this event session, which make us perform faster in emit & trigger period.
     if (queue.length < 1) {
       delete target[id];
+      // backtrack to remove the redudant object
+      for (let i = backtrackList.length - 1; i > -1; i--) {
+        const [ parent, key ] = backtrackList[i];
+        if (!isEmpty(parent[key])) break;
+        delete parent[key];
+      }
     }
     return hasFn;
   }

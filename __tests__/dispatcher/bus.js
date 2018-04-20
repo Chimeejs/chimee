@@ -94,12 +94,12 @@ describe('bus', () => {
     });
     test('remove last one event', () => {
       bus._removeEvent([ 'play', 'main', 'a' ], fn1);
-      expect(bus.events.play.main.a).toBe(undefined);
+      expect(bus.events).toEqual({});
     });
     test('remove binded event handler from wrong object', () => {
       bus._addEvent([ 'what', 'main', 'b' ], fn);
       bus._removeEvent([ 'what', 'main', 'a' ], fn);
-      expect(bus.events.play.main.a).toBe(undefined);
+      expect(bus.events.play).toBe(undefined);
       expect(bus.events.what.main.a).toBe(undefined);
       expect(bus.events.what.main.b[0]).toBe(fn);
     });
@@ -161,9 +161,9 @@ describe('bus', () => {
       bus.off('a', 'play', fn, 'main');
       expect(bus.events.play.main.a[0]).toBe(fn1);
       bus.off('a', 'play', fn, 'after');
-      expect(bus.events.play.after).toEqual({});
+      expect(bus.events.play.after).toBe();
       bus.off('c', 'pause', fn, 'main');
-      expect(bus.events.pause).toEqual({ main: {} });
+      expect(bus.events.pause).toEqual();
     });
   });
 
