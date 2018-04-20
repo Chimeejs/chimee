@@ -53,8 +53,8 @@ describe("plugin's event", () => {
     plugin.__events.ahahah = 1;
     plugin.$destroy();
     expect(plugin.__events).toBe();
-    expect(dispatcher.binder.buses.plugin.events.a).toEqual({ main: {} });
-    expect(dispatcher.binder.buses.plugin.events.b).toEqual({ main: {} });
+    expect(dispatcher.binder.buses.plugin.events).toEqual({});
+    expect(dispatcher.binder.buses.plugin.events).toEqual({});
   });
 
   test('we will throw error if you contain something is not a function in the events.', () => {
