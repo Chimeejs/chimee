@@ -75,4 +75,11 @@ describe('chimee event method', () => {
     expect(() => player.on('touchmove', function() {})).not.toThrow();
     expect(() => player.off('touchmove', function() {})).not.toThrow();
   });
+
+  test('self processor event in emit', () => {
+    const fn = jest.fn();
+    player.on('beforeSilentLoad', fn);
+    player.emit('silentLoad');
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
 });
