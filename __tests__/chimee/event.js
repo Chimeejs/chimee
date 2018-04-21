@@ -82,4 +82,17 @@ describe('chimee event method', () => {
     player.emit('silentLoad');
     expect(fn).toHaveBeenCalledTimes(1);
   });
+
+  test('register a new kernel event', () => {
+    const fn = () => {};
+    player.on('test', fn);
+    expect(player.__dispatcher.binder.buses.kernel.events).toEqual({});
+    expect(player.__dispatcher.binder.buses.plugin.events).not.toEqual({});
+    Chimee.registerEvents({
+      name: 'test',
+      type: 'kernel',
+    });
+    player.on('test', () => {});
+    expect(player.__dispatcher.binder.buses.kernel.events).not.toEqual({});
+  });
 });
