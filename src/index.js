@@ -68,14 +68,14 @@ export default class Chimee extends VideoWrapper {
   // We can register the event through this method
   static registerEvents({
     name,
-    type,
+    target,
   }: {
     name?: string,
-    type?: string,
+    target?: string,
   } = {}) {
     if (!name || !isString(name)) throw new Error(`The event name must be a string, but not ${typeof name}`);
-    if (!type || !isString(type)) throw new Error(`The event type must be a string, but not ${typeof type}`);
-    if (type === 'kernel') {
+    if (!target || !isString(target)) throw new Error(`The event target must be a string, but not ${typeof target}`);
+    if (target === 'kernel') {
       kernelEvents.push(name);
     }
   }

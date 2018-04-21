@@ -270,12 +270,13 @@ export default @autobindClass() class VideoWrapper {
   @alias('on')
   @alias('addEventListener')
   @before(eventBinderCheck)
-  $on(key: string, fn: Function) {
-    this.__dispatcher.binder.on({
+  $on(key: string, fn: Function, options: eventOptions = {}) {
+    const eventInfo = Object.assign({}, options, {
       name: key,
       id: this.__id,
       fn,
     });
+    this.__dispatcher.binder.on(eventInfo);
     // set on __events as mark so that i can destroy it when i destroy
     this.__addEvents(key, fn);
   }
@@ -287,12 +288,13 @@ export default @autobindClass() class VideoWrapper {
   @alias('off')
   @alias('removeEventListener')
   @before(eventBinderCheck)
-  $off(key: string, fn: Function) {
-    this.__dispatcher.binder.off({
+  $off(key: string, fn: Function, options: eventOptions = {}) {
+    const eventInfo = Object.assign({}, options, {
       name: key,
       id: this.__id,
       fn,
     });
+    this.__dispatcher.binder.off(eventInfo);
     this.__removeEvents(key, fn);
   }
   /**
@@ -302,18 +304,19 @@ export default @autobindClass() class VideoWrapper {
    */
   @alias('once')
   @before(eventBinderCheck)
-  $once(key: string, fn: Function) {
+  $once(key: string, fn: Function, options: eventOptions = {}) {
     const self = this;
     const boundFn = function(...args) {
       bind(fn, this)(...args);
       self.__removeEvents(key, boundFn);
     };
     self.__addEvents(key, boundFn);
-    this.__dispatcher.binder.once({
+    const eventInfo = Object.assign({}, options, {
       name: key,
       id: this.__id,
       fn: boundFn,
     });
+    this.__dispatcher.binder.once(eventInfo);
   }
 
   /**
