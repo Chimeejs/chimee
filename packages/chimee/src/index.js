@@ -6,6 +6,7 @@ import { frozen, autobindClass } from 'toxic-decorators';
 import VideoWrapper from 'dispatcher/video-wrapper';
 import GlobalConfig from 'config/global';
 import global from 'core-js/es7/global';
+import { kernelEvents } from './helper/const';
 
 @autobindClass()
 export default class Chimee extends VideoWrapper {
@@ -23,32 +24,62 @@ export default class Chimee extends VideoWrapper {
   static config: GlobalConfig;
   static plugin: Plugin;
   destroyed = false;
+
   @frozen
   __id = '_vm';
+
   @frozen
   version = process.env.PLAYER_VERSION;
+
   @frozen
   config = {
     errorHandler: undefined,
   };
+
   @frozen
   static plugin = Plugin;
+
   @frozen
   static config = new GlobalConfig();
+
   @frozen
   static install = Dispatcher.install;
+
   @frozen
   static uninstall = Dispatcher.uninstall;
+
   @frozen
   static hasInstalled = Dispatcher.hasInstalled;
+
   @frozen
   static installKernel = Dispatcher.installKernel;
+
   @frozen
   static uninstallKernel = Dispatcher.uninstallKernel;
+
   @frozen
   static hasInstalledKernel = Dispatcher.hasInstalledKernel;
+
   @frozen
   static getPluginConfig = Dispatcher.getPluginConfig;
+
+  // In some situation, we may have custom events
+  // For example, we may have a custom kernel event
+  // We can register the event through this method
+  static registerEvents({
+    name,
+    type,
+  }: {
+    name?: string,
+    type?: string,
+  } = {}) {
+    if (!name || !isString(name)) throw new Error(`The event name must be a string, but not ${typeof name}`);
+    if (!type || !isString(type)) throw new Error(`The event type must be a string, but not ${typeof type}`);
+    if (type === 'kernel') {
+      kernelEvents.push(name);
+    }
+  }
+
   constructor(config: UserConfig | string | Element) {
     super();
     /* istanbul ignore if */
@@ -77,6 +108,7 @@ export default class Chimee extends VideoWrapper {
     this.readySync = this.__dispatcher.readySync;
     this.__wrapAsVideo(this.__dispatcher.videoConfig);
   }
+
   destroy() {
     if (this.destroyed) return;
     super.__destroy();
@@ -91,12 +123,15 @@ export default class Chimee extends VideoWrapper {
     });
     this.destroyed = true;
   }
+
   use(option: string | PluginOption) {
     return this.__dispatcher.use(option);
   }
+
   unuse(name: string) {
     return this.__dispatcher.unuse(name);
   }
+
   __throwError(error: Error | string) {
     if (isString(error)) error = new Error(error);
     const errorHandler = this.config.errorHandler || Chimee.config.errorHandler;
