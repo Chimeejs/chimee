@@ -11,6 +11,7 @@ describe('changeKernel', () => {
       box: 'native',
       autoload: false,
     });
+    chimee.on('heartbeat', () => {});
     expect(chimee.isLive).toBe(false);
     expect(chimee.box).toBe('native');
     expect(chimee.preset).toEqual({});

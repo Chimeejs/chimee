@@ -124,7 +124,6 @@ export default class Dispatcher {
      * @type {Kernel}
      */
     this.kernel = this._createKernel(this.dom.videoElement, this.videoConfig);
-    // this._bindKernelEvents(this.kernel);
     // trigger auto load event
     const asyncInitedTasks: Array<Promise<*>> = [];
     this.order.forEach(key => {
@@ -434,13 +433,10 @@ export default class Dispatcher {
     });
     this.videoConfig.changeWatchable = true;
     this.binder.migrateKernelEvent(oldKernel, kernel);
-    // this._bindKernelEvents(oldKernel, true);
-    // this._bindKernelEvents(kernel);
     this.kernel = kernel;
     this._silentLoadTempKernel = undefined;
     const { isLive, box, preset, kernels } = config;
     Object.assign(this.videoConfig, { isLive, box, preset, kernels });
-    // const config = {}
     oldKernel.destroy();
     // delay video event binding
     // so that people can't feel the default value change
@@ -457,7 +453,6 @@ export default class Dispatcher {
     delete this.binder;
     this.dom.destroy();
     delete this.dom;
-    // this._bindKernelEvents(this.kernel, true);
     this.kernel.destroy();
     delete this.kernel;
     delete this.vm;
