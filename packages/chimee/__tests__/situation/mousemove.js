@@ -127,11 +127,32 @@ describe("chimee's binder", () => {
     expect(rawFn).toHaveBeenCalledTimes(1);
   });
 
-  test('mouseleave video to outside should trigger', async () => {
+  test('mouseleave video to to outside should trigger', async () => {
     const fn = jest.fn();
     const rawFn = jest.fn();
     const plugin = {
-      name: 'mouseleave video to outside',
+      name: 'mouseleave video to outside node',
+      penetrate: true,
+      events: {
+        mouseleave: fn,
+      },
+    };
+    Chimee.install(plugin);
+    const { $video } = await player.use(plugin.name);
+    $video.dispatchEvent(new Event('mouseenter'));
+    const event = new Event('mouseleave');
+    // event.relatedTarget = $dom;
+    $video.addEventListener('mouseleave', rawFn);
+    $video.dispatchEvent(event);
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(rawFn).toHaveBeenCalledTimes(1);
+  });
+
+  test('mouseleave video to to inside node should not trigger', async () => {
+    const fn = jest.fn();
+    const rawFn = jest.fn();
+    const plugin = {
+      name: 'mouseleave video to inside node',
       penetrate: true,
       events: {
         mouseleave: fn,

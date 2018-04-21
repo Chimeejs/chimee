@@ -5,7 +5,7 @@
  */
 
 import Bus from './bus';
-import { videoEvents, domEvents, kernelEvents, passiveEvents,esFullscreenEvents } from 'helper/const';
+import { videoEvents, domEvents, kernelEvents, passiveEvents,esFullscreenEvents, mustListenVideoDomEvents } from 'helper/const';
 import { camelize, Log, isString, addEvent, removeEvent, isEmpty, isFunction } from 'chimee-helper';
 import { before, runnable } from 'toxic-decorators';
 import Dispatcher from './index';
@@ -219,18 +219,61 @@ export default class Binder {
 
   // when we create a penetrate plugin, we need to rebind video events on it
   bindEventOnPenetrateNode(node: Element, remove: boolean = false) {
-    this.bindedEventInfo['video-dom'].forEach(([ name, fn ]) => {
-      remove
-        ? removeEvent(node, name, fn)
-        : this._addEventOnDom(node, name, fn);
-    });
+    this.bindedEventInfo['video-dom']
+      .forEach(([ name, fn ]) => {
+        remove
+          ? removeEvent(node, name, fn)
+          : this._addEventOnDom(node, name, fn);
+      });
   }
 
+  // when we switch kernel, we will create a new video.
+  // we need to transfer the event from the oldvideo to it.
   bindEventOnVideo(node: Element, remove: boolean = false) {
-    this.bindedEventInfo['video-dom'].concat(this.bindedEventInfo.video).forEach(([ name, fn ]) => {
-      remove
-        ? removeEvent(node, name, fn)
-        : this._addEventOnDom(node, name, fn);
+    this.bindedEventInfo['video-dom']
+      .concat(this.bindedEventInfo.video)
+      .forEach(([ name, fn ]) => {
+        remove
+          ? removeEvent(node, name, fn)
+          : this._addEventOnDom(node, name, fn);
+      });
+  }
+
+  // As penetrate plugin is considered to be part of video
+  // we need to transfer event for it
+  // so we need some specail event handler
+  listenOnMouseMoveEvent(node: Element) {
+    const dom = this.__dispatcher.dom;
+    const target = 'video-dom';
+    const id = '_vm';
+    mustListenVideoDomEvents.forEach(name => {
+      const fn = (...args) => {
+        const { toElement, currentTarget, relatedTarget, type } = args[0];
+        const to = toElement || relatedTarget;
+        // As we support penetrate plugin, the video dom event may be differnet.
+        if (dom.mouseInVideo && type === 'mouseleave' && !dom.isNodeInsideVideo(to)) {
+          dom.mouseInVideo = false;
+          return this.triggerSync({
+            target,
+            name,
+            id,
+          }, ...args);
+        }
+        if (!dom.mouseInVideo && type === 'mouseenter' && dom.isNodeInsideVideo(currentTarget)) {
+          dom.mouseInVideo = true;
+          return this.triggerSync({
+            target,
+            name,
+            id,
+          }, ...args);
+        }
+      };
+      this._addEventOnDom(node, name, fn);
+      if (this.bindedEventNames[target].indexOf(name) < 0) {
+        this.bindedEventNames[target].push(name);
+        // $FlowFixMe: fn must be function now
+        this.bindedEventInfo[target].push([ name, fn ]);
+      }
     });
   }
 
@@ -283,9 +326,7 @@ export default class Binder {
     target: binderTarget,
     id: string,
   }) {
-    // the plugin target do not need us to transfer
-    // so we do not need to bind
-    if (target === 'plugin' || target === 'esFullscreen') return;
+    if (!this._isEventNeedToBeHandled(target, name)) return;
     let fn;
     // if this event has been binded, return;
     if (this.bindedEventNames[target].indexOf(name) > -1) return;
@@ -302,26 +343,8 @@ export default class Binder {
       this._addEventOnDom(targetDom, name, fn);
     } else if (target === 'video-dom') {
       const { penetrate = false } = Dispatcher.getPluginConfig(id) || {};
-      if (!penetrate || [ 'mouseenter', 'mouseleave' ].indexOf(name) < 0) {
-        fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
-      } else {
-        const dom = this.__dispatcher.dom;
-        fn = (...args) => {
-          const { toElement, currentTarget, relatedTarget, type } = args[0];
-          const to = toElement || relatedTarget;
-
-          // As we support penetrate plugin, the video dom event may be differnet.
-          if (dom.mouseInVideo && type === 'mouseleave' && !dom.isNodeInsideVideo(to)) {
-            dom.mouseInVideo = false;
-            return this.triggerSync({ target, name, id: target }, ...args);
-          }
-          if (!dom.mouseInVideo && type === 'mouseenter' && dom.isNodeInsideVideo(currentTarget)) {
-            dom.mouseInVideo = true;
-            return this.triggerSync({ target, name, id: target }, ...args);
-          }
-        };
-        dom.videoExtendedNodes.forEach(node => this._addEventOnDom(node, name, fn));
-      }
+      fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
+      if (penetrate) this.__dispatcher.dom.videoExtendedNodes.forEach(node => this._addEventOnDom(node, name, fn));
       this._addEventOnDom(targetDom, name, fn);
     }
     this.bindedEventNames[target].push(name);
@@ -340,8 +363,7 @@ export default class Binder {
     name: string,
     target: binderTarget,
   }) {
-    // plugin event do not need us to bind on the target
-    if (target === 'plugin') return;
+    if (!this._isEventNeedToBeHandled(target, name)) return;
     const eventNamesList = this.bindedEventNames[target];
     const nameIndex = eventNamesList.indexOf(name);
     // if we have not bind this event before, we omit it
@@ -394,5 +416,15 @@ export default class Binder {
         break;
     }
     return targetDom;
+  }
+
+  _isEventNeedToBeHandled(target: binderTarget, name: string): boolean {
+    // the plugin target do not need us to transfer
+    // we have listened on esFullscreen in dom
+    // we have listened mustListenVideoDomEvents
+    // so the events above do not need to rebind
+    return target !== 'plugin' &&
+      target !== 'esFullscreen' &&
+      mustListenVideoDomEvents.indexOf(name) < 0;
   }
 }

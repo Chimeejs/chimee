@@ -92,6 +92,10 @@ export const selfProcessorEvents = [
   'silentLoad',
   'fullscreen',
 ];
+export const mustListenVideoDomEvents = [
+  'mouseenter',
+  'mouseleave',
+];
 export const kernelMethods = [
   'play',
   'pause',
