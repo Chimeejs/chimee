@@ -109,6 +109,7 @@ export default class Dispatcher {
       delete config.plugins;
     }
     this.binder = new Binder(this);
+    this.binder.listenOnMouseMoveEvent(this.dom.videoElement);
     // use the plugin user want to use
     this._initUserPlugin(config.plugin);
     // add default config for container

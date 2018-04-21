@@ -2,6 +2,7 @@
 import { isArray, isElement, isString, isHTMLString, hypenate, isFunction, isPosterityNode, isObject, isBoolean, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log, isEvent } from 'chimee-helper';
 import esFullscreen from 'es-fullscreen';
 import { autobind, before, waituntil } from 'toxic-decorators';
+import Dispatcher from './index';
 function targetCheck(target: string, ...args) {
   if (target === 'video') target = 'videoElement';
   if (!isElement(this[target])) throw new TypeError(`Your target "${target}" is not a legal HTMLElement`);
@@ -199,7 +200,8 @@ export default class Dom {
       dom.parentNode && dom.parentNode.removeChild(dom);
       this._autoFocusToVideo(dom, true);
     }
-    this.__dispatcher.binder.bindEventOnPenetrateNode(this.plugins[id], true);
+    const { penetrate = false } = Dispatcher.getPluginConfig(id) || {};
+    if (penetrate) this.__dispatcher.binder.bindEventOnPenetrateNode(dom, true);
     delete this.plugins[id];
   }
 
