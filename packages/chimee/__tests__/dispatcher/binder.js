@@ -32,4 +32,22 @@ describe('dispatcher/binder', () => {
     });
     expect(() => player.destroy()).not.toThrow();
   });
+
+  test('binder triggersync isEventEmitalbe backup', () => {
+    expect(() => player.__dispatcher.binder.triggerSync({})).not.toThrow();
+  });
+
+  test('binder emitsync isEventEmitalbe backup', () => {
+    expect(() => player.__dispatcher.binder.emitSync({ name: 'hello' })).not.toThrow();
+  });
+
+  test('prettifyEventParameter without function', () => {
+    expect(() => {
+      player.__dispatcher.binder.on({
+        name: 'what',
+        target: 'plugin',
+        stage: 'main',
+      });
+    }).toThrow('You must provide a function to handle with event what, but not undefined');
+  });
 });
