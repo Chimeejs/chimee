@@ -285,6 +285,7 @@ export default class Dom {
   }
 
   _autoFocusToVideo(element: Element, remove: boolean = false): void {
+    /* istanbule ignore next */
     if (!isElement(element)) return;
     (remove ? removeEvent : addEvent)(element, 'mouseup', this._focusToVideo, false, true);
     (remove ? removeEvent : addEvent)(element, 'touchend', this._focusToVideo, false, true);

@@ -188,4 +188,33 @@ describe("chimee's binder", () => {
     expect(rawFn).toHaveBeenCalledTimes(1);
     expect(fn).toHaveBeenCalledTimes(1);
   });
+
+  test('mouseleave video to inside node child element should not trigger', async () => {
+    const fn = jest.fn();
+    const rawFn = jest.fn();
+    const plugin = {
+      name: 'mouseenter inside node child node',
+      penetrate: true,
+      events: {
+        mouseleave: fn,
+      },
+    };
+    const plugin1 = {
+      name: 'in order to run reduce',
+      penetrate: true,
+    };
+    Chimee.install(plugin);
+    Chimee.install(plugin1);
+    const { $dom, $video } = await player.use(plugin.name);
+    await player.use(plugin1.name);
+    const childnode = document.createElement('div');
+    $dom.appendChild(childnode);
+    $video.dispatchEvent(new Event('mouseenter'));
+    $video.addEventListener('mouseleave', rawFn);
+    const event = new Event('mouseleave');
+    event.relatedTarget = childnode;
+    $video.dispatchEvent(event);
+    expect(rawFn).toHaveBeenCalledTimes(1);
+    expect(fn).toHaveBeenCalledTimes(0);
+  });
 });
