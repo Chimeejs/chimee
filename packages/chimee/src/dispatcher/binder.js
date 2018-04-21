@@ -183,7 +183,7 @@ export default class Binder {
   emit({
     target,
     name,
-    id,
+    // id,
   }: emitEventInfo, ...args: any[]) {
     return this.buses[target].emit(name, ...args);
   }
@@ -193,7 +193,7 @@ export default class Binder {
   emitSync({
     target,
     name,
-    id,
+    // id,
   }: emitEventInfo, ...args: any[]) {
     return this.buses[target].emitSync(name, ...args);
   }
@@ -203,7 +203,7 @@ export default class Binder {
   trigger({
     target,
     name,
-    id,
+    // id,
   }: emitEventInfo, ...args: any[]) {
     return this.buses[target].trigger(name, ...args);
   }
@@ -213,7 +213,7 @@ export default class Binder {
   triggerSync({
     target,
     name,
-    id,
+    // id,
   }: emitEventInfo, ...args: any[]) {
     return this.buses[target].triggerSync(name, ...args);
   }
