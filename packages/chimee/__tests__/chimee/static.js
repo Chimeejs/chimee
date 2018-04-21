@@ -43,7 +43,7 @@ describe('Chimee static method', () => {
 
   test('registerEvents', () => {
     expect(() => Chimee.registerEvents()).toThrow('The event name must be a string, but not undefined');
-    expect(() => Chimee.registerEvents({ name: 'test' })).toThrow('The event type must be a string, but not undefined');
-    expect(() => Chimee.registerEvents({ name: 'test', type: 'test' })).not.toThrow();
+    expect(() => Chimee.registerEvents({ name: 'test' })).toThrow('The event target must be a string, but not undefined');
+    expect(() => Chimee.registerEvents({ name: 'test', target: 'test' })).not.toThrow();
   });
 });

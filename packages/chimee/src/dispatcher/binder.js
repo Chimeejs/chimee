@@ -54,13 +54,13 @@ function getEventTargetByEventName(name: string): binderTarget {
   return 'plugin';
 }
 
-function getEventInfo({ name, target }: rawEventInfo): additionalEventInfo {
+function getEventInfo({ name, target, stage }: rawEventInfo): additionalEventInfo {
   const oldInfo = getEventTargetByOldLogic(name);
   if (oldInfo) {
     name = oldInfo.name;
     target = oldInfo.target;
   }
-  const { stage, name: newName } = getEventStage(name);
+  const { stage: newStage, name: newName } = getEventStage(name);
   name = newName;
 
   if (!target) {
@@ -69,7 +69,7 @@ function getEventInfo({ name, target }: rawEventInfo): additionalEventInfo {
 
   return {
     name,
-    stage,
+    stage: stage || newStage,
     target,
   };
 }
