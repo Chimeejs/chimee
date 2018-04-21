@@ -102,6 +102,7 @@ export default class Chimee extends VideoWrapper {
     const errorHandler = this.config.errorHandler || Chimee.config.errorHandler;
     if (isFunction(errorHandler)) return errorHandler(error);
     if (Chimee.config.silent) return;
+    /* istanbul ignore else */
     if (isError(error)) throw error;
     else console.error(error);
   }
