@@ -25,6 +25,7 @@ function getEventTargetByOldLogic(oldName: string): { name: string, target: bind
     const target = oldName.indexOf('c') === 0
       ? 'container'
       : 'wrapper';
+    /* istanbul ignore else  */
     if (process.env.NODE_ENV !== 'production') {
       Log.warn(`We no longer support event names like ${oldName}. Please use ${name} and options like { target: '${target}' } instead`);
     }
@@ -180,7 +181,7 @@ export default class Binder {
   @runnable(isEventEmitalbe)
   @before(checkEventEmitParameter)
   emit({
-    target = 'video',
+    target,
     name,
     id,
   }: emitEventInfo, ...args: any[]) {
@@ -190,7 +191,7 @@ export default class Binder {
   @runnable(isEventEmitalbe, { backup() { return false; } })
   @before(checkEventEmitParameter)
   emitSync({
-    target = 'video',
+    target,
     name,
     id,
   }: emitEventInfo, ...args: any[]) {
@@ -200,7 +201,7 @@ export default class Binder {
   @runnable(isEventEmitalbe)
   @before(checkEventEmitParameter)
   trigger({
-    target = 'video',
+    target,
     name,
     id,
   }: emitEventInfo, ...args: any[]) {
@@ -210,7 +211,7 @@ export default class Binder {
   @runnable(isEventEmitalbe, { backup() { return false; } })
   @before(checkEventEmitParameter)
   triggerSync({
-    target = 'video',
+    target,
     name,
     id,
   }: emitEventInfo, ...args: any[]) {
