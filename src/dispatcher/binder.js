@@ -269,6 +269,10 @@ export default class Binder {
         }
       };
       this._addEventOnDom(node, name, fn);
+      // this function is only used once now
+      // so we do not cover this branch
+      // but we still keep this judegement
+      /* istanbul ignore else  */
       if (this.bindedEventNames[target].indexOf(name) < 0) {
         this.bindedEventNames[target].push(name);
         // $FlowFixMe: fn must be function now

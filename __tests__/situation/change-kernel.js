@@ -1,6 +1,10 @@
 import Chimee from 'index';
 import flv from 'chimee-kernel-flv';
 
+function sleep(duration) {
+  return new Promise(resolve => setTimeout(resolve, duration));
+}
+
 describe('changeKernel', () => {
   test('property should change', async () => {
     const originFn = global.URL.revokeObjectURL;
@@ -11,7 +15,10 @@ describe('changeKernel', () => {
       box: 'native',
       autoload: false,
     });
+    // test migrateKernelEvent
     chimee.on('heartbeat', () => {});
+    // test bindEventOnVideo
+    chimee.on('play', () => {});
     expect(chimee.isLive).toBe(false);
     expect(chimee.box).toBe('native');
     expect(chimee.preset).toEqual({});
@@ -33,7 +40,7 @@ describe('changeKernel', () => {
       box: 'native',
       kernels: [],
     });
-    await Promise.resolve();
+    await sleep(100);
     expect(chimee.isLive).toBe(false);
     expect(chimee.box).toBe('native');
     // 因为 preset 不为人知，所以这方面保持逻辑正确即可
