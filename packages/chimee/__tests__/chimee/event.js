@@ -69,6 +69,10 @@ describe('chimee event method', () => {
   test('off from real dom', () => {
     expect(() => player.on('click', function() {})).not.toThrow();
     expect(() => player.off('click', function() {})).not.toThrow();
-    expect(() => player.off('click', function() {})).not.toThrow();
+  });
+
+  test('passive event', () => {
+    expect(() => player.on('touchmove', function() {})).not.toThrow();
+    expect(() => player.off('touchmove', function() {})).not.toThrow();
   });
 });
