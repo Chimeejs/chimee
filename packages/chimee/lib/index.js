@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.0-alpha
+ * chimee v0.10.0-alpha.1
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -1043,7 +1043,7 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec$2(_class$2 = functi
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.10.0-alpha';
+    _this.VERSION = '0.10.0-alpha.1';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -3741,7 +3741,9 @@ var Chimee = (_dec$7 = toxicDecorators.autobindClass(), _dec$7(_class$8 = (_clas
   }]);
 
   return Chimee;
-}(VideoWrapper), _class3.plugin = Plugin, _class3.config = new GlobalConfig(), _class3.install = Dispatcher.install, _class3.uninstall = Dispatcher.uninstall, _class3.hasInstalled = Dispatcher.hasInstalled, _class3.installKernel = Dispatcher.installKernel, _class3.uninstallKernel = Dispatcher.uninstallKernel, _class3.hasInstalledKernel = Dispatcher.hasInstalledKernel, _class3.getPluginConfig = Dispatcher.getPluginConfig, _temp), _descriptor$2 = _applyDecoratedDescriptor$7(_class2$1.prototype, '__id', [toxicDecorators.frozen], {
+}(VideoWrapper), _class3.plugin = Plugin, _class3.config = new GlobalConfig(), _class3.install = Dispatcher.install, _class3.uninstall = Dispatcher.uninstall, _class3.hasInstalled = Dispatcher.hasInstalled, _class3.installKernel = Dispatcher.installKernel, _class3.uninstallKernel = Dispatcher.uninstallKernel, _class3.hasInstalledKernel = Dispatcher.hasInstalledKernel, _class3.getPluginConfig = Dispatcher.getPluginConfig, _class3._constInfo = {
+  kernelEvents: kernelEvents
+}, _temp), _descriptor$2 = _applyDecoratedDescriptor$7(_class2$1.prototype, '__id', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
     return '_vm';
@@ -3749,7 +3751,7 @@ var Chimee = (_dec$7 = toxicDecorators.autobindClass(), _dec$7(_class$8 = (_clas
 }), _descriptor2$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.10.0-alpha';
+    return '0.10.0-alpha.1';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
