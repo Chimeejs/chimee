@@ -78,14 +78,11 @@ describe('chimee-kernel index.js', () => {
     });
 
     test('seek without number', () => {
-      const fn = jest.fn();
-      kernel.on('error', fn);
       expect(kernel.videoElement.currentTime).toBe(0);
       kernel.load();
       expect(kernel.videoElement.currentTime).toBe(0);
       kernel.seek(true);
       expect(Log.data.error[0]).toEqual([ 'chimee-kernel', 'When you try to seek, you must offer us a number, but not boolean' ]);
-      expect(fn).toHaveBeenCalledTimes(1);
       expect(kernel.videoElement.currentTime).toBe(0);
     });
 
@@ -151,6 +148,9 @@ describe('chimee-kernel index.js', () => {
     test('event listener', () => {
       const fn = jest.fn();
       kernel.on('error', fn);
+      kernel.videoKernel.emit('error', 'test');
+      expect(fn).toHaveBeenCalledTimes(1);
+      kernel.off('error', fn);
       kernel.videoKernel.emit('error', 'test');
       expect(fn).toHaveBeenCalledTimes(1);
     });

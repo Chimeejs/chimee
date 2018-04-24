@@ -1,17 +1,16 @@
 // @flow
-import { Log, CustEvent, isNumber, deepAssign, isString, isFunction, isElement } from 'chimee-helper';
+import { Log, isNumber, deepAssign, isString, isFunction, isElement } from 'chimee-helper';
 import NativeVideoKernel from './native/index';
 import defaultConfig from './config';
 
 const LOG_TAG = 'chimee-kernel';
-const kernelEvents = [ 'mediaInfo', 'heartbeat', 'error' ];
 const boxSuffixMap = {
   flv: '.flv',
   hls: '.m3u8',
   mp4: '.mp4',
 };
 
-export default class ChimeeKernel extends CustEvent {
+export default class ChimeeKernel {
   box: string;
   boxConfig: Object;
   config: KernelConfig;
@@ -26,18 +25,15 @@ export default class ChimeeKernel extends CustEvent {
 	 * @class kernel
 	 */
   constructor(videoElement: HTMLVideoElement, config: KernelConfig) {
-    super();
     if (!isElement(videoElement)) throw new Error('You must pass in an video element to the chimee-kernel');
     // copy and maintain only one config for chimee-kernel
     // actually kernel is disposable in most situation nowaday
     this.config = deepAssign({}, defaultConfig, config);
     this.videoElement = videoElement;
     this.initVideoKernel();
-    this.bindEvents(this.videoKernel);
   }
 
   destroy() {
-    this.bindEvents(this.videoKernel, true);
     this.videoKernel.destroy();
   }
 
@@ -96,29 +92,10 @@ export default class ChimeeKernel extends CustEvent {
     const supportMp4Kernel = hasLegalMp4Kernel && mp4Kernel.isSupport();
     // $FlowFixMe: we have make sure it's an kernel now
     if (supportMp4Kernel) return mp4Kernel;
-    if (hasLegalMp4Kernel) this.warnLog('mp4 decode is not support in this browser, we will switch to the native video kernel');
+    if (hasLegalMp4Kernel) Log.warn(LOG_TAG, 'mp4 decode is not support in this browser, we will switch to the native video kernel');
     this.box = 'native';
     // $FlowFixMe: it's the same as videoKernel
     return NativeVideoKernel;
-  }
-
-  errorLog(...args: Array<string>) {
-    this.emit('error', new Error(args[0]));
-    return Log.error(LOG_TAG, ...args);
-  }
-
-  warnLog(...args: Array<string>) {
-    return Log.warn(LOG_TAG, ...args);
-  }
-
-  bindEvents(videoKernel: VideoKernel, remove: boolean = false) {
-    kernelEvents.forEach(eventName => {
-      /* istanbul ignore next  */
-      // $FlowFixMe: we have make sure it's legal now
-      videoKernel[remove ? 'off' : 'on'](eventName, ({ data } = {}) => {
-        this.emit(eventName, data);
-      });
-    });
   }
 
   attachMedia() {
@@ -155,12 +132,21 @@ export default class ChimeeKernel extends CustEvent {
 
   seek(seconds: number) {
     if (!isNumber(seconds)) {
-      this.errorLog(`When you try to seek, you must offer us a number, but not ${typeof seconds}`);
+      Log.error(LOG_TAG, `When you try to seek, you must offer us a number, but not ${typeof seconds}`);
       return;
     }
     this.videoKernel.seek(seconds);
   }
+
   refresh() {
     this.videoKernel.refresh();
+  }
+
+  on(key: string, fn: Function) {
+    this.videoKernel.on(key, fn);
+  }
+
+  off(key: string, fn: Function) {
+    this.videoKernel.off(key, fn);
   }
 }
