@@ -45,6 +45,8 @@ npm install --save chimee
 
 You can get the cdn url on [https://cdnjs.com/libraries/chimee](https://cdnjs.com/libraries/chimee).
 
+If you are in china, you can get the cdn url on [https://www.jsdelivr.com/package/npm/chimee](https://www.jsdelivr.com/package/npm/chimee).
+
 ## Usage
 
 You can use Chimee directly.

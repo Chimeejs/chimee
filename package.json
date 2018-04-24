@@ -66,6 +66,7 @@
     "chimee-kernel-flv": "^1.4.10",
     "chimee-kernel-hls": "^1.3.0",
     "chimee-mobile-player": "^0.2.1",
+    "chimee-player": "^1.3.3",
     "chimee-plugin-center-state": "0.0.10",
     "chimee-plugin-controlbar": "^0.4.0",
     "chimee-plugin-danmu": "0.0.9",

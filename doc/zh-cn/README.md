@@ -41,6 +41,8 @@ npm install --save chimee
 
 你可以前往 [https://cdnjs.com/libraries/chimee](https://cdnjs.com/libraries/chimee) 获取各个版本的 cdn 地址。
 
+如果你在国内，你可以使用 [https://www.jsdelivr.com/package/npm/chimee](https://www.jsdelivr.com/package/npm/chimee) 获取。
+
 ## 用法
 
 你可以直接使用 chimee。
