@@ -153,7 +153,7 @@ export default class Dispatcher {
    * @param  {Object|string} option you can just set a plugin name or plugin config
    * @return {Promise}
    */
-  use(option: string | PluginOption) {
+  use(option: string | PluginOption): Promise<*> {
     if (isString(option)) option = { name: option, alias: undefined };
     if (!isObject(option) || (isObject(option) && !isString(option.name))) {
       throw new TypeError('pluginConfig do not match requirement');
@@ -464,7 +464,7 @@ export default class Dispatcher {
    * @param  {Array<UserPluginConfig>}  configs  a set of plugin config
    * @return {Array<Promise>}   a set of Promise indicate the plugin install stage
    */
-  _initUserPlugin(configs: Array<string | PluginOption> = []) {
+  _initUserPlugin(configs: Array<string | PluginOption> = []): Promise<*>[] {
     if (!isArray(configs)) {
       /* istanbul ignore else  */
       if (process.env.NODE_ENV !== 'production') Log.warn('Dispatcher', `UserConfig.plugin can only by an Array, but not "${configs}" in ${typeof configs}`);
