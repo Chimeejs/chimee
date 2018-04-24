@@ -63,6 +63,10 @@ export default class Chimee extends VideoWrapper {
   @frozen
   static getPluginConfig = Dispatcher.getPluginConfig;
 
+  static _constInfo = {
+    kernelEvents,
+  };
+
   // In some situation, we may have custom events
   // For example, we may have a custom kernel event
   // We can register the event through this method
