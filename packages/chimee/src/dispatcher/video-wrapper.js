@@ -236,7 +236,15 @@ export default @autobindClass() class VideoWrapper {
    * @param  {...args} args
    */
   @alias('emit')
-  $emit(key: string, ...args: any) {
+  $emit(key: string | {
+    target: binderTarget,
+    name: string,
+  }, ...args: any) {
+    let target: binderTarget | void;
+    if (isObject(key) && isString(key.name) && isString(key.target)) {
+      target = key.target;
+      key = key.name;
+    }
     if (!isString(key)) throw new TypeError('emit key parameter must be String');
     /* istanbul ignore else  */
     if (process.env.NODE_ENV !== 'production' && domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
@@ -245,6 +253,7 @@ export default @autobindClass() class VideoWrapper {
     this.__dispatcher.binder.emit({
       name: key,
       id: this.__id,
+      target,
     }, ...args);
   }
 
@@ -254,11 +263,20 @@ export default @autobindClass() class VideoWrapper {
    * @param  {...args} args
    */
   @alias('emitSync')
-  $emitSync(key: string, ...args: any) {
+  $emitSync(key: string | {
+    target: binderTarget,
+    name: string,
+  }, ...args: any) {
+    let target;
+    if (isObject(key) && isString(key.name) && isString(key.target)) {
+      target = key.target;
+      key = key.name;
+    }
     if (!isString(key)) throw new TypeError('emitSync key parameter must be String');
     return this.__dispatcher.binder.emitSync({
       name: key,
       id: this.__id,
+      target,
     }, ...args);
   }
 

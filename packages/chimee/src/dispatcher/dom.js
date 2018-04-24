@@ -69,6 +69,8 @@ export default class Dom {
     this.__dispatcher = dispatcher;
     if (!isElement(wrapper) && !isString(wrapper)) throw new TypeError(`Wrapper can only be string or HTMLElement, but not ${typeof wrapper}`);
     const $wrapper = $(wrapper);
+    // TODO: we have to decalre length for wrapper
+    // $FlowFixMe: we have to decalre length here
     if ($wrapper.length === 0) {
       throw new TypeError('Can not get dom node accroding wrapper. Please check your wrapper');
     }

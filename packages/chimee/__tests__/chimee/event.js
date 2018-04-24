@@ -46,10 +46,80 @@ describe('chimee event method', () => {
     expect(() => player.emitSync('click')).not.toThrow();
   });
 
-  test('emit', async () => {
-    expect(() => player.emit(1)).toThrow();
-    await expect(() => player.emit('click')).not.toThrow();
-    await expect(() => player.emit('play')).not.toThrow();
+  describe('emnit', () => {
+    let fn;
+    beforeEach(() => {
+      fn = jest.fn();
+    });
+
+    test('emitSync', async () => {
+      expect(() => player.emitSync(1)).toThrow();
+      expect(() => player.emitSync('click')).not.toThrow();
+      expect(() => player.emitSync('play')).not.toThrow();
+    });
+
+    test('normal emitSync test', async () => {
+      player.on('hello', fn);
+      player.emitSync('hello', 1);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).lastCalledWith(1);
+    });
+
+    test('emitSync with target', async () => {
+      const fn1 = jest.fn();
+      player.on('hello', fn1, { target: 'kernel' });
+      player.on('hello', fn);
+      player.emitSync('hello', 1);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).lastCalledWith(1);
+      expect(fn1).toHaveBeenCalledTimes(0);
+      player.emitSync({
+        name: 'hello',
+        target: 'kernel',
+      }, 2);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).lastCalledWith(1);
+      expect(fn1).toHaveBeenCalledTimes(1);
+      expect(fn1).lastCalledWith(2);
+    });
+  });
+
+  describe('emnit', () => {
+    let fn;
+    beforeEach(() => {
+      fn = jest.fn();
+    });
+
+    test('emit', async () => {
+      expect(() => player.emit(1)).toThrow();
+      await expect(() => player.emit('click')).not.toThrow();
+      await expect(() => player.emit('play')).not.toThrow();
+    });
+
+    test('normal emit test', async () => {
+      player.on('hello', fn);
+      await player.emit('hello', 1);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).lastCalledWith(1);
+    });
+
+    test('emit with target', async () => {
+      const fn1 = jest.fn();
+      player.on('hello', fn1, { target: 'kernel' });
+      player.on('hello', fn);
+      await player.emit('hello', 1);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).lastCalledWith(1);
+      expect(fn1).toHaveBeenCalledTimes(0);
+      await player.emit({
+        name: 'hello',
+        target: 'kernel',
+      }, 2);
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(fn).lastCalledWith(1);
+      expect(fn1).toHaveBeenCalledTimes(1);
+      expect(fn1).lastCalledWith(2);
+    });
   });
 
   test('once', () => {

@@ -21,7 +21,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: [ 'mocha' ],
+    frameworks: [ 'mocha', 'chai' ],
 
     // list of files / patterns to load in the browser
     files: [
@@ -45,7 +45,7 @@ module.exports = function(config) {
 
     rollupPreprocessor: {
       output: {
-        format: 'umd', // Helps prevent naming collisions.
+        format: 'iife', // Helps prevent naming collisions.
         name: camelize(name), // Required for 'iife' format.
       },
       plugins: rollupConfig.plugins,

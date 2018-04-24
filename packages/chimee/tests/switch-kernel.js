@@ -1,6 +1,4 @@
 import Chimee from '../src/index';
-import chai from 'chai';
-const { expect } = chai;
 describe('check for chimee switch kernel function', () => {
   it('should not trigger volume change', async function() {
     this.timeout(10000);
@@ -22,6 +20,7 @@ describe('check for chimee switch kernel function', () => {
     } catch (error) {
       console.error(error);
     }
+    console.warn(expect);
     expect(count).to.equal(0);
   });
 });
