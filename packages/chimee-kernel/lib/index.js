@@ -1,6 +1,6 @@
 
 /**
- * chimee-kernel v1.4.0
+ * chimee-kernel v1.5.0-alpha
  * (c) 2017-2018 songguangyu
  * Released under MIT
  */
@@ -12,8 +12,8 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var _typeof = _interopDefault(require('babel-runtime/helpers/typeof'));
 var _Object$getPrototypeOf = _interopDefault(require('babel-runtime/core-js/object/get-prototype-of'));
 var _classCallCheck = _interopDefault(require('babel-runtime/helpers/classCallCheck'));
-var _createClass = _interopDefault(require('babel-runtime/helpers/createClass'));
 var _possibleConstructorReturn = _interopDefault(require('babel-runtime/helpers/possibleConstructorReturn'));
+var _createClass = _interopDefault(require('babel-runtime/helpers/createClass'));
 var _inherits = _interopDefault(require('babel-runtime/helpers/inherits'));
 var chimeeHelper = require('chimee-helper');
 
@@ -109,16 +109,13 @@ var defaultConfig = {
 };
 
 var LOG_TAG = 'chimee-kernel';
-var kernelEvents = ['mediaInfo', 'heartbeat', 'error'];
 var boxSuffixMap = {
   flv: '.flv',
   hls: '.m3u8',
   mp4: '.mp4'
 };
 
-var ChimeeKernel = function (_CustEvent) {
-  _inherits(ChimeeKernel, _CustEvent);
-
+var ChimeeKernel = function () {
   /**
   * kernelWrapper
   * @param {any} wrap videoElement
@@ -128,24 +125,19 @@ var ChimeeKernel = function (_CustEvent) {
   function ChimeeKernel(videoElement, config) {
     _classCallCheck(this, ChimeeKernel);
 
-    var _this = _possibleConstructorReturn(this, (ChimeeKernel.__proto__ || _Object$getPrototypeOf(ChimeeKernel)).call(this));
-
-    _this.VERSION = '1.4.0';
+    this.VERSION = '1.5.0-alpha';
 
     if (!chimeeHelper.isElement(videoElement)) throw new Error('You must pass in an video element to the chimee-kernel');
     // copy and maintain only one config for chimee-kernel
     // actually kernel is disposable in most situation nowaday
-    _this.config = chimeeHelper.deepAssign({}, defaultConfig, config);
-    _this.videoElement = videoElement;
-    _this.initVideoKernel();
-    _this.bindEvents(_this.videoKernel);
-    return _this;
+    this.config = chimeeHelper.deepAssign({}, defaultConfig, config);
+    this.videoElement = videoElement;
+    this.initVideoKernel();
   }
 
   _createClass(ChimeeKernel, [{
     key: 'destroy',
     value: function destroy() {
-      this.bindEvents(this.videoKernel, true);
       this.videoKernel.destroy();
     }
   }, {
@@ -158,12 +150,12 @@ var ChimeeKernel = function (_CustEvent) {
 
       if (!chimeeHelper.isFunction(VideoKernel)) throw new Error('We can\'t find video kernel for ' + box + '. Please check your config and make sure it\'s installed or provided');
 
-      var customConfig = config.presetConfig[this.box] || {};
+      var customConfig = config.presetConfig[this.box];
 
       // TODO: nowaday, kernels all get config from one config
       // it's not a good way, because custom config may override kernel config
       // so we may remove this code later
-      chimeeHelper.deepAssign(config, customConfig);
+      if (customConfig) chimeeHelper.deepAssign(config, customConfig);
 
       this.videoKernel = new VideoKernel(this.videoElement, config, customConfig);
     }
@@ -217,47 +209,10 @@ var ChimeeKernel = function (_CustEvent) {
       var supportMp4Kernel = hasLegalMp4Kernel && mp4Kernel.isSupport();
       // $FlowFixMe: we have make sure it's an kernel now
       if (supportMp4Kernel) return mp4Kernel;
-      if (hasLegalMp4Kernel) this.warnLog('mp4 decode is not support in this browser, we will switch to the native video kernel');
+      if (hasLegalMp4Kernel) chimeeHelper.Log.warn(LOG_TAG, 'mp4 decode is not support in this browser, we will switch to the native video kernel');
       this.box = 'native';
       // $FlowFixMe: it's the same as videoKernel
       return NativeVideoKernel;
-    }
-  }, {
-    key: 'errorLog',
-    value: function errorLog() {
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      this.emit('error', new Error(args[0]));
-      return chimeeHelper.Log.error.apply(chimeeHelper.Log, [LOG_TAG].concat(args));
-    }
-  }, {
-    key: 'warnLog',
-    value: function warnLog() {
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      return chimeeHelper.Log.warn.apply(chimeeHelper.Log, [LOG_TAG].concat(args));
-    }
-  }, {
-    key: 'bindEvents',
-    value: function bindEvents(videoKernel) {
-      var _this2 = this;
-
-      var remove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-      kernelEvents.forEach(function (eventName) {
-        /* istanbul ignore next  */
-        // $FlowFixMe: we have make sure it's legal now
-        videoKernel[remove ? 'off' : 'on'](eventName, function () {
-          var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-              data = _ref2.data;
-
-          _this2.emit(eventName, data);
-        });
-      });
     }
   }, {
     key: 'attachMedia',
@@ -299,7 +254,7 @@ var ChimeeKernel = function (_CustEvent) {
     key: 'seek',
     value: function seek(seconds) {
       if (!chimeeHelper.isNumber(seconds)) {
-        this.errorLog('When you try to seek, you must offer us a number, but not ' + (typeof seconds === 'undefined' ? 'undefined' : _typeof(seconds)));
+        chimeeHelper.Log.error(LOG_TAG, 'When you try to seek, you must offer us a number, but not ' + (typeof seconds === 'undefined' ? 'undefined' : _typeof(seconds)));
         return;
       }
       this.videoKernel.seek(seconds);
@@ -310,6 +265,16 @@ var ChimeeKernel = function (_CustEvent) {
       this.videoKernel.refresh();
     }
   }, {
+    key: 'on',
+    value: function on(key, fn) {
+      this.videoKernel.on(key, fn);
+    }
+  }, {
+    key: 'off',
+    value: function off(key, fn) {
+      this.videoKernel.off(key, fn);
+    }
+  }, {
     key: 'currentTime',
     get: function get() {
       return this.videoElement.currentTime || 0;
@@ -317,6 +282,6 @@ var ChimeeKernel = function (_CustEvent) {
   }]);
 
   return ChimeeKernel;
-}(chimeeHelper.CustEvent);
+}();
 
 module.exports = ChimeeKernel;
