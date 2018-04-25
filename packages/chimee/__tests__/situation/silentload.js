@@ -8,6 +8,7 @@ describe('$silentLoad', () => {
   let oldKernel;
   let video;
   let originFn;
+
   beforeEach(() => {
     player = new Chimee({
       wrapper: document.createElement('div'),
@@ -26,10 +27,12 @@ describe('$silentLoad', () => {
       return bind(originFn, document)(tag);
     };
   });
+
   afterEach(() => {
     global.document.createElement = originFn;
     player.destroy();
   });
+
   // need to mock chimeeKernelFlv function on jest
   // test('silentload should use default preset and kernels if people do not pass one', async () => {
   //   const wrapper = document.createElement('div');
@@ -85,6 +88,7 @@ describe('$silentLoad', () => {
     player.src = 'http://cdn.toxicjohann.com/lostStar.mp4';
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
   });
+
   test('abort when ready', async () => {
     const option = {};
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', option);
@@ -101,6 +105,7 @@ describe('$silentLoad', () => {
     option.abort = true;
     await expect(result).rejects.toEqual(new Error('user abort the mission'));
   });
+
   test('abort at start', async () => {
     const option = {};
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', option);
@@ -109,6 +114,7 @@ describe('$silentLoad', () => {
     await expect(result).rejects.toEqual(new Error('user abort the mission'));
     expect(Log.data.warn).toEqual([[ "chimee's silentLoad", 'user abort the mission' ]]);
   });
+
   test('timeout', async () => {
     const option = {};
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', option);
@@ -118,6 +124,7 @@ describe('$silentLoad', () => {
     await expect(result).rejects.toEqual(new Error('The silentLoad for http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4 timed out. Please set a longer duration or check your network'));
     expect(Log.data.warn).toEqual([[ "chimee's silentLoad", 'The silentLoad for http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4 timed out. Please set a longer duration or check your network' ]]);
   });
+
   test('immediate', async () => {
     const option = { immediate: true };
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', option);
@@ -141,6 +148,7 @@ describe('$silentLoad', () => {
     player.src = 'http://cdn.toxicjohann.com/lostStar.mp4';
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
   });
+
   test('isLive', async () => {
     const option = { isLive: true };
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', option);
@@ -164,6 +172,7 @@ describe('$silentLoad', () => {
     player.src = 'http://cdn.toxicjohann.com/lostStar.mp4';
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
   });
+
   test('repeat times', async () => {
     const plugin = {
       name: 'silentLoadWithPlugin',
@@ -207,6 +216,7 @@ describe('$silentLoad', () => {
     player.src = 'http://cdn.toxicjohann.com/lostStar.mp4';
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
   });
+
   test('unknow error', async () => {
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
     await Promise.resolve();
@@ -218,6 +228,7 @@ describe('$silentLoad', () => {
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
     expect(Log.data.error).toEqual([[ "chimee's silentload", 'unknow video error' ]]);
   });
+
   test('video error', async () => {
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
     await Promise.resolve();
@@ -230,11 +241,12 @@ describe('$silentLoad', () => {
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
     expect(Log.data.error).toEqual([[ "chimee's silentload", 'MEDIA_ELEMENT_ERROR: Format error' ]]);
   });
+
   test('kernel error', async () => {
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
     await Promise.resolve();
     // simulate video error
-    player.__dispatcher._silentLoadTempKernel.emit('error', {
+    player.__dispatcher._silentLoadTempKernel.videoKernel.emit('error', {
       errmsg: 'test error',
       errno: 500,
     });
@@ -244,6 +256,7 @@ describe('$silentLoad', () => {
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
     expect(Log.data.error).toEqual([[ "chimee's silentload bump into a kernel error", 'test error' ]]);
   });
+
   test('error in repeat times', async () => {
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', { repeatTimes: 1 });
     await Promise.resolve();
@@ -266,6 +279,7 @@ describe('$silentLoad', () => {
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
     expect(Log.data.error).toEqual([[ "chimee's silentload", 'MEDIA_ELEMENT_ERROR: Format error' ]]);
   });
+
   test('error remove', async () => {
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', { immediate: true });
     await Promise.resolve();
@@ -278,6 +292,7 @@ describe('$silentLoad', () => {
     video.dispatchEvent(new Event('error'));
     expect(Log.data.error).toEqual([]);
   });
+
   test('should not trigger play when we silentLoad', async () => {
     const fn = jest.fn();
     player.$on('play', fn);
@@ -304,6 +319,7 @@ describe('load', () => {
   let oldKernel;
   let video;
   let originFn;
+
   beforeEach(() => {
     player = new Chimee({
       wrapper: document.createElement('div'),
@@ -322,10 +338,12 @@ describe('load', () => {
       return bind(originFn, document)(tag);
     };
   });
+
   afterEach(() => {
     global.document.createElement = originFn;
     player.destroy();
   });
+
   test('load with different box', async () => {
     player.load('http://yunxianchang.live.ujne7.com/vod-system-bj/79_3041054cc65-ae8c-4b63-8937-5ccb05f79720.m3u8', {
       box: 'hls',
@@ -338,6 +356,7 @@ describe('load', () => {
     expect(player.$video).toBe(video);
     expect(player.__dispatcher.kernel).not.toBe(oldKernel);
   });
+
   test('load with different box', async () => {
     player.load('http://yunxianchang.live.ujne7.com/vod-system-bj/79_3041054cc65-ae8c-4b63-8937-5ccb05f79720.m3u8', {
       box: 'hls',
@@ -350,6 +369,7 @@ describe('load', () => {
     expect(player.$video).toBe(video);
     expect(player.__dispatcher.kernel).not.toBe(oldKernel);
   });
+
   test('load with different preset', async () => {
     player.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', {
       preset: {
@@ -362,6 +382,7 @@ describe('load', () => {
     expect(player.__dispatcher.kernel).not.toBe(oldKernel);
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
   });
+
   test('load with same box', async () => {
     player.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', {
       isLive: false,
@@ -373,6 +394,7 @@ describe('load', () => {
     expect(player.__dispatcher.kernel).not.toBe(oldKernel);
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
   });
+
   test('load with one object', async () => {
     player.load({
       src: 'http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4',
@@ -385,6 +407,7 @@ describe('load', () => {
     expect(player.__dispatcher.kernel).not.toBe(oldKernel);
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
   });
+
   test('load with one object', async () => {
     player.load({
       isLive: false,
