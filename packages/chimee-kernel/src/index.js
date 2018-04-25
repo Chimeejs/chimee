@@ -45,12 +45,12 @@ export default class ChimeeKernel {
 
     if (!isFunction(VideoKernel)) throw new Error(`We can't find video kernel for ${box}. Please check your config and make sure it's installed or provided`);
 
-    const customConfig = config.presetConfig[this.box] || {};
+    const customConfig = config.presetConfig[this.box];
 
     // TODO: nowaday, kernels all get config from one config
     // it's not a good way, because custom config may override kernel config
     // so we may remove this code later
-    deepAssign(config, customConfig);
+    if (customConfig) deepAssign(config, customConfig);
 
     this.videoKernel = new VideoKernel(this.videoElement, config, customConfig);
   }
