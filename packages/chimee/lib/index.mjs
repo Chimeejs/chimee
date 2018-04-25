@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.0-alpha.1
+ * chimee v0.10.0-alpha.2
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -301,7 +301,7 @@ var accessorMap = {
 
 var VideoConfig = (_dec = initBoolean(), _dec2 = initString(function (str) {
   return str.toLocaleLowerCase();
-}), _class = function () {
+}), (_class = function () {
 
   // 转为供 kernel 使用的内部参数
   function VideoConfig(dispatcher, config) {
@@ -382,7 +382,7 @@ var VideoConfig = (_dec = initBoolean(), _dec2 = initString(function (str) {
   }]);
 
   return VideoConfig;
-}(), _descriptor = _applyDecoratedDescriptor(_class.prototype, 'needToLoadSrc', [nonenumerable], {
+}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'needToLoadSrc', [nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
@@ -417,7 +417,7 @@ var VideoConfig = (_dec = initBoolean(), _dec2 = initString(function (str) {
   initializer: function initializer() {
     return ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume', 'x5VideoPlayerType'];
   }
-}), _class);
+})), _class));
 
 var _dec$1, _dec2$1, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _dec10, _dec11, _dec12, _dec13, _dec14, _dec15, _dec16, _dec17, _dec18, _dec19, _class$1, _class2;
 
@@ -962,7 +962,7 @@ var VideoWrapper = (_dec$1 = autobindClass(), _dec2$1 = alias('silentLoad'), _de
   }]);
 
   return VideoWrapper;
-}(), _applyDecoratedDescriptor$1(_class2.prototype, '$silentLoad', [_dec2$1], _Object$getOwnPropertyDescriptor(_class2.prototype, '$silentLoad'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$fullscreen', [_dec3, _dec4, _dec5], _Object$getOwnPropertyDescriptor(_class2.prototype, '$fullscreen'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emit'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emitSync'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2.prototype, '$on'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2.prototype, '$off'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2.prototype, '$once'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2.prototype, '$css'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2.prototype, '$attr'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$plugins'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$pluginOrder'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$wrapper'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$container'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$video'), _class2.prototype), _class2)) || _class$1);
+}(), (_applyDecoratedDescriptor$1(_class2.prototype, '$silentLoad', [_dec2$1], _Object$getOwnPropertyDescriptor(_class2.prototype, '$silentLoad'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$fullscreen', [_dec3, _dec4, _dec5], _Object$getOwnPropertyDescriptor(_class2.prototype, '$fullscreen'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emit'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emitSync'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2.prototype, '$on'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2.prototype, '$off'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2.prototype, '$once'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2.prototype, '$css'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2.prototype, '$attr'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$plugins'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$pluginOrder'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$wrapper'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$container'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$video'), _class2.prototype)), _class2)) || _class$1);
 
 var _dec$2, _class$2;
 
@@ -1039,7 +1039,7 @@ var Plugin = (_dec$2 = autobindClass(), _dec$2(_class$2 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.10.0-alpha.1';
+    _this.VERSION = '0.10.0-alpha.2';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -1323,7 +1323,7 @@ function attrOperationCheck(target, attr, val) {
  * It take charge of dom management of Dispatcher.
  * </pre>
  */
-var Dom = (_dec$3 = waituntil('__dispatcher.videoConfigReady'), _dec2$2 = before(attrOperationCheck, targetCheck), _dec3$1 = before(attrOperationCheck, targetCheck), _dec4$1 = before(attrOperationCheck, targetCheck), _dec5$1 = before(attrOperationCheck, targetCheck), _dec6$1 = before(targetCheck), _class$3 = function () {
+var Dom = (_dec$3 = waituntil('__dispatcher.videoConfigReady'), _dec2$2 = before(attrOperationCheck, targetCheck), _dec3$1 = before(attrOperationCheck, targetCheck), _dec4$1 = before(attrOperationCheck, targetCheck), _dec5$1 = before(attrOperationCheck, targetCheck), _dec6$1 = before(targetCheck), (_class$3 = function () {
   _createClass(Dom, [{
     key: 'mouseInVideo',
 
@@ -1664,7 +1664,7 @@ var Dom = (_dec$3 = waituntil('__dispatcher.videoConfigReady'), _dec2$2 = before
   }]);
 
   return Dom;
-}(), _applyDecoratedDescriptor$2(_class$3.prototype, 'setAttr', [_dec$3, _dec2$2], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'setAttr'), _class$3.prototype), _applyDecoratedDescriptor$2(_class$3.prototype, 'getAttr', [_dec3$1], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'getAttr'), _class$3.prototype), _applyDecoratedDescriptor$2(_class$3.prototype, 'setStyle', [_dec4$1], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'setStyle'), _class$3.prototype), _applyDecoratedDescriptor$2(_class$3.prototype, 'getStyle', [_dec5$1], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'getStyle'), _class$3.prototype), _applyDecoratedDescriptor$2(_class$3.prototype, 'requestFullscreen', [_dec6$1], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'requestFullscreen'), _class$3.prototype), _applyDecoratedDescriptor$2(_class$3.prototype, '_focusToVideo', [autobind], _Object$getOwnPropertyDescriptor(_class$3.prototype, '_focusToVideo'), _class$3.prototype), _applyDecoratedDescriptor$2(_class$3.prototype, '_fullscreenMonitor', [autobind], _Object$getOwnPropertyDescriptor(_class$3.prototype, '_fullscreenMonitor'), _class$3.prototype), _class$3);
+}(), (_applyDecoratedDescriptor$2(_class$3.prototype, 'setAttr', [_dec$3, _dec2$2], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'setAttr'), _class$3.prototype), _applyDecoratedDescriptor$2(_class$3.prototype, 'getAttr', [_dec3$1], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'getAttr'), _class$3.prototype), _applyDecoratedDescriptor$2(_class$3.prototype, 'setStyle', [_dec4$1], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'setStyle'), _class$3.prototype), _applyDecoratedDescriptor$2(_class$3.prototype, 'getStyle', [_dec5$1], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'getStyle'), _class$3.prototype), _applyDecoratedDescriptor$2(_class$3.prototype, 'requestFullscreen', [_dec6$1], _Object$getOwnPropertyDescriptor(_class$3.prototype, 'requestFullscreen'), _class$3.prototype), _applyDecoratedDescriptor$2(_class$3.prototype, '_focusToVideo', [autobind], _Object$getOwnPropertyDescriptor(_class$3.prototype, '_focusToVideo'), _class$3.prototype), _applyDecoratedDescriptor$2(_class$3.prototype, '_fullscreenMonitor', [autobind], _Object$getOwnPropertyDescriptor(_class$3.prototype, '_fullscreenMonitor'), _class$3.prototype)), _class$3));
 
 var defaultContainerConfig = {
   width: '100%',
@@ -1767,7 +1767,7 @@ var Bus = (_dec$4 = runnable(secondaryChecker), _dec2$3 = runnable(secondaryChec
   backup: function backup() {
     return false;
   }
-}), _class$4 = function () {
+}), (_class$4 = function () {
   /**
    * @param {Dispatcheer} dispatcher bus rely on dispatcher, so you mush pass dispatcher at first when you generate Bus.
    * @return {Bus}
@@ -2162,7 +2162,7 @@ var Bus = (_dec$4 = runnable(secondaryChecker), _dec2$3 = runnable(secondaryChec
   }]);
 
   return Bus;
-}(), _applyDecoratedDescriptor$3(_class$4.prototype, 'emit', [_dec$4], _Object$getOwnPropertyDescriptor(_class$4.prototype, 'emit'), _class$4.prototype), _applyDecoratedDescriptor$3(_class$4.prototype, 'emitSync', [_dec2$3], _Object$getOwnPropertyDescriptor(_class$4.prototype, 'emitSync'), _class$4.prototype), _applyDecoratedDescriptor$3(_class$4.prototype, 'trigger', [_dec3$2], _Object$getOwnPropertyDescriptor(_class$4.prototype, 'trigger'), _class$4.prototype), _applyDecoratedDescriptor$3(_class$4.prototype, 'triggerSync', [_dec4$2], _Object$getOwnPropertyDescriptor(_class$4.prototype, 'triggerSync'), _class$4.prototype), _class$4);
+}(), (_applyDecoratedDescriptor$3(_class$4.prototype, 'emit', [_dec$4], _Object$getOwnPropertyDescriptor(_class$4.prototype, 'emit'), _class$4.prototype), _applyDecoratedDescriptor$3(_class$4.prototype, 'emitSync', [_dec2$3], _Object$getOwnPropertyDescriptor(_class$4.prototype, 'emitSync'), _class$4.prototype), _applyDecoratedDescriptor$3(_class$4.prototype, 'trigger', [_dec3$2], _Object$getOwnPropertyDescriptor(_class$4.prototype, 'trigger'), _class$4.prototype), _applyDecoratedDescriptor$3(_class$4.prototype, 'triggerSync', [_dec4$2], _Object$getOwnPropertyDescriptor(_class$4.prototype, 'triggerSync'), _class$4.prototype)), _class$4));
 
 var _dec$5, _dec2$4, _dec3$3, _dec4$3, _dec5$2, _dec6$2, _dec7$1, _dec8$1, _dec9$1, _dec10$1, _dec11$1, _class$5;
 
@@ -2320,7 +2320,7 @@ var Binder = (_dec$5 = before(prettifyEventParameter), _dec2$4 = before(prettify
   backup: function backup() {
     return false;
   }
-}), _dec11$1 = before(checkEventEmitParameter), _class$5 = function () {
+}), _dec11$1 = before(checkEventEmitParameter), (_class$5 = function () {
   function Binder(dispatcher) {
     _classCallCheck(this, Binder);
 
@@ -2753,7 +2753,7 @@ var Binder = (_dec$5 = before(prettifyEventParameter), _dec2$4 = before(prettify
   }]);
 
   return Binder;
-}(), _applyDecoratedDescriptor$4(_class$5.prototype, 'on', [_dec$5], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'on'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'off', [_dec2$4], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'off'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'once', [_dec3$3], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'once'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'emit', [_dec4$3, _dec5$2], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'emit'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'emitSync', [_dec6$2, _dec7$1], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'emitSync'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'trigger', [_dec8$1, _dec9$1], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'trigger'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'triggerSync', [_dec10$1, _dec11$1], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'triggerSync'), _class$5.prototype), _class$5);
+}(), (_applyDecoratedDescriptor$4(_class$5.prototype, 'on', [_dec$5], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'on'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'off', [_dec2$4], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'off'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'once', [_dec3$3], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'once'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'emit', [_dec4$3, _dec5$2], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'emit'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'emitSync', [_dec6$2, _dec7$1], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'emitSync'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'trigger', [_dec8$1, _dec9$1], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'trigger'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'triggerSync', [_dec10$1, _dec11$1], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'triggerSync'), _class$5.prototype)), _class$5));
 
 var _dec$6, _dec2$5, _dec3$4, _dec4$4, _dec5$3, _class$6;
 
@@ -2810,7 +2810,7 @@ function checkPluginConfig(config) {
  * It also offer a bridge to let user handle video kernel.
  * </pre>
  */
-var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPluginConfig), _dec3$4 = before(convertNameIntoId), _dec4$4 = before(convertNameIntoId), _dec5$3 = before(convertNameIntoId), _class$6 = function () {
+var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPluginConfig), _dec3$4 = before(convertNameIntoId), _dec4$4 = before(convertNameIntoId), _dec5$3 = before(convertNameIntoId), (_class$6 = function () {
   /**
    * @param  {UserConfig} config UserConfig for whole Chimee player
    * @param  {Chimee} vm referrence of outer class
@@ -3075,11 +3075,11 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
               removeEvent(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
               kernel.off('error', _videoError);
               var error = void 0;
-              if (evt.target === kernel) {
-                var message = evt.data.errmsg;
+              if (!isEmpty(evt.data) && evt.data.errmsg) {
+                var errmsg = evt.data.errmsg;
 
-                Log.error("chimee's silentload bump into a kernel error", message);
-                error = new Error(message);
+                Log.error("chimee's silentload bump into a kernel error", errmsg);
+                error = new Error(errmsg);
               } else {
                 error = !isEmpty(video.error) ? new Error(video.error.message) : new Error('unknow video error');
                 Log.error("chimee's silentload", error.message);
@@ -3490,7 +3490,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
   }]);
 
   return Dispatcher;
-}(), _applyDecoratedDescriptor$5(_class$6.prototype, 'unuse', [_dec$6], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'unuse'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'throwError', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'throwError'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6, 'install', [_dec2$5], _Object$getOwnPropertyDescriptor(_class$6, 'install'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'hasInstalled', [_dec3$4], _Object$getOwnPropertyDescriptor(_class$6, 'hasInstalled'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'uninstall', [_dec4$4], _Object$getOwnPropertyDescriptor(_class$6, 'uninstall'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'getPluginConfig', [_dec5$3], _Object$getOwnPropertyDescriptor(_class$6, 'getPluginConfig'), _class$6), _class$6);
+}(), (_applyDecoratedDescriptor$5(_class$6.prototype, 'unuse', [_dec$6], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'unuse'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'throwError', [autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'throwError'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6, 'install', [_dec2$5], _Object$getOwnPropertyDescriptor(_class$6, 'install'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'hasInstalled', [_dec3$4], _Object$getOwnPropertyDescriptor(_class$6, 'hasInstalled'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'uninstall', [_dec4$4], _Object$getOwnPropertyDescriptor(_class$6, 'uninstall'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'getPluginConfig', [_dec5$3], _Object$getOwnPropertyDescriptor(_class$6, 'getPluginConfig'), _class$6)), _class$6));
 
 var _class$7, _descriptor$1;
 
@@ -3584,12 +3584,12 @@ var GlobalConfig = (_class$7 = function () {
   }
 
   return GlobalConfig;
-}(), _descriptor$1 = _applyDecoratedDescriptor$6(_class$7.prototype, '_silent', [nonenumerable], {
+}(), (_descriptor$1 = _applyDecoratedDescriptor$6(_class$7.prototype, '_silent', [nonenumerable], {
   enumerable: true,
   initializer: function initializer() {
     return false;
   }
-}), _class$7);
+})), _class$7);
 
 var _dec$7, _class$8, _class2$1, _descriptor$2, _descriptor2$1, _descriptor3$1, _init, _init2, _init3, _init4, _init5, _init6, _init7, _init8, _init9, _class3, _temp;
 
@@ -3737,9 +3737,7 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$1 = (_temp = 
   }]);
 
   return Chimee;
-}(VideoWrapper), _class3.plugin = Plugin, _class3.config = new GlobalConfig(), _class3.install = Dispatcher.install, _class3.uninstall = Dispatcher.uninstall, _class3.hasInstalled = Dispatcher.hasInstalled, _class3.installKernel = Dispatcher.installKernel, _class3.uninstallKernel = Dispatcher.uninstallKernel, _class3.hasInstalledKernel = Dispatcher.hasInstalledKernel, _class3.getPluginConfig = Dispatcher.getPluginConfig, _class3._constInfo = {
-  kernelEvents: kernelEvents
-}, _temp), _descriptor$2 = _applyDecoratedDescriptor$7(_class2$1.prototype, '__id', [frozen], {
+}(VideoWrapper), _class3.plugin = Plugin, _class3.config = new GlobalConfig(), _class3.install = Dispatcher.install, _class3.uninstall = Dispatcher.uninstall, _class3.hasInstalled = Dispatcher.hasInstalled, _class3.installKernel = Dispatcher.installKernel, _class3.uninstallKernel = Dispatcher.uninstallKernel, _class3.hasInstalledKernel = Dispatcher.hasInstalledKernel, _class3.getPluginConfig = Dispatcher.getPluginConfig, _temp), (_descriptor$2 = _applyDecoratedDescriptor$7(_class2$1.prototype, '__id', [frozen], {
   enumerable: true,
   initializer: function initializer() {
     return '_vm';
@@ -3747,7 +3745,7 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$1 = (_temp = 
 }), _descriptor2$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.10.0-alpha.1';
+    return '0.10.0-alpha.2';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'config', [frozen], {
   enumerable: true,
@@ -3819,6 +3817,6 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$1 = (_temp = 
   initializer: function initializer() {
     return _init9;
   }
-}), _class2$1), _class2$1)) || _class$8);
+}), _class2$1)), _class2$1)) || _class$8);
 
 export default Chimee;
