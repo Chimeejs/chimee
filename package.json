@@ -1,6 +1,6 @@
 {
   "name": "chimee",
-  "version": "0.10.0-alpha.2",
+  "version": "0.10.0-alpha.3",
   "description": "a video-player aims to bring wonderful experience on browser",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -46,7 +46,6 @@
   "dependencies": {
     "babel-runtime": "^6.26.0",
     "chimee-helper": "^0.2.11",
-    "chimee-kernel": "^1.5.0-alpha",
     "es-fullscreen": "^0.3.0",
     "toxic-decorators": "^0.3.8"
   },

@@ -8,6 +8,7 @@ import type VideoConfig from 'dispatcher/video-config';
 import type VideoWrapper from 'dispatcher/video-wrapper';
 import type GlobalConfig from 'global/config';
 import type ChimeeKernel from 'chimee-kernel';
+import { CustEvent } from 'chimee-helper';
 declare type PluginConfig = {
   id: string,
   name: string,
@@ -153,3 +154,35 @@ declare type wholeEventInfo = {
   id: string,
   fn: Function,
 }
+
+declare type KernelConfig = {
+  src: string,
+  isLive: boolean,
+  box: string,
+  preset: {
+    [string]: Function,
+  },
+  presetConfig: {
+    [string]: Object,
+  },
+};
+
+declare class VideoKernel {
+  static isSupport(): boolean;
+  constructor(videoElement: HTMLVideoElement, config: Object, customConfig: Object): void;
+  video: HTMLVideoElement;
+  config: Object;
+  load(src: string): void;
+  unload(): void;
+  startLoad(src: string): void;
+  stopLoad(): void;
+  play(): void;
+  pause(): void;
+  refresh(): void;
+  attachMedia(): void;
+  seek(seconds: number): void;
+  destroy(): void;
+  on(key: string, fn: Function): void;
+  off(key: string, fn: Function): void;
+}
+
