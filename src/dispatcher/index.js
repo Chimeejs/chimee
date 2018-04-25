@@ -297,12 +297,10 @@ export default class Dispatcher {
             removeEvent(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
             kernel.off('error', videoError);
             let error;
-            if (evt.target === kernel) {
-              const {
-                errmsg: message,
-              } = evt.data;
-              Log.error("chimee's silentload bump into a kernel error", message);
-              error = new Error(message);
+            if (!isEmpty(evt.data) && evt.data.errmsg) {
+              const { errmsg } = evt.data;
+              Log.error("chimee's silentload bump into a kernel error", errmsg);
+              error = new Error(errmsg);
             } else {
               error = !isEmpty(video.error)
                 ? new Error(video.error.message)
