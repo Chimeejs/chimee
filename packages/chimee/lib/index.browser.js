@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.0-alpha.2
+ * chimee v0.10.0-alpha.3
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -5587,14 +5587,7 @@
 	  return NativeVideoKernel;
 	}(CustEvent);
 
-	var defaultConfig = {
-	  isLive: false, // vod or live
-	  box: '', // box type : native mp4 hls flv
-	  preset: {},
-	  presetConfig: {}
-	};
-
-	var LOG_TAG = 'chimee-kernel';
+	var LOG_TAG = 'chimee';
 	var boxSuffixMap = {
 	  flv: '.flv',
 	  hls: '.m3u8',
@@ -5611,12 +5604,8 @@
 	  function ChimeeKernel(videoElement, config) {
 	    _classCallCheck(this, ChimeeKernel);
 
-	    this.VERSION = '1.5.0-alpha';
-
 	    if (!isElement(videoElement)) throw new Error('You must pass in an video element to the chimee-kernel');
-	    // copy and maintain only one config for chimee-kernel
-	    // actually kernel is disposable in most situation nowaday
-	    this.config = deepAssign({}, defaultConfig, config);
+	    this.config = config;
 	    this.videoElement = videoElement;
 	    this.initVideoKernel();
 	  }
@@ -5640,7 +5629,7 @@
 
 	      // TODO: nowaday, kernels all get config from one config
 	      // it's not a good way, because custom config may override kernel config
-	      // so we may remove this code later
+	      // so we may remove this code when we check all the chimee-kernel-* setting
 	      if (customConfig) deepAssign(config, customConfig);
 
 	      this.videoKernel = new VideoKernel(this.videoElement, config, customConfig);
@@ -5689,12 +5678,12 @@
 
 	  }, {
 	    key: 'getMp4Kernel',
-	    value: function getMp4Kernel(mp4Kernel) {
-	      var hasLegalMp4Kernel = mp4Kernel && isFunction(mp4Kernel.isSupport);
+	    value: function getMp4Kernel(Mp4Kernel) {
+	      var hasLegalMp4Kernel = Mp4Kernel && isFunction(Mp4Kernel.isSupport);
 	      // $FlowFixMe: we have make sure it's an kernel now
-	      var supportMp4Kernel = hasLegalMp4Kernel && mp4Kernel.isSupport();
+	      var supportMp4Kernel = hasLegalMp4Kernel && Mp4Kernel.isSupport();
 	      // $FlowFixMe: we have make sure it's an kernel now
-	      if (supportMp4Kernel) return mp4Kernel;
+	      if (supportMp4Kernel) return Mp4Kernel;
 	      if (hasLegalMp4Kernel) Log.warn(LOG_TAG, 'mp4 decode is not support in this browser, we will switch to the native video kernel');
 	      this.box = 'native';
 	      // $FlowFixMe: it's the same as videoKernel
@@ -8690,7 +8679,7 @@
 	    var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
 	    _this.destroyed = false;
-	    _this.VERSION = '0.10.0-alpha.2';
+	    _this.VERSION = '0.10.0-alpha.3';
 	    _this.__operable = true;
 	    _this.__level = 0;
 
@@ -12265,7 +12254,7 @@
 	}), _descriptor2$1 = _applyDecoratedDescriptor$8(_class2$2.prototype, 'version', [frozen], {
 	  enumerable: true,
 	  initializer: function initializer() {
-	    return '0.10.0-alpha.2';
+	    return '0.10.0-alpha.3';
 	  }
 	}), _descriptor3$1 = _applyDecoratedDescriptor$8(_class2$2.prototype, 'config', [frozen], {
 	  enumerable: true,

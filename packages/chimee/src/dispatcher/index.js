@@ -1,6 +1,6 @@
 // @flow
 import { isString, camelize, deepAssign, isObject, isEmpty, isArray, isFunction, transObjectAttrIntoArray, isPromise, Log, runRejectableQueue, addEvent, removeEvent, isError, deepClone } from 'chimee-helper';
-import ChimeeKernel from 'chimee-kernel';
+import ChimeeKernel from './kernel';
 import Plugin from './plugin';
 import Dom from './dom';
 import VideoConfig from 'config/video';
