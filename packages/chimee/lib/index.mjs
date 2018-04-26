@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.0-alpha.3
+ * chimee v0.10.0-alpha.4
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -1294,7 +1294,7 @@ var Plugin = (_dec$2 = autobindClass(), _dec$2(_class$2 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.10.0-alpha.3';
+    _this.VERSION = '0.10.0-alpha.4';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -3803,6 +3803,14 @@ var GlobalConfig = (_class$7 = function () {
         _this.log[key] = !val;
       });
     }
+  }, {
+    key: 'useStyleFullscreen',
+    get: function get() {
+      return esFullscreen.useStyleFirst;
+    },
+    set: function set(val) {
+      esFullscreen.useStyleFirst = !!val;
+    }
   }]);
 
   function GlobalConfig() {
@@ -4000,7 +4008,7 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$1 = (_temp = 
 }), _descriptor2$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.10.0-alpha.3';
+    return '0.10.0-alpha.4';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'config', [frozen], {
   enumerable: true,
