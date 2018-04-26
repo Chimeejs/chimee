@@ -18,6 +18,7 @@ declare module 'es-fullscreen' {
     isFullScreen: boolean;
     isNativelySupport: boolean;
     fullscreenElement: Element | null;
+    useStyleFirst: boolean;
     isFullScreen: boolean;
     open (element: Element, option?: {force: boolean}): boolean;
     requestFullscreen (element: Element, option?: {force: boolean}): boolean;

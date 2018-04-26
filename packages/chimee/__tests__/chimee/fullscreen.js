@@ -141,4 +141,11 @@ describe('chimee fullscreen', () => {
     expect(player.fullscreenElement).toBe(target);
     document.body.removeChild(wrapper);
   });
+
+  test('config.useStyleFullscreen', () => {
+    expect(Chimee.config.useStyleFullscreen).toBe(false);
+    Chimee.config.useStyleFullscreen = true;
+    player.fullscreen;
+    expect(player.$wrapper.innerHTML).toBe('<container style="width: 100%; height: 100%; position: relative; display: block;"><video tabindex="-1" controls="" width="100%" height="100%" preload="auto"></video></container>');
+  });
 });
