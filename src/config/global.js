@@ -1,6 +1,7 @@
 // @flow
 import { Log } from 'chimee-helper';
 import { accessor, applyDecorators, nonenumerable } from 'toxic-decorators';
+import esFullscreen from 'es-fullscreen';
 export default class GlobalConfig {
   log: {
     error: boolean,
@@ -12,6 +13,7 @@ export default class GlobalConfig {
   errorHandler: Function | void;
   silent: boolean;
   _silent: boolean;
+
   log = {
     error: true,
     info: true,
@@ -19,17 +21,30 @@ export default class GlobalConfig {
     debug: true,
     verbose: true,
   }
+
   @nonenumerable
   _silent = false;
+
   get silent(): boolean {
     return this._silent;
   }
+
   set silent(val: boolean) {
     val = !!val;
     this._silent = val;
     Object.keys(this.log).forEach(key => { this.log[key] = !val; });
   }
+
   errorHandler = undefined;
+
+  get useStyleFullscreen(): boolean {
+    return esFullscreen.useStyleFirst;
+  }
+
+  set useStyleFullscreen(val: boolean) {
+    esFullscreen.useStyleFirst = !!val;
+  }
+
   constructor() {
     const props = Object.keys(this.log)
       .reduce((props, key) => {
