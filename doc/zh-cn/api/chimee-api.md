@@ -1223,6 +1223,14 @@ Chimee.silent = true;
 Chimee.errorHandler = error => console.log('wow, an error!!!', error.message)
 ```
 
+### useStyleFullscreen
+
+在某些特殊的情况下，浏览器的全屏效果不是特别好。此时我们可以通过 css 的样式模拟全屏。
+
+```javascript
+Chimee.config.useStyleFullscreen = true;
+```
+
 ## 进阶使用
 
 随着业务发展越来越复杂，我们会发现我们需要实现众多功能。这些功能彼此耦合关联，难以维护。这时候我们需要将功能模块化使用，那样便于我们进行灰度和 debug。此时我们需要使用 chimee 自身的插件体系。让我们进入下一部分，[为什么要将 Chimee 设计成一个组件化框架？](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/design/why-chimee-is-a-frame.md)。
