@@ -7,7 +7,6 @@
   "jsnext:main": "lib/index.mjs",
   "browser": "lib/index.browser.js",
   "scripts": {
-    "precommit": "npm run lint && npm t",
     "prepublishOnly": "npm t && pkg-ok",
     "postmerge": "sh tool/auto-npm-install.sh",
     "test": "npm run karma && jest --coverage && node env-check.js",

@@ -89,7 +89,7 @@ export default class Dispatcher {
      * dom Manager
      * @type {Dom}
      */
-    this.dom = new Dom(config.wrapper, this);
+    this.dom = new Dom(config, this);
     /**
      * Chimee's referrence
      * @type {[type]}
