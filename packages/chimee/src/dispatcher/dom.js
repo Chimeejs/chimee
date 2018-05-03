@@ -24,7 +24,7 @@ export default class Dom {
   videoElement: HTMLVideoElement;
   container: Element;
   originHTML: string;
-  canvasElement: HTMLCanvasElement;
+  canvas: HTMLCanvasElement;
   plugins: {[string]: Element};
   isFullscreen: boolean | string;
   fullscreenElement: HTMLElement | string | void;
@@ -135,25 +135,27 @@ export default class Dom {
 
   installCanvas(): HTMLCanvasElement {
     const { container, wrapper } = this;
-    if (isElement(this.canvasElement)) throw new Error('You have already installed canvas');
+    if (isElement(this.canvas)) throw new Error('You have already installed canvas');
 
-    let canvasElement: HTMLCanvasElement = $(wrapper).find('canvas')[0];
-    if (!canvasElement) {
-      canvasElement = document.createElement('canvas');
+    // $FlowFixMe: support computed key on nodewrap
+    let canvas: HTMLCanvasElement = $(wrapper).find('canvas')[0];
+    if (!canvas) {
+      canvas = document.createElement('canvas');
     }
 
     // if we have no child except for videoElement
     // just append it
     if (container.childNodes.length < 2) {
-      container.appendChild(canvasElement);
+      container.appendChild(canvas);
     } else {
       // if we have more child
       // just insert after videoElement
-      container.insertBefore(canvasElement, container.childNodes[1]);
+      container.insertBefore(canvas, container.childNodes[1]);
     }
 
-    this.canvasElement = canvasElement;
-    return canvasElement;
+    this.canvas = canvas;
+    this.__videoExtendedNodes.push(canvas);
+    return canvas;
   }
 
   removeVideo(): HTMLVideoElement {
@@ -206,7 +208,7 @@ export default class Dom {
     }
     this.plugins[id] = node;
     const outerElement = inner ? this.container : this.wrapper;
-    const originElement = inner ? (this.canvasElement || this.videoElement) : this.container;
+    const originElement = inner ? (this.canvas || this.videoElement) : this.container;
     if (isBoolean(autoFocus) ? autoFocus : inner) this._autoFocusToVideo(node);
     // auto forward the event if this plugin can be penetrate
     if (penetrate) {
