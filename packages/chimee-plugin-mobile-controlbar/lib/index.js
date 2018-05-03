@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-mobile-controlbar v0.1.1
+ * chimee-plugin-mobile-controlbar v0.1.2
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -1399,7 +1399,6 @@ var Base = function () {
       this.option.event && _Object$keys(this.option.event).forEach(function (item) {
         var key = '__' + item;
         _this[key] = chimeeHelper.bind(_this.option.event[item], _this);
-        console.log(_this[key]);
         addDelegate(_this.parent, _this.option.tag, item, _this[key], false, false);
       });
     }
@@ -1986,6 +1985,11 @@ var defaultConfig = {
   hideBarTime: 2000
 };
 
+var barStatus = {
+  timer: null,
+  show: true
+};
+
 var mobiControlbar = gestureFactory({
   name: 'chimeeMobiControlbar',
   el: 'chimee-control',
@@ -2033,7 +2037,8 @@ var mobiControlbar = gestureFactory({
     this.watch_fullscreen = this.$watch('isFullscreen', this._mousemove);
   },
   destroy: function destroy() {
-    window.clearTimeout(this.timeId);
+    window.clearTimeout(barStatus.timer);
+    barStatus.show = false;
     this._removeGlobalEvent();
     this.watch_fullscreen && this.watch_fullscreen();
   },
@@ -2093,8 +2098,8 @@ var mobiControlbar = gestureFactory({
     _hideItself: function _hideItself() {
       var _this2 = this;
 
-      window.clearTimeout(this.timeId);
-      this.timeId = setTimeout(function () {
+      window.clearTimeout(barStatus.timer);
+      barStatus.timer = setTimeout(function () {
         var bottom = -_this2.$wrap.offsetHeight;
         chimeeHelper.setStyle(_this2.$wrap, {
           bottom: bottom + 'px'
@@ -2102,16 +2107,20 @@ var mobiControlbar = gestureFactory({
         chimeeHelper.setStyle(_this2.$dom, {
           visibility: 'hidden'
         });
+        barStatus.show = false;
+        _this2.$emit('barHide');
       }, this.config.hideBarTime);
     },
     _showItself: function _showItself() {
-      window.clearTimeout(this.timeId);
+      window.clearTimeout(barStatus.timer);
       chimeeHelper.setStyle(this.$wrap, {
         bottom: '0'
       });
       chimeeHelper.setStyle(this.$dom, {
         visibility: 'visible'
       });
+      !barStatus.show && this.$emit('barShow');
+      barStatus.show = true;
     },
     _display: function _display() {
       var display = this.show ? 'block' : 'none';

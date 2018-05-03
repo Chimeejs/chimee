@@ -30,7 +30,6 @@ export default class Base {
     this.option.event && Object.keys(this.option.event).forEach(item => {
       const key = '__' + item;
       this[key] = bind(this.option.event[item], this);
-      console.log(this[key])
       addDelegate(this.parent, this.option.tag, item, this[key], false, false);
     });
   }

@@ -79,5 +79,13 @@
       controls: true,
       autoplay: false
     });
+
+    player.$on('barShow', function () {
+      console.log('show')
+    })
+
+    player.$on('barHide', function () {
+      console.log('hide')
+    })
   </script>
 </html>

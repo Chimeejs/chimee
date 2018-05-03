@@ -37,6 +37,11 @@ const defaultConfig = {
   hideBarTime: 2000
 };
 
+const barStatus = {
+  timer: null,
+  show: true
+};
+
 const mobiControlbar = gestureFactory({
   name: 'chimeeMobiControlbar',
   el: 'chimee-control',
@@ -84,7 +89,8 @@ const mobiControlbar = gestureFactory({
     this.watch_fullscreen = this.$watch('isFullscreen', this._mousemove);
   },
   destroy () {
-    window.clearTimeout(this.timeId);
+    window.clearTimeout(barStatus.timer);
+    barStatus.show = false;
     this._removeGlobalEvent();
     this.watch_fullscreen && this.watch_fullscreen();
   },
@@ -142,8 +148,8 @@ const mobiControlbar = gestureFactory({
       this.children.currentTime && this.children.currentTime.updateCurrent();
     },
     _hideItself () {
-      window.clearTimeout(this.timeId);
-      this.timeId = setTimeout(() => {
+      window.clearTimeout(barStatus.timer);
+      barStatus.timer = setTimeout(() => {
         const bottom = -this.$wrap.offsetHeight;
         setStyle(this.$wrap, {
           bottom: bottom + 'px'
@@ -151,16 +157,20 @@ const mobiControlbar = gestureFactory({
         setStyle(this.$dom, {
           visibility: 'hidden'
         });
+        barStatus.show = false;
+        this.$emit('barHide');
       }, this.config.hideBarTime);
     },
     _showItself () {
-      window.clearTimeout(this.timeId);
+      window.clearTimeout(barStatus.timer);
       setStyle(this.$wrap, {
         bottom: '0'
       });
       setStyle(this.$dom, {
         visibility: 'visible'
       });
+      !barStatus.show && this.$emit('barShow');
+      barStatus.show = true;
     },
     _display () {
       const display = this.show ? 'block' : 'none';
