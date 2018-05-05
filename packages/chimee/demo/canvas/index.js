@@ -58,7 +58,7 @@ const player = new Chimee({
   }],
   volume: 0.1,
   controls: true,
-  useCanvas: true,
+  canvas: true,
 });
 [ 'touchstart', 'touchmove', 'touchend' ].forEach(key => {
   player.$on(key, evt => console.log(evt, key));
