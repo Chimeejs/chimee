@@ -110,14 +110,18 @@ export default class Dispatcher {
       delete config.plugins;
     }
 
-    if (config.useCanvas) {
+    if (config.canvas) {
       Dispatcher.install(CanvasRender);
+      const canvasConfig = Object.assign({
+        name: CanvasRender.name,
+      }, isObject(config.canvas) ? config.canvas : {});
       if (isArray(config.plugin)) {
-        config.plugin.unshift(CanvasRender.name);
+        config.plugin.unshift(canvasConfig);
       } else {
-        config.plugin = [ CanvasRender.name ];
+        config.plugin = [ canvasConfig ];
       }
     }
+    console.log(config.plugin);
     this.binder = new Binder(this);
     this.binder.listenOnMouseMoveEvent(this.dom.videoElement);
     // use the plugin user want to use

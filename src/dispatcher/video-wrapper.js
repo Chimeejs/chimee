@@ -4,10 +4,6 @@ import { videoReadOnlyProperties, videoMethods, kernelMethods, domMethods, domEv
 import { attrAndStyleCheck, eventBinderCheck } from 'helper/checker';
 import { accessor, nonenumerable, applyDecorators, watch, alias, before, autobindClass } from 'toxic-decorators';
 import VideoConfig from 'config/video';
-function propertyAccessibilityWarn(property) {
-  /* istanbul ignore else  */
-  if (process.env.NODE_ENV !== 'production') Log.warn('chimee', `You are trying to obtain ${property}, we will return you the DOM node. It's not a good idea to handle this by yourself. If you have some requirement, you can tell use by https://github.com/Chimeejs/chimee/issues`);
-}
 export default @autobindClass() class VideoWrapper {
   __id: string;
   __dispatcher: Dispatcher;
@@ -383,17 +379,14 @@ export default @autobindClass() class VideoWrapper {
   }
   @nonenumerable
   get $wrapper(): HTMLElement {
-    propertyAccessibilityWarn('wrapper');
     return this.__dispatcher.dom.wrapper;
   }
   @nonenumerable
   get $container(): HTMLElement {
-    propertyAccessibilityWarn('container');
     return this.__dispatcher.dom.container;
   }
   @nonenumerable
   get $video(): HTMLVideoElement {
-    propertyAccessibilityWarn('video');
     return this.__dispatcher.dom.videoElement;
   }
 

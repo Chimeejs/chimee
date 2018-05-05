@@ -116,7 +116,11 @@ declare type UserConfig = {
     hls?: Function
   },
   container?: VesselConfig,
-  useCanvas?: boolean;
+  canvas?: {
+    render?: Function;
+    getContext?: Function;
+    setSize?: Function;
+  };
 }
 
 declare type binderTarget = 'kernel' | 'container' | 'wrapper' | 'video' | 'video-dom' | 'plugin' | 'esFullscreen';
