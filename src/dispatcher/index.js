@@ -8,6 +8,7 @@ import defaultContainerConfig from 'config/container';
 import { before, autobind } from 'toxic-decorators';
 import Vessel from 'config/vessel';
 import Binder from './binder';
+import CanvasRender from '../plugin/canvas-render';
 const pluginConfigSet: PluginConfigSet = {};
 const kernelsSet: KernelsSet = {};
 function convertNameIntoId(name: string): string {
@@ -107,6 +108,15 @@ export default class Dispatcher {
     if (isArray(config.plugins) && !isArray(config.plugin)) {
       config.plugin = config.plugins;
       delete config.plugins;
+    }
+
+    if (config.useCanvas) {
+      Dispatcher.install(CanvasRender);
+      if (isArray(config.plugin)) {
+        config.plugin.unshift(CanvasRender.name);
+      } else {
+        config.plugin = [ CanvasRender.name ];
+      }
     }
     this.binder = new Binder(this);
     this.binder.listenOnMouseMoveEvent(this.dom.videoElement);

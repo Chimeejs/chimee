@@ -28,10 +28,6 @@
   const player = new Chimee({
     // 播放地址
     src: 'http://cdn.toxicjohann.com/lostStar.mp4',
-    // 直播:live 点播：vod
-    type: 'vod',
-    // 编解码容器
-    box: 'mp4',
     // dom容器
     wrapper: '#wrapper',
     plugin: [ 'controller' ],
@@ -40,6 +36,5 @@
     controls: true,
   });
 
-  player.load();
-
+  window.player = player;
 })(window.Chimee);

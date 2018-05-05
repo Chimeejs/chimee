@@ -24,7 +24,6 @@ export default class Dom {
   videoElement: HTMLVideoElement;
   container: Element;
   originHTML: string;
-  canvas: HTMLCanvasElement;
   plugins: {[string]: Element};
   isFullscreen: boolean | string;
   fullscreenElement: HTMLElement | string | void;
@@ -67,7 +66,7 @@ export default class Dom {
   fullscreenElement = undefined;
 
   constructor(config: UserConfig, dispatcher: Dispatcher) {
-    const { wrapper, useCanvas } = config;
+    const { wrapper } = config;
     this.__dispatcher = dispatcher;
     if (!isElement(wrapper) && !isString(wrapper)) throw new TypeError(`Wrapper can only be string or HTMLElement, but not ${typeof wrapper}`);
     const $wrapper = $(wrapper);
@@ -96,10 +95,6 @@ export default class Dom {
     this.installVideo(videoElement);
     this._fullscreenMonitor();
     esFullscreen.on('fullscreenchange', this._fullscreenMonitor);
-
-    if (useCanvas) {
-      this.installCanvas();
-    }
   }
 
   installVideo(videoElement: HTMLVideoElement): HTMLVideoElement {
@@ -131,31 +126,6 @@ export default class Dom {
     }
     this.videoElement = videoElement;
     return videoElement;
-  }
-
-  installCanvas(): HTMLCanvasElement {
-    const { container, wrapper } = this;
-    if (isElement(this.canvas)) throw new Error('You have already installed canvas');
-
-    // $FlowFixMe: support computed key on nodewrap
-    let canvas: HTMLCanvasElement = $(wrapper).find('canvas')[0];
-    if (!canvas) {
-      canvas = document.createElement('canvas');
-    }
-
-    // if we have no child except for videoElement
-    // just append it
-    if (container.childNodes.length < 2) {
-      container.appendChild(canvas);
-    } else {
-      // if we have more child
-      // just insert after videoElement
-      container.insertBefore(canvas, container.childNodes[1]);
-    }
-
-    this.canvas = canvas;
-    this.__videoExtendedNodes.push(canvas);
-    return canvas;
   }
 
   removeVideo(): HTMLVideoElement {
@@ -208,7 +178,7 @@ export default class Dom {
     }
     this.plugins[id] = node;
     const outerElement = inner ? this.container : this.wrapper;
-    const originElement = inner ? (this.canvas || this.videoElement) : this.container;
+    const originElement = inner ? this.videoElement : this.container;
     if (isBoolean(autoFocus) ? autoFocus : inner) this._autoFocusToVideo(node);
     // auto forward the event if this plugin can be penetrate
     if (penetrate) {
