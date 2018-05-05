@@ -397,11 +397,6 @@ export default @autobindClass() class VideoWrapper {
     return this.__dispatcher.dom.videoElement;
   }
 
-  @nonenumerable
-  get $canvas(): HTMLCanvasElement {
-    return this.__dispatcher.dom.canvas;
-  }
-
   get isFullscreen(): boolean | string {
     return this.__dispatcher.dom.isFullscreen;
   }
