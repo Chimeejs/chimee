@@ -49,7 +49,7 @@ const plugin = {
 Chimee.install(plugin);
 const player = new Chimee({
   // 播放地址
-  src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+  src: 'https://github.com/yanwsh/videojs-panorama/blob/master/assets/shark.mp4',
   // dom容器
   wrapper: '#wrapper',
   plugin: [{
@@ -58,8 +58,7 @@ const player = new Chimee({
   }],
   volume: 0.1,
   controls: true,
-  canvas: true,
-  poster: 'http://cdn.toxicjohann.com/1.jpg',
+  // canvas: true,
 });
 [ 'touchstart', 'touchmove', 'touchend' ].forEach(key => {
   player.$on(key, evt => console.log(evt, key));
