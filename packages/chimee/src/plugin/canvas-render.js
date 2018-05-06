@@ -31,6 +31,7 @@ export default class CanvasRender extends Plugin {
 
   inited() {
     this.setSize();
+    this.$css('video', 'display', 'none');
   }
 
   defaultPoller(fn: Function) {
