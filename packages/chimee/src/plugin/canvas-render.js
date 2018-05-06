@@ -13,6 +13,8 @@ export default class CanvasRender extends Plugin {
   getContext: Function;
   setSize: Function;
   poller: Function;
+  posterRender: Function;
+  posterImageDom: HTMLImageElement;
 
   constructor(config: Object, ...args: any []) {
     const myConfig = {
@@ -25,6 +27,7 @@ export default class CanvasRender extends Plugin {
     this.render = config.render || this.defaultRender;
     this.getContext = config.getContext || this.getContext;
     this.setSize = config.setSize || this.defaultSetSize;
+    this.posterRender = config.posterRender || this.defaultPosterRender;
     this.ctx = this.$dom.getContext('2d');
     this.poller(this.render);
   }
@@ -42,7 +45,19 @@ export default class CanvasRender extends Plugin {
   }
 
   defaultRender() {
+    if (this.poster && (this.paused || this.ended)) {
+      this.posterRender();
+      return;
+    }
     this.ctx.drawImage(this.$video, 0, 0, this.canvasWidth, this.canvasHeight);
+  }
+
+  defaultPosterRender() {
+    if (!this.posterImageDom) {
+      this.posterImageDom = new Image();
+      this.posterImageDom.src = this.poster;
+    }
+    this.ctx.drawImage(this.posterImageDom, 0, 0, this.canvasWidth, this.canvasHeight);
   }
 
   defaultSetSize() {
