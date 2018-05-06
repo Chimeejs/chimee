@@ -1,5 +1,5 @@
 // @flow
-import { isString, camelize, deepAssign, isObject, isEmpty, isArray, isFunction, transObjectAttrIntoArray, isPromise, Log, runRejectableQueue, addEvent, removeEvent, isError, deepClone } from 'chimee-helper';
+import { isString, camelize, deepAssign, isObject, isEmpty, isArray, isFunction, transObjectAttrIntoArray, isPromise, Log, runRejectableQueue, addEvent, removeEvent, isError, deepClone, getAttr, setAttr } from 'chimee-helper';
 import ChimeeKernel from './kernel';
 import Plugin from './plugin';
 import Dom from './dom';
@@ -109,7 +109,7 @@ export default class Dispatcher {
       config.plugin = config.plugins;
       delete config.plugins;
     }
-
+    // if user want to use canvas, we would insert for them
     if (config.canvas) {
       Dispatcher.install(CanvasRender);
       const canvasConfig = Object.assign({
@@ -121,7 +121,6 @@ export default class Dispatcher {
         config.plugin = [ canvasConfig ];
       }
     }
-    console.log(config.plugin);
     this.binder = new Binder(this);
     this.binder.listenOnMouseMoveEvent(this.dom.videoElement);
     // use the plugin user want to use
@@ -162,6 +161,7 @@ export default class Dispatcher {
         });
     if (this.readySync) this._autoloadVideoSrcAtFirst();
   }
+
   /**
    * use a plugin, which means we will new a plugin instance and include int this Chimee instance
    * @param  {Object|string} option you can just set a plugin name or plugin config
@@ -199,6 +199,7 @@ export default class Dispatcher {
     if (this.videoConfigReady) plugin.__inited();
     return plugin.ready;
   }
+
   /**
    * unuse an plugin, we will destroy the plugin instance and exlude it
    * @param  {string} name plugin's name
@@ -218,10 +219,12 @@ export default class Dispatcher {
     delete this.plugins[id];
     delete this.vm[id];
   }
+
   @autobind
   throwError(error: Error | string) {
     this.vm.__throwError(error);
   }
+
   silentLoad(src: string, option: {
     duration?: number,
     repeatTimes?: number,
@@ -376,6 +379,7 @@ export default class Dispatcher {
         });
       });
   }
+
   load(srcOrOption: string | {
     src: string,
     isLive?: boolean,
@@ -417,6 +421,7 @@ export default class Dispatcher {
     this.kernel.load(this.videoConfig.src);
     this._changeUnwatchable(this.videoConfig, 'autoload', originAutoLoad);
   }
+
   switchKernel({ video, kernel, config }: {
     video: HTMLVideoElement,
     kernel: ChimeeKernel,
@@ -430,6 +435,7 @@ export default class Dispatcher {
   }) {
     const oldKernel = this.kernel;
     const originVideoConfig = deepClone(this.videoConfig);
+    this.dom.migrateVideoRequiredGuardedAttributes(video);
     this.dom.removeVideo();
     this.dom.installVideo(video);
     // as we will reset the currentVideoConfig on the new video
@@ -454,6 +460,7 @@ export default class Dispatcher {
     // so that people can't feel the default value change
     setTimeout(() => this.binder.bindEventOnVideo(video));
   }
+
   /**
    * destroy function called when dispatcher destroyed
    */
@@ -471,6 +478,7 @@ export default class Dispatcher {
     delete this.plugins;
     delete this.order;
   }
+
   /**
    * use a set of plugin
    * @param  {Array<UserPluginConfig>}  configs  a set of plugin config
@@ -484,6 +492,7 @@ export default class Dispatcher {
     }
     return configs.map(config => this.use(config));
   }
+
   /**
    * sort zIndex of plugins to make plugin display in order
    */
@@ -508,6 +517,7 @@ export default class Dispatcher {
     this.zIndexMap.inner = innerOrderArr;
     this.zIndexMap.outer = outerOrderArr;
   }
+
   /**
    * get the top element's level
    * @param {boolean} inner get the inner array or the outer array
@@ -517,6 +527,7 @@ export default class Dispatcher {
     const plugin = this.plugins[arr[arr.length - 1]];
     return isEmpty(plugin) ? 0 : plugin.$level;
   }
+
   _autoloadVideoSrcAtFirst() {
     if (this.videoConfig.autoload) {
       if (process.env.NODE_ENV !== 'prodution' && !this.videoConfig.src) {

@@ -120,7 +120,8 @@ declare type UserConfig = {
     render?: Function;
     getContext?: Function;
     setSize?: Function;
-  };
+  },
+  videoRequiredGuardedAttributes: string[],
 }
 
 declare type binderTarget = 'kernel' | 'container' | 'wrapper' | 'video' | 'video-dom' | 'plugin' | 'esFullscreen';

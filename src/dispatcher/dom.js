@@ -28,6 +28,7 @@ export default class Dom {
   isFullscreen: boolean | string;
   fullscreenElement: HTMLElement | string | void;
   destroyed: boolean;
+  videoRequireGuardedAttributes: string[];
   __dispatcher: Dispatcher;
   __mouseInVideo: boolean;
   __videoExtendedNodes: Array<Node>;
@@ -95,6 +96,16 @@ export default class Dom {
     this.installVideo(videoElement);
     this._fullscreenMonitor();
     esFullscreen.on('fullscreenchange', this._fullscreenMonitor);
+    // As some video attributes will missed when we switch kernel
+    // we set a guarder for it
+    // and we must make sure style be guarded
+    const videoRequiredGuardedAttributes = isArray(config.videoRequiredGuardedAttributes)
+      ? config.videoRequiredGuardedAttributes
+      : [];
+    if (videoRequiredGuardedAttributes.indexOf('style') < 0) {
+      videoRequiredGuardedAttributes.unshift('style');
+    }
+    this.videoRequireGuardedAttributes = videoRequiredGuardedAttributes;
   }
 
   installVideo(videoElement: HTMLVideoElement): HTMLVideoElement {
@@ -273,6 +284,11 @@ export default class Dom {
         if (flag) return flag;
         return isPosterityNode(video, node);
       }, false);
+  }
+
+  migrateVideoRequiredGuardedAttributes(video: HTMLVideoElement) {
+    const guardedAttributesAndValue = this.videoRequireGuardedAttributes.map(attr => ([ attr, getAttr(this.videoElement, attr) ]));
+    guardedAttributesAndValue.forEach(([ attr, value ]) => setAttr(video, attr, value));
   }
 
   /**
