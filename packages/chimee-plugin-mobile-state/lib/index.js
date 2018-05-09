@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-mobile-state v0.0.16
+ * chimee-plugin-mobile-state v0.0.17
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -117,7 +117,9 @@ var chimeeState = gestureFactory({
     },
     d_tap: function d_tap(evt) {
       var path = _Array$from(evt.path || []) || getElementPath(evt.target);
-      if (path.indexOf(this.$dom.querySelector('chimee-state-play') !== -1)) this.play();
+      if (path.indexOf(this.$dom.querySelector('chimee-state-play')) !== -1) {
+        this.play();
+      }
     }
   },
   methods: {

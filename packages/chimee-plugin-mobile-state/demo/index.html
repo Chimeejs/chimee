@@ -28,7 +28,7 @@
   <script src="https://s5.ssl.qhres.com/static/588b46b97caa0749.js"></script>  
   <script src="../node_modules/chimee/lib/index.browser.js"></script>
   <script src="../../chimee-plugin-mobile-controlbar/lib/index.browser.js"></script>
-  <script src="../lib/index.browser.js"></script>
+  <script src="../lib/index.min.js?v=1"></script>
   <script>
     var vConsole = new VConsole();
     Chimee.install(chimeePluginMobileControlbar);
@@ -59,9 +59,12 @@
       x5VideoOrientation: 'landscape'
     });
     player.on('state-change', function () {
-      console.log(111)
+      // console.log(111)
     })
     player.on('state-tap', function () {
+      // console.log(222)
+    })
+    player.on('play', function () {
       console.log(222)
     })
   </script>

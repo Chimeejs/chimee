@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-mobile-state v0.0.16
+ * chimee-plugin-mobile-state v0.0.17
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -162,7 +162,7 @@ var _toPrimitive = function (it, S) {
 
 var dP = Object.defineProperty;
 
-var f = _descriptors ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+var f$1 = _descriptors ? Object.defineProperty : function defineProperty(O, P, Attributes) {
   _anObject(O);
   P = _toPrimitive(P, true);
   _anObject(Attributes);
@@ -175,7 +175,7 @@ var f = _descriptors ? Object.defineProperty : function defineProperty(O, P, Att
 };
 
 var _objectDp = {
-	f: f
+	f: f$1
 };
 
 var _propertyDesc = function (bitmap, value) {
@@ -770,10 +770,10 @@ for (var i = 0; i < DOMIterables.length; i++) {
   _iterators[NAME] = _iterators.Array;
 }
 
-var f$1 = _wks;
+var f$2 = _wks;
 
 var _wksExt = {
-	f: f$1
+	f: f$2
 };
 
 var iterator$2 = _wksExt.f('iterator');
@@ -852,16 +852,16 @@ var _wksDefine = function (name) {
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$4($Symbol, name, { value: _wksExt.f(name) });
 };
 
-var f$2 = Object.getOwnPropertySymbols;
+var f$3 = Object.getOwnPropertySymbols;
 
 var _objectGops = {
-	f: f$2
+	f: f$3
 };
 
-var f$3 = {}.propertyIsEnumerable;
+var f$4 = {}.propertyIsEnumerable;
 
 var _objectPie = {
-	f: f$3
+	f: f$4
 };
 
 // all enumerable object keys, includes symbols
@@ -890,12 +890,12 @@ var _isArray = Array.isArray || function isArray(arg) {
 
 var hiddenKeys = _enumBugKeys.concat('length', 'prototype');
 
-var f$5 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+var f$6 = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return _objectKeysInternal(O, hiddenKeys);
 };
 
 var _objectGopn = {
-	f: f$5
+	f: f$6
 };
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
@@ -914,17 +914,17 @@ var getWindowNames = function (it) {
   }
 };
 
-var f$4 = function getOwnPropertyNames(it) {
+var f$5 = function getOwnPropertyNames(it) {
   return windowNames && toString$1.call(it) == '[object Window]' ? getWindowNames(it) : gOPN$1(_toIobject(it));
 };
 
 var _objectGopnExt = {
-	f: f$4
+	f: f$5
 };
 
 var gOPD$1 = Object.getOwnPropertyDescriptor;
 
-var f$6 = _descriptors ? gOPD$1 : function getOwnPropertyDescriptor(O, P) {
+var f$7 = _descriptors ? gOPD$1 : function getOwnPropertyDescriptor(O, P) {
   O = _toIobject(O);
   P = _toPrimitive(P, true);
   if (_ie8DomDefine) try {
@@ -934,7 +934,7 @@ var f$6 = _descriptors ? gOPD$1 : function getOwnPropertyDescriptor(O, P) {
 };
 
 var _objectGopd = {
-	f: f$6
+	f: f$7
 };
 
 // ECMAScript 6 symbols shim
@@ -2863,12 +2863,12 @@ function PromiseCapability(C) {
   this.reject = _aFunction(reject);
 }
 
-var f$7 = function (C) {
+var f$8 = function (C) {
   return new PromiseCapability(C);
 };
 
 var _newPromiseCapability = {
-	f: f$7
+	f: f$8
 };
 
 var _perform = function (exec) {
@@ -4624,7 +4624,7 @@ var _toPrimitive$2 = function (it, S) {
 
 var dP$3 = Object.defineProperty;
 
-var f$8 = _descriptors$2 ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+var f$9 = _descriptors$2 ? Object.defineProperty : function defineProperty(O, P, Attributes) {
   _anObject$2(O);
   P = _toPrimitive$2(P, true);
   _anObject$2(Attributes);
@@ -4637,7 +4637,7 @@ var f$8 = _descriptors$2 ? Object.defineProperty : function defineProperty(O, P,
 };
 
 var _objectDp$2 = {
-	f: f$8
+	f: f$9
 };
 
 var _propertyDesc$2 = function (bitmap, value) {
@@ -5076,7 +5076,9 @@ var chimeeState = gestureFactory({
     },
     d_tap: function d_tap(evt) {
       var path = _Array$from(evt.path || []) || getElementPath(evt.target);
-      if (path.indexOf(this.$dom.querySelector('chimee-state-play') !== -1)) this.play();
+      if (path.indexOf(this.$dom.querySelector('chimee-state-play')) !== -1) {
+        this.play();
+      }
     }
   },
   methods: {

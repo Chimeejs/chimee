@@ -82,12 +82,14 @@ const chimeeState = gestureFactory({
     panend (evt) {
       this.emit('state-panend', evt);
     },
-    tap (evt) {
+    tap (evt) {f
       this.emit('state-tap', evt);
     },
     d_tap (evt) {
       const path = Array.from(evt.path || []) || getElementPath(evt.target);
-      if(path.indexOf(this.$dom.querySelector('chimee-state-play') !== -1)) this.play();
+      if(path.indexOf(this.$dom.querySelector('chimee-state-play')) !== -1) {
+        this.play();
+      }
     }
   },
   methods: {
