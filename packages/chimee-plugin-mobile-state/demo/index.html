@@ -3,6 +3,8 @@
   <meta name="viewport">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,  user-scalable=no">
   <meta charset="utf-8"> 
+  <script>
+  </script>
   <head>
     <title>test</title>
     <style>
@@ -22,18 +24,19 @@
   <body>
     <div id="wrap"></div>
   </body>
+  <script src="http://lib.baomitu.com/babel-polyfill/7.0.0-beta.44/polyfill.js"></script>
   <script src="https://s5.ssl.qhres.com/static/588b46b97caa0749.js"></script>  
   <script src="../node_modules/chimee/lib/index.browser.js"></script>
   <script src="../../chimee-plugin-mobile-controlbar/lib/index.browser.js"></script>
   <script src="../lib/index.browser.js"></script>
   <script>
-    // const vConsole = new VConsole();
+    var vConsole = new VConsole();
     Chimee.install(chimeePluginMobileControlbar);
     Chimee.install(chimeePluginMobileState);
     var player = new Chimee({
       wrapper: '#wrap',
       src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/103_371ab0c0fda-143d-4755-8727-d3cd12dce02d.mp4',
-      plugin: [chimeePluginMobileControlbar.name, 
+      plugin: [chimeePluginMobileControlbar.name,
       
         {
           name: chimeePluginMobileState.name,

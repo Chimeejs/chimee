@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-mobile-state v0.0.15
+ * chimee-plugin-mobile-state v0.0.16
  * (c) 2017 yandeqiang
  * Released under ISC
  */
@@ -27,6 +27,7 @@ function __$styleInject(css, returnValue) {
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var _Array$from = _interopDefault(require('babel-runtime/core-js/array/from'));
 var chimeeHelper = require('chimee-helper');
 var gestureFactory = _interopDefault(require('chimee-plugin-gesture'));
 
@@ -65,7 +66,7 @@ var chimeeState = gestureFactory({
   },
   inited: function inited() {
     // 存在 src 并且 设置了 prelaod || autoplay 的情况下， 显示 loading
-    this.src && (this.preload === 'auto' || this.preload === 'metadata' || this.autoplay === true) && this.showState('loading', true);
+    this.src && (this.preload === 'auto' || this.preload === 'metadata' || this.preload === '' || this.autoplay === true) && this.showState('loading', true);
   },
 
   penetrate: true,
@@ -88,10 +89,9 @@ var chimeeState = gestureFactory({
     playing: function playing() {
       this.playing();
     },
-
-    // loadstart () {
-    //   this.waiting('loadstart');
-    // },
+    loadstart: function loadstart() {
+      this.waiting();
+    },
     waiting: function waiting() {
       this.waiting();
     },
@@ -116,7 +116,7 @@ var chimeeState = gestureFactory({
       this.emit('state-tap', evt);
     },
     d_tap: function d_tap(evt) {
-      var path = evt.path || getElementPath(evt.target);
+      var path = _Array$from(evt.path || []) || getElementPath(evt.target);
       if (path.indexOf(this.$dom.querySelector('chimee-state-play') !== -1)) this.play();
     }
   },

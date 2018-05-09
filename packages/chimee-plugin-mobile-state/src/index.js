@@ -39,7 +39,7 @@ const chimeeState = gestureFactory({
   },
   inited () {
     // 存在 src 并且 设置了 prelaod || autoplay 的情况下， 显示 loading
-    this.src && (this.preload === 'auto' || this.preload === 'metadata' || this.autoplay === true) && this.showState('loading', true);
+    this.src && (this.preload === 'auto' || this.preload === 'metadata' || this.preload === '' || this.autoplay === true) && this.showState('loading', true);
   },
   penetrate: true,
   operable: true,
@@ -60,9 +60,9 @@ const chimeeState = gestureFactory({
     playing () {
       this.playing();
     },
-    // loadstart () {
-    //   this.waiting('loadstart');
-    // },
+    loadstart () {
+      this.waiting();
+    },
     waiting () {
       this.waiting();
     },
@@ -86,7 +86,7 @@ const chimeeState = gestureFactory({
       this.emit('state-tap', evt);
     },
     d_tap (evt) {
-      const path = evt.path || getElementPath(evt.target);
+      const path = Array.from(evt.path || []) || getElementPath(evt.target);
       if(path.indexOf(this.$dom.querySelector('chimee-state-play') !== -1)) this.play();
     }
   },
