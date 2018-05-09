@@ -31,7 +31,7 @@ describe('dispatcher/dom', () => {
 
   test('dom needs wrapper and dispatcher if you pass in illegal desipatcher, it should throw error', () => {
     expect(() => new Dom()).toThrow('Wrapper can only be string or HTMLElement, but not undefined');
-    expect(() => new Dom('hello')).toThrow('Can not get dom node accroding wrapper. Please check your wrapper');
+    expect(() => new Dom({ wrapper: 'hello' })).toThrow('Can not get dom node accroding wrapper. Please check your wrapper');
   });
 
   describe('wrapper can be string, indicate elment in document', () => {
@@ -41,7 +41,7 @@ describe('dispatcher/dom', () => {
     beforeEach(() => {
       node = document.createElement('div');
       document.body.appendChild(node);
-      dom = new Dom('div', fakeDispatcher);
+      dom = new Dom({ wrapper: 'div' }, fakeDispatcher);
     });
 
     afterEach(() => {
@@ -69,7 +69,7 @@ describe('dispatcher/dom', () => {
 
   test('wrapper can be a custom node', () => {
     const node = document.createElement('div');
-    const dom = new Dom(node, fakeDispatcher);
+    const dom = new Dom({ wrapper: node }, fakeDispatcher);
     expect(dom.wrapper).toBe(node);
     expect(node.querySelector('video')).not.toBe(null);
     expect(node.querySelector('video')).toBe(dom.videoElement);
@@ -90,7 +90,7 @@ describe('dispatcher/dom', () => {
       container.appendChild(video);
       node.appendChild(container);
       document.body.appendChild(node);
-      dom = new Dom(node, fakeDispatcher);
+      dom = new Dom({ wrapper: node }, fakeDispatcher);
     });
 
     afterEach(() => {

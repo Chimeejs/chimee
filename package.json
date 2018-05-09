@@ -7,6 +7,8 @@
   "jsnext:main": "lib/index.mjs",
   "browser": "lib/index.browser.js",
   "scripts": {
+    "precommit": "npm run lint",
+    "prepush": "npm run lint && npm t",
     "prepublishOnly": "npm t && pkg-ok",
     "postmerge": "sh tool/auto-npm-install.sh",
     "test": "npm run karma && jest --coverage && node env-check.js",
@@ -97,8 +99,7 @@
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-uglify": "^3.0.0",
     "rollup-plugin-visualizer": "^0.6.0",
-    "rollup-watch": "^4.3.1",
-    "three": "^0.92.0"
+    "rollup-watch": "^4.3.1"
   },
   "jest": {
     "modulePaths": [

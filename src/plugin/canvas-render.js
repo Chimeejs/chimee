@@ -1,4 +1,4 @@
-// @flow
+/* eslint-disable */ 
 import Plugin from '../dispatcher/plugin';
 import { Scene, PerspectiveCamera, WebGLRenderer, Mesh, MeshBasicMaterial, BoxGeometry, SphereBufferGeometry, VideoTexture, LinearFilter, RGBFormat, Vector3, Math as ThreeMath } from 'three';
 
