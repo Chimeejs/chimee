@@ -60,9 +60,9 @@ const chimeeState = gestureFactory({
     playing () {
       this.playing();
     },
-    loadstart () {
-      this.waiting();
-    },
+    // loadstart () {
+    //   this.waiting();
+    // },
     waiting () {
       this.waiting();
     },
@@ -82,7 +82,7 @@ const chimeeState = gestureFactory({
     panend (evt) {
       this.emit('state-panend', evt);
     },
-    tap (evt) {f
+    tap (evt) {
       this.emit('state-tap', evt);
     },
     d_tap (evt) {

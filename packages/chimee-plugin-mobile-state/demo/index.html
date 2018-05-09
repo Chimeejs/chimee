@@ -47,16 +47,11 @@
           // }
         }
       ],
-      box: 'native',
       controls: true,
-      autoplay: true,
+      // autoplay: true,
       playsInline: true,
-      preload: 'none',
-      x5VideoPlayerFullscreen: true,
-      x5VideoOrientation: true,
-      xWebkitAirplay: true,
-      muted: true,
-      x5VideoOrientation: 'landscape'
+      preload: true,
+      poster: 'https://p0.ssl.qhimgs4.com/t01ffdbaa9e95bf5eb2.jpg'
     });
     player.on('state-change', function () {
       // console.log(111)
@@ -64,7 +59,7 @@
     player.on('state-tap', function () {
       // console.log(222)
     })
-    player.on('play', function () {
+    player.on('loadstart', function () {
       console.log(222)
     })
   </script>

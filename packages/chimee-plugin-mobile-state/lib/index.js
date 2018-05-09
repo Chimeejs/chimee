@@ -89,9 +89,10 @@ var chimeeState = gestureFactory({
     playing: function playing() {
       this.playing();
     },
-    loadstart: function loadstart() {
-      this.waiting();
-    },
+
+    // loadstart () {
+    //   this.waiting();
+    // },
     waiting: function waiting() {
       this.waiting();
     },
