@@ -67,7 +67,7 @@ export default class Dom {
   fullscreenElement = undefined;
 
   constructor(config: UserConfig, dispatcher: Dispatcher) {
-    const { wrapper } = config;
+    const { wrapper } = config || {};
     this.__dispatcher = dispatcher;
     if (!isElement(wrapper) && !isString(wrapper)) throw new TypeError(`Wrapper can only be string or HTMLElement, but not ${typeof wrapper}`);
     const $wrapper = $(wrapper);

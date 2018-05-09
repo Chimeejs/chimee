@@ -121,7 +121,7 @@ declare type UserConfig = {
     getContext?: Function;
     setSize?: Function;
   },
-  videoRequiredGuardedAttributes: string[],
+  videoRequiredGuardedAttributes?: string[],
 }
 
 declare type binderTarget = 'kernel' | 'container' | 'wrapper' | 'video' | 'video-dom' | 'plugin' | 'esFullscreen';
