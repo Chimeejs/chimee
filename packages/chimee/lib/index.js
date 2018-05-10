@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.0-alpha.5
+ * chimee v0.10.0-alpha.6
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -1296,7 +1296,7 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec$2(_class$2 = functi
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.10.0-alpha.5';
+    _this.VERSION = '0.10.0-alpha.6';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -1392,14 +1392,13 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec$2(_class$2 = functi
      * the dom node of whole plugin
      * @type {HTMLElement}
      */
-    _this.$dom = _this.__dispatcher.dom.insertPlugin(_this.__id, el, { penetrate: penetrate, inner: inner, autoFocus: autoFocus, className: className });
+    _this.$dom = _this.__dispatcher.dom.insertPlugin(_this.__id, el, { penetrate: penetrate, inner: inner, className: className });
+    _this.$autoFocus = chimeeHelper.isBoolean(autoFocus) ? autoFocus : inner;
     // now we can frozen inner, autoFocus and penetrate
     _this.$inner = inner;
-    _this.$autoFocus = autoFocus;
     _this.$penetrate = penetrate;
     toxicDecorators.applyDecorators(_this, {
       $inner: toxicDecorators.frozen,
-      $autoFocus: toxicDecorators.frozen,
       $penetrate: toxicDecorators.frozen
     }, { self: true });
     /**
@@ -1523,6 +1522,15 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec$2(_class$2 = functi
     },
     get: function get() {
       return this.__level;
+    }
+  }, {
+    key: '$autoFocus',
+    get: function get() {
+      return this.__autoFocus;
+    },
+    set: function set(val) {
+      this.__autoFocus = val;
+      this.__dispatcher.dom._autoFocusToVideo(this.$dom, !val);
     }
   }]);
 
@@ -1743,8 +1751,7 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       }
       var _option = option,
           inner = _option.inner,
-          penetrate = _option.penetrate,
-          autoFocus = _option.autoFocus;
+          penetrate = _option.penetrate;
       var _option2 = option,
           className = _option2.className;
 
@@ -1758,7 +1765,6 @@ var Dom = (_dec$3 = toxicDecorators.waituntil('__dispatcher.videoConfigReady'), 
       this.plugins[id] = node;
       var outerElement = inner ? this.container : this.wrapper;
       var originElement = inner ? this.videoElement : this.container;
-      if (chimeeHelper.isBoolean(autoFocus) ? autoFocus : inner) this._autoFocusToVideo(node);
       // auto forward the event if this plugin can be penetrate
       if (penetrate) {
         this.__dispatcher.binder.bindEventOnPenetrateNode(node);
@@ -4044,7 +4050,7 @@ var Chimee = (_dec$7 = toxicDecorators.autobindClass(), _dec$7(_class$8 = (_clas
 }), _descriptor2$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.10.0-alpha.5';
+    return '0.10.0-alpha.6';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
