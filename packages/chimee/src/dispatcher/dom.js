@@ -1,5 +1,5 @@
 // @flow
-import { isArray, isElement, isString, isHTMLString, hypenate, isFunction, isPosterityNode, isObject, isBoolean, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log, isEvent } from 'chimee-helper';
+import { isArray, isElement, isString, isHTMLString, hypenate, isFunction, isPosterityNode, isObject, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log, isEvent } from 'chimee-helper';
 import esFullscreen from 'es-fullscreen';
 import { autobind, before, waituntil } from 'toxic-decorators';
 import Dispatcher from './index';
@@ -159,7 +159,7 @@ export default class Dom {
    * 3. string, we will transfer this string into hypen string, then we create a custom elment called by this and bind it on wrapper
    * 4. nothing, we will create a div and bind it on the wrapper
    */
-  insertPlugin(id: string, el?: string | Element | Object, option: {inner?: boolean, penetrate?: boolean, autoFocus?: boolean, className?: string | Array<string>} = {}) {
+  insertPlugin(id: string, el?: string | Element | Object, option: {inner?: boolean, penetrate?: boolean, className?: string | Array<string>} = {}) {
     if (!isString(id)) throw new TypeError('insertPlugin id parameter must be string');
     if (isElement(this.plugins[id])) {
       /* istanbul ignore else  */
@@ -178,7 +178,7 @@ export default class Dom {
       // $FlowFixMe: we have check el's type here and make sure it's an object
       option = el;
     }
-    const { inner, penetrate, autoFocus } = option;
+    const { inner, penetrate } = option;
     let { className } = option;
     const node = (el && isElement(el)) ? el : document.createElement('div');
     if (isArray(className)) {
@@ -190,7 +190,6 @@ export default class Dom {
     this.plugins[id] = node;
     const outerElement = inner ? this.container : this.wrapper;
     const originElement = inner ? this.videoElement : this.container;
-    if (isBoolean(autoFocus) ? autoFocus : inner) this._autoFocusToVideo(node);
     // auto forward the event if this plugin can be penetrate
     if (penetrate) {
       this.__dispatcher.binder.bindEventOnPenetrateNode(node);
