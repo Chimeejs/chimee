@@ -5,6 +5,16 @@ import { bind, Log } from 'chimee-helper';
 describe("plugin's attributes", () => {
   let dispatcher;
   let player;
+  let originScrollTo;
+
+  beforeAll(() => {
+    originScrollTo = global.window.scrollTo;
+    global.window.scrollTo = function() {};
+  });
+
+  afterAll(() => {
+    global.window.scrollTo = originScrollTo;
+  });
 
   beforeEach(() => {
     player = new Chimee({
@@ -242,5 +252,27 @@ describe("plugin's attributes", () => {
     Chimee.install({ name: 'p' });
     dispatcher.use('p');
     expect(dispatcher.plugins.p.$plugins).toBe(dispatcher.plugins);
+  });
+
+  describe('autoFocus', () => {
+    test('normal', () => {
+      Chimee.install({ name: 'autoFocus' });
+      player.use('autoFocus');
+      const plugin = player.$plugins.autoFocus;
+      expect(plugin.$autoFocus).toBe(true);
+      expect(document.activeElement).toBe(document.body);
+      plugin.$dom.dispatchEvent(new Event('mouseup'));
+      expect(document.activeElement).toBe(player.$video);
+    });
+    test('autoFocus is false', () => {
+      Chimee.install({ name: 'autoFocus' });
+      player.use('autoFocus');
+      const plugin = player.$plugins.autoFocus;
+      expect(plugin.$autoFocus).toBe(true);
+      expect(document.activeElement).toBe(document.body);
+      plugin.$autoFocus = false;
+      plugin.$dom.dispatchEvent(new Event('mouseup'));
+      expect(document.activeElement).not.toBe(player.$video);
+    });
   });
 });

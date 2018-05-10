@@ -30,9 +30,10 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   $videoConfig: VideoConfig;
   $inner: boolean;
   $operable: boolean;
-  $autoFocus: boolean;
   $penetrate: boolean;
   VERSION: string;
+  __autoFocus: boolean;
+
   destroyed = false;
   VERSION = process.env.PLAYER_VERSION;
   __operable = true;
@@ -178,14 +179,13 @@ export default @autobindClass() class Plugin extends VideoWrapper {
      * the dom node of whole plugin
      * @type {HTMLElement}
      */
-    this.$dom = this.__dispatcher.dom.insertPlugin(this.__id, el, { penetrate, inner, autoFocus, className });
+    this.$dom = this.__dispatcher.dom.insertPlugin(this.__id, el, { penetrate, inner, className });
+    this.$autoFocus = isBoolean(autoFocus) ? autoFocus : inner;
     // now we can frozen inner, autoFocus and penetrate
     this.$inner = inner;
-    this.$autoFocus = autoFocus;
     this.$penetrate = penetrate;
     applyDecorators(this, {
       $inner: frozen,
-      $autoFocus: frozen,
       $penetrate: frozen,
     }, { self: true });
     /**
@@ -295,5 +295,14 @@ export default @autobindClass() class Plugin extends VideoWrapper {
   }
   get $level(): number {
     return this.__level;
+  }
+
+  get $autoFocus(): boolean {
+    return this.__autoFocus;
+  }
+
+  set $autoFocus(val: boolean) {
+    this.__autoFocus = val;
+    this.__dispatcher.dom._autoFocusToVideo(this.$dom, !val);
   }
 }
