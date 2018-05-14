@@ -74,7 +74,9 @@ export default function (modeConf) {
   const mode = modeConf.output.format;
   const config = {
     input: 'src/index.js',
-    banner,
+    output: {
+      banner
+    },
     external (id) {
       return !/min|umd|iife/.test(mode) && externalRegExp.test(id);
     },
@@ -88,7 +90,6 @@ export default function (modeConf) {
             extensions: ['.svg', 'png'],
             root: './src/'
           }),
-          cssnext(),
           nested(),
           cssnano()
         ],
@@ -106,7 +107,7 @@ export default function (modeConf) {
   delete modeConf.uglify;
   Object.assign(config, modeConf);
   if(mode === 'umd') {
-    config.name = camelize(name);
+    config.output.name = camelize(name);
   }
   return config;
 };

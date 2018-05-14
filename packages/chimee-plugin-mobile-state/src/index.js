@@ -4,17 +4,6 @@ import gestureFactory from 'chimee-plugin-gesture';
 import playStr from './image/play.svg';
 import loadingStr from './image/loading.svg';
 
-const getElementPath = function (elem) {
-  const path = [];
-  if(elem === null) return path;
-  path.push(elem);
-  while(elem.parentNode !== null) {
-    elem = elem.parentNode;
-    path.push(elem);
-  };
-  return path;
-};
-
 const defaultConfig = {
   errorTips: '加载失败，请刷新重试',
   icon: {
@@ -86,8 +75,8 @@ const chimeeState = gestureFactory({
       this.emit('state-tap', evt);
     },
     d_tap (evt) {
-      const path = Array.from(evt.path || []) || getElementPath(evt.target);
-      if(path.indexOf(this.$dom.querySelector('chimee-state-play')) !== -1) {
+      const playElem = this.$dom.querySelector('chimee-state-play');
+      if(playElem.contains(evt.target)) {
         this.play();
       }
     }
