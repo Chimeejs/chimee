@@ -13,7 +13,7 @@ const nativeOneSwitch = {
   el: '<button>Lost star switch</button>',
   create() {
     this.$dom.addEventListener('click', () => {
-      this.$silentLoad('http://cdn.toxicjohann.com/lostStar.mp4', { repeatTimes: 5, increment: 2 });
+      this.$silentLoad('http://cdn.toxicjohann.com/lostStar.mp4', { repeatTimes: 5, increment: 2, immediate: true });
     });
   },
 };

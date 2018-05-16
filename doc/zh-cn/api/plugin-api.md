@@ -1391,7 +1391,7 @@ player.on('fullscreenchange', evt => {
 
 - element【可选】
   - 类型：`string`
-  - 默认：video
+  - 默认：container
   - 可选项：video、wrapper、container
 - attribute 【必选】
   - 类型：`string`
