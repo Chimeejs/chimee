@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.0-alpha.6
+ * chimee v0.10.0-alpha.7
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -1296,7 +1296,7 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec$2(_class$2 = functi
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.10.0-alpha.6';
+    _this.VERSION = '0.10.0-alpha.7';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -2619,6 +2619,7 @@ var Binder = (_dec$5 = toxicDecorators.before(prettifyEventParameter), _dec2$4 =
     this.buses = {};
     this.bindedEventNames = {};
     this.bindedEventInfo = {};
+    this.pendingEventsInfo = {};
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;
@@ -2629,6 +2630,7 @@ var Binder = (_dec$5 = toxicDecorators.before(prettifyEventParameter), _dec2$4 =
 
         this.bindedEventNames[kind] = [];
         this.bindedEventInfo[kind] = [];
+        this.pendingEventsInfo[kind] = [];
         this.buses[kind] = new Bus(dispatcher);
       }
     } catch (err) {
@@ -2924,6 +2926,7 @@ var Binder = (_dec$5 = toxicDecorators.before(prettifyEventParameter), _dec2$4 =
 
           return _this5.triggerSync.apply(_this5, [{ target: target, name: name, id: 'kernel' }].concat(args));
         };
+
         this.__dispatcher.kernel.on(name, fn);
       } else if (target === 'container' || target === 'wrapper') {
         fn = function fn() {
@@ -3039,6 +3042,24 @@ var Binder = (_dec$5 = toxicDecorators.before(prettifyEventParameter), _dec2$4 =
       // we have listened mustListenVideoDomEvents
       // so the events above do not need to rebind
       return target !== 'plugin' && target !== 'esFullscreen' && mustListenVideoDomEvents.indexOf(name) < 0;
+    }
+  }, {
+    key: 'addPendingEvent',
+    value: function addPendingEvent(target, name, id) {
+      this.pendingEventsInfo[target].push([name, id]);
+    }
+  }, {
+    key: 'applyPendingEvents',
+    value: function applyPendingEvents(target) {
+      var pendingEvents = this.pendingEventsInfo[target];
+      while (pendingEvents.length) {
+        var _pendingEvents$pop = pendingEvents.pop(),
+            _pendingEvents$pop2 = _slicedToArray(_pendingEvents$pop, 2),
+            _name2 = _pendingEvents$pop2[0],
+            id = _pendingEvents$pop2[1];
+
+        this._addEventListenerOnTarget({ name: _name2, target: target, id: id });
+      }
     }
   }]);
 
@@ -3359,7 +3380,9 @@ var Dispatcher = (_dec$6 = toxicDecorators.before(convertNameIntoId), _dec2$5 = 
               }
             };
             videoLoadedmetadata = function videoLoadedmetadata() {
-              if (!isLive) kernel.seek(idealTime);
+              if (!isLive) {
+                kernel.seek(immediate ? _this2.kernel.currentTime : idealTime);
+              }
             };
             _videoError = function videoError(evt) {
               chimeeHelper.removeEvent(video, 'canplay', videoCanplay, true);
@@ -4050,7 +4073,7 @@ var Chimee = (_dec$7 = toxicDecorators.autobindClass(), _dec$7(_class$8 = (_clas
 }), _descriptor2$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.10.0-alpha.6';
+    return '0.10.0-alpha.7';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
