@@ -115,6 +115,7 @@ export default class Binder {
   bindedEventNames: { [binderTarget]: string[] };
   bindedEventInfo: { [binderTarget]: Array<[string, Function]> };
   buses: { [binderTarget]: Bus };
+  pendingEventsInfo: { [binderTarget]: Array<[string, string]> };
   __dispatcher: Dispatcher;
 
   constructor(dispatcher: Dispatcher) {
@@ -131,9 +132,11 @@ export default class Binder {
     this.buses = {};
     this.bindedEventNames = {};
     this.bindedEventInfo = {};
+    this.pendingEventsInfo = {};
     for (const kind of this.kinds) {
       this.bindedEventNames[kind] = [];
       this.bindedEventInfo[kind] = [];
+      this.pendingEventsInfo[kind] = [];
       this.buses[kind] = new Bus(dispatcher);
     }
   }
@@ -339,6 +342,7 @@ export default class Binder {
     // choose the correspond method to bind
     if (target === 'kernel') {
       fn = (...args) => this.triggerSync({ target, name, id: 'kernel' }, ...args);
+
       this.__dispatcher.kernel.on(name, fn);
     } else if (target === 'container' || target === 'wrapper') {
       fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
@@ -431,5 +435,17 @@ export default class Binder {
     return target !== 'plugin' &&
       target !== 'esFullscreen' &&
       mustListenVideoDomEvents.indexOf(name) < 0;
+  }
+
+  addPendingEvent(target: binderTarget, name: string, id: string) {
+    this.pendingEventsInfo[target].push([ name, id ]);
+  }
+
+  applyPendingEvents(target: binderTarget) {
+    const pendingEvents = this.pendingEventsInfo[target];
+    while (pendingEvents.length) {
+      const [ name, id ] = pendingEvents.pop();
+      this._addEventListenerOnTarget({ name, target, id });
+    }
   }
 }
