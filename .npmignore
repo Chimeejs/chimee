@@ -3,6 +3,7 @@ __tests__/
 tests/
 build/
 lib/index.dev.js
+lib/index.dev.js.map
 coverage/
 demo/
 doc/

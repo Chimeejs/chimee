@@ -289,7 +289,9 @@ export default class Dispatcher {
             }
           };
           videoLoadedmetadata = () => {
-            if (!isLive) kernel.seek(idealTime);
+            if (!isLive) {
+              kernel.seek(immediate ? this.kernel.currentTime : idealTime);
+            }
           };
           videoError = evt => {
             removeEvent(video, 'canplay', videoCanplay, true);
