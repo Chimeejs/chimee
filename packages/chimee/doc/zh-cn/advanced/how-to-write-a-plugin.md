@@ -4,7 +4,7 @@ Chimee 中的所有插件都是 `Chimee.plugin` 的一个实例。我们可以�
 
 ## 编写一个简单的播放暂停插件
 
-![简单的播放暂停插件](https://resource.toxicjohann.com/simplest-demo.gif)
+![简单的播放暂停插件](http://resource.toxicjohann.com/simplest-demo.gif)
 
 我们可以轻松地编写一个如上图播放暂停插件。
 
