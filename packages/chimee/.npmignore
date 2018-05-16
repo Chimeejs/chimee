@@ -13,3 +13,9 @@ tool/
 bundle-size/
 .babelrc
 .flowconfig
+.eslintignore
+.eslintrc
+.travis.yml
+env-check.js
+karma.conf.js
+src/
