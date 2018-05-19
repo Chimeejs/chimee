@@ -51,9 +51,9 @@ describe("plugin's attributes", () => {
     }, dispatcher);
     dispatcher.order.unshift('p');
     dispatcher.plugins.p = plugin;
+    dispatcher.binder.applyPendingEvents('video-dom');
     plugin.$dom.click();
   });
-
 
   test('set operable to be true and change it', () => {
     const plugin = new Plugin({

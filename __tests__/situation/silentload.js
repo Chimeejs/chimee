@@ -412,11 +412,24 @@ describe('load', () => {
     player.load({
       isLive: false,
       box: 'native',
+      src: 'http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4',
     });
     await Promise.resolve();
     expect(player.$video).not.toBe(oldVideo);
     expect(player.$video).toBe(video);
     expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-    expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
+    expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
+  });
+
+  test('use load to clear src', async () => {
+    player.load({
+      isLive: false,
+      box: 'native',
+    });
+    await Promise.resolve();
+    expect(player.$video).not.toBe(oldVideo);
+    expect(player.$video).toBe(video);
+    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.src).toBe('');
   });
 });
