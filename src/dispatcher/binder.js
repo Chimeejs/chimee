@@ -341,8 +341,11 @@ export default class Binder {
     const targetDom = this._getTargetDom(target);
     // choose the correspond method to bind
     if (target === 'kernel') {
+      if (!this.__dispatcher.kernel) {
+        this.addPendingEvent(target, name, id);
+        return;
+      }
       fn = (...args) => this.triggerSync({ target, name, id: 'kernel' }, ...args);
-
       this.__dispatcher.kernel.on(name, fn);
     } else if (target === 'container' || target === 'wrapper') {
       fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
@@ -443,8 +446,9 @@ export default class Binder {
 
   applyPendingEvents(target: binderTarget) {
     const pendingEvents = this.pendingEventsInfo[target];
-    while (pendingEvents.length) {
-      const [ name, id ] = pendingEvents.pop();
+    const pendingEventsCopy = pendingEvents.splice(0, pendingEvents.length);
+    while (pendingEventsCopy.length) {
+      const [ name, id ] = pendingEventsCopy.pop();
       this._addEventListenerOnTarget({ name, target, id });
     }
   }

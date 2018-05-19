@@ -175,7 +175,6 @@ const player = new Chimee({
   controls: true,
 });
 window.player = player;
-player.load();
 // player.attachMedia();
 document.getElementById('play').addEventListener('click', function() {
   player.play();
