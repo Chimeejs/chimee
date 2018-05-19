@@ -386,7 +386,8 @@ export default class Dispatcher {
       ? srcOrOption
       : isObject(srcOrOption) && isString(srcOrOption.src)
         ? srcOrOption.src
-        : this.videoConfig.src;
+        // give a chance for user to clear the src
+        : '';
     if (isObject(srcOrOption)) {
       delete srcOrOption.src;
       option = srcOrOption;

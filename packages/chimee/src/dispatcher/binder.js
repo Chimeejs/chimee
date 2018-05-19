@@ -116,6 +116,7 @@ export default class Binder {
   bindedEventInfo: { [binderTarget]: Array<[string, Function]> };
   buses: { [binderTarget]: Bus };
   pendingEventsInfo: { [binderTarget]: Array<[string, string]> };
+  needToCheckPendingVideoDomEventPlugins: { [string]: boolean };
   __dispatcher: Dispatcher;
 
   constructor(dispatcher: Dispatcher) {
@@ -133,6 +134,7 @@ export default class Binder {
     this.bindedEventNames = {};
     this.bindedEventInfo = {};
     this.pendingEventsInfo = {};
+    this.needToCheckPendingVideoDomEventPlugins = {};
     for (const kind of this.kinds) {
       this.bindedEventNames[kind] = [];
       this.bindedEventInfo[kind] = [];
@@ -354,9 +356,16 @@ export default class Binder {
       fn = (...args) => this.trigger({ target, name, id: target }, ...args);
       this._addEventOnDom(targetDom, name, fn);
     } else if (target === 'video-dom') {
-      const { penetrate = false } = Dispatcher.getPluginConfig(id) || {};
+      if (!this.__dispatcher.plugins[id]) {
+        // The plugin has not been created
+        // We will be better to wait for it in order to check its penetrate
+        this.needToCheckPendingVideoDomEventPlugins[id] = true;
+        this.addPendingEvent(target, name, id);
+        return;
+      }
+      const { $penetrate = false } = this.__dispatcher.plugins[id] || {};
       fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
-      if (penetrate) this.__dispatcher.dom.videoExtendedNodes.forEach(node => this._addEventOnDom(node, name, fn));
+      if ($penetrate) this.__dispatcher.dom.videoExtendedNodes.forEach(node => this._addEventOnDom(node, name, fn));
       this._addEventOnDom(targetDom, name, fn);
     }
     this.bindedEventNames[target].push(name);
