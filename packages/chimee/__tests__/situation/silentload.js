@@ -408,7 +408,7 @@ describe('load', () => {
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
   });
 
-  test('load with one object', async () => {
+  test('load with one object without src', async () => {
     player.load({
       isLive: false,
       box: 'native',
@@ -417,6 +417,6 @@ describe('load', () => {
     expect(player.$video).not.toBe(oldVideo);
     expect(player.$video).toBe(video);
     expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-    expect(player.src).toBe('');
+    expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
   });
 });

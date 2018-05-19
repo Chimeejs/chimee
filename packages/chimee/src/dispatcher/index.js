@@ -124,6 +124,7 @@ export default class Dispatcher {
      * @type {Kernel}
      */
     this.kernel = this._createKernel(this.dom.videoElement, this.videoConfig);
+    this.binder.applyPendingEvents('kernel');
     // trigger auto load event
     const asyncInitedTasks: Array<Promise<*>> = [];
     this.order.forEach(key => {
@@ -385,7 +386,7 @@ export default class Dispatcher {
       ? srcOrOption
       : isObject(srcOrOption) && isString(srcOrOption.src)
         ? srcOrOption.src
-        : '';
+        : this.videoConfig.src;
     if (isObject(srcOrOption)) {
       delete srcOrOption.src;
       option = srcOrOption;
