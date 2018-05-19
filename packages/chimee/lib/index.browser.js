@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.0-alpha.8
+ * chimee v0.10.0-alpha.9
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -7775,7 +7775,7 @@
 	    var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
 	    _this.destroyed = false;
-	    _this.VERSION = '0.10.0-alpha.8';
+	    _this.VERSION = '0.10.0-alpha.9';
 	    _this.__operable = true;
 	    _this.__level = 0;
 
@@ -7922,6 +7922,10 @@
 	    value: function __inited() {
 	      var _this2 = this;
 
+	      if (this.__dispatcher.binder.needToCheckPendingVideoDomEventPlugins[this.__id]) {
+	        this.__dispatcher.binder.applyPendingEvents('video-dom');
+	        this.__dispatcher.binder.needToCheckPendingVideoDomEventPlugins[this.__id] = false;
+	      }
 	      var result = void 0;
 	      try {
 	        result = isFunction(this.inited) && this.inited();
@@ -9595,6 +9599,7 @@
 	    this.bindedEventNames = {};
 	    this.bindedEventInfo = {};
 	    this.pendingEventsInfo = {};
+	    this.needToCheckPendingVideoDomEventPlugins = {};
 	    var _iteratorNormalCompletion = true;
 	    var _didIteratorError = false;
 	    var _iteratorError = undefined;
@@ -9894,6 +9899,10 @@
 	      var targetDom = this._getTargetDom(target);
 	      // choose the correspond method to bind
 	      if (target === 'kernel') {
+	        if (!this.__dispatcher.kernel) {
+	          this.addPendingEvent(target, name, id);
+	          return;
+	        }
 	        fn = function fn() {
 	          for (var _len7 = arguments.length, args = Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
 	            args[_key7] = arguments[_key7];
@@ -9901,7 +9910,6 @@
 
 	          return _this5.triggerSync.apply(_this5, [{ target: target, name: name, id: 'kernel' }].concat(args));
 	        };
-
 	        this.__dispatcher.kernel.on(name, fn);
 	      } else if (target === 'container' || target === 'wrapper') {
 	        fn = function fn() {
@@ -9922,9 +9930,17 @@
 	        };
 	        this._addEventOnDom(targetDom, name, fn);
 	      } else if (target === 'video-dom') {
-	        var _ref21 = Dispatcher.getPluginConfig(id) || {},
-	            _ref21$penetrate = _ref21.penetrate,
-	            penetrate = _ref21$penetrate === undefined ? false : _ref21$penetrate;
+	        if (!this.__dispatcher.plugins[id]) {
+	          // The plugin has not been created
+	          // We will be better to wait for it in order to check its penetrate
+	          this.needToCheckPendingVideoDomEventPlugins[id] = true;
+	          this.addPendingEvent(target, name, id);
+	          return;
+	        }
+
+	        var _ref21 = this.__dispatcher.plugins[id] || {},
+	            _ref21$$penetrate = _ref21.$penetrate,
+	            $penetrate = _ref21$$penetrate === undefined ? false : _ref21$$penetrate;
 
 	        fn = function fn() {
 	          for (var _len10 = arguments.length, args = Array(_len10), _key10 = 0; _key10 < _len10; _key10++) {
@@ -9933,7 +9949,7 @@
 
 	          return _this5.triggerSync.apply(_this5, [{ target: target, name: name, id: target }].concat(args));
 	        };
-	        if (penetrate) this.__dispatcher.dom.videoExtendedNodes.forEach(function (node) {
+	        if ($penetrate) this.__dispatcher.dom.videoExtendedNodes.forEach(function (node) {
 	          return _this5._addEventOnDom(node, name, fn);
 	        });
 	        this._addEventOnDom(targetDom, name, fn);
@@ -10027,11 +10043,12 @@
 	    key: 'applyPendingEvents',
 	    value: function applyPendingEvents(target) {
 	      var pendingEvents = this.pendingEventsInfo[target];
-	      while (pendingEvents.length) {
-	        var _pendingEvents$pop = pendingEvents.pop(),
-	            _pendingEvents$pop2 = _slicedToArray(_pendingEvents$pop, 2),
-	            _name2 = _pendingEvents$pop2[0],
-	            id = _pendingEvents$pop2[1];
+	      var pendingEventsCopy = pendingEvents.splice(0, pendingEvents.length);
+	      while (pendingEventsCopy.length) {
+	        var _pendingEventsCopy$po = pendingEventsCopy.pop(),
+	            _pendingEventsCopy$po2 = _slicedToArray(_pendingEventsCopy$po, 2),
+	            _name2 = _pendingEventsCopy$po2[0],
+	            id = _pendingEventsCopy$po2[1];
 
 	        this._addEventListenerOnTarget({ name: _name2, target: target, id: id });
 	      }
@@ -10171,6 +10188,7 @@
 	     * @type {Kernel}
 	     */
 	    this.kernel = this._createKernel(this.dom.videoElement, this.videoConfig);
+	    this.binder.applyPendingEvents('kernel');
 	    // trigger auto load event
 	    var asyncInitedTasks = [];
 	    this.order.forEach(function (key) {
@@ -10433,7 +10451,9 @@
 	    value: function load(srcOrOption) {
 	      var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-	      var src = isString(srcOrOption) ? srcOrOption : isObject(srcOrOption) && isString(srcOrOption.src) ? srcOrOption.src : '';
+	      var src = isString(srcOrOption) ? srcOrOption : isObject(srcOrOption) && isString(srcOrOption.src) ? srcOrOption.src
+	      // give a chance for user to clear the src
+	      : '';
 	      if (isObject(srcOrOption)) {
 	        delete srcOrOption.src;
 	        option = srcOrOption;
@@ -11257,7 +11277,7 @@
 	}), _descriptor2$1 = _applyDecoratedDescriptor$8(_class2$2.prototype, 'version', [frozen], {
 	  enumerable: true,
 	  initializer: function initializer() {
-	    return '0.10.0-alpha.8';
+	    return '0.10.0-alpha.9';
 	  }
 	}), _descriptor3$1 = _applyDecoratedDescriptor$8(_class2$2.prototype, 'config', [frozen], {
 	  enumerable: true,
