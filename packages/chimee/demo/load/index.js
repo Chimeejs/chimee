@@ -41,7 +41,7 @@ Chimee.install(flvSwitch);
 Chimee.install(hlsSwitch);
 Chimee.installKernel({
   flv: window.chimeeKernelFlv,
-  hls: window.chimeeKernelHls,
+  hls: window.ChimeeKernelHls,
 });
 const player = new Chimee({
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
