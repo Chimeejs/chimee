@@ -246,7 +246,7 @@ export default @autobindClass() class VideoWrapper {
     if (process.env.NODE_ENV !== 'production' && domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
       Log.warn('plugin', `You are try to emit ${key} event. As emit is wrapped in Promise. It make you can't use event.preventDefault and event.stopPropagation. So we advice you to use emitSync`);
     }
-    this.__dispatcher.binder.emit({
+    return this.__dispatcher.binder.emit({
       name: key,
       id: this.__id,
       target,

@@ -84,7 +84,7 @@ describe('chimee event method', () => {
     });
   });
 
-  describe('emnit', () => {
+  describe('emit', () => {
     let fn;
     beforeEach(() => {
       fn = jest.fn();
