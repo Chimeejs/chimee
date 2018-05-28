@@ -136,7 +136,7 @@ const player = new Chimee({
 
 // 停用插件
 player.unuse(ChimeePluginControllbar.name);
-player.uninstall(ChimeePluginControllbar.name);
+chimee.uninstall(ChimeePluginControllbar.name);
 ```
 
 > 如果我们未停用插件就卸载插件。正在使用插件的实例不会受影响，但是卸载后新建的实例无法使用此插件。
