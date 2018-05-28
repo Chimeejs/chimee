@@ -449,7 +449,9 @@ export default class Dispatcher {
     oldKernel.destroy();
     // delay video event binding
     // so that people can't feel the default value change
-    setTimeout(() => this.binder.bindEventOnVideo(video));
+    setTimeout(() => {
+      this.binder && this.binder.bindEventOnVideo && this.binder.bindEventOnVideo(video);
+    });
   }
 
   /**

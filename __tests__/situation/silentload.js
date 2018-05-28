@@ -1,6 +1,9 @@
 import Chimee from 'index';
-import ChimeeKernelHls from 'chimee-kernel-hls';
-// import ChimeeKernelFlv from 'chimee-kernel-flv';
+
+function sleep(duration) {
+  return new Promise(resolve => setTimeout(resolve, duration));
+}
+
 import { bind, Log } from 'chimee-helper';
 describe('$silentLoad', () => {
   let player;
@@ -153,7 +156,7 @@ describe('$silentLoad', () => {
     const option = { isLive: true };
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', option);
     Object.defineProperty(oldVideo, 'paused', { value: false });
-    await Promise.resolve();
+    await sleep(100);
     Object.defineProperty(video, 'play', { value() {
       Promise.resolve().then(() => {
         video.dispatchEvent(new Event('play'));
@@ -219,7 +222,7 @@ describe('$silentLoad', () => {
 
   test('unknow error', async () => {
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
-    await Promise.resolve();
+    await sleep(100);
     // simulate video error
     video.dispatchEvent(new Event('error'));
     await expect(result).rejects.toEqual(new Error('unknow video error'));
@@ -231,7 +234,7 @@ describe('$silentLoad', () => {
 
   test('video error', async () => {
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
-    await Promise.resolve();
+    await sleep(100);
     video.error = { code: 4, message: 'MEDIA_ELEMENT_ERROR: Format error' };
     // simulate video error
     video.dispatchEvent(new Event('error'));
@@ -244,7 +247,7 @@ describe('$silentLoad', () => {
 
   test('kernel error', async () => {
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
-    await Promise.resolve();
+    await sleep(100);
     // simulate video error
     player.__dispatcher._silentLoadTempKernel.videoKernel.emit('error', {
       errmsg: 'test error',
@@ -263,7 +266,7 @@ describe('$silentLoad', () => {
     video.error = { code: 4, message: 'MEDIA_ELEMENT_ERROR: Format error' };
     // simulate video error
     video.dispatchEvent(new Event('error'));
-    await Promise.resolve();
+    await sleep(100);
     // simulate timeupdate beforechange
     oldVideo.dispatchEvent(new Event('timeupdate'));
     // simulate metadata loaded finished
@@ -310,126 +313,5 @@ describe('$silentLoad', () => {
     video.dispatchEvent(new Event('canplay'));
     await expect(result).resolves.toBe();
     expect(fn).toHaveBeenCalledTimes(0);
-  });
-});
-
-describe('load', () => {
-  let player;
-  let oldVideo;
-  let oldKernel;
-  let video;
-  let originFn;
-
-  beforeEach(() => {
-    player = new Chimee({
-      wrapper: document.createElement('div'),
-      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
-    });
-    oldVideo = player.__dispatcher.dom.videoElement;
-    oldKernel = player.__dispatcher.kernel;
-    Log.data.warn = [];
-    Log.data.error = [];
-    originFn = global.document.createElement;
-    global.document.createElement = function(tag) {
-      if (tag === 'video') {
-        video = bind(originFn, document)(tag);
-        return video;
-      }
-      return bind(originFn, document)(tag);
-    };
-  });
-
-  afterEach(() => {
-    global.document.createElement = originFn;
-    player.destroy();
-  });
-
-  test('load with different box', async () => {
-    player.load('http://yunxianchang.live.ujne7.com/vod-system-bj/79_3041054cc65-ae8c-4b63-8937-5ccb05f79720.m3u8', {
-      box: 'hls',
-      preset: {
-        hls: ChimeeKernelHls,
-      },
-    });
-    await Promise.resolve();
-    expect(player.$video).not.toBe(oldVideo);
-    expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-  });
-
-  test('load with different box', async () => {
-    player.load('http://yunxianchang.live.ujne7.com/vod-system-bj/79_3041054cc65-ae8c-4b63-8937-5ccb05f79720.m3u8', {
-      box: 'hls',
-      preset: {
-        hls: ChimeeKernelHls,
-      },
-    });
-    await Promise.resolve();
-    expect(player.$video).not.toBe(oldVideo);
-    expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-  });
-
-  test('load with different preset', async () => {
-    player.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', {
-      preset: {
-        hls: ChimeeKernelHls,
-      },
-    });
-    await Promise.resolve();
-    expect(player.$video).not.toBe(oldVideo);
-    expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-    expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
-  });
-
-  test('load with same box', async () => {
-    player.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', {
-      isLive: false,
-      box: 'native',
-    });
-    await Promise.resolve();
-    expect(player.$video).not.toBe(oldVideo);
-    expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-    expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
-  });
-
-  test('load with one object', async () => {
-    player.load({
-      src: 'http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4',
-      isLive: false,
-      box: 'native',
-    });
-    await Promise.resolve();
-    expect(player.$video).not.toBe(oldVideo);
-    expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-    expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
-  });
-
-  test('load with one object without src', async () => {
-    player.load({
-      isLive: false,
-      box: 'native',
-      src: 'http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4',
-    });
-    await Promise.resolve();
-    expect(player.$video).not.toBe(oldVideo);
-    expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-    expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
-  });
-
-  test('use load to clear src', async () => {
-    player.load({
-      isLive: false,
-      box: 'native',
-    });
-    await Promise.resolve();
-    expect(player.$video).not.toBe(oldVideo);
-    expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-    expect(player.src).toBe('');
   });
 });
