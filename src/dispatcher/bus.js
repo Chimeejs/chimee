@@ -28,6 +28,7 @@ function secondaryChecker(key) {
  */
 export default class Bus {
   __dispatcher: Dispatcher;
+  __kind: binderTarget;
   events: {
     [string]: {
       [string]: {
@@ -54,12 +55,14 @@ export default class Bus {
    * @param {Dispatcheer} dispatcher bus rely on dispatcher, so you mush pass dispatcher at first when you generate Bus.
    * @return {Bus}
    */
-  constructor(dispatcher: Dispatcher) {
+  constructor(dispatcher: Dispatcher, kind: binderTarget) {
     /**
      * the referrence to dispatcher
      * @type {Dispatcher}
      */
     this.__dispatcher = dispatcher;
+    this.__kind = kind
+    ;
   }
   /**
    * [Can only be called in dispatcher]bind event on bus.

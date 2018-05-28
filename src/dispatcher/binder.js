@@ -139,7 +139,7 @@ export default class Binder {
       this.bindedEventNames[kind] = [];
       this.bindedEventInfo[kind] = [];
       this.pendingEventsInfo[kind] = [];
-      this.buses[kind] = new Bus(dispatcher);
+      this.buses[kind] = new Bus(dispatcher, kind);
     }
   }
 
