@@ -30,7 +30,7 @@ describe('changeKernel', () => {
         flv,
       },
     });
-    await Promise.resolve();
+    await sleep(100);
     expect(chimee.isLive).toBe(true);
     expect(chimee.box).toBe('flv');
     expect(chimee.preset).toEqual({ flv });
