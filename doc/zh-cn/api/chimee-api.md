@@ -721,7 +721,7 @@ const player = new Chimee({
 ### x5VideoOrientation
 
 - 类型：`string | void`
-- 含义：`x5-video-orientation`，可选`landscape`和`protraint`
+- 含义：`x5-video-orientation`，可选`landscape`, `protraint`, `landscape|portrait`
 - 默认：`undefined`
 
 ### xWebkitAirplay
