@@ -74,7 +74,7 @@
     "core-js": "^2.5.7",
     "eslint": "^4.19.1",
     "eslint-config-egg": "^7.0.0",
-    "eslint-plugin-flowtype": "^2.47.1",
+    "eslint-plugin-flowtype": "^2.48.0",
     "eslint-plugin-jest": "^21.17.0",
     "flow-bin": "^0.73.0",
     "husky": "^0.14.3",
