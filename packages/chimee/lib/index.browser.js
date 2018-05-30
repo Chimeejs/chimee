@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.0-alpha.9
+ * chimee v0.10.0-alpha.10
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -31,7 +31,7 @@
 	});
 
 	var _core = createCommonjsModule(function (module) {
-	var core = module.exports = { version: '2.5.5' };
+	var core = module.exports = { version: '2.5.7' };
 	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 	});
 	var _core_1 = _core.version;
@@ -304,11 +304,20 @@
 	  return Object(_defined(it));
 	};
 
+	var _library = true;
+
+	var _shared = createCommonjsModule(function (module) {
 	var SHARED = '__core-js_shared__';
 	var store = _global[SHARED] || (_global[SHARED] = {});
-	var _shared = function (key) {
-	  return store[key] || (store[key] = {});
-	};
+
+	(module.exports = function (key, value) {
+	  return store[key] || (store[key] = value !== undefined ? value : {});
+	})('versions', []).push({
+	  version: _core.version,
+	  mode: 'pure',
+	  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+	});
+	});
 
 	var id = 0;
 	var px = Math.random();
@@ -376,8 +385,6 @@
 	      : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
 	  };
 	};
-
-	var _library = true;
 
 	var _redefine = _hide;
 
@@ -569,8 +576,6 @@
 	    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
 	      // Set @@toStringTag to native iterators
 	      _setToStringTag(IteratorPrototype, TAG, true);
-	      // fix for some old engines
-	      if (!_library && typeof IteratorPrototype[ITERATOR] != 'function') _hide(IteratorPrototype, ITERATOR, returnThis);
 	    }
 	  }
 	  // fix Array#{values, @@iterator}.name in V8 / FF
@@ -579,7 +584,7 @@
 	    $default = function values() { return $native.call(this); };
 	  }
 	  // Define iterator
-	  if ((!_library || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+	  if ((FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
 	    _hide(proto, ITERATOR, $default);
 	  }
 	  // Plug for library
@@ -737,7 +742,7 @@
 
 	var defineProperty$2 = _objectDp.f;
 	var _wksDefine = function (name) {
-	  var $Symbol = _core.Symbol || (_core.Symbol = _library ? {} : _global.Symbol || {});
+	  var $Symbol = _core.Symbol || (_core.Symbol = {});
 	  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$2($Symbol, name, { value: _wksExt.f(name) });
 	};
 
@@ -1687,7 +1692,8 @@
 	    };
 	  // environments with maybe non-completely correct, but existent Promise
 	  } else if (Promise && Promise.resolve) {
-	    var promise = Promise.resolve();
+	    // Promise.resolve without an argument throws an error in LG WebOS 2
+	    var promise = Promise.resolve(undefined);
 	    notify = function () {
 	      promise.then(flush);
 	    };
@@ -1744,6 +1750,10 @@
 	  }
 	};
 
+	var navigator = _global.navigator;
+
+	var _userAgent = navigator && navigator.userAgent || '';
+
 	var _promiseResolve = function (C, x) {
 	  _anObject(C);
 	  if (_isObject(x) && x.constructor === C) return x;
@@ -1796,9 +1806,12 @@
 
 
 
+
 	var PROMISE = 'Promise';
 	var TypeError$1 = _global.TypeError;
 	var process$2 = _global.process;
+	var versions = process$2 && process$2.versions;
+	var v8 = versions && versions.v8 || '';
 	var $Promise = _global[PROMISE];
 	var isNode$1 = _classof(process$2) == 'process';
 	var empty = function () { /* empty */ };
@@ -1813,7 +1826,13 @@
 	      exec(empty, empty);
 	    };
 	    // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-	    return (isNode$1 || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise;
+	    return (isNode$1 || typeof PromiseRejectionEvent == 'function')
+	      && promise.then(empty) instanceof FakePromise
+	      // v8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
+	      // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
+	      // we can't detect it synchronously, so just check versions
+	      && v8.indexOf('6.6') !== 0
+	      && _userAgent.indexOf('Chrome/66') === -1;
 	  } catch (e) { /* empty */ }
 	}();
 
@@ -2007,10 +2026,10 @@
 	    return capability.promise;
 	  }
 	});
-	_export(_export.S + _export.F * (_library || !USE_NATIVE$1), PROMISE, {
+	_export(_export.S + _export.F * (_library), PROMISE, {
 	  // 25.4.4.6 Promise.resolve(x)
 	  resolve: function resolve(x) {
-	    return _promiseResolve(_library && this === Wrapper ? $Promise : this, x);
+	    return _promiseResolve(this === Wrapper ? $Promise : this, x);
 	  }
 	});
 	_export(_export.S + _export.F * !(USE_NATIVE$1 && _iterDetect(function (iter) {
@@ -2424,13 +2443,13 @@
 	Log.ENABLE_VERBOSE = true;
 
 	var uaParser = createCommonjsModule(function (module, exports) {
-	/**
-	 * UAParser.js v0.7.17
+	/*!
+	 * UAParser.js v0.7.18
 	 * Lightweight JavaScript-based User-Agent string parser
 	 * https://github.com/faisalman/ua-parser-js
 	 *
 	 * Copyright © 2012-2016 Faisal Salman <fyzlman@gmail.com>
-	 * Dual licensed under GPLv2 & MIT
+	 * Dual licensed under GPLv2 or MIT
 	 */
 
 	(function (window, undefined) {
@@ -2440,7 +2459,7 @@
 	    /////////////
 
 
-	    var LIBVERSION  = '0.7.17',
+	    var LIBVERSION  = '0.7.18',
 	        EMPTY       = '',
 	        UNKNOWN     = '?',
 	        FUNC_TYPE   = 'function',
@@ -2668,7 +2687,7 @@
 
 	            // Mixed
 	            /(kindle)\/([\w\.]+)/i,                                             // Kindle
-	            /(lunascape|maxthon|netfront|jasmine|blazer)[\/\s]?([\w\.]+)*/i,
+	            /(lunascape|maxthon|netfront|jasmine|blazer)[\/\s]?([\w\.]*)/i,
 	                                                                                // Lunascape/Maxthon/Netfront/Jasmine/Blazer
 
 	            // Trident based
@@ -2677,16 +2696,16 @@
 	            /(?:ms|\()(ie)\s([\w\.]+)/i,                                        // Internet Explorer
 
 	            // Webkit/KHTML based
-	            /(rekonq)\/([\w\.]+)*/i,                                            // Rekonq
-	            /(chromium|flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt|iron|vivaldi|iridium|phantomjs|bowser)\/([\w\.-]+)/i
+	            /(rekonq)\/([\w\.]*)/i,                                             // Rekonq
+	            /(chromium|flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt|iron|vivaldi|iridium|phantomjs|bowser|quark)\/([\w\.-]+)/i
 	                                                                                // Chromium/Flock/RockMelt/Midori/Epiphany/Silk/Skyfire/Bolt/Iron/Iridium/PhantomJS/Bowser
 	            ], [NAME, VERSION], [
 
 	            /(trident).+rv[:\s]([\w\.]+).+like\sgecko/i                         // IE11
 	            ], [[NAME, 'IE'], VERSION], [
 
-	            /(edge)\/((\d+)?[\w\.]+)/i                                          // Microsoft Edge
-	            ], [NAME, VERSION], [
+	            /(edge|edgios|edgea)\/((\d+)?[\w\.]+)/i                             // Microsoft Edge
+	            ], [[NAME, 'Edge'], VERSION], [
 
 	            /(yabrowser)\/([\w\.]+)/i                                           // Yandex
 	            ], [[NAME, 'Yandex'], VERSION], [
@@ -2704,11 +2723,26 @@
 	            /(micromessenger)\/([\w\.]+)/i                                      // WeChat
 	            ], [[NAME, 'WeChat'], VERSION], [
 
+	            /(qqbrowserlite)\/([\w\.]+)/i                                       // QQBrowserLite
+	            ], [NAME, VERSION], [
+
 	            /(QQ)\/([\d\.]+)/i                                                  // QQ, aka ShouQ
 	            ], [NAME, VERSION], [
 
 	            /m?(qqbrowser)[\/\s]?([\w\.]+)/i                                    // QQBrowser
 	            ], [NAME, VERSION], [
+
+	            /(BIDUBrowser)[\/\s]?([\w\.]+)/i                                    // Baidu Browser
+	            ], [NAME, VERSION], [
+
+	            /(2345Explorer)[\/\s]?([\w\.]+)/i                                   // 2345 Browser
+	            ], [NAME, VERSION], [
+
+	            /(MetaSr)[\/\s]?([\w\.]+)/i                                         // SouGouBrowser
+	            ], [NAME], [
+
+	            /(LBBROWSER)/i                                      // LieBao Browser
+	            ], [NAME], [
 
 	            /xiaomi\/miuibrowser\/([\w\.]+)/i                                   // MIUI Browser
 	            ], [VERSION, [NAME, 'MIUI Browser']], [
@@ -2766,7 +2800,8 @@
 	            /(swiftfox)/i,                                                      // Swiftfox
 	            /(icedragon|iceweasel|camino|chimera|fennec|maemo\sbrowser|minimo|conkeror)[\/\s]?([\w\.\+]+)/i,
 	                                                                                // IceDragon/Iceweasel/Camino/Chimera/Fennec/Maemo/Minimo/Conkeror
-	            /(firefox|seamonkey|k-meleon|icecat|iceape|firebird|phoenix)\/([\w\.-]+)/i,
+	            /(firefox|seamonkey|k-meleon|icecat|iceape|firebird|phoenix|palemoon|basilisk|waterfox)\/([\w\.-]+)$/i,
+
 	                                                                                // Firefox/SeaMonkey/K-Meleon/IceCat/IceApe/Firebird/Phoenix
 	            /(mozilla)\/([\w\.]+).+rv\:.+gecko\/\d+/i,                          // Mozilla
 
@@ -2774,7 +2809,7 @@
 	            /(polaris|lynx|dillo|icab|doris|amaya|w3m|netsurf|sleipnir)[\/\s]?([\w\.]+)/i,
 	                                                                                // Polaris/Lynx/Dillo/iCab/Doris/Amaya/w3m/NetSurf/Sleipnir
 	            /(links)\s\(([\w\.]+)/i,                                            // Links
-	            /(gobrowser)\/?([\w\.]+)*/i,                                        // GoBrowser
+	            /(gobrowser)\/?([\w\.]*)/i,                                         // GoBrowser
 	            /(ice\s?browser)\/v?([\w\._]+)/i,                                   // ICE Browser
 	            /(mosaic)[\/\s]([\w\.]+)/i                                          // Mosaic
 	            ], [NAME, VERSION]
@@ -2936,9 +2971,9 @@
 	            /(dell)\s(strea[kpr\s\d]*[\dko])/i                                  // Dell Streak
 	            ], [VENDOR, MODEL, [TYPE, TABLET]], [
 
-	            /(kf[A-z]+)\sbuild\/[\w\.]+.*silk\//i                               // Kindle Fire HD
+	            /(kf[A-z]+)\sbuild\/.+silk\//i                                      // Kindle Fire HD
 	            ], [MODEL, [VENDOR, 'Amazon'], [TYPE, TABLET]], [
-	            /(sd|kf)[0349hijorstuw]+\sbuild\/[\w\.]+.*silk\//i                  // Fire Phone
+	            /(sd|kf)[0349hijorstuw]+\sbuild\/.+silk\//i                         // Fire Phone
 	            ], [[MODEL, mapper.str, maps.device.amazon.model], [VENDOR, 'Amazon'], [TYPE, MOBILE]], [
 
 	            /\((ip[honed|\s\w*]+);.+(apple)/i                                   // iPod/iPhone
@@ -2947,7 +2982,7 @@
 	            ], [MODEL, [VENDOR, 'Apple'], [TYPE, MOBILE]], [
 
 	            /(blackberry)[\s-]?(\w+)/i,                                         // BlackBerry
-	            /(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|meizu|motorola|polytron)[\s_-]?([\w-]+)*/i,
+	            /(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|meizu|motorola|polytron)[\s_-]?([\w-]*)/i,
 	                                                                                // BenQ/Palm/Sony-Ericsson/Acer/Asus/Dell/Meizu/Motorola/Polytron
 	            /(hp)\s([\w\s]+\w)/i,                                               // HP iPAQ
 	            /(asus)-?(\w+)/i                                                    // Asus
@@ -2981,8 +3016,8 @@
 	            ], [VENDOR, MODEL, [TYPE, TABLET]], [
 
 	            /(htc)[;_\s-]+([\w\s]+(?=\))|\w+)*/i,                               // HTC
-	            /(zte)-(\w+)*/i,                                                    // ZTE
-	            /(alcatel|geeksphone|lenovo|nexian|panasonic|(?=;\s)sony)[_\s-]?([\w-]+)*/i
+	            /(zte)-(\w*)/i,                                                     // ZTE
+	            /(alcatel|geeksphone|lenovo|nexian|panasonic|(?=;\s)sony)[_\s-]?([\w-]*)/i
 	                                                                                // Alcatel/GeeksPhone/Lenovo/Nexian/Panasonic/Sony
 	            ], [VENDOR, [MODEL, /_/g, ' '], [TYPE, MOBILE]], [
 
@@ -3002,8 +3037,8 @@
 	            ], [[MODEL, /\./g, ' '], [VENDOR, 'Microsoft'], [TYPE, MOBILE]], [
 
 	                                                                                // Motorola
-	            /\s(milestone|droid(?:[2-4x]|\s(?:bionic|x2|pro|razr))?(:?\s4g)?)[\w\s]+build\//i,
-	            /mot[\s-]?(\w+)*/i,
+	            /\s(milestone|droid(?:[2-4x]|\s(?:bionic|x2|pro|razr))?:?(\s4g)?)[\w\s]+build\//i,
+	            /mot[\s-]?(\w*)/i,
 	            /(XT\d{3,4}) build\//i,
 	            /(nexus\s6)/i
 	            ], [MODEL, [VENDOR, 'Motorola'], [TYPE, MOBILE]], [
@@ -3025,15 +3060,15 @@
 	            /smart-tv.+(samsung)/i
 	            ], [VENDOR, [TYPE, SMARTTV], MODEL], [
 	            /((s[cgp]h-\w+|gt-\w+|galaxy\snexus|sm-\w[\w\d]+))/i,
-	            /(sam[sung]*)[\s-]*(\w+-?[\w-]*)*/i,
+	            /(sam[sung]*)[\s-]*(\w+-?[\w-]*)/i,
 	            /sec-((sgh\w+))/i
 	            ], [[VENDOR, 'Samsung'], MODEL, [TYPE, MOBILE]], [
 
-	            /sie-(\w+)*/i                                                       // Siemens
+	            /sie-(\w*)/i                                                        // Siemens
 	            ], [MODEL, [VENDOR, 'Siemens'], [TYPE, MOBILE]], [
 
 	            /(maemo|nokia).*(n900|lumia\s\d+)/i,                                // Nokia
-	            /(nokia)[\s_-]?([\w-]+)*/i
+	            /(nokia)[\s_-]?([\w-]*)/i
 	            ], [[VENDOR, 'Nokia'], MODEL, [TYPE, MOBILE]], [
 
 	            /android\s3\.[\s\w;-]{10}(a\d{3})/i                                 // Acer
@@ -3046,7 +3081,7 @@
 	            /(lg) netcast\.tv/i                                                 // LG SmartTV
 	            ], [VENDOR, MODEL, [TYPE, SMARTTV]], [
 	            /(nexus\s[45])/i,                                                   // LG
-	            /lg[e;\s\/-]+(\w+)*/i,
+	            /lg[e;\s\/-]+(\w*)/i,
 	            /android.+lg(\-?[\d\w]+)\s+build/i
 	            ], [MODEL, [VENDOR, 'LG'], [TYPE, MOBILE]], [
 
@@ -3074,23 +3109,24 @@
 	            /android.+;\s(pixel xl|pixel)\s/i                                   // Google Pixel
 	            ], [MODEL, [VENDOR, 'Google'], [TYPE, MOBILE]], [
 
-	            /android.+(\w+)\s+build\/hm\1/i,                                    // Xiaomi Hongmi 'numeric' models
+	            /android.+;\s(\w+)\s+build\/hm\1/i,                                 // Xiaomi Hongmi 'numeric' models
 	            /android.+(hm[\s\-_]*note?[\s_]*(?:\d\w)?)\s+build/i,               // Xiaomi Hongmi
-	            /android.+(mi[\s\-_]*(?:one|one[\s_]plus|note lte)?[\s_]*(?:\d\w)?)\s+build/i,    // Xiaomi Mi
-	            /android.+(redmi[\s\-_]*(?:note)?(?:[\s_]*[\w\s]+)?)\s+build/i      // Redmi Phones
+	            /android.+(mi[\s\-_]*(?:one|one[\s_]plus|note lte)?[\s_]*(?:\d?\w?)[\s_]*(?:plus)?)\s+build/i,    // Xiaomi Mi
+	            /android.+(redmi[\s\-_]*(?:note)?(?:[\s_]*[\w\s]+))\s+build/i       // Redmi Phones
 	            ], [[MODEL, /_/g, ' '], [VENDOR, 'Xiaomi'], [TYPE, MOBILE]], [
-	            /android.+(mi[\s\-_]*(?:pad)?(?:[\s_]*[\w\s]+)?)\s+build/i          // Mi Pad tablets
+	            /android.+(mi[\s\-_]*(?:pad)(?:[\s_]*[\w\s]+))\s+build/i            // Mi Pad tablets
 	            ],[[MODEL, /_/g, ' '], [VENDOR, 'Xiaomi'], [TYPE, TABLET]], [
 	            /android.+;\s(m[1-5]\snote)\sbuild/i                                // Meizu Tablet
 	            ], [MODEL, [VENDOR, 'Meizu'], [TYPE, TABLET]], [
 
-	            /android.+a000(1)\s+build/i                                         // OnePlus
+	            /android.+a000(1)\s+build/i,                                        // OnePlus
+	            /android.+oneplus\s(a\d{4})\s+build/i
 	            ], [MODEL, [VENDOR, 'OnePlus'], [TYPE, MOBILE]], [
 
 	            /android.+[;\/]\s*(RCT[\d\w]+)\s+build/i                            // RCA Tablets
 	            ], [MODEL, [VENDOR, 'RCA'], [TYPE, TABLET]], [
 
-	            /android.+[;\/]\s*(Venue[\d\s]*)\s+build/i                          // Dell Venue Tablets
+	            /android.+[;\/\s]+(Venue[\d\s]{2,7})\s+build/i                      // Dell Venue Tablets
 	            ], [MODEL, [VENDOR, 'Dell'], [TYPE, TABLET]], [
 
 	            /android.+[;\/]\s*(Q[T|M][\d\w]+)\s+build/i                         // Verizon Tablet
@@ -3102,8 +3138,8 @@
 	            /android.+[;\/]\s+(TM\d{3}.*\b)\s+build/i                           // Barnes & Noble Tablet
 	            ], [MODEL, [VENDOR, 'NuVision'], [TYPE, TABLET]], [
 
-	            /android.+[;\/]\s*(zte)?.+(k\d{2})\s+build/i                        // ZTE K Series Tablet
-	            ], [[VENDOR, 'ZTE'], MODEL, [TYPE, TABLET]], [
+	            /android.+;\s(k88)\sbuild/i                                         // ZTE K Series Tablet
+	            ], [MODEL, [VENDOR, 'ZTE'], [TYPE, TABLET]], [
 
 	            /android.+[;\/]\s*(gen\d{3})\s+build.*49h/i                         // Swiss GEN Mobile
 	            ], [MODEL, [VENDOR, 'Swiss'], [TYPE, MOBILE]], [
@@ -3114,26 +3150,26 @@
 	            /android.+[;\/]\s*((Zeki)?TB.*\b)\s+build/i                         // Zeki Tablets
 	            ], [MODEL, [VENDOR, 'Zeki'], [TYPE, TABLET]], [
 
-	            /(android).+[;\/]\s+([YR]\d{2}x?.*)\s+build/i,
-	            /android.+[;\/]\s+(Dragon[\-\s]+Touch\s+|DT)(.+)\s+build/i          // Dragon Touch Tablet
+	            /(android).+[;\/]\s+([YR]\d{2})\s+build/i,
+	            /android.+[;\/]\s+(Dragon[\-\s]+Touch\s+|DT)(\w{5})\sbuild/i        // Dragon Touch Tablet
 	            ], [[VENDOR, 'Dragon Touch'], MODEL, [TYPE, TABLET]], [
 
-	            /android.+[;\/]\s*(NS-?.+)\s+build/i                                // Insignia Tablets
+	            /android.+[;\/]\s*(NS-?\w{0,9})\sbuild/i                            // Insignia Tablets
 	            ], [MODEL, [VENDOR, 'Insignia'], [TYPE, TABLET]], [
 
-	            /android.+[;\/]\s*((NX|Next)-?.+)\s+build/i                         // NextBook Tablets
+	            /android.+[;\/]\s*((NX|Next)-?\w{0,9})\s+build/i                    // NextBook Tablets
 	            ], [MODEL, [VENDOR, 'NextBook'], [TYPE, TABLET]], [
 
-	            /android.+[;\/]\s*(Xtreme\_?)?(V(1[045]|2[015]|30|40|60|7[05]|90))\s+build/i
+	            /android.+[;\/]\s*(Xtreme\_)?(V(1[045]|2[015]|30|40|60|7[05]|90))\s+build/i
 	            ], [[VENDOR, 'Voice'], MODEL, [TYPE, MOBILE]], [                    // Voice Xtreme Phones
 
-	            /android.+[;\/]\s*(LVTEL\-?)?(V1[12])\s+build/i                     // LvTel Phones
+	            /android.+[;\/]\s*(LVTEL\-)?(V1[12])\s+build/i                     // LvTel Phones
 	            ], [[VENDOR, 'LvTel'], MODEL, [TYPE, MOBILE]], [
 
 	            /android.+[;\/]\s*(V(100MD|700NA|7011|917G).*\b)\s+build/i          // Envizen Tablets
 	            ], [MODEL, [VENDOR, 'Envizen'], [TYPE, TABLET]], [
 
-	            /android.+[;\/]\s*(Le[\s\-]+Pan)[\s\-]+(.*\b)\s+build/i             // Le Pan Tablets
+	            /android.+[;\/]\s*(Le[\s\-]+Pan)[\s\-]+(\w{1,9})\s+build/i          // Le Pan Tablets
 	            ], [VENDOR, MODEL, [TYPE, TABLET]], [
 
 	            /android.+[;\/]\s*(Trio[\s\-]*.*)\s+build/i                         // MachSpeed Tablets
@@ -3148,14 +3184,14 @@
 	            /android.+(KS(.+))\s+build/i                                        // Amazon Kindle Tablets
 	            ], [MODEL, [VENDOR, 'Amazon'], [TYPE, TABLET]], [
 
-	            /android.+(Gigaset)[\s\-]+(Q.+)\s+build/i                           // Gigaset Tablets
+	            /android.+(Gigaset)[\s\-]+(Q\w{1,9})\s+build/i                      // Gigaset Tablets
 	            ], [VENDOR, MODEL, [TYPE, TABLET]], [
 
 	            /\s(tablet|tab)[;\/]/i,                                             // Unidentifiable Tablet
 	            /\s(mobile)(?:[;\/]|\ssafari)/i                                     // Unidentifiable Mobile
 	            ], [[TYPE, util.lowerize], VENDOR, MODEL], [
 
-	            /(android.+)[;\/].+build/i                                          // Generic Android Device
+	            /(android[\w\.\s\-]{0,9});.+build/i                                 // Generic Android Device
 	            ], [MODEL, [VENDOR, 'Generic']]
 
 
@@ -3222,7 +3258,7 @@
 	            /(icab)[\/\s]([23]\.[\d\.]+)/i                                      // iCab
 	            ], [NAME, VERSION], [
 
-	            /rv\:([\w\.]+).*(gecko)/i                                           // Gecko
+	            /rv\:([\w\.]{1,9}).+(gecko)/i                                       // Gecko
 	            ], [VERSION, NAME]
 	        ],
 
@@ -3232,7 +3268,7 @@
 	            /microsoft\s(windows)\s(vista|xp)/i                                 // Windows (iTunes)
 	            ], [NAME, VERSION], [
 	            /(windows)\snt\s6\.2;\s(arm)/i,                                     // Windows RT
-	            /(windows\sphone(?:\sos)*)[\s\/]?([\d\.\s]+\w)*/i,                  // Windows Phone
+	            /(windows\sphone(?:\sos)*)[\s\/]?([\d\.\s\w]*)/i,                   // Windows Phone
 	            /(windows\smobile|windows)[\s\/]?([ntce\d\.\s]+\w)/i
 	            ], [NAME, [VERSION, mapper.str, maps.os.windows.version]], [
 	            /(win(?=3|9|n)|win\s9x\s)([nt\d\.]+)/i
@@ -3241,13 +3277,13 @@
 	            // Mobile/Embedded OS
 	            /\((bb)(10);/i                                                      // BlackBerry 10
 	            ], [[NAME, 'BlackBerry'], VERSION], [
-	            /(blackberry)\w*\/?([\w\.]+)*/i,                                    // Blackberry
+	            /(blackberry)\w*\/?([\w\.]*)/i,                                     // Blackberry
 	            /(tizen)[\/\s]([\w\.]+)/i,                                          // Tizen
-	            /(android|webos|palm\sos|qnx|bada|rim\stablet\sos|meego|contiki)[\/\s-]?([\w\.]+)*/i,
+	            /(android|webos|palm\sos|qnx|bada|rim\stablet\sos|meego|contiki)[\/\s-]?([\w\.]*)/i,
 	                                                                                // Android/WebOS/Palm/QNX/Bada/RIM/MeeGo/Contiki
 	            /linux;.+(sailfish);/i                                              // Sailfish OS
 	            ], [NAME, VERSION], [
-	            /(symbian\s?os|symbos|s60(?=;))[\/\s-]?([\w\.]+)*/i                 // Symbian
+	            /(symbian\s?os|symbos|s60(?=;))[\/\s-]?([\w\.]*)/i                  // Symbian
 	            ], [[NAME, 'Symbian'], VERSION], [
 	            /\((series40);/i                                                    // Series 40
 	            ], [NAME], [
@@ -3258,43 +3294,43 @@
 	            /(nintendo|playstation)\s([wids34portablevu]+)/i,                   // Nintendo/Playstation
 
 	            // GNU/Linux based
-	            /(mint)[\/\s\(]?(\w+)*/i,                                           // Mint
+	            /(mint)[\/\s\(]?(\w*)/i,                                            // Mint
 	            /(mageia|vectorlinux)[;\s]/i,                                       // Mageia/VectorLinux
-	            /(joli|[kxln]?ubuntu|debian|[open]*suse|gentoo|(?=\s)arch|slackware|fedora|mandriva|centos|pclinuxos|redhat|zenwalk|linpus)[\/\s-]?(?!chrom)([\w\.-]+)*/i,
+	            /(joli|[kxln]?ubuntu|debian|suse|opensuse|gentoo|(?=\s)arch|slackware|fedora|mandriva|centos|pclinuxos|redhat|zenwalk|linpus)[\/\s-]?(?!chrom)([\w\.-]*)/i,
 	                                                                                // Joli/Ubuntu/Debian/SUSE/Gentoo/Arch/Slackware
 	                                                                                // Fedora/Mandriva/CentOS/PCLinuxOS/RedHat/Zenwalk/Linpus
-	            /(hurd|linux)\s?([\w\.]+)*/i,                                       // Hurd/Linux
-	            /(gnu)\s?([\w\.]+)*/i                                               // GNU
+	            /(hurd|linux)\s?([\w\.]*)/i,                                        // Hurd/Linux
+	            /(gnu)\s?([\w\.]*)/i                                                // GNU
 	            ], [NAME, VERSION], [
 
 	            /(cros)\s[\w]+\s([\w\.]+\w)/i                                       // Chromium OS
 	            ], [[NAME, 'Chromium OS'], VERSION],[
 
 	            // Solaris
-	            /(sunos)\s?([\w\.]+\d)*/i                                           // Solaris
+	            /(sunos)\s?([\w\.\d]*)/i                                            // Solaris
 	            ], [[NAME, 'Solaris'], VERSION], [
 
 	            // BSD based
-	            /\s([frentopc-]{0,4}bsd|dragonfly)\s?([\w\.]+)*/i                   // FreeBSD/NetBSD/OpenBSD/PC-BSD/DragonFly
+	            /\s([frentopc-]{0,4}bsd|dragonfly)\s?([\w\.]*)/i                    // FreeBSD/NetBSD/OpenBSD/PC-BSD/DragonFly
 	            ], [NAME, VERSION],[
 
-	            /(haiku)\s(\w+)/i                                                  // Haiku
+	            /(haiku)\s(\w+)/i                                                   // Haiku
 	            ], [NAME, VERSION],[
 
 	            /cfnetwork\/.+darwin/i,
-	            /ip[honead]+(?:.*os\s([\w]+)\slike\smac|;\sopera)/i                 // iOS
+	            /ip[honead]{2,4}(?:.*os\s([\w]+)\slike\smac|;\sopera)/i             // iOS
 	            ], [[VERSION, /_/g, '.'], [NAME, 'iOS']], [
 
-	            /(mac\sos\sx)\s?([\w\s\.]+\w)*/i,
+	            /(mac\sos\sx)\s?([\w\s\.]*)/i,
 	            /(macintosh|mac(?=_powerpc)\s)/i                                    // Mac OS
 	            ], [[NAME, 'Mac OS'], [VERSION, /_/g, '.']], [
 
 	            // Other
-	            /((?:open)?solaris)[\/\s-]?([\w\.]+)*/i,                            // Solaris
-	            /(aix)\s((\d)(?=\.|\)|\s)[\w\.]*)*/i,                               // AIX
+	            /((?:open)?solaris)[\/\s-]?([\w\.]*)/i,                             // Solaris
+	            /(aix)\s((\d)(?=\.|\)|\s)[\w\.])*/i,                                // AIX
 	            /(plan\s9|minix|beos|os\/2|amigaos|morphos|risc\sos|openvms)/i,
 	                                                                                // Plan9/Minix/BeOS/OS2/AmigaOS/MorphOS/RISCOS/OpenVMS
-	            /(unix)\s?([\w\.]+)*/i                                              // UNIX
+	            /(unix)\s?([\w\.]*)/i                                               // UNIX
 	            ], [NAME, VERSION]
 	        ]
 	    };
@@ -3425,9 +3461,9 @@
 
 
 	    // check js environment
-	    if ('object' !== UNDEF_TYPE) {
+	    {
 	        // nodejs env
-	        if ('object' !== UNDEF_TYPE && module.exports) {
+	        if (module.exports) {
 	            exports = module.exports = UAParser;
 	        }
 	        // TODO: test!!!!!!!!
@@ -3460,16 +3496,6 @@
 	        }
 	        */
 	        exports.UAParser = UAParser;
-	    } else {
-	        // requirejs env (optional)
-	        if (typeof(undefined) === FUNC_TYPE && undefined.amd) {
-	            undefined(function () {
-	                return UAParser;
-	            });
-	        } else if (window) {
-	            // browser env
-	            window.UAParser = UAParser;
-	        }
 	    }
 
 	    // jQuery/Zepto specific (optional)
@@ -5783,37 +5809,6 @@
 	  };
 	}
 
-	function after() {
-	  for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
-	    fns[_key] = arguments[_key];
-	  }
-
-	  if (fns.length === 0) throw new Error("@after accept at least one parameter. If you don't need to preprocess after your function, do not add @after decorators");
-	  if (fns.length > 2 && isDescriptor(fns[2])) {
-	    throw new Error('You may have used @after straightly. @after return decorators. You should call it before you use it as decorators');
-	  }
-	  var fn = compressOneArgFnArray(fns, '@after only accept function parameter');
-	  return function (obj, prop, descriptor) {
-	    var _ref = descriptor || {},
-	        value = _ref.value,
-	        configurable = _ref.configurable,
-	        enumerable = _ref.enumerable,
-	        writable = _ref.writable;
-
-	    if (!isFunction(value)) throw new TypeError('@after can only be used on function, please checkout your property "' + prop + '" is a method or not.');
-	    var handler = function handler() {
-	      var ret = bind$1(value, this).apply(undefined, arguments);
-	      return bind$1(fn, this)(ret);
-	    };
-	    return {
-	      value: handler,
-	      configurable: configurable,
-	      enumerable: enumerable,
-	      writable: writable
-	    };
-	  };
-	}
-
 	function initialize() {
 	  for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
 	    fns[_key] = arguments[_key];
@@ -6704,42 +6699,6 @@
 	  return accessor({ set: args, get: args });
 	}
 
-	var before$1 = classify(before, {
-	  requirement: function requirement(obj, prop, desc) {
-	    // $FlowFixMe: it's data descriptor now
-	    return isDataDescriptor(desc) && isFunction(desc.value);
-	  },
-
-	  customArgs: true
-	});
-
-	var after$1 = classify(after, {
-	  requirement: function requirement(obj, prop, desc) {
-	    // $FlowFixMe: it's data descriptor now
-	    return isDataDescriptor(desc) && isFunction(desc.value);
-	  },
-
-	  customArgs: true
-	});
-
-	var runnable$1 = classify(runnable, {
-	  requirement: function requirement(obj, prop, desc) {
-	    // $FlowFixMe: it's data descriptor now
-	    return isDataDescriptor(desc) && isFunction(desc.value);
-	  },
-
-	  customArgs: true
-	});
-
-	var waituntil$1 = classify(waituntil, {
-	  requirement: function requirement(obj, prop, desc) {
-	    // $FlowFixMe: it's data descriptor now
-	    return isDataDescriptor(desc) && isFunction(desc.value);
-	  },
-
-	  customArgs: true
-	});
-
 	var $JSON$1 = _core.JSON || (_core.JSON = { stringify: JSON.stringify });
 	var stringify = function stringify(it) { // eslint-disable-line no-unused-vars
 	  return $JSON$1.stringify.apply($JSON$1, arguments);
@@ -7449,7 +7408,7 @@
 	        args[_key4 - 1] = arguments[_key4];
 	      }
 
-	      (_dispatcher$binder3 = this.__dispatcher.binder).emit.apply(_dispatcher$binder3, [{
+	      return (_dispatcher$binder3 = this.__dispatcher.binder).emit.apply(_dispatcher$binder3, [{
 	        name: key,
 	        id: this.__id,
 	        target: target
@@ -7775,7 +7734,7 @@
 	    var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
 	    _this.destroyed = false;
-	    _this.VERSION = '0.10.0-alpha.9';
+	    _this.VERSION = '0.10.0-alpha.10';
 	    _this.__operable = true;
 	    _this.__level = 0;
 
@@ -9047,7 +9006,7 @@
 	   * @type {Object}
 	   * @member events
 	   */
-	  function Bus(dispatcher) {
+	  function Bus(dispatcher, kind) {
 	    _classCallCheck(this, Bus);
 
 	    this.events = {};
@@ -9058,6 +9017,7 @@
 	     * @type {Dispatcher}
 	     */
 	    this.__dispatcher = dispatcher;
+	    this.__kind = kind;
 	  }
 	  /**
 	   * [Can only be called in dispatcher]bind event on bus.
@@ -9611,7 +9571,7 @@
 	        this.bindedEventNames[kind] = [];
 	        this.bindedEventInfo[kind] = [];
 	        this.pendingEventsInfo[kind] = [];
-	        this.buses[kind] = new Bus(dispatcher);
+	        this.buses[kind] = new Bus(dispatcher, kind);
 	      }
 	    } catch (err) {
 	      _didIteratorError = true;
@@ -9930,18 +9890,6 @@
 	        };
 	        this._addEventOnDom(targetDom, name, fn);
 	      } else if (target === 'video-dom') {
-	        if (!this.__dispatcher.plugins[id]) {
-	          // The plugin has not been created
-	          // We will be better to wait for it in order to check its penetrate
-	          this.needToCheckPendingVideoDomEventPlugins[id] = true;
-	          this.addPendingEvent(target, name, id);
-	          return;
-	        }
-
-	        var _ref21 = this.__dispatcher.plugins[id] || {},
-	            _ref21$$penetrate = _ref21.$penetrate,
-	            $penetrate = _ref21$$penetrate === undefined ? false : _ref21$$penetrate;
-
 	        fn = function fn() {
 	          for (var _len10 = arguments.length, args = Array(_len10), _key10 = 0; _key10 < _len10; _key10++) {
 	            args[_key10] = arguments[_key10];
@@ -9949,7 +9897,7 @@
 
 	          return _this5.triggerSync.apply(_this5, [{ target: target, name: name, id: target }].concat(args));
 	        };
-	        if ($penetrate) this.__dispatcher.dom.videoExtendedNodes.forEach(function (node) {
+	        this.__dispatcher.dom.videoExtendedNodes.forEach(function (node) {
 	          return _this5._addEventOnDom(node, name, fn);
 	        });
 	        this._addEventOnDom(targetDom, name, fn);
@@ -9966,9 +9914,9 @@
 
 	  }, {
 	    key: '_removeEventListenerOnTargetWhenIsUseless',
-	    value: function _removeEventListenerOnTargetWhenIsUseless(_ref22) {
-	      var name = _ref22.name,
-	          target = _ref22.target;
+	    value: function _removeEventListenerOnTargetWhenIsUseless(_ref21) {
+	      var name = _ref21.name,
+	          target = _ref21.target;
 
 	      if (!this._isEventNeedToBeHandled(target, name)) return;
 	      var eventNamesList = this.bindedEventNames[target];
@@ -10521,7 +10469,7 @@
 	      // delay video event binding
 	      // so that people can't feel the default value change
 	      setTimeout(function () {
-	        return _this3.binder.bindEventOnVideo(video);
+	        _this3.binder && _this3.binder.bindEventOnVideo && _this3.binder.bindEventOnVideo(video);
 	      });
 	    }
 
@@ -10924,7 +10872,7 @@
 	});
 
 	var _core$1 = createCommonjsModule(function (module) {
-	var core = module.exports = { version: '2.5.5' };
+	var core = module.exports = { version: '2.5.7' };
 	if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 	});
 	var _core_1$1 = _core$1.version;
@@ -11277,7 +11225,7 @@
 	}), _descriptor2$1 = _applyDecoratedDescriptor$8(_class2$2.prototype, 'version', [frozen], {
 	  enumerable: true,
 	  initializer: function initializer() {
-	    return '0.10.0-alpha.9';
+	    return '0.10.0-alpha.10';
 	  }
 	}), _descriptor3$1 = _applyDecoratedDescriptor$8(_class2$2.prototype, 'config', [frozen], {
 	  enumerable: true,

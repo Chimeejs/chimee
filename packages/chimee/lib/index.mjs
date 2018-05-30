@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.0-alpha.9
+ * chimee v0.10.0-alpha.10
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -966,7 +966,7 @@ var VideoWrapper = (_dec$1 = autobindClass(), _dec2$1 = alias('silentLoad'), _de
         args[_key4 - 1] = arguments[_key4];
       }
 
-      (_dispatcher$binder3 = this.__dispatcher.binder).emit.apply(_dispatcher$binder3, [{
+      return (_dispatcher$binder3 = this.__dispatcher.binder).emit.apply(_dispatcher$binder3, [{
         name: key,
         id: this.__id,
         target: target
@@ -1292,7 +1292,7 @@ var Plugin = (_dec$2 = autobindClass(), _dec$2(_class$2 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.10.0-alpha.9';
+    _this.VERSION = '0.10.0-alpha.10';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -2068,7 +2068,7 @@ var Bus = (_dec$4 = runnable(secondaryChecker), _dec2$3 = runnable(secondaryChec
    * @type {Object}
    * @member events
    */
-  function Bus(dispatcher) {
+  function Bus(dispatcher, kind) {
     _classCallCheck(this, Bus);
 
     this.events = {};
@@ -2079,6 +2079,7 @@ var Bus = (_dec$4 = runnable(secondaryChecker), _dec2$3 = runnable(secondaryChec
      * @type {Dispatcher}
      */
     this.__dispatcher = dispatcher;
+    this.__kind = kind;
   }
   /**
    * [Can only be called in dispatcher]bind event on bus.
@@ -2632,7 +2633,7 @@ var Binder = (_dec$5 = before(prettifyEventParameter), _dec2$4 = before(prettify
         this.bindedEventNames[kind] = [];
         this.bindedEventInfo[kind] = [];
         this.pendingEventsInfo[kind] = [];
-        this.buses[kind] = new Bus(dispatcher);
+        this.buses[kind] = new Bus(dispatcher, kind);
       }
     } catch (err) {
       _didIteratorError = true;
@@ -2951,18 +2952,6 @@ var Binder = (_dec$5 = before(prettifyEventParameter), _dec2$4 = before(prettify
         };
         this._addEventOnDom(targetDom, name, fn);
       } else if (target === 'video-dom') {
-        if (!this.__dispatcher.plugins[id]) {
-          // The plugin has not been created
-          // We will be better to wait for it in order to check its penetrate
-          this.needToCheckPendingVideoDomEventPlugins[id] = true;
-          this.addPendingEvent(target, name, id);
-          return;
-        }
-
-        var _ref21 = this.__dispatcher.plugins[id] || {},
-            _ref21$$penetrate = _ref21.$penetrate,
-            $penetrate = _ref21$$penetrate === undefined ? false : _ref21$$penetrate;
-
         fn = function fn() {
           for (var _len10 = arguments.length, args = Array(_len10), _key10 = 0; _key10 < _len10; _key10++) {
             args[_key10] = arguments[_key10];
@@ -2970,7 +2959,7 @@ var Binder = (_dec$5 = before(prettifyEventParameter), _dec2$4 = before(prettify
 
           return _this5.triggerSync.apply(_this5, [{ target: target, name: name, id: target }].concat(args));
         };
-        if ($penetrate) this.__dispatcher.dom.videoExtendedNodes.forEach(function (node) {
+        this.__dispatcher.dom.videoExtendedNodes.forEach(function (node) {
           return _this5._addEventOnDom(node, name, fn);
         });
         this._addEventOnDom(targetDom, name, fn);
@@ -2987,9 +2976,9 @@ var Binder = (_dec$5 = before(prettifyEventParameter), _dec2$4 = before(prettify
 
   }, {
     key: '_removeEventListenerOnTargetWhenIsUseless',
-    value: function _removeEventListenerOnTargetWhenIsUseless(_ref22) {
-      var name = _ref22.name,
-          target = _ref22.target;
+    value: function _removeEventListenerOnTargetWhenIsUseless(_ref21) {
+      var name = _ref21.name,
+          target = _ref21.target;
 
       if (!this._isEventNeedToBeHandled(target, name)) return;
       var eventNamesList = this.bindedEventNames[target];
@@ -3542,7 +3531,7 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
       // delay video event binding
       // so that people can't feel the default value change
       setTimeout(function () {
-        return _this3.binder.bindEventOnVideo(video);
+        _this3.binder && _this3.binder.bindEventOnVideo && _this3.binder.bindEventOnVideo(video);
       });
     }
 
@@ -4089,7 +4078,7 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$1 = (_temp = 
 }), _descriptor2$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.10.0-alpha.9';
+    return '0.10.0-alpha.10';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'config', [frozen], {
   enumerable: true,
