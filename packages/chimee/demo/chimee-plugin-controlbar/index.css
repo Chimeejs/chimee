@@ -59,3 +59,12 @@ button:active {
   background-color: #36384A;
 }
 
+.my-plugin {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 0;
+  right: 0;
+  background-color: #9D295A;
+}
+
