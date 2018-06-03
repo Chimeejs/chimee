@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.0-alpha.10
+ * chimee v0.10.0-alpha.11
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -1292,7 +1292,7 @@ var Plugin = (_dec$2 = autobindClass(), _dec$2(_class$2 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.10.0-alpha.10';
+    _this.VERSION = '0.10.0-alpha.11';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -3042,7 +3042,7 @@ var Binder = (_dec$5 = before(prettifyEventParameter), _dec2$4 = before(prettify
       // we have listened on esFullscreen in dom
       // we have listened mustListenVideoDomEvents
       // so the events above do not need to rebind
-      return target !== 'plugin' && target !== 'esFullscreen' && mustListenVideoDomEvents.indexOf(name) < 0;
+      return target !== 'plugin' && target !== 'esFullscreen' && (mustListenVideoDomEvents.indexOf(name) < 0 || target !== 'video');
     }
   }, {
     key: 'addPendingEvent',
@@ -4078,7 +4078,7 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$1 = (_temp = 
 }), _descriptor2$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.10.0-alpha.10';
+    return '0.10.0-alpha.11';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'config', [frozen], {
   enumerable: true,
