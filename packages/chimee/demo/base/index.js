@@ -38,6 +38,9 @@ const plugin = {
     c_click(evt) {
       console.warn(evt);
     },
+    c_mouseenter(evt) {
+      console.warn(evt, 'c_mouseenter');
+    },
     after_c_click(evt) {
       console.log(evt, 'after_c');
     },
@@ -72,5 +75,8 @@ const player = new Chimee({
 [ 'touchstart', 'touchmove', 'touchend' ].forEach(key => {
   player.$on(key, evt => console.log(evt, key));
 });
+
+player.$on('mouseenter', event => console.log(event), { target: 'container' });
+player.$on('mouseenter', event => console.log(event, 'mouseenter'));
 
 window.player = player;
