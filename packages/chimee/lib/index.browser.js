@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.0-alpha.11
+ * chimee v0.10.0
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -7734,7 +7734,7 @@
 	    var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
 	    _this.destroyed = false;
-	    _this.VERSION = '0.10.0-alpha.11';
+	    _this.VERSION = '0.10.0';
 	    _this.__operable = true;
 	    _this.__level = 0;
 
@@ -11225,7 +11225,7 @@
 	}), _descriptor2$1 = _applyDecoratedDescriptor$8(_class2$2.prototype, 'version', [frozen], {
 	  enumerable: true,
 	  initializer: function initializer() {
-	    return '0.10.0-alpha.11';
+	    return '0.10.0';
 	  }
 	}), _descriptor3$1 = _applyDecoratedDescriptor$8(_class2$2.prototype, 'config', [frozen], {
 	  enumerable: true,
