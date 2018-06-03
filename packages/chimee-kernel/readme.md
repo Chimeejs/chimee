@@ -1,3 +1,5 @@
+# [DEPRECATED] chimee-kernel has been merged into chimee.
+
 # chimee-kernel
 
 Chimee-kernel is a manger of video decoder.
