@@ -269,12 +269,12 @@ level 值可以由用户设置、插件默认设置或插件内部通过 `$level
 
 利用上述方法进行事件监听，监听的对象均为原生 video 对象。
 
-有的时候我们需要监听 container 和 wrapper 的相关事件，此时我们需要在事件名称上添加前缀。
+有的时候我们需要监听 container 和 wrapper 的相关事件，此时我们需要在监听事件时，传入对应的 option。
 
 如：
 
-- c_mousemove， 在 container 上绑定 mousemove 事件
-- w_mousemove， 在 wrapper 上绑定 mouse move 事件
+- `chimee.on('mousemove', evt => console.log(evt), { target: 'container' };`， 在 container 上绑定 `mousemove` 事件
+- ``chimee.on('mousemove', evt => console.log(evt), { target: 'wrapper' };``， 在 wrapper 上绑定 mouse move 事件
 
 > 官方提供的事件绑定方法主要目的是搭建插件间沟通桥梁，和插件对 video, container, wrapper 三者的监听。
 >
@@ -1459,8 +1459,24 @@ this.$css('width', 100);
 
 绑定事件
 
-- key 事件名
-- fn 绑定行数
+- key
+  - 类型：`string`
+  - 含义：事件名称
+- fn
+  - 类型：`Function`
+  - 含义：处理函数
+- options
+  - 类型：`Object`
+  - 含义：可以穿入一些事件相关的属性
+  - 备注：可选参数
+    - target
+      - 类型：'kernel' | 'container' | 'wrapper' | 'video' | 'video-dom' | 'plugin' | 'esFullscreen'
+      - 含义：标明事件需要绑定的目标对象。
+      - 默认：会根据事件名智能判断
+    - stage
+      - 类型：'before' | 'after' | 'main' | '_'
+      - 含义：标明事件监听的阶段
+      - 默认：会根据事件名智能判断
 
 ### $off
 
