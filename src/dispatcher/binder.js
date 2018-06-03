@@ -438,7 +438,7 @@ export default class Binder {
     // so the events above do not need to rebind
     return target !== 'plugin' &&
       target !== 'esFullscreen' &&
-      mustListenVideoDomEvents.indexOf(name) < 0;
+      (mustListenVideoDomEvents.indexOf(name) < 0 || target !== 'video');
   }
 
   addPendingEvent(target: binderTarget, name: string, id: string) {

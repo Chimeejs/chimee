@@ -217,4 +217,24 @@ describe("chimee's binder", () => {
     expect(rawFn).toHaveBeenCalledTimes(1);
     expect(fn).toHaveBeenCalledTimes(0);
   });
+
+  test('mouseenter and mouseleave on container should be normal', async () => {
+    const fn1 = jest.fn();
+    const fn2 = jest.fn();
+    const plugin = {
+      name: 'mouseenter inside container',
+      events: {
+        c_mouseenter: fn1,
+        c_mouseleave: fn2,
+      },
+    };
+    Chimee.install(plugin);
+    const { $container } = await player.use(plugin.name);
+    const leaveEvent = new Event('mouseleave');
+    const enterEvent = new Event('mouseenter');
+    $container.dispatchEvent(enterEvent);
+    expect(fn1).toHaveBeenCalledTimes(1);
+    $container.dispatchEvent(leaveEvent);
+    expect(fn1).toHaveBeenCalledTimes(1);
+  });
 });
