@@ -1,6 +1,6 @@
 {
   "name": "chimee-kernel-hls",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "kernel-hls of chimee",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -16,8 +16,8 @@
     "b-umd": "rollup -c build/rollup.config.umd.js",
     "b-min": "rollup -c build/rollup.config.min.js",
     "start": "rollup -c build/rollup.config.dev.js -w",
-    "lint": "eslint . --fix && flow",
-    "flow": "flow",
+    "lint": "eslint . --fix && flow check",
+    "flow": "flow check",
     "test": "karma start karma.conf.js",
     "unit": "karma start karma.conf.js --auto-watch"
   },
