@@ -144,7 +144,13 @@ const player = new Chimee({
 ```javascript
 import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee'
-Chimee.install(popup);
+Chimee.install(popup({
+  name: 'ccPopup',
+  title: '这是一个居中信息框',
+  body: '这里是信息内容',
+  offset: '50% 50%',
+  width: '200px'
+}));
 
 const chimee = new Chimee({
   wrapper: '#wrapper',
@@ -157,7 +163,13 @@ const chimee = new Chimee({
 ```javascript
 import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee'
-Chimee.install(popup);
+Chimee.install(popup({
+  name: 'ccPopup',
+  title: '这是一个居中信息框',
+  body: '这里是信息内容',
+  offset: '50% 50%',
+  width: '200px'
+}));
 
 const chimee = new Chimee({
   wrapper: '#wrapper',
@@ -173,7 +185,13 @@ const chimee = new Chimee({
 ```javascript
 import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee'
-Chimee.install(popup);
+Chimee.install(popup({
+  name: 'ccPopup',
+  title: '这是一个居中信息框',
+  body: '这里是信息内容',
+  offset: '50% 50%',
+  width: '200px'
+}));
 
 const chimee = new Chimee({
   wrapper: '#wrapper',
@@ -1137,7 +1155,13 @@ player.on('fullscreenchange', evt => {
 ```javascript
 import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee'
-Chimee.install(popup);
+Chimee.install(popup({
+  name: 'ccPopup',
+  title: '这是一个居中信息框',
+  body: '这里是信息内容',
+  offset: '50% 50%',
+  width: '200px'
+}));
 ```
 
 ### hasInstalled
@@ -1155,7 +1179,13 @@ Chimee.install(popup);
 ```javascript
 import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee'
-Chimee.install(popup);
+Chimee.install(popup({
+  name: 'ccPopup',
+  title: '这是一个居中信息框',
+  body: '这里是信息内容',
+  offset: '50% 50%',
+  width: '200px'
+}));
 Chimee.hasInstalled(popup.name); // true
 Chimee.hasInstalled('something else'); // false
 ```
@@ -1199,7 +1229,13 @@ Chimee.hasInstalled('something else'); // false
 import popup from 'chimee-plugin-popup';
 import danmu from 'chimee-plugin-danmu';
 import Chimee from 'chimee'
-Chimee.install(popup);
+Chimee.install(popup({
+  name: 'ccPopup',
+  title: '这是一个居中信息框',
+  body: '这里是信息内容',
+  offset: '50% 50%',
+  width: '200px'
+}));
 Chimee.install(danmu)
 
 const chimee = new Chimee('#wrapper');
