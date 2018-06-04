@@ -52,3 +52,4 @@ player.$fullscreen();
 player.$fullscreen(false);
 ```
 
+如果页面是嵌套在 iframe 中，则需要在 iframe 上设置 `allowfullscreen` 属性。
