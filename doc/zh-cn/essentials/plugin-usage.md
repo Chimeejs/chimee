@@ -28,7 +28,13 @@ chimee 是一个简单的框架。如果需要让 chimee 发挥更强的能力�
 ```javascript
 import popup from 'chimee-plugin-popup';
 import Chimee from 'chimee'
-Chimee.install(popup);
+Chimee.install(popup({
+  name: 'ccPopup',
+  title: '这是一个居中信息框',
+  body: '这里是信息内容',
+  offset: '50% 50%',
+  width: '200px'
+}));
 Chimee.hasInstalled(popup.name); // true
 ```
 
