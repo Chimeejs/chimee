@@ -3,7 +3,7 @@ import { Log } from 'chimee-helper';
 import { accessor, applyDecorators, nonenumerable } from 'toxic-decorators';
 import esFullscreen from 'es-fullscreen';
 export default class GlobalConfig {
-  log: {
+  _log: {
     error: boolean,
     info: boolean,
     warn: boolean,
@@ -14,7 +14,7 @@ export default class GlobalConfig {
   silent: boolean;
   _silent: boolean;
 
-  log = {
+  _log = {
     error: true,
     info: true,
     warn: true,
@@ -24,6 +24,14 @@ export default class GlobalConfig {
 
   @nonenumerable
   _silent = false;
+
+  get log(): any {
+    return this._log;
+  }
+
+  set log(val: any) {
+    Object.keys(val).forEach(key => { this._log[key] = val[key]; });
+  }
 
   get silent(): boolean {
     return this._silent;
