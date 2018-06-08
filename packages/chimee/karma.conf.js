@@ -1,5 +1,5 @@
 // process.env.CHROME_BIN = require('puppeteer').executablePath();
-const esmRequire = require('@std/esm')(module, {
+const esmRequire = require('esm')(module, {
   mode: 'all',
   cjs: {
     vars: true,
