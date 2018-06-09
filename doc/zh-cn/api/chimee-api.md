@@ -225,6 +225,12 @@ const chimee = new Chimee({
 }
 ```
 
+### videoRequiredGuardedAttributes（v0.10.0后）
+
+* 类型：`string[]`
+* 含义：在切换 video 的时候，我们会创建一个新的 video， 此时我们可能会丢掉 vidoe 上除 video 属性外的部分属性，所以，为了保留这些属性，你需要将属性名称提供给我们。
+* 默认：`[style]`
+
 ### video属性
 
 除了以上几个用于 Chimee 内部使用的配置，我们还可以传入一些 video 元素需要用到的参数。
