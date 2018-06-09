@@ -224,10 +224,6 @@ export default @autobindClass() class Plugin extends VideoWrapper {
    * call for inited lifecycle hook, which just to tell the plugin we have inited.
    */
   __inited(): Promise<*> | Plugin {
-    if (this.__dispatcher.binder.needToCheckPendingVideoDomEventPlugins[this.__id]) {
-      this.__dispatcher.binder.applyPendingEvents('video-dom');
-      this.__dispatcher.binder.needToCheckPendingVideoDomEventPlugins[this.__id] = false;
-    }
     let result;
     try {
       result = isFunction(this.inited) && this.inited();

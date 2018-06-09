@@ -8,8 +8,7 @@ describe('check for chimee switch kernel function', () => {
       src: 'http://cdn.toxicjohann.com/lostStar.mp4',
       volume: 0.2,
     });
-    chimee.on('volumechange', evt => {
-      console.log(evt);
+    chimee.on('volumechange', () => {
       count++;
     });
     try {
@@ -20,7 +19,6 @@ describe('check for chimee switch kernel function', () => {
     } catch (error) {
       console.error(error);
     }
-    console.warn(expect);
     expect(count).to.equal(0);
   });
 });

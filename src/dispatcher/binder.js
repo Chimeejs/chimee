@@ -116,7 +116,6 @@ export default class Binder {
   bindedEventInfo: { [binderTarget]: Array<[string, Function]> };
   buses: { [binderTarget]: Bus };
   pendingEventsInfo: { [binderTarget]: Array<[string, string]> };
-  needToCheckPendingVideoDomEventPlugins: { [string]: boolean };
   __dispatcher: Dispatcher;
 
   constructor(dispatcher: Dispatcher) {
@@ -134,7 +133,6 @@ export default class Binder {
     this.bindedEventNames = {};
     this.bindedEventInfo = {};
     this.pendingEventsInfo = {};
-    this.needToCheckPendingVideoDomEventPlugins = {};
     for (const kind of this.kinds) {
       this.bindedEventNames[kind] = [];
       this.bindedEventInfo[kind] = [];
