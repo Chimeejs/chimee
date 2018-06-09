@@ -116,12 +116,8 @@ declare type UserConfig = {
     hls?: Function
   },
   container?: VesselConfig,
-  canvas?: {
-    render?: Function;
-    getContext?: Function;
-    setSize?: Function;
-  },
   videoRequiredGuardedAttributes?: string[],
+  noDefaultContextMenu?: string | boolean,
 }
 
 declare type binderTarget = 'kernel' | 'container' | 'wrapper' | 'video' | 'video-dom' | 'plugin' | 'esFullscreen';

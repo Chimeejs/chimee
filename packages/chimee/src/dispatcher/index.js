@@ -125,6 +125,19 @@ export default class Dispatcher {
      */
     this.kernel = this._createKernel(this.dom.videoElement, this.videoConfig);
     this.binder.applyPendingEvents('kernel');
+    if (config.noDefaultContextMenu) {
+      const { noDefaultContextMenu } = config;
+      const target = (noDefaultContextMenu === 'container' || noDefaultContextMenu === 'wrapper')
+        ? noDefaultContextMenu
+        : 'video-dom';
+      this.binder.on({
+        target,
+        id: '_vm',
+        name: 'contextmenu',
+        fn: evt => evt.preventDefault(),
+        stage: 'main',
+      });
+    }
     // trigger auto load event
     const asyncInitedTasks: Array<Promise<*>> = [];
     this.order.forEach(key => {
@@ -140,14 +153,18 @@ export default class Dispatcher {
       : Promise.all(asyncInitedTasks)
         .then(() => {
           this.readySync = true;
-          this.binder.trigger({
-            target: 'plugin',
-            name: 'ready',
-            id: 'dispatcher',
-          });
-          this._autoloadVideoSrcAtFirst();
+          this.onReady();
         });
-    if (this.readySync) this._autoloadVideoSrcAtFirst();
+    if (this.readySync) this.onReady();
+  }
+
+  onReady() {
+    this.binder.trigger({
+      target: 'plugin',
+      name: 'ready',
+      id: 'dispatcher',
+    });
+    this._autoloadVideoSrcAtFirst();
   }
 
   /**

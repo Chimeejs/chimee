@@ -32,21 +32,21 @@ const plugin = {
     play() {
       this.changeButtonText('pause');
     },
-    c_contextmenu(evt) {
-      console.log(evt);
-    },
-    c_click(evt) {
-      console.warn(evt);
-    },
-    c_mouseenter(evt) {
-      console.warn(evt, 'c_mouseenter');
-    },
-    after_c_click(evt) {
-      console.log(evt, 'after_c');
-    },
-    click(evt) {
-      console.log(evt);
-    },
+    // c_contextmenu(evt) {
+    //   console.log(evt);
+    // },
+    // c_click(evt) {
+    //   console.warn(evt);
+    // },
+    // c_mouseenter(evt) {
+    //   console.warn(evt, 'c_mouseenter');
+    // },
+    // after_c_click(evt) {
+    //   console.log(evt, 'after_c');
+    // },
+    // click(evt) {
+    //   console.log(evt);
+    // },
   },
 };
 Chimee.install(plugin);
@@ -71,12 +71,14 @@ const player = new Chimee({
   volume: 0.1,
   // autoplay: true,
   controls: true,
+  // noDefaultContextMenu: true,
+  noDefaultContextMenu: 'wrapper',
 });
-[ 'touchstart', 'touchmove', 'touchend' ].forEach(key => {
-  player.$on(key, evt => console.log(evt, key));
-});
+// [ 'touchstart', 'touchmove', 'touchend' ].forEach(key => {
+//   player.$on(key, evt => console.log(evt, key));
+// });
 
-player.$on('mouseenter', event => console.log(event), { target: 'container' });
-player.$on('mouseenter', event => console.log(event, 'mouseenter'));
+// player.$on('mouseenter', event => console.log(event), { target: 'container' });
+// player.$on('mouseenter', event => console.log(event, 'mouseenter'));
 
 window.player = player;
