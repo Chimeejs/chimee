@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.0
+ * chimee v0.10.1
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -1292,7 +1292,7 @@ var Plugin = (_dec$2 = autobindClass(), _dec$2(_class$2 = function (_VideoWrappe
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.10.0';
+    _this.VERSION = '0.10.1';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -1439,10 +1439,6 @@ var Plugin = (_dec$2 = autobindClass(), _dec$2(_class$2 = function (_VideoWrappe
     value: function __inited() {
       var _this2 = this;
 
-      if (this.__dispatcher.binder.needToCheckPendingVideoDomEventPlugins[this.__id]) {
-        this.__dispatcher.binder.applyPendingEvents('video-dom');
-        this.__dispatcher.binder.needToCheckPendingVideoDomEventPlugins[this.__id] = false;
-      }
       var result = void 0;
       try {
         result = isFunction(this.inited) && this.inited();
@@ -2621,7 +2617,6 @@ var Binder = (_dec$5 = before(prettifyEventParameter), _dec2$4 = before(prettify
     this.bindedEventNames = {};
     this.bindedEventInfo = {};
     this.pendingEventsInfo = {};
-    this.needToCheckPendingVideoDomEventPlugins = {};
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
     var _iteratorError = undefined;
@@ -3199,6 +3194,20 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
      */
     this.kernel = this._createKernel(this.dom.videoElement, this.videoConfig);
     this.binder.applyPendingEvents('kernel');
+    if (config.noDefaultContextMenu) {
+      var noDefaultContextMenu = config.noDefaultContextMenu;
+
+      var target = noDefaultContextMenu === 'container' || noDefaultContextMenu === 'wrapper' ? noDefaultContextMenu : 'video-dom';
+      this.binder.on({
+        target: target,
+        id: '_vm',
+        name: 'contextmenu',
+        fn: function fn(evt) {
+          return evt.preventDefault();
+        },
+        stage: 'main'
+      });
+    }
     // trigger auto load event
     var asyncInitedTasks = [];
     this.order.forEach(function (key) {
@@ -3211,22 +3220,10 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
     // tell them we have inited the whold player
     this.ready = this.readySync ? _Promise.resolve() : _Promise.all(asyncInitedTasks).then(function () {
       _this.readySync = true;
-      _this.binder.trigger({
-        target: 'plugin',
-        name: 'ready',
-        id: 'dispatcher'
-      });
-      _this._autoloadVideoSrcAtFirst();
+      _this.onReady();
     });
-    if (this.readySync) this._autoloadVideoSrcAtFirst();
+    if (this.readySync) this.onReady();
   }
-
-  /**
-   * use a plugin, which means we will new a plugin instance and include int this Chimee instance
-   * @param  {Object|string} option you can just set a plugin name or plugin config
-   * @return {Promise}
-   */
-
   // to save the kernel event handler, so that we can remove it when we destroy the kernel
 
   /**
@@ -3243,6 +3240,23 @@ var Dispatcher = (_dec$6 = before(convertNameIntoId), _dec2$5 = before(checkPlug
 
 
   _createClass(Dispatcher, [{
+    key: 'onReady',
+    value: function onReady() {
+      this.binder.trigger({
+        target: 'plugin',
+        name: 'ready',
+        id: 'dispatcher'
+      });
+      this._autoloadVideoSrcAtFirst();
+    }
+
+    /**
+     * use a plugin, which means we will new a plugin instance and include int this Chimee instance
+     * @param  {Object|string} option you can just set a plugin name or plugin config
+     * @return {Promise}
+     */
+
+  }, {
     key: 'use',
     value: function use(option) {
       if (isString(option)) option = { name: option, alias: undefined };
@@ -4078,7 +4092,7 @@ var Chimee = (_dec$7 = autobindClass(), _dec$7(_class$8 = (_class2$1 = (_temp = 
 }), _descriptor2$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'version', [frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.10.0';
+    return '0.10.1';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'config', [frozen], {
   enumerable: true,
