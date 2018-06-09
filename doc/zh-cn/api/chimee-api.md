@@ -231,7 +231,7 @@ const chimee = new Chimee({
 * 含义：在切换 video 的时候，我们会创建一个新的 video， 此时我们可能会丢掉 vidoe 上除 video 属性外的部分属性，所以，为了保留这些属性，你需要将属性名称提供给我们。
 * 默认：`[style]`
 
-### noDefaultContextMenu
+### noDefaultContextMenu（v0.10.1 后）
 
 * 类型：`boolean|'container'|'wrapper'`
 * 含义：配置该属性可以隐藏原生右键菜单。配置` true` 的话会隐藏 video 上的原生菜单，配置 `container` 和 `wrapper` 则隐藏对应层级上的菜单。
