@@ -46,7 +46,7 @@ describe('chimee event method', () => {
     expect(() => player.emitSync('click')).not.toThrow();
   });
 
-  describe('emnit', () => {
+  describe('emit', () => {
     let fn;
     beforeEach(() => {
       fn = jest.fn();
