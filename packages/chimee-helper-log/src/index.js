@@ -1,4 +1,5 @@
 // @flow
+import { inBrowser } from 'chimee-helper-utils';
 import {isString} from 'toxic-predicate-functions';
 function formatter (tag: string, msg?: string): string {
   if(!isString(tag)) throw new TypeError(`Log's method only acccept string as argument, but not ${tag} in ${typeof tag}`);
@@ -49,7 +50,7 @@ class Log {
   static ENABLE_VERBOSE = true;
   /**
    * equal to console.error, output `[${tag}] > {$msg}`
-   * @param {string} tag optional, the header of log 
+   * @param {string} tag optional, the header of log
    * @param {string} msg the message
    */
   static error (tag: string, msg?: string) {
@@ -61,7 +62,7 @@ class Log {
   }
   /**
    * equal to console.info, output `[${tag}] > {$msg}`
-   * @param {string} tag optional, the header of log 
+   * @param {string} tag optional, the header of log
    * @param {string} msg the message
    */
   static info (tag: string, msg?: string) {
@@ -72,7 +73,7 @@ class Log {
   }
   /**
    * equal to console.warn, output `[${tag}] > {$msg}`
-   * @param {string} tag optional, the header of log 
+   * @param {string} tag optional, the header of log
    * @param {string} msg the message
    */
   static warn (tag: string, msg?: string) {
@@ -83,7 +84,7 @@ class Log {
   }
   /**
    * equal to console.debug, output `[${tag}] > {$msg}`
-   * @param {string} tag optional, the header of log 
+   * @param {string} tag optional, the header of log
    * @param {string} msg the message
    */
   static debug (tag: string, msg?: string) {
@@ -94,7 +95,7 @@ class Log {
   }
   /**
    * equal to console.verbose, output `[${tag}] > {$msg}`
-   * @param {string} tag optional, the header of log 
+   * @param {string} tag optional, the header of log
    * @param {string} msg the message
    */
   static verbose (tag: string, msg?: string) {
@@ -105,4 +106,8 @@ class Log {
   }
 }
 
-export default Log;
+if (inBrowser && !window._chimee_log) {
+  window._chimee_log = Log;
+}
+
+export default (inBrowser ? window._chimee_log : Log);
