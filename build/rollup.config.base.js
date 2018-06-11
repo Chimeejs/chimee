@@ -26,6 +26,7 @@ const babelConfig = {
     ],
     exclude: 'node_modules/**',
     plugins: [
+      'lodash',
       'external-helpers',
       'transform-decorators-legacy',
       'transform-runtime',
@@ -47,6 +48,7 @@ const babelConfig = {
     ],
     exclude: 'node_modules/**',
     plugins: [
+      'lodash',
       'external-helpers',
       'transform-decorators-legacy',
       'transform-runtime',
@@ -68,6 +70,7 @@ const babelConfig = {
     ],
     exclude: 'node_modules/**',
     plugins: [
+      'lodash',
       'external-helpers',
       'transform-decorators-legacy',
       'transform-runtime',
@@ -89,6 +92,7 @@ const babelConfig = {
     ],
     exclude: 'node_modules/**',
     plugins: [
+      'lodash',
       'external-helpers',
       'transform-decorators-legacy',
       'transform-runtime',
@@ -110,6 +114,7 @@ const babelConfig = {
     ],
     exclude: 'node_modules/**',
     plugins: [
+      'lodash',
       'external-helpers',
       'transform-decorators-legacy',
     ],

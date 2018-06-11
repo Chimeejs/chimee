@@ -1,5 +1,5 @@
 // @flow
-import { CustEvent, isElement } from 'chimee-helper';
+import { CustEvent, isElement } from 'helper/chimee-helper';
 
 let tempCurrentTime: number = 0;
 

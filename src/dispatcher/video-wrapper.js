@@ -1,5 +1,5 @@
 // @flow
-import { bind, isString, getDeepProperty, isArray, isObject, isFunction, Log, isEmpty, deepAssign } from 'chimee-helper';
+import { bind, isString, getDeepProperty, isArray, isObject, isFunction, Log, isEmpty, deepAssign } from 'helper/chimee-helper';
 import { videoReadOnlyProperties, videoMethods, kernelMethods, domMethods, domEvents } from 'helper/const';
 import { attrAndStyleCheck, eventBinderCheck } from 'helper/checker';
 import { accessor, nonenumerable, applyDecorators, watch, alias, before, autobindClass } from 'toxic-decorators';

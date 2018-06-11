@@ -1,5 +1,5 @@
 // @flow
-import { isNumber, isString, deepAssign } from 'chimee-helper';
+import { isNumber, isString, deepAssign } from 'helper/chimee-helper';
 import Dispatcher from '../dispatcher/index';
 // base css controller for container and wrapper
 export default class Vessel {

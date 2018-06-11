@@ -1,5 +1,5 @@
 // @flow
-import { isString, isFunction } from 'chimee-helper';
+import { isString, isFunction } from 'helper/chimee-helper';
 /**
  * checker for on, off, once function
  * @param {string} key

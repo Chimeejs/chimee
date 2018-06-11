@@ -48,6 +48,7 @@
     "babel-runtime": "^6.26.0",
     "chimee-helper": "^0.2.11",
     "es-fullscreen": "^0.3.0",
+    "lodash": "^4.17.10",
     "toxic-decorators": "^0.3.8"
   },
   "devDependencies": {

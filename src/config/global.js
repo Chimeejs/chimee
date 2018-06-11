@@ -1,5 +1,5 @@
 // @flow
-import { Log } from 'chimee-helper';
+import { Log } from 'helper/chimee-helper';
 import { accessor, applyDecorators, nonenumerable } from 'toxic-decorators';
 import esFullscreen from 'es-fullscreen';
 export default class GlobalConfig {
