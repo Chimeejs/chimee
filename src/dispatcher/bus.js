@@ -1,5 +1,5 @@
 // @flow
-import { isEmpty, isArray, runRejectableQueue, runStoppableQueue, camelize, bind, isError, isVoid, isFunction, deepClone, Log } from 'helper/chimee-helper';
+import { isEmpty, isArray, runRejectableQueue, runStoppableQueue, camelize, bind, isError, isVoid, isFunction, deepClone, Log } from 'helper/index';
 import { videoEvents, kernelMethods, domEvents, domMethods, selfProcessorEvents, dispatcherMethods } from 'helper/const';
 import { runnable } from 'toxic-decorators';
 const secondaryReg = /^(before|after|_)/;

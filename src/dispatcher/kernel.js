@@ -1,5 +1,5 @@
 // @flow
-import { Log, isNumber, deepAssign, isString, isFunction, isElement } from 'helper/chimee-helper';
+import { Log, isNumber, deepAssign, isString, isFunction, isElement } from 'helper/index';
 import NativeVideoKernel from '../kernels/native';
 
 const LOG_TAG = 'chimee';

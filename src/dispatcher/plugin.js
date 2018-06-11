@@ -1,5 +1,5 @@
 // @flow
-import { isError, isString, isFunction, isEmpty, isObject, isBoolean, isInteger, isPromise, deepAssign, bind, Log } from 'helper/chimee-helper';
+import { isError, isString, isFunction, isEmpty, isObject, isBoolean, isInteger, isPromise, deepAssign, bind, Log } from 'helper/index';
 import { accessor, applyDecorators, frozen, autobindClass } from 'toxic-decorators';
 import VideoWrapper from 'dispatcher/video-wrapper';
 

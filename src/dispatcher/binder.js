@@ -6,7 +6,7 @@
 
 import Bus from './bus';
 import { videoEvents, domEvents, kernelEvents, passiveEvents, esFullscreenEvents, mustListenVideoDomEvents } from 'helper/const';
-import { camelize, Log, isString, addEvent, removeEvent, isEmpty, isFunction } from 'helper/chimee-helper';
+import { camelize, Log, isString, addEvent, removeEvent, isEmpty, isFunction } from 'helper/index';
 import { before, runnable } from 'toxic-decorators';
 import Dispatcher from './index';
 

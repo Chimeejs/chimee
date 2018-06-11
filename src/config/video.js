@@ -1,6 +1,6 @@
 // @flow
 import { alwaysString, initString, accessor, alwaysBoolean, frozen, alwaysNumber, nonenumerable, applyDecorators, configurable, initBoolean } from 'toxic-decorators';
-import { isNumber, isString, deepAssign, isObject, isNumeric } from 'helper/chimee-helper';
+import { isNumber, isString, deepAssign, isObject, isNumeric } from 'helper/index';
 
 function stringOrVoid(value: any): string | void {
   return isString(value) ? value : undefined;

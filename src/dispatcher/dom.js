@@ -1,5 +1,5 @@
 // @flow
-import { isArray, isElement, isString, isHTMLString, hypenate, isFunction, isPosterityNode, isObject, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log, isEvent } from 'helper/chimee-helper';
+import { isArray, isElement, isString, isHTMLString, hypenate, isFunction, isPosterityNode, isObject, $, setStyle, getStyle, setAttr, addEvent, getAttr, removeEvent, addClassName, Log, isEvent } from 'helper/index';
 import esFullscreen from 'es-fullscreen';
 import { autobind, before, waituntil } from 'toxic-decorators';
 import Dispatcher from './index';

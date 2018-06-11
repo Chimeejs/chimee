@@ -1,6 +1,6 @@
 // @flow
 import Dispatcher from './dispatcher/index';
-import { isString, isFunction, isElement, isObject, Log, isError } from 'helper/chimee-helper';
+import { isString, isFunction, isElement, isObject, Log, isError } from 'helper/index';
 import Plugin from './dispatcher/plugin';
 import { frozen, autobindClass } from 'toxic-decorators';
 import VideoWrapper from 'dispatcher/video-wrapper';
