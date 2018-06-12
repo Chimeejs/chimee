@@ -3,7 +3,7 @@ export {
   bind,
   isNumber,
   isError,
-  isString,
+  // isString,
   // isEmpty, // isEmpty(function) === true // dispatcher/index.js#640
   // isPlainObject as isObject, // isPlainObject(new Plugin()) === false  // dispatcher/index.js#198
   // isObject, // typeof a === 'object' || typeof a === 'function'
@@ -15,13 +15,14 @@ export {
   camelCase as camelize,
   isNil as isVoid,
   merge as deepAssign,
-  cloneDeep as deepClone,
+  clone as deepClone,
+  kebabCase as hypenate,
 } from 'lodash';
 
 export {
   // bind,
   // isNumber,
-  // isString,
+  isString,
   // isError,
   isEmpty,
   isObject,
@@ -41,7 +42,7 @@ export {
   runRejectableQueue,
   runStoppableQueue,
   isHTMLString,
-  hypenate,
+  // hypenate,
   isPosterityNode,
   $,
   setStyle,
