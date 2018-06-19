@@ -126,4 +126,25 @@ describe('load', () => {
     expect(player.__dispatcher.kernel).not.toBe(oldKernel);
     expect(player.src).toBe('');
   });
+
+  test('should not trigger switch kernel at the first auto load', () => {
+    const fn = jest.fn();
+    const plugin = {
+      name: 'test',
+      events: {
+        play() {
+          fn();
+        },
+      },
+    };
+    Chimee.install(plugin);
+    const player = new Chimee({
+      wrapper: document.createElement('div'),
+      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+      plugins: [ plugin.name ],
+    });
+    player.$video.dispatchEvent(new Event('play'));
+    expect(fn).toHaveBeenCalledTimes(1);
+    player.destroy();
+  });
 });

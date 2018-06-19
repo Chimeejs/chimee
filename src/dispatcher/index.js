@@ -392,12 +392,14 @@ export default class Dispatcher {
     isLive?: boolean,
     box?: string,
     preset?: Object,
-    kernels?: UserKernelsConfig
+    kernels?: UserKernelsConfig,
+    isFirst?: boolean,
   }, option: {
     isLive?: boolean,
     box?: string,
     preset?: Object,
-    kernels?: UserKernelsConfig
+    kernels?: UserKernelsConfig,
+    isFirst?: boolean,
   } = {}) {
     const src: string = isString(srcOrOption)
       ? srcOrOption
@@ -416,12 +418,13 @@ export default class Dispatcher {
       box = videoConfig.box,
       preset = videoConfig.preset,
       kernels = videoConfig.kernels,
+      isFirst,
     } = option;
     if (box !== 'native' || box !== oldBox || !isEmpty(option)) {
       const video = document.createElement('video');
       const config = { isLive, box, preset, src, kernels };
       const kernel = this._createKernel(video, config);
-      this.switchKernel({ video, kernel, config });
+      this.switchKernel({ video, kernel, config, notifyChange: isFirst });
     }
     const originAutoLoad = this.videoConfig.autoload;
     this._changeUnwatchable(this.videoConfig, 'autoload', false);
@@ -430,7 +433,7 @@ export default class Dispatcher {
     this._changeUnwatchable(this.videoConfig, 'autoload', originAutoLoad);
   }
 
-  switchKernel({ video, kernel, config }: {
+  switchKernel({ video, kernel, config, notifyChange }: {
     video: HTMLVideoElement,
     kernel: ChimeeKernel,
     config: {
@@ -439,7 +442,8 @@ export default class Dispatcher {
       box: string,
       kernels: UserKernelsConfig,
       preset: Object,
-    }
+    },
+    notifyChange?: boolean,
   }) {
     const oldKernel = this.kernel;
     const originVideoConfig = deepClone(this.videoConfig);
@@ -466,9 +470,14 @@ export default class Dispatcher {
     oldKernel.destroy();
     // delay video event binding
     // so that people can't feel the default value change
-    setTimeout(() => {
+    // unless it's caused by autoload
+    if (notifyChange) {
       this.binder && this.binder.bindEventOnVideo && this.binder.bindEventOnVideo(video);
-    });
+    } else {
+      setTimeout(() => {
+        this.binder && this.binder.bindEventOnVideo && this.binder.bindEventOnVideo(video);
+      });
+    }
   }
 
   /**
@@ -548,7 +557,7 @@ export default class Dispatcher {
         name: 'load',
         target: 'plugin',
         id: 'dispatcher',
-      }, this.videoConfig.src);
+      }, { src: this.videoConfig.src, isFirst: true });
     }
   }
   _changeUnwatchable(object: Object, property: string, value: any) {
