@@ -1,5 +1,6 @@
 // @flow
-import { isEmpty, isArray, runRejectableQueue, runStoppableQueue, camelize, bind, isError, isVoid, isFunction, deepClone, Log } from 'chimee-helper';
+import { runRejectableQueue, runStoppableQueue, Log } from 'chimee-helper';
+import { isEmpty, isArray, camelCase, bind, isError, isNil, isFunction, clone } from 'lodash';
 import { videoEvents, kernelMethods, domEvents, domMethods, selfProcessorEvents, dispatcherMethods } from 'helper/const';
 import { runnable } from 'toxic-decorators';
 const secondaryReg = /^(before|after|_)/;
@@ -201,7 +202,7 @@ export default class Bus {
    * @param {function} fn handler to put
    */
   _addEvent(keys: Array<string | eventStage>, fn: Function): void {
-    keys = deepClone(keys);
+    keys = clone(keys);
     const id: string = keys.pop();
     const target = keys.reduce((target, key) => {
       target[key] = target[key] || {};
@@ -218,7 +219,7 @@ export default class Bus {
    * @param {function} fn handler to put
    */
   _removeEvent(keys: Array<string>, fn: Function): void | boolean {
-    keys = deepClone(keys);
+    keys = clone(keys);
     const id = keys.pop();
     let target = this.events;
     const backtrackList = [];
@@ -260,7 +261,7 @@ export default class Bus {
     const key = keys.join('-');
     const map = this.onceMap[key];
     // do not need to check now
-    // if(isVoid(map) || !map.has(fn)) return;
+    // if(isNil(map) || !map.has(fn)) return;
     const handlers = map.get(fn);
     const index = handlers.indexOf(handler);
     handlers.splice(index, 1);
@@ -269,7 +270,7 @@ export default class Bus {
   _getHandlerFromOnceMap(keys: Array<string>, fn: Function): Function | void {
     const key = keys.join('-');
     const map = this.onceMap[key];
-    if (isVoid(map) || !map.has(fn)) return;
+    if (isNil(map) || !map.has(fn)) return;
     const handlers = map.get(fn);
     return handlers[0];
   }
@@ -284,7 +285,7 @@ export default class Bus {
     // $FlowFixMe: make sure it's event stage here
     const stage: eventStage = (secondaryCheck && secondaryCheck[0]) || 'main';
     if (secondaryCheck) {
-      key = camelize(key.replace(secondaryReg, ''));
+      key = camelCase(key.replace(secondaryReg, ''));
     }
     return { stage, key };
   }

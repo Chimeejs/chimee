@@ -6,7 +6,8 @@
 
 import Bus from './bus';
 import { videoEvents, domEvents, kernelEvents, passiveEvents, esFullscreenEvents, mustListenVideoDomEvents } from 'helper/const';
-import { camelize, Log, isString, addEvent, removeEvent, isEmpty, isFunction } from 'chimee-helper';
+import { Log, addEvent, removeEvent } from 'chimee-helper';
+import { isString, isFunction, isEmpty, camelCase } from 'lodash';
 import { before, runnable } from 'toxic-decorators';
 import Dispatcher from './index';
 
@@ -41,7 +42,7 @@ function getEventStage(name: string): { stage: eventStage, name: string } {
   // $FlowFixMe: We make sure it's event stage here
   const stage: eventStage = (matches && matches[0]) || 'main';
   if (matches) {
-    name = camelize(name.replace(secondaryReg, ''));
+    name = camelCase(name.replace(secondaryReg, ''));
   }
   return { name, stage };
 }
