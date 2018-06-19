@@ -5,8 +5,8 @@ import Dispatcher from '../dispatcher/index';
 export default class Vessel {
   __dispatcher: Dispatcher;
   __target: string;
-  width: string;
-  height: string;
+  width: string | number;
+  height: string | number;
   constructor(dispatcher: Dispatcher, target: string, config: VesselConfig) {
     this.__dispatcher = dispatcher;
     this.__target = target;
