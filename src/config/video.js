@@ -1,6 +1,7 @@
 // @flow
 import { alwaysString, initString, accessor, alwaysBoolean, frozen, alwaysNumber, nonenumerable, applyDecorators, configurable, initBoolean } from 'toxic-decorators';
-import { isNumber, isString, deepAssign, isObject, isNumeric } from 'chimee-helper';
+import { isNumeric } from 'toxic-predicate-functions';
+import { isNumber, isString, isPlainObject } from 'lodash';
 
 function stringOrVoid(value: any): string | void {
   return isString(value) ? value : undefined;
@@ -22,7 +23,7 @@ function accessorVideoProperty(property: string): Function {
 }
 
 function accessorVideoAttribute(attribute: string | {set: string, get: string, isBoolean?: boolean}): Function {
-  const { set, get, isBoolean } = isObject(attribute)
+  const { set, get, isBoolean } = isPlainObject(attribute)
     ? attribute
     : {
       set: attribute,
@@ -345,7 +346,8 @@ export default class VideoConfig {
       writable: false,
       configurable: false,
     });
-    deepAssign(this, config);
+    Object.assign(this, config);
+    // deepAssign(this, config);
   }
 
   init() {

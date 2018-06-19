@@ -1,5 +1,5 @@
 // @flow
-import { isNumber, isString, deepAssign } from 'chimee-helper';
+import { isNumber, isString } from 'lodash';
 import Dispatcher from '../dispatcher/index';
 // base css controller for container and wrapper
 export default class Vessel {
@@ -29,6 +29,7 @@ export default class Vessel {
         enumerable: true,
       });
     });
-    deepAssign(this, config);
+    // deepAssign(this, config);
+    Object.assign(this, config);
   }
 }
