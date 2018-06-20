@@ -1,6 +1,7 @@
 // @flow
 import { isString, camelize, deepAssign, isObject, isEmpty, isArray, isFunction, transObjectAttrIntoArray, isPromise, Log, runRejectableQueue, addEvent, removeEvent, isError, deepClone } from 'chimee-helper';
 import ChimeeKernel from './kernel';
+import { getLegalBox } from './kernel';
 import Plugin from './plugin';
 import Dom from './dom';
 import VideoConfig from 'config/video';
@@ -415,12 +416,14 @@ export default class Dispatcher {
     const videoConfig = this.videoConfig;
     const {
       isLive = videoConfig.isLive,
-      box = videoConfig.box,
+      box = getLegalBox({ src, box: videoConfig.box }),
       preset = videoConfig.preset,
       kernels = videoConfig.kernels,
       isFirst,
     } = option;
+    delete option.isFirst;
     if (box !== 'native' || box !== oldBox || !isEmpty(option)) {
+      option.isFirst = isFirst;
       const video = document.createElement('video');
       const config = { isLive, box, preset, src, kernels };
       const kernel = this._createKernel(video, config);
