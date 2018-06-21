@@ -268,7 +268,7 @@ const chimee = new Chimee({
 >
 > 1）autoplay 属性在并不是在所有情况下都会生效。但是通过一些配置，我们可以使其在大部分模式下生效。
 >
-> 1. 在 iOS 下需要 inline 的模式下才能自动播放，因此在传入的时候需要设置 `inline: true`。我们会为你设置`playsinline="true" webkit-playsinline="true"`
+> 1. 在 iOS 下需要 inline 的模式下才能自动播放，因此在传入的时候需要设置 `playsInline: true`。我们会为你设置`playsinline="true" webkit-playsinline="true"`
 > 2. 然而并不是所有 iOS 的 webview 都支持该模式，如果你的 iOS 版本比较旧，请检查 webView 上有否设置 `webview.allowsInlineMediaPlayback = YES;`
 > 3. 在腾讯的 X5 浏览器也需要同理，设为 `inline: true`，我们会为你设置 `x5-playsinline`
 > 4. 部分浏览器必须要一开始就添加 video 元素，此时，请将 wrapper 的 html 写成如下格式。
