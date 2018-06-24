@@ -4,11 +4,13 @@ import { videoReadOnlyProperties, videoMethods, kernelMethods, domMethods, domEv
 import { attrAndStyleCheck, eventBinderCheck } from 'helper/checker';
 import { accessor, nonenumerable, applyDecorators, watch, alias, before, autobindClass } from 'toxic-decorators';
 import VideoConfig from 'config/video';
+import Chimee from '../index';
 export default @autobindClass() class VideoWrapper {
   __id: string;
   __dispatcher: Dispatcher;
   __unwatchHandlers: Array<Function>;
   __events: PluginEvents;
+  play: Function;
   __events = {};
   __unwatchHandlers = [];
   __wrapAsVideo(videoConfig: VideoConfig) {
@@ -367,6 +369,57 @@ export default @autobindClass() class VideoWrapper {
       }
     }
     return this.__dispatcher.dom[method + 'Attr'](...args);
+  }
+
+  async requestPictureInPicture({
+    autoplay = false,
+  }: {
+    autoplay?: boolean,
+  } = {}) {
+    if ('pictureInPictureEnabled' in document) {
+      // if video is in picture-in-picture mode, do nothing
+      if (this.isInPictureInPictureMode) return Promise.resolve(window.__chimee_picture_in_picture_window);
+      // $FlowFixMe: requestPictureInPicture is a new function
+      const pipWindow = await this.$video.requestPictureInPicture();
+      console.warn(pipWindow);
+      window.__chimee_picture_in_picture_window = pipWindow;
+      if (autoplay) this.play();
+      return pipWindow;
+    }
+    const { default: PictureInPicture } = await import('../plugin/picture-in-picture');
+    if (!Chimee.hasInstalled(PictureInPicture.name)) {
+      Chimee.install(PictureInPicture);
+    }
+    if (!this.__dispatcher.hasUsed(PictureInPicture.name)) {
+      this.__dispatcher.use(PictureInPicture.name);
+    }
+    return this.$plugins.pictureInPicture.requestPictureInPicture();
+  }
+
+  exitPictureInPicture() {
+    if ('pictureInPictureEnabled' in document) {
+      // if current video is not in picture-in-picture mode, do nothing
+      if (this.isInPictureInPictureMode) {
+        window.__chimee_picture_in_picture_window = void 0;
+        // $FlowFixMe: support new function in document
+        return document.exitPictureInPicture();
+      }
+    }
+
+    return this.$plugins.pictureInPicture && this.$plugins.pictureInPicture.exitPictureInPicture();
+  }
+
+  @nonenumerable
+  get inPictureInPictureMode(): boolean {
+    return 'pictureInPictureEnabled' in document
+      // $FlowFixMe: support new function in document
+      ? this.$video === document.pictureInPictureElement
+      : this.$plugins.pictureInPicture && this.$plugins.pictureInPicture.isShown;
+  }
+
+  @nonenumerable
+  get pictureInPictureWindow(): void | Object {
+    return window.__chimee_picture_in_picture_window;
   }
 
   @nonenumerable

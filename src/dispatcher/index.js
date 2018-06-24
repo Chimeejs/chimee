@@ -226,6 +226,12 @@ export default class Dispatcher {
     delete this.vm[id];
   }
 
+  @before(convertNameIntoId)
+  hasUsed(id: string) {
+    const plugin = this.plugins[id];
+    return isObject(plugin);
+  }
+
   @autobind
   throwError(error: Error | string) {
     this.vm.__throwError(error);
@@ -476,6 +482,11 @@ export default class Dispatcher {
         this.binder && this.binder.bindEventOnVideo && this.binder.bindEventOnVideo(video);
       });
     }
+    // if we are in picutre in picture mode
+    // we need to exit thie picture in picture mode
+    if (this.vm.inPictureInPictureMode) {
+      this.vm.exitPictureInPicture();
+    }
   }
 
   /**
@@ -558,11 +569,13 @@ export default class Dispatcher {
       }, { src: this.videoConfig.src });
     }
   }
+
   _changeUnwatchable(object: Object, property: string, value: any) {
     this.changeWatchable = false;
     object[property] = value;
     this.changeWatchable = true;
   }
+
   _createKernel(video: HTMLVideoElement, config: Object) {
     const { kernels, preset } = config;
     /* istanbul ignore else  */
@@ -674,10 +687,12 @@ export default class Dispatcher {
     pluginConfigSet[id] = pluginConfig;
     return id;
   }
+
   @before(convertNameIntoId)
   static hasInstalled(id: string): boolean {
     return !isEmpty(pluginConfigSet[id]);
   }
+
   @before(convertNameIntoId)
   static uninstall(id: string) {
     delete pluginConfigSet[id];
