@@ -25,6 +25,8 @@ export const videoEvents = [
   'timeupdate',
   'volumechange',
   'waiting',
+  'enterpictureinpicture',
+  'leavepictureinpicture',
 ];
 export const videoReadOnlyProperties = [
   'buffered',
