@@ -378,10 +378,9 @@ export default @autobindClass() class VideoWrapper {
   } = {}) {
     if ('pictureInPictureEnabled' in document) {
       // if video is in picture-in-picture mode, do nothing
-      if (this.isInPictureInPictureMode) return Promise.resolve(window.__chimee_picture_in_picture_window);
+      if (this.inPictureInPictureMode) return Promise.resolve(window.__chimee_picture_in_picture_window);
       // $FlowFixMe: requestPictureInPicture is a new function
       const pipWindow = await this.$video.requestPictureInPicture();
-      console.warn(pipWindow);
       window.__chimee_picture_in_picture_window = pipWindow;
       if (autoplay) this.play();
       return pipWindow;
@@ -399,7 +398,7 @@ export default @autobindClass() class VideoWrapper {
   exitPictureInPicture() {
     if ('pictureInPictureEnabled' in document) {
       // if current video is not in picture-in-picture mode, do nothing
-      if (this.isInPictureInPictureMode) {
+      if (this.inPictureInPictureMode) {
         window.__chimee_picture_in_picture_window = void 0;
         // $FlowFixMe: support new function in document
         return document.exitPictureInPicture();

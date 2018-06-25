@@ -7,20 +7,35 @@ export default class PictureInPicture extends Plugin {
   isShown: boolean;
   ctx: CanvasRenderingContext2D;
   $dom: HTMLCanvasElement;
-  canvasHeight: number;
-  canvasWidth: number;
   hasStopRender: boolean;
+  myStyle: {
+    position: string,
+    top: string | number,
+    left: string | number,
+    right: string | number,
+    bottom: string | number,
+    width: string | number,
+    height: string | number,
+  };
 
   isShown = false;
   hasStopRender = true;
+  myStyle = {
+    position: 'fixed',
+    top: '',
+    left: '',
+    right: 0,
+    bottom: 0,
+    width: 277,
+    height: 156,
+  };
 
   constructor(config: Object, ...args: any []) {
-    const myConfig = {
+    super(Object.assign(config, {
       el: document.createElement('canvas'),
       penetrate: true,
       inner: false,
-    };
-    super(Object.assign(config, myConfig), ...args);
+    }), ...args);
   }
 
   create() {
@@ -29,7 +44,7 @@ export default class PictureInPicture extends Plugin {
   }
 
   inited() {
-    this.setSize();
+    this.setStyle();
   }
 
   show() {
@@ -88,15 +103,18 @@ export default class PictureInPicture extends Plugin {
 
   render() {
     if (this.isShown) {
-      this.ctx.drawImage(this.$video, 0, 0, this.canvasWidth, this.canvasHeight);
+      this.ctx.drawImage(this.$video, 0, 0, this.myStyle.width, this.myStyle.height);
     }
   }
 
-  setSize() {
-    const { clientWidth: width, clientHeight: height } = this.$video;
-    this.canvasWidth = width;
-    this.canvasHeight = height;
-    this.$dom.setAttribute('width', width.toString());
-    this.$dom.setAttribute('height', height.toString());
+  setStyle(styles: Object = {}) {
+    Object.assign(this.myStyle, styles);
+    this.$dom.setAttribute('width', this.myStyle.width.toString());
+    this.$dom.setAttribute('height', this.myStyle.height.toString());
+    for (const key in this.myStyle) {
+      if (key === 'width' || key === 'height') continue;
+      const value = this.myStyle[key];
+      setStyle(this.$dom, key, value);
+    }
   }
 }
