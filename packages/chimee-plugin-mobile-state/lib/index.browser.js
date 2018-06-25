@@ -5017,6 +5017,9 @@ var chimeeState = gestureFactory({
   },
 
   events: {
+    load: function load() {
+      this.showState('play', true);
+    },
     pause: function pause() {
       this.showState('play', true);
     },

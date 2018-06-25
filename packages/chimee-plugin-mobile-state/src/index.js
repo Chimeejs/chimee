@@ -36,6 +36,9 @@ const chimeeState = gestureFactory({
     this.clearTimeout();
   },
   events: {
+    load () {
+      this.showState('play', true);
+    },
     pause () {
       this.showState('play', true);
     },

@@ -16,7 +16,6 @@ import replace from 'rollup-plugin-replace';
 
 // PostCSS plugins
 import nested from 'postcss-nested';
-import cssnext from 'postcss-cssnext';
 import cssnano from 'cssnano';
 import base64 from 'postcss-base64';
 
