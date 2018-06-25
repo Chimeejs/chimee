@@ -112,4 +112,11 @@ export default class ProgressBar extends Base {
     removeDelegate(this.parent, this.option.tag, 'panmove', this.draging);
     removeDelegate(this.parent, this.option.tag, 'panend', this.dragEnd);
   }
+  /**
+   * progress 不可点击
+   * @param {*} value 
+   */
+  changePointerEvent (value) {
+    this.$dom.css('pointerEvents', value);
+  }
 }

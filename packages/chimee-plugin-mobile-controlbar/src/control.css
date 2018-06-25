@@ -136,6 +136,7 @@ chimee-progressbar.chimee-flex-component {
   position: relative;
   flex-grow: 1;
   margin: 0 1.5em;
+  pointer-events: none;
 }
 
 .chimee-progressbar-line {

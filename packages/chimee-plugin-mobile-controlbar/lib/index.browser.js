@@ -22,7 +22,7 @@ function __$styleInject(css, returnValue) {
   return returnValue;
 }
 
-__$styleInject("container{position:relative;-webkit-tap-highlight-color:rgba(255,255,255,0)}container,video{display:block;width:100%;height:100%;background:#000;outline:none}video:focus{outline:none}.chimee-flex-component svg:hover g,.chimee-flex-component svg g{fill:#fff;stroke:#fff}chimee-clarity-list,chimee-control-state-pause,chimee-control-state-play,chimee-screen-full,chimee-screen-small{display:none}chimee-control.full chimee-screen-full,chimee-control.pause chimee-control-state-pause,chimee-control.play chimee-control-state-play,chimee-control.small chimee-screen-small{display:inline-block;width:1.4em;height:100%}chimee-control{position:absolute;bottom:0;left:0;display:block;width:100%;height:4em;font-size:10px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;overflow:hidden;font-family:Roboto,Arial,Helvetica,sans-serif;-webkit-transition:visibility .5s ease;transition:visibility .5s ease}chimee-control:focus{outline:none}chimee-control-wrap{position:absolute;left:0;bottom:0;width:100%;height:4em;line-height:4em;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-flow:row nowrap;flex-flow:row nowrap;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;background:rgba(0,0,0,.5);-webkit-transition:bottom .5s ease;transition:bottom .5s ease;pointer-events:auto}.chimee-flex-component{-webkit-box-ordinal-group:2;-ms-flex-order:1;order:1;-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;height:4em;cursor:pointer}.chimee-flex-component svg{vertical-align:middle;width:1.8em;height:1.8em}chimee-control-state.chimee-flex-component{-ms-flex-preferred-size:3em;flex-basis:3em;text-align:right;margin-right:1em}chimee-control-state .left,chimee-control-state .right{-webkit-transition:d .2s ease-in-out;transition:d .2s ease-in-out}chimee-current-time.chimee-flex-component,chimee-total-time.chimee-flex-component{color:#fff;font-size:1.5em;font-weight:400;text-align:center;white-space:nowrap}chimee-current-time+chimee-total-time:before{content:\"/\";padding:4px}chimee-progressbar.chimee-flex-component{position:relative;-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;margin:0 1.5em}.chimee-progressbar-line{position:absolute;top:1.8em;left:0;display:inline-block;height:8px;border-radius:4px}chimee-progressbar-bg{width:100%;background:#4c4c4c}chimee-progressbar-buffer{width:0;background:#6f6f6f}chimee-progressbar-all{background:#de698c}chimee-progressbar-ball{content:\"\";position:absolute;right:-1em;top:-.4em;display:inline-block;width:1.4em;height:1.4em;border-radius:1.4em;background:#fff;pointer-events:none}chimee-screen.chimee-flex-component{-ms-flex-preferred-size:3em;flex-basis:3em;text-align:left;margin-left:1em}", undefined);
+__$styleInject("container{position:relative;-webkit-tap-highlight-color:rgba(255,255,255,0)}container,video{display:block;width:100%;height:100%;background:#000;outline:none}video:focus{outline:none}.chimee-flex-component svg:hover g,.chimee-flex-component svg g{fill:#fff;stroke:#fff}chimee-clarity-list,chimee-control-state-pause,chimee-control-state-play,chimee-screen-full,chimee-screen-small{display:none}chimee-control.full chimee-screen-full,chimee-control.pause chimee-control-state-pause,chimee-control.play chimee-control-state-play,chimee-control.small chimee-screen-small{display:inline-block;width:1.4em;height:100%}chimee-control{position:absolute;bottom:0;left:0;display:block;width:100%;height:4em;font-size:10px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;overflow:hidden;font-family:Roboto,Arial,Helvetica,sans-serif;-webkit-transition:visibility .5s ease;transition:visibility .5s ease}chimee-control:focus{outline:none}chimee-control-wrap{position:absolute;left:0;bottom:0;width:100%;height:4em;line-height:4em;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-flow:row nowrap;flex-flow:row nowrap;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;-webkit-box-align:start;-ms-flex-align:start;align-items:flex-start;background:rgba(0,0,0,.5);-webkit-transition:bottom .5s ease;transition:bottom .5s ease;pointer-events:auto}.chimee-flex-component{-webkit-box-ordinal-group:2;-ms-flex-order:1;order:1;-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;height:4em;cursor:pointer}.chimee-flex-component svg{vertical-align:middle;width:1.8em;height:1.8em}chimee-control-state.chimee-flex-component{-ms-flex-preferred-size:3em;flex-basis:3em;text-align:right;margin-right:1em}chimee-control-state .left,chimee-control-state .right{-webkit-transition:d .2s ease-in-out;transition:d .2s ease-in-out}chimee-current-time.chimee-flex-component,chimee-total-time.chimee-flex-component{color:#fff;font-size:1.5em;font-weight:400;text-align:center;white-space:nowrap}chimee-current-time+chimee-total-time:before{content:\"/\";padding:4px}chimee-progressbar.chimee-flex-component{position:relative;-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;margin:0 1.5em;pointer-events:none}.chimee-progressbar-line{position:absolute;top:1.8em;left:0;display:inline-block;height:8px;border-radius:4px}chimee-progressbar-bg{width:100%;background:#4c4c4c}chimee-progressbar-buffer{width:0;background:#6f6f6f}chimee-progressbar-all{background:#de698c}chimee-progressbar-ball{content:\"\";position:absolute;right:-1em;top:-.4em;display:inline-block;width:1.4em;height:1.4em;border-radius:1.4em;background:#fff;pointer-events:none}chimee-screen.chimee-flex-component{-ms-flex-preferred-size:3em;flex-basis:3em;text-align:left;margin-left:1em}", undefined);
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -6685,6 +6685,16 @@ var ProgressBar = (_class$1 = function (_Base) {
       removeDelegate$1(this.parent, this.option.tag, 'panmove', this.draging);
       removeDelegate$1(this.parent, this.option.tag, 'panend', this.dragEnd);
     }
+    /**
+     * progress 不可点击
+     * @param {*} value 
+     */
+
+  }, {
+    key: 'changePointerEvent',
+    value: function changePointerEvent(value) {
+      this.$dom.css('pointerEvents', value);
+    }
   }]);
 
   return ProgressBar;
@@ -6919,12 +6929,16 @@ var mobiControlbar = gestureFactory({
       this.children.play && this.children.play.changeState('pause');
       this._showItself();
     },
+    canplay: function canplay() {
+      this.children.progressBar.changePointerEvent('auto');
+    },
     load: function load() {
       // update src 充值进度条/时间/播放状态
       // load 的时候不会触发 pause(), 手动将控制条显示出来
       this._showItself();
       this._progressUpdate();
       this.children.play && this.children.play.changeState('pause');
+      this.children.progressBar.changePointerEvent('none');
       this._progressUpdate();
     },
     durationchange: function durationchange() {

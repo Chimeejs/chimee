@@ -108,12 +108,16 @@ const mobiControlbar = gestureFactory({
       this.children.play && this.children.play.changeState('pause');
       this._showItself();
     },
+    canplay () {
+      this.children.progressBar.changePointerEvent('auto');
+    },
     load () {
       // update src 充值进度条/时间/播放状态
       // load 的时候不会触发 pause(), 手动将控制条显示出来
       this._showItself();
       this._progressUpdate();
       this.children.play && this.children.play.changeState('pause');
+      this.children.progressBar.changePointerEvent('none');
       this._progressUpdate();
     },
     durationchange () {
