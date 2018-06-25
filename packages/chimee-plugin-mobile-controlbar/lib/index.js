@@ -1,10 +1,3 @@
-
-/**
- * chimee-plugin-mobile-controlbar v0.1.2
- * (c) 2017 yandeqiang
- * Released under ISC
- */
-
 'use strict';
 
 function __$styleInject(css, returnValue) {
@@ -2057,7 +2050,14 @@ var mobiControlbar = gestureFactory({
       this.children.play && this.children.play.changeState('pause');
       this._showItself();
     },
-    load: function load() {},
+    load: function load() {
+      // update src 充值进度条/时间/播放状态
+      // load 的时候不会触发 pause(), 手动将控制条显示出来
+      this._showItself();
+      this._progressUpdate();
+      this.children.play && this.children.play.changeState('pause');
+      this._progressUpdate();
+    },
     durationchange: function durationchange() {
       this.children.totalTime && this.children.totalTime.updateTotal();
     },
