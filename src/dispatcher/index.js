@@ -394,13 +394,11 @@ export default class Dispatcher {
     box?: string,
     preset?: Object,
     kernels?: UserKernelsConfig,
-    isFirst?: boolean,
   }, option: {
     isLive?: boolean,
     box?: string,
     preset?: Object,
     kernels?: UserKernelsConfig,
-    isFirst?: boolean,
   } = {}) {
     const src: string = isString(srcOrOption)
       ? srcOrOption
@@ -419,15 +417,12 @@ export default class Dispatcher {
       box = getLegalBox({ src, box: videoConfig.box }),
       preset = videoConfig.preset,
       kernels = videoConfig.kernels,
-      isFirst,
     } = option;
-    delete option.isFirst;
     if (box !== 'native' || box !== oldBox || !isEmpty(option)) {
-      option.isFirst = isFirst;
       const video = document.createElement('video');
       const config = { isLive, box, preset, src, kernels };
       const kernel = this._createKernel(video, config);
-      this.switchKernel({ video, kernel, config, notifyChange: isFirst });
+      this.switchKernel({ video, kernel, config, notifyChange: true });
     }
     const originAutoLoad = this.videoConfig.autoload;
     this._changeUnwatchable(this.videoConfig, 'autoload', false);
@@ -560,7 +555,7 @@ export default class Dispatcher {
         name: 'load',
         target: 'plugin',
         id: 'dispatcher',
-      }, { src: this.videoConfig.src, isFirst: true });
+      }, { src: this.videoConfig.src });
     }
   }
   _changeUnwatchable(object: Object, property: string, value: any) {
