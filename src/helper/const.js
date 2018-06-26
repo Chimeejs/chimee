@@ -105,9 +105,11 @@ export const kernelMethods = [
   'startLoad',
   'stopLoad',
 ];
-export const dispatcherMethods = [
-  'load',
-];
+export const dispatcherEventMethodMap = {
+  load: 'load',
+  enterpictureinpicture: 'requestPictureInPicture',
+  leavepictureinpicture: 'exitPictureInPicture',
+};
 export const kernelEvents = [
   'mediaInfo',
   'heartbeat',

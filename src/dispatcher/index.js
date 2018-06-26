@@ -6,7 +6,7 @@ import Plugin from './plugin';
 import Dom from './dom';
 import VideoConfig from 'config/video';
 import defaultContainerConfig from 'config/container';
-import { before, autobind } from 'toxic-decorators';
+import { before, autobind, nonenumerable } from 'toxic-decorators';
 import Vessel from 'config/vessel';
 import Binder from './binder';
 const pluginConfigSet: PluginConfigSet = {};
@@ -487,6 +487,48 @@ export default class Dispatcher {
     if (this.vm.inPictureInPictureMode) {
       this.vm.exitPictureInPicture();
     }
+  }
+
+  async requestPictureInPicture() {
+    if ('pictureInPictureEnabled' in document) {
+      // if video is in picture-in-picture mode, do nothing
+      if (this.inPictureInPictureMode) return Promise.resolve(window.__chimee_picture_in_picture_window);
+      // $FlowFixMe: requestPictureInPicture is a new function
+      const pipWindow = await this.dom.videoElement.requestPictureInPicture();
+      window.__chimee_picture_in_picture_window = pipWindow;
+      // if (autoplay) this.play();
+      return pipWindow;
+    }
+    const { default: PictureInPicture } = await import('../plugin/picture-in-picture');
+    if (!Chimee.hasInstalled(PictureInPicture.name)) {
+      Chimee.install(PictureInPicture);
+    }
+    if (!this.hasUsed(PictureInPicture.name)) {
+      this.use(PictureInPicture.name);
+    }
+    return this.plugins.pictureInPicture.requestPictureInPicture();
+  }
+
+  exitPictureInPicture() {
+    if ('pictureInPictureEnabled' in document) {
+      console.warn(this.inPictureInPictureMode);
+      // if current video is not in picture-in-picture mode, do nothing
+      if (this.inPictureInPictureMode) {
+        window.__chimee_picture_in_picture_window = void 0;
+        // $FlowFixMe: support new function in document
+        return document.exitPictureInPicture();
+      }
+    }
+
+    return this.plugins.pictureInPicture && this.plugins.pictureInPicture.exitPictureInPicture();
+  }
+
+  @nonenumerable
+  get inPictureInPictureMode(): boolean {
+    return 'pictureInPictureEnabled' in document
+      // $FlowFixMe: support new function in document
+      ? this.dom.videoElement === document.pictureInPictureElement
+      : this.plugins.pictureInPicture && this.plugins.pictureInPicture.isShown;
   }
 
   /**
