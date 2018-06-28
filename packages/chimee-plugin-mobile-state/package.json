@@ -1,6 +1,6 @@
 {
   "name": "chimee-plugin-mobile-state",
-  "version": "0.0.18",
+  "version": "0.0.20",
   "description": "state for chimee",
   "main": "lib/index.js",
   "module": "lib/index.mjs",

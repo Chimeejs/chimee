@@ -5018,18 +5018,22 @@ var chimeeState = gestureFactory({
 
   events: {
     load: function load() {
+      console.log('load');
       this.showState('play', true);
     },
     pause: function pause() {
+      console.log('pause');
       this.showState('play', true);
     },
     play: function play() {
       this.showState('play', false);
     },
-    loadedmetadata: function loadedmetadata() {
-      this.playing();
-      this.showState('play', true);
-    },
+
+    // loadedmetadata () {
+    // this.playing();
+    // console.log('loadedmetadata')
+    // this.showState('play', true);
+    // },
     playing: function playing() {
       this.playing();
     },
@@ -5100,6 +5104,7 @@ var chimeeState = gestureFactory({
       }
     }),
     showState: function showState(state, show) {
+      console.log(state, show);
       show && this.emit('state-change', state);
       this.$dom.className = show ? state : '';
     },
