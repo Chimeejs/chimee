@@ -484,8 +484,8 @@ export default class Dispatcher {
     }
     // if we are in picutre in picture mode
     // we need to exit thie picture in picture mode
-    if (this.vm.inPictureInPictureMode) {
-      this.vm.exitPictureInPicture();
+    if (this.inPictureInPictureMode) {
+      this.exitPictureInPicture();
     }
   }
 
@@ -511,7 +511,6 @@ export default class Dispatcher {
 
   exitPictureInPicture() {
     if ('pictureInPictureEnabled' in document) {
-      console.warn(this.inPictureInPictureMode);
       // if current video is not in picture-in-picture mode, do nothing
       if (this.inPictureInPictureMode) {
         window.__chimee_picture_in_picture_window = void 0;
@@ -519,7 +518,6 @@ export default class Dispatcher {
         return document.exitPictureInPicture();
       }
     }
-
     return this.plugins.pictureInPicture && this.plugins.pictureInPicture.exitPictureInPicture();
   }
 
