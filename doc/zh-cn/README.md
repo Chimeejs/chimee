@@ -77,11 +77,6 @@ const chimee = new Chimee({
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
   controls: true,
   autoplay: true,
-  events: {
-    play () {
-      console.log('play!!');
-    }
-  }
 });
 ```
 

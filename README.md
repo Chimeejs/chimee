@@ -81,13 +81,7 @@ const chimee = new Chimee({
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
   controls: true,
   autoplay: true,
-  events: {
-    play () {
-      console.log('play!!');
-    }
-  }
 });
-// play!!
 ```
 
 If you need to play video in flv or hls, you can simply add those kernels:
