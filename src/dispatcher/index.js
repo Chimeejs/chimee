@@ -499,16 +499,16 @@ export default class Dispatcher {
       window.__chimee_picture_in_picture_window = pipWindow;
       return pipWindow;
     }
-    console.warn('?????')
+    console.warn('?????');
     const { default: PictureInPicture } = await import('../plugin/picture-in-picture');
-    console.warn('!!!!!')
+    console.warn('!!!!!');
     if (!Chimee.hasInstalled(PictureInPicture.name)) {
       Chimee.install(PictureInPicture);
     }
     if (!this.hasUsed(PictureInPicture.name)) {
       this.use(PictureInPicture.name);
     }
-    console.warn(this.plugins.pictureInPicture)
+    console.warn(this.plugins.pictureInPicture);
     return this.plugins.pictureInPicture.requestPictureInPicture();
   }
 
