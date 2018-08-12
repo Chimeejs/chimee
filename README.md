@@ -194,6 +194,7 @@ You will find four different builds in the lib.
 | index.mjs        | esmodule | An es module, mostly used in Webpack 2 and rollup. | Yes                      |
 | index.browser.js | umd      | Can be used directly in browser                    | No (It's in development) |
 | index.min.js     | umd      | Can be used directly in browser                    | No (It's in production)  |
+| Index.esm.js     | esmodule | An es module, mostly used in browser es module     | No (It's in development) |
 
 ## Development
 

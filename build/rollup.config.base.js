@@ -55,6 +55,27 @@ const babelConfig = {
     runtimeHelpers: true,
     babelrc: false,
   },
+  esm: {
+    presets: [
+      'flow',
+      [ 'env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
+      'stage-0',
+    ],
+    exclude: 'node_modules/**',
+    plugins: [
+      'external-helpers',
+      'transform-decorators-legacy',
+      'transform-runtime',
+    ],
+    externalHelpers: true,
+    runtimeHelpers: true,
+    babelrc: false,
+  },
   umd: {
     presets: [
       'flow',
@@ -122,7 +143,7 @@ export default function(mode) {
   return {
     input: 'src/index.js',
     external(id) {
-      return !/min|umd|iife/.test(mode) && externalRegExp.test(id);
+      return !/min|umd|iife|esm/.test(mode) && externalRegExp.test(id);
     },
     plugins: [
       babel(babelConfig[mode]),
@@ -133,7 +154,7 @@ export default function(mode) {
       }),
       resolve({
         customResolveOptions: {
-          moduleDirectory: /min|umd|iife/.test(mode) ? [ 'src', 'node_modules' ] : [ 'src' ],
+          moduleDirectory: /min|umd|iife|esm/.test(mode) ? [ 'src', 'node_modules' ] : [ 'src' ],
         },
       }),
       visualizer({
