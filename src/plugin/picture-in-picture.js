@@ -78,6 +78,7 @@ export default class PictureInPicture extends Plugin {
       window: this.$dom,
       element: this.$video,
     };
+    console.warn(window.__chimee_picture_in_picture)
   }
 
   exitPictureInPicture() {

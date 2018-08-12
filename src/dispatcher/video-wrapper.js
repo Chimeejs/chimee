@@ -388,10 +388,7 @@ export default @autobindClass() class VideoWrapper {
 
   @nonenumerable
   get inPictureInPictureMode(): boolean {
-    return 'pictureInPictureEnabled' in document
-      // $FlowFixMe: support new function in document
-      ? this.$video === document.pictureInPictureElement
-      : this.$plugins.pictureInPicture && this.$plugins.pictureInPicture.isShown;
+    return this.__dispatcher.inPictureInPictureMode;
   }
 
   @nonenumerable

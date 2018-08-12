@@ -490,22 +490,25 @@ export default class Dispatcher {
   }
 
   async requestPictureInPicture() {
+    console.warn('pictureInPictureEnabled' in document);
     if ('pictureInPictureEnabled' in document) {
       // if video is in picture-in-picture mode, do nothing
       if (this.inPictureInPictureMode) return Promise.resolve(window.__chimee_picture_in_picture_window);
       // $FlowFixMe: requestPictureInPicture is a new function
       const pipWindow = await this.dom.videoElement.requestPictureInPicture();
       window.__chimee_picture_in_picture_window = pipWindow;
-      // if (autoplay) this.play();
       return pipWindow;
     }
+    console.warn('?????')
     const { default: PictureInPicture } = await import('../plugin/picture-in-picture');
+    console.warn('!!!!!')
     if (!Chimee.hasInstalled(PictureInPicture.name)) {
       Chimee.install(PictureInPicture);
     }
     if (!this.hasUsed(PictureInPicture.name)) {
       this.use(PictureInPicture.name);
     }
+    console.warn(this.plugins.pictureInPicture)
     return this.plugins.pictureInPicture.requestPictureInPicture();
   }
 
@@ -513,7 +516,7 @@ export default class Dispatcher {
     if ('pictureInPictureEnabled' in document) {
       // if current video is not in picture-in-picture mode, do nothing
       if (this.inPictureInPictureMode) {
-        window.__chimee_picture_in_picture_window = void 0;
+        window.__chimee_picture_in_picture_window = undefined;
         // $FlowFixMe: support new function in document
         return document.exitPictureInPicture();
       }
@@ -526,7 +529,7 @@ export default class Dispatcher {
     return 'pictureInPictureEnabled' in document
       // $FlowFixMe: support new function in document
       ? this.dom.videoElement === document.pictureInPictureElement
-      : this.plugins.pictureInPicture && this.plugins.pictureInPicture.isShown;
+      : Boolean(this.plugins.pictureInPicture && this.plugins.pictureInPicture.isShown);
   }
 
   /**
