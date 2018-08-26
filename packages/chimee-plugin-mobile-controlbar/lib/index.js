@@ -1772,7 +1772,12 @@ var ProgressBar = (_class$1 = function (_Base) {
   }, {
     key: 'tap',
     value: function tap(e) {
-      this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$dom[0].offsetWidth * this.parent.duration;
+      var _$dom$0$getBoundingCl = this.$dom[0].getBoundingClientRect(),
+          left = _$dom$0$getBoundingCl.left,
+          width = _$dom$0$getBoundingCl.width;
+
+      console.log(left, e.clientX);
+      this._currentTime = (e.clientX - left) / width * this.parent.duration;
       this.update();
       this.parent.currentTime = this._currentTime;
       this._currentTime = undefined;
@@ -1780,7 +1785,11 @@ var ProgressBar = (_class$1 = function (_Base) {
   }, {
     key: 'mousedown',
     value: function mousedown(e) {
-      this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$dom[0].offsetWidth * this.parent.duration;
+      var _$dom$0$getBoundingCl2 = this.$dom[0].getBoundingClientRect(),
+          left = _$dom$0$getBoundingCl2.left,
+          width = _$dom$0$getBoundingCl2.width;
+
+      this._currentTime = (e.clientX - left) / width * this.parent.duration;
       this.startX = e.clientX;
       this.startTime = this._currentTime;
       addDelegate(this.parent, this.option.tag, 'panmove', this.draging);
@@ -1796,7 +1805,11 @@ var ProgressBar = (_class$1 = function (_Base) {
     key: 'draging',
     value: function draging(e) {
       this.endX = e.clientX;
-      var dragTime = (this.endX - this.startX) / this.$dom[0].offsetWidth * this.parent.duration;
+
+      var _$dom$0$getBoundingCl3 = this.$dom[0].getBoundingClientRect(),
+          width = _$dom$0$getBoundingCl3.width;
+
+      var dragTime = (this.endX - this.startX) / width * this.parent.duration;
       var dragAfterTime = +(this.startTime + dragTime).toFixed(2);
       this._currentTime = dragAfterTime < 0 ? 0 : dragAfterTime > this.parent.duration ? this.parent.duration : dragAfterTime;
       this.update();
