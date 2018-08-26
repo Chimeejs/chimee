@@ -1,6 +1,6 @@
 {
   "name": "chimee-plugin-mobile-controlbar",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "controlbar for chimee in mobile",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -36,8 +36,8 @@
   "dependencies": {
     "chimee-helper": "^0.2.8",
     "chimee-plugin-gesture": "0.0.12",
-    "toxic-decorators": "^0.3.8",
-    "chimee-plugin-mobile-state": "git+https://github.com/Chimeejs/chimee-plugin-mobile-state.git"
+    "chimee-plugin-mobile-state": "git+https://github.com/Chimeejs/chimee-plugin-mobile-state.git",
+    "toxic-decorators": "^0.3.8"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

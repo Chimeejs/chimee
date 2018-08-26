@@ -72,7 +72,9 @@ export default class ProgressBar extends Base {
 
   @autobind
   tap (e) {
-    this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$dom[0].offsetWidth * this.parent.duration;
+    const {left, width} = this.$dom[0].getBoundingClientRect();
+    console.log(left, e.clientX)
+    this._currentTime = (e.clientX - left) / width * this.parent.duration;
     this.update();
     this.parent.currentTime = this._currentTime;
     this._currentTime = undefined;
@@ -80,7 +82,8 @@ export default class ProgressBar extends Base {
 
   @autobind
   mousedown (e) {
-    this._currentTime = (e.clientX - this.$dom[0].offsetLeft) / this.$dom[0].offsetWidth * this.parent.duration;
+    const {left, width} = this.$dom[0].getBoundingClientRect();
+    this._currentTime = (e.clientX - left) / width * this.parent.duration;
     this.startX = e.clientX;
     this.startTime = this._currentTime;
     addDelegate(this.parent, this.option.tag, 'panmove', this.draging);
@@ -94,7 +97,8 @@ export default class ProgressBar extends Base {
   @autobind
   draging (e) {
     this.endX = e.clientX;
-    const dragTime = (this.endX - this.startX) / this.$dom[0].offsetWidth * this.parent.duration;
+    const {width} = this.$dom[0].getBoundingClientRect();
+    const dragTime = (this.endX - this.startX) / width * this.parent.duration;
     const dragAfterTime = +(this.startTime + dragTime).toFixed(2);
     this._currentTime = dragAfterTime < 0 ? 0 : dragAfterTime > this.parent.duration ? this.parent.duration : dragAfterTime;
     this.update();
