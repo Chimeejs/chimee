@@ -594,7 +594,7 @@ option.abort = true;
 
 该函数为异步函数，无需传入参数。
 
-调用此方法会触发`enterpictureinpicture` 事件。
+调用此方法会触发`enterpictureinpicture`事件。
 
 ### exitPictureInPicture（v0.11.0后支持）
 
