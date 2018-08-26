@@ -500,8 +500,8 @@ export default class Dispatcher {
       return pipWindow;
     }
     const { default: PictureInPicture } = await import('../plugin/picture-in-picture');
-    if (!Chimee.hasInstalled(PictureInPicture.name)) {
-      Chimee.install(PictureInPicture);
+    if (!Dispatcher.hasInstalled(PictureInPicture.name)) {
+      Dispatcher.install(PictureInPicture);
     }
     if (!this.hasUsed(PictureInPicture.name)) {
       this.use(PictureInPicture.name);
