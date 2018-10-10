@@ -35,7 +35,7 @@
     Chimee.install(chimeePluginMobileState);
     var player = new Chimee({
       wrapper: '#wrap',
-      src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/103_371ab0c0fda-143d-4755-8727-d3cd12dce02d.mp4',
+      src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/18_72_20161228192050dbd3f91c-312f-48c5-aeeb-867b44fb4580.m3u8',
       plugin: [chimeePluginMobileControlbar.name,
       
         {
@@ -51,7 +51,8 @@
       // autoplay: true,
       playsInline: true,
       preload: 'auto',
-      poster: 'https://p0.ssl.qhimgs4.com/t01ffdbaa9e95bf5eb2.jpg'
+      poster: 'https://p0.ssl.qhimgs4.com/t01ffdbaa9e95bf5eb2.jpg',
+      box: 'native',
     });
     player.on('state-change', function () {
       // console.log(111)

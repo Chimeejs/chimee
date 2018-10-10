@@ -37,11 +37,11 @@ const chimeeState = gestureFactory({
   },
   events: {
     load () {
-      console.log('load')
+      console.log('load');
       this.showState('play', true);
     },
     pause () {
-      console.log('pause')
+      console.log('pause');
       this.showState('play', true);
     },
     play () {
@@ -52,13 +52,23 @@ const chimeeState = gestureFactory({
       // console.log('loadedmetadata')
       // this.showState('play', true);
     // },
+    seeked () {
+      console.log('seeked');
+      this.playing();
+    },
     playing () {
+      console.log('playing');
       this.playing();
     },
     // loadstart () {
     //   this.waiting();
     // },
+    seeking () {
+      console.log('seeking');
+      this.waiting();
+    },
     waiting () {
+      console.log('waiting');
       this.waiting();
     },
     // 卡顿(FLV|HLS加载异常待内部特供事件)

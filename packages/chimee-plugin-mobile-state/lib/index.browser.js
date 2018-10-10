@@ -4,22 +4,31 @@
 	(global.chimeePluginMobileState = factory());
 }(this, (function () { 'use strict';
 
-function __$styleInject(css, returnValue) {
-  if (typeof document === 'undefined') {
-    return returnValue;
-  }
-  css = css || '';
+function __$styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css || typeof document === 'undefined') { return; }
+
   var head = document.head || document.getElementsByTagName('head')[0];
   var style = document.createElement('style');
   style.type = 'text/css';
-  head.appendChild(style);
-  
-  if (style.styleSheet){
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
     style.styleSheet.cssText = css;
   } else {
     style.appendChild(document.createTextNode(css));
   }
-  return returnValue;
 }
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -56,7 +65,7 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
 var _core = createCommonjsModule(function (module) {
-var core = module.exports = { version: '2.5.1' };
+var core = module.exports = { version: '2.5.7' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
 
@@ -168,6 +177,11 @@ var _hide = _descriptors ? function (object, key, value) {
   return object;
 };
 
+var hasOwnProperty = {}.hasOwnProperty;
+var _has = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
+
 var PROTOTYPE = 'prototype';
 
 var $export = function (type, name, source) {
@@ -185,7 +199,7 @@ var $export = function (type, name, source) {
   for (key in source) {
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && key in exports) continue;
+    if (own && _has(exports, key)) continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
@@ -303,11 +317,6 @@ var _library = true;
 
 var _redefine = _hide;
 
-var hasOwnProperty = {}.hasOwnProperty;
-var _has = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
 var _iterators = {};
 
 var toString = {}.toString;
@@ -368,11 +377,18 @@ var _arrayIncludes = function (IS_INCLUDES) {
   };
 };
 
+var _shared = createCommonjsModule(function (module) {
 var SHARED = '__core-js_shared__';
 var store = _global[SHARED] || (_global[SHARED] = {});
-var _shared = function (key) {
-  return store[key] || (store[key] = {});
-};
+
+(module.exports = function (key, value) {
+  return store[key] || (store[key] = value !== undefined ? value : {});
+})('versions', []).push({
+  version: _core.version,
+  mode: _library ? 'pure' : 'global',
+  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+});
+});
 
 var id = 0;
 var px = Math.random();
@@ -555,7 +571,7 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
       // Set @@toStringTag to native iterators
       _setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if (!_library && !_has(IteratorPrototype, ITERATOR)) _hide(IteratorPrototype, ITERATOR, returnThis);
+      if (!_library && typeof IteratorPrototype[ITERATOR] != 'function') _hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
@@ -837,6 +853,7 @@ var META = _meta.KEY;
 
 
 
+
 var gOPD = _objectGopd.f;
 var dP$2 = _objectDp.f;
 var gOPN = _objectGopnExt.f;
@@ -1021,15 +1038,14 @@ $JSON && _export(_export.S + _export.F * (!USE_NATIVE || _fails(function () {
   return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
 })), 'JSON', {
   stringify: function stringify(it) {
-    if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
     var args = [it];
     var i = 1;
     var replacer, $replacer;
     while (arguments.length > i) args.push(arguments[i++]);
-    replacer = args[1];
-    if (typeof replacer == 'function') $replacer = replacer;
-    if ($replacer || !_isArray(replacer)) replacer = function (key, value) {
-      if ($replacer) value = $replacer.call(this, key, value);
+    $replacer = replacer = args[1];
+    if (!_isObject(replacer) && it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
+    if (!_isArray(replacer)) replacer = function (key, value) {
+      if (typeof $replacer == 'function') value = $replacer.call(this, key, value);
       if (!isSymbol(value)) return value;
     };
     args[1] = replacer;
@@ -1173,7 +1189,7 @@ var _parseFloat$3 = 1 / $parseFloat(_stringWs + '-0') !== -Infinity ? function p
 // 20.1.2.12 Number.parseFloat(string)
 _export(_export.S + _export.F * (Number.parseFloat != _parseFloat$3), 'Number', { parseFloat: _parseFloat$3 });
 
-var _parseFloat$1 = parseFloat;
+var _parseFloat$1 = _core.Number.parseFloat;
 
 var _parseFloat = createCommonjsModule(function (module) {
 module.exports = { "default": _parseFloat$1, __esModule: true };
@@ -1240,7 +1256,7 @@ function isPrimitive(val) {
 }
 
 /**
- * chimee-helper-log v0.1.2
+ * chimee-helper-log v0.1.3
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -1285,7 +1301,7 @@ var Log = function () {
         return;
       }
 
-      (console.error || console.warn || console.log)(formatter(tag, msg));
+      (console.error || console.warn || console.log).call(console, formatter(tag, msg));
     }
     /**
      * equal to console.info, output `[${tag}] > {$msg}`
@@ -1315,7 +1331,7 @@ var Log = function () {
       if (!Log.ENABLE_INFO) {
         return;
       }
-      (console.info || console.log)(formatter(tag, msg));
+      (console.info || console.log).call(console, formatter(tag, msg));
     }
     /**
      * equal to console.warn, output `[${tag}] > {$msg}`
@@ -1329,7 +1345,7 @@ var Log = function () {
       if (!Log.ENABLE_WARN) {
         return;
       }
-      (console.warn || console.log)(formatter(tag, msg));
+      (console.warn || console.log).call(console, formatter(tag, msg));
     }
     /**
      * equal to console.debug, output `[${tag}] > {$msg}`
@@ -1343,7 +1359,7 @@ var Log = function () {
       if (!Log.ENABLE_DEBUG) {
         return;
       }
-      (console.debug || console.log)(formatter(tag, msg));
+      (console.debug || console.log).call(console, formatter(tag, msg));
     }
     /**
      * equal to console.verbose, output `[${tag}] > {$msg}`
@@ -1373,18 +1389,18 @@ Log.ENABLE_DEBUG = true;
 Log.ENABLE_VERBOSE = true;
 
 var uaParser = createCommonjsModule(function (module, exports) {
-/**
- * UAParser.js v0.7.17
+/*!
+ * UAParser.js v0.7.18
  * Lightweight JavaScript-based User-Agent string parser
  * https://github.com/faisalman/ua-parser-js
  *
  * Copyright © 2012-2016 Faisal Salman <fyzlman@gmail.com>
- * Dual licensed under GPLv2 & MIT
+ * Dual licensed under GPLv2 or MIT
  */
 
 (function (window, undefined) {
 
-    var LIBVERSION  = '0.7.17',
+    var LIBVERSION  = '0.7.18',
         EMPTY       = '',
         UNKNOWN     = '?',
         FUNC_TYPE   = 'function',
@@ -1612,7 +1628,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
 
             // Mixed
             /(kindle)\/([\w\.]+)/i,                                             // Kindle
-            /(lunascape|maxthon|netfront|jasmine|blazer)[\/\s]?([\w\.]+)*/i,
+            /(lunascape|maxthon|netfront|jasmine|blazer)[\/\s]?([\w\.]*)/i,
                                                                                 // Lunascape/Maxthon/Netfront/Jasmine/Blazer
 
             // Trident based
@@ -1621,16 +1637,16 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /(?:ms|\()(ie)\s([\w\.]+)/i,                                        // Internet Explorer
 
             // Webkit/KHTML based
-            /(rekonq)\/([\w\.]+)*/i,                                            // Rekonq
-            /(chromium|flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt|iron|vivaldi|iridium|phantomjs|bowser)\/([\w\.-]+)/i
+            /(rekonq)\/([\w\.]*)/i,                                             // Rekonq
+            /(chromium|flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt|iron|vivaldi|iridium|phantomjs|bowser|quark)\/([\w\.-]+)/i
                                                                                 // Chromium/Flock/RockMelt/Midori/Epiphany/Silk/Skyfire/Bolt/Iron/Iridium/PhantomJS/Bowser
             ], [NAME, VERSION], [
 
             /(trident).+rv[:\s]([\w\.]+).+like\sgecko/i                         // IE11
             ], [[NAME, 'IE'], VERSION], [
 
-            /(edge)\/((\d+)?[\w\.]+)/i                                          // Microsoft Edge
-            ], [NAME, VERSION], [
+            /(edge|edgios|edgea)\/((\d+)?[\w\.]+)/i                             // Microsoft Edge
+            ], [[NAME, 'Edge'], VERSION], [
 
             /(yabrowser)\/([\w\.]+)/i                                           // Yandex
             ], [[NAME, 'Yandex'], VERSION], [
@@ -1648,11 +1664,26 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /(micromessenger)\/([\w\.]+)/i                                      // WeChat
             ], [[NAME, 'WeChat'], VERSION], [
 
+            /(qqbrowserlite)\/([\w\.]+)/i                                       // QQBrowserLite
+            ], [NAME, VERSION], [
+
             /(QQ)\/([\d\.]+)/i                                                  // QQ, aka ShouQ
             ], [NAME, VERSION], [
 
             /m?(qqbrowser)[\/\s]?([\w\.]+)/i                                    // QQBrowser
             ], [NAME, VERSION], [
+
+            /(BIDUBrowser)[\/\s]?([\w\.]+)/i                                    // Baidu Browser
+            ], [NAME, VERSION], [
+
+            /(2345Explorer)[\/\s]?([\w\.]+)/i                                   // 2345 Browser
+            ], [NAME, VERSION], [
+
+            /(MetaSr)[\/\s]?([\w\.]+)/i                                         // SouGouBrowser
+            ], [NAME], [
+
+            /(LBBROWSER)/i                                      // LieBao Browser
+            ], [NAME], [
 
             /xiaomi\/miuibrowser\/([\w\.]+)/i                                   // MIUI Browser
             ], [VERSION, [NAME, 'MIUI Browser']], [
@@ -1710,7 +1741,8 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /(swiftfox)/i,                                                      // Swiftfox
             /(icedragon|iceweasel|camino|chimera|fennec|maemo\sbrowser|minimo|conkeror)[\/\s]?([\w\.\+]+)/i,
                                                                                 // IceDragon/Iceweasel/Camino/Chimera/Fennec/Maemo/Minimo/Conkeror
-            /(firefox|seamonkey|k-meleon|icecat|iceape|firebird|phoenix)\/([\w\.-]+)/i,
+            /(firefox|seamonkey|k-meleon|icecat|iceape|firebird|phoenix|palemoon|basilisk|waterfox)\/([\w\.-]+)$/i,
+
                                                                                 // Firefox/SeaMonkey/K-Meleon/IceCat/IceApe/Firebird/Phoenix
             /(mozilla)\/([\w\.]+).+rv\:.+gecko\/\d+/i,                          // Mozilla
 
@@ -1718,7 +1750,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /(polaris|lynx|dillo|icab|doris|amaya|w3m|netsurf|sleipnir)[\/\s]?([\w\.]+)/i,
                                                                                 // Polaris/Lynx/Dillo/iCab/Doris/Amaya/w3m/NetSurf/Sleipnir
             /(links)\s\(([\w\.]+)/i,                                            // Links
-            /(gobrowser)\/?([\w\.]+)*/i,                                        // GoBrowser
+            /(gobrowser)\/?([\w\.]*)/i,                                         // GoBrowser
             /(ice\s?browser)\/v?([\w\._]+)/i,                                   // ICE Browser
             /(mosaic)[\/\s]([\w\.]+)/i                                          // Mosaic
             ], [NAME, VERSION]
@@ -1880,9 +1912,9 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /(dell)\s(strea[kpr\s\d]*[\dko])/i                                  // Dell Streak
             ], [VENDOR, MODEL, [TYPE, TABLET]], [
 
-            /(kf[A-z]+)\sbuild\/[\w\.]+.*silk\//i                               // Kindle Fire HD
+            /(kf[A-z]+)\sbuild\/.+silk\//i                                      // Kindle Fire HD
             ], [MODEL, [VENDOR, 'Amazon'], [TYPE, TABLET]], [
-            /(sd|kf)[0349hijorstuw]+\sbuild\/[\w\.]+.*silk\//i                  // Fire Phone
+            /(sd|kf)[0349hijorstuw]+\sbuild\/.+silk\//i                         // Fire Phone
             ], [[MODEL, mapper.str, maps.device.amazon.model], [VENDOR, 'Amazon'], [TYPE, MOBILE]], [
 
             /\((ip[honed|\s\w*]+);.+(apple)/i                                   // iPod/iPhone
@@ -1891,7 +1923,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
             ], [MODEL, [VENDOR, 'Apple'], [TYPE, MOBILE]], [
 
             /(blackberry)[\s-]?(\w+)/i,                                         // BlackBerry
-            /(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|meizu|motorola|polytron)[\s_-]?([\w-]+)*/i,
+            /(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|meizu|motorola|polytron)[\s_-]?([\w-]*)/i,
                                                                                 // BenQ/Palm/Sony-Ericsson/Acer/Asus/Dell/Meizu/Motorola/Polytron
             /(hp)\s([\w\s]+\w)/i,                                               // HP iPAQ
             /(asus)-?(\w+)/i                                                    // Asus
@@ -1925,8 +1957,8 @@ var uaParser = createCommonjsModule(function (module, exports) {
             ], [VENDOR, MODEL, [TYPE, TABLET]], [
 
             /(htc)[;_\s-]+([\w\s]+(?=\))|\w+)*/i,                               // HTC
-            /(zte)-(\w+)*/i,                                                    // ZTE
-            /(alcatel|geeksphone|lenovo|nexian|panasonic|(?=;\s)sony)[_\s-]?([\w-]+)*/i
+            /(zte)-(\w*)/i,                                                     // ZTE
+            /(alcatel|geeksphone|lenovo|nexian|panasonic|(?=;\s)sony)[_\s-]?([\w-]*)/i
                                                                                 // Alcatel/GeeksPhone/Lenovo/Nexian/Panasonic/Sony
             ], [VENDOR, [MODEL, /_/g, ' '], [TYPE, MOBILE]], [
 
@@ -1946,8 +1978,8 @@ var uaParser = createCommonjsModule(function (module, exports) {
             ], [[MODEL, /\./g, ' '], [VENDOR, 'Microsoft'], [TYPE, MOBILE]], [
 
                                                                                 // Motorola
-            /\s(milestone|droid(?:[2-4x]|\s(?:bionic|x2|pro|razr))?(:?\s4g)?)[\w\s]+build\//i,
-            /mot[\s-]?(\w+)*/i,
+            /\s(milestone|droid(?:[2-4x]|\s(?:bionic|x2|pro|razr))?:?(\s4g)?)[\w\s]+build\//i,
+            /mot[\s-]?(\w*)/i,
             /(XT\d{3,4}) build\//i,
             /(nexus\s6)/i
             ], [MODEL, [VENDOR, 'Motorola'], [TYPE, MOBILE]], [
@@ -1969,15 +2001,15 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /smart-tv.+(samsung)/i
             ], [VENDOR, [TYPE, SMARTTV], MODEL], [
             /((s[cgp]h-\w+|gt-\w+|galaxy\snexus|sm-\w[\w\d]+))/i,
-            /(sam[sung]*)[\s-]*(\w+-?[\w-]*)*/i,
+            /(sam[sung]*)[\s-]*(\w+-?[\w-]*)/i,
             /sec-((sgh\w+))/i
             ], [[VENDOR, 'Samsung'], MODEL, [TYPE, MOBILE]], [
 
-            /sie-(\w+)*/i                                                       // Siemens
+            /sie-(\w*)/i                                                        // Siemens
             ], [MODEL, [VENDOR, 'Siemens'], [TYPE, MOBILE]], [
 
             /(maemo|nokia).*(n900|lumia\s\d+)/i,                                // Nokia
-            /(nokia)[\s_-]?([\w-]+)*/i
+            /(nokia)[\s_-]?([\w-]*)/i
             ], [[VENDOR, 'Nokia'], MODEL, [TYPE, MOBILE]], [
 
             /android\s3\.[\s\w;-]{10}(a\d{3})/i                                 // Acer
@@ -1990,7 +2022,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /(lg) netcast\.tv/i                                                 // LG SmartTV
             ], [VENDOR, MODEL, [TYPE, SMARTTV]], [
             /(nexus\s[45])/i,                                                   // LG
-            /lg[e;\s\/-]+(\w+)*/i,
+            /lg[e;\s\/-]+(\w*)/i,
             /android.+lg(\-?[\d\w]+)\s+build/i
             ], [MODEL, [VENDOR, 'LG'], [TYPE, MOBILE]], [
 
@@ -2018,23 +2050,24 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /android.+;\s(pixel xl|pixel)\s/i                                   // Google Pixel
             ], [MODEL, [VENDOR, 'Google'], [TYPE, MOBILE]], [
 
-            /android.+(\w+)\s+build\/hm\1/i,                                    // Xiaomi Hongmi 'numeric' models
+            /android.+;\s(\w+)\s+build\/hm\1/i,                                 // Xiaomi Hongmi 'numeric' models
             /android.+(hm[\s\-_]*note?[\s_]*(?:\d\w)?)\s+build/i,               // Xiaomi Hongmi
-            /android.+(mi[\s\-_]*(?:one|one[\s_]plus|note lte)?[\s_]*(?:\d\w)?)\s+build/i,    // Xiaomi Mi
-            /android.+(redmi[\s\-_]*(?:note)?(?:[\s_]*[\w\s]+)?)\s+build/i      // Redmi Phones
+            /android.+(mi[\s\-_]*(?:one|one[\s_]plus|note lte)?[\s_]*(?:\d?\w?)[\s_]*(?:plus)?)\s+build/i,    // Xiaomi Mi
+            /android.+(redmi[\s\-_]*(?:note)?(?:[\s_]*[\w\s]+))\s+build/i       // Redmi Phones
             ], [[MODEL, /_/g, ' '], [VENDOR, 'Xiaomi'], [TYPE, MOBILE]], [
-            /android.+(mi[\s\-_]*(?:pad)?(?:[\s_]*[\w\s]+)?)\s+build/i          // Mi Pad tablets
+            /android.+(mi[\s\-_]*(?:pad)(?:[\s_]*[\w\s]+))\s+build/i            // Mi Pad tablets
             ],[[MODEL, /_/g, ' '], [VENDOR, 'Xiaomi'], [TYPE, TABLET]], [
             /android.+;\s(m[1-5]\snote)\sbuild/i                                // Meizu Tablet
             ], [MODEL, [VENDOR, 'Meizu'], [TYPE, TABLET]], [
 
-            /android.+a000(1)\s+build/i                                         // OnePlus
+            /android.+a000(1)\s+build/i,                                        // OnePlus
+            /android.+oneplus\s(a\d{4})\s+build/i
             ], [MODEL, [VENDOR, 'OnePlus'], [TYPE, MOBILE]], [
 
             /android.+[;\/]\s*(RCT[\d\w]+)\s+build/i                            // RCA Tablets
             ], [MODEL, [VENDOR, 'RCA'], [TYPE, TABLET]], [
 
-            /android.+[;\/]\s*(Venue[\d\s]*)\s+build/i                          // Dell Venue Tablets
+            /android.+[;\/\s]+(Venue[\d\s]{2,7})\s+build/i                      // Dell Venue Tablets
             ], [MODEL, [VENDOR, 'Dell'], [TYPE, TABLET]], [
 
             /android.+[;\/]\s*(Q[T|M][\d\w]+)\s+build/i                         // Verizon Tablet
@@ -2046,8 +2079,8 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /android.+[;\/]\s+(TM\d{3}.*\b)\s+build/i                           // Barnes & Noble Tablet
             ], [MODEL, [VENDOR, 'NuVision'], [TYPE, TABLET]], [
 
-            /android.+[;\/]\s*(zte)?.+(k\d{2})\s+build/i                        // ZTE K Series Tablet
-            ], [[VENDOR, 'ZTE'], MODEL, [TYPE, TABLET]], [
+            /android.+;\s(k88)\sbuild/i                                         // ZTE K Series Tablet
+            ], [MODEL, [VENDOR, 'ZTE'], [TYPE, TABLET]], [
 
             /android.+[;\/]\s*(gen\d{3})\s+build.*49h/i                         // Swiss GEN Mobile
             ], [MODEL, [VENDOR, 'Swiss'], [TYPE, MOBILE]], [
@@ -2058,26 +2091,26 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /android.+[;\/]\s*((Zeki)?TB.*\b)\s+build/i                         // Zeki Tablets
             ], [MODEL, [VENDOR, 'Zeki'], [TYPE, TABLET]], [
 
-            /(android).+[;\/]\s+([YR]\d{2}x?.*)\s+build/i,
-            /android.+[;\/]\s+(Dragon[\-\s]+Touch\s+|DT)(.+)\s+build/i          // Dragon Touch Tablet
+            /(android).+[;\/]\s+([YR]\d{2})\s+build/i,
+            /android.+[;\/]\s+(Dragon[\-\s]+Touch\s+|DT)(\w{5})\sbuild/i        // Dragon Touch Tablet
             ], [[VENDOR, 'Dragon Touch'], MODEL, [TYPE, TABLET]], [
 
-            /android.+[;\/]\s*(NS-?.+)\s+build/i                                // Insignia Tablets
+            /android.+[;\/]\s*(NS-?\w{0,9})\sbuild/i                            // Insignia Tablets
             ], [MODEL, [VENDOR, 'Insignia'], [TYPE, TABLET]], [
 
-            /android.+[;\/]\s*((NX|Next)-?.+)\s+build/i                         // NextBook Tablets
+            /android.+[;\/]\s*((NX|Next)-?\w{0,9})\s+build/i                    // NextBook Tablets
             ], [MODEL, [VENDOR, 'NextBook'], [TYPE, TABLET]], [
 
-            /android.+[;\/]\s*(Xtreme\_?)?(V(1[045]|2[015]|30|40|60|7[05]|90))\s+build/i
+            /android.+[;\/]\s*(Xtreme\_)?(V(1[045]|2[015]|30|40|60|7[05]|90))\s+build/i
             ], [[VENDOR, 'Voice'], MODEL, [TYPE, MOBILE]], [                    // Voice Xtreme Phones
 
-            /android.+[;\/]\s*(LVTEL\-?)?(V1[12])\s+build/i                     // LvTel Phones
+            /android.+[;\/]\s*(LVTEL\-)?(V1[12])\s+build/i                     // LvTel Phones
             ], [[VENDOR, 'LvTel'], MODEL, [TYPE, MOBILE]], [
 
             /android.+[;\/]\s*(V(100MD|700NA|7011|917G).*\b)\s+build/i          // Envizen Tablets
             ], [MODEL, [VENDOR, 'Envizen'], [TYPE, TABLET]], [
 
-            /android.+[;\/]\s*(Le[\s\-]+Pan)[\s\-]+(.*\b)\s+build/i             // Le Pan Tablets
+            /android.+[;\/]\s*(Le[\s\-]+Pan)[\s\-]+(\w{1,9})\s+build/i          // Le Pan Tablets
             ], [VENDOR, MODEL, [TYPE, TABLET]], [
 
             /android.+[;\/]\s*(Trio[\s\-]*.*)\s+build/i                         // MachSpeed Tablets
@@ -2092,14 +2125,14 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /android.+(KS(.+))\s+build/i                                        // Amazon Kindle Tablets
             ], [MODEL, [VENDOR, 'Amazon'], [TYPE, TABLET]], [
 
-            /android.+(Gigaset)[\s\-]+(Q.+)\s+build/i                           // Gigaset Tablets
+            /android.+(Gigaset)[\s\-]+(Q\w{1,9})\s+build/i                      // Gigaset Tablets
             ], [VENDOR, MODEL, [TYPE, TABLET]], [
 
             /\s(tablet|tab)[;\/]/i,                                             // Unidentifiable Tablet
             /\s(mobile)(?:[;\/]|\ssafari)/i                                     // Unidentifiable Mobile
             ], [[TYPE, util.lowerize], VENDOR, MODEL], [
 
-            /(android.+)[;\/].+build/i                                          // Generic Android Device
+            /(android[\w\.\s\-]{0,9});.+build/i                                 // Generic Android Device
             ], [MODEL, [VENDOR, 'Generic']]
 
 
@@ -2166,7 +2199,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /(icab)[\/\s]([23]\.[\d\.]+)/i                                      // iCab
             ], [NAME, VERSION], [
 
-            /rv\:([\w\.]+).*(gecko)/i                                           // Gecko
+            /rv\:([\w\.]{1,9}).+(gecko)/i                                       // Gecko
             ], [VERSION, NAME]
         ],
 
@@ -2176,7 +2209,7 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /microsoft\s(windows)\s(vista|xp)/i                                 // Windows (iTunes)
             ], [NAME, VERSION], [
             /(windows)\snt\s6\.2;\s(arm)/i,                                     // Windows RT
-            /(windows\sphone(?:\sos)*)[\s\/]?([\d\.\s]+\w)*/i,                  // Windows Phone
+            /(windows\sphone(?:\sos)*)[\s\/]?([\d\.\s\w]*)/i,                   // Windows Phone
             /(windows\smobile|windows)[\s\/]?([ntce\d\.\s]+\w)/i
             ], [NAME, [VERSION, mapper.str, maps.os.windows.version]], [
             /(win(?=3|9|n)|win\s9x\s)([nt\d\.]+)/i
@@ -2185,13 +2218,13 @@ var uaParser = createCommonjsModule(function (module, exports) {
             // Mobile/Embedded OS
             /\((bb)(10);/i                                                      // BlackBerry 10
             ], [[NAME, 'BlackBerry'], VERSION], [
-            /(blackberry)\w*\/?([\w\.]+)*/i,                                    // Blackberry
+            /(blackberry)\w*\/?([\w\.]*)/i,                                     // Blackberry
             /(tizen)[\/\s]([\w\.]+)/i,                                          // Tizen
-            /(android|webos|palm\sos|qnx|bada|rim\stablet\sos|meego|contiki)[\/\s-]?([\w\.]+)*/i,
+            /(android|webos|palm\sos|qnx|bada|rim\stablet\sos|meego|contiki)[\/\s-]?([\w\.]*)/i,
                                                                                 // Android/WebOS/Palm/QNX/Bada/RIM/MeeGo/Contiki
             /linux;.+(sailfish);/i                                              // Sailfish OS
             ], [NAME, VERSION], [
-            /(symbian\s?os|symbos|s60(?=;))[\/\s-]?([\w\.]+)*/i                 // Symbian
+            /(symbian\s?os|symbos|s60(?=;))[\/\s-]?([\w\.]*)/i                  // Symbian
             ], [[NAME, 'Symbian'], VERSION], [
             /\((series40);/i                                                    // Series 40
             ], [NAME], [
@@ -2202,43 +2235,43 @@ var uaParser = createCommonjsModule(function (module, exports) {
             /(nintendo|playstation)\s([wids34portablevu]+)/i,                   // Nintendo/Playstation
 
             // GNU/Linux based
-            /(mint)[\/\s\(]?(\w+)*/i,                                           // Mint
+            /(mint)[\/\s\(]?(\w*)/i,                                            // Mint
             /(mageia|vectorlinux)[;\s]/i,                                       // Mageia/VectorLinux
-            /(joli|[kxln]?ubuntu|debian|[open]*suse|gentoo|(?=\s)arch|slackware|fedora|mandriva|centos|pclinuxos|redhat|zenwalk|linpus)[\/\s-]?(?!chrom)([\w\.-]+)*/i,
+            /(joli|[kxln]?ubuntu|debian|suse|opensuse|gentoo|(?=\s)arch|slackware|fedora|mandriva|centos|pclinuxos|redhat|zenwalk|linpus)[\/\s-]?(?!chrom)([\w\.-]*)/i,
                                                                                 // Joli/Ubuntu/Debian/SUSE/Gentoo/Arch/Slackware
                                                                                 // Fedora/Mandriva/CentOS/PCLinuxOS/RedHat/Zenwalk/Linpus
-            /(hurd|linux)\s?([\w\.]+)*/i,                                       // Hurd/Linux
-            /(gnu)\s?([\w\.]+)*/i                                               // GNU
+            /(hurd|linux)\s?([\w\.]*)/i,                                        // Hurd/Linux
+            /(gnu)\s?([\w\.]*)/i                                                // GNU
             ], [NAME, VERSION], [
 
             /(cros)\s[\w]+\s([\w\.]+\w)/i                                       // Chromium OS
             ], [[NAME, 'Chromium OS'], VERSION],[
 
             // Solaris
-            /(sunos)\s?([\w\.]+\d)*/i                                           // Solaris
+            /(sunos)\s?([\w\.\d]*)/i                                            // Solaris
             ], [[NAME, 'Solaris'], VERSION], [
 
             // BSD based
-            /\s([frentopc-]{0,4}bsd|dragonfly)\s?([\w\.]+)*/i                   // FreeBSD/NetBSD/OpenBSD/PC-BSD/DragonFly
+            /\s([frentopc-]{0,4}bsd|dragonfly)\s?([\w\.]*)/i                    // FreeBSD/NetBSD/OpenBSD/PC-BSD/DragonFly
             ], [NAME, VERSION],[
 
-            /(haiku)\s(\w+)/i                                                  // Haiku
+            /(haiku)\s(\w+)/i                                                   // Haiku
             ], [NAME, VERSION],[
 
             /cfnetwork\/.+darwin/i,
-            /ip[honead]+(?:.*os\s([\w]+)\slike\smac|;\sopera)/i                 // iOS
+            /ip[honead]{2,4}(?:.*os\s([\w]+)\slike\smac|;\sopera)/i             // iOS
             ], [[VERSION, /_/g, '.'], [NAME, 'iOS']], [
 
-            /(mac\sos\sx)\s?([\w\s\.]+\w)*/i,
+            /(mac\sos\sx)\s?([\w\s\.]*)/i,
             /(macintosh|mac(?=_powerpc)\s)/i                                    // Mac OS
             ], [[NAME, 'Mac OS'], [VERSION, /_/g, '.']], [
 
             // Other
-            /((?:open)?solaris)[\/\s-]?([\w\.]+)*/i,                            // Solaris
-            /(aix)\s((\d)(?=\.|\)|\s)[\w\.]*)*/i,                               // AIX
+            /((?:open)?solaris)[\/\s-]?([\w\.]*)/i,                             // Solaris
+            /(aix)\s((\d)(?=\.|\)|\s)[\w\.])*/i,                                // AIX
             /(plan\s9|minix|beos|os\/2|amigaos|morphos|risc\sos|openvms)/i,
                                                                                 // Plan9/Minix/BeOS/OS2/AmigaOS/MorphOS/RISCOS/OpenVMS
-            /(unix)\s?([\w\.]+)*/i                                              // UNIX
+            /(unix)\s?([\w\.]*)/i                                               // UNIX
             ], [NAME, VERSION]
         ]
     };
@@ -2585,7 +2618,7 @@ exports.default = function (arr) {
 unwrapExports(toConsumableArray);
 
 /**
- * toxic-utils v0.1.6
+ * toxic-utils v0.2.0
  * (c) 2017 toxic-johann
  * Released under MIT
  */
@@ -2596,12 +2629,19 @@ unwrapExports(toConsumableArray);
  * @return {Function}    the handler
  */
 function genTraversalHandler(fn) {
+  var setter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function (target, key, value) {
+    target[key] = value;
+  };
+
+  // use recursive to move what in source to the target
+  // if you do not provide a target, we will create a new target
   function recursiveFn(source, target, key) {
     if (isArray$1(source) || isObject$1(source)) {
       target = isPrimitive(target) ? isObject$1(source) ? {} : [] : target;
       for (var _key in source) {
         // $FlowFixMe: support computed key here
-        target[_key] = recursiveFn(source[_key], target[_key], _key);
+        setter(target, _key, recursiveFn(source[_key], target[_key], _key));
+        // target[key] = recursiveFn(source[key], target[key], key);
       }
       return target;
     }
@@ -2805,8 +2845,8 @@ var _microtask = function () {
     notify = function () {
       process$2.nextTick(flush);
     };
-  // browsers with MutationObserver
-  } else if (Observer) {
+  // browsers with MutationObserver, except iOS Safari - https://github.com/zloirock/core-js/issues/339
+  } else if (Observer && !(_global.navigator && _global.navigator.standalone)) {
     var toggle = true;
     var node = document.createTextNode('');
     new Observer(flush).observe(node, { characterData: true }); // eslint-disable-line no-new
@@ -2815,7 +2855,8 @@ var _microtask = function () {
     };
   // environments with maybe non-completely correct, but existent Promise
   } else if (Promise && Promise.resolve) {
-    var promise = Promise.resolve();
+    // Promise.resolve without an argument throws an error in LG WebOS 2
+    var promise = Promise.resolve(undefined);
     notify = function () {
       promise.then(flush);
     };
@@ -2872,6 +2913,10 @@ var _perform = function (exec) {
   }
 };
 
+var navigator = _global.navigator;
+
+var _userAgent = navigator && navigator.userAgent || '';
+
 var _promiseResolve = function (C, x) {
   _anObject(C);
   if (_isObject(x) && x.constructor === C) return x;
@@ -2903,9 +2948,12 @@ var microtask = _microtask();
 
 
 
+
 var PROMISE = 'Promise';
 var TypeError$1 = _global.TypeError;
 var process = _global.process;
+var versions = process && process.versions;
+var v8 = versions && versions.v8 || '';
 var $Promise = _global[PROMISE];
 var isNode$1 = _classof(process) == 'process';
 var empty = function () { /* empty */ };
@@ -2923,7 +2971,13 @@ var USE_NATIVE$1 = !!function () {
       exec(empty, empty);
     };
     // unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-    return (isNode$1 || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise;
+    return (isNode$1 || typeof PromiseRejectionEvent == 'function')
+      && promise.then(empty) instanceof FakePromise
+      // v8 6.6 (Node 10 and Chrome 66) have a bug with resolving custom thenables
+      // https://bugs.chromium.org/p/chromium/issues/detail?id=830565
+      // we can't detect it synchronously, so just check versions
+      && v8.indexOf('6.6') !== 0
+      && _userAgent.indexOf('Chrome/66') === -1;
   } catch (e) { /* empty */ }
 }();
 
@@ -2945,7 +2999,7 @@ var notify = function (promise, isReject) {
       var resolve = reaction.resolve;
       var reject = reaction.reject;
       var domain = reaction.domain;
-      var result, then;
+      var result, then, exited;
       try {
         if (handler) {
           if (!ok) {
@@ -2955,8 +3009,11 @@ var notify = function (promise, isReject) {
           if (handler === true) result = value;
           else {
             if (domain) domain.enter();
-            result = handler(value);
-            if (domain) domain.exit();
+            result = handler(value); // may throw
+            if (domain) {
+              domain.exit();
+              exited = true;
+            }
           }
           if (result === reaction.promise) {
             reject(TypeError$1('Promise-chain cycle'));
@@ -2965,6 +3022,7 @@ var notify = function (promise, isReject) {
           } else resolve(result);
         } else reject(value);
       } catch (e) {
+        if (domain && !exited) domain.exit();
         reject(e);
       }
     };
@@ -2996,14 +3054,7 @@ var onUnhandled = function (promise) {
   });
 };
 var isUnhandled = function (promise) {
-  if (promise._h == 1) return false;
-  var chain = promise._a || promise._c;
-  var i = 0;
-  var reaction;
-  while (chain.length > i) {
-    reaction = chain[i++];
-    if (reaction.fail || !isUnhandled(reaction.promise)) return false;
-  } return true;
+  return promise._h !== 1 && (promise._a || promise._c).length === 0;
 };
 var onHandleUnhandled = function (promise) {
   task.call(_global, function () {
@@ -3204,12 +3255,6 @@ module.exports = { "default": promise$1, __esModule: true };
 
 unwrapExports(promise);
 
-/**
- * chimee-helper-utils v0.2.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
 // **********************  judgement   ************************
 /**
  * check if the code running in browser environment (not include worker env)
@@ -3217,13 +3262,21 @@ unwrapExports(promise);
  */
 var inBrowser = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
 
+// **********************  对象操作  ************************
+/**
+ * 转变一个类数组对象为数组
+ */
+function makeArray(obj) {
+  return _Array$from(obj);
+}
+
 // requestAnimationFrame
-var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function (cb) {
+var raf = inBrowser && (window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame) || function (cb) {
   return setTimeout(cb, 17);
 };
 
 // cancelAnimationFrame
-var caf = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame || window.msCancelAnimationFrame || window.oCancelAnimationFrame || function (id) {
+var caf = inBrowser && (window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame || window.webkitCancelRequestAnimationFrame || window.msCancelAnimationFrame || window.oCancelAnimationFrame) || function (id) {
   clearTimeout(id);
 };
 
@@ -3535,285 +3588,12 @@ var CustEvent = function () {
 }();
 
 /**
- * chimee-helper-dom v0.1.7
- * (c) 2017 huzunjie
- * Released under MIT
+ * @module dom
+ * @author huzunjie
+ * @description 一些常用的DOM判断及操作方法，可以使用dom.$('*')包装DOM，实现类jQuery的链式操作；当然这里的静态方法也可以直接使用。
  */
 
-/**
- * chimee-helper-events v0.1.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-/**
-* @module event
-* @author huzunjie
-* @description 自定义事件基础类
-*/
-
-/* 缓存事件监听方法及包装，内部数据格式：
- * targetIndex_<type:'click|mouseup|done'>: [ [
- *   function(){ ... handler ... },
- *   function(){ ... handlerWrap ... handler.apply(target, arguments) ... },
- *   isOnce
- * ]]
- */
-var _evtListenerCache$1 = _Object$create(null);
-_evtListenerCache$1.count = 0;
-
-/**
- * 得到某对象的某事件类型对应的监听队列数组
- * @param  {Object}  target 发生事件的对象
- * @param {String} type 事件类型(这里的时间类型不只是名称，还是缓存标识，可以通过添加后缀来区分)
- * @return {Array}
- */
-function getEvtTypeCache$1(target, type) {
-
-  var evtId = target.__evt_id;
-  if (!evtId) {
-
-    /* 设置__evt_id不可枚举 */
-    Object.defineProperty(target, '__evt_id', {
-      writable: true,
-      enumerable: false,
-      configurable: true
-    });
-
-    /* 空对象初始化绑定索引 */
-    evtId = target.__evt_id = ++_evtListenerCache$1.count;
-  }
-
-  var typeCacheKey = evtId + '_' + type;
-  var evtTypeCache = _evtListenerCache$1[typeCacheKey];
-  if (!evtTypeCache) {
-    evtTypeCache = _evtListenerCache$1[typeCacheKey] = [];
-  }
-
-  return evtTypeCache;
-}
-
-/**
- * 触发事件监听方法
- * @param  {Object}  target 发生事件的对象
- * @param {String} type 事件类型
- * @param {Object} eventObj 触发事件时要传回的event对象
- * @return {undefined}
- */
-function emitEventCache$1(target, type, eventObj) {
-  var evt = _Object$create(null);
-  evt.type = type;
-  evt.target = target;
-  if (eventObj) {
-    _Object$assign(evt, isObject$1(eventObj) ? eventObj : { data: eventObj });
-  }
-  getEvtTypeCache$1(target, type).forEach(function (item) {
-    (item[1] || item[0]).apply(target, [evt]);
-  });
-}
-
-/**
- * 添加事件监听到缓存
- * @param  {Object}  target 发生事件的对象
- * @param {String} type 事件类型
- * @param {Function} handler 监听函数
- * @param {Boolean} isOnce 是否单次执行
- * @param {Function} handlerWrap
- * @return {undefined}
- */
-function addEventCache$1(target, type, handler) {
-  var isOnce = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  var handlerWrap = arguments[4];
-
-  if (isFunction(isOnce) && !handlerWrap) {
-    handlerWrap = isOnce;
-    isOnce = undefined;
-  }
-  var handlers = [handler, undefined, isOnce];
-  if (isOnce && !handlerWrap) {
-    handlerWrap = function handlerWrap() {
-      removeEventCache$1(target, type, handler, isOnce);
-
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      handler.apply(target, args);
-    };
-  }
-  if (handlerWrap) {
-    handlers[1] = handlerWrap;
-  }
-  getEvtTypeCache$1(target, type).push(handlers);
-}
-
-/**
- * 移除事件监听
- * @param  {Object}  target 发生事件的对象
- * @param {String} type 事件类型
- * @param {Function} handler 监听函数
- * @return {undefined}
- */
-function removeEventCache$1(target, type, handler) {
-  var isOnce = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
-  var typeCache = getEvtTypeCache$1(target, type);
-
-  if (handler || isOnce) {
-    /* 有指定 handler 则清除对应监听 */
-    var handlerId = -1;
-    var handlerWrap = void 0;
-    typeCache.find(function (item, i) {
-      if ((!handler || item[0] === handler) && (!isOnce || item[2])) {
-        handlerId = i;
-        handlerWrap = item[1];
-        return true;
-      }
-    });
-    if (handlerId !== -1) {
-      typeCache.splice(handlerId, 1);
-    }
-    return handlerWrap;
-  } else {
-    /* 未指定 handler 则清除type对应的所有监听 */
-    typeCache.length = 0;
-  }
-}
-
-/**
- * @class CustEvent
- * @description
- * Event 自定义事件类
- * 1. 可以使用不传参得到的实例作为eventBus使用
- * 2. 可以通过指定target，用多个实例操作同一target对象的事件管理
- * 3. 当设定target时，可以通过设置assign为true，来给target实现"on\once\off\emit"方法
- * @param  {Object}  target 发生事件的对象（空则默认为event实例）
- * @param  {Boolean}  assign 是否将"on\once\off\emit"方法实现到target对象上
- * @return {event}
- */
-var CustEvent$1 = function () {
-  function CustEvent(target, assign$$1) {
-    var _this = this;
-
-    _classCallCheck(this, CustEvent);
-
-    /* 设置__target不可枚举 */
-    Object.defineProperty(this, '__target', {
-      writable: true,
-      enumerable: false,
-      configurable: true
-    });
-    this.__target = this;
-
-    if (target) {
-
-      if ((typeof target === 'undefined' ? 'undefined' : _typeof(target)) !== 'object') {
-        throw new Error('CusEvent target are not object');
-      }
-      this.__target = target;
-
-      /* 为target实现on\once\off\emit */
-      if (assign$$1) {
-        ['on', 'once', 'off', 'emit'].forEach(function (mth) {
-          target[mth] = _this[mth];
-        });
-      }
-    }
-  }
-
-  /**
-   * 添加事件监听
-   * @param {String} type 事件类型
-   * @param {Function} handler 监听函数
-   * @param {Boolean} isOnce 单次监听类型
-   * @return {event}
-   */
-
-
-  _createClass(CustEvent, [{
-    key: 'on',
-    value: function on(type, handler) {
-      var isOnce = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-      addEventCache$1(this.__target, type, handler, isOnce);
-      return this;
-    }
-
-    /**
-     * 添加事件监听,并且只执行一次
-     * @param {String} type 事件类型
-     * @param {Function} handler 监听函数
-     * @return {event}
-     */
-
-  }, {
-    key: 'once',
-    value: function once(type, handler) {
-      return this.on(type, handler, true);
-    }
-
-    /**
-     * 移除事件监听
-     * @param {String} type 事件类型
-     * @param {Function} handler 监听函数(不指定handler则清除type对应的所有事件监听)
-     * @param {Boolean} isOnce 单次监听类型
-     * @return {event}
-     */
-
-  }, {
-    key: 'off',
-    value: function off(type, handler) {
-      var isOnce = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-      removeEventCache$1(this.__target, type, handler, isOnce);
-      return this;
-    }
-
-    /**
-     * 触发事件监听函数
-     * @param {String} type 事件类型
-     * @return {event}
-     */
-
-  }, {
-    key: 'emit',
-    value: function emit(type, data) {
-      emitEventCache$1(this.__target, type, { data: data });
-      return this;
-    }
-  }]);
-
-  return CustEvent;
-}();
-
-/**
- * chimee-helper-utils v0.2.0
- * (c) 2017 toxic-johann
- * Released under MIT
- */
-
-// **********************  judgement   ************************
-/**
- * check if the code running in browser environment (not include worker env)
- * @returns {Boolean}
- */
-var inBrowser$1 = typeof window !== 'undefined' && Object.prototype.toString.call(window) !== '[object Object]';
-
-// **********************  对象操作  ************************
-/**
- * 转变一个类数组对象为数组
- */
-function makeArray$1(obj) {
-  return _Array$from(obj);
-}
-
-/**
-* @module dom
-* @author huzunjie
-* @description 一些常用的DOM判断及操作方法，可以使用dom.$('*')包装DOM，实现类jQuery的链式操作；当然这里的静态方法也可以直接使用。
-*/
-
-var _divEl = document.createElement('div');
+var _divEl = inBrowser ? document.createElement('div') : {};
 var _textAttrName = 'innerText';
 'textContent' in _divEl && (_textAttrName = 'textContent');
 var _arrPrototype = Array.prototype;
@@ -3913,8 +3693,10 @@ try {
       supportsPassive = true;
     }
   });
-  window.addEventListener('test', null, opts);
-} catch (e) {}
+  if (inBrowser) window.addEventListener('test', null, opts);
+} catch (e) {
+  console.error(e);
+}
 
 /**
  * 为HTML元素移除事件监听
@@ -3933,7 +3715,7 @@ function removeEvent(el, type, handler) {
   }
   if (once) {
     /* 尝试从缓存中读取包装后的方法 */
-    var handlerWrap = removeEventCache$1(el, type + '_once', handler);
+    var handlerWrap = removeEventCache(el, type + '_once', handler);
     if (handlerWrap) {
       handler = handlerWrap;
     }
@@ -3947,7 +3729,7 @@ function removeEvent(el, type, handler) {
  * @param {String} type 事件名称
  * @param {Function} handler 处理函数
  * @param {Boolean} once 是否只监听一次
- * @param {Boolean} capture 是否在捕获阶段监听
+ * @param {Boolean|Object} capture 是否在捕获阶段监听，这里也可以传入 { passive: true } 表示被动模式
  */
 function addEvent(el, type, handler) {
   var once = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
@@ -3969,7 +3751,7 @@ function addEvent(el, type, handler) {
       };
     }();
     /* 将包装后的方法记录到缓存中 */
-    addEventCache$1(el, type + '_once', oldHandler, handler);
+    addEventCache(el, type + '_once', oldHandler, handler);
   }
 
   el.addEventListener(type, handler, capture);
@@ -4012,7 +3794,7 @@ function addDelegate(el, selector, type, handler) {
     retEl && handler.apply(retEl, arguments);
   };
   /* 将包装后的方法记录到缓存中 */
-  addEventCache$1(el, type + '_delegate_' + selector, handler, handlerWrap);
+  addEventCache(el, type + '_delegate_' + selector, handler, handlerWrap);
   el.addEventListener(type, handlerWrap, capture);
 }
 
@@ -4031,7 +3813,7 @@ function removeDelegate(el, selector, type, handler) {
     capture = { passive: true };
   }
   /* 尝试从缓存中读取包装后的方法 */
-  var handlerWrap = removeEventCache$1(el, type + '_delegate_' + selector, handler);
+  var handlerWrap = removeEventCache(el, type + '_delegate_' + selector, handler);
   handlerWrap && el.removeEventListener(type, handlerWrap, capture);
 }
 
@@ -4111,16 +3893,6 @@ function findParents(el) {
 }
 
 /**
- * 根据选择器查询并得到目标元素的wrap包装器
- * @param {String} selector 选择器,另外支持 HTMLString||NodeList||NodeArray||HTMLElement
- * @param {HTMLElement} container 父容器
- * @return {Object}
- */
-function $(selector, container) {
-  return selector.constructor === NodeWrap ? selector : new NodeWrap(selector, container);
-}
-
-/**
  * @class NodeWrap
  * @description
  * NodeWrap DOM包装器，用以实现基本的链式操作
@@ -4143,7 +3915,7 @@ var NodeWrap = function () {
     var elsArr = void 0;
     if (selector && selector.constructor === NodeList) {
       /* 支持直接传入NodeList来构建包装器 */
-      elsArr = makeArray$1(selector);
+      elsArr = makeArray(selector);
     } else if (isArray$1(selector)) {
       /* 支持直接传入Node数组来构建包装器 */
       elsArr = selector;
@@ -4183,15 +3955,15 @@ var NodeWrap = function () {
       _arrPrototype.forEach.apply(this, args);
       return this;
     }
-  }, {
-    key: 'push',
-
 
     /**
      * 添加元素到DOM集合
      * @param {HTMLElement} el 要加入的元素
      * @return {this}
      */
+
+  }, {
+    key: 'push',
     value: function push() {
       for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
         args[_key3] = arguments[_key3];
@@ -4200,9 +3972,6 @@ var NodeWrap = function () {
       _arrPrototype.push.apply(this, args);
       return this;
     }
-  }, {
-    key: 'splice',
-
 
     /**
      * 截取DOM集合片段，并得到新的包装器splice
@@ -4210,6 +3979,9 @@ var NodeWrap = function () {
      * @param {Nubmer} count
      * @return {NodeWrap} 新的DOM集合包装器
      */
+
+  }, {
+    key: 'splice',
     value: function splice() {
       for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
         args[_key4] = arguments[_key4];
@@ -4217,15 +3989,15 @@ var NodeWrap = function () {
 
       return $(_arrPrototype.splice.apply(this, args));
     }
-  }, {
-    key: 'find',
-
 
     /**
      * 查找子元素
      * @param {String} selector 选择器
      * @return {NodeWrap} 新的DOM集合包装器
      */
+
+  }, {
+    key: 'find',
     value: function find(selector) {
       var childs = [];
       this.each(function (el) {
@@ -4493,13 +4265,17 @@ var NodeWrap = function () {
   return NodeWrap;
 }();
 
+function $(selector, container) {
+  return selector.constructor === NodeWrap ? selector : new NodeWrap(selector, container);
+}
+
 /**
- * chimee-helper v0.2.8
+ * chimee-helper v0.2.11
  * (c) 2017 toxic-johann
  * Released under MIT
  */
 
-__$styleInject(":root{--barColor:#de698c;--trackColor:#4c4c4c}video::-webkit-media-controls-start-playback-button{display:none}chimee-state svg{width:100%;height:100%}@keyframes a{0%{transform:rotate(0)}to{transform:rotate(1turn)}}chimee-state{position:absolute;top:0;left:0;width:100%;height:100%;font-size:24px}chimee-state-error,chimee-state-loading,chimee-state-pause,chimee-state-play{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}chimee-state-pause,chimee-state-play{width:2em;height:2em;box-sizing:initial}chimee-state-loading{width:2em;height:2em;transform:none;margin:-1em;animation:.9s a linear infinite}chimee-state-error{display:none;font-size:16px;z-index:1;color:#ffcf00;text-shadow:0 0 3px red;font-weight:100}chimee-state.error chimee-state-error,chimee-state.loading chimee-state-loading,chimee-state.play chimee-state-play{display:inline-block}", undefined);
+__$styleInject(":root{--barColor:#de698c;--trackColor:#4c4c4c}video::-webkit-media-controls-start-playback-button{display:none}chimee-state svg{width:100%;height:100%}@keyframes a{0%{transform:rotate(0)}to{transform:rotate(1turn)}}chimee-state{position:absolute;top:0;left:0;width:100%;height:100%;font-size:24px}chimee-state-error,chimee-state-loading,chimee-state-pause,chimee-state-play{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}chimee-state-pause,chimee-state-play{width:2em;height:2em;box-sizing:initial}chimee-state-loading{width:2em;height:2em;transform:none;margin:-1em;animation:.9s a linear infinite}chimee-state-error{display:none;font-size:16px;z-index:1;color:#ffcf00;text-shadow:0 0 3px red;font-weight:100}chimee-state.error chimee-state-error,chimee-state.loading chimee-state-loading,chimee-state.play chimee-state-play{display:inline-block}", {});
 
 /**
  * chimee-plugin-gesture v0.0.12
@@ -5034,14 +4810,24 @@ var chimeeState = gestureFactory({
     // console.log('loadedmetadata')
     // this.showState('play', true);
     // },
+    seeked: function seeked() {
+      console.log('seeked');
+      this.playing();
+    },
     playing: function playing() {
+      console.log('playing');
       this.playing();
     },
 
     // loadstart () {
     //   this.waiting();
     // },
+    seeking: function seeking() {
+      console.log('seeking');
+      this.waiting();
+    },
     waiting: function waiting() {
+      console.log('waiting');
       this.waiting();
     },
 
