@@ -226,8 +226,9 @@ const accessorMap = {
         this.dom.setAttr('video', 'x5-video-player-type', val);
         return value;
       },
-      get() {
-        return this.dom.getAttr('video', 'x5-video-player-type') ? 'h5' : undefined;
+      get(value) {
+        return (this.dispatcher.videoConfigReady && value) ||
+          (this.dom.getAttr('video', 'x5-video-player-type') ? 'h5' : undefined);
       },
     }),
   ],

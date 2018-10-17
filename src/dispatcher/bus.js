@@ -1,7 +1,7 @@
 // @flow
 import { runRejectableQueue, runStoppableQueue, Log } from 'chimee-helper';
 import { isEmpty, isArray, camelCase, bind, isError, isNil, isFunction, clone } from 'lodash';
-import { videoEvents, kernelMethods, domEvents, domMethods, selfProcessorEvents, dispatcherMethods } from 'helper/const';
+import { videoEvents, kernelMethods, domEvents, domMethods, selfProcessorEvents, dispatcherEventMethodMap } from 'helper/const';
 import { runnable } from 'toxic-decorators';
 const secondaryReg = /^(before|after|_)/;
 function secondaryChecker(key) {
@@ -327,10 +327,10 @@ export default class Bus {
   _eventProcessor(key: string, { sync }: {sync: boolean}, ...args: any): Promise<*> | boolean {
     const isKernelMethod: boolean = kernelMethods.indexOf(key) > -1;
     const isDomMethod: boolean = domMethods.indexOf(key) > -1;
-    const isDispatcherMethod: boolean = dispatcherMethods.indexOf(key) > -1;
+    const isDispatcherMethod: boolean = Boolean(dispatcherEventMethodMap[key]);
     if (isKernelMethod || isDomMethod || isDispatcherMethod) {
       if (isDispatcherMethod) {
-        this.__dispatcher[key](...args);
+        this.__dispatcher[dispatcherEventMethodMap[key]](...args);
       } else {
         this.__dispatcher[isKernelMethod ? 'kernel' : 'dom'][key](...args);
       }

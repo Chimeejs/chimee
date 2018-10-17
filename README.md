@@ -7,6 +7,8 @@
 [![devDependency Status](https://david-dm.org/Chimeejs/chimee/dev-status.svg)](https://david-dm.org/Chimeejs/chimee?type=dev)
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 [![jest](https://facebook.github.io/jest/img/jest-badge.svg)](https://github.com/facebook/jest)
+[![Code Quality: Javascript](https://img.shields.io/lgtm/grade/javascript/g/Chimeejs/chimee.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Chimeejs/chimee/context:javascript)
+[![Total Alerts](https://img.shields.io/lgtm/alerts/g/Chimeejs/chimee.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Chimeejs/chimee/alerts)
 
 English | [中文](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/README.md)
 
@@ -81,13 +83,7 @@ const chimee = new Chimee({
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
   controls: true,
   autoplay: true,
-  events: {
-    play () {
-      console.log('play!!');
-    }
-  }
 });
-// play!!
 ```
 
 If you need to play video in flv or hls, you can simply add those kernels:
@@ -200,6 +196,7 @@ You will find four different builds in the lib.
 | index.mjs        | esmodule | An es module, mostly used in Webpack 2 and rollup. | Yes                      |
 | index.browser.js | umd      | Can be used directly in browser                    | No (It's in development) |
 | index.min.js     | umd      | Can be used directly in browser                    | No (It's in production)  |
+| Index.esm.js     | esmodule | An es module, mostly used in browser es module     | No (It's in development) |
 
 ## Development
 

@@ -6,8 +6,20 @@ const LOG_TAG = 'chimee';
 const boxSuffixMap = {
   flv: '.flv',
   hls: '.m3u8',
-  mp4: '.mp4',
+  native: '.mp4',
 };
+
+// return the config box
+// or choose the right one according to the src
+export function getLegalBox({ src, box }: { src: string, box: string }): string {
+  if (isString(box) && box) return box;
+  src = src.toLowerCase();
+  for (const key in boxSuffixMap) {
+    const suffix = boxSuffixMap[key];
+    if (src.indexOf(suffix) > -1) return key;
+  }
+  return 'native';
+}
 
 export default class ChimeeKernel {
   box: string;
@@ -34,7 +46,7 @@ export default class ChimeeKernel {
 
   initVideoKernel() {
     const config = this.config;
-    const box = this.chooseBox(config);
+    const box = getLegalBox(config);
     this.box = box;
     const VideoKernel = this.chooseVideoKernel(this.box, config.preset);
 
@@ -48,18 +60,6 @@ export default class ChimeeKernel {
     if (customConfig) deepAssign(config, customConfig);
 
     this.videoKernel = new VideoKernel(this.videoElement, config, customConfig);
-  }
-
-  // return the config box
-  // or choose the right one according to the src
-  chooseBox({ src, box }: { src: string, box: string }): string {
-    if (isString(box) && box) return box;
-    src = src.toLowerCase();
-    for (const key in boxSuffixMap) {
-      const suffix = boxSuffixMap[key];
-      if (src.indexOf(suffix) > -1) return key;
-    }
-    return 'native';
   }
 
   // choose the right video kernel according to the box setting
