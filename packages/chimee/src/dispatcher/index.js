@@ -1,11 +1,12 @@
 // @flow
 import { isString, camelize, deepAssign, isObject, isEmpty, isArray, isFunction, transObjectAttrIntoArray, isPromise, Log, runRejectableQueue, addEvent, removeEvent, isError, deepClone } from 'chimee-helper';
 import ChimeeKernel from './kernel';
+import { getLegalBox } from './kernel';
 import Plugin from './plugin';
 import Dom from './dom';
 import VideoConfig from 'config/video';
 import defaultContainerConfig from 'config/container';
-import { before, autobind } from 'toxic-decorators';
+import { before, autobind, nonenumerable } from 'toxic-decorators';
 import Vessel from 'config/vessel';
 import Binder from './binder';
 const pluginConfigSet: PluginConfigSet = {};
@@ -225,6 +226,12 @@ export default class Dispatcher {
     delete this.vm[id];
   }
 
+  @before(convertNameIntoId)
+  hasUsed(id: string) {
+    const plugin = this.plugins[id];
+    return isObject(plugin);
+  }
+
   @autobind
   throwError(error: Error | string) {
     this.vm.__throwError(error);
@@ -392,12 +399,12 @@ export default class Dispatcher {
     isLive?: boolean,
     box?: string,
     preset?: Object,
-    kernels?: UserKernelsConfig
+    kernels?: UserKernelsConfig,
   }, option: {
     isLive?: boolean,
     box?: string,
     preset?: Object,
-    kernels?: UserKernelsConfig
+    kernels?: UserKernelsConfig,
   } = {}) {
     const src: string = isString(srcOrOption)
       ? srcOrOption
@@ -413,7 +420,7 @@ export default class Dispatcher {
     const videoConfig = this.videoConfig;
     const {
       isLive = videoConfig.isLive,
-      box = videoConfig.box,
+      box = getLegalBox({ src, box: videoConfig.box }),
       preset = videoConfig.preset,
       kernels = videoConfig.kernels,
     } = option;
@@ -421,7 +428,7 @@ export default class Dispatcher {
       const video = document.createElement('video');
       const config = { isLive, box, preset, src, kernels };
       const kernel = this._createKernel(video, config);
-      this.switchKernel({ video, kernel, config });
+      this.switchKernel({ video, kernel, config, notifyChange: true });
     }
     const originAutoLoad = this.videoConfig.autoload;
     this._changeUnwatchable(this.videoConfig, 'autoload', false);
@@ -430,7 +437,7 @@ export default class Dispatcher {
     this._changeUnwatchable(this.videoConfig, 'autoload', originAutoLoad);
   }
 
-  switchKernel({ video, kernel, config }: {
+  switchKernel({ video, kernel, config, notifyChange }: {
     video: HTMLVideoElement,
     kernel: ChimeeKernel,
     config: {
@@ -439,7 +446,8 @@ export default class Dispatcher {
       box: string,
       kernels: UserKernelsConfig,
       preset: Object,
-    }
+    },
+    notifyChange?: boolean,
   }) {
     const oldKernel = this.kernel;
     const originVideoConfig = deepClone(this.videoConfig);
@@ -466,9 +474,59 @@ export default class Dispatcher {
     oldKernel.destroy();
     // delay video event binding
     // so that people can't feel the default value change
-    setTimeout(() => {
+    // unless it's caused by autoload
+    if (notifyChange) {
       this.binder && this.binder.bindEventOnVideo && this.binder.bindEventOnVideo(video);
-    });
+    } else {
+      setTimeout(() => {
+        this.binder && this.binder.bindEventOnVideo && this.binder.bindEventOnVideo(video);
+      });
+    }
+    // if we are in picutre in picture mode
+    // we need to exit thie picture in picture mode
+    if (this.inPictureInPictureMode) {
+      this.exitPictureInPicture();
+    }
+  }
+
+  async requestPictureInPicture() {
+    if ('pictureInPictureEnabled' in document) {
+      // if video is in picture-in-picture mode, do nothing
+      if (this.inPictureInPictureMode) return Promise.resolve(window.__chimee_picture_in_picture_window);
+      // $FlowFixMe: requestPictureInPicture is a new function
+      const pipWindow = await this.dom.videoElement.requestPictureInPicture();
+      window.__chimee_picture_in_picture_window = pipWindow;
+      // if (autoplay) this.play();
+      return pipWindow;
+    }
+    const { default: PictureInPicture } = await import('../plugin/picture-in-picture');
+    if (!Dispatcher.hasInstalled(PictureInPicture.name)) {
+      Dispatcher.install(PictureInPicture);
+    }
+    if (!this.hasUsed(PictureInPicture.name)) {
+      this.use(PictureInPicture.name);
+    }
+    return this.plugins.pictureInPicture.requestPictureInPicture();
+  }
+
+  exitPictureInPicture() {
+    if ('pictureInPictureEnabled' in document) {
+      // if current video is not in picture-in-picture mode, do nothing
+      if (this.inPictureInPictureMode) {
+        window.__chimee_picture_in_picture_window = undefined;
+        // $FlowFixMe: support new function in document
+        return document.exitPictureInPicture();
+      }
+    }
+    return this.plugins.pictureInPicture && this.plugins.pictureInPicture.exitPictureInPicture();
+  }
+
+  @nonenumerable
+  get inPictureInPictureMode(): boolean {
+    return 'pictureInPictureEnabled' in document
+      // $FlowFixMe: support new function in document
+      ? this.dom.videoElement === document.pictureInPictureElement
+      : Boolean(this.plugins.pictureInPicture && this.plugins.pictureInPicture.isShown);
   }
 
   /**
@@ -548,14 +606,16 @@ export default class Dispatcher {
         name: 'load',
         target: 'plugin',
         id: 'dispatcher',
-      }, this.videoConfig.src);
+      }, { src: this.videoConfig.src });
     }
   }
+
   _changeUnwatchable(object: Object, property: string, value: any) {
     this.changeWatchable = false;
     object[property] = value;
     this.changeWatchable = true;
   }
+
   _createKernel(video: HTMLVideoElement, config: Object) {
     const { kernels, preset } = config;
     /* istanbul ignore else  */
@@ -667,10 +727,12 @@ export default class Dispatcher {
     pluginConfigSet[id] = pluginConfig;
     return id;
   }
+
   @before(convertNameIntoId)
   static hasInstalled(id: string): boolean {
     return !isEmpty(pluginConfigSet[id]);
   }
+
   @before(convertNameIntoId)
   static uninstall(id: string) {
     delete pluginConfigSet[id];

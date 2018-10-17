@@ -73,6 +73,7 @@ const player = new Chimee({
   controls: true,
   // noDefaultContextMenu: true,
   noDefaultContextMenu: 'wrapper',
+  muted: true,
 });
 // [ 'touchstart', 'touchmove', 'touchend' ].forEach(key => {
 //   player.$on(key, evt => console.log(evt, key));
@@ -81,4 +82,7 @@ const player = new Chimee({
 // player.$on('mouseenter', event => console.log(event), { target: 'container' });
 // player.$on('mouseenter', event => console.log(event, 'mouseenter'));
 
+player.$on('play', evt => console.warn(evt));
+player.$video.addEventListener('play', evt => console.error(evt));
+player.play();
 window.player = player;

@@ -77,11 +77,6 @@ const chimee = new Chimee({
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
   controls: true,
   autoplay: true,
-  events: {
-    play () {
-      console.log('play!!');
-    }
-  }
 });
 ```
 
@@ -209,12 +204,13 @@ const player = new ChimeeMobilePlayer({
 
 你会发现我们有四种构建的版本。
 
-| 名称               | 种类       | 用处                                   | 是否需要定义环境             |
-| ---------------- | -------- | ------------------------------------ | -------------------- |
-| index.js         | commonjs | Common js, 常用于 Webpack 1.            | 是                    |
-| index.mjs        | esmodule | in es module, 常用于 webpack 2 和 rollup | 是                    |
-| index.browser.js | umd      | 常直接用于浏览器                             | 否，构建为 development 环境 |
-| index.min.js     | umd      | 常直接用于浏览器                             | 否，构建为 production 环境  |
+| 名称             | 种类     | 用处                                     | 是否需要定义环境            |
+| ---------------- | -------- | ---------------------------------------- | --------------------------- |
+| index.js         | commonjs | Common js, 常用于 Webpack 1.             | 是                          |
+| index.mjs        | esmodule | in es module, 常用于 webpack 2 和 rollup | 是                          |
+| index.browser.js | umd      | 常直接用于浏览器                         | 否，构建为 development 环境 |
+| index.min.js     | umd      | 常直接用于浏览器                         | 否，构建为 production 环境  |
+| index.esm.js     | esmodule | 用于浏览器使用 module 的模式引入         | 否，构建为 development 环境 |
 
 ## Development vs. Production
 

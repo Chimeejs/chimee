@@ -23,6 +23,7 @@ describe('changeKernel', () => {
     expect(chimee.box).toBe('native');
     expect(chimee.preset).toEqual({});
     expect(chimee.kernels).toBe(undefined);
+    await chimee.requestPictureInPicture();
     chimee.load('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', {
       isLive: true,
       box: 'flv',

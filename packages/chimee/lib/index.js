@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.1
+ * chimee v0.11.0
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -32,6 +32,8 @@ var esFullscreen = _interopDefault(require('es-fullscreen'));
 var _Map = _interopDefault(require('babel-runtime/core-js/map'));
 var _getIterator = _interopDefault(require('babel-runtime/core-js/get-iterator'));
 var _Object$entries = _interopDefault(require('babel-runtime/core-js/object/entries'));
+var _regeneratorRuntime = _interopDefault(require('babel-runtime/regenerator'));
+var _asyncToGenerator = _interopDefault(require('babel-runtime/helpers/asyncToGenerator'));
 var global = _interopDefault(require('core-js/es7/global'));
 
 var tempCurrentTime = 0;
@@ -122,8 +124,23 @@ var LOG_TAG = 'chimee';
 var boxSuffixMap = {
   flv: '.flv',
   hls: '.m3u8',
-  mp4: '.mp4'
+  native: '.mp4'
 };
+
+// return the config box
+// or choose the right one according to the src
+function getLegalBox(_ref) {
+  var src = _ref.src,
+      box = _ref.box;
+
+  if (chimeeHelper.isString(box) && box) return box;
+  src = src.toLowerCase();
+  for (var key in boxSuffixMap) {
+    var suffix = boxSuffixMap[key];
+    if (src.indexOf(suffix) > -1) return key;
+  }
+  return 'native';
+}
 
 var ChimeeKernel = function () {
   /**
@@ -150,7 +167,7 @@ var ChimeeKernel = function () {
     key: 'initVideoKernel',
     value: function initVideoKernel() {
       var config = this.config;
-      var box = this.chooseBox(config);
+      var box = getLegalBox(config);
       this.box = box;
       var VideoKernel = this.chooseVideoKernel(this.box, config.preset);
 
@@ -164,24 +181,6 @@ var ChimeeKernel = function () {
       if (customConfig) chimeeHelper.deepAssign(config, customConfig);
 
       this.videoKernel = new VideoKernel(this.videoElement, config, customConfig);
-    }
-
-    // return the config box
-    // or choose the right one according to the src
-
-  }, {
-    key: 'chooseBox',
-    value: function chooseBox(_ref) {
-      var src = _ref.src,
-          box = _ref.box;
-
-      if (chimeeHelper.isString(box) && box) return box;
-      src = src.toLowerCase();
-      for (var key in boxSuffixMap) {
-        var suffix = boxSuffixMap[key];
-        if (src.indexOf(suffix) > -1) return key;
-      }
-      return 'native';
     }
 
     // choose the right video kernel according to the box setting
@@ -290,7 +289,7 @@ var ChimeeKernel = function () {
   return ChimeeKernel;
 }();
 
-var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting'];
+var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting', 'enterpictureinpicture', 'leavepictureinpicture'];
 var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'error', 'ended', 'networkState', 'paused', 'readyState', 'seekable', 'sinkId', 'controlsList', 'tabIndex', 'dataset', 'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth'];
 var domEvents = ['beforeinput', 'blur', 'click', 'compositionend', 'compositionstart', 'compositionupdate', 'dblclick', 'focus', 'focusin', 'focusout', 'input', 'keydown', 'keypress', 'keyup', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll', 'select', 'wheel', 'mousewheel', 'contextmenu', 'touchstart', 'touchmove', 'touchend', 'fullscreen'];
 var esFullscreenEvents = ['fullscreenchange'];
@@ -298,7 +297,11 @@ var passiveEvents = ['wheel', 'mousewheel', 'touchstart', 'touchmove'];
 var selfProcessorEvents = ['silentLoad', 'fullscreen'];
 var mustListenVideoDomEvents = ['mouseenter', 'mouseleave'];
 var kernelMethods = ['play', 'pause', 'seek', 'startLoad', 'stopLoad'];
-var dispatcherMethods = ['load'];
+var dispatcherEventMethodMap = {
+  load: 'load',
+  enterpictureinpicture: 'requestPictureInPicture',
+  leavepictureinpicture: 'exitPictureInPicture'
+};
 var kernelEvents = ['mediaInfo', 'heartbeat', 'error'];
 var domMethods = ['focus', 'fullscreen', 'requestFullscreen', 'exitFullscreen'];
 var videoMethods = ['canPlayType', 'captureStream', 'setSinkId'];
@@ -540,8 +543,8 @@ var accessorMap = {
       this.dom.setAttr('video', 'x5-video-player-type', val);
       return value;
     },
-    get: function get() {
-      return this.dom.getAttr('video', 'x5-video-player-type') ? 'h5' : undefined;
+    get: function get(value) {
+      return this.dispatcher.videoConfigReady && value || (this.dom.getAttr('video', 'x5-video-player-type') ? 'h5' : undefined);
     }
   })],
   xWebkitAirplay: [toxicDecorators.accessor({
@@ -1122,6 +1125,24 @@ var VideoWrapper = (_dec$1 = toxicDecorators.autobindClass(), _dec2$1 = toxicDec
       return (_dispatcher$dom3 = this.__dispatcher.dom)[method + 'Attr'].apply(_dispatcher$dom3, args);
     }
   }, {
+    key: 'requestPictureInPicture',
+    value: function requestPictureInPicture() {
+      return this.__dispatcher.binder.emit({
+        target: 'video',
+        name: 'enterpictureinpicture',
+        id: this.__id
+      });
+    }
+  }, {
+    key: 'exitPictureInPicture',
+    value: function exitPictureInPicture() {
+      return this.__dispatcher.binder.emit({
+        target: 'video',
+        name: 'leavepictureinpicture',
+        id: this.__id
+      });
+    }
+  }, {
     key: '__addEvents',
     value: function __addEvents(key, fn) {
       this.__events[key] = this.__events[key] || [];
@@ -1163,6 +1184,16 @@ var VideoWrapper = (_dec$1 = toxicDecorators.autobindClass(), _dec2$1 = toxicDec
         target: 'video',
         id: this.__id
       }, second);
+    }
+  }, {
+    key: 'inPictureInPictureMode',
+    get: function get() {
+      return this.__dispatcher.inPictureInPictureMode;
+    }
+  }, {
+    key: 'pictureInPictureWindow',
+    get: function get() {
+      return window.__chimee_picture_in_picture_window;
     }
   }, {
     key: '$plugins',
@@ -1219,7 +1250,7 @@ var VideoWrapper = (_dec$1 = toxicDecorators.autobindClass(), _dec2$1 = toxicDec
   }]);
 
   return VideoWrapper;
-}(), (_applyDecoratedDescriptor$1(_class2.prototype, '$silentLoad', [_dec2$1], _Object$getOwnPropertyDescriptor(_class2.prototype, '$silentLoad'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$fullscreen', [_dec3, _dec4, _dec5], _Object$getOwnPropertyDescriptor(_class2.prototype, '$fullscreen'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emit'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emitSync'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2.prototype, '$on'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2.prototype, '$off'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2.prototype, '$once'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2.prototype, '$css'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2.prototype, '$attr'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$plugins', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$plugins'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$pluginOrder', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$pluginOrder'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$wrapper', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$wrapper'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$container', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$container'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$video', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$video'), _class2.prototype)), _class2)) || _class$1);
+}(), (_applyDecoratedDescriptor$1(_class2.prototype, '$silentLoad', [_dec2$1], _Object$getOwnPropertyDescriptor(_class2.prototype, '$silentLoad'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$fullscreen', [_dec3, _dec4, _dec5], _Object$getOwnPropertyDescriptor(_class2.prototype, '$fullscreen'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emit'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emitSync'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2.prototype, '$on'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2.prototype, '$off'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2.prototype, '$once'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2.prototype, '$css'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2.prototype, '$attr'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, 'inPictureInPictureMode', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, 'inPictureInPictureMode'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, 'pictureInPictureWindow', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, 'pictureInPictureWindow'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$plugins', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$plugins'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$pluginOrder', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$pluginOrder'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$wrapper', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$wrapper'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$container', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$container'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$video', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$video'), _class2.prototype)), _class2)) || _class$1);
 
 var _dec$2, _class$2;
 
@@ -1296,7 +1327,7 @@ var Plugin = (_dec$2 = toxicDecorators.autobindClass(), _dec$2(_class$2 = functi
     var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
     _this.destroyed = false;
-    _this.VERSION = '0.10.1';
+    _this.VERSION = '0.11.0';
     _this.__operable = true;
     _this.__level = 0;
 
@@ -2406,7 +2437,7 @@ var Bus = (_dec$4 = toxicDecorators.runnable(secondaryChecker), _dec2$3 = toxicD
 
       var isKernelMethod = kernelMethods.indexOf(key) > -1;
       var isDomMethod = domMethods.indexOf(key) > -1;
-      var isDispatcherMethod = dispatcherMethods.indexOf(key) > -1;
+      var isDispatcherMethod = Boolean(dispatcherEventMethodMap[key]);
 
       for (var _len5 = arguments.length, args = Array(_len5 > 2 ? _len5 - 2 : 0), _key5 = 2; _key5 < _len5; _key5++) {
         args[_key5 - 2] = arguments[_key5];
@@ -2416,7 +2447,7 @@ var Bus = (_dec$4 = toxicDecorators.runnable(secondaryChecker), _dec2$3 = toxicD
         if (isDispatcherMethod) {
           var _dispatcher;
 
-          (_dispatcher = this.__dispatcher)[key].apply(_dispatcher, _toConsumableArray(args));
+          (_dispatcher = this.__dispatcher)[dispatcherEventMethodMap[key]].apply(_dispatcher, _toConsumableArray(args));
         } else {
           var _dispatcher2;
 
@@ -3067,7 +3098,7 @@ var Binder = (_dec$5 = toxicDecorators.before(prettifyEventParameter), _dec2$4 =
   return Binder;
 }(), (_applyDecoratedDescriptor$4(_class$5.prototype, 'on', [_dec$5], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'on'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'off', [_dec2$4], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'off'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'once', [_dec3$3], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'once'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'emit', [_dec4$3, _dec5$2], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'emit'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'emitSync', [_dec6$2, _dec7$1], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'emitSync'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'trigger', [_dec8$1, _dec9$1], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'trigger'), _class$5.prototype), _applyDecoratedDescriptor$4(_class$5.prototype, 'triggerSync', [_dec10$1, _dec11$1], _Object$getOwnPropertyDescriptor(_class$5.prototype, 'triggerSync'), _class$5.prototype)), _class$5));
 
-var _dec$6, _dec2$5, _dec3$4, _dec4$4, _dec5$3, _class$6;
+var _dec$6, _dec2$5, _dec3$4, _dec4$4, _dec5$3, _dec6$3, _class$6;
 
 function _applyDecoratedDescriptor$5(target, property, decorators, descriptor, context) {
   var desc = {};
@@ -3122,7 +3153,7 @@ function checkPluginConfig(config) {
  * It also offer a bridge to let user handle video kernel.
  * </pre>
  */
-var Dispatcher = (_dec$6 = toxicDecorators.before(convertNameIntoId), _dec2$5 = toxicDecorators.before(checkPluginConfig), _dec3$4 = toxicDecorators.before(convertNameIntoId), _dec4$4 = toxicDecorators.before(convertNameIntoId), _dec5$3 = toxicDecorators.before(convertNameIntoId), (_class$6 = function () {
+var Dispatcher = (_dec$6 = toxicDecorators.before(convertNameIntoId), _dec2$5 = toxicDecorators.before(convertNameIntoId), _dec3$4 = toxicDecorators.before(checkPluginConfig), _dec4$4 = toxicDecorators.before(convertNameIntoId), _dec5$3 = toxicDecorators.before(convertNameIntoId), _dec6$3 = toxicDecorators.before(convertNameIntoId), (_class$6 = function () {
   /**
    * @param  {UserConfig} config UserConfig for whole Chimee player
    * @param  {Chimee} vm referrence of outer class
@@ -3319,6 +3350,12 @@ var Dispatcher = (_dec$6 = toxicDecorators.before(convertNameIntoId), _dec2$5 = 
       delete this.vm[id];
     }
   }, {
+    key: 'hasUsed',
+    value: function hasUsed(id) {
+      var plugin = this.plugins[id];
+      return chimeeHelper.isObject(plugin);
+    }
+  }, {
     key: 'throwError',
     value: function throwError(error) {
       this.vm.__throwError(error);
@@ -3492,7 +3529,7 @@ var Dispatcher = (_dec$6 = toxicDecorators.before(convertNameIntoId), _dec2$5 = 
           _option2$isLive = _option2.isLive,
           isLive = _option2$isLive === undefined ? videoConfig.isLive : _option2$isLive,
           _option2$box = _option2.box,
-          box = _option2$box === undefined ? videoConfig.box : _option2$box,
+          box = _option2$box === undefined ? getLegalBox({ src: src, box: videoConfig.box }) : _option2$box,
           _option2$preset = _option2.preset,
           preset = _option2$preset === undefined ? videoConfig.preset : _option2$preset,
           _option2$kernels = _option2.kernels,
@@ -3502,7 +3539,7 @@ var Dispatcher = (_dec$6 = toxicDecorators.before(convertNameIntoId), _dec2$5 = 
         var video = document.createElement('video');
         var config = { isLive: isLive, box: box, preset: preset, src: src, kernels: kernels };
         var kernel = this._createKernel(video, config);
-        this.switchKernel({ video: video, kernel: kernel, config: config });
+        this.switchKernel({ video: video, kernel: kernel, config: config, notifyChange: true });
       }
       var originAutoLoad = this.videoConfig.autoload;
       this._changeUnwatchable(this.videoConfig, 'autoload', false);
@@ -3517,7 +3554,8 @@ var Dispatcher = (_dec$6 = toxicDecorators.before(convertNameIntoId), _dec2$5 = 
 
       var video = _ref.video,
           kernel = _ref.kernel,
-          config = _ref.config;
+          config = _ref.config,
+          notifyChange = _ref.notifyChange;
 
       var oldKernel = this.kernel;
       var originVideoConfig = chimeeHelper.deepClone(this.videoConfig);
@@ -3548,17 +3586,103 @@ var Dispatcher = (_dec$6 = toxicDecorators.before(convertNameIntoId), _dec2$5 = 
       oldKernel.destroy();
       // delay video event binding
       // so that people can't feel the default value change
-      setTimeout(function () {
-        _this3.binder && _this3.binder.bindEventOnVideo && _this3.binder.bindEventOnVideo(video);
-      });
+      // unless it's caused by autoload
+      if (notifyChange) {
+        this.binder && this.binder.bindEventOnVideo && this.binder.bindEventOnVideo(video);
+      } else {
+        setTimeout(function () {
+          _this3.binder && _this3.binder.bindEventOnVideo && _this3.binder.bindEventOnVideo(video);
+        });
+      }
+      // if we are in picutre in picture mode
+      // we need to exit thie picture in picture mode
+      if (this.inPictureInPictureMode) {
+        this.exitPictureInPicture();
+      }
     }
+  }, {
+    key: 'requestPictureInPicture',
+    value: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+        var pipWindow, _ref3, PictureInPicture;
+
+        return _regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!('pictureInPictureEnabled' in document)) {
+                  _context.next = 8;
+                  break;
+                }
+
+                if (!this.inPictureInPictureMode) {
+                  _context.next = 3;
+                  break;
+                }
+
+                return _context.abrupt('return', _Promise.resolve(window.__chimee_picture_in_picture_window));
+
+              case 3:
+                _context.next = 5;
+                return this.dom.videoElement.requestPictureInPicture();
+
+              case 5:
+                pipWindow = _context.sent;
+
+                window.__chimee_picture_in_picture_window = pipWindow;
+                // if (autoplay) this.play();
+                return _context.abrupt('return', pipWindow);
+
+              case 8:
+                _context.next = 10;
+                return Promise.resolve().then(function () { return pictureInPicture; });
+
+              case 10:
+                _ref3 = _context.sent;
+                PictureInPicture = _ref3.default;
+
+                if (!Dispatcher.hasInstalled(PictureInPicture.name)) {
+                  Dispatcher.install(PictureInPicture);
+                }
+                if (!this.hasUsed(PictureInPicture.name)) {
+                  this.use(PictureInPicture.name);
+                }
+                return _context.abrupt('return', this.plugins.pictureInPicture.requestPictureInPicture());
+
+              case 15:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function requestPictureInPicture() {
+        return _ref2.apply(this, arguments);
+      }
+
+      return requestPictureInPicture;
+    }()
+  }, {
+    key: 'exitPictureInPicture',
+    value: function exitPictureInPicture() {
+      if ('pictureInPictureEnabled' in document) {
+        // if current video is not in picture-in-picture mode, do nothing
+        if (this.inPictureInPictureMode) {
+          window.__chimee_picture_in_picture_window = undefined;
+          // $FlowFixMe: support new function in document
+          return document.exitPictureInPicture();
+        }
+      }
+      return this.plugins.pictureInPicture && this.plugins.pictureInPicture.exitPictureInPicture();
+    }
+  }, {
+    key: 'destroy',
+
 
     /**
      * destroy function called when dispatcher destroyed
      */
-
-  }, {
-    key: 'destroy',
     value: function destroy() {
       for (var _key in this.plugins) {
         this.unuse(_key);
@@ -3654,7 +3778,7 @@ var Dispatcher = (_dec$6 = toxicDecorators.before(convertNameIntoId), _dec2$5 = 
           name: 'load',
           target: 'plugin',
           id: 'dispatcher'
-        }, this.videoConfig.src);
+        }, { src: this.videoConfig.src });
       }
     }
   }, {
@@ -3769,6 +3893,13 @@ var Dispatcher = (_dec$6 = toxicDecorators.before(convertNameIntoId), _dec2$5 = 
      * @type {string} plugin's id
      */
 
+  }, {
+    key: 'inPictureInPictureMode',
+    get: function get() {
+      return 'pictureInPictureEnabled' in document
+      // $FlowFixMe: support new function in document
+      ? this.dom.videoElement === document.pictureInPictureElement : Boolean(this.plugins.pictureInPicture && this.plugins.pictureInPicture.isShown);
+    }
   }], [{
     key: 'install',
     value: function install(config) {
@@ -3807,10 +3938,10 @@ var Dispatcher = (_dec$6 = toxicDecorators.before(convertNameIntoId), _dec2$5 = 
     key: 'installKernel',
     value: function installKernel(key, value) {
       var tasks = chimeeHelper.isObject(key) ? _Object$entries(key) : [[key, value]];
-      tasks.forEach(function (_ref2) {
-        var _ref3 = _slicedToArray(_ref2, 2),
-            key = _ref3[0],
-            value = _ref3[1];
+      tasks.forEach(function (_ref4) {
+        var _ref5 = _slicedToArray(_ref4, 2),
+            key = _ref5[0],
+            value = _ref5[1];
 
         if (!chimeeHelper.isFunction(value)) throw new Error('The kernel you install on ' + key + ' must be a Function, but not ' + (typeof value === 'undefined' ? 'undefined' : _typeof(value)));
         if (chimeeHelper.isFunction(kernelsSet[key])) chimeeHelper.Log.warn('You have alrady install a kernel on ' + key + ', and now we will replace it');
@@ -3833,7 +3964,7 @@ var Dispatcher = (_dec$6 = toxicDecorators.before(convertNameIntoId), _dec2$5 = 
   }]);
 
   return Dispatcher;
-}(), (_applyDecoratedDescriptor$5(_class$6.prototype, 'unuse', [_dec$6], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'unuse'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'throwError', [toxicDecorators.autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'throwError'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6, 'install', [_dec2$5], _Object$getOwnPropertyDescriptor(_class$6, 'install'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'hasInstalled', [_dec3$4], _Object$getOwnPropertyDescriptor(_class$6, 'hasInstalled'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'uninstall', [_dec4$4], _Object$getOwnPropertyDescriptor(_class$6, 'uninstall'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'getPluginConfig', [_dec5$3], _Object$getOwnPropertyDescriptor(_class$6, 'getPluginConfig'), _class$6)), _class$6));
+}(), (_applyDecoratedDescriptor$5(_class$6.prototype, 'unuse', [_dec$6], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'unuse'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'hasUsed', [_dec2$5], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'hasUsed'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'throwError', [toxicDecorators.autobind], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'throwError'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'inPictureInPictureMode', [toxicDecorators.nonenumerable], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'inPictureInPictureMode'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6, 'install', [_dec3$4], _Object$getOwnPropertyDescriptor(_class$6, 'install'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'hasInstalled', [_dec4$4], _Object$getOwnPropertyDescriptor(_class$6, 'hasInstalled'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'uninstall', [_dec5$3], _Object$getOwnPropertyDescriptor(_class$6, 'uninstall'), _class$6), _applyDecoratedDescriptor$5(_class$6, 'getPluginConfig', [_dec6$3], _Object$getOwnPropertyDescriptor(_class$6, 'getPluginConfig'), _class$6)), _class$6));
 
 var _class$7, _descriptor$1;
 
@@ -4096,7 +4227,7 @@ var Chimee = (_dec$7 = toxicDecorators.autobindClass(), _dec$7(_class$8 = (_clas
 }), _descriptor2$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'version', [toxicDecorators.frozen], {
   enumerable: true,
   initializer: function initializer() {
-    return '0.10.1';
+    return '0.11.0';
   }
 }), _descriptor3$1 = _applyDecoratedDescriptor$7(_class2$1.prototype, 'config', [toxicDecorators.frozen], {
   enumerable: true,
@@ -4169,5 +4300,142 @@ var Chimee = (_dec$7 = toxicDecorators.autobindClass(), _dec$7(_class$8 = (_clas
     return _init9;
   }
 }), _class2$1)), _class2$1)) || _class$8);
+
+// $FlowFixMe: we can extend create here
+
+var PictureInPicture = function (_Plugin) {
+  _inherits(PictureInPicture, _Plugin);
+
+  function PictureInPicture(config) {
+    var _ref;
+
+    _classCallCheck(this, PictureInPicture);
+
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    var _this = _possibleConstructorReturn(this, (_ref = PictureInPicture.__proto__ || _Object$getPrototypeOf(PictureInPicture)).call.apply(_ref, [this, _Object$assign(config, {
+      el: document.createElement('canvas'),
+      penetrate: true,
+      inner: false
+    })].concat(_toConsumableArray(args))));
+
+    _this.isShown = false;
+    _this.hasStopRender = true;
+    _this.myStyle = {
+      position: 'fixed',
+      top: '',
+      left: '',
+      right: 0,
+      bottom: 0,
+      width: 277,
+      height: 156
+    };
+    return _this;
+  }
+
+  _createClass(PictureInPicture, [{
+    key: 'create',
+    value: function create() {
+      chimeeHelper.addClassName(this.$dom, 'chimee-plugin-picture-in-picture');
+      this.getContext();
+    }
+  }, {
+    key: 'inited',
+    value: function inited() {
+      this.setStyle();
+    }
+  }, {
+    key: 'show',
+    value: function show() {
+      chimeeHelper.setStyle(this.$dom, 'display', 'block');
+      this.isShown = true;
+    }
+  }, {
+    key: 'hide',
+    value: function hide() {
+      chimeeHelper.setStyle(this.$dom, 'display', 'none');
+      this.isShown = false;
+    }
+  }, {
+    key: 'closeCurrentPicture',
+    value: function closeCurrentPicture() {
+      if (window.__chimee_picture_in_picture && window.__chimee_picture_in_picture.plugin) {
+        window.__chimee_picture_in_picture.plugin.exitPictureInPicture();
+      }
+    }
+  }, {
+    key: 'requestPictureInPicture',
+    value: function requestPictureInPicture() {
+      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          _ref2$autoplay = _ref2.autoplay,
+          autoplay = _ref2$autoplay === undefined ? false : _ref2$autoplay;
+
+      this.closeCurrentPicture();
+      this.show();
+      this.poller(this.render);
+      if (autoplay && this.paused) this.play();else if (!autoplay && !this.paused) this.pause();
+      window.__chimee_picture_in_picture = {
+        plugin: this,
+        window: this.$dom,
+        element: this.$video
+      };
+    }
+  }, {
+    key: 'exitPictureInPicture',
+    value: function exitPictureInPicture() {
+      this.hide();
+      window.__chimee_picture_in_picture = {};
+    }
+  }, {
+    key: 'getContext',
+    value: function getContext() {
+      this.ctx = this.$dom.getContext('2d');
+    }
+  }, {
+    key: 'poller',
+    value: function poller(fn) {
+      var _this2 = this;
+
+      requestAnimationFrame(function () {
+        fn.call(_this2);
+        if (_this2.isShown) {
+          _this2.poller(fn);
+          _this2.hasStopRender = false;
+        } else {
+          _this2.hasStopRender = true;
+        }
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      if (this.isShown) {
+        this.ctx.drawImage(this.$video, 0, 0, this.myStyle.width, this.myStyle.height);
+      }
+    }
+  }, {
+    key: 'setStyle',
+    value: function setStyle() {
+      var styles = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      _Object$assign(this.myStyle, styles);
+      this.$dom.setAttribute('width', this.myStyle.width.toString());
+      this.$dom.setAttribute('height', this.myStyle.height.toString());
+      for (var key in this.myStyle) {
+        if (key === 'width' || key === 'height') continue;
+        var value = this.myStyle[key];
+        chimeeHelper.setStyle(this.$dom, key, value);
+      }
+    }
+  }]);
+
+  return PictureInPicture;
+}(Plugin);
+
+var pictureInPicture = /*#__PURE__*/Object.freeze({
+  default: PictureInPicture
+});
 
 module.exports = Chimee;

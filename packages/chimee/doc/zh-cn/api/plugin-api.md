@@ -599,6 +599,26 @@ this.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4', option);
 option.abort = true;
 ```
 
+### requestPictureInPicture（v0.11.0后支持）
+
+画中画指 [Picture-in-Picture Api](https://wicg.github.io/picture-in-picture/)。点击[此处](https://googlechrome.github.io/samples/picture-in-picture/)可观看 google chrome 最新的 demo。
+
+为此， chimee 也给用户提供了相关的 api。
+
+在不支持画中画功能的浏览器上，我们使用 canvas 模拟画中画图标。
+
+该函数为异步函数，无需传入参数。
+
+调用此方法会触发`enterpictureinpicture`事件。
+
+### exitPictureInPicture（v0.11.0后支持）
+
+退出画中画模式。
+
+同步函数，无需传入参数。
+
+调用此方法会触发`leavepictureinpicture`事件。
+
 ## video元素相关属性
 
 > \* 前缀为 chimee 自定义属性
@@ -816,6 +836,12 @@ const player = new Chimee({
 
 - 类型：`boolean`
 - 默认：`false`
+
+### inPictureInPictureMode（v0.11.0后支持）
+
+* 类型：`boolean`
+* 含义：该对象是否在画中画模式中
+* 默认：`false`
 
 > 还有更多属性可以直接获取，如下
 >

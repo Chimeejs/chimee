@@ -9,6 +9,7 @@ export default @autobindClass() class VideoWrapper {
   __dispatcher: Dispatcher;
   __unwatchHandlers: Array<Function>;
   __events: PluginEvents;
+  play: Function;
   __events = {};
   __unwatchHandlers = [];
   __wrapAsVideo(videoConfig: VideoConfig) {
@@ -367,6 +368,32 @@ export default @autobindClass() class VideoWrapper {
       }
     }
     return this.__dispatcher.dom[method + 'Attr'](...args);
+  }
+
+  requestPictureInPicture() {
+    return this.__dispatcher.binder.emit({
+      target: 'video',
+      name: 'enterpictureinpicture',
+      id: this.__id,
+    });
+  }
+
+  exitPictureInPicture() {
+    return this.__dispatcher.binder.emit({
+      target: 'video',
+      name: 'leavepictureinpicture',
+      id: this.__id,
+    });
+  }
+
+  @nonenumerable
+  get inPictureInPictureMode(): boolean {
+    return this.__dispatcher.inPictureInPictureMode;
+  }
+
+  @nonenumerable
+  get pictureInPictureWindow(): void | Object {
+    return window.__chimee_picture_in_picture_window;
   }
 
   @nonenumerable

@@ -126,4 +126,71 @@ describe('load', () => {
     expect(player.__dispatcher.kernel).not.toBe(oldKernel);
     expect(player.src).toBe('');
   });
+
+  test('should not block normal video event at the first auto load', () => {
+    const fn = jest.fn();
+    const plugin = {
+      name: 'test',
+      events: {
+        play() {
+          fn();
+        },
+      },
+    };
+    Chimee.install(plugin);
+    const player = new Chimee({
+      wrapper: document.createElement('div'),
+      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+      plugins: [ plugin.name ],
+    });
+    player.$video.dispatchEvent(new Event('play'));
+    expect(fn).toHaveBeenCalledTimes(1);
+    player.destroy();
+  });
+
+  test('should not switch kernel at the first auto load', () => {
+    let originalVideo;
+    const plugin = {
+      name: 'test',
+      create() {
+        originalVideo = this.$video;
+      },
+    };
+    Chimee.install(plugin);
+    const player = new Chimee({
+      wrapper: document.createElement('div'),
+      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+      plugins: [ plugin.name ],
+    });
+    expect(originalVideo === player.$video).toBe(true);
+    player.destroy();
+  });
+
+  test('should not block normal video event at the load event', done => {
+    const plugin = {
+      name: 'test',
+      events: {
+        play() {
+          /* eslint-disable */
+          player.destroy();
+          /* eslint-enable */
+          done();
+        },
+      },
+    };
+    Chimee.install(plugin);
+    const player = new Chimee({
+      wrapper: document.createElement('div'),
+      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+      plugins: [ plugin.name ],
+    });
+    player.load('http://yunxianchang.live.ujne7.com/vod-system-bj/79_3041054cc65-ae8c-4b63-8937-5ccb05f79720.m3u8', {
+      box: 'hls',
+      preset: {
+        hls: ChimeeKernelHls,
+      },
+    }).then(() => {
+      player.$video.dispatchEvent(new Event('play'));
+    });
+  });
 });

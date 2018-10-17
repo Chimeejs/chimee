@@ -1,6 +1,6 @@
 
 /**
- * chimee v0.10.1
+ * chimee v0.11.0
  * (c) 2017-2018 toxic-johann
  * Released under MIT
  */
@@ -314,7 +314,7 @@
 	  return store[key] || (store[key] = value !== undefined ? value : {});
 	})('versions', []).push({
 	  version: _core.version,
-	  mode: 'pure',
+	  mode: _library ? 'pure' : 'global',
 	  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
 	});
 	});
@@ -576,6 +576,8 @@
 	    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
 	      // Set @@toStringTag to native iterators
 	      _setToStringTag(IteratorPrototype, TAG, true);
+	      // fix for some old engines
+	      if (!_library && typeof IteratorPrototype[ITERATOR] != 'function') _hide(IteratorPrototype, ITERATOR, returnThis);
 	    }
 	  }
 	  // fix Array#{values, @@iterator}.name in V8 / FF
@@ -584,7 +586,7 @@
 	    $default = function values() { return $native.call(this); };
 	  }
 	  // Define iterator
-	  if ((FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+	  if ((!_library || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
 	    _hide(proto, ITERATOR, $default);
 	  }
 	  // Plug for library
@@ -1447,52 +1449,770 @@
 
 	var _Object$keys = unwrapExports(keys$1);
 
-	// 19.1.2.1 Object.assign(target, source, ...)
+	var runtime = createCommonjsModule(function (module) {
+	/**
+	 * Copyright (c) 2014-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
 
+	!(function(global) {
 
+	  var Op = Object.prototype;
+	  var hasOwn = Op.hasOwnProperty;
+	  var undefined; // More compressible than void 0.
+	  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+	  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+	  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+	  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+	  var runtime = global.regeneratorRuntime;
+	  if (runtime) {
+	    {
+	      // If regeneratorRuntime is defined globally and we're in a module,
+	      // make the exports object identical to regeneratorRuntime.
+	      module.exports = runtime;
+	    }
+	    // Don't bother evaluating the rest of this file if the runtime was
+	    // already defined globally.
+	    return;
+	  }
 
+	  // Define the runtime globally (as expected by generated code) as either
+	  // module.exports (if we're in a module) or a new, empty object.
+	  runtime = global.regeneratorRuntime = module.exports;
 
+	  function wrap(innerFn, outerFn, self, tryLocsList) {
+	    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+	    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+	    var generator = Object.create(protoGenerator.prototype);
+	    var context = new Context(tryLocsList || []);
 
-	var $assign = Object.assign;
+	    // The ._invoke method unifies the implementations of the .next,
+	    // .throw, and .return methods.
+	    generator._invoke = makeInvokeMethod(innerFn, self, context);
 
-	// should work with symbols and should have deterministic property order (V8 bug)
-	var _objectAssign = !$assign || _fails(function () {
-	  var A = {};
-	  var B = {};
-	  // eslint-disable-next-line no-undef
-	  var S = Symbol();
-	  var K = 'abcdefghijklmnopqrst';
-	  A[S] = 7;
-	  K.split('').forEach(function (k) { B[k] = k; });
-	  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
-	}) ? function assign(target, source) { // eslint-disable-line no-unused-vars
-	  var T = _toObject(target);
-	  var aLen = arguments.length;
-	  var index = 1;
-	  var getSymbols = _objectGops.f;
-	  var isEnum = _objectPie.f;
-	  while (aLen > index) {
-	    var S = _iobject(arguments[index++]);
-	    var keys = getSymbols ? _objectKeys(S).concat(getSymbols(S)) : _objectKeys(S);
-	    var length = keys.length;
-	    var j = 0;
-	    var key;
-	    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
-	  } return T;
-	} : $assign;
+	    return generator;
+	  }
+	  runtime.wrap = wrap;
 
-	// 19.1.3.1 Object.assign(target, source)
+	  // Try/catch helper to minimize deoptimizations. Returns a completion
+	  // record like context.tryEntries[i].completion. This interface could
+	  // have been (and was previously) designed to take a closure to be
+	  // invoked without arguments, but in all the cases we care about we
+	  // already have an existing method we want to call, so there's no need
+	  // to create a new function object. We can even get away with assuming
+	  // the method takes exactly one argument, since that happens to be true
+	  // in every case, so we don't have to touch the arguments object. The
+	  // only additional allocation required is the completion record, which
+	  // has a stable shape and so hopefully should be cheap to allocate.
+	  function tryCatch(fn, obj, arg) {
+	    try {
+	      return { type: "normal", arg: fn.call(obj, arg) };
+	    } catch (err) {
+	      return { type: "throw", arg: err };
+	    }
+	  }
 
+	  var GenStateSuspendedStart = "suspendedStart";
+	  var GenStateSuspendedYield = "suspendedYield";
+	  var GenStateExecuting = "executing";
+	  var GenStateCompleted = "completed";
 
-	_export(_export.S + _export.F, 'Object', { assign: _objectAssign });
+	  // Returning this object from the innerFn has the same effect as
+	  // breaking out of the dispatch switch statement.
+	  var ContinueSentinel = {};
 
-	var assign = _core.Object.assign;
+	  // Dummy constructor functions that we use as the .constructor and
+	  // .constructor.prototype properties for functions that return Generator
+	  // objects. For full spec compliance, you may wish to configure your
+	  // minifier not to mangle the names of these two functions.
+	  function Generator() {}
+	  function GeneratorFunction() {}
+	  function GeneratorFunctionPrototype() {}
 
-	var assign$1 = createCommonjsModule(function (module) {
-	module.exports = { "default": assign, __esModule: true };
+	  // This is a polyfill for %IteratorPrototype% for environments that
+	  // don't natively support it.
+	  var IteratorPrototype = {};
+	  IteratorPrototype[iteratorSymbol] = function () {
+	    return this;
+	  };
+
+	  var getProto = Object.getPrototypeOf;
+	  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+	  if (NativeIteratorPrototype &&
+	      NativeIteratorPrototype !== Op &&
+	      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+	    // This environment has a native %IteratorPrototype%; use it instead
+	    // of the polyfill.
+	    IteratorPrototype = NativeIteratorPrototype;
+	  }
+
+	  var Gp = GeneratorFunctionPrototype.prototype =
+	    Generator.prototype = Object.create(IteratorPrototype);
+	  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+	  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+	  GeneratorFunctionPrototype[toStringTagSymbol] =
+	    GeneratorFunction.displayName = "GeneratorFunction";
+
+	  // Helper for defining the .next, .throw, and .return methods of the
+	  // Iterator interface in terms of a single ._invoke method.
+	  function defineIteratorMethods(prototype) {
+	    ["next", "throw", "return"].forEach(function(method) {
+	      prototype[method] = function(arg) {
+	        return this._invoke(method, arg);
+	      };
+	    });
+	  }
+
+	  runtime.isGeneratorFunction = function(genFun) {
+	    var ctor = typeof genFun === "function" && genFun.constructor;
+	    return ctor
+	      ? ctor === GeneratorFunction ||
+	        // For the native GeneratorFunction constructor, the best we can
+	        // do is to check its .name property.
+	        (ctor.displayName || ctor.name) === "GeneratorFunction"
+	      : false;
+	  };
+
+	  runtime.mark = function(genFun) {
+	    if (Object.setPrototypeOf) {
+	      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+	    } else {
+	      genFun.__proto__ = GeneratorFunctionPrototype;
+	      if (!(toStringTagSymbol in genFun)) {
+	        genFun[toStringTagSymbol] = "GeneratorFunction";
+	      }
+	    }
+	    genFun.prototype = Object.create(Gp);
+	    return genFun;
+	  };
+
+	  // Within the body of any async function, `await x` is transformed to
+	  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+	  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+	  // meant to be awaited.
+	  runtime.awrap = function(arg) {
+	    return { __await: arg };
+	  };
+
+	  function AsyncIterator(generator) {
+	    function invoke(method, arg, resolve, reject) {
+	      var record = tryCatch(generator[method], generator, arg);
+	      if (record.type === "throw") {
+	        reject(record.arg);
+	      } else {
+	        var result = record.arg;
+	        var value = result.value;
+	        if (value &&
+	            typeof value === "object" &&
+	            hasOwn.call(value, "__await")) {
+	          return Promise.resolve(value.__await).then(function(value) {
+	            invoke("next", value, resolve, reject);
+	          }, function(err) {
+	            invoke("throw", err, resolve, reject);
+	          });
+	        }
+
+	        return Promise.resolve(value).then(function(unwrapped) {
+	          // When a yielded Promise is resolved, its final value becomes
+	          // the .value of the Promise<{value,done}> result for the
+	          // current iteration. If the Promise is rejected, however, the
+	          // result for this iteration will be rejected with the same
+	          // reason. Note that rejections of yielded Promises are not
+	          // thrown back into the generator function, as is the case
+	          // when an awaited Promise is rejected. This difference in
+	          // behavior between yield and await is important, because it
+	          // allows the consumer to decide what to do with the yielded
+	          // rejection (swallow it and continue, manually .throw it back
+	          // into the generator, abandon iteration, whatever). With
+	          // await, by contrast, there is no opportunity to examine the
+	          // rejection reason outside the generator function, so the
+	          // only option is to throw it from the await expression, and
+	          // let the generator function handle the exception.
+	          result.value = unwrapped;
+	          resolve(result);
+	        }, reject);
+	      }
+	    }
+
+	    var previousPromise;
+
+	    function enqueue(method, arg) {
+	      function callInvokeWithMethodAndArg() {
+	        return new Promise(function(resolve, reject) {
+	          invoke(method, arg, resolve, reject);
+	        });
+	      }
+
+	      return previousPromise =
+	        // If enqueue has been called before, then we want to wait until
+	        // all previous Promises have been resolved before calling invoke,
+	        // so that results are always delivered in the correct order. If
+	        // enqueue has not been called before, then it is important to
+	        // call invoke immediately, without waiting on a callback to fire,
+	        // so that the async generator function has the opportunity to do
+	        // any necessary setup in a predictable way. This predictability
+	        // is why the Promise constructor synchronously invokes its
+	        // executor callback, and why async functions synchronously
+	        // execute code before the first await. Since we implement simple
+	        // async functions in terms of async generators, it is especially
+	        // important to get this right, even though it requires care.
+	        previousPromise ? previousPromise.then(
+	          callInvokeWithMethodAndArg,
+	          // Avoid propagating failures to Promises returned by later
+	          // invocations of the iterator.
+	          callInvokeWithMethodAndArg
+	        ) : callInvokeWithMethodAndArg();
+	    }
+
+	    // Define the unified helper method that is used to implement .next,
+	    // .throw, and .return (see defineIteratorMethods).
+	    this._invoke = enqueue;
+	  }
+
+	  defineIteratorMethods(AsyncIterator.prototype);
+	  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+	    return this;
+	  };
+	  runtime.AsyncIterator = AsyncIterator;
+
+	  // Note that simple async functions are implemented on top of
+	  // AsyncIterator objects; they just return a Promise for the value of
+	  // the final result produced by the iterator.
+	  runtime.async = function(innerFn, outerFn, self, tryLocsList) {
+	    var iter = new AsyncIterator(
+	      wrap(innerFn, outerFn, self, tryLocsList)
+	    );
+
+	    return runtime.isGeneratorFunction(outerFn)
+	      ? iter // If outerFn is a generator, return the full iterator.
+	      : iter.next().then(function(result) {
+	          return result.done ? result.value : iter.next();
+	        });
+	  };
+
+	  function makeInvokeMethod(innerFn, self, context) {
+	    var state = GenStateSuspendedStart;
+
+	    return function invoke(method, arg) {
+	      if (state === GenStateExecuting) {
+	        throw new Error("Generator is already running");
+	      }
+
+	      if (state === GenStateCompleted) {
+	        if (method === "throw") {
+	          throw arg;
+	        }
+
+	        // Be forgiving, per 25.3.3.3.3 of the spec:
+	        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+	        return doneResult();
+	      }
+
+	      context.method = method;
+	      context.arg = arg;
+
+	      while (true) {
+	        var delegate = context.delegate;
+	        if (delegate) {
+	          var delegateResult = maybeInvokeDelegate(delegate, context);
+	          if (delegateResult) {
+	            if (delegateResult === ContinueSentinel) continue;
+	            return delegateResult;
+	          }
+	        }
+
+	        if (context.method === "next") {
+	          // Setting context._sent for legacy support of Babel's
+	          // function.sent implementation.
+	          context.sent = context._sent = context.arg;
+
+	        } else if (context.method === "throw") {
+	          if (state === GenStateSuspendedStart) {
+	            state = GenStateCompleted;
+	            throw context.arg;
+	          }
+
+	          context.dispatchException(context.arg);
+
+	        } else if (context.method === "return") {
+	          context.abrupt("return", context.arg);
+	        }
+
+	        state = GenStateExecuting;
+
+	        var record = tryCatch(innerFn, self, context);
+	        if (record.type === "normal") {
+	          // If an exception is thrown from innerFn, we leave state ===
+	          // GenStateExecuting and loop back for another invocation.
+	          state = context.done
+	            ? GenStateCompleted
+	            : GenStateSuspendedYield;
+
+	          if (record.arg === ContinueSentinel) {
+	            continue;
+	          }
+
+	          return {
+	            value: record.arg,
+	            done: context.done
+	          };
+
+	        } else if (record.type === "throw") {
+	          state = GenStateCompleted;
+	          // Dispatch the exception by looping back around to the
+	          // context.dispatchException(context.arg) call above.
+	          context.method = "throw";
+	          context.arg = record.arg;
+	        }
+	      }
+	    };
+	  }
+
+	  // Call delegate.iterator[context.method](context.arg) and handle the
+	  // result, either by returning a { value, done } result from the
+	  // delegate iterator, or by modifying context.method and context.arg,
+	  // setting context.delegate to null, and returning the ContinueSentinel.
+	  function maybeInvokeDelegate(delegate, context) {
+	    var method = delegate.iterator[context.method];
+	    if (method === undefined) {
+	      // A .throw or .return when the delegate iterator has no .throw
+	      // method always terminates the yield* loop.
+	      context.delegate = null;
+
+	      if (context.method === "throw") {
+	        if (delegate.iterator.return) {
+	          // If the delegate iterator has a return method, give it a
+	          // chance to clean up.
+	          context.method = "return";
+	          context.arg = undefined;
+	          maybeInvokeDelegate(delegate, context);
+
+	          if (context.method === "throw") {
+	            // If maybeInvokeDelegate(context) changed context.method from
+	            // "return" to "throw", let that override the TypeError below.
+	            return ContinueSentinel;
+	          }
+	        }
+
+	        context.method = "throw";
+	        context.arg = new TypeError(
+	          "The iterator does not provide a 'throw' method");
+	      }
+
+	      return ContinueSentinel;
+	    }
+
+	    var record = tryCatch(method, delegate.iterator, context.arg);
+
+	    if (record.type === "throw") {
+	      context.method = "throw";
+	      context.arg = record.arg;
+	      context.delegate = null;
+	      return ContinueSentinel;
+	    }
+
+	    var info = record.arg;
+
+	    if (! info) {
+	      context.method = "throw";
+	      context.arg = new TypeError("iterator result is not an object");
+	      context.delegate = null;
+	      return ContinueSentinel;
+	    }
+
+	    if (info.done) {
+	      // Assign the result of the finished delegate to the temporary
+	      // variable specified by delegate.resultName (see delegateYield).
+	      context[delegate.resultName] = info.value;
+
+	      // Resume execution at the desired location (see delegateYield).
+	      context.next = delegate.nextLoc;
+
+	      // If context.method was "throw" but the delegate handled the
+	      // exception, let the outer generator proceed normally. If
+	      // context.method was "next", forget context.arg since it has been
+	      // "consumed" by the delegate iterator. If context.method was
+	      // "return", allow the original .return call to continue in the
+	      // outer generator.
+	      if (context.method !== "return") {
+	        context.method = "next";
+	        context.arg = undefined;
+	      }
+
+	    } else {
+	      // Re-yield the result returned by the delegate method.
+	      return info;
+	    }
+
+	    // The delegate iterator is finished, so forget it and continue with
+	    // the outer generator.
+	    context.delegate = null;
+	    return ContinueSentinel;
+	  }
+
+	  // Define Generator.prototype.{next,throw,return} in terms of the
+	  // unified ._invoke helper method.
+	  defineIteratorMethods(Gp);
+
+	  Gp[toStringTagSymbol] = "Generator";
+
+	  // A Generator should always return itself as the iterator object when the
+	  // @@iterator function is called on it. Some browsers' implementations of the
+	  // iterator prototype chain incorrectly implement this, causing the Generator
+	  // object to not be returned from this call. This ensures that doesn't happen.
+	  // See https://github.com/facebook/regenerator/issues/274 for more details.
+	  Gp[iteratorSymbol] = function() {
+	    return this;
+	  };
+
+	  Gp.toString = function() {
+	    return "[object Generator]";
+	  };
+
+	  function pushTryEntry(locs) {
+	    var entry = { tryLoc: locs[0] };
+
+	    if (1 in locs) {
+	      entry.catchLoc = locs[1];
+	    }
+
+	    if (2 in locs) {
+	      entry.finallyLoc = locs[2];
+	      entry.afterLoc = locs[3];
+	    }
+
+	    this.tryEntries.push(entry);
+	  }
+
+	  function resetTryEntry(entry) {
+	    var record = entry.completion || {};
+	    record.type = "normal";
+	    delete record.arg;
+	    entry.completion = record;
+	  }
+
+	  function Context(tryLocsList) {
+	    // The root entry object (effectively a try statement without a catch
+	    // or a finally block) gives us a place to store values thrown from
+	    // locations where there is no enclosing try statement.
+	    this.tryEntries = [{ tryLoc: "root" }];
+	    tryLocsList.forEach(pushTryEntry, this);
+	    this.reset(true);
+	  }
+
+	  runtime.keys = function(object) {
+	    var keys = [];
+	    for (var key in object) {
+	      keys.push(key);
+	    }
+	    keys.reverse();
+
+	    // Rather than returning an object with a next method, we keep
+	    // things simple and return the next function itself.
+	    return function next() {
+	      while (keys.length) {
+	        var key = keys.pop();
+	        if (key in object) {
+	          next.value = key;
+	          next.done = false;
+	          return next;
+	        }
+	      }
+
+	      // To avoid creating an additional object, we just hang the .value
+	      // and .done properties off the next function object itself. This
+	      // also ensures that the minifier will not anonymize the function.
+	      next.done = true;
+	      return next;
+	    };
+	  };
+
+	  function values(iterable) {
+	    if (iterable) {
+	      var iteratorMethod = iterable[iteratorSymbol];
+	      if (iteratorMethod) {
+	        return iteratorMethod.call(iterable);
+	      }
+
+	      if (typeof iterable.next === "function") {
+	        return iterable;
+	      }
+
+	      if (!isNaN(iterable.length)) {
+	        var i = -1, next = function next() {
+	          while (++i < iterable.length) {
+	            if (hasOwn.call(iterable, i)) {
+	              next.value = iterable[i];
+	              next.done = false;
+	              return next;
+	            }
+	          }
+
+	          next.value = undefined;
+	          next.done = true;
+
+	          return next;
+	        };
+
+	        return next.next = next;
+	      }
+	    }
+
+	    // Return an iterator with no values.
+	    return { next: doneResult };
+	  }
+	  runtime.values = values;
+
+	  function doneResult() {
+	    return { value: undefined, done: true };
+	  }
+
+	  Context.prototype = {
+	    constructor: Context,
+
+	    reset: function(skipTempReset) {
+	      this.prev = 0;
+	      this.next = 0;
+	      // Resetting context._sent for legacy support of Babel's
+	      // function.sent implementation.
+	      this.sent = this._sent = undefined;
+	      this.done = false;
+	      this.delegate = null;
+
+	      this.method = "next";
+	      this.arg = undefined;
+
+	      this.tryEntries.forEach(resetTryEntry);
+
+	      if (!skipTempReset) {
+	        for (var name in this) {
+	          // Not sure about the optimal order of these conditions:
+	          if (name.charAt(0) === "t" &&
+	              hasOwn.call(this, name) &&
+	              !isNaN(+name.slice(1))) {
+	            this[name] = undefined;
+	          }
+	        }
+	      }
+	    },
+
+	    stop: function() {
+	      this.done = true;
+
+	      var rootEntry = this.tryEntries[0];
+	      var rootRecord = rootEntry.completion;
+	      if (rootRecord.type === "throw") {
+	        throw rootRecord.arg;
+	      }
+
+	      return this.rval;
+	    },
+
+	    dispatchException: function(exception) {
+	      if (this.done) {
+	        throw exception;
+	      }
+
+	      var context = this;
+	      function handle(loc, caught) {
+	        record.type = "throw";
+	        record.arg = exception;
+	        context.next = loc;
+
+	        if (caught) {
+	          // If the dispatched exception was caught by a catch block,
+	          // then let that catch block handle the exception normally.
+	          context.method = "next";
+	          context.arg = undefined;
+	        }
+
+	        return !! caught;
+	      }
+
+	      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+	        var entry = this.tryEntries[i];
+	        var record = entry.completion;
+
+	        if (entry.tryLoc === "root") {
+	          // Exception thrown outside of any try block that could handle
+	          // it, so set the completion value of the entire function to
+	          // throw the exception.
+	          return handle("end");
+	        }
+
+	        if (entry.tryLoc <= this.prev) {
+	          var hasCatch = hasOwn.call(entry, "catchLoc");
+	          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+	          if (hasCatch && hasFinally) {
+	            if (this.prev < entry.catchLoc) {
+	              return handle(entry.catchLoc, true);
+	            } else if (this.prev < entry.finallyLoc) {
+	              return handle(entry.finallyLoc);
+	            }
+
+	          } else if (hasCatch) {
+	            if (this.prev < entry.catchLoc) {
+	              return handle(entry.catchLoc, true);
+	            }
+
+	          } else if (hasFinally) {
+	            if (this.prev < entry.finallyLoc) {
+	              return handle(entry.finallyLoc);
+	            }
+
+	          } else {
+	            throw new Error("try statement without catch or finally");
+	          }
+	        }
+	      }
+	    },
+
+	    abrupt: function(type, arg) {
+	      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+	        var entry = this.tryEntries[i];
+	        if (entry.tryLoc <= this.prev &&
+	            hasOwn.call(entry, "finallyLoc") &&
+	            this.prev < entry.finallyLoc) {
+	          var finallyEntry = entry;
+	          break;
+	        }
+	      }
+
+	      if (finallyEntry &&
+	          (type === "break" ||
+	           type === "continue") &&
+	          finallyEntry.tryLoc <= arg &&
+	          arg <= finallyEntry.finallyLoc) {
+	        // Ignore the finally entry if control is not jumping to a
+	        // location outside the try/catch block.
+	        finallyEntry = null;
+	      }
+
+	      var record = finallyEntry ? finallyEntry.completion : {};
+	      record.type = type;
+	      record.arg = arg;
+
+	      if (finallyEntry) {
+	        this.method = "next";
+	        this.next = finallyEntry.finallyLoc;
+	        return ContinueSentinel;
+	      }
+
+	      return this.complete(record);
+	    },
+
+	    complete: function(record, afterLoc) {
+	      if (record.type === "throw") {
+	        throw record.arg;
+	      }
+
+	      if (record.type === "break" ||
+	          record.type === "continue") {
+	        this.next = record.arg;
+	      } else if (record.type === "return") {
+	        this.rval = this.arg = record.arg;
+	        this.method = "return";
+	        this.next = "end";
+	      } else if (record.type === "normal" && afterLoc) {
+	        this.next = afterLoc;
+	      }
+
+	      return ContinueSentinel;
+	    },
+
+	    finish: function(finallyLoc) {
+	      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+	        var entry = this.tryEntries[i];
+	        if (entry.finallyLoc === finallyLoc) {
+	          this.complete(entry.completion, entry.afterLoc);
+	          resetTryEntry(entry);
+	          return ContinueSentinel;
+	        }
+	      }
+	    },
+
+	    "catch": function(tryLoc) {
+	      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+	        var entry = this.tryEntries[i];
+	        if (entry.tryLoc === tryLoc) {
+	          var record = entry.completion;
+	          if (record.type === "throw") {
+	            var thrown = record.arg;
+	            resetTryEntry(entry);
+	          }
+	          return thrown;
+	        }
+	      }
+
+	      // The context.catch method must only be called with a location
+	      // argument that corresponds to a known catch block.
+	      throw new Error("illegal catch attempt");
+	    },
+
+	    delegateYield: function(iterable, resultName, nextLoc) {
+	      this.delegate = {
+	        iterator: values(iterable),
+	        resultName: resultName,
+	        nextLoc: nextLoc
+	      };
+
+	      if (this.method === "next") {
+	        // Deliberately forget the last sent value so that we don't
+	        // accidentally pass it on to the delegate.
+	        this.arg = undefined;
+	      }
+
+	      return ContinueSentinel;
+	    }
+	  };
+	})(
+	  // In sloppy mode, unbound `this` refers to the global object, fallback to
+	  // Function constructor if we're in global strict mode. That is sadly a form
+	  // of indirect eval which violates Content Security Policy.
+	  (function() { return this })() || Function("return this")()
+	);
 	});
 
-	var _Object$assign = unwrapExports(assign$1);
+	/**
+	 * Copyright (c) 2014-present, Facebook, Inc.
+	 *
+	 * This source code is licensed under the MIT license found in the
+	 * LICENSE file in the root directory of this source tree.
+	 */
+
+	// This method of obtaining a reference to the global object needs to be
+	// kept identical to the way it is obtained in runtime.js
+	var g = (function() { return this })() || Function("return this")();
+
+	// Use `getOwnPropertyNames` because not all browsers support calling
+	// `hasOwnProperty` on the global `self` object in a worker. See #183.
+	var hadRuntime = g.regeneratorRuntime &&
+	  Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
+
+	// Save the old regeneratorRuntime in case it needs to be restored later.
+	var oldRuntime = hadRuntime && g.regeneratorRuntime;
+
+	// Force reevalutation of runtime.js.
+	g.regeneratorRuntime = undefined;
+
+	var runtimeModule = runtime;
+
+	if (hadRuntime) {
+	  // Restore the original runtime.
+	  g.regeneratorRuntime = oldRuntime;
+	} else {
+	  // Remove the global property added by runtime.js.
+	  try {
+	    delete g.regeneratorRuntime;
+	  } catch(e) {
+	    g.regeneratorRuntime = undefined;
+	  }
+	}
+
+	var regenerator = runtimeModule;
 
 	var _anInstance = function (it, Constructor, name, forbiddenField) {
 	  if (!(it instanceof Constructor) || (forbiddenField !== undefined && forbiddenField in it)) {
@@ -1654,7 +2374,7 @@
 	var macrotask = _task.set;
 	var Observer = _global.MutationObserver || _global.WebKitMutationObserver;
 	var process$1 = _global.process;
-	var Promise = _global.Promise;
+	var Promise$1 = _global.Promise;
 	var isNode = _cof(process$1) == 'process';
 
 	var _microtask = function () {
@@ -1691,9 +2411,9 @@
 	      node.data = toggle = !toggle;
 	    };
 	  // environments with maybe non-completely correct, but existent Promise
-	  } else if (Promise && Promise.resolve) {
+	  } else if (Promise$1 && Promise$1.resolve) {
 	    // Promise.resolve without an argument throws an error in LG WebOS 2
-	    var promise = Promise.resolve(undefined);
+	    var promise = Promise$1.resolve(undefined);
 	    notify = function () {
 	      promise.then(flush);
 	    };
@@ -2109,6 +2829,95 @@
 	});
 
 	var _Promise = unwrapExports(promise$1);
+
+	var asyncToGenerator = createCommonjsModule(function (module, exports) {
+
+	exports.__esModule = true;
+
+
+
+	var _promise2 = _interopRequireDefault(promise$1);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (fn) {
+	  return function () {
+	    var gen = fn.apply(this, arguments);
+	    return new _promise2.default(function (resolve, reject) {
+	      function step(key, arg) {
+	        try {
+	          var info = gen[key](arg);
+	          var value = info.value;
+	        } catch (error) {
+	          reject(error);
+	          return;
+	        }
+
+	        if (info.done) {
+	          resolve(value);
+	        } else {
+	          return _promise2.default.resolve(value).then(function (value) {
+	            step("next", value);
+	          }, function (err) {
+	            step("throw", err);
+	          });
+	        }
+	      }
+
+	      return step("next");
+	    });
+	  };
+	};
+	});
+
+	var _asyncToGenerator = unwrapExports(asyncToGenerator);
+
+	// 19.1.2.1 Object.assign(target, source, ...)
+
+
+
+
+
+	var $assign = Object.assign;
+
+	// should work with symbols and should have deterministic property order (V8 bug)
+	var _objectAssign = !$assign || _fails(function () {
+	  var A = {};
+	  var B = {};
+	  // eslint-disable-next-line no-undef
+	  var S = Symbol();
+	  var K = 'abcdefghijklmnopqrst';
+	  A[S] = 7;
+	  K.split('').forEach(function (k) { B[k] = k; });
+	  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
+	}) ? function assign(target, source) { // eslint-disable-line no-unused-vars
+	  var T = _toObject(target);
+	  var aLen = arguments.length;
+	  var index = 1;
+	  var getSymbols = _objectGops.f;
+	  var isEnum = _objectPie.f;
+	  while (aLen > index) {
+	    var S = _iobject(arguments[index++]);
+	    var keys = getSymbols ? _objectKeys(S).concat(getSymbols(S)) : _objectKeys(S);
+	    var length = keys.length;
+	    var j = 0;
+	    var key;
+	    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
+	  } return T;
+	} : $assign;
+
+	// 19.1.3.1 Object.assign(target, source)
+
+
+	_export(_export.S + _export.F, 'Object', { assign: _objectAssign });
+
+	var assign = _core.Object.assign;
+
+	var assign$1 = createCommonjsModule(function (module) {
+	module.exports = { "default": assign, __esModule: true };
+	});
+
+	var _Object$assign = unwrapExports(assign$1);
 
 	// 20.1.2.3 Number.isInteger(number)
 
@@ -3556,13 +4365,13 @@
 	  }
 	});
 
-	var from = _core.Array.from;
+	var from_1 = _core.Array.from;
 
-	var from$1 = createCommonjsModule(function (module) {
-	module.exports = { "default": from, __esModule: true };
+	var from_1$1 = createCommonjsModule(function (module) {
+	module.exports = { "default": from_1, __esModule: true };
 	});
 
-	var _Array$from = unwrapExports(from$1);
+	var _Array$from = unwrapExports(from_1$1);
 
 	var toConsumableArray = createCommonjsModule(function (module, exports) {
 
@@ -3570,7 +4379,7 @@
 
 
 
-	var _from2 = _interopRequireDefault(from$1);
+	var _from2 = _interopRequireDefault(from_1$1);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4833,8 +5642,23 @@
 	var boxSuffixMap = {
 	  flv: '.flv',
 	  hls: '.m3u8',
-	  mp4: '.mp4'
+	  native: '.mp4'
 	};
+
+	// return the config box
+	// or choose the right one according to the src
+	function getLegalBox(_ref) {
+	  var src = _ref.src,
+	      box = _ref.box;
+
+	  if (isString(box) && box) return box;
+	  src = src.toLowerCase();
+	  for (var key in boxSuffixMap) {
+	    var suffix = boxSuffixMap[key];
+	    if (src.indexOf(suffix) > -1) return key;
+	  }
+	  return 'native';
+	}
 
 	var ChimeeKernel = function () {
 	  /**
@@ -4861,7 +5685,7 @@
 	    key: 'initVideoKernel',
 	    value: function initVideoKernel() {
 	      var config = this.config;
-	      var box = this.chooseBox(config);
+	      var box = getLegalBox(config);
 	      this.box = box;
 	      var VideoKernel = this.chooseVideoKernel(this.box, config.preset);
 
@@ -4875,24 +5699,6 @@
 	      if (customConfig) deepAssign(config, customConfig);
 
 	      this.videoKernel = new VideoKernel(this.videoElement, config, customConfig);
-	    }
-
-	    // return the config box
-	    // or choose the right one according to the src
-
-	  }, {
-	    key: 'chooseBox',
-	    value: function chooseBox(_ref) {
-	      var src = _ref.src,
-	          box = _ref.box;
-
-	      if (isString(box) && box) return box;
-	      src = src.toLowerCase();
-	      for (var key in boxSuffixMap) {
-	        var suffix = boxSuffixMap[key];
-	        if (src.indexOf(suffix) > -1) return key;
-	      }
-	      return 'native';
 	    }
 
 	    // choose the right video kernel according to the box setting
@@ -6710,7 +7516,7 @@
 
 	var _JSON$stringify = unwrapExports(stringify$1);
 
-	var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting'];
+	var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting', 'enterpictureinpicture', 'leavepictureinpicture'];
 	var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'error', 'ended', 'networkState', 'paused', 'readyState', 'seekable', 'sinkId', 'controlsList', 'tabIndex', 'dataset', 'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth'];
 	var domEvents = ['beforeinput', 'blur', 'click', 'compositionend', 'compositionstart', 'compositionupdate', 'dblclick', 'focus', 'focusin', 'focusout', 'input', 'keydown', 'keypress', 'keyup', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll', 'select', 'wheel', 'mousewheel', 'contextmenu', 'touchstart', 'touchmove', 'touchend', 'fullscreen'];
 	var esFullscreenEvents = ['fullscreenchange'];
@@ -6718,7 +7524,11 @@
 	var selfProcessorEvents = ['silentLoad', 'fullscreen'];
 	var mustListenVideoDomEvents = ['mouseenter', 'mouseleave'];
 	var kernelMethods = ['play', 'pause', 'seek', 'startLoad', 'stopLoad'];
-	var dispatcherMethods = ['load'];
+	var dispatcherEventMethodMap = {
+	  load: 'load',
+	  enterpictureinpicture: 'requestPictureInPicture',
+	  leavepictureinpicture: 'exitPictureInPicture'
+	};
 	var kernelEvents = ['mediaInfo', 'heartbeat', 'error'];
 	var domMethods = ['focus', 'fullscreen', 'requestFullscreen', 'exitFullscreen'];
 	var videoMethods = ['canPlayType', 'captureStream', 'setSinkId'];
@@ -6978,8 +7788,8 @@
 	      this.dom.setAttr('video', 'x5-video-player-type', val);
 	      return value;
 	    },
-	    get: function get() {
-	      return this.dom.getAttr('video', 'x5-video-player-type') ? 'h5' : undefined;
+	    get: function get(value) {
+	      return this.dispatcher.videoConfigReady && value || (this.dom.getAttr('video', 'x5-video-player-type') ? 'h5' : undefined);
 	    }
 	  })],
 	  xWebkitAirplay: [accessor({
@@ -7560,6 +8370,24 @@
 	      return (_dispatcher$dom3 = this.__dispatcher.dom)[method + 'Attr'].apply(_dispatcher$dom3, args);
 	    }
 	  }, {
+	    key: 'requestPictureInPicture',
+	    value: function requestPictureInPicture() {
+	      return this.__dispatcher.binder.emit({
+	        target: 'video',
+	        name: 'enterpictureinpicture',
+	        id: this.__id
+	      });
+	    }
+	  }, {
+	    key: 'exitPictureInPicture',
+	    value: function exitPictureInPicture() {
+	      return this.__dispatcher.binder.emit({
+	        target: 'video',
+	        name: 'leavepictureinpicture',
+	        id: this.__id
+	      });
+	    }
+	  }, {
 	    key: '__addEvents',
 	    value: function __addEvents(key, fn) {
 	      this.__events[key] = this.__events[key] || [];
@@ -7601,6 +8429,16 @@
 	        target: 'video',
 	        id: this.__id
 	      }, second);
+	    }
+	  }, {
+	    key: 'inPictureInPictureMode',
+	    get: function get() {
+	      return this.__dispatcher.inPictureInPictureMode;
+	    }
+	  }, {
+	    key: 'pictureInPictureWindow',
+	    get: function get() {
+	      return window.__chimee_picture_in_picture_window;
 	    }
 	  }, {
 	    key: '$plugins',
@@ -7657,7 +8495,7 @@
 	  }]);
 
 	  return VideoWrapper;
-	}(), (_applyDecoratedDescriptor$1(_class2.prototype, '$silentLoad', [_dec2$1], _Object$getOwnPropertyDescriptor(_class2.prototype, '$silentLoad'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$fullscreen', [_dec3, _dec4, _dec5], _Object$getOwnPropertyDescriptor(_class2.prototype, '$fullscreen'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emit'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emitSync'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2.prototype, '$on'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2.prototype, '$off'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2.prototype, '$once'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2.prototype, '$css'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2.prototype, '$attr'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$plugins'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$pluginOrder'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$wrapper'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$container'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$video'), _class2.prototype)), _class2)) || _class$1);
+	}(), (_applyDecoratedDescriptor$1(_class2.prototype, '$silentLoad', [_dec2$1], _Object$getOwnPropertyDescriptor(_class2.prototype, '$silentLoad'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$fullscreen', [_dec3, _dec4, _dec5], _Object$getOwnPropertyDescriptor(_class2.prototype, '$fullscreen'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$emit', [_dec6], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emit'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$emitSync', [_dec7], _Object$getOwnPropertyDescriptor(_class2.prototype, '$emitSync'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$on', [_dec8, _dec9, _dec10], _Object$getOwnPropertyDescriptor(_class2.prototype, '$on'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$off', [_dec11, _dec12, _dec13], _Object$getOwnPropertyDescriptor(_class2.prototype, '$off'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$once', [_dec14, _dec15], _Object$getOwnPropertyDescriptor(_class2.prototype, '$once'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$css', [_dec16, _dec17], _Object$getOwnPropertyDescriptor(_class2.prototype, '$css'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$attr', [_dec18, _dec19], _Object$getOwnPropertyDescriptor(_class2.prototype, '$attr'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, 'inPictureInPictureMode', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, 'inPictureInPictureMode'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, 'pictureInPictureWindow', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, 'pictureInPictureWindow'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$plugins', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$plugins'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$pluginOrder', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$pluginOrder'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$wrapper', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$wrapper'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$container', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$container'), _class2.prototype), _applyDecoratedDescriptor$1(_class2.prototype, '$video', [nonenumerable], _Object$getOwnPropertyDescriptor(_class2.prototype, '$video'), _class2.prototype)), _class2)) || _class$1);
 
 	var _dec$2, _class$2;
 
@@ -7734,7 +8572,7 @@
 	    var _this = _possibleConstructorReturn(this, (Plugin.__proto__ || _Object$getPrototypeOf(Plugin)).call(this));
 
 	    _this.destroyed = false;
-	    _this.VERSION = '0.10.1';
+	    _this.VERSION = '0.11.0';
 	    _this.__operable = true;
 	    _this.__level = 0;
 
@@ -9340,7 +10178,7 @@
 
 	      var isKernelMethod = kernelMethods.indexOf(key) > -1;
 	      var isDomMethod = domMethods.indexOf(key) > -1;
-	      var isDispatcherMethod = dispatcherMethods.indexOf(key) > -1;
+	      var isDispatcherMethod = Boolean(dispatcherEventMethodMap[key]);
 
 	      for (var _len5 = arguments.length, args = Array(_len5 > 2 ? _len5 - 2 : 0), _key5 = 2; _key5 < _len5; _key5++) {
 	        args[_key5 - 2] = arguments[_key5];
@@ -9350,7 +10188,7 @@
 	        if (isDispatcherMethod) {
 	          var _dispatcher;
 
-	          (_dispatcher = this.__dispatcher)[key].apply(_dispatcher, _toConsumableArray(args));
+	          (_dispatcher = this.__dispatcher)[dispatcherEventMethodMap[key]].apply(_dispatcher, _toConsumableArray(args));
 	        } else {
 	          var _dispatcher2;
 
@@ -10001,7 +10839,7 @@
 	  return Binder;
 	}(), (_applyDecoratedDescriptor$5(_class$6.prototype, 'on', [_dec$6], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'on'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'off', [_dec2$5], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'off'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'once', [_dec3$4], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'once'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'emit', [_dec4$4, _dec5$3], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'emit'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'emitSync', [_dec6$2, _dec7$1], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'emitSync'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'trigger', [_dec8$1, _dec9$1], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'trigger'), _class$6.prototype), _applyDecoratedDescriptor$5(_class$6.prototype, 'triggerSync', [_dec10$1, _dec11$1], _Object$getOwnPropertyDescriptor(_class$6.prototype, 'triggerSync'), _class$6.prototype)), _class$6));
 
-	var _dec$7, _dec2$6, _dec3$5, _dec4$5, _dec5$4, _class$7;
+	var _dec$7, _dec2$6, _dec3$5, _dec4$5, _dec5$4, _dec6$3, _class$7;
 
 	function _applyDecoratedDescriptor$6(target, property, decorators, descriptor, context) {
 	  var desc = {};
@@ -10056,7 +10894,7 @@
 	 * It also offer a bridge to let user handle video kernel.
 	 * </pre>
 	 */
-	var Dispatcher = (_dec$7 = before(convertNameIntoId), _dec2$6 = before(checkPluginConfig), _dec3$5 = before(convertNameIntoId), _dec4$5 = before(convertNameIntoId), _dec5$4 = before(convertNameIntoId), (_class$7 = function () {
+	var Dispatcher = (_dec$7 = before(convertNameIntoId), _dec2$6 = before(convertNameIntoId), _dec3$5 = before(checkPluginConfig), _dec4$5 = before(convertNameIntoId), _dec5$4 = before(convertNameIntoId), _dec6$3 = before(convertNameIntoId), (_class$7 = function () {
 	  /**
 	   * @param  {UserConfig} config UserConfig for whole Chimee player
 	   * @param  {Chimee} vm referrence of outer class
@@ -10253,6 +11091,12 @@
 	      delete this.vm[id];
 	    }
 	  }, {
+	    key: 'hasUsed',
+	    value: function hasUsed(id) {
+	      var plugin = this.plugins[id];
+	      return isObject(plugin);
+	    }
+	  }, {
 	    key: 'throwError',
 	    value: function throwError(error) {
 	      this.vm.__throwError(error);
@@ -10426,7 +11270,7 @@
 	          _option2$isLive = _option2.isLive,
 	          isLive = _option2$isLive === undefined ? videoConfig.isLive : _option2$isLive,
 	          _option2$box = _option2.box,
-	          box = _option2$box === undefined ? videoConfig.box : _option2$box,
+	          box = _option2$box === undefined ? getLegalBox({ src: src, box: videoConfig.box }) : _option2$box,
 	          _option2$preset = _option2.preset,
 	          preset = _option2$preset === undefined ? videoConfig.preset : _option2$preset,
 	          _option2$kernels = _option2.kernels,
@@ -10436,7 +11280,7 @@
 	        var video = document.createElement('video');
 	        var config = { isLive: isLive, box: box, preset: preset, src: src, kernels: kernels };
 	        var kernel = this._createKernel(video, config);
-	        this.switchKernel({ video: video, kernel: kernel, config: config });
+	        this.switchKernel({ video: video, kernel: kernel, config: config, notifyChange: true });
 	      }
 	      var originAutoLoad = this.videoConfig.autoload;
 	      this._changeUnwatchable(this.videoConfig, 'autoload', false);
@@ -10451,7 +11295,8 @@
 
 	      var video = _ref.video,
 	          kernel = _ref.kernel,
-	          config = _ref.config;
+	          config = _ref.config,
+	          notifyChange = _ref.notifyChange;
 
 	      var oldKernel = this.kernel;
 	      var originVideoConfig = deepClone(this.videoConfig);
@@ -10482,17 +11327,103 @@
 	      oldKernel.destroy();
 	      // delay video event binding
 	      // so that people can't feel the default value change
-	      setTimeout(function () {
-	        _this3.binder && _this3.binder.bindEventOnVideo && _this3.binder.bindEventOnVideo(video);
-	      });
+	      // unless it's caused by autoload
+	      if (notifyChange) {
+	        this.binder && this.binder.bindEventOnVideo && this.binder.bindEventOnVideo(video);
+	      } else {
+	        setTimeout(function () {
+	          _this3.binder && _this3.binder.bindEventOnVideo && _this3.binder.bindEventOnVideo(video);
+	        });
+	      }
+	      // if we are in picutre in picture mode
+	      // we need to exit thie picture in picture mode
+	      if (this.inPictureInPictureMode) {
+	        this.exitPictureInPicture();
+	      }
 	    }
+	  }, {
+	    key: 'requestPictureInPicture',
+	    value: function () {
+	      var _ref2 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+	        var pipWindow, _ref3, PictureInPicture;
+
+	        return regenerator.wrap(function _callee$(_context) {
+	          while (1) {
+	            switch (_context.prev = _context.next) {
+	              case 0:
+	                if (!('pictureInPictureEnabled' in document)) {
+	                  _context.next = 8;
+	                  break;
+	                }
+
+	                if (!this.inPictureInPictureMode) {
+	                  _context.next = 3;
+	                  break;
+	                }
+
+	                return _context.abrupt('return', _Promise.resolve(window.__chimee_picture_in_picture_window));
+
+	              case 3:
+	                _context.next = 5;
+	                return this.dom.videoElement.requestPictureInPicture();
+
+	              case 5:
+	                pipWindow = _context.sent;
+
+	                window.__chimee_picture_in_picture_window = pipWindow;
+	                // if (autoplay) this.play();
+	                return _context.abrupt('return', pipWindow);
+
+	              case 8:
+	                _context.next = 10;
+	                return Promise.resolve().then(function () { return pictureInPicture; });
+
+	              case 10:
+	                _ref3 = _context.sent;
+	                PictureInPicture = _ref3.default;
+
+	                if (!Dispatcher.hasInstalled(PictureInPicture.name)) {
+	                  Dispatcher.install(PictureInPicture);
+	                }
+	                if (!this.hasUsed(PictureInPicture.name)) {
+	                  this.use(PictureInPicture.name);
+	                }
+	                return _context.abrupt('return', this.plugins.pictureInPicture.requestPictureInPicture());
+
+	              case 15:
+	              case 'end':
+	                return _context.stop();
+	            }
+	          }
+	        }, _callee, this);
+	      }));
+
+	      function requestPictureInPicture() {
+	        return _ref2.apply(this, arguments);
+	      }
+
+	      return requestPictureInPicture;
+	    }()
+	  }, {
+	    key: 'exitPictureInPicture',
+	    value: function exitPictureInPicture() {
+	      if ('pictureInPictureEnabled' in document) {
+	        // if current video is not in picture-in-picture mode, do nothing
+	        if (this.inPictureInPictureMode) {
+	          window.__chimee_picture_in_picture_window = undefined;
+	          // $FlowFixMe: support new function in document
+	          return document.exitPictureInPicture();
+	        }
+	      }
+	      return this.plugins.pictureInPicture && this.plugins.pictureInPicture.exitPictureInPicture();
+	    }
+	  }, {
+	    key: 'destroy',
+
 
 	    /**
 	     * destroy function called when dispatcher destroyed
 	     */
-
-	  }, {
-	    key: 'destroy',
 	    value: function destroy() {
 	      for (var _key in this.plugins) {
 	        this.unuse(_key);
@@ -10588,7 +11519,7 @@
 	          name: 'load',
 	          target: 'plugin',
 	          id: 'dispatcher'
-	        }, this.videoConfig.src);
+	        }, { src: this.videoConfig.src });
 	      }
 	    }
 	  }, {
@@ -10703,6 +11634,13 @@
 	     * @type {string} plugin's id
 	     */
 
+	  }, {
+	    key: 'inPictureInPictureMode',
+	    get: function get() {
+	      return 'pictureInPictureEnabled' in document
+	      // $FlowFixMe: support new function in document
+	      ? this.dom.videoElement === document.pictureInPictureElement : Boolean(this.plugins.pictureInPicture && this.plugins.pictureInPicture.isShown);
+	    }
 	  }], [{
 	    key: 'install',
 	    value: function install(config) {
@@ -10741,10 +11679,10 @@
 	    key: 'installKernel',
 	    value: function installKernel(key, value) {
 	      var tasks = isObject(key) ? _Object$entries(key) : [[key, value]];
-	      tasks.forEach(function (_ref2) {
-	        var _ref3 = _slicedToArray(_ref2, 2),
-	            key = _ref3[0],
-	            value = _ref3[1];
+	      tasks.forEach(function (_ref4) {
+	        var _ref5 = _slicedToArray(_ref4, 2),
+	            key = _ref5[0],
+	            value = _ref5[1];
 
 	        if (!isFunction(value)) throw new Error('The kernel you install on ' + key + ' must be a Function, but not ' + (typeof value === 'undefined' ? 'undefined' : _typeof(value)));
 	        if (isFunction(kernelsSet[key])) Log.warn('You have alrady install a kernel on ' + key + ', and now we will replace it');
@@ -10767,7 +11705,7 @@
 	  }]);
 
 	  return Dispatcher;
-	}(), (_applyDecoratedDescriptor$6(_class$7.prototype, 'unuse', [_dec$7], _Object$getOwnPropertyDescriptor(_class$7.prototype, 'unuse'), _class$7.prototype), _applyDecoratedDescriptor$6(_class$7.prototype, 'throwError', [autobind], _Object$getOwnPropertyDescriptor(_class$7.prototype, 'throwError'), _class$7.prototype), _applyDecoratedDescriptor$6(_class$7, 'install', [_dec2$6], _Object$getOwnPropertyDescriptor(_class$7, 'install'), _class$7), _applyDecoratedDescriptor$6(_class$7, 'hasInstalled', [_dec3$5], _Object$getOwnPropertyDescriptor(_class$7, 'hasInstalled'), _class$7), _applyDecoratedDescriptor$6(_class$7, 'uninstall', [_dec4$5], _Object$getOwnPropertyDescriptor(_class$7, 'uninstall'), _class$7), _applyDecoratedDescriptor$6(_class$7, 'getPluginConfig', [_dec5$4], _Object$getOwnPropertyDescriptor(_class$7, 'getPluginConfig'), _class$7)), _class$7));
+	}(), (_applyDecoratedDescriptor$6(_class$7.prototype, 'unuse', [_dec$7], _Object$getOwnPropertyDescriptor(_class$7.prototype, 'unuse'), _class$7.prototype), _applyDecoratedDescriptor$6(_class$7.prototype, 'hasUsed', [_dec2$6], _Object$getOwnPropertyDescriptor(_class$7.prototype, 'hasUsed'), _class$7.prototype), _applyDecoratedDescriptor$6(_class$7.prototype, 'throwError', [autobind], _Object$getOwnPropertyDescriptor(_class$7.prototype, 'throwError'), _class$7.prototype), _applyDecoratedDescriptor$6(_class$7.prototype, 'inPictureInPictureMode', [nonenumerable], _Object$getOwnPropertyDescriptor(_class$7.prototype, 'inPictureInPictureMode'), _class$7.prototype), _applyDecoratedDescriptor$6(_class$7, 'install', [_dec3$5], _Object$getOwnPropertyDescriptor(_class$7, 'install'), _class$7), _applyDecoratedDescriptor$6(_class$7, 'hasInstalled', [_dec4$5], _Object$getOwnPropertyDescriptor(_class$7, 'hasInstalled'), _class$7), _applyDecoratedDescriptor$6(_class$7, 'uninstall', [_dec5$4], _Object$getOwnPropertyDescriptor(_class$7, 'uninstall'), _class$7), _applyDecoratedDescriptor$6(_class$7, 'getPluginConfig', [_dec6$3], _Object$getOwnPropertyDescriptor(_class$7, 'getPluginConfig'), _class$7)), _class$7));
 
 	var _class$8, _descriptor$1;
 
@@ -11239,7 +12177,7 @@
 	}), _descriptor2$1 = _applyDecoratedDescriptor$8(_class2$2.prototype, 'version', [frozen], {
 	  enumerable: true,
 	  initializer: function initializer() {
-	    return '0.10.1';
+	    return '0.11.0';
 	  }
 	}), _descriptor3$1 = _applyDecoratedDescriptor$8(_class2$2.prototype, 'config', [frozen], {
 	  enumerable: true,
@@ -11312,6 +12250,143 @@
 	    return _init9;
 	  }
 	}), _class2$2)), _class2$2)) || _class$9);
+
+	// $FlowFixMe: we can extend create here
+
+	var PictureInPicture = function (_Plugin) {
+	  _inherits(PictureInPicture, _Plugin);
+
+	  function PictureInPicture(config) {
+	    var _ref;
+
+	    _classCallCheck(this, PictureInPicture);
+
+	    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+	      args[_key - 1] = arguments[_key];
+	    }
+
+	    var _this = _possibleConstructorReturn(this, (_ref = PictureInPicture.__proto__ || _Object$getPrototypeOf(PictureInPicture)).call.apply(_ref, [this, _Object$assign(config, {
+	      el: document.createElement('canvas'),
+	      penetrate: true,
+	      inner: false
+	    })].concat(_toConsumableArray(args))));
+
+	    _this.isShown = false;
+	    _this.hasStopRender = true;
+	    _this.myStyle = {
+	      position: 'fixed',
+	      top: '',
+	      left: '',
+	      right: 0,
+	      bottom: 0,
+	      width: 277,
+	      height: 156
+	    };
+	    return _this;
+	  }
+
+	  _createClass(PictureInPicture, [{
+	    key: 'create',
+	    value: function create() {
+	      addClassName(this.$dom, 'chimee-plugin-picture-in-picture');
+	      this.getContext();
+	    }
+	  }, {
+	    key: 'inited',
+	    value: function inited() {
+	      this.setStyle();
+	    }
+	  }, {
+	    key: 'show',
+	    value: function show() {
+	      setStyle(this.$dom, 'display', 'block');
+	      this.isShown = true;
+	    }
+	  }, {
+	    key: 'hide',
+	    value: function hide() {
+	      setStyle(this.$dom, 'display', 'none');
+	      this.isShown = false;
+	    }
+	  }, {
+	    key: 'closeCurrentPicture',
+	    value: function closeCurrentPicture() {
+	      if (window.__chimee_picture_in_picture && window.__chimee_picture_in_picture.plugin) {
+	        window.__chimee_picture_in_picture.plugin.exitPictureInPicture();
+	      }
+	    }
+	  }, {
+	    key: 'requestPictureInPicture',
+	    value: function requestPictureInPicture() {
+	      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+	          _ref2$autoplay = _ref2.autoplay,
+	          autoplay = _ref2$autoplay === undefined ? false : _ref2$autoplay;
+
+	      this.closeCurrentPicture();
+	      this.show();
+	      this.poller(this.render);
+	      if (autoplay && this.paused) this.play();else if (!autoplay && !this.paused) this.pause();
+	      window.__chimee_picture_in_picture = {
+	        plugin: this,
+	        window: this.$dom,
+	        element: this.$video
+	      };
+	    }
+	  }, {
+	    key: 'exitPictureInPicture',
+	    value: function exitPictureInPicture() {
+	      this.hide();
+	      window.__chimee_picture_in_picture = {};
+	    }
+	  }, {
+	    key: 'getContext',
+	    value: function getContext() {
+	      this.ctx = this.$dom.getContext('2d');
+	    }
+	  }, {
+	    key: 'poller',
+	    value: function poller(fn) {
+	      var _this2 = this;
+
+	      requestAnimationFrame(function () {
+	        fn.call(_this2);
+	        if (_this2.isShown) {
+	          _this2.poller(fn);
+	          _this2.hasStopRender = false;
+	        } else {
+	          _this2.hasStopRender = true;
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      if (this.isShown) {
+	        this.ctx.drawImage(this.$video, 0, 0, this.myStyle.width, this.myStyle.height);
+	      }
+	    }
+	  }, {
+	    key: 'setStyle',
+	    value: function setStyle$$1() {
+	      var styles = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+	      _Object$assign(this.myStyle, styles);
+	      this.$dom.setAttribute('width', this.myStyle.width.toString());
+	      this.$dom.setAttribute('height', this.myStyle.height.toString());
+	      for (var key in this.myStyle) {
+	        if (key === 'width' || key === 'height') continue;
+	        var value = this.myStyle[key];
+	        setStyle(this.$dom, key, value);
+	      }
+	    }
+	  }]);
+
+	  return PictureInPicture;
+	}(Plugin);
+
+	var pictureInPicture = /*#__PURE__*/Object.freeze({
+		default: PictureInPicture
+	});
 
 	return Chimee;
 
