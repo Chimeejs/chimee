@@ -52,7 +52,7 @@ export default class Gesture {
   }
 
   touchend (evt) {
-
+    evt.preventDefault(); // 防止 300ms click 事件 chimeejs/chimee-mobile-player#32
     this.endTouch = evt.changedTouches[0];
 
     const time = Date.now();

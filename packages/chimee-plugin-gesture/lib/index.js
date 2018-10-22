@@ -18,6 +18,7 @@ function createCommonjsModule(fn, module) {
 }
 
 var classCallCheck = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 exports.default = function (instance, Constructor) {
@@ -38,22 +39,39 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
-var _core = createCommonjsModule(function (module) {
-var core = module.exports = { version: '2.5.1' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+var _global$1 = /*#__PURE__*/Object.freeze({
+	default: _global,
+	__moduleExports: _global
 });
 
+var _core = createCommonjsModule(function (module) {
+var core = module.exports = { version: '2.5.7' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+});
 var _core_1 = _core.version;
+
+var _core$1 = /*#__PURE__*/Object.freeze({
+	default: _core,
+	__moduleExports: _core,
+	version: _core_1
+});
 
 var _aFunction = function (it) {
   if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
 
+var _aFunction$1 = /*#__PURE__*/Object.freeze({
+	default: _aFunction,
+	__moduleExports: _aFunction
+});
+
+var aFunction = ( _aFunction$1 && _aFunction ) || _aFunction$1;
+
 // optional / simple context binding
 
 var _ctx = function (fn, that, length) {
-  _aFunction(fn);
+  aFunction(fn);
   if (that === undefined) return fn;
   switch (length) {
     case 1: return function (a) {
@@ -71,14 +89,31 @@ var _ctx = function (fn, that, length) {
   };
 };
 
+var _ctx$1 = /*#__PURE__*/Object.freeze({
+	default: _ctx,
+	__moduleExports: _ctx
+});
+
 var _isObject = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
+var _isObject$1 = /*#__PURE__*/Object.freeze({
+	default: _isObject,
+	__moduleExports: _isObject
+});
+
+var isObject = ( _isObject$1 && _isObject ) || _isObject$1;
+
 var _anObject = function (it) {
-  if (!_isObject(it)) throw TypeError(it + ' is not an object!');
+  if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
+
+var _anObject$1 = /*#__PURE__*/Object.freeze({
+	default: _anObject,
+	__moduleExports: _anObject
+});
 
 var _fails = function (exec) {
   try {
@@ -88,20 +123,48 @@ var _fails = function (exec) {
   }
 };
 
+var _fails$1 = /*#__PURE__*/Object.freeze({
+	default: _fails,
+	__moduleExports: _fails
+});
+
+var require$$1 = ( _fails$1 && _fails ) || _fails$1;
+
 // Thank's IE8 for his funny defineProperty
-var _descriptors = !_fails(function () {
+var _descriptors = !require$$1(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
-var document = _global.document;
+var _descriptors$1 = /*#__PURE__*/Object.freeze({
+	default: _descriptors,
+	__moduleExports: _descriptors
+});
+
+var require$$0 = ( _global$1 && _global ) || _global$1;
+
+var document = require$$0.document;
 // typeof document.createElement is 'object' in old IE
-var is = _isObject(document) && _isObject(document.createElement);
+var is = isObject(document) && isObject(document.createElement);
 var _domCreate = function (it) {
   return is ? document.createElement(it) : {};
 };
 
-var _ie8DomDefine = !_descriptors && !_fails(function () {
-  return Object.defineProperty(_domCreate('div'), 'a', { get: function () { return 7; } }).a != 7;
+var _domCreate$1 = /*#__PURE__*/Object.freeze({
+	default: _domCreate,
+	__moduleExports: _domCreate
+});
+
+var require$$0$1 = ( _descriptors$1 && _descriptors ) || _descriptors$1;
+
+var require$$2 = ( _domCreate$1 && _domCreate ) || _domCreate$1;
+
+var _ie8DomDefine = !require$$0$1 && !require$$1(function () {
+  return Object.defineProperty(require$$2('div'), 'a', { get: function () { return 7; } }).a != 7;
+});
+
+var _ie8DomDefine$1 = /*#__PURE__*/Object.freeze({
+	default: _ie8DomDefine,
+	__moduleExports: _ie8DomDefine
 });
 
 // 7.1.1 ToPrimitive(input [, PreferredType])
@@ -109,21 +172,32 @@ var _ie8DomDefine = !_descriptors && !_fails(function () {
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
 var _toPrimitive = function (it, S) {
-  if (!_isObject(it)) return it;
+  if (!isObject(it)) return it;
   var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !_isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !_isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !_isObject(val = fn.call(it))) return val;
+  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
   throw TypeError("Can't convert object to primitive value");
 };
 
+var _toPrimitive$1 = /*#__PURE__*/Object.freeze({
+	default: _toPrimitive,
+	__moduleExports: _toPrimitive
+});
+
+var anObject = ( _anObject$1 && _anObject ) || _anObject$1;
+
+var IE8_DOM_DEFINE = ( _ie8DomDefine$1 && _ie8DomDefine ) || _ie8DomDefine$1;
+
+var toPrimitive = ( _toPrimitive$1 && _toPrimitive ) || _toPrimitive$1;
+
 var dP = Object.defineProperty;
 
-var f = _descriptors ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  _anObject(O);
-  P = _toPrimitive(P, true);
-  _anObject(Attributes);
-  if (_ie8DomDefine) try {
+var f = require$$0$1 ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPrimitive(P, true);
+  anObject(Attributes);
+  if (IE8_DOM_DEFINE) try {
     return dP(O, P, Attributes);
   } catch (e) { /* empty */ }
   if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
@@ -135,6 +209,12 @@ var _objectDp = {
 	f: f
 };
 
+var _objectDp$1 = /*#__PURE__*/Object.freeze({
+	default: _objectDp,
+	__moduleExports: _objectDp,
+	f: f
+});
+
 var _propertyDesc = function (bitmap, value) {
   return {
     enumerable: !(bitmap & 1),
@@ -144,12 +224,44 @@ var _propertyDesc = function (bitmap, value) {
   };
 };
 
-var _hide = _descriptors ? function (object, key, value) {
-  return _objectDp.f(object, key, _propertyDesc(1, value));
+var _propertyDesc$1 = /*#__PURE__*/Object.freeze({
+	default: _propertyDesc,
+	__moduleExports: _propertyDesc
+});
+
+var dP$1 = ( _objectDp$1 && _objectDp ) || _objectDp$1;
+
+var createDesc = ( _propertyDesc$1 && _propertyDesc ) || _propertyDesc$1;
+
+var _hide = require$$0$1 ? function (object, key, value) {
+  return dP$1.f(object, key, createDesc(1, value));
 } : function (object, key, value) {
   object[key] = value;
   return object;
 };
+
+var _hide$1 = /*#__PURE__*/Object.freeze({
+	default: _hide,
+	__moduleExports: _hide
+});
+
+var hasOwnProperty = {}.hasOwnProperty;
+var _has = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
+
+var _has$1 = /*#__PURE__*/Object.freeze({
+	default: _has,
+	__moduleExports: _has
+});
+
+var core = ( _core$1 && _core ) || _core$1;
+
+var ctx = ( _ctx$1 && _ctx ) || _ctx$1;
+
+var hide = ( _hide$1 && _hide ) || _hide$1;
+
+var has = ( _has$1 && _has ) || _has$1;
 
 var PROTOTYPE = 'prototype';
 
@@ -160,21 +272,21 @@ var $export = function (type, name, source) {
   var IS_PROTO = type & $export.P;
   var IS_BIND = type & $export.B;
   var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? _core : _core[name] || (_core[name] = {});
+  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
   var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? _global : IS_STATIC ? _global[name] : (_global[name] || {})[PROTOTYPE];
+  var target = IS_GLOBAL ? require$$0 : IS_STATIC ? require$$0[name] : (require$$0[name] || {})[PROTOTYPE];
   var key, own, out;
   if (IS_GLOBAL) source = name;
   for (key in source) {
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && key in exports) continue;
+    if (own && has(exports, key)) continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
     exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
     // bind timers to global for call from export context
-    : IS_BIND && own ? _ctx(out, _global)
+    : IS_BIND && own ? ctx(out, require$$0)
     // wrap global constructors for prevent change them in library
     : IS_WRAP && target[key] == out ? (function (C) {
       var F = function (a, b, c) {
@@ -189,12 +301,12 @@ var $export = function (type, name, source) {
       F[PROTOTYPE] = C[PROTOTYPE];
       return F;
     // make static versions for prototype methods
-    })(out) : IS_PROTO && typeof out == 'function' ? _ctx(Function.call, out) : out;
+    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
     // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
     if (IS_PROTO) {
       (exports.virtual || (exports.virtual = {}))[key] = out;
       // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) _hide(expProto, key, out);
+      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
     }
   }
 };
@@ -209,26 +321,48 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 var _export = $export;
 
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-_export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
+var _export$1 = /*#__PURE__*/Object.freeze({
+	default: _export,
+	__moduleExports: _export
+});
 
-var $Object = _core.Object;
-var defineProperty$2 = function defineProperty(it, key, desc) {
+var $export$1 = ( _export$1 && _export ) || _export$1;
+
+// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+$export$1($export$1.S + $export$1.F * !require$$0$1, 'Object', { defineProperty: dP$1.f });
+
+var $Object = core.Object;
+var defineProperty = function defineProperty(it, key, desc) {
   return $Object.defineProperty(it, key, desc);
 };
 
-var defineProperty = createCommonjsModule(function (module) {
-module.exports = { "default": defineProperty$2, __esModule: true };
+var defineProperty$1 = /*#__PURE__*/Object.freeze({
+	default: defineProperty,
+	__moduleExports: defineProperty
 });
 
-unwrapExports(defineProperty);
+var require$$0$2 = ( defineProperty$1 && defineProperty ) || defineProperty$1;
+
+var defineProperty$2 = createCommonjsModule(function (module) {
+module.exports = { "default": require$$0$2, __esModule: true };
+});
+
+var defineProperty$3 = unwrapExports(defineProperty$2);
+
+var defineProperty$4 = /*#__PURE__*/Object.freeze({
+	default: defineProperty$3,
+	__moduleExports: defineProperty$2
+});
+
+var _defineProperty = ( defineProperty$4 && defineProperty$3 ) || defineProperty$4;
 
 var createClass = createCommonjsModule(function (module, exports) {
+
 exports.__esModule = true;
 
 
 
-var _defineProperty2 = _interopRequireDefault(defineProperty);
+var _defineProperty2 = _interopRequireDefault(_defineProperty);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -265,15 +399,6 @@ function getSpeed(s, t) {
 function isArray(arr) {
   return Array.isArray(arr);
 }
-
-/**
- * 手势判断组件
- * 目前判断的手势
- * 单点操作
- * tap
- * swipe
- * pan
- */
 
 var Gesture = function () {
   function Gesture() {
@@ -322,7 +447,7 @@ var Gesture = function () {
   }, {
     key: 'touchend',
     value: function touchend(evt) {
-
+      evt.preventDefault(); // 防止 300ms click 事件 chimeejs/chimee-mobile-player#32
       this.endTouch = evt.changedTouches[0];
 
       var time = Date.now();
