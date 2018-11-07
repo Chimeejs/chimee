@@ -15,21 +15,21 @@ import visualizer from 'rollup-plugin-visualizer';
 const babelConfig = {
   common: {
     presets: [
-      'flow',
-      [ 'env', {
+      '@babel/preset-flow',
+      [ '@babel/env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
+      [ '@babel/plugin-proposal-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
       'lodash',
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
+      '@babel/plugin-transform-runtime',
     ],
     externalHelpers: true,
     runtimeHelpers: true,
@@ -37,21 +37,21 @@ const babelConfig = {
   },
   es: {
     presets: [
-      'flow',
-      [ 'env', {
+      '@babel/preset-flow',
+      [ '@babel/env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
+      [ '@babel/plugin-proposal-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
       'lodash',
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
+      '@babel/plugin-transform-runtime',
     ],
     externalHelpers: true,
     runtimeHelpers: true,
@@ -59,20 +59,21 @@ const babelConfig = {
   },
   esm: {
     presets: [
-      'flow',
-      [ 'env', {
+      '@babel/preset-flow',
+      [ '@babel/env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
+      [ '@babel/plugin-proposal-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
+      'lodash',
+      '@babel/plugin-transform-runtime',
     ],
     externalHelpers: true,
     runtimeHelpers: true,
@@ -80,21 +81,21 @@ const babelConfig = {
   },
   umd: {
     presets: [
-      'flow',
-      [ 'env', {
+      '@babel/preset-flow',
+      [ '@babel/env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
+      [ '@babel/plugin-proposal-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
       'lodash',
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
+      '@babel/plugin-transform-runtime',
     ],
     externalHelpers: true,
     runtimeHelpers: true,
@@ -102,21 +103,21 @@ const babelConfig = {
   },
   iife: {
     presets: [
-      'flow',
-      [ 'env', {
+      '@babel/preset-flow',
+      [ '@babel/env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
+      [ '@babel/plugin-proposal-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
       'lodash',
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
+      '@babel/plugin-transform-runtime',
     ],
     externalHelpers: true,
     runtimeHelpers: true,
@@ -124,20 +125,20 @@ const babelConfig = {
   },
   min: {
     presets: [
-      'flow',
-      [ 'env', {
+      '@babel/preset-flow',
+      [ '@babel/env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
+      [ '@babel/plugin-proposal-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
       'lodash',
-      'external-helpers',
-      'transform-decorators-legacy',
     ],
     runtimeHelpers: true,
     babelrc: false,

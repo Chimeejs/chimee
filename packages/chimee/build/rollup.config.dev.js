@@ -15,11 +15,11 @@ config.plugins.unshift(replace({
   'process.env.NODE_ENV': '"development"',
 }));
 export default Object.assign(config, {
-  sourceMap: true,
   output: {
     format: 'umd',
     file: 'lib/index.dev.js',
     name: camelize(name, true),
     banner,
+    sourceMap: true,
   },
 });
