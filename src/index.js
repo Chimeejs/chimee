@@ -8,8 +8,7 @@ import GlobalConfig from 'config/global';
 import global from 'core-js/es7/global';
 import { kernelEvents } from './helper/const';
 
-@autobindClass()
-export default class Chimee extends VideoWrapper {
+export default @autobindClass() class Chimee extends VideoWrapper {
   __id: string;
   __dispatcher: Dispatcher;
   __kernel: ChimeeKernel;
