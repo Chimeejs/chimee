@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-gesture v0.0.12
+ * chimee-plugin-gesture v0.0.13
  * (c) 2017 yandeqiang
  * Released under ISC
  */
