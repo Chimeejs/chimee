@@ -131,18 +131,20 @@
     "modulePaths": [
       "src"
     ],
-    "moduleFileExtensions": [
-      "js"
-    ],
     "moduleDirectories": [
-      "node_modules",
-      "bower_components"
+      "node_modules"
     ],
     "transform": {
-      ".*": "babel-jest"
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+\\.jsx?$": "babel-jest"
     },
-    "setupFiles": [
-      "jest-canvas-mock"
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
     ]
   }
 }
