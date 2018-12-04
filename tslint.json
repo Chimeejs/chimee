@@ -10,7 +10,8 @@
         "only-arrow-functions": false,
         "no-shadowed-variable": false,
         "quotemark": [true, "single" ],
-        "interface-over-type-literal": false
+        "interface-over-type-literal": false,
+        "max-line-length": [true, 250]
     },
     "rulesDirectory": []
 }

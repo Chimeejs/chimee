@@ -1,4 +1,3 @@
-import { EventEmitter } from 'events';
 import { isElement } from 'toxic-predicate-functions';
 
 export type NativeVideoKernelConfig = {
@@ -8,8 +7,10 @@ export type NativeVideoKernelConfig = {
 };
 
 let tempCurrentTime: number = 0;
-
-export default class NativeVideoKernel extends EventEmitter {
+/**
+ * native is much simpler than normal kernel
+ */
+export default class NativeVideoKernel {
   public static isSupport() {
     return true;
   }
@@ -18,7 +19,6 @@ export default class NativeVideoKernel extends EventEmitter {
   private config: NativeVideoKernelConfig;
 
   constructor(videoElement: HTMLVideoElement, config: NativeVideoKernelConfig, customConfig: any) {
-    super();
     if (!isElement(videoElement)) {
       throw new Error(`You must pass in an legal video element but not ${typeof videoElement}`);
     }
