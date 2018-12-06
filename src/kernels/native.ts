@@ -2,8 +2,6 @@ import { isElement } from 'toxic-predicate-functions';
 
 export type NativeVideoKernelConfig = {
   src: string,
-  isLive: boolean,
-  box: string,
 };
 
 let tempCurrentTime: number = 0;
@@ -18,7 +16,7 @@ export default class NativeVideoKernel {
   private video: HTMLVideoElement;
   private config: NativeVideoKernelConfig;
 
-  constructor(videoElement: HTMLVideoElement, config: NativeVideoKernelConfig, customConfig: any) {
+  constructor(videoElement: HTMLVideoElement, config: NativeVideoKernelConfig = { src: '' }, customConfig: any) {
     if (!isElement(videoElement)) {
       throw new Error(`You must pass in an legal video element but not ${typeof videoElement}`);
     }
@@ -32,7 +30,9 @@ export default class NativeVideoKernel {
   }
 
   public startLoad(src: string) {
-    const currentTime = this.video.currentTime || tempCurrentTime;
+    const currentTime = typeof this.video.currentTime === 'number'
+      ? this.video.currentTime
+      : tempCurrentTime;
     this.load(src);
     this.seek(currentTime);
   }
