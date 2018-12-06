@@ -8,7 +8,7 @@
   "browser": "lib/index.browser.js",
   "scripts": {
     "precommit": "",
-    "prepush": "npm run lint && npm t",
+    "prepush": "",
     "prepublishOnly": "npm t && pkg-ok",
     "postmerge": "sh tool/auto-npm-install.sh",
     "test": "npm run karma && jest --coverage && node env-check.js",
