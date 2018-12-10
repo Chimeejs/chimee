@@ -8,7 +8,8 @@ export type NativeVideoKernelConfig = {
 
 let tempCurrentTime: number = 0;
 /**
- * native is much simpler than normal kernel
+ * Native video kernel class for native video player
+ * It is much simpler than normal kernel
  */
 export default class NativeVideoKernel extends EventEmitter implements IVideoKernel {
   public static isSupport() {
