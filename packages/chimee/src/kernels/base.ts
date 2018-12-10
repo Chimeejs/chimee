@@ -12,3 +12,8 @@ export interface IVideoKernel {
   on(key: string, fn: (...args: any[]) => any): void;
   off(key: string, fn: (...args: any[]) => any): void;
 }
+
+export interface IVideoKernelConstructor {
+  new(...args: any[]): IVideoKernel;
+  isSupport(): boolean;
+}
