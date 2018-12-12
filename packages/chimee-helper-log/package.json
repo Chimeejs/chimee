@@ -10,15 +10,15 @@
   "scripts": {
     "test": "jest --coverage",
     "start": "jest --coverage --watch",
-    "flow": "flow",
-    "lint": "eslint ./src --fix",
+    "lint": "tslint -c ./tslint.json 'src/**/*.ts' --fix && eslint ./ --fix",
     "precommit": "npm run lint",
     "prepush": "npm run test",
-    "build": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
+    "build": "npm run tsc && tsc --emitDeclarationOnly true --outDir ./lib && npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
     "b-common": "rollup -c build/rollup.config.common.js",
     "b-es": "rollup -c build/rollup.config.es.js",
     "b-umd": "rollup -c build/rollup.config.umd.js",
     "b-min": "rollup -c build/rollup.config.min.js",
+    "tsc": " tsc --outDir ./ts-out",
     "doc": "documentation readme  src/index.js --section=doc --github=true --project-version=true"
   },
   "repository": {
@@ -43,59 +43,45 @@
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-decorators": "^7.0.0",
-    "@babel/plugin-proposal-do-expressions": "^7.0.0",
-    "@babel/plugin-proposal-export-default-from": "^7.0.0",
-    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
-    "@babel/plugin-proposal-function-bind": "^7.0.0",
-    "@babel/plugin-proposal-function-sent": "^7.0.0",
-    "@babel/plugin-proposal-json-strings": "^7.0.0",
-    "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
-    "@babel/plugin-proposal-numeric-separator": "^7.0.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
-    "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
-    "@babel/plugin-proposal-throw-expressions": "^7.0.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-    "@babel/plugin-syntax-import-meta": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "@babel/preset-flow": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.4.2",
     "babel-preset-es2015-rollup": "^3.0.0",
     "documentation": "^9.0.0",
     "eslint": "^5.10.0",
-    "eslint-plugin-flowtype": "^3.2.0",
+    "eslint-config-egg": "^7.1.0",
     "eslint-plugin-jest": "^22.1.2",
-    "flow-bin": "^0.88.0",
     "husky": "^1.2.0",
     "jest": "^23.6.0",
-    "nyc": "^13.1.0",
     "rollup": "^0.67.4",
     "rollup-plugin-babel": "^4.1.0",
     "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-flow-no-whitespace": "^1.0.0",
-    "rollup-plugin-includepaths": "^0.2.3",
-    "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-uglify": "^6.0.0",
-    "toxic-utils": "^0.3.0"
+    "toxic-utils": "^0.3.0",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.11.0",
+    "typescript": "^3.2.2"
   },
   "jest": {
     "modulePaths": [
       "src"
     ],
-    "moduleFileExtensions": [
-      "js"
-    ],
     "moduleDirectories": [
-      "node_modules",
-      "bower_components"
+      "node_modules"
     ],
     "transform": {
+      "^.+\\.tsx?$": "ts-jest",
       ".*": "babel-jest"
-    }
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }

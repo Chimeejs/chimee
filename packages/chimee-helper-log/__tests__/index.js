@@ -5,24 +5,24 @@ let ret = '';
 const examples = [
   {
     method: 'error',
-    msg: 'err msg'
+    msg: 'err msg',
   },
   {
     method: 'info',
-    msg: 'info msg'
+    msg: 'info msg',
   },
   {
     method: 'warn',
-    msg: 'warn msg'
+    msg: 'warn msg',
   },
   {
     method: 'debug',
-    msg: 'debug msg'
+    msg: 'debug msg',
   },
   {
     method: 'verbose',
-    msg: 'verbose msg'
-  }
+    msg: 'verbose msg',
+  },
 ];
 
 /* console各属性方法不存在测试 */
@@ -31,23 +31,23 @@ examples.forEach(item => testBasic(Object.assign({ tag: 'tag' }, item)));
 /* console各属性方法存在情况分别测试 */
 examples.forEach(item => testBasic(Object.assign({
   tag: 'tag',
-  methodFuns: { error: str => { ret = str; } }
+  methodFuns: { error: str => { ret = str; } },
 }, item)));
 examples.forEach(item => testBasic(Object.assign({
   tag: 'tag',
-  methodFuns: { info: str => { ret = str; } }
+  methodFuns: { info: str => { ret = str; } },
 }, item)));
 examples.forEach(item => testBasic(Object.assign({
   tag: 'tag',
-  methodFuns: { warn: str => { ret = str; } }
+  methodFuns: { warn: str => { ret = str; } },
 }, item)));
 examples.forEach(item => testBasic(Object.assign({
   tag: 'tag',
-  methodFuns: { debug: str => { ret = str; } }
+  methodFuns: { debug: str => { ret = str; } },
 }, item)));
 examples.forEach(item => testBasic(Object.assign({
   tag: 'tag',
-  methodFuns: { verbose: str => { ret = str; } }
+  methodFuns: { verbose: str => { ret = str; } },
 }, item)));
 
 /* ENABLE */
@@ -56,16 +56,16 @@ examples.forEach(item => testBasic(Object.assign({ enable: true, tag: 'tag' }, i
 /* forceGlobalTag */
 examples.forEach(item => testBasic(Object.assign({ forceGlobalTag: true, enable: false, tag: 'chimee' }, item)));
 
-function testBasic ({
+function testBasic({
   method = 'log',
   msg = 'msg',
   tag = 'tag',
   forceGlobalTag = false,
   enable,
-  methodFuns
+  methodFuns,
 }) {
   let caseType = '';
-  if(forceGlobalTag) {
+  if (forceGlobalTag) {
     caseType = '[FORCE_GLOBAL_TAG]';
   }
   if (enable) {
@@ -83,9 +83,9 @@ function testBasic ({
       log: str => {
         // _console.log('xxx:',str);
         ret = str;
-      }
+      },
     };
-    if(methodFuns) {
+    if (methodFuns) {
       Object.assign(global.console, methodFuns);
     }
 
@@ -132,5 +132,4 @@ describe('arguments is not enough', () => {
     expect(fn).lastCalledWith('[chimee] > i am ok');
   });
 });
-  
 
