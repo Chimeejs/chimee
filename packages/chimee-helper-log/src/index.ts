@@ -5,34 +5,13 @@ import { inBrowser, isString } from "toxic-predicate-functions";
  * Log Object
  */
 class ChimeeHelperLog {
-  /**
-   * @member {string}
-   */
-  public GLOBAL_TAG = "chimee";
-  /**
-   * @member {boolean}
-   */
-  public FORCE_GLOBAL_TAG = false;
-  /**
-   * @member {boolean}
-   */
-  public ENABLE_ERROR = true;
-  /**
-   * @member {boolean}
-   */
-  public ENABLE_INFO = true;
-  /**
-   * @member {boolean}
-   */
-  public ENABLE_WARN = true;
-  /**
-   * @member {boolean}
-   */
-  public ENABLE_DEBUG = true;
-  /**
-   * @member {boolean}
-   */
-  public ENABLE_VERBOSE = true;
+  public GLOBAL_TAG: string = "chimee";
+  public FORCE_GLOBAL_TAG: boolean = false;
+  public ENABLE_ERROR: boolean = true;
+  public ENABLE_INFO: boolean = true;
+  public ENABLE_WARN: boolean = true;
+  public ENABLE_DEBUG: boolean = true;
+  public ENABLE_VERBOSE: boolean = true;
   /**
    * equal to console.error, output `[${tag}] > {$msg}`
    * @param {string} tag optional, the header of log
@@ -104,10 +83,7 @@ class ChimeeHelperLog {
   }
 }
 
-const chimeeLog = new ChimeeHelperLog();
+// tslint:disable-next-line: max-line-length
+const chimeeLog: ChimeeHelperLog = (inBrowser && ((window as any)._chimee_log as ChimeeHelperLog)) || new ChimeeHelperLog();
 
-if (inBrowser && !(window as any)._chimee_log) {
-  (window as any)._chimee_log = chimeeLog;
-}
-
-export default (inBrowser ? (window as any)._chimee_log : chimeeLog);
+export default chimeeLog;
