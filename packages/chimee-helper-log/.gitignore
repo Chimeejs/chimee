@@ -58,3 +58,4 @@ typings/
 .env
 
 package-lock.json
+ts-out

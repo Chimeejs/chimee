@@ -1,144 +1,91 @@
 
 /**
- * chimee-helper-log v0.1.3
- * (c) 2017 toxic-johann
+ * chimee-helper-log v0.2.0
+ * (c) 2017-2018 toxic-johann
  * Released under MIT
+ * Built ad Wed Dec 12 2018 23:39:16 GMT+0800 (China Standard Time)
  */
 
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var _classCallCheck = _interopDefault(require('babel-runtime/helpers/classCallCheck'));
-var _createClass = _interopDefault(require('babel-runtime/helpers/createClass'));
-var _typeof = _interopDefault(require('babel-runtime/helpers/typeof'));
+var _typeof = _interopDefault(require('@babel/runtime/helpers/typeof'));
 var toxicPredicateFunctions = require('toxic-predicate-functions');
 
-function formatter(tag, msg) {
-  if (!toxicPredicateFunctions.isString(tag)) throw new TypeError('Log\'s method only acccept string as argument, but not ' + tag + ' in ' + (typeof tag === 'undefined' ? 'undefined' : _typeof(tag)));
-  if (!toxicPredicateFunctions.isString(msg)) return '[' + Log.GLOBAL_TAG + '] > ' + tag;
-  tag = Log.FORCE_GLOBAL_TAG ? Log.GLOBAL_TAG : tag || Log.GLOBAL_TAG;
-  return '[' + tag + '] > ' + msg;
-}
-/**
- * Log Object
- */
-
-var Log = function () {
-  function Log() {
-    _classCallCheck(this, Log);
+var ChimeeHelperLog = function () {
+  function ChimeeHelperLog() {
+    this.GLOBAL_TAG = "chimee";
+    this.FORCE_GLOBAL_TAG = false;
+    this.ENABLE_ERROR = true;
+    this.ENABLE_INFO = true;
+    this.ENABLE_WARN = true;
+    this.ENABLE_DEBUG = true;
+    this.ENABLE_VERBOSE = true;
   }
 
-  _createClass(Log, null, [{
-    key: 'error',
-
-    /**
-     * equal to console.error, output `[${tag}] > {$msg}`
-     * @param {string} tag optional, the header of log 
-     * @param {string} msg the message
-     */
-
-    /**
-     * @member {boolean}
-     */
-
-    /**
-     * @member {boolean}
-     */
-
-    /**
-     * @member {boolean}
-     */
-    value: function error(tag, msg) {
-      if (!Log.ENABLE_ERROR) {
-        return;
-      }
-
-      (console.error || console.warn || console.log).call(console, formatter(tag, msg));
+  ChimeeHelperLog.prototype.error = function (tag, msg) {
+    if (!this.ENABLE_ERROR) {
+      return;
     }
-    /**
-     * equal to console.info, output `[${tag}] > {$msg}`
-     * @param {string} tag optional, the header of log 
-     * @param {string} msg the message
-     */
 
-    /**
-     * @member {boolean}
-     */
+    (console.error || console.warn || console.log).call(console, this.formatter(tag, msg));
+  };
 
-    /**
-     * @member {boolean}
-     */
-
-    /**
-     * @member {boolean}
-     */
-
-    /**
-     * @member {string}
-     */
-
-  }, {
-    key: 'info',
-    value: function info(tag, msg) {
-      if (!Log.ENABLE_INFO) {
-        return;
-      }
-      (console.info || console.log).call(console, formatter(tag, msg));
+  ChimeeHelperLog.prototype.info = function (tag, msg) {
+    if (!this.ENABLE_INFO) {
+      return;
     }
-    /**
-     * equal to console.warn, output `[${tag}] > {$msg}`
-     * @param {string} tag optional, the header of log 
-     * @param {string} msg the message
-     */
 
-  }, {
-    key: 'warn',
-    value: function warn(tag, msg) {
-      if (!Log.ENABLE_WARN) {
-        return;
-      }
-      (console.warn || console.log).call(console, formatter(tag, msg));
+    (console.info || console.log).call(console, this.formatter(tag, msg));
+  };
+
+  ChimeeHelperLog.prototype.warn = function (tag, msg) {
+    if (!this.ENABLE_WARN) {
+      return;
     }
-    /**
-     * equal to console.debug, output `[${tag}] > {$msg}`
-     * @param {string} tag optional, the header of log 
-     * @param {string} msg the message
-     */
 
-  }, {
-    key: 'debug',
-    value: function debug(tag, msg) {
-      if (!Log.ENABLE_DEBUG) {
-        return;
-      }
-      (console.debug || console.log).call(console, formatter(tag, msg));
+    (console.warn || console.log).call(console, this.formatter(tag, msg));
+  };
+
+  ChimeeHelperLog.prototype.debug = function (tag, msg) {
+    if (!this.ENABLE_DEBUG) {
+      return;
     }
-    /**
-     * equal to console.verbose, output `[${tag}] > {$msg}`
-     * @param {string} tag optional, the header of log 
-     * @param {string} msg the message
-     */
 
-  }, {
-    key: 'verbose',
-    value: function verbose(tag, msg) {
-      if (!Log.ENABLE_VERBOSE) {
-        return;
-      }
-      console.log(formatter(tag, msg));
+    (console.debug || console.log).call(console, this.formatter(tag, msg));
+  };
+
+  ChimeeHelperLog.prototype.verbose = function (tag, msg) {
+    if (!this.ENABLE_VERBOSE) {
+      return;
     }
-  }]);
 
-  return Log;
+    console.log(this.formatter(tag, msg));
+  };
+
+  ChimeeHelperLog.prototype.formatter = function (tag, msg) {
+    if (!toxicPredicateFunctions.isString(tag)) {
+      throw new TypeError("Log's method only acccept string as argument, but not " + tag + " in " + _typeof(tag));
+    }
+
+    if (!toxicPredicateFunctions.isString(msg)) {
+      return "[" + this.GLOBAL_TAG + "] > " + tag;
+    }
+
+    tag = this.FORCE_GLOBAL_TAG ? this.GLOBAL_TAG : tag || this.GLOBAL_TAG;
+    return "[" + tag + "] > " + msg;
+  };
+
+  return ChimeeHelperLog;
 }();
 
-Log.GLOBAL_TAG = 'chimee';
-Log.FORCE_GLOBAL_TAG = false;
-Log.ENABLE_ERROR = true;
-Log.ENABLE_INFO = true;
-Log.ENABLE_WARN = true;
-Log.ENABLE_DEBUG = true;
-Log.ENABLE_VERBOSE = true;
+var chimeeLog = new ChimeeHelperLog();
 
-module.exports = Log;
+if (toxicPredicateFunctions.inBrowser && !window._chimee_log) {
+  window._chimee_log = chimeeLog;
+}
+
+var index = toxicPredicateFunctions.inBrowser ? window._chimee_log : chimeeLog;
+
+module.exports = index;
