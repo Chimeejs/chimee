@@ -1,4 +1,4 @@
-import Log from 'chimee-helper-log';
+import { chimeeLog } from 'chimee-helper-log';
 import { IVideoKernel, IVideoKernelConstructor } from 'kernels/base';
 import NativeVideoKernel from 'kernels/native';
 import { isFunction, isNumber, isString } from 'lodash';
@@ -115,7 +115,7 @@ export default class ChimeeKernel {
 
   public seek(seconds: number) {
     if (!isNumber(seconds)) {
-      Log.error(LOG_TAG, `When you try to seek, you must offer us a number, but not ${typeof seconds}`);
+      chimeeLog.error(LOG_TAG, `When you try to seek, you must offer us a number, but not ${typeof seconds}`);
       return;
     }
     this.videoKernel.seek(seconds);
@@ -154,9 +154,9 @@ export default class ChimeeKernel {
   // if it's not exist or not support
   // we will fall back to the native video kernel
   private getMp4Kernel(Mp4Kernel: IVideoKernelConstructor | void): IVideoKernelConstructor {
-    if (!Mp4Kernel || !Mp4Kernel.isSupport()) {
+    if (!Mp4Kernel || !isFunction(Mp4Kernel.isSupport) || !Mp4Kernel.isSupport()) {
       if (Mp4Kernel) {
-        Log.warn(LOG_TAG, 'mp4 decode is not support in this browser, we will switch to the native video kernel');
+        chimeeLog.warn(LOG_TAG, 'mp4 decode is not support in this browser, we will switch to the native video kernel');
       }
       this.box = 'native';
       return NativeVideoKernel;
