@@ -1,4 +1,4 @@
-declare class ChimeeHelperLog {
+export declare class ChimeeHelperLog {
     GLOBAL_TAG: string;
     FORCE_GLOBAL_TAG: boolean;
     ENABLE_ERROR: boolean;
@@ -13,5 +13,5 @@ declare class ChimeeHelperLog {
     verbose(tag: string, msg?: string): void;
     formatter(tag: string, msg?: string): string;
 }
-declare const chimeeLog: ChimeeHelperLog;
+export declare const chimeeLog: ChimeeHelperLog;
 export default chimeeLog;

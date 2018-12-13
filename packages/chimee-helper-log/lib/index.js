@@ -1,12 +1,14 @@
 
 /**
- * chimee-helper-log v0.2.1
+ * chimee-helper-log v0.2.2
  * (c) 2017-2018 toxic-johann
  * Released under MIT
- * Built ad Thu Dec 13 2018 00:05:43 GMT+0800 (China Standard Time)
+ * Built ad Thu Dec 13 2018 22:49:28 GMT+0800 (China Standard Time)
  */
 
 'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
@@ -79,7 +81,8 @@ var ChimeeHelperLog = function () {
 
   return ChimeeHelperLog;
 }();
-
 var chimeeLog = toxicPredicateFunctions.inBrowser && window._chimee_log || new ChimeeHelperLog();
 
-module.exports = chimeeLog;
+exports.ChimeeHelperLog = ChimeeHelperLog;
+exports.chimeeLog = chimeeLog;
+exports.default = chimeeLog;

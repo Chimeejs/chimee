@@ -1,9 +1,9 @@
 
 /**
- * chimee-helper-log v0.2.1
+ * chimee-helper-log v0.2.2
  * (c) 2017-2018 toxic-johann
  * Released under MIT
- * Built ad Thu Dec 13 2018 00:05:45 GMT+0800 (China Standard Time)
+ * Built ad Thu Dec 13 2018 22:49:31 GMT+0800 (China Standard Time)
  */
 
 import _typeof from '@babel/runtime/helpers/typeof';
@@ -75,7 +75,7 @@ var ChimeeHelperLog = function () {
 
   return ChimeeHelperLog;
 }();
-
 var chimeeLog = inBrowser && window._chimee_log || new ChimeeHelperLog();
 
 export default chimeeLog;
+export { ChimeeHelperLog, chimeeLog };
