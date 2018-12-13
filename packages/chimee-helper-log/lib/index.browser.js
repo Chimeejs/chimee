@@ -1,9 +1,9 @@
 
 /**
- * chimee-helper-log v0.2.2
+ * chimee-helper-log v0.2.3
  * (c) 2017-2018 toxic-johann
  * Released under MIT
- * Built ad Thu Dec 13 2018 22:49:32 GMT+0800 (China Standard Time)
+ * Built ad Thu Dec 13 2018 22:56:44 GMT+0800 (China Standard Time)
  */
 
 (function (global, factory) {
@@ -432,7 +432,6 @@
 
 	exports.ChimeeHelperLog = ChimeeHelperLog;
 	exports.chimeeLog = chimeeLog;
-	exports.default = chimeeLog;
 
 	Object.defineProperty(exports, '__esModule', { value: true });
 

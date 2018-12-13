@@ -14,4 +14,3 @@ export declare class ChimeeHelperLog {
     formatter(tag: string, msg?: string): string;
 }
 export declare const chimeeLog: ChimeeHelperLog;
-export default chimeeLog;

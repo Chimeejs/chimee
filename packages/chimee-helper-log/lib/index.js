@@ -1,9 +1,9 @@
 
 /**
- * chimee-helper-log v0.2.2
+ * chimee-helper-log v0.2.3
  * (c) 2017-2018 toxic-johann
  * Released under MIT
- * Built ad Thu Dec 13 2018 22:49:28 GMT+0800 (China Standard Time)
+ * Built ad Thu Dec 13 2018 22:56:40 GMT+0800 (China Standard Time)
  */
 
 'use strict';
@@ -85,4 +85,3 @@ var chimeeLog = toxicPredicateFunctions.inBrowser && window._chimee_log || new C
 
 exports.ChimeeHelperLog = ChimeeHelperLog;
 exports.chimeeLog = chimeeLog;
-exports.default = chimeeLog;
