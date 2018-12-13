@@ -8,6 +8,7 @@
         "preserveConstEnums": true,
         "sourceMap": true,
         "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
         "typeRoots": [
             "node_modules/@types",
         ],
