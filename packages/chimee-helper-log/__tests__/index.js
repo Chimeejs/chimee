@@ -1,4 +1,4 @@
-import Log from 'index';
+import { chimeeLog as Log } from 'index';
 
 let ret = '';
 
