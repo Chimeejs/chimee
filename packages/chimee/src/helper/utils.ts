@@ -25,3 +25,24 @@ export function runRejectableQueue(queue: Array<(...args: any[]) => any>, ...arg
     step(0);
   });
 }
+
+/**
+ * run a queue one by one.If include function return false it will stop
+ * @param  {Array} queue the queue which we want to run one by one
+ * @return {boolean} tell the user if the queue run finished
+ */
+export function runStoppableQueue(queue: Array<(...args: any[]) => any>, ...args: any[]): boolean {
+  function step(index: number): boolean {
+    if (index >= queue.length) {
+      return true;
+    }
+    const result = isFunction(queue[index])
+      ? queue[index](...args)
+      : queue[index];
+    if (result === false) {
+      return false;
+    }
+    return step(++index);
+  }
+  return step(0);
+}

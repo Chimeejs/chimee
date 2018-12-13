@@ -1,4 +1,4 @@
-import { runRejectableQueue } from 'helper/utils';
+import { runRejectableQueue, runStoppableQueue } from 'helper/utils';
 describe('runRejectableQueue', async () => {
   test('empty', () => {
     expect(runRejectableQueue([])).resolves.toBe();
@@ -63,4 +63,29 @@ describe('runRejectableQueue', async () => {
       () => {},
     ])).rejects.toBe('abc');
   });
+});
+
+test('runStoppableQueue', async () => {
+  expect(runStoppableQueue([])).toBe(true);
+  expect(runStoppableQueue([ 1, 2, 3 ])).toBe(true);
+  expect(runStoppableQueue([ 1, 2, false, 3 ])).toBe(false);
+  expect(runStoppableQueue([
+    () => {},
+    () => {},
+    () => {},
+  ])).toBe(true);
+  expect(runStoppableQueue([
+    () => {},
+    Promise.resolve(),
+    () => new Promise(resolve => resolve()),
+  ])).toBe(true);
+  const checkArray = [];
+  await expect(runStoppableQueue([
+    () => checkArray.push(1),
+    () => checkArray.push(2),
+    () => false,
+    () => checkArray.push(3),
+    () => checkArray.push(4),
+  ])).toBe(false);
+  expect(checkArray).toEqual([ 1, 2 ]);
 });
