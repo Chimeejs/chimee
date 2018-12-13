@@ -1,10 +1,7 @@
 /* tslint:disable: no-console */
 import { inBrowser, isString } from "toxic-predicate-functions";
 
-/**
- * Log Object
- */
-class ChimeeHelperLog {
+export class ChimeeHelperLog {
   public GLOBAL_TAG: string = "chimee";
   public FORCE_GLOBAL_TAG: boolean = false;
   public ENABLE_ERROR: boolean = true;
@@ -84,6 +81,6 @@ class ChimeeHelperLog {
 }
 
 // tslint:disable-next-line: max-line-length
-const chimeeLog: ChimeeHelperLog = (inBrowser && ((window as any)._chimee_log as ChimeeHelperLog)) || new ChimeeHelperLog();
+export const chimeeLog: ChimeeHelperLog = (inBrowser && ((window as any)._chimee_log as ChimeeHelperLog)) || new ChimeeHelperLog();
 
 export default chimeeLog;
