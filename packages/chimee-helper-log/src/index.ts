@@ -82,5 +82,3 @@ export class ChimeeHelperLog {
 
 // tslint:disable-next-line: max-line-length
 export const chimeeLog: ChimeeHelperLog = (inBrowser && ((window as any)._chimee_log as ChimeeHelperLog)) || new ChimeeHelperLog();
-
-export default chimeeLog;
