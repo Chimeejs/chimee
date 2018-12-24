@@ -53,7 +53,7 @@
     "es-fullscreen": "^0.3.0",
     "events": "^3.0.0",
     "lodash": "^4.17.11",
-    "toxic-decorators": "^0.3.8",
+    "toxic-decorators": "^0.4.0-beta.3",
     "toxic-predicate-functions": "^0.2.4"
   },
   "devDependencies": {

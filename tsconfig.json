@@ -9,6 +9,7 @@
         "sourceMap": true,
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
         "typeRoots": [
             "node_modules/@types",
         ],
