@@ -1,4 +1,17 @@
-import { isFunction } from 'lodash';
+import { isEmpty, isFunction } from 'lodash';
+/**
+ * delete the property if the value of the property is empty
+ * @param  {any} obj
+ * @param  {string} key
+ */
+export function deletePropertyIfItIsEmpty(obj: any, key: string) {
+  if (!obj) {
+    return;
+  }
+  if (isEmpty(obj[key])) {
+    delete obj[key];
+  }
+}
 /**
  * run a queue one by one.If include function reject or return false it will stop
  * @param  {Array} queue the queue which we want to run one by one
