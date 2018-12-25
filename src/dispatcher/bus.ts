@@ -3,7 +3,7 @@ import { dispatcherEventMethodMap, isDispatcherEventMethod, isDomEvent, isDomMet
 import { deletePropertyIfItIsEmpty, runRejectableQueue, runStoppableQueue } from 'helper/utils';
 import { bind, isArray, isEmpty, isError, isFunction, isNil } from 'lodash';
 import { runnable } from 'toxic-decorators';
-const secondaryReg = /^(before|after|_)/;
+export const secondaryReg = /^(before|after|_)/;
 function secondaryChecker(key: string) {
   if (key.match(secondaryReg)) {
     /* istanbul ignore else  */
@@ -41,7 +41,6 @@ type Dispatcher = any;
  */
 export default class Bus {
   public dispatcher: Dispatcher;
-  private kind: binderTarget;
   private events: {
     [eventName: string]: {
       [eventStage: string]: {
@@ -49,6 +48,7 @@ export default class Bus {
       },
     },
   };
+  private kind: binderTarget;
   private onceMap: {
     [key: string]: Map<(...args: any[]) => any, Array<(...args: any[]) => any>>,
   };
@@ -67,83 +67,11 @@ export default class Bus {
     this.onceMap = {};
   }
   /**
-   * [Can only be called in dispatcher]bind event on bus.
+   * destroy hook which will be called when object destroy
    */
-  public on(pluginId: string, eventName: string, fn: (...args: any[]) => any, stage: eventStage) {
-    this.addEvent({ eventName, stage, pluginId, fn });
-  }
-  /**
-   * [Can only be called in dispatcher]remove event off bus. Only suggest one by one.
-   */
-  public off(pluginId: string, eventName: string, fn: (...args: any[]) => any, stage: eventStage) {
-    const deleted = this.removeEvent({
-      eventName,
-      fn,
-      pluginId,
-      stage,
-    });
-    if (deleted) { return; }
-    // if we can't find the normal events
-    // maybe this event is bind once
-    const handler = this.getFirstHandlerFromOnceMap({
-      eventName,
-      fn,
-      pluginId,
-      stage,
-    });
-    if (isFunction(handler)) {
-      const deleted = this.removeEvent({
-        eventName,
-        fn: handler,
-        pluginId,
-        stage,
-      });
-      if (deleted) {
-        this.removeFromOnceMap({
-          eventName,
-          fn,
-          handler,
-          pluginId,
-          stage,
-        });
-      }
-    }
-  }
-  /**
-   * [Can only be called in dispatcher]bind event on bus and remove it once event is triggered.
-   */
-  public once(pluginId: string, eventName: string, fn: (...args: any[]) => any, stage: eventStage) {
-    const bus = this;
-    const handler = function(...args: any[]) {
-      // keep the this so that it can run
-      bind(fn, this)(...args);
-      bus.removeEvent({
-        eventName,
-        fn: handler,
-        pluginId,
-        stage,
-      });
-      bus.removeFromOnceMap({
-        eventName,
-        fn,
-        handler,
-        pluginId,
-        stage,
-      });
-    };
-    this.addEvent({
-      eventName,
-      fn: handler,
-      pluginId,
-      stage,
-    });
-    this.addToOnceMap({
-      eventName,
-      fn,
-      handler,
-      pluginId,
-      stage,
-    });
+  public destroy(): void {
+    delete this.events;
+    delete this.dispatcher;
   }
   /**
    * [Can only be called in dispatcher]emit an event, which will run before -> processor period.
@@ -191,6 +119,85 @@ export default class Bus {
       this.eventProcessor(key, { sync: true }, ...args));
   }
   /**
+   * [Can only be called in dispatcher]remove event off bus. Only suggest one by one.
+   */
+  public off(pluginId: string, eventName: string, fn: (...args: any[]) => any, stage: eventStage) {
+    const deleted = this.removeEvent({
+      eventName,
+      fn,
+      pluginId,
+      stage,
+    });
+    if (deleted) { return; }
+    // if we can't find the normal events
+    // maybe this event is bind once
+    const handler = this.getFirstHandlerFromOnceMap({
+      eventName,
+      fn,
+      pluginId,
+      stage,
+    });
+    if (isFunction(handler)) {
+      const deleted = this.removeEvent({
+        eventName,
+        fn: handler,
+        pluginId,
+        stage,
+      });
+      if (deleted) {
+        this.removeFromOnceMap({
+          eventName,
+          fn,
+          handler,
+          pluginId,
+          stage,
+        });
+      }
+    }
+  }
+  /**
+   * [Can only be called in dispatcher]bind event on bus.
+   */
+  public on(pluginId: string, eventName: string, fn: (...args: any[]) => any, stage: eventStage) {
+    this.addEvent({ eventName, stage, pluginId, fn });
+  }
+  /**
+   * [Can only be called in dispatcher]bind event on bus and remove it once event is triggered.
+   */
+  public once(pluginId: string, eventName: string, fn: (...args: any[]) => any, stage: eventStage) {
+    const bus = this;
+    const handler = function(...args: any[]) {
+      // keep the this so that it can run
+      bind(fn, this)(...args);
+      bus.removeEvent({
+        eventName,
+        fn: handler,
+        pluginId,
+        stage,
+      });
+      bus.removeFromOnceMap({
+        eventName,
+        fn,
+        handler,
+        pluginId,
+        stage,
+      });
+    };
+    this.addEvent({
+      eventName,
+      fn: handler,
+      pluginId,
+      stage,
+    });
+    this.addToOnceMap({
+      eventName,
+      fn,
+      handler,
+      pluginId,
+      stage,
+    });
+  }
+  /**
    * [Can only be called in dispatcher]trigger an event, which will run main -> after -> side effect period
    * @param  {string}    key event's name
    * @param  {anything} args
@@ -235,27 +242,6 @@ export default class Bus {
     return result;
   }
   /**
-   * destroy hook which will be called when object destroy
-   */
-  public destroy(): void {
-    delete this.events;
-    delete this.dispatcher;
-  }
-  /**
-   * run side effect period
-   * @param  {string}    key event's name
-   * @param  {args} args
-   */
-  private runSideEffectEvent(key: string, ...args: any): boolean {
-    const event = this.events[key];
-    if (isEmpty(event)) {
-      return false;
-    }
-    const queue = this.getEventQueue(event._);
-    queue.forEach((run) => run(...args));
-    return true;
-  }
-  /**
    * add event into bus
    * @private
    * @param {Array} keys keys map pointing to position to put event handler
@@ -268,56 +254,14 @@ export default class Bus {
     fn,
   }: {
     eventName: string,
-    stage: eventStage,
-    pluginId: string,
     fn: (...args: any[]) => any,
+    pluginId: string,
+    stage: eventStage,
   }): void {
     this.events[eventName] = this.events[eventName] || {};
     this.events[eventName][stage] = this.events[eventName][stage] || {};
     this.events[eventName][stage][pluginId] = this.events[eventName][stage][pluginId] || ([] as Array<(...args: any[]) => any>);
     this.events[eventName][stage][pluginId].push(fn);
-  }
-  /**
-   * remove event from bus
-   * @private
-   * @param {Array} keys keys map pointing to position to get event handler
-   * @param {function} fn handler to put
-   */
-  private removeEvent({
-    eventName,
-    stage,
-    pluginId,
-    fn,
-  }: {
-    eventName: string,
-    stage: eventStage,
-    pluginId: string,
-    fn: (...args: any[]) => any,
-  }): boolean {
-    const eventsForEventName = this.events[eventName];
-    if (!eventsForEventName) {
-      return;
-    }
-    const eventsForStage = eventsForEventName[stage];
-    if (!eventsForStage) {
-      return;
-    }
-
-    const eventsForPlugin = eventsForStage[pluginId];
-    if (!eventsForPlugin) {
-      return;
-    }
-
-    const index = eventsForPlugin.indexOf(fn);
-    const hasFn = index > -1;
-    if (hasFn) {
-      eventsForPlugin.splice(index, 1);
-    }
-    // if this plugin has no event binding, we remove this event session, which make us perform faster in emit & trigger period.
-    deletePropertyIfItIsEmpty(eventsForStage, pluginId);
-    deletePropertyIfItIsEmpty(eventsForEventName, stage);
-    deletePropertyIfItIsEmpty(this.events, eventName);
-    return hasFn;
   }
   private addToOnceMap({
     eventName,
@@ -327,10 +271,10 @@ export default class Bus {
     handler,
   }: {
     eventName: string,
-    stage: eventStage,
-    pluginId: string,
     fn: (...args: any[]) => any,
     handler: (...args: any[]) => any,
+    pluginId: string,
+    stage: eventStage,
   }): void {
     const key = getKeyForOnceMap(eventName, stage, pluginId);
     const map = this.onceMap[key] = this.onceMap[key] || new Map();
@@ -340,48 +284,31 @@ export default class Bus {
     const handlers = map.get(fn);
     handlers.push(handler);
   }
-  private removeFromOnceMap({
-    eventName,
-    stage,
-    pluginId,
-    fn,
-    handler,
-  }: {
-    eventName: string,
-    stage: eventStage,
-    pluginId: string,
-    fn: (...args: any[]) => any,
-    handler: (...args: any[]) => any,
-  }): void {
-    const key = getKeyForOnceMap(eventName, stage, pluginId);
-    const map = this.onceMap[key];
-    if (isNil(map) || !map.has(fn)) {
-      return;
+  /**
+   * event processor period. If event needs call kernel function.
+   * I will called here.
+   * If kernel will reponse. I will stop here.
+   * Else I will trigger next period.
+   * @param  {string}    key event's name
+   * @param  {boolean}  options.sync we will take triggerSync if true, otherwise we will run trigger. default is false
+   * @param  {anything} args
+   * @return {Promise|undefined}
+   */
+  private eventProcessor(key: string, { sync }: {sync: true}, ...args: any): boolean;
+  private eventProcessor(key: string, { sync }: {sync: false}, ...args: any): Promise<any>;
+  private eventProcessor(key: string, { sync }: {sync: boolean}, ...args: any): Promise<any> | boolean {
+    if (isDispatcherEventMethod(key)) {
+      this.dispatcher[dispatcherEventMethodMap[key]](...args);
+    } else if (isKernelMethod(key)) {
+      this.dispatcher.kernel[key](...args);
+    } else if (isDomMethod(key)) {
+      this.dispatcher.dom[key](...args);
     }
-    const handlers = map.get(fn);
-    const index = handlers.indexOf(handler);
-    handlers.splice(index, 1);
-    if (isEmpty(handlers)) {
-      map.delete(fn);
-    }
-  }
 
-  private getFirstHandlerFromOnceMap({
-    eventName,
-    stage,
-    pluginId,
-    fn,
-  }: {
-    eventName: string,
-    stage: eventStage,
-    pluginId: string,
-    fn: (...args: any[]) => any,
-  }): (...args: any[]) => any | void {
-    const key = getKeyForOnceMap(eventName, stage, pluginId);
-    const map = this.onceMap[key];
-    if (isNil(map) || !map.has(fn)) { return; }
-    const handlers = map.get(fn);
-    return handlers[0];
+    if (isVideoEvent(key) || isDomEvent(key)) {
+      return true;
+    }
+    return this[sync ? 'triggerSync' : 'trigger'](key, ...args);
   }
   /**
    * get event handlers queue to run
@@ -409,30 +336,103 @@ export default class Bus {
         }));
       }, []);
   }
+
+  private getFirstHandlerFromOnceMap({
+    eventName,
+    stage,
+    pluginId,
+    fn,
+  }: {
+    eventName: string,
+    fn: (...args: any[]) => any,
+    pluginId: string,
+    stage: eventStage,
+  }): (...args: any[]) => any | void {
+    const key = getKeyForOnceMap(eventName, stage, pluginId);
+    const map = this.onceMap[key];
+    if (isNil(map) || !map.has(fn)) { return; }
+    const handlers = map.get(fn);
+    return handlers[0];
+  }
   /**
-   * event processor period. If event needs call kernel function.
-   * I will called here.
-   * If kernel will reponse. I will stop here.
-   * Else I will trigger next period.
-   * @param  {string}    key event's name
-   * @param  {boolean}  options.sync we will take triggerSync if true, otherwise we will run trigger. default is false
-   * @param  {anything} args
-   * @return {Promise|undefined}
+   * remove event from bus
+   * @private
+   * @param {Array} keys keys map pointing to position to get event handler
+   * @param {function} fn handler to put
    */
-  private eventProcessor(key: string, { sync }: {sync: true}, ...args: any): boolean;
-  private eventProcessor(key: string, { sync }: {sync: false}, ...args: any): Promise<any>;
-  private eventProcessor(key: string, { sync }: {sync: boolean}, ...args: any): Promise<any> | boolean {
-    if (isDispatcherEventMethod(key)) {
-      this.dispatcher[dispatcherEventMethodMap[key]](...args);
-    } else if (isKernelMethod(key)) {
-      this.dispatcher.kernel[key](...args);
-    } else if (isDomMethod(key)) {
-      this.dispatcher.dom[key](...args);
+  private removeEvent({
+    eventName,
+    stage,
+    pluginId,
+    fn,
+  }: {
+    eventName: string,
+    fn: (...args: any[]) => any,
+    pluginId: string,
+    stage: eventStage,
+  }): boolean {
+    const eventsForEventName = this.events[eventName];
+    if (!eventsForEventName) {
+      return;
+    }
+    const eventsForStage = eventsForEventName[stage];
+    if (!eventsForStage) {
+      return;
     }
 
-    if (isVideoEvent(key) || isDomEvent(key)) {
-      return true;
+    const eventsForPlugin = eventsForStage[pluginId];
+    if (!eventsForPlugin) {
+      return;
     }
-    return this[sync ? 'triggerSync' : 'trigger'](key, ...args);
+
+    const index = eventsForPlugin.indexOf(fn);
+    const hasFn = index > -1;
+    if (hasFn) {
+      eventsForPlugin.splice(index, 1);
+    }
+    // if this plugin has no event binding, we remove this event session, which make us perform faster in emit & trigger period.
+    deletePropertyIfItIsEmpty(eventsForStage, pluginId);
+    deletePropertyIfItIsEmpty(eventsForEventName, stage);
+    deletePropertyIfItIsEmpty(this.events, eventName);
+    return hasFn;
+  }
+  private removeFromOnceMap({
+    eventName,
+    stage,
+    pluginId,
+    fn,
+    handler,
+  }: {
+    eventName: string,
+    fn: (...args: any[]) => any,
+    handler: (...args: any[]) => any,
+    pluginId: string,
+    stage: eventStage,
+  }): void {
+    const key = getKeyForOnceMap(eventName, stage, pluginId);
+    const map = this.onceMap[key];
+    if (isNil(map) || !map.has(fn)) {
+      return;
+    }
+    const handlers = map.get(fn);
+    const index = handlers.indexOf(handler);
+    handlers.splice(index, 1);
+    if (isEmpty(handlers)) {
+      map.delete(fn);
+    }
+  }
+  /**
+   * run side effect period
+   * @param  {string}    key event's name
+   * @param  {args} args
+   */
+  private runSideEffectEvent(key: string, ...args: any): boolean {
+    const event = this.events[key];
+    if (isEmpty(event)) {
+      return false;
+    }
+    const queue = this.getEventQueue(event._);
+    queue.forEach((run) => run(...args));
+    return true;
   }
 }
