@@ -5,8 +5,8 @@
 
 import { chimeeLog } from 'chimee-helper-log';
 import { off, on } from 'dom-helpers/events';
-import { domEvents, esFullscreenEvents, isMustListenVideoDomEvent, kernelEvents, mustListenVideoDomEvents, passiveEvents, videoEvents } from 'helper/const';
-import { camelCase, isEmpty, isFunction, isString } from 'lodash';
+import { domEvents, esFullscreenEvents, isMustListenVideoDomEvent, kernelEvents, mustListenVideoDomEvents, videoEvents } from 'helper/const';
+import { camelCase, isFunction, isString } from 'lodash';
 import { before, runnable } from 'toxic-decorators';
 import Bus, { binderTarget, eventStage, secondaryReg } from './bus';
 import ChimeeKernel from './kernel';
