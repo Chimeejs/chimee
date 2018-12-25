@@ -13,7 +13,7 @@ const boxSuffixMap: { [x: string]: string } = {
 
 // return the config box
 // or choose the right one according to the src
-export function getLegalBox({ src, box }: { src: string, box: string }): string {
+export function getLegalBox({ src, box }: { box: string, src: string }): string {
   if (isString(box) && box) { return box; }
   src = src.toLowerCase();
   for (const key in boxSuffixMap) {
@@ -26,9 +26,8 @@ export function getLegalBox({ src, box }: { src: string, box: string }): string 
 }
 
 export interface ChimeeKernelConfig {
-  src: string;
-  isLive: boolean;
   box: string;
+  isLive: boolean;
   preset: {
     // TODO: use the concrete kernel declare here later
     [x: string]: IVideoKernelConstructor,
@@ -36,9 +35,14 @@ export interface ChimeeKernelConfig {
   presetConfig: {
     [x: string]: object,
   };
+  src: string;
 }
 
 export default class ChimeeKernel {
+
+  get currentTime(): number {
+    return this.videoElement.currentTime || 0;
+  }
   public box: string;
   public boxConfig: object;
   public config: ChimeeKernelConfig;
@@ -50,6 +54,10 @@ export default class ChimeeKernel {
     this.config = config;
     this.videoElement = videoElement;
     this.initVideoKernel();
+  }
+
+  public attachMedia() {
+    this.videoKernel.attachMedia();
   }
 
   public destroy() {
@@ -81,13 +89,37 @@ export default class ChimeeKernel {
     this.videoKernel = new (VideoKernel as IVideoKernelConstructor)(this.videoElement, config, customConfig);
   }
 
-  public attachMedia() {
-    this.videoKernel.attachMedia();
-  }
-
   public load(src: string = this.config.src) {
     this.config.src = src;
     this.videoKernel.load(src);
+  }
+
+  public off(key: string, fn: (...args: any[]) => any) {
+    this.videoKernel.off(key, fn);
+  }
+
+  public on(key: string, fn: (...args: any[]) => any) {
+    this.videoKernel.on(key, fn);
+  }
+
+  public pause() {
+    this.videoKernel.pause();
+  }
+
+  public play() {
+    this.videoKernel.play();
+  }
+
+  public refresh() {
+    this.videoKernel.refresh();
+  }
+
+  public seek(seconds: number) {
+    if (!isNumber(seconds)) {
+      chimeeLog.error(LOG_TAG, `When you try to seek, you must offer us a number, but not ${typeof seconds}`);
+      return;
+    }
+    this.videoKernel.seek(seconds);
   }
 
   public startLoad() {
@@ -99,38 +131,6 @@ export default class ChimeeKernel {
   public stopLoad() {
     /* istanbul ignore else */
     if (isFunction(this.videoKernel.stopLoad)) { this.videoKernel.stopLoad(); }
-  }
-
-  public play() {
-    this.videoKernel.play();
-  }
-
-  public pause() {
-    this.videoKernel.pause();
-  }
-
-  get currentTime(): number {
-    return this.videoElement.currentTime || 0;
-  }
-
-  public seek(seconds: number) {
-    if (!isNumber(seconds)) {
-      chimeeLog.error(LOG_TAG, `When you try to seek, you must offer us a number, but not ${typeof seconds}`);
-      return;
-    }
-    this.videoKernel.seek(seconds);
-  }
-
-  public refresh() {
-    this.videoKernel.refresh();
-  }
-
-  public on(key: string, fn: (...args: any[]) => any) {
-    this.videoKernel.on(key, fn);
-  }
-
-  public off(key: string, fn: (...args: any[]) => any) {
-    this.videoKernel.off(key, fn);
   }
 
   // choose the right video kernel according to the box setting
