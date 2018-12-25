@@ -1,4 +1,3 @@
-// @flow
 import { isString, camelize, deepAssign, isObject, isEmpty, isArray, isFunction, transObjectAttrIntoArray, isPromise, Log, runRejectableQueue, addEvent, removeEvent, isError, deepClone } from 'chimee-helper';
 import ChimeeKernel from './kernel';
 import { getLegalBox } from './kernel';

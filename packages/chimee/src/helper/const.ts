@@ -115,6 +115,12 @@ export const mustListenVideoDomEvents = [
   'mouseleave',
 ];
 
+export type IMustListenVideoDomEvent = 'mouseenter'| 'mouseleave';
+
+export function isMustListenVideoDomEvent(x: string): x is IMustListenVideoDomEvent {
+  return mustListenVideoDomEvents.includes(x);
+}
+
 export const kernelEvents = [
   'mediaInfo',
   'heartbeat',

@@ -24,7 +24,8 @@
                 "public-instance-method",
                 "protected-instance-method",
                 "private-instance-method"
-              ]
+              ],
+              "alphabetize": true
             }
           ],
         "max-line-length": [true, 250]
