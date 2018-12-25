@@ -15,9 +15,8 @@ export default class NativeVideoKernel extends EventEmitter implements IVideoKer
   public static isSupport() {
     return true;
   }
-
-  private video: HTMLVideoElement;
   private config: NativeVideoKernelConfig;
+  private video: HTMLVideoElement;
 
   constructor(videoElement: HTMLVideoElement, config: NativeVideoKernelConfig = { src: '' }, customConfig: any) {
     super();
@@ -28,13 +27,35 @@ export default class NativeVideoKernel extends EventEmitter implements IVideoKer
     this.config = config;
   }
 
+  public attachMedia() {
+    // do nothing
+  }
+
+  public destroy() {
+    if (isElement(this.video)) {
+      this.stopLoad();
+    }
+  }
+
   public load(src: string) {
     this.video.setAttribute('src', src);
     this.video.src = src;
   }
 
-  public unload() {
-    // do nothing
+  public pause() {
+    return this.video.pause();
+  }
+
+  public play() {
+    return this.video.play();
+  }
+
+  public refresh() {
+    this.video.src = this.config.src;
+  }
+
+  public seek(seconds: number) {
+    this.video.currentTime = seconds;
   }
 
   public startLoad(src: string) {
@@ -52,29 +73,7 @@ export default class NativeVideoKernel extends EventEmitter implements IVideoKer
     this.video.removeAttribute('src');
   }
 
-  public destroy() {
-    if (isElement(this.video)) {
-      this.stopLoad();
-    }
-  }
-
-  public play() {
-    return this.video.play();
-  }
-
-  public pause() {
-    return this.video.pause();
-  }
-
-  public refresh() {
-    this.video.src = this.config.src;
-  }
-
-  public attachMedia() {
+  public unload() {
     // do nothing
-  }
-
-  public seek(seconds: number) {
-    this.video.currentTime = seconds;
   }
 }
