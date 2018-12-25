@@ -118,6 +118,9 @@ export default class Bus {
       // $FlowFixMe: conditional return here
       this.eventProcessor(key, { sync: true }, ...args));
   }
+  public hasEvents() {
+    return !isEmpty(this.events);
+  }
   /**
    * [Can only be called in dispatcher]remove event off bus. Only suggest one by one.
    */
