@@ -6,7 +6,7 @@
 import { chimeeLog } from 'chimee-helper-log';
 import { domEvents, esFullscreenEvents, isMustListenVideoDomEvent, kernelEvents, mustListenVideoDomEvents, videoEvents } from 'const/event';
 import { secondaryEventReg } from 'const/regExp';
-import { off, on } from 'dom-helpers/events';
+import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
 import { camelCase, isFunction, isString } from 'lodash';
 import { before, runnable } from 'toxic-decorators';
 import { binderTarget, eventStage } from 'types/base';
@@ -190,8 +190,8 @@ export default class Binder {
     this.bindedEventInfo['video-dom']
       .forEach(([ name, fn ]) => {
         remove
-          ? off(node, name, fn)
-          : on(node, name, fn);
+          ? removeEvent(node, name, fn)
+          : addEvent(node, name, fn);
       });
   }
 
@@ -202,8 +202,8 @@ export default class Binder {
       .concat(this.bindedEventInfo.video)
       .forEach(([ name, fn ]) => {
         remove
-          ? off(node, name, fn)
-          : on(node, name, fn);
+          ? removeEvent(node, name, fn)
+          : addEvent(node, name, fn);
       });
   }
 
@@ -217,10 +217,10 @@ export default class Binder {
       } else {
         const targetDom = this.getTargetDom(target);
         this.bindedEventInfo[target].forEach(([ name, fn ]) => {
-          off(targetDom, name, fn);
+          removeEvent(targetDom, name, fn);
 
           if (target === 'video-dom') {
-            this.dispatcher.dom.videoExtendedNodes.forEach((node) => off(node, name, fn));
+            this.dispatcher.dom.videoExtendedNodes.forEach((node) => removeEvent(node, name, fn));
           }
         });
       }
@@ -280,7 +280,7 @@ export default class Binder {
           }, ...args);
         }
       };
-      on(node, name, fn);
+      addEvent(node, name, fn);
       // this function is only used once now
       // so we do not cover this branch
       // but we still keep this judegement
@@ -389,14 +389,14 @@ export default class Binder {
       this.dispatcher.kernel.on(name, fn);
     } else if (target === 'container' || target === 'wrapper') {
       fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
-      on(targetDom, name, fn);
+      addEvent(targetDom, name, fn);
     } else if (target === 'video') {
       fn = (...args) => this.trigger({ target, name, id: target }, ...args);
-      on(targetDom, name, fn);
+      addEvent(targetDom, name, fn);
     } else if (target === 'video-dom') {
       fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
-      this.dispatcher.dom.videoExtendedNodes.forEach((node) => on(node, name, fn));
-      on(targetDom, name, fn);
+      this.dispatcher.dom.videoExtendedNodes.forEach((node) => addEvent(node, name, fn));
+      addEvent(targetDom, name, fn);
     }
     this.bindedEventNames[target].push(name);
     // $FlowFixMe: fn must be function now
@@ -463,12 +463,12 @@ export default class Binder {
     } else {
       const targetDom = this.getTargetDom(target);
 
-      off(targetDom, name, fn);
+      removeEvent(targetDom, name, fn);
 
       // When we remove something on video dom, we also need to remove event on penetrate plugin
       if (target === 'video-dom') {
         this.dispatcher.dom.videoExtendedNodes.forEach((node) => {
-          off(node, name, fn);
+          removeEvent(node, name, fn);
         });
       }
     }
