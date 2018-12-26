@@ -5,7 +5,7 @@ import { secondaryEventReg } from 'const/regExp';
 import { deletePropertyIfItIsEmpty, runRejectableQueue, runStoppableQueue } from 'helper/utils';
 import { bind, isArray, isEmpty, isError, isFunction, isNil } from 'lodash';
 import { runnable } from 'toxic-decorators';
-import { binderTarget, eventStage } from 'types/base';
+import { BinderTarget, EventStage } from 'types/base';
 
 function secondaryChecker(key: string) {
   if (key.match(secondaryEventReg)) {
@@ -18,7 +18,7 @@ function secondaryChecker(key: string) {
   return true;
 }
 
-function getKeyForOnceMap(eventName: string, stage: eventStage, pluginId: string) {
+function getKeyForOnceMap(eventName: string, stage: EventStage, pluginId: string) {
   return `${eventName}-${stage}-${pluginId}`;
 }
 
@@ -48,7 +48,7 @@ export default class Bus {
       },
     },
   };
-  private kind: binderTarget;
+  private kind: BinderTarget;
   private onceMap: {
     [key: string]: Map<(...args: any[]) => any, Array<(...args: any[]) => any>>,
   };
@@ -56,7 +56,7 @@ export default class Bus {
    * @param {Dispatcheer} dispatcher bus rely on dispatcher, so you mush pass dispatcher at first when you generate Bus.
    * @return {Bus}
    */
-  constructor(dispatcher: Dispatcher, kind: binderTarget) {
+  constructor(dispatcher: Dispatcher, kind: BinderTarget) {
     /**
      * the referrence to dispatcher
      * @type {Dispatcher}
@@ -124,7 +124,7 @@ export default class Bus {
   /**
    * [Can only be called in dispatcher]remove event off bus. Only suggest one by one.
    */
-  public off(pluginId: string, eventName: string, fn: (...args: any[]) => any, stage: eventStage) {
+  public off(pluginId: string, eventName: string, fn: (...args: any[]) => any, stage: EventStage) {
     const deleted = this.removeEvent({
       eventName,
       fn,
@@ -161,13 +161,13 @@ export default class Bus {
   /**
    * [Can only be called in dispatcher]bind event on bus.
    */
-  public on(pluginId: string, eventName: string, fn: (...args: any[]) => any, stage: eventStage) {
+  public on(pluginId: string, eventName: string, fn: (...args: any[]) => any, stage: EventStage) {
     this.addEvent({ eventName, stage, pluginId, fn });
   }
   /**
    * [Can only be called in dispatcher]bind event on bus and remove it once event is triggered.
    */
-  public once(pluginId: string, eventName: string, fn: (...args: any[]) => any, stage: eventStage) {
+  public once(pluginId: string, eventName: string, fn: (...args: any[]) => any, stage: EventStage) {
     const bus = this;
     const handler = function(...args: any[]) {
       // keep the this so that it can run
@@ -259,7 +259,7 @@ export default class Bus {
     eventName: string,
     fn: (...args: any[]) => any,
     pluginId: string,
-    stage: eventStage,
+    stage: EventStage,
   }): void {
     this.events[eventName] = this.events[eventName] || {};
     this.events[eventName][stage] = this.events[eventName][stage] || {};
@@ -277,7 +277,7 @@ export default class Bus {
     fn: (...args: any[]) => any,
     handler: (...args: any[]) => any,
     pluginId: string,
-    stage: eventStage,
+    stage: EventStage,
   }): void {
     const key = getKeyForOnceMap(eventName, stage, pluginId);
     const map = this.onceMap[key] = this.onceMap[key] || new Map();
@@ -349,7 +349,7 @@ export default class Bus {
     eventName: string,
     fn: (...args: any[]) => any,
     pluginId: string,
-    stage: eventStage,
+    stage: EventStage,
   }): (...args: any[]) => any | void {
     const key = getKeyForOnceMap(eventName, stage, pluginId);
     const map = this.onceMap[key];
@@ -372,7 +372,7 @@ export default class Bus {
     eventName: string,
     fn: (...args: any[]) => any,
     pluginId: string,
-    stage: eventStage,
+    stage: EventStage,
   }): boolean {
     const eventsForEventName = this.events[eventName];
     if (!eventsForEventName) {
@@ -410,7 +410,7 @@ export default class Bus {
     fn: (...args: any[]) => any,
     handler: (...args: any[]) => any,
     pluginId: string,
-    stage: eventStage,
+    stage: EventStage,
   }): void {
     const key = getKeyForOnceMap(eventName, stage, pluginId);
     const map = this.onceMap[key];

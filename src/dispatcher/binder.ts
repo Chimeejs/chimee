@@ -9,7 +9,7 @@ import { secondaryEventReg } from 'const/regExp';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
 import { camelCase, isFunction, isString } from 'lodash';
 import { before, runnable } from 'toxic-decorators';
-import { binderTarget, eventStage } from 'types/base';
+import { BinderTarget, EventStage } from 'types/base';
 import Bus from './bus';
 import ChimeeKernel from './kernel';
 // import Dispatcher from './index';
@@ -21,28 +21,28 @@ type rawEventInfo = {
   fn: (...args: any[]) => any,
   id: string,
   name: string,
-  stage?: eventStage;
-  target?: binderTarget;
+  stage?: EventStage;
+  target?: BinderTarget;
 };
 
 type additionalEventInfo = {
   name: string,
-  stage: eventStage,
-  target: binderTarget,
+  stage: EventStage,
+  target: BinderTarget,
 };
 
 type emitEventInfo = {
   id: string,
   name: string,
-  target: binderTarget,
+  target: BinderTarget,
 };
 
 type wholeEventInfo = {
   fn: (...args: any[]) => any,
   id: string,
   name: string,
-  stage: eventStage,
-  target: binderTarget,
+  stage: EventStage,
+  target: BinderTarget,
 };
 
 /**
@@ -50,7 +50,7 @@ type wholeEventInfo = {
  * we need to keep that logic work until next major version.
  * @param {string} name
  */
-function getEventTargetByOldLogic(oldName: string): { name: string, target: binderTarget } | false {
+function getEventTargetByOldLogic(oldName: string): { name: string, target: BinderTarget } | false {
   const targetKeyReg = new RegExp('^(c|w)_');
   const matches = oldName.match(targetKeyReg);
   if (matches) {
@@ -69,16 +69,16 @@ function getEventTargetByOldLogic(oldName: string): { name: string, target: bind
   return false;
 }
 
-function getEventStage(name?: string): { name: string, stage: eventStage } {
+function getEventStage(name?: string): { name: string, stage: EventStage } {
   const matches = name.match(secondaryEventReg);
-  const stage = ((matches && matches[0]) || 'main') as eventStage;
+  const stage = ((matches && matches[0]) || 'main') as EventStage;
   if (matches) {
     name = camelCase(name.replace(secondaryEventReg, ''));
   }
   return { name, stage };
 }
 
-function getEventTargetByEventName(name: string): binderTarget {
+function getEventTargetByEventName(name: string): BinderTarget {
   if (videoEvents.indexOf(name) > -1) { return 'video'; }
   if (kernelEvents.indexOf(name) > -1) { return 'kernel'; }
   if (domEvents.indexOf(name) > -1) { return 'video-dom'; }
@@ -86,7 +86,7 @@ function getEventTargetByEventName(name: string): binderTarget {
   return 'plugin';
 }
 
-function getEventInfo({ name, target, stage }: { name: string, stage?: eventStage, target?: binderTarget }): additionalEventInfo {
+function getEventInfo({ name, target, stage }: { name: string, stage?: EventStage, target?: BinderTarget }): additionalEventInfo {
   const oldInfo = getEventTargetByOldLogic(name);
   if (oldInfo) {
     name = oldInfo.name;
@@ -142,12 +142,12 @@ function checkEventEmitParameter(info: emitEventInfo, ...args: any[]): Array<emi
 }
 
 export default class Binder {
-  private bindedEventInfo: { [key in binderTarget]: Array<[string, (...args: any[]) => any]> };
-  private bindedEventNames: { [key in binderTarget]: string[] };
-  private buses: { [key in binderTarget]: Bus };
+  private bindedEventInfo: { [key in BinderTarget]: Array<[string, (...args: any[]) => any]> };
+  private bindedEventNames: { [key in BinderTarget]: string[] };
+  private buses: { [key in BinderTarget ]: Bus };
   private dispatcher: Dispatcher;
-  private kinds: binderTarget[];
-  private pendingEventsInfo: { [key in binderTarget]: Array<[string, string]> };
+  private kinds: BinderTarget [];
+  private pendingEventsInfo: { [key in BinderTarget ]: Array<[string, string]> };
 
   constructor(dispatcher: Dispatcher) {
     this.dispatcher = dispatcher;
@@ -160,10 +160,10 @@ export default class Binder {
       'plugin',
       'esFullscreen',
     ];
-    this.buses = ({} as { [key in binderTarget]: Bus });
-    this.bindedEventNames = ({} as { [key in binderTarget]: string[] });
-    this.bindedEventInfo = ({} as { [key in binderTarget]: Array<[string, (...args: any[]) => any]> });
-    this.pendingEventsInfo = ({} as { [key in binderTarget]: Array<[string, string]> });
+    this.buses = ({} as { [key in BinderTarget ]: Bus });
+    this.bindedEventNames = ({} as { [key in BinderTarget ]: string[] });
+    this.bindedEventInfo = ({} as { [key in BinderTarget ]: Array<[string, (...args: any[]) => any]> });
+    this.pendingEventsInfo = ({} as { [key in BinderTarget ]: Array<[string, string]> });
     for (const kind of this.kinds) {
       this.bindedEventNames[kind] = [];
       this.bindedEventInfo[kind] = [];
@@ -172,11 +172,11 @@ export default class Binder {
     }
   }
 
-  public addPendingEvent(target: binderTarget, name: string, id: string) {
+  public addPendingEvent(target: BinderTarget , name: string, id: string) {
     this.pendingEventsInfo[target].push([ name, id ]);
   }
 
-  public applyPendingEvents(target: binderTarget) {
+  public applyPendingEvents(target: BinderTarget ) {
     const pendingEvents = this.pendingEventsInfo[target];
     const pendingEventsCopy = pendingEvents.splice(0, pendingEvents.length);
     while (pendingEventsCopy.length) {
@@ -372,7 +372,7 @@ export default class Binder {
   }: {
     id: string,
     name: string,
-    target: binderTarget,
+    target: BinderTarget ,
   }) {
     if (!this.isEventNeedToBeHandled(target, name)) { return; }
     let fn: (...args: any[]) => any;
@@ -403,7 +403,7 @@ export default class Binder {
     this.bindedEventInfo[target].push([ name, fn ]);
   }
 
-  private getTargetDom(target: binderTarget): Element {
+  private getTargetDom(target: BinderTarget ): Element {
     let targetDom;
     switch (target) {
       case 'container':
@@ -417,7 +417,7 @@ export default class Binder {
     return targetDom;
   }
 
-  private isEventNeedToBeHandled(target: binderTarget, name: string): boolean {
+  private isEventNeedToBeHandled(target: BinderTarget , name: string): boolean {
     // the plugin target do not need us to transfer
     // we have listened on esFullscreen in dom
     // we have listened mustListenVideoDomEvents
@@ -436,7 +436,7 @@ export default class Binder {
     target,
   }: {
     name: string,
-    target: binderTarget,
+    target: BinderTarget ,
   }) {
     if (!this.isEventNeedToBeHandled(target, name)) { return; }
     const eventNamesList = this.bindedEventNames[target];
