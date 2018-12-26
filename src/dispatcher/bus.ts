@@ -1,11 +1,14 @@
 import { chimeeLog } from 'chimee-helper-log';
-import { dispatcherEventMethodMap, isDispatcherEventMethod, isDomEvent, isDomMethod, isKernelMethod, isVideoEvent, selfProcessorEvents } from 'helper/const';
+import { dispatcherEventMethodMap, isDispatcherEventMethod, isDomEvent, isVideoEvent, selfProcessorEvents } from 'const/event';
+import { isDomMethod, isKernelMethod } from 'const/method';
+import { secondaryEventReg } from 'const/regExp';
 import { deletePropertyIfItIsEmpty, runRejectableQueue, runStoppableQueue } from 'helper/utils';
 import { bind, isArray, isEmpty, isError, isFunction, isNil } from 'lodash';
 import { runnable } from 'toxic-decorators';
-export const secondaryReg = /^(before|after|_)/;
+import { binderTarget, eventStage } from 'types/base';
+
 function secondaryChecker(key: string) {
-  if (key.match(secondaryReg)) {
+  if (key.match(secondaryEventReg)) {
     /* istanbul ignore else  */
     if (process.env.NODE_ENV !== 'production') {
       chimeeLog.warn('bus', `Secondary Event "${key}" could not be call straightly by API.`);
@@ -19,9 +22,6 @@ function getKeyForOnceMap(eventName: string, stage: eventStage, pluginId: string
   return `${eventName}-${stage}-${pluginId}`;
 }
 
-export type binderTarget = 'kernel' | 'container' | 'wrapper' | 'video' | 'video-dom' | 'plugin' | 'esFullscreen';
-
-export type eventStage = 'before' | 'main' | 'after' | '_';
 // TODO: change later
 type Dispatcher = any;
 /**

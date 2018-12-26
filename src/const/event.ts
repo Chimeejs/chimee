@@ -1,16 +1,3 @@
-export const domMethods = [
-  'focus',
-  'fullscreen',
-  'requestFullscreen',
-  'exitFullscreen',
-];
-
-export type IDomMethod = 'focus' | 'fullscreen' | 'requestFullscreen' | 'exitFullscreen';
-
-export function isDomMethod(x: string): x is IDomMethod {
-  return domMethods.includes(x);
-}
-
 export const domEvents = [
   'beforeinput',
   'blur',
@@ -85,19 +72,6 @@ export const esFullscreenEvents = [
   'fullscreenchange',
 ];
 
-export const kernelMethods = [
-  'play',
-  'pause',
-  'seek',
-  'startLoad',
-  'stopLoad',
-];
-export type IKernelMethod = 'play' | 'pause' | 'seek' | 'startLoad' | 'stopLoad';
-
-export function isKernelMethod(x: string): x is IKernelMethod {
-  return kernelMethods.includes(x);
-}
-
 export const dispatcherEventMethodMap = {
   enterpictureinpicture: 'requestPictureInPicture',
   leavepictureinpicture: 'exitPictureInPicture',
@@ -136,12 +110,6 @@ export const passiveEvents = [
 export const selfProcessorEvents = [
   'silentLoad',
   'fullscreen',
-];
-
-export const videoMethods = [
-  'canPlayType',
-  'captureStream',
-  'setSinkId',
 ];
 
 export const videoEvents = [
@@ -207,24 +175,3 @@ export type IVideoEvent = 'abort'
 export function isVideoEvent(x: string): x is IVideoEvent {
   return videoEvents.includes(x);
 }
-
-export const videoReadOnlyProperties = [
-  'buffered',
-  'currentSrc',
-  'duration',
-  'error',
-  'ended',
-  'networkState',
-  'paused',
-  'readyState',
-  'seekable',
-  'sinkId',
-  'controlsList',
-  'tabIndex',
-  'dataset',
-  'offsetHeight',
-  'offsetLeft',
-  'offsetParent',
-  'offsetTop',
-  'offsetWidth',
-];

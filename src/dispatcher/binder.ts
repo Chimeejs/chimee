@@ -4,11 +4,13 @@
  */
 
 import { chimeeLog } from 'chimee-helper-log';
+import { domEvents, esFullscreenEvents, isMustListenVideoDomEvent, kernelEvents, mustListenVideoDomEvents, videoEvents } from 'const/event';
+import { secondaryEventReg } from 'const/regExp';
 import { off, on } from 'dom-helpers/events';
-import { domEvents, esFullscreenEvents, isMustListenVideoDomEvent, kernelEvents, mustListenVideoDomEvents, videoEvents } from 'helper/const';
 import { camelCase, isFunction, isString } from 'lodash';
 import { before, runnable } from 'toxic-decorators';
-import Bus, { binderTarget, eventStage, secondaryReg } from './bus';
+import { binderTarget, eventStage } from 'types/base';
+import Bus from './bus';
 import ChimeeKernel from './kernel';
 // import Dispatcher from './index';
 
@@ -68,10 +70,10 @@ function getEventTargetByOldLogic(oldName: string): { name: string, target: bind
 }
 
 function getEventStage(name?: string): { name: string, stage: eventStage } {
-  const matches = name.match(secondaryReg);
+  const matches = name.match(secondaryEventReg);
   const stage = ((matches && matches[0]) || 'main') as eventStage;
   if (matches) {
-    name = camelCase(name.replace(secondaryReg, ''));
+    name = camelCase(name.replace(secondaryEventReg, ''));
   }
   return { name, stage };
 }
