@@ -125,7 +125,7 @@ function isEventEmitalbe({
   id,
   name,
 }: emitEventInfo): boolean {
-  if (!name || !isString(name) || secondaryReg.test(name)) {
+  if (!name || !isString(name) || secondaryEventReg.test(name)) {
     chimeeLog.error('You must provide a legal event name, which is string and could not started with before/after/_');
     return false;
   }
