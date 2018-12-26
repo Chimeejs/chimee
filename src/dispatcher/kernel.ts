@@ -25,7 +25,7 @@ export function getLegalBox({ src, box }: { box: string, src: string }): string 
   return 'native';
 }
 
-export interface ChimeeKernelConfig {
+export interface IChimeeKernelConfig {
   box: string;
   isLive: boolean;
   preset: {
@@ -45,11 +45,11 @@ export default class ChimeeKernel {
   }
   public box: string;
   public boxConfig: object;
-  public config: ChimeeKernelConfig;
+  public config: IChimeeKernelConfig;
   public videoElement: HTMLVideoElement;
   public videoKernel: IVideoKernel;
 
-  constructor(videoElement: HTMLVideoElement, config: ChimeeKernelConfig) {
+  constructor(videoElement: HTMLVideoElement, config: IChimeeKernelConfig) {
     if (!isElement(videoElement)) { throw new Error('You must pass in an video element to the chimee-kernel'); }
     this.config = config;
     this.videoElement = videoElement;
