@@ -4,6 +4,9 @@ export type EventStage = 'before' | 'main' | 'after' | '_';
 
 export type BinderTarget = 'kernel' | 'container' | 'wrapper' | 'video' | 'video-dom' | 'plugin' | 'esFullscreen';
 
+export type ChimeeDomElement = 'container' | 'wrapper' | 'video';
+export type RealChimeeDomElement = 'container' | 'wrapper' | 'videoElement';
+
 export type PluginOption = {
   alias?: string,
   level?: number,

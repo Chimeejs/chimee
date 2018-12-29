@@ -1,4 +1,5 @@
 import { isEmpty, isFunction } from 'lodash';
+import { ChimeeDomElement, RealChimeeDomElement } from 'types/base';
 /**
  * delete the property if the value of the property is empty
  * @param  {any} obj
@@ -58,4 +59,11 @@ export function runStoppableQueue(queue: Array<(...args: any[]) => any>, ...args
     return step(++index);
   }
   return step(0);
+}
+
+function changeChimeeDomElementIntoRealChimeeDomElement(target: ChimeeDomElement): RealChimeeDomElement {
+  if (target === 'video') {
+    return 'videoElement';
+  }
+  return target;
 }

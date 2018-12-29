@@ -6,7 +6,6 @@
     "jsRules": {
     },
     "rules": {
-        "interface-name": false,
         "only-arrow-functions": false,
         "no-shadowed-variable": false,
         "quotemark": [true, "single" ],
