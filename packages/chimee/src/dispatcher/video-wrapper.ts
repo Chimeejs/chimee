@@ -1,66 +1,74 @@
-// @flow
-import { bind, deepAssign, getDeepProperty, isArray, isEmpty, isFunction, isObject, isString, Log } from 'chimee-helper';
+
+import { chimeeLog } from 'chimee-helper-log';
 import VideoConfig from 'config/video';
+import { domEvents } from 'const/event';
+import { domMethods, kernelMethods, videoMethods } from 'const/method';
+import { videoReadOnlyProperties } from 'const/property';
 import { attrAndStyleCheck, eventBinderCheck } from 'helper/checker';
-import { domEvents, domMethods, kernelMethods, videoMethods, videoReadOnlyProperties } from 'const/event';
+import { isArray, isFunction, isPlainObject, isString } from 'lodash';
 import { accessor, alias, applyDecorators, autobindClass, before, nonenumerable, watch } from 'toxic-decorators';
+import { isEmpty } from 'toxic-predicate-functions';
+import { bind, getDeepProperty } from 'toxic-utils';
+import { BinderTarget, EventOptions, VesselConfig } from 'typings/base';
+
+// TODO: change later
+type Dispatcher = any;
 export default class VideoWrapper {
   @nonenumerable
   get $container(): HTMLElement {
-    return this.__dispatcher.dom.container;
+    return this.dispatcher.dom.container;
   }
   @nonenumerable
   get $pluginOrder(): string[] {
-    return this.__dispatcher.order;
+    return this.dispatcher.order;
   }
 
   @nonenumerable
-  get $plugins(): plugins {
-    return this.__dispatcher.plugins;
+  get $plugins(): { [id: string]: Plugin } {
+    return this.dispatcher.plugins;
   }
   @nonenumerable
   get $video(): HTMLVideoElement {
-    return this.__dispatcher.dom.videoElement;
+    return this.dispatcher.dom.videoElement;
   }
   @nonenumerable
   get $wrapper(): HTMLElement {
-    return this.__dispatcher.dom.wrapper;
+    return this.dispatcher.dom.wrapper;
   }
 
   get container(): VesselConfig {
-    return this.__dispatcher.containerConfig;
+    return this.dispatcher.containerConfig;
   }
 
-  set container(config: Object): VesselConfig {
-    if (!isObject(config)) {
+  set container(config: VesselConfig) {
+    if (!isPlainObject(config)) {
       throw new Error(`The config of container must be Object, but not ${typeof config}.`);
     }
-    deepAssign(this.__dispatcher.containerConfig, config);
-    return this.__dispatcher.container;
+    Object.assign(this.dispatcher.containerConfig, config);
   }
   get currentTime(): number {
-    return this.__dispatcher.kernel.currentTime;
+    return this.dispatcher.kernel.currentTime;
   }
 
   set currentTime(second: number) {
-    this.__dispatcher.binder.emitSync({
+    this.dispatcher.binder.emitSync({
+      id: this.id,
       name: 'seek',
       target: 'video',
-      id: this.__id,
     }, second);
   }
 
   get fullscreenElement(): HTMLElement | string | void {
-    return this.__dispatcher.dom.fullscreenElement;
+    return this.dispatcher.dom.fullscreenElement;
   }
 
   @nonenumerable
   get inPictureInPictureMode(): boolean {
-    return this.__dispatcher.inPictureInPictureMode;
+    return this.dispatcher.inPictureInPictureMode;
   }
 
   get isFullscreen(): boolean | string {
-    return this.__dispatcher.dom.isFullscreen;
+    return this.dispatcher.dom.isFullscreen;
   }
 
   @nonenumerable
@@ -69,72 +77,351 @@ export default class VideoWrapper {
   }
 
   get videoRequireGuardedAttributes(): string[] {
-    return this.__dispatcher.dom.videoRequireGuardedAttributes;
+    return this.dispatcher.dom.videoRequireGuardedAttributes;
   }
-  public __dispatcher: Dispatcher;
-  public __events: PluginEvents;
-  public __events = {};
-  public __id: string;
-  public __unwatchHandlers: Function[];
-  public __unwatchHandlers = [];
-  public play: Function;
+  public play: (...args: any[]) => any;
+  private dispatcher: Dispatcher;
+  private events: { [evetName: string]: Array<(...args: any[]) => any> } = {};
+  private id: string;
+  private unwatchHandlers: Array<(...args: any[]) => any> = [];
 
-  public __addEvents(key: string, fn: Function) {
-    this.__events[key] = this.__events[key] || [];
-    this.__events[key].push(fn);
+  /**
+   * set attr
+   * @param {string} element optional, default to be video, you can choose from video | container | wrapper
+   * @param {string} attribute the atrribue nameß
+   * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
+   */
+  @alias('attr')
+  @before(attrAndStyleCheck)
+  public $attr(method: string, ...args: any[]): string {
+    if (method === 'set' && /video/.test(args[0])) {
+      if (!this.dispatcher.videoConfigReady) {
+        /* istanbul ignore else  */
+        if (process.env.NODE_ENV !== 'production') {
+          chimeeLog.warn('chimee', `${this.id} is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger`);
+        }
+        return args[2];
+      }
+      if (this.dispatcher.videoConfig._realDomAttr.indexOf(args[1]) > -1) {
+        const [ , key, val ] = args;
+        this.dispatcher.videoConfig[key] = val;
+        return val;
+      }
+    }
+    return this.dispatcher.dom[method + 'Attr'](...args);
   }
 
-  public __destroy() {
-    this.__unwatchHandlers.forEach((unwatcher) => unwatcher());
-    Object.keys(this.__events)
-      .forEach((key) => {
-        if (!isArray(this.__events[key])) { return; }
-        this.__events[key].forEach((fn) => this.$off(key, fn));
+  /**
+   * set style
+   * @param {string} element optional, default to be video, you can choose from video | container | wrapper
+   * @param {string} attribute the atrribue name
+   * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
+   */
+  @alias('css')
+  @before(attrAndStyleCheck)
+  public $css(method: string, ...args: any[]): string {
+    return this.dispatcher.dom[method + 'Style'](...args);
+  }
+
+  public $del(obj: any, property: string) {
+    if (!isPlainObject(obj) && !isArray(obj)) { throw new TypeError(`$del only support Array or Object, but not ${obj}, whose type is ${typeof obj}`); }
+    if (!isFunction(obj.__del)) {
+      /* istanbul ignore else  */
+      if (process.env.NODE_ENV !== 'production') { chimeeLog.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $del.`); }
+      delete obj[property];
+      return;
+    }
+    obj.__del(property);
+  }
+
+  /**
+   * emit an event
+   * @param  {string}    key event's name
+   * @param  {...args} args
+   */
+  @alias('emit')
+  public $emit(
+    key: string | {
+      name: string,
+      target: BinderTarget,
+    },
+    ...args: any) {
+    let target: BinderTarget | void;
+    if (!isString(key) && isString(key.name) && isString(key.target)) {
+      target = key.target;
+      key = key.name;
+    }
+    if (!isString(key)) {
+      throw new TypeError('emit key parameter must be String');
+    }
+    /* istanbul ignore else  */
+    if (process.env.NODE_ENV !== 'production' && domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
+      chimeeLog.warn('plugin', `You are try to emit ${key} event. As emit is wrapped in Promise. It make you can't use event.preventDefault and event.stopPropagation. So we advice you to use emitSync`);
+    }
+    return this.dispatcher.binder.emit({
+      id: this.id,
+      name: key,
+      target,
+    }, ...args);
+  }
+
+  /**
+   * emit a sync event
+   * @param  {string}    key event's name
+   * @param  {...args} args
+   */
+  @alias('emitSync')
+  public $emitSync(
+    key: string | {
+      name: string,
+      target: BinderTarget,
+    },
+    ...args: any) {
+    let target;
+    if (!isString(key) && isString(key.name) && isString(key.target)) {
+      target = key.target;
+      key = key.name;
+    }
+    if (!isString(key)) {
+      throw new TypeError('emitSync key parameter must be String');
+    }
+    return this.dispatcher.binder.emitSync({
+      id: this.id,
+      name: key,
+      target,
+    }, ...args);
+  }
+
+  /**
+   * call fullscreen api on some specific element
+   * @param {boolean} flag true means fullscreen and means exit fullscreen
+   * @param {string} element the element you want to fullscreen, default it's container, you can choose from video | container | wrapper
+   */
+  @alias('fullScreen')
+  @alias('$fullScreen')
+  @alias('fullscreen')
+  public $fullscreen(flag: boolean = true, element: string = 'container'): boolean {
+    if (!this.dispatcher.binder.emitSync({
+      id: this.id,
+      name: 'fullscreen',
+      target: 'video-dom',
+    }, flag, element)) { return false; }
+    const result = this.dispatcher.dom.fullscreen(flag, element);
+    this.dispatcher.binder.triggerSync({
+      id: this.id,
+      name: 'fullscreen',
+      target: 'video-dom',
+    }, flag, element);
+    return result;
+  }
+  /**
+   * remove event handler through this function
+   * @param  {string} key event's name
+   * @param  {Function} fn event's handler
+   */
+  @alias('off')
+  @alias('removeEventListener')
+  @before(eventBinderCheck)
+  public $off(key: string, fn: (...args: any[]) => any, options: EventOptions = {}) {
+    const eventInfo = Object.assign({}, options, {
+      fn,
+      id: this.id,
+      name: key,
+    });
+    this.dispatcher.binder.off(eventInfo);
+    this.removeEvents(key, fn);
+  }
+
+  /**
+   * bind event handler through this function
+   * @param  {string} key event's name
+   * @param  {Function} fn event's handler
+   */
+  @alias('on')
+  @alias('addEventListener')
+  @before(eventBinderCheck)
+  public $on(key: string, fn: (...args: any[]) => any, options: EventOptions = {}) {
+    const eventInfo = Object.assign({}, options, {
+      fn,
+      id: this.id,
+      name: key,
+    });
+    this.dispatcher.binder.on(eventInfo);
+    // set on events as mark so that i can destroy it when i destroy
+    this.addEvents(key, fn);
+  }
+  /**
+   * bind one time event handler
+   * @param {string} key event's name
+   * @param {Function} fn event's handler
+   */
+  @alias('once')
+  @before(eventBinderCheck)
+  public $once(key: string, fn: (...args: any[]) => any, options: EventOptions = {}) {
+    const self = this;
+    const boundFn = function(...args: any[]) {
+      bind(fn, this)(...args);
+      self.removeEvents(key, boundFn);
+    };
+    self.addEvents(key, boundFn);
+    const eventInfo = Object.assign({}, options, {
+      fn: boundFn,
+      id: this.id,
+      name: key,
+    });
+    this.dispatcher.binder.once(eventInfo);
+  }
+
+  public $set(obj: any, property: string | number, value: any) {
+    if (!isPlainObject(obj) && !isArray(obj)) { throw new TypeError(`$set only support Array or Object, but not ${obj}, whose type is ${typeof obj}`); }
+    // $FlowFixMe: we have custom this function
+    if (!isFunction(obj.__set)) {
+      /* istanbul ignore else  */
+      if (process.env.NODE_ENV !== 'production') {
+        chimeeLog.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $set.`);
+      }
+      // $FlowFixMe: we support computed string on array here
+      obj[property] = value;
+      return;
+    }
+    obj.__set(property, value);
+  }
+
+  @alias('silentLoad')
+  public $silentLoad(...args: any[]) {
+    return this.dispatcher.binder.emit({
+      id: this.id,
+      name: 'silentLoad',
+      target: 'video',
+    })
+      .then(() => {
+        return this.dispatcher.silentLoad(...args);
+      }).then((result: any) => {
+        this.dispatcher.binder.trigger({
+          id: this.id,
+          name: 'silentLoad',
+          target: 'video',
+        }, result);
       });
-    delete this.__events;
   }
-  public __removeEvents(key: string, fn: Function) {
-    if (isEmpty(this.__events[key])) { return; }
-    const index = this.__events[key].indexOf(fn);
-    if (index < 0) { return; }
-    this.__events[key].splice(index, 1);
-    if (isEmpty(this.__events[key])) { delete this.__events[key]; }
+
+  public $watch(key: string | string[], handler: (...args: any[]) => any, {
+    deep,
+    diff = true,
+    other,
+    proxy = false,
+  }: {
+    deep?: boolean,
+    diff?: boolean,
+    other?: any,
+    proxy?: boolean,
+  } = {}) {
+    if (!isString(key) && !isArray(key)) { throw new TypeError(`$watch only accept string and Array<string> as key to find the target to spy on, but not ${key}, whose type is ${typeof key}`); }
+    let watching = true;
+    const watcher = function(...args: any[]) {
+      if (watching && (!(this instanceof VideoConfig) || this.dispatcher.changeWatchable)) { bind(handler, this)(...args); }
+    };
+    const unwatcher = () => {
+      watching = false;
+      const index = this.unwatchHandlers.indexOf(unwatcher);
+      if (index > -1) { this.unwatchHandlers.splice(index, 1); }
+    };
+    const keys = isString(key)
+      ? key.split('.')
+      : key;
+    const property = keys.pop();
+    const videoConfig = this.dispatcher.videoConfig;
+    const target = (
+      keys.length === 0 &&
+      !other &&
+      videoConfig._realDomAttr.indexOf(property) > -1
+    )
+      ? videoConfig
+      : [ 'isFullscreen', 'fullscreenElement' ].indexOf(property) > -1
+        ? this.dispatcher.dom
+        : getDeepProperty(other || this, keys, { throwError: true });
+    applyDecorators(target, {
+      [property]: watch(watcher, { deep, diff, proxy }),
+    }, { self: true });
+    this.unwatchHandlers.push(unwatcher);
+    return unwatcher;
   }
-  public __wrapAsVideo(videoConfig: VideoConfig) {
+
+  public destroy() {
+    this.unwatchHandlers.forEach((unwatcher) => unwatcher());
+    Object.keys(this.events)
+      .forEach((key) => {
+        if (!isArray(this.events[key])) { return; }
+        this.events[key].forEach((fn) => this.$off(key, fn));
+      });
+    delete this.events;
+  }
+
+  public exitPictureInPicture() {
+    return this.dispatcher.binder.emit({
+      id: this.id,
+      name: 'leavepictureinpicture',
+      target: 'video',
+    });
+  }
+
+  public load(...args: any[]): Promise<void> {
+    return new Promise((resolve) => {
+      this.dispatcher.binder.once({
+        fn: resolve,
+        id: this.id,
+        name: '_load',
+        target: 'plugin',
+      });
+      this.dispatcher.binder.emit({
+        id: this.id,
+        name: 'load',
+        target: 'plugin',
+      }, ...args);
+    });
+  }
+
+  public requestPictureInPicture() {
+    return this.dispatcher.binder.emit({
+      id: this.id,
+      name: 'enterpictureinpicture',
+      target: 'video',
+    });
+  }
+
+  public wrapAsVideo(videoConfig: VideoConfig) {
     // bind video read only properties on instance, so that you can get info like buffered
     videoReadOnlyProperties.forEach((key) => {
       Object.defineProperty(this, key, {
-        get() {
-          return this.__dispatcher.dom.videoElement[key];
-        },
-        set: undefined,
         configurable: false,
         enumerable: false,
+        get() {
+          return this.dispatcher.dom.videoElement[key];
+        },
+        set: undefined,
       });
     });
     // bind videoMethods like canplaytype on instance
     videoMethods.forEach((key) => {
       Object.defineProperty(this, key, {
+        configurable: false,
+        enumerable: false,
         get() {
-          const video = this.__dispatcher.dom.videoElement;
+          const video = this.dispatcher.dom.videoElement;
           return bind(video[key], video);
         },
         set: undefined,
-        configurable: false,
-        enumerable: false,
       });
     });
     // bind video config properties on instance, so that you can just set src by this
-    const props = videoConfig._realDomAttr.concat(videoConfig._kernelProperty)
-      .reduce((props, key) => {
+    const props = videoConfig.realDomAttr.concat(videoConfig.kernelProperty)
+      .reduce((props: { [x: string]: Array<(...args: any[]) => any>}, key: keyof VideoConfig) => {
         props[key] = [
           accessor({
             get() {
-            // $FlowFixMe: support computed key here
               return videoConfig[key];
             },
-            set(value) {
-            // $FlowFixMe: support computed key here
+            set(value: any) {
               videoConfig[key] = value;
               return value;
             },
@@ -149,15 +436,15 @@ export default class VideoWrapper {
         value(...args: any) {
           return new Promise((resolve) => {
             const id = this.__id;
-            this.__dispatcher.binder.once({
+            this.dispatcher.binder.once({
+              fn: resolve,
               id,
               name: '_' + key,
-              fn: resolve,
             });
-            this.__dispatcher.binder[/^(seek)$/.test(key) ? 'emitSync' : 'emit']({
-              target: 'video',
-              name: key,
+            this.dispatcher.binder[/^(seek)$/.test(key) ? 'emitSync' : 'emit']({
               id,
+              name: key,
+              target: 'video',
             }, ...args);
           });
         },
@@ -170,7 +457,7 @@ export default class VideoWrapper {
       if (key === 'fullscreen') { return; }
       Object.defineProperty(this, key, {
         value(...args: any) {
-          return this.__dispatcher.dom[key](...args);
+          return this.dispatcher.dom[key](...args);
         },
         configurable: true,
         enumerable: false,
@@ -179,287 +466,15 @@ export default class VideoWrapper {
     });
   }
 
-  /**
-   * set attr
-   * @param {string} element optional, default to be video, you can choose from video | container | wrapper
-   * @param {string} attribute the atrribue nameß
-   * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
-   */
-  @alias('attr')
-  @before(attrAndStyleCheck)
-  public $attr(method: string, ...args: any[]): string {
-    if (method === 'set' && /video/.test(args[0])) {
-      if (!this.__dispatcher.videoConfigReady) {
-        /* istanbul ignore else  */
-        if (process.env.NODE_ENV !== 'production') { Log.warn('chimee', `${this.__id} is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger`); }
-        return args[2];
-      }
-      if (this.__dispatcher.videoConfig._realDomAttr.indexOf(args[1]) > -1) {
-        const [ , key, val ] = args;
-        this.__dispatcher.videoConfig[key] = val;
-        return val;
-      }
-    }
-    return this.__dispatcher.dom[method + 'Attr'](...args);
+  private addEvents(key: string, fn: (...args: any[]) => any) {
+    this.events[key].push(fn);
   }
 
-  /**
-   * set style
-   * @param {string} element optional, default to be video, you can choose from video | container | wrapper
-   * @param {string} attribute the atrribue name
-   * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
-   */
-  @alias('css')
-  @before(attrAndStyleCheck)
-  public $css(method: string, ...args: any[]): string {
-    return this.__dispatcher.dom[method + 'Style'](...args);
-  }
-
-  public $del(obj: Object | Array<*>, property: string) {
-    if (!isObject(obj) && !isArray(obj)) { throw new TypeError(`$del only support Array or Object, but not ${obj}, whose type is ${typeof obj}`); }
-    // $FlowFixMe: we have custom this function
-    if (!isFunction(obj.__del)) {
-      /* istanbul ignore else  */
-      if (process.env.NODE_ENV !== 'production') { Log.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $del.`); }
-      // $FlowFixMe: we support computed string on array here
-      delete obj[property];
-      return;
-    }
-    obj.__del(property);
-  }
-
-  /**
-   * emit an event
-   * @param  {string}    key event's name
-   * @param  {...args} args
-   */
-  @alias('emit')
-  public $emit(key: string | {
-    name: string,
-    target: binderTarget,
-  },           ...args: any) {
-    let target: binderTarget | void;
-    if (isObject(key) && isString(key.name) && isString(key.target)) {
-      target = key.target;
-      key = key.name;
-    }
-    if (!isString(key)) { throw new TypeError('emit key parameter must be String'); }
-    /* istanbul ignore else  */
-    if (process.env.NODE_ENV !== 'production' && domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
-      Log.warn('plugin', `You are try to emit ${key} event. As emit is wrapped in Promise. It make you can't use event.preventDefault and event.stopPropagation. So we advice you to use emitSync`);
-    }
-    return this.__dispatcher.binder.emit({
-      name: key,
-      id: this.__id,
-      target,
-    }, ...args);
-  }
-
-  /**
-   * emit a sync event
-   * @param  {string}    key event's name
-   * @param  {...args} args
-   */
-  @alias('emitSync')
-  public $emitSync(key: string | {
-    name: string,
-    target: binderTarget,
-  },               ...args: any) {
-    let target;
-    if (isObject(key) && isString(key.name) && isString(key.target)) {
-      target = key.target;
-      key = key.name;
-    }
-    if (!isString(key)) { throw new TypeError('emitSync key parameter must be String'); }
-    return this.__dispatcher.binder.emitSync({
-      name: key,
-      id: this.__id,
-      target,
-    }, ...args);
-  }
-
-  /**
-   * call fullscreen api on some specific element
-   * @param {boolean} flag true means fullscreen and means exit fullscreen
-   * @param {string} element the element you want to fullscreen, default it's container, you can choose from video | container | wrapper
-   */
-  @alias('fullScreen')
-  @alias('$fullScreen')
-  @alias('fullscreen')
-  public $fullscreen(flag: boolean = true, element: string = 'container'): boolean {
-    if (!this.__dispatcher.binder.emitSync({
-      name: 'fullscreen',
-      id: this.__id,
-      target: 'video-dom',
-    }, flag, element)) { return false; }
-    const result = this.__dispatcher.dom.fullscreen(flag, element);
-    this.__dispatcher.binder.triggerSync({
-      name: 'fullscreen',
-      id: this.__id,
-      target: 'video-dom',
-    }, flag, element);
-    return result;
-  }
-  /**
-   * remove event handler through this function
-   * @param  {string} key event's name
-   * @param  {Function} fn event's handler
-   */
-  @alias('off')
-  @alias('removeEventListener')
-  @before(eventBinderCheck)
-  public $off(key: string, fn: Function, options: eventOptions = {}) {
-    const eventInfo = Object.assign({}, options, {
-      name: key,
-      id: this.__id,
-      fn,
-    });
-    this.__dispatcher.binder.off(eventInfo);
-    this.__removeEvents(key, fn);
-  }
-
-  /**
-   * bind event handler through this function
-   * @param  {string} key event's name
-   * @param  {Function} fn event's handler
-   */
-  @alias('on')
-  @alias('addEventListener')
-  @before(eventBinderCheck)
-  public $on(key: string, fn: Function, options: eventOptions = {}) {
-    const eventInfo = Object.assign({}, options, {
-      name: key,
-      id: this.__id,
-      fn,
-    });
-    this.__dispatcher.binder.on(eventInfo);
-    // set on __events as mark so that i can destroy it when i destroy
-    this.__addEvents(key, fn);
-  }
-  /**
-   * bind one time event handler
-   * @param {string} key event's name
-   * @param {Function} fn event's handler
-   */
-  @alias('once')
-  @before(eventBinderCheck)
-  public $once(key: string, fn: Function, options: eventOptions = {}) {
-    const self = this;
-    const boundFn = function(...args) {
-      bind(fn, this)(...args);
-      self.__removeEvents(key, boundFn);
-    };
-    self.__addEvents(key, boundFn);
-    const eventInfo = Object.assign({}, options, {
-      name: key,
-      id: this.__id,
-      fn: boundFn,
-    });
-    this.__dispatcher.binder.once(eventInfo);
-  }
-
-  public $set(obj: Object | Array<*>, property: string | number, value: any) {
-    if (!isObject(obj) && !isArray(obj)) { throw new TypeError(`$set only support Array or Object, but not ${obj}, whose type is ${typeof obj}`); }
-    // $FlowFixMe: we have custom this function
-    if (!isFunction(obj.__set)) {
-      /* istanbul ignore else  */
-      if (process.env.NODE_ENV !== 'production') { Log.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $set.`); }
-      // $FlowFixMe: we support computed string on array here
-      obj[property] = value;
-      return;
-    }
-    obj.__set(property, value);
-  }
-
-  @alias('silentLoad')
-  public $silentLoad(...args: Array<*>) {
-    return this.__dispatcher.binder.emit({
-      name: 'silentLoad',
-      target: 'video',
-      id: this.__id,
-    })
-      .then(() => {
-        return this.__dispatcher.silentLoad(...args);
-      }).then((result) => {
-        this.__dispatcher.binder.trigger({
-          name: 'silentLoad',
-          target: 'video',
-          id: this.__id,
-        }, result);
-      });
-  }
-
-  public $watch(key: string | string[], handler: Function, {
-    deep,
-    diff = true,
-    other,
-    proxy = false,
-  }: {
-    deep?: boolean,
-    diff?: boolean,
-    other?: any,
-    proxy?: boolean,
-  } = {}) {
-    if (!isString(key) && !isArray(key)) { throw new TypeError(`$watch only accept string and Array<string> as key to find the target to spy on, but not ${key}, whose type is ${typeof key}`); }
-    let watching = true;
-    const watcher = function(...args) {
-      if (watching && (!(this instanceof VideoConfig) || this.dispatcher.changeWatchable)) { bind(handler, this)(...args); }
-    };
-    const unwatcher = () => {
-      watching = false;
-      const index = this.__unwatchHandlers.indexOf(unwatcher);
-      if (index > -1) { this.__unwatchHandlers.splice(index, 1); }
-    };
-    const keys = isString(key)
-      ? key.split('.')
-      : key;
-    const property = keys.pop();
-    const videoConfig = this.__dispatcher.videoConfig;
-    const target = (
-      keys.length === 0 &&
-      !other &&
-      videoConfig._realDomAttr.indexOf(property) > -1
-    )
-      ? videoConfig
-      : [ 'isFullscreen', 'fullscreenElement' ].indexOf(property) > -1
-        ? this.__dispatcher.dom
-        : getDeepProperty(other || this, keys, { throwError: true });
-    applyDecorators(target, {
-      [property]: watch(watcher, { deep, diff, proxy }),
-    }, { self: true });
-    this.__unwatchHandlers.push(unwatcher);
-    return unwatcher;
-  }
-
-  public exitPictureInPicture() {
-    return this.__dispatcher.binder.emit({
-      target: 'video',
-      name: 'leavepictureinpicture',
-      id: this.__id,
-    });
-  }
-
-  public load(...args: Array<*>): Promise<*> {
-    return new Promise((resolve) => {
-      this.__dispatcher.binder.once({
-        id: this.__id,
-        name: '_load',
-        target: 'plugin',
-        fn: resolve,
-      });
-      this.__dispatcher.binder.emit({
-        name: 'load',
-        target: 'plugin',
-        id: this.__id,
-      }, ...args);
-    });
-  }
-
-  public requestPictureInPicture() {
-    return this.__dispatcher.binder.emit({
-      target: 'video',
-      name: 'enterpictureinpicture',
-      id: this.__id,
-    });
+  private removeEvents(key: string, fn: (...args: any[]) => any) {
+    if (isEmpty(this.events[key])) { return; }
+    const index = this.events[key].indexOf(fn);
+    if (index < 0) { return; }
+    this.events[key].splice(index, 1);
+    if (isEmpty(this.events[key])) { delete this.events[key]; }
   }
 }
