@@ -2,9 +2,9 @@
 import { bind, deepAssign, getDeepProperty, isArray, isEmpty, isFunction, isObject, isString, Log } from 'chimee-helper';
 import VideoConfig from 'config/video';
 import { attrAndStyleCheck, eventBinderCheck } from 'helper/checker';
-import { domEvents, domMethods, kernelMethods, videoMethods, videoReadOnlyProperties } from 'helper/const';
+import { domEvents, domMethods, kernelMethods, videoMethods, videoReadOnlyProperties } from 'const/event';
 import { accessor, alias, applyDecorators, autobindClass, before, nonenumerable, watch } from 'toxic-decorators';
-export default; @autobindClass() class VideoWrapper {
+export default class VideoWrapper {
   @nonenumerable
   get $container(): HTMLElement {
     return this.__dispatcher.dom.container;
