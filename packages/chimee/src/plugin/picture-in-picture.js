@@ -1,5 +1,5 @@
 // @flow
-import Plugin from '../dispatcher/plugin';
+import ChimeePlugin from '../dispatcher/plugin';
 import { addClassName, setStyle } from 'chimee-helper';
 // $FlowFixMe: we can extend create here
 export default class PictureInPicture extends Plugin {

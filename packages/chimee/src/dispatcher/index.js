@@ -1,7 +1,7 @@
 import { isString, camelize, deepAssign, isObject, isEmpty, isArray, isFunction, transObjectAttrIntoArray, isPromise, Log, runRejectableQueue, addEvent, removeEvent, isError, deepClone } from 'chimee-helper';
 import ChimeeKernel from './kernel';
 import { getLegalBox } from './kernel';
-import Plugin from './plugin';
+import ChimeePlugin from './plugin';
 import Dom from './dom';
 import VideoConfig from 'config/video';
 import defaultContainerConfig from 'config/container';

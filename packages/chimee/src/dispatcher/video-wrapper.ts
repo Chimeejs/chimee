@@ -4,6 +4,7 @@ import VideoConfig from 'config/video';
 import { domEvents } from 'const/event';
 import { domMethods, kernelMethods, videoMethods } from 'const/method';
 import { videoReadOnlyProperties } from 'const/property';
+import ChimeePlugin from 'dispatcher/plugin';
 import { attrAndStyleCheck, eventBinderCheck } from 'helper/checker';
 import { isArray, isFunction, isPlainObject, isString } from 'lodash';
 import { accessor, alias, applyDecorators, autobindClass, before, nonenumerable, watch } from 'toxic-decorators';
@@ -24,7 +25,7 @@ export default class VideoWrapper {
   }
 
   @nonenumerable
-  get $plugins(): { [id: string]: Plugin } {
+  get $plugins(): { [id: string]: ChimeePlugin } {
     return this.dispatcher.plugins;
   }
   @nonenumerable

@@ -1,7 +1,7 @@
 // @flow
 import Dispatcher from './dispatcher/index';
 import { isString, isFunction, isElement, isObject, Log, isError } from 'chimee-helper';
-import Plugin from './dispatcher/plugin';
+import ChimeePlugin from './dispatcher/plugin';
 import { frozen, autobindClass } from 'toxic-decorators';
 import VideoWrapper from 'dispatcher/video-wrapper';
 import GlobalConfig from 'config/global';
@@ -21,7 +21,7 @@ export default @autobindClass() class Chimee extends VideoWrapper {
     errorHandler: Function | void;
   };
   static config: GlobalConfig;
-  static plugin: Plugin;
+  static plugin: ChimeePlugin;
   destroyed = false;
 
   @frozen
