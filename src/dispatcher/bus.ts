@@ -5,7 +5,7 @@ import { secondaryEventReg } from 'const/regExp';
 import { deletePropertyIfItIsEmpty, runRejectableQueue, runStoppableQueue } from 'helper/utils';
 import { bind, isArray, isEmpty, isError, isFunction, isNil } from 'lodash';
 import { runnable } from 'toxic-decorators';
-import { BinderTarget, EventStage } from 'types/base';
+import { BinderTarget, EventStage } from 'typings/base';
 
 function secondaryChecker(key: string) {
   if (key.match(secondaryEventReg)) {

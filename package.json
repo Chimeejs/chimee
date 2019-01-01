@@ -14,7 +14,7 @@
     "test": "npm run karma && jest --coverage && node env-check.js",
     "tsc": "tsc --outDir ./ts-out",
     "unit": "jest --coverage --watch",
-    "lint": "eslint . --fix && flow check",
+    "lint": "tslint -c ./tslint.json 'src/**/*.ts' --fix && eslint . --fix",
     "flow": "flow check",
     "start": "rollup -c build/rollup.config.dev.js -w",
     "build": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min && npm run b-esm",
