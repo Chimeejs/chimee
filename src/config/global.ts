@@ -1,4 +1,3 @@
-// @flow
 import { chimeeLog } from 'chimee-helper-log';
 import esFullscreen from 'es-fullscreen';
 import { accessor, applyDecorators, nonenumerable } from 'toxic-decorators';
