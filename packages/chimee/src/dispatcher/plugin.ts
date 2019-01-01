@@ -1,7 +1,14 @@
-// @flow
-import { isError, isString, isFunction, isEmpty, isObject, isBoolean, isInteger, isPromise, deepAssign, bind, Log } from 'chimee-helper';
-import { accessor, applyDecorators, frozen, autobindClass } from 'toxic-decorators';
+import { chimeeLog } from 'chimee-helper-log';
+import VideoConfig from 'config/video';
 import VideoWrapper from 'dispatcher/video-wrapper';
+import { isBoolean, isError, isFunction, isInteger, isPlainObject, isString } from 'lodash';
+import { accessor, applyDecorators, frozen } from 'toxic-decorators';
+import { isEmpty, isPromise } from 'toxic-predicate-functions';
+import { bind } from 'toxic-utils';
+import { PluginConfig, PluginOption } from 'typings/base';
+
+// TODO: change later
+type Dispatcher = any;
 
 /**
  * <pre>
@@ -10,34 +17,58 @@ import VideoWrapper from 'dispatcher/video-wrapper';
  * Developer can do most of things base on this plugin
  * </pre>
  */
-export default @autobindClass() class Plugin extends VideoWrapper {
-  __dispatcher: Dispatcher;
-  __id: string;
-  beforeCreate: Function;
-  create: Function;
-  destroy: Function;
-  init: Function;
-  inited: Function;
-  ready: Promise<*>;
-  readySync: boolean;
-  destroyed: boolean;
-  $dom: HTMLElement;
-  $level: number;
-  __level: number;
-  $operable: boolean;
-  __operable: boolean;
-  $config: PluginOption;
-  $videoConfig: VideoConfig;
-  $inner: boolean;
-  $operable: boolean;
-  $penetrate: boolean;
-  VERSION: string;
-  __autoFocus: boolean;
+export default class ChimeePlugin extends VideoWrapper {
 
-  destroyed = false;
-  VERSION = process.env.PLAYER_VERSION;
-  __operable = true;
-  __level = 0;
+  get $autoFocus(): boolean {
+    return this.autoFocusValue;
+  }
+
+  set $autoFocus(val: boolean) {
+    this.autoFocusValue = val;
+    this.dispatcher.dom._autoFocusToVideo(this.$dom, !val);
+  }
+  /**
+   * the z-index level, higher when you set higher
+   * @type {boolean}
+   */
+  set $level(val: number) {
+    if (!isInteger(val)) { return; }
+    this.levelValue = val;
+    this.dispatcher._sortZIndex();
+  }
+  get $level(): number {
+    return this.levelValue;
+  }
+  /**
+   * to tell us if the plugin can be operable, can be dynamic change
+   * @type {boolean}
+   */
+  set $operable(val: boolean) {
+    if (!isBoolean(val)) { return; }
+    this.$dom.style.pointerEvents = val ? 'auto' : 'none';
+    this.operableValue = val;
+  }
+  get $operable(): boolean {
+    return this.operableValue;
+  }
+  public $config: PluginOption;
+  public $dom: HTMLElement;
+  public $inner: boolean;
+  public $penetrate: boolean;
+  public $videoConfig: VideoConfig;
+  public beforeCreate?: PluginConfig['beforeCreate'];
+  public create?: PluginConfig['create'];
+  public destroy?: PluginConfig['destroy'];
+
+  public destroyed: boolean = false;
+  public init?: PluginConfig['init'];
+  public inited?: PluginConfig['inited'];
+  public ready: Promise<void>;
+  public readySync: boolean;
+  public VERSION: string = process.env.PLAYER_VERSION;
+  private autoFocusValue: boolean = false;
+  private levelValue: number = 0;
+  private operableValue: boolean = true;
   /**
    * <pre>
    * to create a plugin, we need three parameter
@@ -64,90 +95,94 @@ export default @autobindClass() class Plugin extends VideoWrapper {
    * @param  {Object}  option  PluginOption that will pass to the plugin
    * @return {Plugin}  plugin instance
    */
-  constructor({
-    id,
-    name,
-    level = 0,
-    operable = true,
-    beforeCreate,
-    create,
-    init,
-    inited,
-    destroy,
-    events = {},
-    data = {},
-    computed = {},
-    methods = {},
-    el,
-    penetrate = false,
-    inner = true,
-    autoFocus,
-    className,
-  }: PluginConfig = {}, dispatcher: Dispatcher, option: PluginOption = { name }) {
-    super();
+  constructor(
+    {
+      id,
+      name,
+      level = 0,
+      operable = true,
+      beforeCreate,
+      create,
+      init,
+      inited,
+      destroy,
+      events = {},
+      data = {},
+      computed = {},
+      methods = {},
+      el,
+      penetrate = false,
+      inner = true,
+      autoFocus,
+      className,
+    }: PluginConfig,
+    dispatcher: Dispatcher,
+    option: PluginOption = { name }) {
+    super({ dispatcher, id });
     if (isEmpty(dispatcher)) {
       /* istanbul ignore else  */
-      if (process.env.NODE_ENV !== 'production') Log.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
+      if (process.env.NODE_ENV !== 'production') { chimeeLog.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?'); }
       throw new TypeError('lack of dispatcher');
     }
     if (!isString(id)) {
       throw new TypeError('id of PluginConfig must be string');
     }
-    this.__id = id;
-    this.__dispatcher = dispatcher;
-    this.$videoConfig = this.__dispatcher.videoConfig;
-    this.__wrapAsVideo(this.$videoConfig);
+    this.id = id;
+    this.$videoConfig = this.dispatcher.videoConfig;
+    this.wrapAsVideo(this.$videoConfig);
     this.beforeCreate = this.beforeCreate || beforeCreate;
     try {
-      isFunction(this.beforeCreate) && this.beforeCreate({
-        events,
-        data,
-        computed,
-        methods,
-      }, option);
+      if (isFunction(this.beforeCreate)) {
+        this.beforeCreate({
+          computed,
+          data,
+          events,
+          methods,
+        }, option);
+      }
     } catch (error) {
       this.$throwError(error);
     }
     // bind plugin methods into instance
-    if (!isEmpty(methods) && isObject(methods)) {
-      Object.keys(methods).forEach(key => {
+    if (!isEmpty(methods) && isPlainObject(methods)) {
+      Object.keys(methods).forEach((key) => {
         const fn = methods[key];
-        if (!isFunction(fn)) throw new TypeError('plugins methods must be Function');
+        if (!isFunction(fn)) { throw new TypeError('plugins methods must be Function'); }
         Object.defineProperty(this, key, {
+          configurable: true,
+          enumerable: false,
           value: bind(fn, this),
           writable: true,
-          enumerable: false,
-          configurable: true,
         });
       });
     }
     // hook plugin events on bus
-    if (!isEmpty(events) && isObject(events)) {
+    if (!isEmpty(events) && isPlainObject(events)) {
       Object.keys(events)
-        .forEach(key => {
-          if (!isFunction(events[key])) throw new TypeError('plugins events hook must bind with Function');
+        .forEach((key) => {
+          if (!isFunction(events[key])) { throw new TypeError('plugins events hook must bind with Function'); }
           this.$on(key, events[key]);
         });
     }
     // bind data into plugin instance
-    if (!isEmpty(data) && isObject(data)) {
-      deepAssign(this, data);
+    if (!isEmpty(data) && isPlainObject(data)) {
+      Object.assign(this, data);
     }
     // set the computed member by getter and setter
-    if (!isEmpty(computed) && isObject(computed)) {
+    if (!isEmpty(computed) && isPlainObject(computed)) {
       const props = Object.keys(computed)
-        .reduce((props, key) => {
+        .reduce((props: { [x: string]: (...args: any[]) => any }, key) => {
           const val = computed[key];
           if (isFunction(val)) {
             props[key] = accessor({ get: val });
             return props;
           }
-          if (isObject(val) && (isFunction(val.get) || isFunction(val.set))) {
+          if (isPlainObject(val) && (isFunction(val.get) || isFunction(val.set))) {
             props[key] = accessor(val);
             return props;
           }
           /* istanbul ignore else  */
-          if (process.env.NODE_ENV !== 'production') Log.warn('Dispatcher.plugin', `Wrong computed member '${key}' defination in Plugin ${name}`);
+          if (process.env.NODE_ENV !== 'production') { chimeeLog.warn('Dispatcher.plugin', `Wrong computed member '${key}' defination in Plugin ${name}`); }
           return props;
         }, {});
       applyDecorators(this, props, { self: true });
@@ -179,7 +214,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
      * the dom node of whole plugin
      * @type {HTMLElement}
      */
-    this.$dom = this.__dispatcher.dom.insertPlugin(this.__id, el, { penetrate, inner, className });
+    this.$dom = this.dispatcher.dom.insertPlugin(this.id, el, { penetrate, inner, className });
     this.$autoFocus = isBoolean(autoFocus) ? autoFocus : inner;
     // now we can frozen inner, autoFocus and penetrate
     this.$inner = inner;
@@ -195,7 +230,7 @@ export default @autobindClass() class Plugin extends VideoWrapper {
     this.$operable = isBoolean(option.operable)
       ? option.operable
       : operable;
-    this.__level = isInteger(option.level)
+    this.levelValue = isInteger(option.level)
       ? option.level
       : level;
     /**
@@ -204,26 +239,44 @@ export default @autobindClass() class Plugin extends VideoWrapper {
      */
     this.$config = option;
     try {
-      isFunction(this.create) && this.create();
+      if (isFunction(create)) {
+        this.create();
+      }
     } catch (error) {
       this.$throwError(error);
     }
   }
+
   /**
-   * call for init lifecycle hook, which mainly handle the original config of video and kernel.
-   * @param {VideoConfig} videoConfig the original config of the videoElement or Kernel
+   * set the plugin to be the top of all plugins
    */
-  __init(videoConfig: VideoConfig) {
-    try {
-      isFunction(this.init) && this.init(videoConfig);
-    } catch (error) {
-      this.$throwError(error);
+  public $bumpToTop() {
+    const topLevel = this.dispatcher._getTopLevel(this.$inner);
+    this.$level = topLevel + 1;
+  }
+  /**
+   * officail destroy function for plugin
+   * we will call user destory function in this method
+   */
+  public $destroy() {
+    if (this.destroyed) { return; }
+    if (isFunction(this.destroy)) {
+      this.destroy();
     }
+    super.destroyVideoWrapper();
+    this.dispatcher.dom.removePlugin(this.id);
+    delete this.dispatcher;
+    delete this.$dom;
+    this.destroyed = true;
+  }
+
+  public $throwError(error: Error | string) {
+    this.dispatcher.throwError(error);
   }
   /**
    * call for inited lifecycle hook, which just to tell the plugin we have inited.
    */
-  __inited(): Promise<*> | Plugin {
+  private runInitedHook(): Promise<void> | ChimeePlugin {
     let result;
     try {
       result = isFunction(this.inited) && this.inited();
@@ -233,76 +286,30 @@ export default @autobindClass() class Plugin extends VideoWrapper {
     this.readySync = !isPromise(result);
     this.ready = this.readySync
       ? Promise.resolve(this)
-      // $FlowFixMe: it's promise now
       : result
         .then(() => {
           this.readySync = true;
           return this;
         })
-        .catch(error => {
-          if (isError(error)) return this.$throwError(error);
+        .catch((error: Error) => {
+          if (isError(error)) { return this.$throwError(error); }
           return Promise.reject(error);
         });
     return this.readySync
       ? this
       : this.ready;
   }
-
   /**
-   * set the plugin to be the top of all plugins
+   * call for init lifecycle hook, which mainly handle the original config of video and kernel.
+   * @param {VideoConfig} videoConfig the original config of the videoElement or Kernel
    */
-  $bumpToTop() {
-    const topLevel = this.__dispatcher._getTopLevel(this.$inner);
-    this.$level = topLevel + 1;
-  }
-
-  $throwError(error: Error | string) {
-    this.__dispatcher.throwError(error);
-  }
-  /**
-   * officail destroy function for plugin
-   * we will call user destory function in this method
-   */
-  $destroy() {
-    if (this.destroyed) return;
-    isFunction(this.destroy) && this.destroy();
-    super.__destroy();
-    this.__dispatcher.dom.removePlugin(this.__id);
-    delete this.__dispatcher;
-    delete this.$dom;
-    this.destroyed = true;
-  }
-  /**
-   * to tell us if the plugin can be operable, can be dynamic change
-   * @type {boolean}
-   */
-  set $operable(val: boolean) {
-    if (!isBoolean(val)) return;
-    this.$dom.style.pointerEvents = val ? 'auto' : 'none';
-    this.__operable = val;
-  }
-  get $operable(): boolean {
-    return this.__operable;
-  }
-  /**
-   * the z-index level, higher when you set higher
-   * @type {boolean}
-   */
-  set $level(val: number) {
-    if (!isInteger(val)) return;
-    this.__level = val;
-    this.__dispatcher._sortZIndex();
-  }
-  get $level(): number {
-    return this.__level;
-  }
-
-  get $autoFocus(): boolean {
-    return this.__autoFocus;
-  }
-
-  set $autoFocus(val: boolean) {
-    this.__autoFocus = val;
-    this.__dispatcher.dom._autoFocusToVideo(this.$dom, !val);
+  private runInitHook(videoConfig: VideoConfig) {
+    try {
+      if (isFunction(this.init)) {
+        this.init(videoConfig);
+      }
+    } catch (error) {
+      this.$throwError(error);
+    }
   }
 }
