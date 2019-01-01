@@ -1,16 +1,19 @@
-// @flow
 import { isNumber, isString } from 'lodash';
-import Dispatcher from '../dispatcher/index';
+import { VesselConfig } from 'typings/base';
+// import Dispatcher from '../dispatcher/index';
+
+// TODO: change later
+type Dispatcher = any;
 // base css controller for container and wrapper
 export default class Vessel {
-  __dispatcher: Dispatcher;
-  __target: string;
-  width: string | number;
-  height: string | number;
+  public dispatcher: Dispatcher;
+  public height: string | number;
+  public target: string;
+  public width: string | number;
   constructor(dispatcher: Dispatcher, target: string, config: VesselConfig) {
-    this.__dispatcher = dispatcher;
-    this.__target = target;
-    [ 'width', 'height', 'position', 'display' ].forEach(key => {
+    this.dispatcher = dispatcher;
+    this.target = target;
+    [ 'width', 'height', 'position', 'display' ].forEach((key) => {
       Object.defineProperty(this, key, {
         get() {
           return this.__dispatcher.dom.getStyle(this.__target, key);
