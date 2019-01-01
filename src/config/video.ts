@@ -296,7 +296,7 @@ export default class VideoConfig {
   public isLive: boolean = false;
 
   @frozen
-  public kernelProperty: string[] = [ 'isLive', 'box', 'preset', 'kernels', 'presetConfig' ];
+  public kernelProperty: Array<keyof VideoConfig> = [ 'isLive', 'box', 'preset', 'kernels', 'presetConfig' ];
   // kernels 不在 videoConfig 上设置默认值，防止判断出错
   public kernels: UserKernelsConfig;
 
