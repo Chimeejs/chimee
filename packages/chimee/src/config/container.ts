@@ -1,6 +1,6 @@
 export default {
-  width: '100%',
+  display: 'block',
   height: '100%',
   position: 'relative',
-  display: 'block',
+  width: '100%',
 };
