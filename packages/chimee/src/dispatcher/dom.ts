@@ -8,7 +8,7 @@ import { isArray, isFunction, isPlainObject, isString } from 'lodash';
 import { autobind, before, waituntil } from 'toxic-decorators';
 import { isElement, isEvent, isHTMLString, isPosterityNode } from 'toxic-predicate-functions';
 import { hypenate } from 'toxic-utils';
-import { RealChimeeDomElement, UserConfig } from 'types/base';
+import { RealChimeeDomElement, UserConfig } from 'typings/base';
 // import Dispatcher from './index';
 // TODO: change later
 type Dispatcher = any;

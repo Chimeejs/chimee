@@ -1,5 +1,5 @@
 import { isEmpty, isFunction } from 'lodash';
-import { ChimeeDomElement, RealChimeeDomElement } from 'types/base';
+import { ChimeeDomElement, RealChimeeDomElement } from 'typings/base';
 /**
  * delete the property if the value of the property is empty
  * @param  {any} obj

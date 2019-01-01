@@ -1,1 +1,1 @@
-import 'helper/const'
+import 'helper/const';

@@ -9,7 +9,7 @@ import { secondaryEventReg } from 'const/regExp';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
 import { camelCase, isFunction, isString } from 'lodash';
 import { before, runnable } from 'toxic-decorators';
-import { BinderTarget, EventStage } from 'types/base';
+import { BinderTarget, EventStage } from 'typings/base';
 import Bus from './bus';
 import ChimeeKernel from './kernel';
 // import Dispatcher from './index';

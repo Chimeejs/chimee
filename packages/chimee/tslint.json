@@ -27,7 +27,7 @@
               "alphabetize": true
             }
           ],
-        "max-line-length": [true, 250]
+        "max-line-length": [true, 350]
     },
     "rulesDirectory": []
 }
