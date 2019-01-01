@@ -57,6 +57,7 @@ export default class VideoWrapper {
       target: 'video',
     }, second);
   }
+  protected dispatcher: Dispatcher;
 
   get fullscreenElement(): HTMLElement | string | void {
     return this.dispatcher.dom.fullscreenElement;
@@ -79,11 +80,14 @@ export default class VideoWrapper {
   get videoRequireGuardedAttributes(): string[] {
     return this.dispatcher.dom.videoRequireGuardedAttributes;
   }
-  public play: (...args: any[]) => any;
-  private dispatcher: Dispatcher;
+  protected id: string;
   private events: { [evetName: string]: Array<(...args: any[]) => any> } = {};
-  private id: string;
   private unwatchHandlers: Array<(...args: any[]) => any> = [];
+
+  constructor({ dispatcher, id }: { dispatcher: Dispatcher, id: string }) {
+    this.dispatcher = dispatcher;
+    this.id = id;
+  }
 
   /**
    * set attr
@@ -347,16 +351,6 @@ export default class VideoWrapper {
     return unwatcher;
   }
 
-  public destroy() {
-    this.unwatchHandlers.forEach((unwatcher) => unwatcher());
-    Object.keys(this.events)
-      .forEach((key) => {
-        if (!isArray(this.events[key])) { return; }
-        this.events[key].forEach((fn) => this.$off(key, fn));
-      });
-    delete this.events;
-  }
-
   public exitPictureInPicture() {
     return this.dispatcher.binder.emit({
       id: this.id,
@@ -389,7 +383,17 @@ export default class VideoWrapper {
     });
   }
 
-  public wrapAsVideo(videoConfig: VideoConfig) {
+  protected destroyVideoWrapper() {
+    this.unwatchHandlers.forEach((unwatcher) => unwatcher());
+    Object.keys(this.events)
+      .forEach((key) => {
+        if (!isArray(this.events[key])) { return; }
+        this.events[key].forEach((fn) => this.$off(key, fn));
+      });
+    delete this.events;
+  }
+
+  protected wrapAsVideo(videoConfig: VideoConfig) {
     // bind video read only properties on instance, so that you can get info like buffered
     videoReadOnlyProperties.forEach((key) => {
       Object.defineProperty(this, key, {
