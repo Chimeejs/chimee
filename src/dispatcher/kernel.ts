@@ -3,6 +3,7 @@ import { IVideoKernel, IVideoKernelConstructor } from 'kernels/base';
 import NativeVideoKernel from 'kernels/native';
 import { isFunction, isNumber, isString } from 'lodash';
 import { isElement } from 'toxic-predicate-functions';
+import { SupportedKernelType } from 'typings/base';
 
 const LOG_TAG = 'chimee';
 const boxSuffixMap: { [x: string]: string } = {
@@ -29,8 +30,7 @@ export interface IChimeeKernelConfig {
   box: string;
   isLive: boolean;
   preset: {
-    // TODO: use the concrete kernel declare here later
-    [x: string]: IVideoKernelConstructor,
+    [key in SupportedKernelType]?: IVideoKernelConstructor;
   };
   presetConfig: {
     [x: string]: object,
@@ -136,7 +136,7 @@ export default class ChimeeKernel {
   // choose the right video kernel according to the box setting
   private chooseVideoKernel(
     box: string,
-    preset: { [x: string]: IVideoKernelConstructor; }): IVideoKernelConstructor {
+    preset: { [key in SupportedKernelType]?: IVideoKernelConstructor; }): IVideoKernelConstructor {
     switch (box) {
       case 'native':
         return NativeVideoKernel;

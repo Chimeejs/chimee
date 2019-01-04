@@ -5,7 +5,7 @@ import { querySelectorAll } from 'dom-helpers/query';
 import style from 'dom-helpers/style';
 import esFullscreen from 'es-fullscreen';
 import { isArray, isFunction, isPlainObject, isString } from 'lodash';
-import { autobind, before, waituntil } from 'toxic-decorators';
+import { autobind, waituntil } from 'toxic-decorators';
 import { isElement, isEvent, isHTMLString, isPosterityNode } from 'toxic-predicate-functions';
 import { hypenate } from 'toxic-utils';
 import { RealChimeeDomElement, UserConfig } from 'typings/base';
