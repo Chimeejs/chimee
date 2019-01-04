@@ -299,7 +299,6 @@ export default class Dom {
    * Set zIndex for a plugins list
    */
   public setPluginsZIndex(plugins: string[]): void {
-    // $FlowFixMe: there are videoElment and container here
     plugins.forEach((key: string, index) => style(key.match(/^(videoElement|container)$/) ? this[(key as RealChimeeDomElement)] : this.plugins[key], 'z-index', ++index));
   }
 

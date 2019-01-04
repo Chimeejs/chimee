@@ -282,13 +282,11 @@ export default class VideoWrapper {
 
   public $set(obj: any, property: string | number, value: any) {
     if (!isPlainObject(obj) && !isArray(obj)) { throw new TypeError(`$set only support Array or Object, but not ${obj}, whose type is ${typeof obj}`); }
-    // $FlowFixMe: we have custom this function
     if (!isFunction(obj.__set)) {
       /* istanbul ignore else  */
       if (process.env.NODE_ENV !== 'production') {
         chimeeLog.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $set.`);
       }
-      // $FlowFixMe: we support computed string on array here
       obj[property] = value;
       return;
     }

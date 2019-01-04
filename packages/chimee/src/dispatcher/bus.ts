@@ -84,7 +84,6 @@ export default class Bus {
     const event = this.events[key];
     if (isEmpty(event)) {
       if (selfProcessorEvents.indexOf(key) > -1) { return Promise.resolve(); }
-      // $FlowFixMe: conditional return here
       return this.eventProcessor(key, { sync: false }, ...args);
     }
     const beforeQueue = this.getEventQueue(event.before);
@@ -114,7 +113,6 @@ export default class Bus {
     }
     const beforeQueue = this.getEventQueue(event.before);
     return runStoppableQueue(beforeQueue, ...args) && (selfProcessorEvents.indexOf(key) > -1 ||
-      // $FlowFixMe: conditional return here
       this.eventProcessor(key, { sync: true }, ...args));
   }
   public hasEvents() {
@@ -296,14 +294,21 @@ export default class Bus {
    * @param  {anything} args
    * @return {Promise|undefined}
    */
-  private eventProcessor(key: string, { sync }: {sync: true}, ...args: any): boolean;
-  private eventProcessor(key: string, { sync }: {sync: false}, ...args: any): Promise<any>;
-  private eventProcessor(key: string, { sync }: {sync: boolean}, ...args: any): Promise<any> | boolean {
+  private eventProcessor(key: string, { sync }: {sync: true}, ...args: any[]): boolean;
+  private eventProcessor(key: string, { sync }: {sync: false}, ...args: any[]): Promise<any>;
+  private eventProcessor(key: string, { sync }: {sync: boolean}, ...args: any[]): Promise<any> | boolean {
     if (isDispatcherEventMethod(key)) {
-      this.dispatcher[dispatcherEventMethodMap[key]](...args);
+      const methodName = dispatcherEventMethodMap[key];
+      // TODO: add type check
+      // @ts-ignore: we do not check argument here, we will provide user a type check
+      this.dispatcher[methodName](...args);
     } else if (isKernelMethod(key)) {
+      // TODO: add type check
+      // @ts-ignore: we do not check argument here, we will provide user a type ch
       this.dispatcher.kernel[key](...args);
     } else if (isDomMethod(key)) {
+      // TODO: add type check
+      // @ts-ignore: we do not check argument here, we will provide user a type ch
       this.dispatcher.dom[key](...args);
     }
 
