@@ -184,7 +184,6 @@ export default class Dispatcher {
     // create the videoconfig
     this.videoConfig = new VideoConfig(this, config);
     // support both plugin and plugins here as people often cofuse both
-    // $FlowFixMe: we support plugins here, which should be illegal
     if (isArray(config.plugins) && !isArray(config.plugin)) {
       config.plugin = config.plugins;
       delete config.plugins;

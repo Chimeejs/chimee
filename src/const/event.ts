@@ -72,7 +72,11 @@ export const esFullscreenEvents = [
   'fullscreenchange',
 ];
 
-export const dispatcherEventMethodMap = {
+export const dispatcherEventMethodMap: {
+  enterpictureinpicture: 'requestPictureInPicture',
+  leavepictureinpicture: 'exitPictureInPicture',
+  load: 'load',
+} = {
   enterpictureinpicture: 'requestPictureInPicture',
   leavepictureinpicture: 'exitPictureInPicture',
   load: 'load',

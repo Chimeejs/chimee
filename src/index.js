@@ -101,7 +101,6 @@ export default @autobindClass() class Chimee extends VideoWrapper {
     } else {
       throw new Error('You must pass in an Object containing wrapper or string or element to new a Chimee');
     }
-    // $FlowFixMe: we have check wrapper here
     this.__dispatcher = new Dispatcher(config, this);
     this.ready = this.__dispatcher.ready;
     this.readySync = this.__dispatcher.readySync;

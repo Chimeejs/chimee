@@ -285,7 +285,6 @@ export default class Binder {
       /* istanbul ignore else  */
       if (this.bindedEventNames[target].indexOf(name) < 0) {
         this.bindedEventNames[target].push(name);
-        // $FlowFixMe: fn must be function now
         this.bindedEventInfo[target].push([ name, fn ]);
       }
     });
@@ -392,7 +391,6 @@ export default class Binder {
       addEvent(targetDom, name, fn);
     }
     this.bindedEventNames[target].push(name);
-    // $FlowFixMe: fn must be function now
     this.bindedEventInfo[target].push([ name, fn ]);
   }
 
