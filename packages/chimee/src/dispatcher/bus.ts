@@ -2,6 +2,7 @@ import { chimeeLog } from 'chimee-helper-log';
 import { dispatcherEventMethodMap, isDispatcherEventMethod, isDomEvent, isVideoEvent, selfProcessorEvents } from 'const/event';
 import { isDomMethod, isKernelMethod } from 'const/method';
 import { secondaryEventReg } from 'const/regExp';
+import Dispatcher from 'dispatcher/index';
 import { deletePropertyIfItIsEmpty, runRejectableQueue, runStoppableQueue } from 'helper/utils';
 import { bind, isArray, isEmpty, isError, isFunction, isNil } from 'lodash';
 import { runnable } from 'toxic-decorators';
@@ -22,8 +23,6 @@ function getKeyForOnceMap(eventName: string, stage: EventStage, pluginId: string
   return `${eventName}-${stage}-${pluginId}`;
 }
 
-// TODO: change later
-type Dispatcher = any;
 /**
  * <pre>
  * event Bus class. Bus take charge of commuication between plugins and user.
@@ -53,7 +52,7 @@ export default class Bus {
     [key: string]: Map<(...args: any[]) => any, Array<(...args: any[]) => any>>,
   };
   /**
-   * @param {Dispatcheer} dispatcher bus rely on dispatcher, so you mush pass dispatcher at first when you generate Bus.
+   * @param {Dispatcher} dispatcher bus rely on dispatcher, so you mush pass dispatcher at first when you generate Bus.
    * @return {Bus}
    */
   constructor(dispatcher: Dispatcher, kind: BinderTarget) {

@@ -1,4 +1,6 @@
 import { chimeeLog } from 'chimee-helper-log';
+import { RealChimeeDomElement } from 'const/dom';
+import Dispatcher from 'dispatcher/index';
 import { addClass } from 'dom-helpers/class';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
 import { querySelectorAll } from 'dom-helpers/query';
@@ -8,10 +10,11 @@ import { isArray, isFunction, isPlainObject, isString } from 'lodash';
 import { autobind, waituntil } from 'toxic-decorators';
 import { isElement, isEvent, isHTMLString, isPosterityNode } from 'toxic-predicate-functions';
 import { hypenate } from 'toxic-utils';
-import { RealChimeeDomElement, UserConfig } from 'typings/base';
-// import Dispatcher from './index';
-// TODO: change later
-type Dispatcher = any;
+import { UserConfig } from 'typings/base';
+
+export interface IFriendlyDom {
+  autoFocusToVideo(element: Element, remove?: boolean): void;
+}
 /**
  * <pre>
  * Dom work for Dispatcher.
@@ -251,6 +254,7 @@ export default class Dom {
       }
       this.autoFocusToVideo(dom, true);
     }
+    // @ts-ignore: Property 'penetrate' does not exist on type 'PluginConfig | IChimeePluginConstructor | { penetrate?: false; }'.
     const { penetrate = false } = Dispatcher.getPluginConfig(id) || {};
     if (penetrate) { this.dispatcher.binder.bindEventOnPenetrateNode(dom, true); }
     delete this.plugins[id];
@@ -283,7 +287,11 @@ export default class Dom {
    * @param {string} target the HTMLElemnt string name, only support video/wrapper/container now
    */
   @waituntil('__dispatcher.videoConfigReady')
-  public setAttr(target: RealChimeeDomElement, attr: string, val: any): void {
+  public setAttr(target: RealChimeeDomElement, attr: string, val: string | void): void {
+    if (typeof val === 'undefined') {
+      this[target].removeAttribute(attr);
+      return;
+    }
     this[target].setAttribute(attr, val);
   }
 
@@ -299,7 +307,7 @@ export default class Dom {
     style(this[target], attr, val);
   }
 
-  private autoFocusToVideo(element: Element, remove: boolean = false): void {
+  protected autoFocusToVideo(element: Element, remove: boolean = false): void {
     /* istanbule ignore next */
     if (!isElement(element)) { return; }
     (remove ? removeEvent : addEvent)(element, 'mouseup', this.focusToVideo);

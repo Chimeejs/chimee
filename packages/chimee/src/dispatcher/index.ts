@@ -37,6 +37,9 @@ function checkPluginConfig(config: any) {
   const { name } = config;
   if (!isString(name) || name.length < 1) { throw new TypeError(`plugin must have a legal namea, but not "${name}" in ${typeof name}`); }
 }
+export interface IFriendlyDispatcher {
+  sortZIndex(): void;
+}
 /**
  * <pre>
  * Dispatcher is the hub of plugins, user, and video kernel.

@@ -18,3 +18,7 @@ export const videoReadOnlyProperties = [
   'offsetTop',
   'offsetWidth',
 ];
+
+export const kernelProperties: IKernelProperty[] = [ 'isLive', 'box', 'preset', 'kernels', 'presetConfig' ];
+
+type IKernelProperty = 'isLive' | 'box' | 'preset' | 'kernels' | 'presetConfig';

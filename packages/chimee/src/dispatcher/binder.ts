@@ -6,34 +6,25 @@
 import { chimeeLog } from 'chimee-helper-log';
 import { domEvents, esFullscreenEvents, isMustListenVideoDomEvent, kernelEvents, mustListenVideoDomEvents, videoEvents } from 'const/event';
 import { secondaryEventReg } from 'const/regExp';
+import Bus from 'dispatcher/bus';
+import Dispatcher from 'dispatcher/index';
+import ChimeeKernel from 'dispatcher/kernel';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
 import { camelCase, isFunction, isString } from 'lodash';
 import { before, runnable } from 'toxic-decorators';
 import { BinderTarget, EventStage } from 'typings/base';
-import Bus from './bus';
-import ChimeeKernel from './kernel';
-// import Dispatcher from './index';
-
-// TODO: change later
-type Dispatcher = any;
 
 type rawEventInfo = {
   fn: (...args: any[]) => any,
   id: string,
   name: string,
   stage?: EventStage;
-  target?: BinderTarget;
+  target?: BinderTarget | void;
 };
 
 type additionalEventInfo = {
   name: string,
   stage: EventStage,
-  target: BinderTarget,
-};
-
-type emitEventInfo = {
-  id: string,
-  name: string,
   target: BinderTarget,
 };
 
@@ -86,7 +77,7 @@ function getEventTargetByEventName(name: string): BinderTarget {
   return 'plugin';
 }
 
-function getEventInfo({ name, target, stage }: { name: string, stage?: EventStage, target?: BinderTarget }): additionalEventInfo {
+function getEventInfo({ name, target, stage }: { name: string, stage?: EventStage, target?: BinderTarget | void }): additionalEventInfo {
   const oldInfo = getEventTargetByOldLogic(name);
   if (oldInfo) {
     name = oldInfo.name;
@@ -124,7 +115,7 @@ function prettifyEventParameter(info: rawEventInfo): wholeEventInfo {
 function isEventEmitalbe({
   id,
   name,
-}: emitEventInfo): boolean {
+}: { id?: string, name?: string }): boolean {
   if (!name || !isString(name) || secondaryEventReg.test(name)) {
     chimeeLog.error('You must provide a legal event name, which is string and could not started with before/after/_');
     return false;
@@ -134,11 +125,6 @@ function isEventEmitalbe({
     return false;
   }
   return true;
-}
-
-function checkEventEmitParameter(info: emitEventInfo, ...args: any[]): Array<emitEventInfo | any[]> {
-  info.target = getEventInfo(info).target;
-  return [ info, ...args ];
 }
 
 export default class Binder {
@@ -230,24 +216,36 @@ export default class Binder {
   }
 
   @runnable(isEventEmitalbe)
-  @before(checkEventEmitParameter)
   public emit(
     {
-      target,
       name,
-    }: emitEventInfo,
+      stage,
+      target: rawTarget,
+    }: {
+      id: string;
+      name: string;
+      stage?: EventStage;
+      target?: BinderTarget | void;
+    },
     ...args: any[]) {
+    const { target } = getEventInfo({ name, target: rawTarget, stage });
     return this.buses[target].emit(name, ...args);
   }
 
   @runnable(isEventEmitalbe, { backup() { return false; } })
-  @before(checkEventEmitParameter)
   public emitSync(
     {
-      target,
       name,
-    }: emitEventInfo,
+      stage,
+      target: rawTarget,
+    }: {
+      id: string;
+      name: string;
+      stage?: EventStage;
+      target?: BinderTarget | void;
+    },
     ...args: any[]) {
+    const { target } = getEventInfo({ name, target: rawTarget, stage });
     return this.buses[target].emitSync(name, ...args);
   }
 
@@ -302,27 +300,15 @@ export default class Binder {
     });
   }
 
-  @before(prettifyEventParameter)
-  public off({
-    target,
-    id,
-    name,
-    fn,
-    stage,
-  }: wholeEventInfo) {
+  public off(info: rawEventInfo) {
+    const { id, name, fn, stage, target } = prettifyEventParameter(info);
     const ret = this.buses[target].off(id, name, fn, stage);
     this.removeEventListenerOnTargetWhenIsUseless({ name, target });
     return ret;
   }
 
-  @before(prettifyEventParameter)
-  public on({
-    target,
-    id,
-    name,
-    fn,
-    stage,
-  }: wholeEventInfo) {
+  public on(info: rawEventInfo) {
+    const { id, name, fn, stage, target } = prettifyEventParameter(info);
     this.addEventListenerOnTarget({
       id,
       name,
@@ -331,35 +317,42 @@ export default class Binder {
     return this.buses[target].on(id, name, fn, stage);
   }
 
-  @before(prettifyEventParameter)
-  public once({
-    target,
-    id,
-    name,
-    fn,
-    stage,
-  }: wholeEventInfo) {
+  public once(info: rawEventInfo) {
+    const { id, name, fn, stage, target } = prettifyEventParameter(info);
     return this.buses[target].once(id, name, fn, stage);
   }
 
   @runnable(isEventEmitalbe)
-  @before(checkEventEmitParameter)
   public trigger(
     {
-      target,
       name,
-    }: emitEventInfo,
+      stage,
+      target: rawTarget,
+    }: {
+      id: string;
+      name: string;
+      stage?: EventStage;
+      target?: BinderTarget | void;
+    },
     ...args: any[]) {
+    const { target } = getEventInfo({ name, target: rawTarget, stage });
     return this.buses[target].trigger(name, ...args);
   }
 
   @runnable(isEventEmitalbe, { backup() { return false; } })
-  @before(checkEventEmitParameter)
-  public triggerSync({
-    target,
-    name,
-    // id,
-  }: emitEventInfo,  ...args: any[]) {
+  public triggerSync(
+    {
+      name,
+      stage,
+      target: rawTarget,
+    }: {
+      id: string;
+      name: string;
+      stage?: EventStage;
+      target?: BinderTarget | void;
+    },
+    ...args: any[]) {
+    const { target } = getEventInfo({ name, target: rawTarget, stage });
     return this.buses[target].triggerSync(name, ...args);
   }
 
