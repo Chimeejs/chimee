@@ -155,7 +155,7 @@ export default class Dom {
    * 3. string, we will transfer this string into hypen string, then we create a custom elment called by this and bind it on wrapper
    * 4. nothing, we will create a div and bind it on the wrapper
    */
-  public insertPlugin(id: string, el?: string | Element | { className?: string | string[], inner?: boolean, penetrate?: boolean }, option: { className?: string | string[], inner?: boolean, penetrate?: boolean } = {}) {
+  public insertPlugin(id: string, el?: string | HTMLElement | { className?: string | string[], inner?: boolean, penetrate?: boolean } | void, option: { className?: string | string[], inner?: boolean, penetrate?: boolean } = {}) {
     if (!isString(id)) { throw new TypeError('insertPlugin id parameter must be string'); }
     if (isElement(this.plugins[id])) {
       /* istanbul ignore else  */
@@ -170,7 +170,7 @@ export default class Dom {
       } else {
         el = document.createElement(hypenate(el));
       }
-    } else if (isPlainObject(el)) {
+    } else if (el && isPlainObject(el)) {
       option = el;
     }
     const { inner, penetrate } = option;
