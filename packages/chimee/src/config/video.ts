@@ -1,9 +1,9 @@
 import Dom from 'dispatcher/dom';
 import { IVideoKernelConstructor } from 'kernels/base';
-import { isNumber, isPlainObject, isString } from 'lodash';
-import { accessor, alwaysBoolean, alwaysNumber, alwaysString, applyDecorators, configurable, frozen, initBoolean, initString, nonenumerable } from 'toxic-decorators';
+import { isNumber, isString } from 'lodash';
+import { accessor, alwaysBoolean, alwaysNumber, alwaysString, applyDecorators, configurable, frozen, initString, nonenumerable } from 'toxic-decorators';
 import { isNumeric } from 'toxic-predicate-functions';
-import { UserConfig, UserKernelsConfig } from 'typings/base';
+import { SupportedKernelType, UserConfig, UserKernelsConfig } from 'typings/base';
 // TODO: change later
 type Dispatcher = any;
 
@@ -316,7 +316,7 @@ export default class VideoConfig {
   public preload: 'none' | 'auto' | 'metadata' | '' = 'auto';
 
   // 转为供 kernel 使用的内部参数
-  public preset: { [x: string]: IVideoKernelConstructor } = {};
+  public preset: { [key in SupportedKernelType]?: IVideoKernelConstructor } = {};
 
   public presetConfig: any = {};
 

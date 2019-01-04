@@ -1,5 +1,5 @@
 import { isEmpty, isFunction } from 'lodash';
-import { ChimeeDomElement, RealChimeeDomElement } from 'typings/base';
+import { SupportedKernelType } from 'typings/base';
 /**
  * delete the property if the value of the property is empty
  * @param  {any} obj
@@ -61,9 +61,21 @@ export function runStoppableQueue(queue: Array<(...args: any[]) => any>, ...args
   return step(0);
 }
 
-function changeChimeeDomElementIntoRealChimeeDomElement(target: ChimeeDomElement): RealChimeeDomElement {
-  if (target === 'video') {
-    return 'videoElement';
-  }
-  return target;
+/**
+ * sort Object attributes by function
+ * and transfer them into array
+ * @param  {Object} obj Object form from numric
+ * @param  {Function} fn sort function
+ * @return {Array} the sorted attirbutes array
+ */
+export function transObjectAttrIntoArray(obj: { [x: string]: any }, fn: (a: string, b: string) => number = (a, b) => +a - +b): string[] {
+  return Object.keys(obj)
+  .sort(fn)
+  .reduce((order, key) => {
+    return order.concat(obj[key]);
+  }, []);
+}
+
+export function isSupportedKernelType(type: string): type is SupportedKernelType {
+  return type === 'flv' || type === 'hls' || type === 'mp4';
 }

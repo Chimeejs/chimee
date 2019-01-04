@@ -10,6 +10,10 @@ import { PluginConfig, PluginOption } from 'typings/base';
 // TODO: change later
 type Dispatcher = any;
 
+export interface IChimeePluginConstructor {
+  new(...args: any[]): ChimeePlugin;
+}
+
 /**
  * <pre>
  * Plugin is the class for plugin developer.
@@ -276,7 +280,7 @@ export default class ChimeePlugin extends VideoWrapper {
   /**
    * call for inited lifecycle hook, which just to tell the plugin we have inited.
    */
-  private runInitedHook(): Promise<void> | ChimeePlugin {
+  public runInitedHook(): Promise<void> | ChimeePlugin {
     let result;
     try {
       result = isFunction(this.inited) && this.inited();
@@ -303,7 +307,7 @@ export default class ChimeePlugin extends VideoWrapper {
    * call for init lifecycle hook, which mainly handle the original config of video and kernel.
    * @param {VideoConfig} videoConfig the original config of the videoElement or Kernel
    */
-  private runInitHook(videoConfig: VideoConfig) {
+  public runInitHook(videoConfig: VideoConfig) {
     try {
       if (isFunction(this.init)) {
         this.init(videoConfig);
