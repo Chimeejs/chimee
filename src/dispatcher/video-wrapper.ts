@@ -1,22 +1,22 @@
-
 import { chimeeLog } from 'chimee-helper-log';
 import VideoConfig from 'config/video';
+import { isVideoDomAttribute, videoDomAttributes } from 'const/attribute';
+import { ChimeeDomElement, isChimeeDomElement, RealChimeeDomElement, turnChimeeDomElementIntoRealChimeeDomElement } from 'const/dom';
 import { domEvents } from 'const/event';
 import { domMethods, kernelMethods, videoMethods } from 'const/method';
-import { videoReadOnlyProperties } from 'const/property';
+import { kernelProperties, videoReadOnlyProperties } from 'const/property';
+import Dispatcher from 'dispatcher/index';
 import ChimeePlugin from 'dispatcher/plugin';
-import { attrAndStyleCheck, eventBinderCheck } from 'helper/checker';
+import { eventBinderCheck } from 'helper/checker';
 import { isArray, isFunction, isPlainObject, isString } from 'lodash';
-import { accessor, alias, applyDecorators, autobindClass, before, nonenumerable, watch } from 'toxic-decorators';
+import { accessor, alias, applyDecorators, before, nonenumerable, watch } from 'toxic-decorators';
 import { isEmpty } from 'toxic-predicate-functions';
 import { bind, getDeepProperty } from 'toxic-utils';
 import { BinderTarget, EventOptions, VesselConfig } from 'typings/base';
 
-// TODO: change later
-type Dispatcher = any;
 export default class VideoWrapper {
   @nonenumerable
-  get $container(): HTMLElement {
+  get $container(): Element {
     return this.dispatcher.dom.container;
   }
   @nonenumerable
@@ -33,7 +33,7 @@ export default class VideoWrapper {
     return this.dispatcher.dom.videoElement;
   }
   @nonenumerable
-  get $wrapper(): HTMLElement {
+  get $wrapper(): Element {
     return this.dispatcher.dom.wrapper;
   }
 
@@ -60,9 +60,10 @@ export default class VideoWrapper {
   }
   protected dispatcher: Dispatcher;
 
-  get fullscreenElement(): HTMLElement | string | void {
+  get fullscreenElement(): Element | string | void {
     return this.dispatcher.dom.fullscreenElement;
   }
+  protected id: string;
 
   @nonenumerable
   get inPictureInPictureMode(): boolean {
@@ -81,7 +82,6 @@ export default class VideoWrapper {
   get videoRequireGuardedAttributes(): string[] {
     return this.dispatcher.dom.videoRequireGuardedAttributes;
   }
-  protected id: string;
   private events: { [evetName: string]: Array<(...args: any[]) => any> } = {};
   private unwatchHandlers: Array<(...args: any[]) => any> = [];
 
@@ -97,23 +97,24 @@ export default class VideoWrapper {
    * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
    */
   @alias('attr')
-  @before(attrAndStyleCheck)
-  public $attr(method: string, ...args: any[]): string {
-    if (method === 'set' && /video/.test(args[0])) {
+  public $attr(targetOrAttr: ChimeeDomElement | string, attrOrValue?: string, valueOrNothing?: string | void): string | void {
+    const { method, target, attr, value } = this.getRealInfoForStyleAndAttr(arguments.length, targetOrAttr, attrOrValue, valueOrNothing);
+    if (method === 'set' && target === 'videoElement') {
       if (!this.dispatcher.videoConfigReady) {
         /* istanbul ignore else  */
         if (process.env.NODE_ENV !== 'production') {
           chimeeLog.warn('chimee', `${this.id} is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger`);
         }
-        return args[2];
+        return value;
       }
-      if (this.dispatcher.videoConfig._realDomAttr.indexOf(args[1]) > -1) {
-        const [ , key, val ] = args;
-        this.dispatcher.videoConfig[key] = val;
-        return val;
+      if (isVideoDomAttribute(attr)) {
+        this.dispatcher.videoConfig[attr] = value;
+        return value;
       }
     }
-    return this.dispatcher.dom[method + 'Attr'](...args);
+    return method === 'set'
+      ? this.dispatcher.dom.setAttr(target, attr, value)
+      : this.dispatcher.dom.getAttr(target, attr);
   }
 
   /**
@@ -123,9 +124,11 @@ export default class VideoWrapper {
    * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
    */
   @alias('css')
-  @before(attrAndStyleCheck)
-  public $css(method: string, ...args: any[]): string {
-    return this.dispatcher.dom[method + 'Style'](...args);
+  public $css(targetOrAttr: ChimeeDomElement | string, attrOrValue?: string, valueOrNothing?: string | void): string | void {
+    const { method, target, attr, value } = this.getRealInfoForStyleAndAttr(arguments.length, targetOrAttr, attrOrValue, valueOrNothing);
+    return method === 'set'
+      ? this.dispatcher.dom.setStyle(target, attr, value)
+      : this.dispatcher.dom.getStyle(target, attr);
   }
 
   public $del(obj: any, property: string) {
@@ -182,7 +185,7 @@ export default class VideoWrapper {
       target: BinderTarget,
     },
     ...args: any) {
-    let target;
+    let target: BinderTarget | void;
     if (!isString(key) && isString(key.name) && isString(key.target)) {
       target = key.target;
       key = key.name;
@@ -205,13 +208,13 @@ export default class VideoWrapper {
   @alias('fullScreen')
   @alias('$fullScreen')
   @alias('fullscreen')
-  public $fullscreen(flag: boolean = true, element: string = 'container'): boolean {
+  public $fullscreen(flag: boolean = true, element: ChimeeDomElement = 'container'): boolean {
     if (!this.dispatcher.binder.emitSync({
       id: this.id,
       name: 'fullscreen',
       target: 'video-dom',
     }, flag, element)) { return false; }
-    const result = this.dispatcher.dom.fullscreen(flag, element);
+    const result = this.dispatcher.dom.fullscreen(flag, turnChimeeDomElementIntoRealChimeeDomElement(element));
     this.dispatcher.binder.triggerSync({
       id: this.id,
       name: 'fullscreen',
@@ -339,7 +342,7 @@ export default class VideoWrapper {
     const target = (
       keys.length === 0 &&
       !other &&
-      videoConfig._realDomAttr.indexOf(property) > -1
+      isVideoDomAttribute(property)
     )
       ? videoConfig
       : [ 'isFullscreen', 'fullscreenElement' ].indexOf(property) > -1
@@ -419,7 +422,7 @@ export default class VideoWrapper {
       });
     });
     // bind video config properties on instance, so that you can just set src by this
-    const props = videoConfig.realDomAttr.concat(videoConfig.kernelProperty)
+    const props = ([]).concat(kernelProperties).concat(videoDomAttributes)
       .reduce((props: { [x: string]: Array<(...args: any[]) => any>}, key: keyof VideoConfig) => {
         props[key] = [
           accessor({
@@ -473,6 +476,43 @@ export default class VideoWrapper {
 
   private addEvents(key: string, fn: (...args: any[]) => any) {
     this.events[key].push(fn);
+  }
+
+  private getRealInfoForStyleAndAttr(argumentsLength: number, targetOrAttr: ChimeeDomElement | string, attrOrValue?: string, valueOrNothing?: string | void): {
+    attr: string;
+    method: 'set' | 'get';
+    target: RealChimeeDomElement;
+    value: string | void;
+  } {
+    let method: 'set' | 'get';
+    let target: ChimeeDomElement;
+    let attr: string;
+    let value: string | void;
+    if (argumentsLength > 2) {
+      method = 'set';
+      target = (targetOrAttr as ChimeeDomElement);
+      attr = attrOrValue;
+      value = valueOrNothing;
+    } else if (argumentsLength === 2)  {
+      if (isChimeeDomElement(targetOrAttr)) {
+        method = 'get';
+        target = targetOrAttr;
+        attr = attrOrValue;
+      } else {
+        method = 'set';
+        target = 'container';
+        attr = targetOrAttr;
+        value = attrOrValue;
+      }
+    } else if (argumentsLength === 1) {
+      method = 'get';
+      target = 'container';
+      attr = targetOrAttr;
+    } else {
+      throw new Error('You have to pass at least one argument to run $attr or $ css');
+    }
+    const realTarget = turnChimeeDomElementIntoRealChimeeDomElement(target);
+    return { attr, method, value, target: realTarget };
   }
 
   private removeEvents(key: string, fn: (...args: any[]) => any) {

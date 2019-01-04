@@ -1,14 +1,13 @@
 import { chimeeLog } from 'chimee-helper-log';
 import VideoConfig from 'config/video';
+import { IFriendlyDom } from 'dispatcher/dom';
+import Dispatcher, { IFriendlyDispatcher } from 'dispatcher/index';
 import VideoWrapper from 'dispatcher/video-wrapper';
 import { isBoolean, isError, isFunction, isInteger, isPlainObject, isString } from 'lodash';
 import { accessor, applyDecorators, frozen } from 'toxic-decorators';
 import { isEmpty, isPromise } from 'toxic-predicate-functions';
 import { bind } from 'toxic-utils';
 import { PluginConfig, PluginOption } from 'typings/base';
-
-// TODO: change later
-type Dispatcher = any;
 
 export interface IChimeePluginConstructor {
   new(...args: any[]): ChimeePlugin;
@@ -29,7 +28,9 @@ export default class ChimeePlugin extends VideoWrapper {
 
   set $autoFocus(val: boolean) {
     this.autoFocusValue = val;
-    this.dispatcher.dom._autoFocusToVideo(this.$dom, !val);
+    // It's a work around for the friendly class in https://github.com/Microsoft/TypeScript/issues/7692#issuecomment-341115350
+    const dom: IFriendlyDom = (this.dispatcher.dom as any);
+    dom.autoFocusToVideo(this.$dom, !val);
   }
   /**
    * the z-index level, higher when you set higher
@@ -38,7 +39,8 @@ export default class ChimeePlugin extends VideoWrapper {
   set $level(val: number) {
     if (!isInteger(val)) { return; }
     this.levelValue = val;
-    this.dispatcher._sortZIndex();
+    const dispatcher: IFriendlyDispatcher = (this.dispatcher as any);
+    dispatcher.sortZIndex();
   }
   get $level(): number {
     return this.levelValue;

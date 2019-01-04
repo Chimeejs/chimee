@@ -1,11 +1,11 @@
+import { videoDomAttributes } from 'const/attribute';
 import Dom from 'dispatcher/dom';
+import Dispatcher from 'dispatcher/index';
 import { IVideoKernelConstructor } from 'kernels/base';
 import { isNumber, isString } from 'lodash';
 import { accessor, alwaysBoolean, alwaysNumber, alwaysString, applyDecorators, configurable, frozen, initString, nonenumerable } from 'toxic-decorators';
 import { isNumeric } from 'toxic-predicate-functions';
 import { SupportedKernelType, UserConfig, UserKernelsConfig } from 'typings/base';
-// TODO: change later
-type Dispatcher = any;
 
 // TODO: in config we should not need to care about videoconfigready
 // let dispatcher to handle this
@@ -295,8 +295,6 @@ export default class VideoConfig {
 
   public isLive: boolean = false;
 
-  @frozen
-  public kernelProperty: Array<keyof VideoConfig> = [ 'isLive', 'box', 'preset', 'kernels', 'presetConfig' ];
   // kernels 不在 videoConfig 上设置默认值，防止判断出错
   public kernels: UserKernelsConfig;
 
@@ -319,30 +317,6 @@ export default class VideoConfig {
   public preset: { [key in SupportedKernelType]?: IVideoKernelConstructor } = {};
 
   public presetConfig: any = {};
-
-  @frozen
-  public realDomAttr: Array<keyof VideoConfig> = [ 'src',
-    'controls',
-    'width',
-    'height',
-    'crossOrigin',
-    'loop',
-    'muted',
-    'preload',
-    'poster',
-    'autoplay',
-    'playsInline',
-    'x5VideoPlayerFullscreen',
-    'x5VideoOrientation',
-    'xWebkitAirplay',
-    'playbackRate',
-    'defaultPlaybackRate',
-    'autoload',
-    'disableRemotePlayback',
-    'defaultMuted',
-    'volume',
-    'x5VideoPlayerType',
-  ];
 
   public src: string = '';
 
@@ -378,7 +352,7 @@ export default class VideoConfig {
   }
 
   public init() {
-    this.realDomAttr.forEach((key) => {
+    videoDomAttributes.forEach((key) => {
       this[key] = this[key];
     });
     this.inited = true;
