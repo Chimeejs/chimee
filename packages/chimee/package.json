@@ -84,6 +84,7 @@
     "@types/events": "^1.2.0",
     "@types/jest": "^23.3.10",
     "@types/lodash": "^4.14.119",
+    "@types/node": "^10.12.18",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",

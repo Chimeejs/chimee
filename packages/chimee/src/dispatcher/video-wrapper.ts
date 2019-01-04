@@ -85,8 +85,10 @@ export default class VideoWrapper {
   private events: { [evetName: string]: Array<(...args: any[]) => any> } = {};
   private unwatchHandlers: Array<(...args: any[]) => any> = [];
 
-  constructor({ dispatcher, id }: { dispatcher: Dispatcher, id: string }) {
-    this.dispatcher = dispatcher;
+  constructor({ dispatcher, id }: { dispatcher?: Dispatcher, id: string }) {
+    if (dispatcher) {
+      this.dispatcher = dispatcher;
+    }
     this.id = id;
   }
 

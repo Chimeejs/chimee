@@ -2,6 +2,7 @@ import { chimeeLog } from 'chimee-helper-log';
 import defaultContainerConfig from 'config/container';
 import Vessel from 'config/vessel';
 import VideoConfig from 'config/video';
+import { videoDomAttributes } from 'const/attribute';
 import Binder from 'dispatcher/binder';
 import Dom from 'dispatcher/dom';
 import ChimeeKernel, { getLegalBox } from 'dispatcher/kernel';
@@ -14,8 +15,7 @@ import { autobind, before, nonenumerable } from 'toxic-decorators';
 import { isPromise } from 'toxic-predicate-functions';
 import { camelize } from 'toxic-utils';
 import { PluginConfig, PluginOption, SingleKernelConfig, SupportedKernelType, UserConfig, UserKernelsConfig, UserKernelsConstructorMap } from 'typings/base';
-// TODO: change later
-type Chimee = any;
+import Chimee from '../index';
 
 const pluginConfigSet: {
   [id: string]: PluginConfig | IChimeePluginConstructor,
@@ -38,7 +38,8 @@ function checkPluginConfig(config: any) {
   if (!isString(name) || name.length < 1) { throw new TypeError(`plugin must have a legal namea, but not "${name}" in ${typeof name}`); }
 }
 export interface IFriendlyDispatcher {
-  sortZIndex(): void;
+  getTopLevel: Dispatcher['getTopLevel'];
+  sortZIndex: Dispatcher['sortZIndex'];
 }
 /**
  * <pre>
@@ -479,6 +480,7 @@ export default class Dispatcher {
         if (isError(data)) {
           return Promise.reject(data);
         }
+        // TODO: need to add kernel error declaration
         if (data.error) {
         /* istanbul ignore else  */
           if (process.env.NODE_ENV !== 'production') {
@@ -488,7 +490,7 @@ export default class Dispatcher {
         }
         const { video, kernel } = data;
         if (option.abort) {
-          kernel.destroy();
+          (kernel as ChimeeKernel).destroy();
           return Promise.reject(new Error('user abort the mission'));
         }
         const paused = this.dom.videoElement.paused;
@@ -501,7 +503,7 @@ export default class Dispatcher {
             this.switchKernel({ video, kernel, config });
             resolve();
           }, true);
-          video.play();
+          (video as HTMLVideoElement).play();
         });
       });
   }
@@ -530,7 +532,7 @@ export default class Dispatcher {
     this.videoConfig.changeWatchable = false;
     this.videoConfig.autoload = false;
     this.videoConfig.src = config.src;
-    this.videoConfig.realDomAttr.forEach((key) => {
+    videoDomAttributes.forEach((key) => {
       if (key !== 'src') { this.videoConfig[key] = originVideoConfig[key]; }
     });
     this.videoConfig.changeWatchable = true;
@@ -563,7 +565,7 @@ export default class Dispatcher {
 
   @autobind
   public throwError(error: Error | string) {
-    this.vm.__throwError(error);
+    this.vm.customThrowError(error);
   }
 
   /**
@@ -583,6 +585,7 @@ export default class Dispatcher {
       this.order.splice(orderIndex, 1);
     }
     delete this.plugins[id];
+    // @ts-ignore: delete the plugin hooks on chimee itself
     delete this.vm[id];
   }
 
@@ -648,7 +651,17 @@ export default class Dispatcher {
     this.changeWatchable = true;
   }
 
-  private createKernel(video: HTMLVideoElement, config: VideoConfig) {
+  private createKernel(video: HTMLVideoElement, config: {
+    box: string;
+    isLive: boolean;
+    kernels: UserKernelsConfig;
+    preset: {
+        flv?: IVideoKernelConstructor;
+        hls?: IVideoKernelConstructor;
+        mp4?: IVideoKernelConstructor;
+    };
+    src: string;
+}) {
     const { kernels, preset } = config;
     /* istanbul ignore else  */
     if (process.env.NODE_ENV !== 'production' && isEmpty(kernels) && !isEmpty(preset)) { chimeeLog.warn('preset will be deprecated in next major version, please use kernels instead.'); }
@@ -757,7 +770,7 @@ export default class Dispatcher {
    * get the top element's level
    * @param {boolean} inner get the inner array or the outer array
    */
-  private getTopLevel(inner: boolean) {
+  private getTopLevel(inner: boolean): number {
     const arr = this.zIndexMap[inner ? 'inner' : 'outer'];
     const plugin = this.plugins[arr[arr.length - 1]];
     return isEmpty(plugin) ? 0 : plugin.$level;

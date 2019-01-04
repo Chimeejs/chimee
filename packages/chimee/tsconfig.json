@@ -18,7 +18,7 @@
         ],
         "lib": [
             "dom",
-            "esnext"
+            "esnext",
         ],
         "declaration": true
     },

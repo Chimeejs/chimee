@@ -257,7 +257,8 @@ export default class ChimeePlugin extends VideoWrapper {
    * set the plugin to be the top of all plugins
    */
   public $bumpToTop() {
-    const topLevel = this.dispatcher._getTopLevel(this.$inner);
+    const dispatcher: IFriendlyDispatcher = (this.dispatcher as any);
+    const topLevel = dispatcher.getTopLevel(this.$inner);
     this.$level = topLevel + 1;
   }
   /**
