@@ -8,13 +8,15 @@ import { kernelProperties, videoReadOnlyProperties } from 'const/property';
 import Dispatcher from 'dispatcher/index';
 import ChimeePlugin from 'dispatcher/plugin';
 import { eventBinderCheck } from 'helper/checker';
+import { IVideoKernelConstructor } from 'kernels/base';
 import { isArray, isFunction, isPlainObject, isString } from 'lodash';
 import { accessor, alias, applyDecorators, before, nonenumerable, watch } from 'toxic-decorators';
 import { isEmpty } from 'toxic-predicate-functions';
 import { bind, getDeepProperty } from 'toxic-utils';
 import { BinderTarget, EventOptions, VesselConfig } from 'typings/base';
+import { SupportedKernelType, UserKernelsConfig } from 'typings/base';
 
-export default class VideoWrapper {
+export default class VideoWrapper implements Partial<HTMLVideoElement> {
   @nonenumerable
   get $container(): Element {
     return this.dispatcher.dom.container;
@@ -82,6 +84,86 @@ export default class VideoWrapper {
   get videoRequireGuardedAttributes(): string[] {
     return this.dispatcher.dom.videoRequireGuardedAttributes;
   }
+
+  public autoload: boolean;
+
+  public autoplay: boolean;
+
+  public box: 'mp4' | 'hls' | 'flv' | '';
+  public readonly buffered: TimeRanges;
+  public readonly canPlayType: () => CanPlayTypeResult;
+  public readonly captureStream: () => void;
+
+  public changeWatchable: boolean;
+
+  public controls: boolean;
+  public readonly controlsList: boolean;
+
+  public crossOrigin: string;
+  public readonly currentSrc: string;
+  public readonly dataset: DOMStringMap;
+
+  public defaultMuted: boolean;
+
+  public defaultPlaybackRate: number;
+
+  public disableRemotePlayback: boolean;
+  public readonly duration: number;
+  public readonly ended: boolean;
+  public readonly error: MediaError;
+
+  public height: number;
+
+  public isLive: boolean;
+
+  // kernels 不在 videoConfig 上设置默认值，防止判断出错
+  public kernels: UserKernelsConfig;
+
+  public loop: boolean;
+
+  public muted: boolean;
+  public readonly networkState: number;
+  public readonly offsetHeight: number;
+  public readonly offsetLeft: number;
+  public readonly offsetParent: Element;
+  public readonly offsetTop: number;
+  public readonly offsetWidth: number;
+  public readonly paused: boolean;
+
+  public playbackRate: number;
+
+  public playsInline: boolean;
+
+  public poster: string;
+
+  public preload: 'none' | 'auto' | 'metadata' | '';
+
+  // 转为供 kernel 使用的内部参数
+  public preset: { [key in SupportedKernelType]?: IVideoKernelConstructor };
+
+  public presetConfig: any;
+  public readonly readyState: number;
+  public readonly seekable: TimeRanges;
+  public readonly setSinkId: () => void;
+  public readonly sinkId: boolean;
+  // public readonly play: () => Promise<void>;
+  // public readonly pause: () => Promise<void>;
+  // public readonly seek: (n: number) => Promise<void>;
+
+  public src: string;
+  public readonly tabIndex: number;
+
+  public volume: number;
+
+  public width: number;
+
+  public x5VideoOrientation: 'landscape' | 'portrait' | undefined;
+
+  public x5VideoPlayerFullscreen: boolean;
+
+  public x5VideoPlayerType: 'h5' | undefined;
+
+  public xWebkitAirplay: boolean;
   private events: { [evetName: string]: Array<(...args: any[]) => any> } = {};
   private unwatchHandlers: Array<(...args: any[]) => any> = [];
 

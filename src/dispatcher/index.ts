@@ -5,12 +5,13 @@ import VideoConfig from 'config/video';
 import { videoDomAttributes } from 'const/attribute';
 import Binder from 'dispatcher/binder';
 import Dom from 'dispatcher/dom';
-import ChimeeKernel, { getLegalBox } from 'dispatcher/kernel';
+import ChimeeKernel, { getLegalBox, IChimeeKernelConfig } from 'dispatcher/kernel';
 import ChimeePlugin, { IChimeePluginConstructor } from 'dispatcher/plugin';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
 import { isSupportedKernelType, runRejectableQueue, transObjectAttrIntoArray } from 'helper/utils';
 import { IVideoKernelConstructor } from 'kernels/base';
 import { clone, isArray, isEmpty, isError, isFunction, isPlainObject, isString } from 'lodash';
+import PictureInPicture from 'plugin/picture-in-picture';
 import { autobind, before, nonenumerable } from 'toxic-decorators';
 import { isPromise } from 'toxic-predicate-functions';
 import { camelize } from 'toxic-utils';
@@ -70,8 +71,8 @@ export default class Dispatcher {
   @nonenumerable
   get inPictureInPictureMode(): boolean {
     return 'pictureInPictureEnabled' in document
-      // $FlowFixMe: support new function in document
-      ? this.dom.videoElement === document.pictureInPictureElement
+      // @ts-ignore: support new function in document
+      ? this.dom.videoElement === (document as Document).pictureInPictureElement
       : Boolean(this.plugins.pictureInPicture && this.plugins.pictureInPicture.isShown);
   }
   /**
@@ -136,7 +137,10 @@ export default class Dispatcher {
    * @type {Object}
    * @member plugins
    */
-  public plugins: { [id: string]: ChimeePlugin } = {};
+  public plugins: {
+    [id: string]: ChimeePlugin,
+    pictureInPicture?: PictureInPicture,
+  } = {};
   public ready: Promise<void>;
   /**
    * the synchronous ready flag
@@ -264,8 +268,8 @@ export default class Dispatcher {
       // if current video is not in picture-in-picture mode, do nothing
       if (this.inPictureInPictureMode) {
         window.__chimee_picture_in_picture_window = undefined;
-        // $FlowFixMe: support new function in document
-        return document.exitPictureInPicture();
+        // @ts-ignore: support new function in document
+        return (document as Document).exitPictureInPicture();
       }
     }
     return this.plugins.pictureInPicture && this.plugins.pictureInPicture.exitPictureInPicture();
@@ -761,8 +765,8 @@ export default class Dispatcher {
       });
     }
     config.preset = Object.assign(newPreset, preset);
-    config.presetConfig = presetConfig;
-    const kernel = new ChimeeKernel(video, config);
+    const legalConfig: IChimeeKernelConfig = Object.assign({ presetConfig }, config);
+    const kernel = new ChimeeKernel(video, legalConfig);
     return kernel;
   }
 
