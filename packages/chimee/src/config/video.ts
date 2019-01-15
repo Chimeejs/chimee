@@ -271,7 +271,7 @@ export default class VideoConfig {
   // 曾经 bug 详见 https://github.com/Chimeejs/chimee-kernel/issues/1
   @initString((str: string) => str.toLocaleLowerCase())
   @configurable
-  public box = '';
+  public box: 'mp4' | 'hls' | 'flv' | '' = '';
   // TODO: the watchable flag should not be placed into config
   @nonenumerable
   public changeWatchable: boolean = true;
