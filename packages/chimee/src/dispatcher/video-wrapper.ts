@@ -5,6 +5,7 @@ import { ChimeeDomElement, isChimeeDomElement, RealChimeeDomElement, turnChimeeD
 import { domEvents } from 'const/event';
 import { domMethods, kernelMethods, videoMethods } from 'const/method';
 import { kernelProperties, videoReadOnlyProperties } from 'const/property';
+import Dom from 'dispatcher/dom';
 import Dispatcher from 'dispatcher/index';
 import ChimeePlugin from 'dispatcher/plugin';
 import { eventBinderCheck } from 'helper/checker';
@@ -16,7 +17,7 @@ import { bind, getDeepProperty } from 'toxic-utils';
 import { BinderTarget, EventOptions, VesselConfig } from 'typings/base';
 import { SupportedKernelType, UserKernelsConfig } from 'typings/base';
 
-export default class VideoWrapper implements Partial<HTMLVideoElement> {
+export default class VideoWrapper {
   @nonenumerable
   get $container(): Element {
     return this.dispatcher.dom.container;
@@ -111,6 +112,9 @@ export default class VideoWrapper implements Partial<HTMLVideoElement> {
   public readonly duration: number;
   public readonly ended: boolean;
   public readonly error: MediaError;
+  public readonly exitFullscreen: Dom['exitFullscreen'];
+  public readonly focus: Dom['focus'];
+  public readonly fullscreen: Dom['fullscreen'];
 
   public height: number;
 
@@ -128,7 +132,9 @@ export default class VideoWrapper implements Partial<HTMLVideoElement> {
   public readonly offsetParent: Element;
   public readonly offsetTop: number;
   public readonly offsetWidth: number;
+  public readonly pause: () => Promise<void>;
   public readonly paused: boolean;
+  public readonly play: () => Promise<void>;
 
   public playbackRate: number;
 
@@ -137,20 +143,24 @@ export default class VideoWrapper implements Partial<HTMLVideoElement> {
   public poster: string;
 
   public preload: 'none' | 'auto' | 'metadata' | '';
+  public preset: {
+    [key in SupportedKernelType]?: IVideoKernelConstructor;
+  };
 
-  // 转为供 kernel 使用的内部参数
-  public preset: { [key in SupportedKernelType]?: IVideoKernelConstructor };
+  public presetConfig: {
+    [x: string]: object,
+  };
 
-  public presetConfig: any;
   public readonly readyState: number;
+  public readonly requestFullscreen: Dom['requestFullscreen'];
+  public readonly seek: (n: number) => Promise<void>;
   public readonly seekable: TimeRanges;
   public readonly setSinkId: () => void;
   public readonly sinkId: boolean;
-  // public readonly play: () => Promise<void>;
-  // public readonly pause: () => Promise<void>;
-  // public readonly seek: (n: number) => Promise<void>;
-
   public src: string;
+  public readonly startLoad: () => Promise<void>;
+  public readonly stopLoad: () => Promise<void>;
+
   public readonly tabIndex: number;
 
   public volume: number;
