@@ -45,5 +45,5 @@ export type IVideoDomAttribute = 'src'
   | 'x5VideoPlayerType';
 
 export function isVideoDomAttribute(attr: string): attr is IVideoDomAttribute {
-  return videoDomAttributes.includes(attr);
+  return videoDomAttributes.includes(attr as IVideoDomAttribute);
 }

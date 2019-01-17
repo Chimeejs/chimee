@@ -12,11 +12,18 @@ import { isSupportedKernelType, runRejectableQueue, transObjectAttrIntoArray } f
 import { IVideoKernelConstructor } from 'kernels/base';
 import { clone, isArray, isEmpty, isError, isFunction, isPlainObject, isString } from 'lodash';
 import PictureInPicture from 'plugin/picture-in-picture';
+import { ChimeePictureInPictureOnWindow } from 'plugin/picture-in-picture';
 import { autobind, before, nonenumerable } from 'toxic-decorators';
 import { isPromise } from 'toxic-predicate-functions';
 import { camelize } from 'toxic-utils';
 import { PluginConfig, PluginOption, SingleKernelConfig, SupportedKernelType, UserConfig, UserKernelsConfig, UserKernelsConstructorMap } from 'typings/base';
 import Chimee from '../index';
+declare global {
+  // tslint:disable-next-line:interface-name
+  interface Window {
+    __chimee_picture_in_picture: ChimeePictureInPictureOnWindow;
+  }
+}
 
 const pluginConfigSet: {
   [id: string]: PluginConfig | IChimeePluginConstructor,
@@ -267,7 +274,7 @@ export default class Dispatcher {
     if ('pictureInPictureEnabled' in document) {
       // if current video is not in picture-in-picture mode, do nothing
       if (this.inPictureInPictureMode) {
-        window.__chimee_picture_in_picture_window = undefined;
+        window.__chimee_picture_in_picture = undefined;
         // @ts-ignore: support new function in document
         return (document as Document).exitPictureInPicture();
       }
@@ -338,10 +345,9 @@ export default class Dispatcher {
   public async requestPictureInPicture() {
     if ('pictureInPictureEnabled' in document) {
       // if video is in picture-in-picture mode, do nothing
-      if (this.inPictureInPictureMode) { return Promise.resolve(window.__chimee_picture_in_picture_window); }
-      // $FlowFixMe: requestPictureInPicture is a new function
-      const pipWindow = await this.dom.videoElement.requestPictureInPicture();
-      window.__chimee_picture_in_picture_window = pipWindow;
+      if (this.inPictureInPictureMode) { return Promise.resolve(window.__chimee_picture_in_picture); }
+      const pipWindow = await (this.dom.videoElement as any).requestPictureInPicture();
+      window.__chimee_picture_in_picture = pipWindow;
       // if (autoplay) this.play();
       return pipWindow;
     }
@@ -366,7 +372,7 @@ export default class Dispatcher {
     kernels?: UserKernelsConfig,
     preset?: UserConfig['preset'],
     repeatTimes?: number,
-  } = {}) {
+  } = {}): Promise<void | {}> {
     const {
       duration = 3,
       bias = 0,
@@ -445,8 +451,8 @@ export default class Dispatcher {
             kernel.off('error', videoError);
             let error;
             // TODO: need to add the kernel error declare here
-            if (!isEmpty(evt.data) && evt.data.errmsg) {
-              const { errmsg } = evt.data;
+            if (!isEmpty((evt as any).data) && (evt as any).data.errmsg) {
+              const { errmsg } = (evt as any).data;
               chimeeLog.error('chimee\'s silentload bump into a kernel error', errmsg);
               error = new Error(errmsg);
             } else {
@@ -480,21 +486,27 @@ export default class Dispatcher {
           chimeeLog.warn('chimee\'s silentLoad', message);
         }
         return Promise.reject(new Error(message));
-      }).catch((data: Error) => {
-        if (isError(data)) {
-          return Promise.reject(data);
+      }).catch((result: Error | { error: string, message: string } | { kernel: ChimeeKernel, video: HTMLVideoElement }) => {
+        if (isError(result)) {
+          return Promise.reject(result);
         }
-        // TODO: need to add kernel error declaration
-        if (data.error) {
+        let kernelError: { error: string, message: string } | void;
+        let data: { kernel: ChimeeKernel, video: HTMLVideoElement };
+        if ((result as any).error) {
+          kernelError = (result as { error: string, message: string });
+        } else {
+          data = (result as { kernel: ChimeeKernel, video: HTMLVideoElement });
+        }
+        if (kernelError && kernelError.error) {
         /* istanbul ignore else  */
           if (process.env.NODE_ENV !== 'production') {
-            chimeeLog.warn('chimee\'s silentLoad', data.message);
+            chimeeLog.warn('chimee\'s silentLoad', kernelError.message);
           }
-          return Promise.reject(new Error(data.message));
+          return Promise.reject(new Error(kernelError.message));
         }
         const { video, kernel } = data;
         if (option.abort) {
-          (kernel as ChimeeKernel).destroy();
+          kernel.destroy();
           return Promise.reject(new Error('user abort the mission'));
         }
         const paused = this.dom.videoElement.paused;
