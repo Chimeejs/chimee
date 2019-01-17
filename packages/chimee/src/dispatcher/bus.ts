@@ -324,9 +324,9 @@ export default class Bus {
    * @param  {Array} Array form of plugin id
    * @return {Array<Function>} event handler in queue to run
    */
-  private getEventQueue(handlerSet: { [pluginId: string]: Array<(...args: any[]) => any> }): Array<(...args: any[]) => any> {
+  private getEventQueue(handlerSet: { [pluginId: string]: Array<(...args: any[]) => any> }, customOrder: string[] | false = false): Array<(...args: any[]) => any> {
     // TODO: it may no to need to concat everytime
-    const order = this.dispatcher.order.concat([ '_vm' ]);
+    const order = (customOrder || this.dispatcher.order).concat([ '_vm' ]);
     return isEmpty(handlerSet)
       ? []
       : order.reduce((queue: Array<(...args: any[]) => any>, id: string) => {
