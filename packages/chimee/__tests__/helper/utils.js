@@ -1,4 +1,4 @@
-import { runRejectableQueue, runStoppableQueue } from 'helper/utils';
+import { runRejectableQueue, runStoppableQueue, deletePropertyIfItIsEmpty, transObjectAttrIntoArray, isSupportedKernelType } from 'helper/utils';
 describe('runRejectableQueue', async () => {
   test('empty', () => {
     expect(runRejectableQueue([])).resolves.toBe();
@@ -88,4 +88,27 @@ test('runStoppableQueue', async () => {
     () => checkArray.push(4),
   ])).toBe(false);
   expect(checkArray).toEqual([ 1, 2 ]);
+});
+
+describe('deletePropertyIfItIsEmpty', () => {
+  expect(() => deletePropertyIfItIsEmpty()).not.toThrow();
+  const obj = { a: {} };
+  deletePropertyIfItIsEmpty(obj, 'a');
+  expect(typeof obj.a).toBe('undefined');
+  const obj1 = { a: { b: 2 } };
+  deletePropertyIfItIsEmpty(obj1, 'a');
+  expect(typeof obj1.a).not.toBe('undefined');
+});
+
+test('transObjectAttrIntoArray', () => {
+  expect(transObjectAttrIntoArray({})).toEqual([]);
+  expect(transObjectAttrIntoArray({ 1: 'a', 2: 'b' })).toEqual([ 'a', 'b' ]);
+  expect(transObjectAttrIntoArray({ 1: 'a', 2: 'b' }, (b, a) => +a - +b)).toEqual([ 'b', 'a' ]);
+});
+
+test('isSupportedKernelType', () => {
+  expect(isSupportedKernelType('flv')).toBe(true);
+  expect(isSupportedKernelType('hls')).toBe(true);
+  expect(isSupportedKernelType('mp4')).toBe(true);
+  expect(isSupportedKernelType('')).toBe(false);
 });
