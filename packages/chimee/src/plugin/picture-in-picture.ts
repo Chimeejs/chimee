@@ -3,6 +3,17 @@ import ChimeePlugin from 'dispatcher/plugin';
 import { addClass } from 'dom-helpers/class';
 import style from 'dom-helpers/style';
 import { PluginConfig, PluginOption } from 'typings/base';
+export type ChimeePictureInPictureOnWindow = {
+  element?: HTMLVideoElement;
+  plugin?: PictureInPicture;
+  window?: Element;
+};
+declare global {
+  // tslint:disable-next-line:interface-name
+  interface Window {
+    __chimee_picture_in_picture: ChimeePictureInPictureOnWindow;
+  }
+}
 export default class PictureInPicture extends ChimeePlugin {
   public $dom: HTMLCanvasElement;
   public ctx: CanvasRenderingContext2D;

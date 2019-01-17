@@ -11,11 +11,18 @@ import ChimeePlugin from 'dispatcher/plugin';
 import { eventBinderCheck } from 'helper/checker';
 import { IVideoKernelConstructor } from 'kernels/base';
 import { isArray, isFunction, isPlainObject, isString } from 'lodash';
+import { ChimeePictureInPictureOnWindow } from 'plugin/picture-in-picture';
 import { accessor, alias, applyDecorators, before, nonenumerable, watch } from 'toxic-decorators';
 import { isEmpty } from 'toxic-predicate-functions';
 import { bind, getDeepProperty } from 'toxic-utils';
 import { BinderTarget, EventOptions, VesselConfig } from 'typings/base';
-import { SupportedKernelType, UserKernelsConfig } from 'typings/base';
+import { SupportedKernelType, UserConfig, UserKernelsConfig } from 'typings/base';
+declare global {
+  // tslint:disable-next-line:interface-name
+  interface Window {
+    __chimee_picture_in_picture: ChimeePictureInPictureOnWindow;
+  }
+}
 
 export default class VideoWrapper {
   @nonenumerable
@@ -78,8 +85,8 @@ export default class VideoWrapper {
   }
 
   @nonenumerable
-  get pictureInPictureWindow(): void | Object {
-    return window.__chimee_picture_in_picture_window;
+  get pictureInPictureWindow(): void | ChimeePictureInPictureOnWindow {
+    return window.__chimee_picture_in_picture;
   }
 
   get videoRequireGuardedAttributes(): string[] {
@@ -388,14 +395,25 @@ export default class VideoWrapper {
   }
 
   @alias('silentLoad')
-  public $silentLoad(...args: any[]) {
+  public $silentLoad(src: string, option: {
+    abort?: boolean,
+    bias?: number,
+    box?: string,
+    duration?: number,
+    immediate?: boolean,
+    increment?: number,
+    isLive?: boolean,
+    kernels?: UserKernelsConfig,
+    preset?: UserConfig['preset'],
+    repeatTimes?: number,
+  } = {}) {
     return this.dispatcher.binder.emit({
       id: this.id,
       name: 'silentLoad',
       target: 'video',
     })
       .then(() => {
-        return this.dispatcher.silentLoad(...args);
+        return this.dispatcher.silentLoad(src, option);
       }).then((result: any) => {
         this.dispatcher.binder.trigger({
           id: this.id,
