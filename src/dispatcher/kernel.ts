@@ -18,6 +18,7 @@ export function getLegalBox({ src, box }: { box: string, src: string }): string 
   if (isString(box) && box) { return box; }
   src = src.toLowerCase();
   for (const key in boxSuffixMap) {
+    /* istanbul ignore next */
     if (boxSuffixMap.hasOwnProperty(key)) {
       const suffix = boxSuffixMap[key];
       if (src.indexOf(suffix) > -1) { return key; }

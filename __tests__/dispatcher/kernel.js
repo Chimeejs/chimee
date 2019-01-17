@@ -194,7 +194,11 @@ describe('chimee kernel index.js', () => {
       preset: {
         flv: ChimeeKernelFlv,
       },
-      presetConfig: {},
+      presetConfig: {
+        flv: {
+          test: 1,
+        },
+      },
     };
     const kernel = new ChimeeKernel(videoElement, config);
     expect(kernel.videoElement).toBe(videoElement);
