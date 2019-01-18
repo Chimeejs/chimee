@@ -26,8 +26,7 @@ export default class Chimee extends VideoWrapper {
       kernelEvents.push(name);
     }
   }
-  @frozen
-  public config: {
+  public readonly config: {
     errorHandler: (...args: any[]) => any | void;
   } = {
     errorHandler: undefined,
@@ -36,35 +35,25 @@ export default class Chimee extends VideoWrapper {
   public ready: Promise<void>;
   public readySync: boolean;
 
-  @frozen
-  public version: string = process.env.PLAYER_VERSION;
+  public readonly version: string = process.env.PLAYER_VERSION;
 
-  @frozen
-  public static config: GlobalConfig = new GlobalConfig();
+  public static readonly config: GlobalConfig = new GlobalConfig();
 
-  @frozen
-  public static getPluginConfig = Dispatcher.getPluginConfig;
+  public static readonly getPluginConfig = Dispatcher.getPluginConfig;
 
-  @frozen
-  public static hasInstalled = Dispatcher.hasInstalled;
+  public static readonly hasInstalled = Dispatcher.hasInstalled;
 
-  @frozen
-  public static hasInstalledKernel = Dispatcher.hasInstalledKernel;
+  public static readonly hasInstalledKernel = Dispatcher.hasInstalledKernel;
 
-  @frozen
-  public static install = Dispatcher.install;
+  public static readonly install = Dispatcher.install;
 
-  @frozen
-  public static installKernel = Dispatcher.installKernel;
+  public static readonly installKernel = Dispatcher.installKernel;
 
-  @frozen
-  public static plugin: IChimeePluginConstructor = ChimeePlugin;
+  public static readonly plugin: IChimeePluginConstructor = ChimeePlugin;
 
-  @frozen
-  public static uninstall = Dispatcher.uninstall;
+  public static readonly uninstall = Dispatcher.uninstall;
 
-  @frozen
-  public static uninstallKernel = Dispatcher.uninstallKernel;
+  public static readonly uninstallKernel = Dispatcher.uninstallKernel;
 
   constructor(rawConfig: UserConfig | string | Element) {
     super({ id: '_vm' });
