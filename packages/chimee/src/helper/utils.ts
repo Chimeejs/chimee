@@ -1,5 +1,5 @@
 import { isEmpty, isFunction } from 'lodash';
-import { SupportedKernelType } from 'typings/base';
+import { SupportedKernelType } from '../typings/base';
 /**
  * delete the property if the value of the property is empty
  * @param  {any} obj

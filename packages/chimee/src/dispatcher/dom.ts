@@ -1,17 +1,17 @@
 import { chimeeLog } from 'chimee-helper-log';
-import { RealChimeeDomElement } from 'const/dom';
-import Dispatcher from 'dispatcher/index';
 import { addClass } from 'dom-helpers/class';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
 import { querySelectorAll } from 'dom-helpers/query';
 import style from 'dom-helpers/style';
 import esFullscreen from 'es-fullscreen';
+import { RealChimeeDomElement } from '../const/dom';
+import Dispatcher from '../dispatcher/index';
 console.warn('esfulllll', esFullscreen);
 import { isArray, isFunction, isPlainObject, isString } from 'lodash';
 import { autobind, waituntil } from 'toxic-decorators';
 import { isElement, isEvent, isHTMLString, isPosterityNode } from 'toxic-predicate-functions';
 import { hypenate } from 'toxic-utils';
-import { UserConfig } from 'typings/base';
+import { UserConfig } from '../typings/base';
 
 export interface IFriendlyDom {
   autoFocusToVideo(element: Element, remove?: boolean): void;

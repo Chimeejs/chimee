@@ -1,22 +1,21 @@
 import { chimeeLog } from 'chimee-helper-log';
-import VideoConfig from 'config/video';
-import { isVideoDomAttribute, videoDomAttributes } from 'const/attribute';
-import { ChimeeDomElement, isChimeeDomElement, RealChimeeDomElement, turnChimeeDomElementIntoRealChimeeDomElement } from 'const/dom';
-import { domEvents } from 'const/event';
-import { domMethods, kernelMethods, videoMethods } from 'const/method';
-import { kernelProperties, videoReadOnlyProperties } from 'const/property';
-import Dom from 'dispatcher/dom';
-import Dispatcher from 'dispatcher/index';
-import ChimeePlugin from 'dispatcher/plugin';
-import { eventBinderCheck } from 'helper/checker';
-import { IVideoKernelConstructor } from 'kernels/base';
 import { isArray, isFunction, isPlainObject, isString } from 'lodash';
-import { ChimeePictureInPictureOnWindow } from 'plugin/picture-in-picture';
 import { accessor, alias, applyDecorators, before, nonenumerable, watch } from 'toxic-decorators';
 import { isEmpty } from 'toxic-predicate-functions';
 import { bind, getDeepProperty } from 'toxic-utils';
-import { BinderTarget, EventOptions, VesselConfig } from 'typings/base';
-import { SupportedKernelType, UserConfig, UserKernelsConfig } from 'typings/base';
+import VideoConfig from '../config/video';
+import { isVideoDomAttribute, videoDomAttributes } from '../const/attribute';
+import { ChimeeDomElement, isChimeeDomElement, RealChimeeDomElement, turnChimeeDomElementIntoRealChimeeDomElement } from '../const/dom';
+import { domEvents } from '../const/event';
+import { domMethods, kernelMethods, videoMethods } from '../const/method';
+import { kernelProperties, videoReadOnlyProperties } from '../const/property';
+import Dom from '../dispatcher/dom';
+import Dispatcher from '../dispatcher/index';
+import ChimeePlugin from '../dispatcher/plugin';
+import { eventBinderCheck } from '../helper/checker';
+import { IVideoKernelConstructor } from '../kernels/base';
+import { ChimeePictureInPictureOnWindow } from '../plugin/picture-in-picture';
+import { BinderTarget, EventOptions, SupportedKernelType, UserConfig, UserKernelsConfig, VesselConfig } from '../typings/base';
 declare global {
   // tslint:disable-next-line:interface-name
   interface Window {

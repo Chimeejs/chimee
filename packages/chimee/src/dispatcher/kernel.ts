@@ -1,9 +1,9 @@
 import { chimeeLog } from 'chimee-helper-log';
-import { IVideoKernel, IVideoKernelConstructor } from 'kernels/base';
-import NativeVideoKernel from 'kernels/native';
 import { isFunction, isNumber, isString } from 'lodash';
 import { isElement } from 'toxic-predicate-functions';
-import { SupportedKernelType } from 'typings/base';
+import { IVideoKernel, IVideoKernelConstructor } from '../kernels/base';
+import NativeVideoKernel from '../kernels/native';
+import { SupportedKernelType } from '../typings/base';
 
 const LOG_TAG = 'chimee';
 const boxSuffixMap: { [x: string]: string } = {

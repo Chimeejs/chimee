@@ -1,23 +1,23 @@
 import { chimeeLog } from 'chimee-helper-log';
-import defaultContainerConfig from 'config/container';
-import Vessel from 'config/vessel';
-import VideoConfig from 'config/video';
-import { videoDomAttributes } from 'const/attribute';
-import Binder from 'dispatcher/binder';
-import Dom from 'dispatcher/dom';
-import ChimeeKernel, { getLegalBox, IChimeeKernelConfig } from 'dispatcher/kernel';
-import ChimeePlugin, { IChimeePluginConstructor } from 'dispatcher/plugin';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
-import { isSupportedKernelType, runRejectableQueue, transObjectAttrIntoArray } from 'helper/utils';
-import { IVideoKernelConstructor } from 'kernels/base';
 import { clone, isArray, isEmpty, isError, isFunction, isPlainObject, isString } from 'lodash';
-import PictureInPicture from 'plugin/picture-in-picture';
-import { ChimeePictureInPictureOnWindow } from 'plugin/picture-in-picture';
 import { autobind, before, nonenumerable } from 'toxic-decorators';
 import { isPromise } from 'toxic-predicate-functions';
 import { camelize } from 'toxic-utils';
-import { PluginConfig, PluginOption, SingleKernelConfig, SupportedKernelType, UserConfig, UserKernelsConfig, UserKernelsConstructorMap } from 'typings/base';
+import defaultContainerConfig from '../config/container';
+import Vessel from '../config/vessel';
+import VideoConfig from '../config/video';
+import { videoDomAttributes } from '../const/attribute';
+import Binder from '../dispatcher/binder';
+import Dom from '../dispatcher/dom';
+import ChimeeKernel, { getLegalBox, IChimeeKernelConfig } from '../dispatcher/kernel';
+import ChimeePlugin, { IChimeePluginConstructor } from '../dispatcher/plugin';
+import { isSupportedKernelType, runRejectableQueue, transObjectAttrIntoArray } from '../helper/utils';
 import Chimee from '../index';
+import { IVideoKernelConstructor } from '../kernels/base';
+import { ChimeePictureInPictureOnWindow } from '../plugin/picture-in-picture';
+import PictureInPicture from '../plugin/picture-in-picture';
+import { PluginConfig, PluginOption, SingleKernelConfig, SupportedKernelType, UserConfig, UserKernelsConfig, UserKernelsConstructorMap } from '../typings/base';
 declare global {
   // tslint:disable-next-line:interface-name
   interface Window {

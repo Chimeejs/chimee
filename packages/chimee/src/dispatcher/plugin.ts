@@ -1,13 +1,13 @@
 import { chimeeLog } from 'chimee-helper-log';
-import VideoConfig from 'config/video';
-import { IFriendlyDom } from 'dispatcher/dom';
-import Dispatcher, { IFriendlyDispatcher } from 'dispatcher/index';
-import VideoWrapper from 'dispatcher/video-wrapper';
 import { isBoolean, isError, isFunction, isInteger, isPlainObject, isString } from 'lodash';
 import { accessor, applyDecorators, frozen } from 'toxic-decorators';
 import { isEmpty, isPromise } from 'toxic-predicate-functions';
 import { bind } from 'toxic-utils';
-import { PluginConfig, PluginOption } from 'typings/base';
+import VideoConfig from '../config/video';
+import { IFriendlyDom } from '../dispatcher/dom';
+import Dispatcher, { IFriendlyDispatcher } from '../dispatcher/index';
+import VideoWrapper from '../dispatcher/video-wrapper';
+import { PluginConfig, PluginOption } from '../typings/base';
 
 export interface IChimeePluginConstructor {
   new(...args: any[]): ChimeePlugin;
