@@ -10,7 +10,7 @@ export default class GlobalConfig {
   set silent(val: boolean) {
     val = !!val;
     this.silentValue = val;
-    Object.keys(this.log).forEach((key) => { this.log[key] = !val; });
+    Object.keys(this.log).forEach((key: 'debug' | 'error' | 'info' | 'verbose' | 'warn') => { this.log[key] = !val; });
   }
 
   get useStyleFullscreen(): boolean {
@@ -42,19 +42,26 @@ export default class GlobalConfig {
 
   constructor() {
     const props = Object.keys(this.log)
-      .reduce((props, key) => {
+      .reduce((props, key: 'debug' | 'error' | 'info' | 'verbose' | 'warn') => {
+        const switchKey = ('ENABLE_' + key.toUpperCase() as 'ENABLE_DEBUG' | 'ENABLE_ERROR' | 'ENABLE_INFO' | 'ENABLE_VERBOSE' | 'ENABLE_WARN');
         props[key] = accessor({
           get() {
-            return chimeeLog['ENABLE_' + key.toUpperCase()];
+            return chimeeLog[switchKey];
           },
-          set(val) {
-            chimeeLog['ENABLE_' + key.toUpperCase()] = val;
+          set(val: boolean) {
+            chimeeLog[switchKey] = val;
             if (val === true) { this.silent = false; }
             return val;
           },
         });
         return props;
-      }, {});
+      }, ({} as {
+        debug: boolean,
+        error: boolean,
+        info: boolean,
+        verbose: boolean
+        warn: boolean,
+      }));
     applyDecorators(this.log, props, { self: true });
   }
 }
