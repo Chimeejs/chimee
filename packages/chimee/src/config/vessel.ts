@@ -14,7 +14,7 @@ export default class Vessel {
     [ 'width', 'height', 'position', 'display' ].forEach((key) => {
       Object.defineProperty(this, key, {
         get() {
-          return this.__dispatcher.dom.getStyle(this.__target, key);
+          return (this as Vessel).dispatcher.dom.getStyle(this.__target, key);
         },
         set(value) {
           if (isNumber(value)) {
@@ -23,8 +23,7 @@ export default class Vessel {
           if (!isString(value)) {
             throw new Error(`The value of ${key} in ${this.__target}Config must be string, but not ${typeof value}.`);
           }
-          this.__dispatcher.dom.setStyle(this.__target, key, value);
-          // return value;
+          (this as Vessel).dispatcher.dom.setStyle(this.__target, key, value);
         },
         configurable: true,
         enumerable: true,

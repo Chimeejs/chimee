@@ -1,5 +1,5 @@
 import { chimeeLog } from 'chimee-helper-log';
-import esFullscreen from 'es-fullscreen';
+import { esFullscreen } from 'es-fullscreen';
 import { accessor, applyDecorators, nonenumerable as nonenumerableDecorator } from 'toxic-decorators';
 // @ts-ignore: ignore property decorator problem
 const nonenumerable = nonenumerableDecorator as PropertyDecorator;
