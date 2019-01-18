@@ -739,7 +739,7 @@ export default class Dispatcher {
       }, {});
     } else {
       // SKC means SingleKernelConfig
-      Object.keys(kernels).forEach((key: SupportedKernelType) => {
+      Object.keys(kernels || {}).forEach((key: SupportedKernelType) => {
         const fnOrSKC: SupportedKernelType | SingleKernelConfig | IVideoKernelConstructor = kernels[key];
         // if it's a function, means we need to do nothing
         if (isFunction(fnOrSKC)) {

@@ -4,24 +4,18 @@ describe('dispatcher/binder', () => {
   let player;
 
   beforeEach(() => {
-    console.warn('i got here');
-    try {
-      player = new Chimee({
-        // 播放地址
-        src: 'http://cdn.toxicjohann.com/lostStar.mp4',
-        // 直播:live 点播：vod
-        type: 'vod',
-        // 编解码容器
-        box: 'native',
-        // dom容器
-        wrapper: document.createElement('div'),
-        plugin: [],
-        events: {},
-      });
-    } catch (error) {
-      console.error(error);
-    }
-    console.error(player);
+    player = new Chimee({
+      // 播放地址
+      src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+      // 直播:live 点播：vod
+      type: 'vod',
+      // 编解码容器
+      box: 'native',
+      // dom容器
+      wrapper: document.createElement('div'),
+      plugin: [],
+      events: {},
+    });
   });
 
   afterEach(() => {
