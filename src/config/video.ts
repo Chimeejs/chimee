@@ -1,11 +1,11 @@
-import { videoDomAttributes } from 'const/attribute';
-import Dom from 'dispatcher/dom';
-import Dispatcher from 'dispatcher/index';
-import { IVideoKernelConstructor } from 'kernels/base';
 import { isNumber, isString } from 'lodash';
 import { accessor, alwaysBoolean, alwaysNumber, alwaysString, applyDecorators, initString, nonenumerable as nonenumerableDecorator } from 'toxic-decorators';
 import { isNumeric } from 'toxic-predicate-functions';
-import { SupportedKernelType, UserConfig, UserKernelsConfig } from 'typings/base';
+import { videoDomAttributes } from '../const/attribute';
+import Dom from '../dispatcher/dom';
+import Dispatcher from '../dispatcher/index';
+import { IVideoKernelConstructor } from '../kernels/base';
+import { SupportedKernelType, UserConfig, UserKernelsConfig } from '../typings/base';
 // @ts-ignore: ignore property decorator problem
 const nonenumerable = nonenumerableDecorator as PropertyDecorator;
 

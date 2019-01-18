@@ -1,12 +1,12 @@
 import { chimeeLog } from 'chimee-helper-log';
-import { dispatcherEventMethodMap, isDispatcherEventMethod, isDomEvent, isVideoEvent, selfProcessorEvents } from 'const/event';
-import { isDomMethod, isKernelMethod } from 'const/method';
-import { secondaryEventReg } from 'const/regExp';
-import Dispatcher from 'dispatcher/index';
-import { deletePropertyIfItIsEmpty, runRejectableQueue, runStoppableQueue } from 'helper/utils';
 import { bind, isArray, isEmpty, isError, isFunction, isNil } from 'lodash';
 import { runnable } from 'toxic-decorators';
-import { BinderTarget, EventStage } from 'typings/base';
+import { dispatcherEventMethodMap, isDispatcherEventMethod, isDomEvent, isVideoEvent, selfProcessorEvents } from '../const/event';
+import { isDomMethod, isKernelMethod } from '../const/method';
+import { secondaryEventReg } from '../const/regExp';
+import Dispatcher from '../dispatcher/index';
+import { deletePropertyIfItIsEmpty, runRejectableQueue, runStoppableQueue } from '../helper/utils';
+import { BinderTarget, EventStage } from '../typings/base';
 
 function secondaryChecker(key: string) {
   if (key.match(secondaryEventReg)) {

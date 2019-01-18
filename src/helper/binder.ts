@@ -1,8 +1,8 @@
 import { chimeeLog } from 'chimee-helper-log';
-import { domEvents, esFullscreenEvents, kernelEvents, videoEvents } from 'const/event';
-import { secondaryEventReg } from 'const/regExp';
 import { camelCase, isFunction, isString } from 'lodash';
-import { AdditionalEventInfo, BinderTarget, EventStage, RawEventInfo, WholeEventInfo } from 'typings/base';
+import { domEvents, esFullscreenEvents, kernelEvents, videoEvents } from '../const/event';
+import { secondaryEventReg } from '../const/regExp';
+import { AdditionalEventInfo, BinderTarget, EventStage, RawEventInfo, WholeEventInfo } from '../typings/base';
 
 /**
  * In logic before 0.10.0, we use 'c_' and 'w_' to mark event of container and wrapper

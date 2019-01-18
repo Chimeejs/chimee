@@ -1,8 +1,8 @@
-import Dispatcher from 'dispatcher/index';
-import ChimeePlugin from 'dispatcher/plugin';
 import { addClass } from 'dom-helpers/class';
 import style from 'dom-helpers/style';
-import { PluginConfig, PluginOption } from 'typings/base';
+import Dispatcher from '../dispatcher/index';
+import ChimeePlugin from '../dispatcher/plugin';
+import { PluginConfig, PluginOption } from '../typings/base';
 export type ChimeePictureInPictureOnWindow = {
   element?: HTMLVideoElement;
   plugin?: PictureInPicture;

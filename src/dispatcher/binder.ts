@@ -2,15 +2,15 @@
  * A class to mark all the events name of certain kind of part
  * It can use to rebind the events
  */
-import { isMustListenVideoDomEvent, mustListenVideoDomEvents } from 'const/event';
-import Bus from 'dispatcher/bus';
-import Dispatcher from 'dispatcher/index';
-import ChimeeKernel from 'dispatcher/kernel';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
-import { getEventInfo, isEventEmitalbe, prettifyEventParameter } from 'helper/binder';
 import { isFunction } from 'lodash';
 import { runnable } from 'toxic-decorators';
-import { BinderTarget, EventStage, RawEventInfo } from 'typings/base';
+import { isMustListenVideoDomEvent, mustListenVideoDomEvents } from '../const/event';
+import Bus from '../dispatcher/bus';
+import Dispatcher from '../dispatcher/index';
+import ChimeeKernel from '../dispatcher/kernel';
+import { getEventInfo, isEventEmitalbe, prettifyEventParameter } from '../helper/binder';
+import { BinderTarget, EventStage, RawEventInfo } from '../typings/base';
 
 export default class Binder {
   private bindedEventInfo: { [key in BinderTarget]: Array<[string, (...args: any[]) => any]> };

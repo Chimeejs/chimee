@@ -1,6 +1,6 @@
-import Dispatcher from 'dispatcher/index';
 import { isNumber, isString } from 'lodash';
-import { VesselConfig } from 'typings/base';
+import Dispatcher from '../dispatcher/index';
+import { VesselConfig } from '../typings/base';
 
 // base css controller for container and wrapper
 export default class Vessel {
