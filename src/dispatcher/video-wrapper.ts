@@ -197,7 +197,7 @@ export default class VideoWrapper {
    * @param {string} attribute the atrribue nameß
    * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
    */
-  @alias('attr')
+  @(alias('attr') as MethodDecorator)
   public $attr(targetOrAttr: ChimeeDomElement | string, attrOrValue?: string, valueOrNothing?: string | void): string | void {
     const { method, target, attr, value } = this.getRealInfoForStyleAndAttr(arguments.length, targetOrAttr, attrOrValue, valueOrNothing);
     if (method === 'set' && target === 'videoElement') {
@@ -224,7 +224,7 @@ export default class VideoWrapper {
    * @param {string} attribute the atrribue name
    * @param {any} value optional, when it's no offer, we consider you want to get the attribute's value. When it's offered, we consider you to set the attribute's value, if the value you passed is undefined, that means you want to remove the value;
    */
-  @alias('css')
+  @(alias('css') as MethodDecorator)
   public $css(targetOrAttr: ChimeeDomElement | string, attrOrValue?: string, valueOrNothing?: string | void): string | void {
     const { method, target, attr, value } = this.getRealInfoForStyleAndAttr(arguments.length, targetOrAttr, attrOrValue, valueOrNothing);
     return method === 'set'
@@ -248,7 +248,7 @@ export default class VideoWrapper {
    * @param  {string}    key event's name
    * @param  {...args} args
    */
-  @alias('emit')
+  @(alias('emit') as MethodDecorator)
   public $emit(
     key: string | {
       name: string,
@@ -279,7 +279,7 @@ export default class VideoWrapper {
    * @param  {string}    key event's name
    * @param  {...args} args
    */
-  @alias('emitSync')
+  @(alias('emitSync') as MethodDecorator)
   public $emitSync(
     key: string | {
       name: string,
@@ -306,9 +306,9 @@ export default class VideoWrapper {
    * @param {boolean} flag true means fullscreen and means exit fullscreen
    * @param {string} element the element you want to fullscreen, default it's container, you can choose from video | container | wrapper
    */
-  @alias('fullScreen')
-  @alias('$fullScreen')
-  @alias('fullscreen')
+  @(alias('fullScreen') as MethodDecorator)
+  @(alias('$fullScreen') as MethodDecorator)
+  @(alias('fullscreen') as MethodDecorator)
   public $fullscreen(flag: boolean = true, element: ChimeeDomElement = 'container'): boolean {
     if (!this.dispatcher.binder.emitSync({
       id: this.id,
@@ -328,8 +328,8 @@ export default class VideoWrapper {
    * @param  {string} key event's name
    * @param  {Function} fn event's handler
    */
-  @alias('off')
-  @alias('removeEventListener')
+  @(alias('off') as MethodDecorator)
+  @(alias('removeEventListener') as MethodDecorator)
   @before(eventBinderCheck)
   public $off(key: string, fn: (...args: any[]) => any, options: EventOptions = {}) {
     const eventInfo = Object.assign({}, options, {
@@ -346,8 +346,8 @@ export default class VideoWrapper {
    * @param  {string} key event's name
    * @param  {Function} fn event's handler
    */
-  @alias('on')
-  @alias('addEventListener')
+  @(alias('on') as MethodDecorator)
+  @(alias('addEventListener') as MethodDecorator)
   @before(eventBinderCheck)
   public $on(key: string, fn: (...args: any[]) => any, options: EventOptions = {}) {
     const eventInfo = Object.assign({}, options, {
@@ -364,7 +364,7 @@ export default class VideoWrapper {
    * @param {string} key event's name
    * @param {Function} fn event's handler
    */
-  @alias('once')
+  @(alias('once') as MethodDecorator)
   @before(eventBinderCheck)
   public $once(key: string, fn: (...args: any[]) => any, options: EventOptions = {}) {
     const self = this;
@@ -394,7 +394,7 @@ export default class VideoWrapper {
     obj.__set(property, value);
   }
 
-  @alias('silentLoad')
+  @(alias('silentLoad') as MethodDecorator)
   public $silentLoad(src: string, option: {
     abort?: boolean,
     bias?: number,

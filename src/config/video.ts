@@ -3,9 +3,11 @@ import Dom from 'dispatcher/dom';
 import Dispatcher from 'dispatcher/index';
 import { IVideoKernelConstructor } from 'kernels/base';
 import { isNumber, isString } from 'lodash';
-import { accessor, alwaysBoolean, alwaysNumber, alwaysString, applyDecorators, configurable, frozen, initString, nonenumerable } from 'toxic-decorators';
+import { accessor, alwaysBoolean, alwaysNumber, alwaysString, applyDecorators, initString, nonenumerable as nonenumerableDecorator } from 'toxic-decorators';
 import { isNumeric } from 'toxic-predicate-functions';
 import { SupportedKernelType, UserConfig, UserKernelsConfig } from 'typings/base';
+// @ts-ignore: ignore property decorator problem
+const nonenumerable = nonenumerableDecorator as PropertyDecorator;
 
 // TODO: in config we should not need to care about videoconfigready
 // let dispatcher to handle this
@@ -270,8 +272,8 @@ export default class VideoConfig {
   // 此处 box 只能置空，因为 kernel 会自动根据你的安装 kernel 和相关地址作智能判断。
   // 曾经 bug 详见 https://github.com/Chimeejs/chimee-kernel/issues/1
   @initString((str: string) => str.toLocaleLowerCase())
-  @configurable
   public box: 'mp4' | 'hls' | 'flv' | '' = '';
+
   // TODO: the watchable flag should not be placed into config
   @nonenumerable
   public changeWatchable: boolean = true;

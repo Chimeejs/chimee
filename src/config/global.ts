@@ -1,6 +1,8 @@
 import { chimeeLog } from 'chimee-helper-log';
 import esFullscreen from 'es-fullscreen';
-import { accessor, applyDecorators, nonenumerable } from 'toxic-decorators';
+import { accessor, applyDecorators, nonenumerable as nonenumerableDecorator } from 'toxic-decorators';
+// @ts-ignore: ignore property decorator problem
+const nonenumerable = nonenumerableDecorator as PropertyDecorator;
 export default class GlobalConfig {
 
   get silent(): boolean {
@@ -56,11 +58,11 @@ export default class GlobalConfig {
         });
         return props;
       }, ({} as {
-        debug: boolean,
-        error: boolean,
-        info: boolean,
-        verbose: boolean
-        warn: boolean,
+        debug: MethodDecorator | PropertyDecorator,
+        error: MethodDecorator | PropertyDecorator,
+        info: MethodDecorator | PropertyDecorator,
+        verbose: MethodDecorator | PropertyDecorator
+        warn: MethodDecorator | PropertyDecorator,
       }));
     applyDecorators(this.log, props, { self: true });
   }
