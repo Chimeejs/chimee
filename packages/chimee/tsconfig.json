@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
         "baseUrl": "./src",
-        "module": "ESNext",
-        "target": "ESNext",
+        "module": "esnext",
+        "target": "esnext",
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,

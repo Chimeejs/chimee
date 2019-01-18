@@ -579,7 +579,7 @@ export default class Dispatcher {
     }
   }
 
-  @autobind
+  @(autobind as MethodDecorator)
   public throwError(error: Error | string) {
     this.vm.customThrowError(error);
   }

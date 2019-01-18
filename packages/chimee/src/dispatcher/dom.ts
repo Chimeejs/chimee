@@ -6,6 +6,7 @@ import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
 import { querySelectorAll } from 'dom-helpers/query';
 import style from 'dom-helpers/style';
 import esFullscreen from 'es-fullscreen';
+console.warn('esfulllll', esFullscreen);
 import { isArray, isFunction, isPlainObject, isString } from 'lodash';
 import { autobind, waituntil } from 'toxic-decorators';
 import { isElement, isEvent, isHTMLString, isPosterityNode } from 'toxic-predicate-functions';
@@ -313,7 +314,7 @@ export default class Dom {
     (remove ? removeEvent : addEvent)(element, 'touchend', this.focusToVideo);
   }
 
-  @autobind
+  @(autobind as MethodDecorator)
   private focusToVideo() {
     const x = window.scrollX;
     const y = window.scrollY;
@@ -323,7 +324,7 @@ export default class Dom {
     window.scrollTo(x, y);
   }
 
-  @autobind
+  @(autobind as MethodDecorator)
   private fullscreenMonitor(evt?: Event) {
     const element = esFullscreen.fullscreenElement;
     const original = this.isFullscreen;
