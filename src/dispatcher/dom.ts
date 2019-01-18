@@ -3,14 +3,13 @@ import { addClass } from 'dom-helpers/class';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
 import { querySelectorAll } from 'dom-helpers/query';
 import style from 'dom-helpers/style';
-import esFullscreen from 'es-fullscreen';
-import { RealChimeeDomElement } from '../const/dom';
-import Dispatcher from '../dispatcher/index';
-console.warn('esfulllll', esFullscreen);
+import { esFullscreen } from 'es-fullscreen';
 import { isArray, isFunction, isPlainObject, isString } from 'lodash';
 import { autobind, waituntil } from 'toxic-decorators';
 import { isElement, isEvent, isHTMLString, isPosterityNode } from 'toxic-predicate-functions';
 import { hypenate } from 'toxic-utils';
+import { RealChimeeDomElement } from '../const/dom';
+import Dispatcher from '../dispatcher/index';
 import { UserConfig } from '../typings/base';
 
 export interface IFriendlyDom {
@@ -287,13 +286,13 @@ export default class Dom {
    * @param {anything} val attribute's value
    * @param {string} target the HTMLElemnt string name, only support video/wrapper/container now
    */
-  @waituntil('__dispatcher.videoConfigReady')
-  public setAttr(target: RealChimeeDomElement, attr: string, val: string | void): void {
+  @waituntil('dispatcher.videoConfigReady')
+  public setAttr(target: RealChimeeDomElement, attr: string, val: string | void | number | boolean): void {
     if (typeof val === 'undefined') {
       this[target].removeAttribute(attr);
       return;
     }
-    this[target].setAttribute(attr, val);
+    this[target].setAttribute(attr, val as any);
   }
 
   /**

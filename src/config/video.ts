@@ -19,13 +19,13 @@ function stringOrVoid(value: any): string | void {
 function accessorVideoProperty(property: string) {
   return accessor({
     get(value: string | number | boolean | void) {
-      return (this.dispatcher.videoConfigReady && this.inited)
-        ? this.dom.videoElement[property]
+      return ((this as VideoConfig).dispatcher.videoConfigReady && (this as VideoConfig).inited)
+        ? ((this as VideoConfig).dom.videoElement as any)[property]
         : value;
     },
     set(value: string | number | boolean | void) {
-      if (!this.dispatcher.videoConfigReady) { return value; }
-      this.dom.videoElement[property] = value;
+      if (!(this as VideoConfig).dispatcher.videoConfigReady) { return value; }
+      ((this as VideoConfig).dom.videoElement as any)[property] = value;
       return value;
     },
   });
@@ -41,12 +41,12 @@ function accessorVideoAttribute(attribute: string | { get: string, isBoolean?: b
     : attribute;
   return accessor({
     get(value: string | number | boolean | void) {
-      return (this.dispatcher.videoConfigReady && this.inited)
-        ? this.dom.videoElement[get]
+      return ((this as VideoConfig).dispatcher.videoConfigReady && (this as VideoConfig).inited)
+        ? ((this as VideoConfig).dom.videoElement as any)[get]
         : value;
     },
     set(value: string | number | boolean | void) {
-      if (!this.dispatcher.videoConfigReady) { return value; }
+      if (!(this as VideoConfig).dispatcher.videoConfigReady) { return value; }
       const val = isBoolean
         ? value
           ? ''
@@ -55,7 +55,7 @@ function accessorVideoAttribute(attribute: string | { get: string, isBoolean?: b
         : value === null
           ? undefined
           : value;
-      this.dom.setAttr('video', set, val);
+      (this as VideoConfig).dom.setAttr('videoElement', set, val);
       return value;
     },
   }, {
@@ -66,21 +66,21 @@ function accessorVideoAttribute(attribute: string | { get: string, isBoolean?: b
 function accessorCustomAttribute(attribute: string, isBoolean?: boolean) {
   return accessor({
     get(value: string | number | boolean | void) {
-      const attrValue = this.dom.getAttr('video', attribute);
-      return (this.dispatcher.videoConfigReady && this.inited)
+      const attrValue = (this as VideoConfig).dom.getAttr('videoElement', attribute);
+      return ((this as VideoConfig).dispatcher.videoConfigReady && (this as VideoConfig).inited)
         ? isBoolean
           ? !!attrValue
           : attrValue
         : value;
     },
     set(value: string | number | boolean | void) {
-      if (!this.dispatcher.videoConfigReady) { return value; }
+      if (!(this as VideoConfig).dispatcher.videoConfigReady) { return value; }
       const val = isBoolean
         ? value || undefined
         : value === null
           ? undefined
           : value;
-      this.dom.setAttr('video', attribute, val);
+      (this as VideoConfig).dom.setAttr('videoElement', attribute, val);
       return value;
     },
   });
@@ -89,21 +89,21 @@ function accessorCustomAttribute(attribute: string, isBoolean?: boolean) {
 function accessorWidthAndHeight(property: string): (...args: any[]) => any {
   return accessor({
     get(value: string | number | void) {
-      if (!this.dispatcher.videoConfigReady || !this.inited) { return value; }
-      const attr = this.dom.getAttr('video', property);
-      const prop = this.dom.videoElement[property];
+      if (!(this as VideoConfig).dispatcher.videoConfigReady || !(this as VideoConfig).inited) { return value; }
+      const attr = (this as VideoConfig).dom.getAttr('videoElement', property);
+      const prop = ((this as VideoConfig).dom.videoElement as any)[property];
       if (isNumeric(attr) && isNumber(prop)) { return prop; }
       return attr || undefined;
     },
     set(value: string | number | void) {
-      if (!this.dispatcher.videoConfigReady) { return value; }
+      if (!(this as VideoConfig).dispatcher.videoConfigReady) { return value; }
       let val;
       if (value === undefined || isNumber(value)) {
         val = value;
       } else if (isString(value) && !Number.isNaN(parseFloat(value))) {
         val = value;
       }
-      this.dom.setAttr('video', property, val);
+      (this as VideoConfig).dom.setAttr('videoElement', property, val);
       return val;
     },
   });
@@ -153,20 +153,20 @@ const accessorMap = {
   playsInline: [
     accessor({
       get(value: boolean) {
-        const playsInline = this.dom.videoElement.playsInline;
-        return (this.dispatcher.videoConfigReady && this.inited)
+        const playsInline = ((this as VideoConfig).dom.videoElement as any).playsInline;
+        return ((this as VideoConfig).dispatcher.videoConfigReady && (this as VideoConfig).inited)
           ? playsInline === undefined
             ? value
             : playsInline
           : value;
       },
       set(value: boolean) {
-        if (!this.dispatcher.videoConfigReady) { return value; }
-        this.dom.videoElement.playsInline = value;
+        if (!(this as VideoConfig).dispatcher.videoConfigReady) { return value; }
+        ((this as VideoConfig).dom.videoElement as any).playsInline = value;
         const val = value ? '' : undefined;
-        this.dom.setAttr('video', 'playsinline', val);
-        this.dom.setAttr('video', 'webkit-playsinline', val);
-        this.dom.setAttr('video', 'x5-playsinline', val);
+        (this as VideoConfig).dom.setAttr('videoElement', 'playsinline', val);
+        (this as VideoConfig).dom.setAttr('videoElement', 'webkit-playsinline', val);
+        (this as VideoConfig).dom.setAttr('videoElement', 'x5-playsinline', val);
         return value;
       },
     }),
@@ -178,13 +178,13 @@ const accessorMap = {
     alwaysString(),
     accessor({
       get(value: string) {
-        return (this.dispatcher.videoConfigReady && this.inited)
-          ? this.dom.videoElement.poster
+        return ((this as VideoConfig).dispatcher.videoConfigReady && (this as VideoConfig).inited)
+          ? (this as VideoConfig).dom.videoElement.poster
           : value;
       },
       set(value: string) {
-        if (!this.dispatcher.videoConfigReady) { return value; }
-        if (value.length) { this.dom.setAttr('video', 'poster', value); }
+        if (!(this as VideoConfig).dispatcher.videoConfigReady) { return value; }
+        if (value.length) { (this as VideoConfig).dom.setAttr('videoElement', 'poster', value); }
         return value;
       },
     }),
@@ -206,19 +206,19 @@ const accessorMap = {
     alwaysString(),
     accessor({
       set(val: string) {
-        // must check val !== this.src here
+        // must check val !== (this as VideoConfig).src here
         // as we will set config.src in the video
         // the may cause dead lock
-        if (this.dispatcher.readySync && this.autoload && val !== this.src) { this.needToLoadSrc = true; }
+        if ((this as VideoConfig).dispatcher.readySync && (this as VideoConfig).autoload && val !== (this as VideoConfig).src) { (this as VideoConfig).needToLoadSrc = true; }
         return val;
       },
     }),
     accessor({
       set(val: string) {
-        if (this.needToLoadSrc) {
+        if ((this as VideoConfig).needToLoadSrc) {
           // unlock it at first, to avoid deadlock
-          this.needToLoadSrc = false;
-          this.dispatcher.binder.emit({
+          (this as VideoConfig).needToLoadSrc = false;
+          (this as VideoConfig).dispatcher.binder.emit({
             id: 'dispatcher',
             name: 'load',
             target: 'plugin',
@@ -246,14 +246,14 @@ const accessorMap = {
   x5VideoPlayerType: [
     accessor({
       set(value: 'h5' | undefined) {
-        if (!this.dispatcher.videoConfigReady) { return value; }
+        if (!(this as VideoConfig).dispatcher.videoConfigReady) { return value; }
         const val = value === 'h5' ? 'h5' : undefined;
-        this.dom.setAttr('video', 'x5-video-player-type', val);
+        (this as VideoConfig).dom.setAttr('videoElement', 'x5-video-player-type', val);
         return value;
       },
       get(value: 'h5' | undefined) {
-        return (this.dispatcher.videoConfigReady && value) ||
-          (this.dom.getAttr('video', 'x5-video-player-type') ? 'h5' : undefined);
+        return ((this as VideoConfig).dispatcher.videoConfigReady && value) ||
+          ((this as VideoConfig).dom.getAttr('videoElement', 'x5-video-player-type') ? 'h5' : undefined);
       },
     }),
   ],
