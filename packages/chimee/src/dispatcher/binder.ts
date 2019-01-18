@@ -7,7 +7,7 @@ import Bus from 'dispatcher/bus';
 import Dispatcher from 'dispatcher/index';
 import ChimeeKernel from 'dispatcher/kernel';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
-import { isEventEmitalbe, prettifyEventParameter } from 'helper/binder';
+import { getEventInfo, isEventEmitalbe, prettifyEventParameter } from 'helper/binder';
 import { isFunction } from 'lodash';
 import { runnable } from 'toxic-decorators';
 import { BinderTarget, EventStage, RawEventInfo } from 'typings/base';
