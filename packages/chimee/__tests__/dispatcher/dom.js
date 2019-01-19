@@ -1,6 +1,7 @@
 import Dom from 'dispatcher/dom';
 import Chimee from 'index';
-import { Log, bind } from 'chimee-helper';
+import { chimeeLog } from 'chimee-helper-log';
+import { bind } from 'toxic-utils';
 describe('dispatcher/dom', () => {
   let originCreateElement;
   let originScrollTo;
@@ -30,7 +31,8 @@ describe('dispatcher/dom', () => {
   });
 
   test('dom needs wrapper and dispatcher if you pass in illegal desipatcher, it should throw error', () => {
-    expect(() => new Dom()).toThrow('Wrapper can only be string or HTMLElement, but not undefined');
+    // We use typescript currently, we can let typescript to handle this
+    // expect(() => new Dom()).toThrow('Wrapper can only be string or HTMLElement, but not undefined');
     expect(() => new Dom({ wrapper: 'hello' })).toThrow('Can not get dom node accroding wrapper. Please check your wrapper');
   });
 
@@ -129,7 +131,7 @@ describe('dispatcher/dom', () => {
         plugin: [],
         events: {},
       });
-      dom = player.__dispatcher.dom;
+      dom = player.dispatcher.dom;
     });
 
     afterEach(() => {
@@ -170,7 +172,7 @@ describe('dispatcher/dom', () => {
     test('warn when you duplicate insert', () => {
       dom.insertPlugin('div', { inner: true });
       dom.insertPlugin('div', { inner: true });
-      expect(Log.data.warn).toEqual([
+      expect(chimeeLog.data.warn).toEqual([
         [ 'Dispatcher.dom', 'Plugin div have already had a dom node. Now it will be replaced' ],
       ]);
     });
@@ -193,6 +195,7 @@ describe('dispatcher/dom', () => {
     let player;
 
     beforeEach(() => {
+      const wrapper = document.createElement('div');
       player = new Chimee({
         // 播放地址
         src: 'http://cdn.toxicjohann.com/lostStar.mp4',
@@ -201,19 +204,20 @@ describe('dispatcher/dom', () => {
         // 编解码容器
         box: 'native',
         // dom容器
-        wrapper: 'body',
+        wrapper,
         plugin: [],
         events: {},
       });
-      dom = player.__dispatcher.dom;
+      dom = player.dispatcher.dom;
+      console.warn(wrapper.innerHTML)
     });
 
     afterEach(() => {
       player.destroy();
     });
 
-    test('_focusToVideo should work', () => {
-      dom._focusToVideo();
+    test('focusToVideo should work', () => {
+      dom.focusToVideo();
     });
     test('fullscreen should work', () => {
       dom.container.mozRequestFullscreen = () => {};
