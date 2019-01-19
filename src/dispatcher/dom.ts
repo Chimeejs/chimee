@@ -277,6 +277,7 @@ export default class Dom {
   }
 
   public requestFullscreen(target: RealChimeeDomElement) {
+    console.warn(target, this[target]);
     return esFullscreen.open((this[target] as HTMLElement));
   }
 
