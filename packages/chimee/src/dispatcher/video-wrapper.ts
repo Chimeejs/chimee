@@ -584,6 +584,7 @@ export default class VideoWrapper {
   }
 
   private addEvents(key: string, fn: (...args: any[]) => any) {
+    this.events[key] = this.events[key] || [];
     this.events[key].push(fn);
   }
 
