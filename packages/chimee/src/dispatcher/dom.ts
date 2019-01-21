@@ -144,6 +144,15 @@ export default class Dom {
   }
 
   public getStyle(target: RealChimeeDomElement, attr: string): string {
+    if (!isString(attr)) {
+      throw new TypeError(`to handle dom's attribute or style, your attr parameter must be string, but not ${attr} in ${typeof attr}`);
+    }
+    if (!isString(target)) {
+      throw new TypeError(`to handle dom's attribute or style, your target parameter must be string, , but not ${target} in ${typeof target}`);
+    }
+    if (!isElement(this[target])) {
+      throw new TypeError(`Your target "${target}" is not a legal HTMLElement`);
+    }
     return style(this[target], attr);
   }
 
@@ -277,7 +286,6 @@ export default class Dom {
   }
 
   public requestFullscreen(target: RealChimeeDomElement) {
-    console.warn(target, this[target]);
     return esFullscreen.open((this[target] as HTMLElement));
   }
 
@@ -304,6 +312,15 @@ export default class Dom {
   }
 
   public setStyle(target: RealChimeeDomElement, attr: string, val: any): void {
+    if (!isString(attr)) {
+      throw new TypeError(`to handle dom's attribute or style, your attr parameter must be string, but not ${attr} in ${typeof attr}`);
+    }
+    if (!isString(target)) {
+      throw new TypeError(`to handle dom's attribute or style, your target parameter must be string, , but not ${target} in ${typeof target}`);
+    }
+    if (!isElement(this[target])) {
+      throw new TypeError(`Your target "${target}" is not a legal HTMLElement`);
+    }
     style(this[target], attr, val);
   }
 
