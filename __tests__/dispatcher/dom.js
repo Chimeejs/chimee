@@ -193,9 +193,10 @@ describe('dispatcher/dom', () => {
   describe('dom methods', () => {
     let dom;
     let player;
+    let wrapper;
 
     beforeEach(() => {
-      const wrapper = document.createElement('div');
+      wrapper = document.createElement('div');
       player = new Chimee({
         // 播放地址
         src: 'http://cdn.toxicjohann.com/lostStar.mp4',
@@ -209,16 +210,18 @@ describe('dispatcher/dom', () => {
         events: {},
       });
       dom = player.dispatcher.dom;
-      console.warn(wrapper.innerHTML)
+      document.body.appendChild(wrapper);
     });
 
     afterEach(() => {
+      document.body.removeChild(wrapper);
       player.destroy();
     });
 
     test('focusToVideo should work', () => {
       dom.focusToVideo();
     });
+
     test('fullscreen should work', () => {
       dom.container.mozRequestFullscreen = () => {};
       dom.fullscreen(true);
@@ -235,6 +238,7 @@ describe('dispatcher/dom', () => {
     });
 
     test('setStyle', () => {
+      dom.container.style.cssText = 'display: auto';
       dom.setStyle('container', 'z-index', 10);
       expect(dom.container.style.zIndex).toBe('10');
       expect(() => dom.setStyle('WHAT')).toThrow("to handle dom's attribute or style, your attr parameter must be string");
