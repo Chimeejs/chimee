@@ -595,7 +595,7 @@ export default class Dispatcher {
   @before(convertNameIntoId)
   public unuse(id: string) {
     const plugin = this.plugins[id];
-    if (!isPlainObject(plugin) || !isFunction(plugin.$destroy)) {
+    if (!plugin) {
       delete this.plugins[id];
       return;
     }
