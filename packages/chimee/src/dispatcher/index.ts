@@ -30,13 +30,15 @@ const pluginConfigSet: {
  } = {};
 
 const kernelsSet: { [key in SupportedKernelType]?: IVideoKernelConstructor } = {};
+
 function convertNameIntoId(name: string): string {
   if (!isString(name)) { throw new Error(`Plugin's name must be a string, but not "${name}" in ${typeof name}`); }
   return camelize(name);
 }
-function checkPluginConfig(config: any) {
+
+function checkPluginConfig(config: PluginConfig | IChimeePluginConstructor) {
   if (isFunction(config)) {
-    if (!(config.prototype instanceof Plugin)) {
+    if (!(config.prototype instanceof ChimeePlugin)) {
       throw new TypeError(`Your are trying to install plugin ${config.name}, but it's not extends from Chimee.plugin.`);
     }
     return;
@@ -68,7 +70,7 @@ export default class Dispatcher {
 
   @before(convertNameIntoId)
   public static hasInstalled(id: string): boolean {
-    return !isEmpty(pluginConfigSet[id]);
+    return !!pluginConfigSet[id];
   }
 
   public static hasInstalledKernel(key: SupportedKernelType) {
@@ -91,9 +93,11 @@ export default class Dispatcher {
   public static install(config: PluginConfig | IChimeePluginConstructor): string {
     const { name } = config;
     const id = camelize(name);
-    if (!isEmpty(pluginConfigSet[id])) {
+    if (pluginConfigSet[id]) {
       /* istanbul ignore else  */
-      if (process.env.NODE_ENV !== 'production') { chimeeLog.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced'); }
+      if (process.env.NODE_ENV !== 'production') {
+        chimeeLog.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
+      }
     }
     const pluginConfig = isFunction(config)
       ? config
@@ -623,7 +627,7 @@ export default class Dispatcher {
     const id = camelize(alias || name);
     const pluginOption = option;
     const pluginConfig = Dispatcher.getPluginConfig(key);
-    if (isEmpty(pluginConfig) || !pluginConfig) {
+    if (!pluginConfig) {
       throw new TypeError('You have not installed plugin ' + key);
     }
     if (isPlainObject(pluginConfig)) {
