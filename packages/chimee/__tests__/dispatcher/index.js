@@ -235,7 +235,7 @@ describe('dispatcher', () => {
     const dispatcher = new Dispatcher({
       wrapper: document.createElement('div'),
     }, {
-      throwError: fn,
+      customThrowError: fn,
     });
     dispatcher.throwError(error);
     expect(fn).toHaveBeenCalledTimes(1);
