@@ -182,15 +182,16 @@ export default class Dom {
     } else if (el && isPlainObject(el)) {
       option = el;
     }
-    const { inner, penetrate } = option;
-    let { className } = option;
+    const { inner, penetrate, className } = option;
     const node = (el && isElement(el)) ? el : document.createElement('div');
-    if (isArray(className)) {
-      className = className.join(' ');
-    }
-    if (isString(className)) {
-      addClass(node, className);
-    }
+    const classNames = isString(className)
+      ? className.split(/\s+/)
+      : isArray(className)
+        ? className
+        : [];
+    classNames.forEach((name) => {
+      addClass(node, name);
+    });
     this.plugins[id] = node;
     const outerElement = inner ? this.container : this.wrapper;
     const originElement = inner ? this.videoElement : this.container;
