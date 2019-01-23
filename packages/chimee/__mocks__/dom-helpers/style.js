@@ -4,7 +4,7 @@ function style(...args) {
   if (args.length === 3 && node && node.style) {
     node.style[args[1]] = args[2];
   }
-  originStyle(...args);
+  return originStyle(...args);
 }
 
 module.exports = style;
