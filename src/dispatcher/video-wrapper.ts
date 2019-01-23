@@ -255,7 +255,7 @@ export default class VideoWrapper {
     },
     ...args: any) {
     let target: BinderTarget | void;
-    if (!isString(key) && isString(key.name) && isString(key.target)) {
+    if (!isString(key) && isPlainObject(key) && isString(key.name) && isString(key.target)) {
       target = key.target;
       key = key.name;
     }
@@ -286,7 +286,7 @@ export default class VideoWrapper {
     },
     ...args: any) {
     let target: BinderTarget | void;
-    if (!isString(key) && isString(key.name) && isString(key.target)) {
+    if (!isString(key) && isPlainObject(key) && isString(key.name) && isString(key.target)) {
       target = key.target;
       key = key.name;
     }
