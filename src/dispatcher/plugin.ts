@@ -125,9 +125,11 @@ export default class ChimeePlugin extends VideoWrapper {
     dispatcher: Dispatcher,
     option: PluginOption = { name }) {
     super({ dispatcher, id });
-    if (isEmpty(dispatcher)) {
+    if (!dispatcher) {
       /* istanbul ignore else  */
-      if (process.env.NODE_ENV !== 'production') { chimeeLog.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?'); }
+      if (process.env.NODE_ENV !== 'production') {
+        chimeeLog.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
+      }
       throw new TypeError('lack of dispatcher');
     }
     if (!isString(id)) {
