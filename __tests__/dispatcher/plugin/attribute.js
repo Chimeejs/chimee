@@ -1,6 +1,7 @@
 import Plugin from 'dispatcher/plugin';
 import Chimee from 'index';
-import { bind, Log } from 'chimee-helper';
+import { chimeeLog } from 'chimee-helper-log';
+import { bind } from 'toxic-utils';
 
 describe("plugin's attributes", () => {
   let dispatcher;
@@ -25,12 +26,12 @@ describe("plugin's attributes", () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.body,
       plugin: [],
       events: {},
     });
 
-    dispatcher = player.__dispatcher;
+    dispatcher = player.dispatcher;
   });
 
   afterEach(() => {
@@ -84,9 +85,9 @@ describe("plugin's attributes", () => {
   describe('level', () => {
     let fn;
     beforeEach(() => {
-      const originFn = dispatcher._sortZIndex;
+      const originFn = dispatcher.sortZIndex;
       fn = jest.fn();
-      dispatcher._sortZIndex = function(...args) {
+      dispatcher.sortZIndex = function(...args) {
         fn();
         bind(originFn, this)(...args);
       };
@@ -151,7 +152,7 @@ describe("plugin's attributes", () => {
         dispatcher.videoConfigReady = false;
         plugin.$attr('container', 'data-id', 1);
         expect(plugin.$attr('container', 'data-id')).toBe(null);
-        dispatcher.dom.__dispatcher.videoConfigReady = true;
+        dispatcher.dom.dispatcher.videoConfigReady = true;
         plugin.$attr('data-id', '2');
         expect(plugin.$attr('data-id')).toBe('2');
       });
@@ -166,7 +167,7 @@ describe("plugin's attributes", () => {
         dispatcher.videoConfigReady = false;
         plugin.$attr('video', 'controls', true);
         expect(plugin.$attr('video', 'controls')).toBe(null);
-        expect(Log.data.warn[0]).toEqual([ 'chimee',
+        expect(chimeeLog.data.warn[0]).toEqual([ 'chimee',
           'normal is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger' ]);
         dispatcher.videoConfigReady = true;
         plugin.$attr('video', 'controls', true);
@@ -178,8 +179,8 @@ describe("plugin's attributes", () => {
         plugin.$attr('video', 'data-controls', true);
         expect(plugin.$attr('video', 'data-controls')).toBe(null);
         dispatcher.videoConfigReady = true;
-        dispatcher.dom.__dispatcher.videoConfigReady = true;
-        plugin.__init(dispatcher.videoConfig);
+        dispatcher.dom.dispatcher.videoConfigReady = true;
+        plugin.runInitHook(dispatcher.videoConfig);
         plugin.$attr('video', 'data-controls', true);
         expect(plugin.$attr('video', 'data-controls')).toBe('true');
       });
@@ -226,8 +227,8 @@ describe("plugin's attributes", () => {
     dispatcher.use('olevel1');
     dispatcher.use('olevel2');
     dispatcher.use('olevel3');
-    expect(dispatcher._getTopLevel(true)).toBe(3);
-    expect(dispatcher._getTopLevel(false)).toBe(3);
+    expect(dispatcher.getTopLevel(true)).toBe(3);
+    expect(dispatcher.getTopLevel(false)).toBe(3);
     expect(dispatcher.plugins.olevel3.$dom.style.zIndex).toBe('4');
     expect(dispatcher.plugins.olevel1.$dom.style.zIndex).toBe('2');
     expect(dispatcher.plugins.level3.$dom.style.zIndex).toBe('4');
@@ -238,8 +239,8 @@ describe("plugin's attributes", () => {
     expect(dispatcher.plugins.olevel1.$dom.style.zIndex).toBe('4');
     expect(dispatcher.plugins.level3.$dom.style.zIndex).toBe('3');
     expect(dispatcher.plugins.level1.$dom.style.zIndex).toBe('4');
-    expect(dispatcher._getTopLevel(true)).toBe(4);
-    expect(dispatcher._getTopLevel(false)).toBe(4);
+    expect(dispatcher.getTopLevel(true)).toBe(4);
+    expect(dispatcher.getTopLevel(false)).toBe(4);
   });
 
   test('$pluginOrder', () => {
