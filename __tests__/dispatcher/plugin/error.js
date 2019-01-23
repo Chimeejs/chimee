@@ -15,12 +15,12 @@ describe("plugin's error", () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
 
-    dispatcher = player.__dispatcher;
+    dispatcher = player.dispatcher;
 
     error = new Error('i am an error');
   });
@@ -55,7 +55,7 @@ describe("plugin's error", () => {
         throw error;
       },
     }, dispatcher);
-    expect(() => plugin.__init({})).toThrow(error.message);
+    expect(() => plugin.runInitHook({})).toThrow(error.message);
   });
 
   test('inited', () => {
@@ -65,7 +65,7 @@ describe("plugin's error", () => {
         throw error;
       },
     }, dispatcher);
-    expect(() => plugin.__inited({})).toThrow(error.message);
+    expect(() => plugin.runInitedHook({})).toThrow(error.message);
   });
 
   test('inited with promise', async () => {
@@ -77,7 +77,7 @@ describe("plugin's error", () => {
     }, dispatcher);
     let catcherr = false;
     try {
-      await plugin.__inited({});
+      await plugin.runInitedHook({});
     } catch (err) {
       catcherr = true;
       expect(err).toBe(error);
@@ -92,6 +92,6 @@ describe("plugin's error", () => {
         return Promise.reject();
       },
     }, dispatcher);
-    expect(plugin.__inited({})).rejects.toBe();
+    expect(plugin.runInitedHook({})).rejects.toBe();
   });
 });
