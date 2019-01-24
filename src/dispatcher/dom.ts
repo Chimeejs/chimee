@@ -133,7 +133,7 @@ export default class Dom {
     this.videoElement.focus();
   }
 
-  public fullscreen(request: boolean = true, target: RealChimeeDomElement = 'container', ...args: any): boolean {
+  public fullscreen(request: boolean = true, target: RealChimeeDomElement = 'container'): boolean {
     return request
       ? this.requestFullscreen(target)
       : this.exitFullscreen();
@@ -287,6 +287,10 @@ export default class Dom {
   }
 
   public requestFullscreen(target: RealChimeeDomElement) {
+    // @ts-ignore: user may pass video when they are using JavaScript
+    if (target === 'video') {
+      target = 'videoElement';
+    }
     return esFullscreen.open((this[target] as HTMLElement));
   }
 
