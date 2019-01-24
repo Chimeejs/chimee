@@ -17,7 +17,7 @@ describe('$attr & $css', () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
@@ -42,19 +42,19 @@ describe('$attr & $css', () => {
   });
 
   test('attr on video property', () => {
-    player.__dispatcher.videoConfigReady = false;
+    player.dispatcher.videoConfigReady = false;
     player.attr('video', 'controls', false);
     expect(player.attr('video', 'controls')).toBe(null);
-    player.__dispatcher.videoConfigReady = true;
+    player.dispatcher.videoConfigReady = true;
     player.attr('video', 'controls', false);
     expect(player.attr('video', 'controls')).toBe(null);
   });
 
   test('attr on video property but it is not in videoconfig', () => {
-    player.__dispatcher.videoConfigReady = false;
+    player.dispatcher.videoConfigReady = false;
     player.attr('video', 'data-controls', true);
     expect(player.attr('video', 'data-controls')).toBe(null);
-    player.__dispatcher.videoConfigReady = true;
+    player.dispatcher.videoConfigReady = true;
     player.attr('video', 'data-controls', true);
     expect(player.attr('video', 'data-controls')).toBe('true');
   });
