@@ -1,5 +1,5 @@
 import Chimee from 'index';
-import { bind } from 'chimee-helper';
+import { bind } from 'toxic-utils';
 
 describe('chimee event method', () => {
   let player;

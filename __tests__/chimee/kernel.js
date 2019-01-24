@@ -30,7 +30,7 @@ describe('chimee kernel method', () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
