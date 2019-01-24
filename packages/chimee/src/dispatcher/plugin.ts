@@ -1,5 +1,5 @@
 import { chimeeLog } from 'chimee-helper-log';
-import { isBoolean, isError, isFunction, isInteger, isPlainObject, isString } from 'lodash';
+import { cloneDeep, isBoolean, isError, isFunction, isInteger, isPlainObject, isString } from 'lodash';
 import { accessor, applyDecorators, frozen } from 'toxic-decorators';
 import { isEmpty, isPromise } from 'toxic-predicate-functions';
 import { bind } from 'toxic-utils';
@@ -174,7 +174,7 @@ export default class ChimeePlugin extends VideoWrapper {
     }
     // bind data into plugin instance
     if (!isEmpty(data) && isPlainObject(data)) {
-      Object.assign(this, data);
+      Object.assign(this, cloneDeep(data));
     }
     // set the computed member by getter and setter
     if (!isEmpty(computed) && isPlainObject(computed)) {
