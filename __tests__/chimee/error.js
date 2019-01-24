@@ -1,6 +1,6 @@
 import Chimee from 'index';
 
-describe('__throwError', () => {
+describe('customThrowError', () => {
   const error = new Error('hello, i am an error');
   let fn;
   let player;
@@ -14,7 +14,7 @@ describe('__throwError', () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
@@ -27,16 +27,16 @@ describe('__throwError', () => {
   });
 
   test('normal throw', () => {
-    expect(() => player.__throwError(error)).toThrow(error.message);
+    expect(() => player.customThrowError(error)).toThrow(error.message);
   });
 
   test('string error', () => {
-    expect(() => player.__throwError(error.message)).toThrow(error.message);
+    expect(() => player.customThrowError(error.message)).toThrow(error.message);
   });
 
   test('instance error handler', () => {
     player.config.errorHandler = fn;
-    expect(() => player.__throwError(error)).not.toThrow();
+    expect(() => player.customThrowError(error)).not.toThrow();
     expect(fn).toHaveBeenCalledTimes(1);
     expect(fn).lastCalledWith(error);
     delete player.config.errorHandler;
@@ -44,7 +44,7 @@ describe('__throwError', () => {
 
   test('Chimee error handler', () => {
     Chimee.config.errorHandler = fn;
-    expect(() => player.__throwError(error)).not.toThrow();
+    expect(() => player.customThrowError(error)).not.toThrow();
     expect(fn).toHaveBeenCalledTimes(1);
     expect(fn).lastCalledWith(error);
     delete Chimee.config.errorHandler;
@@ -52,7 +52,7 @@ describe('__throwError', () => {
 
   test('instance could not be silent', () => {
     player.config.silent = true;
-    expect(() => player.__throwError(error)).toThrow();
+    expect(() => player.customThrowError(error)).toThrow();
     delete player.config.silent;
   });
 
@@ -68,14 +68,14 @@ describe('__throwError', () => {
     expect(Chimee.config.log.warn).toBe(false);
     expect(Chimee.config.log.debug).toBe(false);
     expect(Chimee.config.log.verbose).toBe(false);
-    expect(() => player.__throwError(error)).not.toThrow();
+    expect(() => player.customThrowError(error)).not.toThrow();
     Chimee.config.silent = false;
     expect(Chimee.config.log.error).toBe(true);
     expect(Chimee.config.log.info).toBe(true);
     expect(Chimee.config.log.warn).toBe(true);
     expect(Chimee.config.log.debug).toBe(true);
     expect(Chimee.config.log.verbose).toBe(true);
-    expect(() => player.__throwError(error)).toThrow();
+    expect(() => player.customThrowError(error)).toThrow();
     delete Chimee.config.silent;
   });
 });
