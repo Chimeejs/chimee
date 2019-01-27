@@ -34,6 +34,7 @@ describe('picture in picture mode', () => {
         document.pictureInPictureElement = undefined;
         return;
       };
+      delete window.__chimee_picture_in_picture;
     });
 
     afterEach(() => {
@@ -49,15 +50,16 @@ describe('picture in picture mode', () => {
       });
       expect(requestPictureInPictureFn).toHaveBeenCalledTimes(0);
       expect(requestPictureInPictureFn).toHaveBeenCalledTimes(0);
-      expect(window.__chimee_picture_in_picture_window).toBe();
+      expect(window.__chimee_picture_in_picture).toBe();
       expect(player.inPictureInPictureMode).toBe(false);
       await player.requestPictureInPicture();
+      await sleep(100);
       expect(requestPictureInPictureFn).toHaveBeenCalledTimes(1);
-      expect(window.__chimee_picture_in_picture_window).not.toBe();
+      expect(window.__chimee_picture_in_picture).not.toBe();
       expect(player.inPictureInPictureMode).toBe(true);
       player.exitPictureInPicture();
       expect(exitPictureInPictureFn).toHaveBeenCalledTimes(1);
-      expect(window.__chimee_picture_in_picture_window).toBe();
+      expect(window.__chimee_picture_in_picture).toBe();
       expect(player.inPictureInPictureMode).toBe(false);
     });
 
@@ -68,16 +70,17 @@ describe('picture in picture mode', () => {
       });
       expect(requestPictureInPictureFn).toHaveBeenCalledTimes(0);
       expect(requestPictureInPictureFn).toHaveBeenCalledTimes(0);
-      expect(window.__chimee_picture_in_picture_window).toBe();
+      expect(window.__chimee_picture_in_picture).toBe();
       expect(player.inPictureInPictureMode).toBe(false);
       await player.requestPictureInPicture();
       await player.requestPictureInPicture();
+      await sleep(100);
       expect(requestPictureInPictureFn).toHaveBeenCalledTimes(1);
-      expect(window.__chimee_picture_in_picture_window).not.toBe();
+      expect(window.__chimee_picture_in_picture).not.toBe();
       expect(player.inPictureInPictureMode).toBe(true);
       player.exitPictureInPicture();
       expect(exitPictureInPictureFn).toHaveBeenCalledTimes(1);
-      expect(window.__chimee_picture_in_picture_window).toBe();
+      expect(window.__chimee_picture_in_picture).toBe();
       expect(player.inPictureInPictureMode).toBe(false);
     });
 
@@ -88,7 +91,7 @@ describe('picture in picture mode', () => {
       });
       player.exitPictureInPicture();
       expect(exitPictureInPictureFn).toHaveBeenCalledTimes(0);
-      expect(window.__chimee_picture_in_picture_window).toBe();
+      expect(window.__chimee_picture_in_picture).toBe();
       expect(player.inPictureInPictureMode).toBe(false);
     });
   });

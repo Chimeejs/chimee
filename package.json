@@ -155,6 +155,7 @@
       "json",
       "node"
     ],
+    "setupFiles": ["jest-canvas-mock"],
     "globals": {
       "ts-jest": {
         "tsConfig": "tsconfig.test.json"
