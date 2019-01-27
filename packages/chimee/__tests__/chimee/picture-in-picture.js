@@ -1,5 +1,5 @@
 import Chimee from 'index';
-import { bind } from 'chimee-helper';
+import { bind } from 'toxic-utils';
 
 function sleep(duration) {
   return new Promise(resolve => setTimeout(resolve, duration));

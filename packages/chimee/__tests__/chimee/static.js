@@ -1,5 +1,5 @@
 import Chimee from 'index';
-import { Log } from 'chimee-helper';
+import { chimeeLog } from 'chimee-helper-log';
 
 describe('Chimee static method', () => {
   const normalInstall = {
@@ -20,7 +20,7 @@ describe('Chimee static method', () => {
     expect(Chimee.install(NormalFunctionInstall)).toBe('normalFunctionInstall');
     expect(Chimee.install(GrandSon)).toBe('grandSon');
     Chimee.install(GrandSon);
-    expect(Log.data.warn[0]).toEqual([ 'Dispatcher', 'You have installed GrandSon again. And the older one will be replaced' ]);
+    expect(chimeeLog.data.warn[0]).toEqual([ 'Dispatcher', 'You have installed GrandSon again. And the older one will be replaced' ]);
   });
 
   test('getPluginConfig', () => {
