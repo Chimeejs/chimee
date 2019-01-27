@@ -101,7 +101,7 @@ export default class Dispatcher {
     }
     const pluginConfig = isFunction(config)
       ? config
-      : Object.assign({ id }, config);
+      : Object.assign({}, config, { id });
     pluginConfigSet[id] = pluginConfig;
     return id;
   }
@@ -783,7 +783,7 @@ export default class Dispatcher {
       });
     }
     config.preset = Object.assign(newPreset, preset);
-    const legalConfig: IChimeeKernelConfig = Object.assign({ presetConfig }, config);
+    const legalConfig: IChimeeKernelConfig = Object.assign(config, { presetConfig });
     const kernel = new ChimeeKernel(video, legalConfig);
     return kernel;
   }

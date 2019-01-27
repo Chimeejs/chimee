@@ -1,6 +1,6 @@
 import Chimee from 'index';
 import chimeeKernelFlv from 'chimee-kernel-flv';
-import { Log } from 'chimee-helper';
+import { chimeeLog } from 'chimee-helper-log';
 describe('installKernel', () => {
   test('normal install & uninstall', () => {
     Chimee.installKernel('flv', chimeeKernelFlv);
@@ -23,20 +23,20 @@ describe('installKernel', () => {
   test('replace warning', () => {
     Chimee.installKernel({ flv: chimeeKernelFlv });
     Chimee.installKernel({ flv: chimeeKernelFlv });
-    expect(Log.data.warn[0]).toEqual([ 'chimee', 'You have alrady install a kernel on flv, and now we will replace it' ]);
-    Log.data.warn = [];
+    expect(chimeeLog.data.warn[0]).toEqual([ 'chimee', 'You have alrady install a kernel on flv, and now we will replace it' ]);
+    chimeeLog.data.warn = [];
     Chimee.uninstallKernel('flv');
   });
 });
 
-describe('_createkernel', () => {
+describe('createkernel', () => {
   let originURLrevoke;
   beforeAll(() => {
     Chimee.installKernel('flv', chimeeKernelFlv);
   });
   beforeEach(() => {
-    Log.data.warn = [];
-    Log.data.error = [];
+    chimeeLog.data.warn = [];
+    chimeeLog.data.error = [];
     originURLrevoke = global.URL.revokeObjectURL;
     global.URL.revokeObjectURL = () => {};
   });
@@ -60,7 +60,7 @@ describe('_createkernel', () => {
       wrapper: document.createElement('div'),
       kernels: [ 'flv' ],
     })).not.toThrow();
-    expect(Log.data.warn.length).toBe(0);
+    expect(chimeeLog.data.warn.length).toBe(0);
   });
 
   test('error array<string> kernels', () => {
@@ -75,7 +75,7 @@ describe('_createkernel', () => {
       wrapper: document.createElement('div'),
       kernels: [ 'hls' ],
     })).not.toThrow();
-    expect(Log.data.warn[0]).toEqual([ 'chimee', 'You have not installed kernel for hls.' ]);
+    expect(chimeeLog.data.warn[0]).toEqual([ 'chimee', 'You have not installed kernel for hls.' ]);
   });
 
   test('error type in array kernels', () => {
@@ -90,7 +90,7 @@ describe('_createkernel', () => {
       wrapper: document.createElement('div'),
       kernels: [ 0 ],
     })).not.toThrow();
-    expect(Log.data.warn[0]).toEqual([ 'chimee', 'If you pass in kernels as array, you must pass in kernels in string or function, but not number' ]);
+    expect(chimeeLog.data.warn[0]).toEqual([ 'chimee', 'If you pass in kernels as array, you must pass in kernels in string or function, but not number' ]);
   });
 
   test('object:[key: F] kernels', () => {
@@ -107,7 +107,7 @@ describe('_createkernel', () => {
         flv: chimeeKernelFlv,
       },
     })).not.toThrow();
-    expect(Log.data.warn.length).toBe(0);
+    expect(chimeeLog.data.warn.length).toBe(0);
   });
 
   test('array<SingleKernelConfig> kernels, handler is string', () => {
@@ -126,7 +126,7 @@ describe('_createkernel', () => {
       wrapper: document.createElement('div'),
       kernels: [ flvConfig ],
     });
-    expect(Log.data.warn.length).toBe(0);
+    expect(chimeeLog.data.warn.length).toBe(0);
     expect(chimee.presetConfig.flv).toEqual(flvConfig);
   });
 
@@ -147,7 +147,7 @@ describe('_createkernel', () => {
       wrapper: document.createElement('div'),
       kernels: [ flvConfig ],
     });
-    expect(Log.data.warn.length).toBe(0);
+    expect(chimeeLog.data.warn.length).toBe(0);
     expect(chimee.presetConfig.flv).toEqual(flvConfig);
   });
 
@@ -167,7 +167,7 @@ describe('_createkernel', () => {
       wrapper: document.createElement('div'),
       kernels: [ flvConfig ],
     })).not.toThrow();
-    expect(Log.data.warn[0]).toEqual([ 'chimee', "When you pass in an SingleKernelConfig in Array, you must clarify it's handler, we only support handler in string or function but not number" ]);
+    expect(chimeeLog.data.warn[0]).toEqual([ 'chimee', "When you pass in an SingleKernelConfig in Array, you must clarify it's handler, we only support handler in string or function but not number" ]);
   });
 
   test('error array<SingleKernelConfig> kernels, handler is string', () => {
@@ -186,7 +186,7 @@ describe('_createkernel', () => {
       wrapper: document.createElement('div'),
       kernels: [ hlsConfig ],
     })).not.toThrow();
-    expect(Log.data.warn[0]).toEqual([ 'chimee', 'You have not installed kernel for hls.' ]);
+    expect(chimeeLog.data.warn[0]).toEqual([ 'chimee', 'You have not installed kernel for hls.' ]);
   });
 
   test('object<SingleKernelConfig> kernels, handler is function', () => {
@@ -207,7 +207,7 @@ describe('_createkernel', () => {
         flv: flvConfig,
       },
     });
-    expect(Log.data.warn.length).toBe(0);
+    expect(chimeeLog.data.warn.length).toBe(0);
     expect(chimee.presetConfig.flv).toEqual(flvConfig);
   });
 
@@ -228,7 +228,7 @@ describe('_createkernel', () => {
       wrapper: document.createElement('div'),
       kernels: [ flvConfig ],
     });
-    expect(Log.data.warn.length).toBe(0);
+    expect(chimeeLog.data.warn.length).toBe(0);
     expect(chimee.presetConfig.flv).toEqual(flvConfig);
   });
 
@@ -250,7 +250,7 @@ describe('_createkernel', () => {
         flv: flvConfig,
       },
     });
-    expect(Log.data.warn.length).toBe(0);
+    expect(chimeeLog.data.warn.length).toBe(0);
     expect(chimee.presetConfig.flv).toEqual(flvConfig);
   });
 
@@ -272,7 +272,7 @@ describe('_createkernel', () => {
         hls: hlsConfig,
       },
     })).toThrow("We can't find video kernel for flv. Please check your config and make sure it's installed or provided");
-    expect(Log.data.warn[0]).toEqual([ 'chimee', 'You have not installed kernel for hls.' ]);
+    expect(chimeeLog.data.warn[0]).toEqual([ 'chimee', 'You have not installed kernel for hls.' ]);
   });
 
   test('object<SingleKernelConfig> kernels, handler is error type', () => {
@@ -293,7 +293,7 @@ describe('_createkernel', () => {
         flv: flvConfig,
       },
     })).toThrow("We can't find video kernel for flv. Please check your config and make sure it's installed or provided");
-    expect(Log.data.warn[0]).toEqual([ 'chimee', "When you pass in an SingleKernelConfig in Object, you must clarify it's handler, we only support handler in string or function but not number" ]);
+    expect(chimeeLog.data.warn[0]).toEqual([ 'chimee', "When you pass in an SingleKernelConfig in Object, you must clarify it's handler, we only support handler in string or function but not number" ]);
   });
 
   test('error type in object kernels', () => {
@@ -310,6 +310,6 @@ describe('_createkernel', () => {
         flv: 0,
       },
     })).not.toThrow();
-    expect(Log.data.warn[0]).toEqual([ 'chimee', 'If you pass in kernels as object, you must pass in kernels in string or function, but not number' ]);
+    expect(chimeeLog.data.warn[0]).toEqual([ 'chimee', 'If you pass in kernels as object, you must pass in kernels in string or function, but not number' ]);
   });
 });
