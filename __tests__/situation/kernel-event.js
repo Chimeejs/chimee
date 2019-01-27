@@ -12,19 +12,19 @@ describe('kernel-events', () => {
   test('heartbeat check', () => {
     const fn = jest.fn();
     chimee.on('heartbeat', fn);
-    chimee.__dispatcher.kernel.videoKernel.emit('heartbeat');
+    chimee.dispatcher.kernel.videoKernel.emit('heartbeat');
     expect(fn).toHaveBeenCalledTimes(1);
   });
   test('mediaInfo check', () => {
     const fn = jest.fn();
     chimee.on('mediaInfo', fn);
-    chimee.__dispatcher.kernel.videoKernel.emit('mediaInfo');
+    chimee.dispatcher.kernel.videoKernel.emit('mediaInfo');
     expect(fn).toHaveBeenCalledTimes(1);
   });
   test('error check', () => {
     const fn = jest.fn();
     chimee.on('error', fn);
-    expect(() => chimee.__dispatcher.kernel.videoKernel.emit('error')).not.toThrow();
+    expect(() => chimee.dispatcher.kernel.videoKernel.emit('error')).not.toThrow();
     expect(fn).toHaveBeenCalledTimes(1);
   });
 });
