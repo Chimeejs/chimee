@@ -12,7 +12,7 @@ describe("chimee's binder", () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.body,
       plugin: [],
       events: {},
     });
