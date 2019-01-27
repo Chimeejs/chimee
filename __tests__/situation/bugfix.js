@@ -1,12 +1,12 @@
 import Chimee from 'index';
 import chimeeKernelFlv from 'chimee-kernel-flv';
-import { Log } from 'chimee-helper';
+import { chimeeLog } from 'chimee-helper-log';
 describe('bugfix', () => {
   let originURLrevoke;
 
   beforeEach(() => {
-    Log.data.warn = [];
-    Log.data.error = [];
+    chimeeLog.data.warn = [];
+    chimeeLog.data.error = [];
     originURLrevoke = global.URL.revokeObjectURL;
     global.URL.revokeObjectURL = () => {};
   });
@@ -32,11 +32,11 @@ describe('bugfix', () => {
       wrapper,
       plugin: [ 'redudantEventBind' ],
     });
-    player.__dispatcher.dom.videoElement.dispatchEvent(new Event('click'));
+    player.dispatcher.dom.videoElement.dispatchEvent(new Event('click'));
     expect(fn).toHaveBeenCalledTimes(1);
-    player.__dispatcher.dom.container.dispatchEvent(new Event('click'));
+    player.dispatcher.dom.container.dispatchEvent(new Event('click'));
     expect(cfn).toHaveBeenCalledTimes(1);
-    player.__dispatcher.dom.wrapper.dispatchEvent(new Event('click'));
+    player.dispatcher.dom.wrapper.dispatchEvent(new Event('click'));
     expect(wfn).toHaveBeenCalledTimes(1);
   });
 
@@ -72,12 +72,12 @@ describe('bugfix', () => {
   });
 
   test('when src is empty and autoload is true', () => {
-    Log.data.error = [];
+    chimeeLog.data.error = [];
     const wrapper = document.createElement('div');
     expect(() => new Chimee({
       wrapper,
     })).not.toThrow();
-    expect(Log.data.error.length).toBe(0);
+    expect(chimeeLog.data.error.length).toBe(0);
   });
 
 });
