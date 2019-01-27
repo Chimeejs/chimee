@@ -325,6 +325,12 @@ export default class Bus {
    * @return {Array<Function>} event handler in queue to run
    */
   private getEventQueue(handlerSet: { [pluginId: string]: Array<(...args: any[]) => any> }, customOrder: string[] | false = false): Array<(...args: any[]) => any> {
+    // if user destroy the chimee in the event callback
+    // the rest event callback may run into here
+    // and throw an error
+    if (this.dispatcher.destroyed) {
+      return [];
+    }
     // TODO: it may no to need to concat everytime
     const order = (customOrder || this.dispatcher.order).concat([ '_vm' ]);
     return isEmpty(handlerSet)

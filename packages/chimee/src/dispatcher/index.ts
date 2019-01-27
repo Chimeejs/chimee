@@ -133,6 +133,7 @@ export default class Dispatcher {
   public binder: Binder;
   public changeWatchable: boolean = true;
   public containerConfig: Vessel;
+  public destroyed: true;
   public dom: Dom;
   public kernel: ChimeeKernel;
   // to save the kernel event handler, so that we can remove it when we destroy the kernel
@@ -272,6 +273,7 @@ export default class Dispatcher {
     delete this.vm;
     delete this.plugins;
     delete this.order;
+    this.destroyed = true;
   }
 
   public exitPictureInPicture() {
