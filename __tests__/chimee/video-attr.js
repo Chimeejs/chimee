@@ -1,6 +1,5 @@
 import Chimee from 'index';
-import { videoReadOnlyProperties } from 'helper/const';
-import { getAttr, setAttr } from 'chimee-helper';
+import { videoReadOnlyProperties } from 'const/property';
 
 describe('chimee video attributes', () => {
   let player;
@@ -15,12 +14,12 @@ describe('chimee video attributes', () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
 
-    videoElement = player.__dispatcher.dom.videoElement;
+    videoElement = player.dispatcher.dom.videoElement;
   });
 
   afterEach(() => {
@@ -52,15 +51,15 @@ describe('chimee video attributes', () => {
 
   test('defaultMuted', () => {
     expect(player.defaultMuted).toBe(false);
-    expect(getAttr(videoElement, 'muted')).toBe(null);
+    expect(videoElement.getAttribute('muted')).toBe(null);
     expect(videoElement.defaultMuted).toBe(false);
     player.defaultMuted = true;
     expect(player.defaultMuted).toBe(true);
     expect(videoElement.defaultMuted).toBe(true);
-    expect(getAttr(videoElement, 'muted')).toBe('');
+    expect(videoElement.getAttribute('muted')).toBe('');
     videoElement.defaultMuted = false;
     expect(player.defaultMuted).toBe(false);
-    expect(getAttr(videoElement, 'muted')).toBe(null);
+    expect(videoElement.getAttribute('muted')).toBe(null);
   });
 
   test('muted', () => {
@@ -75,10 +74,10 @@ describe('chimee video attributes', () => {
 
   test('currentTime', () => {
     expect(player.currentTime).toBe(videoElement.currentTime);
-    expect(player.currentTime).toBe(player.__dispatcher.kernel.currentTime);
+    expect(player.currentTime).toBe(player.dispatcher.kernel.currentTime);
     player.currentTime = 99;
     expect(player.currentTime).toBe(99);
-    expect(player.currentTime).toBe(player.__dispatcher.kernel.currentTime);
+    expect(player.currentTime).toBe(player.dispatcher.kernel.currentTime);
   });
 
   test('src', done => {
@@ -160,7 +159,7 @@ describe('chimee video attributes', () => {
       expect(videoElement.width).toBe(10);
     });
     test('if videoConfig is not ready', () => {
-      player.__dispatcher.videoConfigReady = false;
+      player.dispatcher.videoConfigReady = false;
       player.preload = 'metadata';
       expect(player.preload).toBe('metadata');
       expect(videoElement.preload).toBe('auto');
@@ -194,7 +193,7 @@ describe('chimee video attributes', () => {
       expect(videoElement.height).toBe(10);
     });
     test('if videoConfig is not ready', () => {
-      player.__dispatcher.videoConfigReady = false;
+      player.dispatcher.videoConfigReady = false;
       player.height = 20;
       expect(player.height).toBe(20);
       expect(videoElement.height).toBe(100);
@@ -237,7 +236,7 @@ describe('chimee video attributes', () => {
     player.poster = url;
     expect(player.poster).toBe(url);
     expect(videoElement.poster).toBe(url);
-    player.__dispatcher.videoConfigReady = false;
+    player.dispatcher.videoConfigReady = false;
     player.poster = 123;
     expect(player.poster).toBe('');
     expect(videoElement.poster).toBe(url);
@@ -245,48 +244,48 @@ describe('chimee video attributes', () => {
 
   test('playsinline', () => {
     expect(player.playsInline).toBe(false);
-    expect(getAttr(videoElement, 'playsinline')).toBe(null);
-    expect(getAttr(videoElement, 'webkit-playsinline')).toBe(null);
-    expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
+    expect(videoElement.getAttribute('playsinline')).toBe(null);
+    expect(videoElement.getAttribute('webkit-playsinline')).toBe(null);
+    expect(videoElement.getAttribute('x5-video-player-type')).toBe(null);
     player.playsInline = true;
     expect(player.playsInline).toBe(true);
-    expect(getAttr(videoElement, 'playsinline')).toBe('');
-    expect(getAttr(videoElement, 'webkit-playsinline')).toBe('');
-    expect(getAttr(videoElement, 'x5-playsinline')).toBe('');
+    expect(videoElement.getAttribute('playsinline')).toBe('');
+    expect(videoElement.getAttribute('webkit-playsinline')).toBe('');
+    expect(videoElement.getAttribute('x5-playsinline')).toBe('');
     videoElement.playsInline = false;
     expect(player.playsInline).toBe(false);
-    // expect(getAttr(videoElement, 'playsinline')).toBe(null);
-    // expect(getAttr(videoElement, 'webkit-playsinline')).toBe(null);
-    // expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
+    // expect(videoElement.getAttribute('playsinline')).toBe(null);
+    // expect(videoElement.getAttribute('webkit-playsinline')).toBe(null);
+    // expect(videoElement.getAttribute('x5-video-player-type')).toBe(null);
   });
 
   test('playsinline with videoconfigready = false', () => {
-    player.__dispatcher.videoConfigReady = false;
+    player.dispatcher.videoConfigReady = false;
     player.playsInline = true;
     expect(player.playsInline).toBe(true);
-    expect(getAttr(videoElement, 'playsinline')).toBe(null);
-    expect(getAttr(videoElement, 'webkit-playsinline')).toBe(null);
-    expect(getAttr(videoElement, 'x5-playsinline')).toBe(null);
+    expect(videoElement.getAttribute('playsinline')).toBe(null);
+    expect(videoElement.getAttribute('webkit-playsinline')).toBe(null);
+    expect(videoElement.getAttribute('x5-playsinline')).toBe(null);
   });
 
   test('x5VideoPlayerType', () => {
     expect(player.x5VideoPlayerType).toBe();
-    expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
+    expect(videoElement.getAttribute('x5-video-player-type')).toBe(null);
     player.x5VideoPlayerType = 'h5';
     expect(player.x5VideoPlayerType).toBe('h5');
-    expect(getAttr(videoElement, 'x5-video-player-type')).toBe('h5');
+    expect(videoElement.getAttribute('x5-video-player-type')).toBe('h5');
     player.x5VideoPlayerType = false;
     expect(player.x5VideoPlayerType).toBe();
-    expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
+    expect(videoElement.getAttribute('x5-video-player-type')).toBe(null);
   });
 
   test('x5VideoPlayerType  with videoconfigready = false', () => {
     expect(player.x5VideoPlayerType).toBe();
-    expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
-    player.__dispatcher.videoConfigReady = false;
+    expect(videoElement.getAttribute('x5-video-player-type')).toBe(null);
+    player.dispatcher.videoConfigReady = false;
     player.x5VideoPlayerType = 'h5';
     expect(player.x5VideoPlayerType).toBe();
-    expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
+    expect(videoElement.getAttribute('x5-video-player-type')).toBe(null);
   });
 
   test('get playsinline when playsInline of videoElement is undefined', () => {
@@ -296,33 +295,33 @@ describe('chimee video attributes', () => {
 
   test('x5VideoPlayerFullscreen', () => {
     expect(player.x5VideoPlayerFullscreen).toBe(false);
-    expect(getAttr(videoElement, 'x5-video-player-fullscreen')).toBe(null);
+    expect(videoElement.getAttribute('x5-video-player-fullscreen')).toBe(null);
     player.x5VideoPlayerFullscreen = true;
     expect(player.x5VideoPlayerFullscreen).toBe(true);
-    expect(getAttr(videoElement, 'x5-video-player-fullscreen')).toBe('true');
-    player.__dispatcher.videoConfigReady = false;
+    expect(videoElement.getAttribute('x5-video-player-fullscreen')).toBe('true');
+    player.dispatcher.videoConfigReady = false;
     player.x5VideoPlayerFullscreen = false;
     expect(player.x5VideoPlayerFullscreen).toBe(false);
-    expect(getAttr(videoElement, 'x5-video-player-fullscreen')).toBe('true');
+    expect(videoElement.getAttribute('x5-video-player-fullscreen')).toBe('true');
   });
 
   test('xWebkitAirplay', () => {
     expect(player.xWebkitAirplay).toBe(false);
-    expect(getAttr(videoElement, 'x-webkit-airplay')).toBe(null);
+    expect(videoElement.getAttribute('x-webkit-airplay')).toBe(null);
     player.xWebkitAirplay = true;
     expect(player.xWebkitAirplay).toBe(true);
-    expect(getAttr(videoElement, 'x-webkit-airplay')).toBe('true');
-    setAttr(videoElement, 'x-webkit-airplay', undefined);
+    expect(videoElement.getAttribute('x-webkit-airplay')).toBe('true');
+    videoElement.removeAttribute('x-webkit-airplay');
     expect(player.xWebkitAirplay).toBe(false);
-    expect(getAttr(videoElement, 'x-webkit-airplay')).toBe(null);
+    expect(videoElement.getAttribute('x-webkit-airplay')).toBe(null);
   });
 
   test('x5VideoOrientation', () => {
     expect(player.x5VideoOrientation).toBe(null);
-    expect(getAttr(videoElement, 'x5-video-orientation')).toBe(null);
+    expect(videoElement.getAttribute('x5-video-orientation')).toBe(null);
     player.x5VideoOrientation = 'landscape';
     expect(player.x5VideoOrientation).toBe('landscape');
-    expect(getAttr(videoElement, 'x5-video-orientation')).toBe('landscape');
+    expect(videoElement.getAttribute('x5-video-orientation')).toBe('landscape');
   });
 
   test('playbackRate', () => {
