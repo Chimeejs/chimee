@@ -7,7 +7,7 @@ import VideoConfig from '../config/video';
 import { IFriendlyDom } from '../dispatcher/dom';
 import Dispatcher, { IFriendlyDispatcher } from '../dispatcher/index';
 import VideoWrapper from '../dispatcher/video-wrapper';
-import { PluginConfig, PluginOption } from '../typings/base';
+import { ComputedMap, PluginConfig, PluginEvents, PluginMethods, PluginOption } from '../typings/base';
 
 export interface IChimeePluginConstructor {
   new(...args: any[]): ChimeePlugin;
@@ -62,14 +62,9 @@ export default class ChimeePlugin extends VideoWrapper {
   public $inner: boolean;
   public $penetrate: boolean;
   public $videoConfig: VideoConfig;
-  public beforeCreate?: PluginConfig['beforeCreate'];
-  public create?: PluginConfig['create'];
-  public destroy?: PluginConfig['destroy'];
 
   public destroyed: boolean = false;
-  public init?: PluginConfig['init'];
-  public inited?: PluginConfig['inited'];
-  public ready: Promise<void>;
+  public ready: Promise<this>;
   public readySync: boolean;
   public VERSION: string = process.env.PLAYER_VERSION;
   private autoFocusValue: boolean = false;
@@ -247,7 +242,7 @@ export default class ChimeePlugin extends VideoWrapper {
      */
     this.$config = option;
     try {
-      if (isFunction(create)) {
+      if (isFunction(this.create)) {
         this.create();
       }
     } catch (error) {
@@ -282,28 +277,36 @@ export default class ChimeePlugin extends VideoWrapper {
   public $throwError(error: Error | string) {
     this.dispatcher.throwError(error);
   }
+  public beforeCreate?(obj: { computed: ComputedMap, data: any, events: PluginEvents, methods: PluginMethods }, option: PluginOption): void;
+  public create?(): void;
+  public destroy?(): void;
+  public init?(config: VideoConfig): void;
+  public inited?(): void | Promise<void>;
   /**
    * call for inited lifecycle hook, which just to tell the plugin we have inited.
    */
-  public runInitedHook(): Promise<void> | ChimeePlugin {
+  public runInitedHook(): Promise<this> | this {
     let result;
     try {
       result = isFunction(this.inited) && this.inited();
     } catch (error) {
       this.$throwError(error);
     }
-    this.readySync = !isPromise(result);
-    this.ready = this.readySync
-      ? Promise.resolve(this)
-      : result
-        .then(() => {
-          this.readySync = true;
-          return this;
-        })
-        .catch((error: Error) => {
-          if (isError(error)) { return this.$throwError(error); }
-          return Promise.reject(error);
-        });
+    const promiseResult = isPromise(result) && result;
+    this.readySync = !promiseResult;
+    this.ready = promiseResult
+      ? promiseResult
+      .then(() => {
+        this.readySync = true;
+        return this;
+      })
+      .catch((error: Error) => {
+        if (isError(error)) {
+          this.$throwError(error);
+        }
+        return Promise.reject(error);
+      })
+      : Promise.resolve(this);
     return this.readySync
       ? this
       : this.ready;

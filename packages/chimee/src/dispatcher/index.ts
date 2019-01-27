@@ -235,7 +235,7 @@ export default class Dispatcher {
       });
     }
     // trigger auto load event
-    const asyncInitedTasks: Array<Promise<void>> = [];
+    const asyncInitedTasks: Array<Promise<ChimeePlugin>> = [];
     this.order.forEach((key) => {
       const ready = this.plugins[key].runInitedHook();
       if (isPromise(ready)) {
@@ -614,7 +614,7 @@ export default class Dispatcher {
    * @param  {Object|string} option you can just set a plugin name or plugin config
    * @return {Promise}
    */
-  public use(option: string | PluginOption): Promise<void> {
+  public use(option: string | PluginOption): Promise<ChimeePlugin> {
     if (isString(option)) { option = { name: option, alias: undefined }; }
     if (!isPlainObject(option) || (isPlainObject(option) && !isString(option.name))) {
       throw new TypeError('pluginConfig do not match requirement');
@@ -801,7 +801,7 @@ export default class Dispatcher {
    * @param  {Array<UserPluginConfig>}  configs  a set of plugin config
    * @return {Array<Promise>}   a set of Promise indicate the plugin install stage
    */
-  private initUserPlugin(configs: Array<string | PluginOption> = []): Array<Promise<void>> {
+  private initUserPlugin(configs: Array<string | PluginOption> = []): Array<Promise<ChimeePlugin>> {
     if (!isArray(configs)) {
       /* istanbul ignore else  */
       if (process.env.NODE_ENV !== 'production') { chimeeLog.warn('Dispatcher', `UserConfig.plugin can only by an Array, but not "${configs}" in ${typeof configs}`); }

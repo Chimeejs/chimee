@@ -1,5 +1,5 @@
 import { addClass } from 'dom-helpers/class';
-import style from 'dom-helpers/style';
+import * as style from 'dom-helpers/style';
 import Dispatcher from '../dispatcher/index';
 import ChimeePlugin from '../dispatcher/plugin';
 import { PluginConfig, PluginOption } from '../typings/base';
@@ -52,7 +52,7 @@ export default class PictureInPicture extends ChimeePlugin {
     }
   }
 
-  public create = () => {
+  public create() {
     addClass(this.$dom, 'chimee-plugin-picture-in-picture');
     this.getContext();
   }
