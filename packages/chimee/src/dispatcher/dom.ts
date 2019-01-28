@@ -1,8 +1,8 @@
 import { chimeeLog } from 'chimee-helper-log';
+import { style } from 'dom-helpers';
 import { addClass } from 'dom-helpers/class';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
 import { querySelectorAll } from 'dom-helpers/query';
-import * as style from 'dom-helpers/style';
 import { esFullscreen } from 'es-fullscreen';
 import { isArray, isFunction, isPlainObject, isString } from 'lodash';
 import { autobind, waituntil } from 'toxic-decorators';
