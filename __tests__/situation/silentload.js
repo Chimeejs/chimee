@@ -1,10 +1,10 @@
 import Chimee from 'index';
-
+import { bind } from 'toxic-utils';
+import { chimeeLog } from 'chimee-helper-log';
 function sleep(duration) {
   return new Promise(resolve => setTimeout(resolve, duration));
 }
 
-import { bind, Log } from 'chimee-helper';
 describe('$silentLoad', () => {
   let player;
   let oldVideo;
@@ -17,10 +17,10 @@ describe('$silentLoad', () => {
       wrapper: document.createElement('div'),
       src: 'http://cdn.toxicjohann.com/lostStar.mp4',
     });
-    oldVideo = player.__dispatcher.dom.videoElement;
-    oldKernel = player.__dispatcher.kernel;
-    Log.data.warn = [];
-    Log.data.error = [];
+    oldVideo = player.dispatcher.dom.videoElement;
+    oldKernel = player.dispatcher.kernel;
+    chimeeLog.data.warn = [];
+    chimeeLog.data.error = [];
     originFn = global.document.createElement;
     global.document.createElement = function(tag) {
       if (tag === 'video') {
@@ -51,8 +51,8 @@ describe('$silentLoad', () => {
   //     // dom容器
   //     wrapper
   //   });
-  //   oldVideo = player.__dispatcher.dom.videoElement;
-  //   oldKernel = player.__dispatcher.kernel;
+  //   oldVideo = player.dispatcher.dom.videoElement;
+  //   oldKernel = player.dispatcher.kernel;
   //   const result = player.silentLoad(
   //     'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
   //     {
@@ -85,8 +85,8 @@ describe('$silentLoad', () => {
     player.currentTime = 3;
     oldVideo.dispatchEvent(new Event('timeupdate'));
     await expect(result).resolves.toBe();
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-    expect(player.__dispatcher.dom.videoElement).toBe(video);
+    expect(player.dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.dispatcher.dom.videoElement).toBe(video);
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
     player.src = 'http://cdn.toxicjohann.com/lostStar.mp4';
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
@@ -115,7 +115,7 @@ describe('$silentLoad', () => {
     option.abort = true;
     await Promise.resolve();
     await expect(result).rejects.toEqual(new Error('user abort the mission'));
-    expect(Log.data.warn).toEqual([[ "chimee's silentLoad", 'user abort the mission' ]]);
+    expect(chimeeLog.data.warn).toEqual([[ "chimee's silentLoad", 'user abort the mission' ]]);
   });
 
   test('timeout', async () => {
@@ -125,7 +125,7 @@ describe('$silentLoad', () => {
     player.currentTime = 3;
     oldVideo.dispatchEvent(new Event('timeupdate'));
     await expect(result).rejects.toEqual(new Error('The silentLoad for http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4 timed out. Please set a longer duration or check your network'));
-    expect(Log.data.warn).toEqual([[ "chimee's silentLoad", 'The silentLoad for http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4 timed out. Please set a longer duration or check your network' ]]);
+    expect(chimeeLog.data.warn).toEqual([[ "chimee's silentLoad", 'The silentLoad for http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4 timed out. Please set a longer duration or check your network' ]]);
   });
 
   test('immediate', async () => {
@@ -145,8 +145,8 @@ describe('$silentLoad', () => {
     // simulate canplayable
     video.dispatchEvent(new Event('canplay'));
     await expect(result).resolves.toBe();
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-    expect(player.__dispatcher.dom.videoElement).toBe(video);
+    expect(player.dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.dispatcher.dom.videoElement).toBe(video);
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
     player.src = 'http://cdn.toxicjohann.com/lostStar.mp4';
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
@@ -169,8 +169,8 @@ describe('$silentLoad', () => {
     // simulate canplayable
     video.dispatchEvent(new Event('canplay'));
     await expect(result).resolves.toBe();
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-    expect(player.__dispatcher.dom.videoElement).toBe(video);
+    expect(player.dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.dispatcher.dom.videoElement).toBe(video);
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
     player.src = 'http://cdn.toxicjohann.com/lostStar.mp4';
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
@@ -200,7 +200,7 @@ describe('$silentLoad', () => {
     // simulate times up
     player.currentTime = 3;
     oldVideo.dispatchEvent(new Event('timeupdate'));
-    expect(player.__dispatcher.kernel).toBe(oldKernel);
+    expect(player.dispatcher.kernel).toBe(oldKernel);
     await Promise.resolve();
     await Promise.resolve();
     await Promise.resolve();
@@ -213,8 +213,8 @@ describe('$silentLoad', () => {
     player.currentTime = 7;
     oldVideo.dispatchEvent(new Event('timeupdate'));
     await expect(result).resolves.toBe();
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-    expect(player.__dispatcher.dom.videoElement).toBe(video);
+    expect(player.dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.dispatcher.dom.videoElement).toBe(video);
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
     player.src = 'http://cdn.toxicjohann.com/lostStar.mp4';
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
@@ -226,10 +226,10 @@ describe('$silentLoad', () => {
     // simulate video error
     video.dispatchEvent(new Event('error'));
     await expect(result).rejects.toEqual(new Error('unknow video error'));
-    expect(player.__dispatcher.kernel).toBe(oldKernel);
-    expect(player.__dispatcher.dom.videoElement).toBe(oldVideo);
+    expect(player.dispatcher.kernel).toBe(oldKernel);
+    expect(player.dispatcher.dom.videoElement).toBe(oldVideo);
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
-    expect(Log.data.error).toEqual([[ "chimee's silentload", 'unknow video error' ]]);
+    expect(chimeeLog.data.error).toEqual([[ "chimee's silentload", 'unknow video error' ]]);
   });
 
   test('video error', async () => {
@@ -239,25 +239,25 @@ describe('$silentLoad', () => {
     // simulate video error
     video.dispatchEvent(new Event('error'));
     await expect(result).rejects.toEqual(new Error('MEDIA_ELEMENT_ERROR: Format error'));
-    expect(player.__dispatcher.kernel).toBe(oldKernel);
-    expect(player.__dispatcher.dom.videoElement).toBe(oldVideo);
+    expect(player.dispatcher.kernel).toBe(oldKernel);
+    expect(player.dispatcher.dom.videoElement).toBe(oldVideo);
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
-    expect(Log.data.error).toEqual([[ "chimee's silentload", 'MEDIA_ELEMENT_ERROR: Format error' ]]);
+    expect(chimeeLog.data.error).toEqual([[ "chimee's silentload", 'MEDIA_ELEMENT_ERROR: Format error' ]]);
   });
 
   test('kernel error', async () => {
     const result = player.$silentLoad('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
     await sleep(100);
     // simulate video error
-    player.__dispatcher._silentLoadTempKernel.videoKernel.emit('error', {
+    player.dispatcher.silentLoadTempKernel.videoKernel.emit('error', {
       errmsg: 'test error',
       errno: 500,
     });
     await expect(result).rejects.toEqual(new Error('test error'));
-    expect(player.__dispatcher.kernel).toBe(oldKernel);
-    expect(player.__dispatcher.dom.videoElement).toBe(oldVideo);
+    expect(player.dispatcher.kernel).toBe(oldKernel);
+    expect(player.dispatcher.dom.videoElement).toBe(oldVideo);
     expect(player.src).toBe('http://cdn.toxicjohann.com/lostStar.mp4');
-    expect(Log.data.error).toEqual([[ "chimee's silentload bump into a kernel error", 'test error' ]]);
+    expect(chimeeLog.data.error).toEqual([[ "chimee's silentload bump into a kernel error", 'test error' ]]);
   });
 
   test('error in repeat times', async () => {
@@ -277,10 +277,10 @@ describe('$silentLoad', () => {
     player.currentTime = 3;
     oldVideo.dispatchEvent(new Event('timeupdate'));
     await expect(result).resolves.toBe();
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
-    expect(player.__dispatcher.dom.videoElement).toBe(video);
+    expect(player.dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.dispatcher.dom.videoElement).toBe(video);
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
-    expect(Log.data.error).toEqual([[ "chimee's silentload", 'MEDIA_ELEMENT_ERROR: Format error' ]]);
+    expect(chimeeLog.data.error).toEqual([[ "chimee's silentload", 'MEDIA_ELEMENT_ERROR: Format error' ]]);
   });
 
   test('error remove', async () => {
@@ -293,7 +293,7 @@ describe('$silentLoad', () => {
     oldVideo.dispatchEvent(new Event('timeupdate'));
     await expect(result).resolves.toBe();
     video.dispatchEvent(new Event('error'));
-    expect(Log.data.error).toEqual([]);
+    expect(chimeeLog.data.error).toEqual([]);
   });
 
   test('should not trigger play when we silentLoad', async () => {
