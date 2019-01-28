@@ -9,9 +9,7 @@ import Dispatcher, { IFriendlyDispatcher } from '../dispatcher/index';
 import VideoWrapper from '../dispatcher/video-wrapper';
 import { ComputedMap, PluginConfig, PluginEvents, PluginMethods, PluginOption } from '../typings/base';
 
-export interface IChimeePluginConstructor {
-  new(...args: any[]): ChimeePlugin;
-}
+export type IChimeePluginConstructor = new(...args: any[]) => ChimeePlugin;
 
 /**
  * <pre>

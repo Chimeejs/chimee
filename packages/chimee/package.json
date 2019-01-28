@@ -7,7 +7,7 @@
   "jsnext:main": "lib/index.mjs",
   "browser": "lib/index.browser.js",
   "scripts": {
-    "precommit": "",
+    "precommit": "npm run lint",
     "prepush": "",
     "prepublishOnly": "npm t && pkg-ok",
     "postmerge": "sh tool/auto-npm-install.sh",
