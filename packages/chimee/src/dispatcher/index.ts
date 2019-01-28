@@ -175,6 +175,7 @@ export default class Dispatcher {
     inner: [],
     outer: [],
   };
+  // 测试用的临时记录
   private silentLoadTempKernel: ChimeeKernel | void;
   /**
    * @param  {UserConfig} config UserConfig for whole Chimee player
@@ -457,8 +458,8 @@ export default class Dispatcher {
             kernel.off('error', videoError);
             let error;
             // TODO: need to add the kernel error declare here
-            if (!isEmpty((evt as any).data) && (evt as any).data.errmsg) {
-              const { errmsg } = (evt as any).data;
+            if (evt && (evt as any).errmsg) {
+              const { errmsg } = (evt as any);
               chimeeLog.error('chimee\'s silentload bump into a kernel error', errmsg);
               error = new Error(errmsg);
             } else {
@@ -474,7 +475,7 @@ export default class Dispatcher {
               : resolve(error);
           }
           addEvent(video, 'canplay', videoCanplay, true);
-          addEvent(video, 'loadedmetadata', videoLoadedmetadata, true);
+          addEvent(video, 'loadedmetadata', videoLoadedmetadata.bind(this), true);
           addEvent(video, 'error', videoError, true);
           kernel = this.createKernel(video, config);
           this.silentLoadTempKernel = kernel;
