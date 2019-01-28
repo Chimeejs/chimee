@@ -1,5 +1,5 @@
+import { style } from 'dom-helpers';
 import { addClass } from 'dom-helpers/class';
-import * as style from 'dom-helpers/style';
 import Dispatcher from '../dispatcher/index';
 import ChimeePlugin from '../dispatcher/plugin';
 import { PluginConfig, PluginOption } from '../typings/base';
