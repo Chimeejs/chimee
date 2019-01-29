@@ -1,4 +1,4 @@
-import Chimee from '../src/index';
+import Chimee from '../ts-out/index';
 describe('check for chimee switch kernel function', () => {
   it('should not trigger volume change', async function() {
     this.timeout(10000);
