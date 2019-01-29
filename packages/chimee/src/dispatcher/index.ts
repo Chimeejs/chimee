@@ -289,6 +289,10 @@ export default class Dispatcher {
     return this.plugins.pictureInPicture && this.plugins.pictureInPicture.exitPictureInPicture();
   }
 
+  public getPluginConfig(id: string): PluginConfig | void | IChimeePluginConstructor {
+    return Dispatcher.getPluginConfig(id);
+  }
+
   @before(convertNameIntoId)
   public hasUsed(id: string) {
     const plugin = this.plugins[id];
@@ -358,7 +362,6 @@ export default class Dispatcher {
       // if (autoplay) this.play();
       return pipWindow;
     }
-    const { default: PictureInPicture } = await import('../plugin/picture-in-picture');
     if (!Dispatcher.hasInstalled(PictureInPicture.name)) {
       Dispatcher.install(PictureInPicture);
     }

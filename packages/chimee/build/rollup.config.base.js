@@ -147,7 +147,7 @@ const babelConfig = {
 const externalRegExp = new RegExp(Object.keys(dependencies).join('|'));
 export default function(mode) {
   return {
-    input: 'src/index.js',
+    input: 'ts-out/index.js',
     external(id) {
       return !/min|umd|iife|esm/.test(mode) && externalRegExp.test(id);
     },
@@ -162,10 +162,15 @@ export default function(mode) {
         customResolveOptions: {
           moduleDirectory: /min|umd|iife|esm/.test(mode) ? [ 'src', 'node_modules' ] : [ 'src' ],
         },
+        preferBuiltins: false,
       }),
       visualizer({
         filename: `bundle-size/${mode}.html`,
       }),
     ],
+    onwarn(warning, warn) {
+      if (warning.code === 'THIS_IS_UNDEFINED') return;
+      warn(warning); // this requires Rollup 0.46
+    },
   };
 }

@@ -265,7 +265,7 @@ export default class Dom {
       this.autoFocusToVideo(dom, true);
     }
     // @ts-ignore: Property 'penetrate' does not exist on type 'PluginConfig | IChimeePluginConstructor | { penetrate?: false; }'.
-    const { penetrate = false } = Dispatcher.getPluginConfig(id) || {};
+    const { penetrate = false } = this.dispatcher.getPluginConfig(id) || {};
     if (penetrate) { this.dispatcher.binder.bindEventOnPenetrateNode(dom, true); }
     delete this.plugins[id];
   }
