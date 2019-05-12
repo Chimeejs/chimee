@@ -144,17 +144,25 @@ const babelConfig = {
     babelrc: false,
   },
 };
-const externalRegExp = new RegExp(Object.keys(dependencies).join('|'));
+const externalRegExp = new RegExp('^(' + Object.keys(dependencies).join('|') + ')$');
 export default function(mode) {
   return {
-    input: 'ts-out/index.js',
+    // input: 'ts-out/index.js',
+    input: 'lib/esnext/index.js',
     external(id) {
       return !/min|umd|iife|esm/.test(mode) && externalRegExp.test(id);
     },
     plugins: [
       babel(babelConfig[mode]),
       flow(),
-      commonjs(),
+      commonjs({
+        namedExports: {
+          // left-hand side can be an absolute path, a path
+          // relative to the current directory, or the name
+          // of a module in node_modules
+          'node_modules/events/events.js': [ 'EventEmitter' ],
+        },
+      }),
       replace({
         'process.env.PLAYER_VERSION': `'${version}'`,
       }),
