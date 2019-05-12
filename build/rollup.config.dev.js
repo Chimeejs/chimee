@@ -6,14 +6,16 @@ import sourcemaps from 'rollup-plugin-sourcemaps';
 import { camelize } from 'toxic-utils';
 const { name } = require('../package.json');
 const config = base('iife');
-config.plugins.push(
-  serve(),
-  livereload(),
-  sourcemaps()
-);
-config.plugins.unshift(replace({
-  'process.env.NODE_ENV': '"development"',
-}));
+// delete config.plugins;
+config.plugins = config.plugins.concat([
+  replace({
+    'process.env.NODE_ENV': '"development"',
+  }),
+  // serve(),
+  // livereload(),
+  // sourcemaps(),
+]);
+config.input = 'lib/esnext/index.js';
 export default Object.assign(config, {
   output: {
     format: 'umd',
