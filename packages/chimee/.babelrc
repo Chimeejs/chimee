@@ -1,6 +1,5 @@
 {
   "presets": [
-    "@babel/preset-flow",
     [
       "@babel/preset-env",
       {
@@ -20,7 +19,9 @@
         "legacy": true
       }
     ],
-    ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    ["@babel/plugin-proposal-class-properties", {
+      "loose": true
+    }],
     "lodash",
     "@babel/plugin-syntax-dynamic-import",
     "@babel/plugin-syntax-import-meta",
@@ -41,5 +42,18 @@
     "@babel/plugin-proposal-nullish-coalescing-operator",
     "@babel/plugin-proposal-do-expressions",
     "@babel/plugin-proposal-function-bind"
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["@babel/preset-env",
+          {
+            "targets": {
+              "node": "current"
+            }
+          }
+        ]
+      ]
+    }
+  }
 }
