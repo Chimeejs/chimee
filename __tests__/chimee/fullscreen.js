@@ -15,7 +15,7 @@ describe('chimee fullscreen', () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.body,
       plugin: [],
       events: {},
     });
@@ -36,14 +36,14 @@ describe('chimee fullscreen', () => {
   });
 
   test('wrapper', () => {
-    const target = player.__dispatcher.dom.wrapper;
+    const target = player.dispatcher.dom.wrapper;
     const fn1 = jest.fn();
     player.$watch('isFullscreen', fn1);
     const fn2 = jest.fn();
     player.$watch('fullscreenElement', fn2);
     player.requestFullscreen('wrapper');
     expect(player.isFullscreen).toBe(true);
-    expect(player.__dispatcher.dom[player.fullscreenElement]).toBe(target);
+    expect(player.dispatcher.dom[player.fullscreenElement]).toBe(target);
     expect(fn1).toHaveBeenCalledTimes(1);
     expect(fn2).toHaveBeenCalledTimes(1);
     expect(fn1).lastCalledWith(true, false);
@@ -51,17 +51,17 @@ describe('chimee fullscreen', () => {
   });
 
   test('container', () => {
-    const target = player.__dispatcher.dom.container;
+    const target = player.dispatcher.dom.container;
     player.requestFullscreen('container');
     expect(player.isFullscreen).toBe(true);
-    expect(player.__dispatcher.dom[player.fullscreenElement]).toBe(target);
+    expect(player.dispatcher.dom[player.fullscreenElement]).toBe(target);
   });
 
   test('video', () => {
-    const target = player.__dispatcher.dom.videoElement;
+    const target = player.dispatcher.dom.videoElement;
     player.requestFullscreen('video');
     expect(player.isFullscreen).toBe(true);
-    expect(player.__dispatcher.dom[player.fullscreenElement + 'Element']).toBe(target);
+    expect(player.dispatcher.dom[player.fullscreenElement + 'Element']).toBe(target);
   });
 
   test('fullscreen event and fullscreenchange event', () => {
@@ -100,14 +100,14 @@ describe('chimee fullscreen', () => {
   });
 
   test('wrapper', () => {
-    const target = player.__dispatcher.dom.wrapper;
+    const target = player.dispatcher.dom.wrapper;
     const fn1 = jest.fn();
     player.$watch('isFullscreen', fn1);
     const fn2 = jest.fn();
     player.$watch('fullscreenElement', fn2);
     player.requestFullscreen('wrapper');
     expect(player.isFullscreen).toBe(true);
-    expect(player.__dispatcher.dom[player.fullscreenElement]).toBe(target);
+    expect(player.dispatcher.dom[player.fullscreenElement]).toBe(target);
     expect(fn1).toHaveBeenCalledTimes(1);
     expect(fn2).toHaveBeenCalledTimes(1);
     expect(fn1).lastCalledWith(true, false);
@@ -115,17 +115,17 @@ describe('chimee fullscreen', () => {
   });
 
   test('container', () => {
-    const target = player.__dispatcher.dom.container;
+    const target = player.dispatcher.dom.container;
     player.requestFullscreen('container');
     expect(player.isFullscreen).toBe(true);
-    expect(player.__dispatcher.dom[player.fullscreenElement]).toBe(target);
+    expect(player.dispatcher.dom[player.fullscreenElement]).toBe(target);
   });
 
   test('video', () => {
-    const target = player.__dispatcher.dom.videoElement;
+    const target = player.dispatcher.dom.videoElement;
     player.requestFullscreen('video');
     expect(player.isFullscreen).toBe(true);
-    expect(player.__dispatcher.dom[player.fullscreenElement + 'Element']).toBe(target);
+    expect(player.dispatcher.dom[player.fullscreenElement + 'Element']).toBe(target);
   });
 
   test('plugin', () => {
@@ -146,6 +146,6 @@ describe('chimee fullscreen', () => {
     expect(Chimee.config.useStyleFullscreen).toBe(false);
     Chimee.config.useStyleFullscreen = true;
     player.fullscreen;
-    expect(player.$wrapper.innerHTML).toBe('<container style="width: 100%; height: 100%; position: relative; display: block;"><video tabindex="-1" controls="" width="100%" height="100%" preload="auto"></video></container>');
+    expect(player.$wrapper.innerHTML).toBe('<container style="display: block; height: 100%; position: relative; width: 100%;"><video tabindex="-1" controls="" width="100%" height="100%" preload="auto"></video></container>');
   });
 });

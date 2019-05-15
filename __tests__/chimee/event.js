@@ -1,5 +1,5 @@
 import Chimee from 'index';
-import { bind } from 'chimee-helper';
+import { bind } from 'toxic-utils';
 
 describe('chimee event method', () => {
   let player;
@@ -30,7 +30,7 @@ describe('chimee event method', () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
@@ -134,22 +134,22 @@ describe('chimee event method', () => {
 
     test('on normal function', () => {
       player.on('hello', function() {});
-      expect(player.__dispatcher.binder.buses.plugin.events.hello.main).not.toBe();
+      expect(player.dispatcher.binder.buses.plugin.events.hello.main).not.toBe();
     });
 
     test('on with custom target', () => {
       player.on('hello', function() {}, { target: 'kernel' });
-      expect(player.__dispatcher.binder.buses.kernel.events.hello.main).not.toBe();
+      expect(player.dispatcher.binder.buses.kernel.events.hello.main).not.toBe();
     });
 
     test('on with custom stage', () => {
       player.on('hello', function() {}, { target: 'kernel', stage: 'after' });
-      expect(player.__dispatcher.binder.buses.kernel.events.hello.after).not.toBe();
+      expect(player.dispatcher.binder.buses.kernel.events.hello.after).not.toBe();
     });
 
     test('on with custom stage described by name', () => {
       player.on('afterHello', function() {}, { target: 'kernel' });
-      expect(player.__dispatcher.binder.buses.kernel.events.hello.after).not.toBe();
+      expect(player.dispatcher.binder.buses.kernel.events.hello.after).not.toBe();
     });
   });
 
@@ -161,31 +161,31 @@ describe('chimee event method', () => {
     test('off from real dom', () => {
       const fn = () => {};
       player.on('click', fn);
-      expect(player.__dispatcher.binder.buses['video-dom'].events.click.main).not.toBe();
+      expect(player.dispatcher.binder.buses['video-dom'].events.click.main).not.toBe();
       player.off('click', fn);
-      expect(player.__dispatcher.binder.buses['video-dom'].events.click).toBe();
+      expect(player.dispatcher.binder.buses['video-dom'].events.click).toBe();
     });
 
     test('off according to stage', () => {
       const fn = () => {};
       player.on('click', fn, { stage: 'before' });
       player.on('click', fn);
-      expect(player.__dispatcher.binder.buses['video-dom'].events.click.main).not.toBe();
-      expect(player.__dispatcher.binder.buses['video-dom'].events.click.before).not.toBe();
+      expect(player.dispatcher.binder.buses['video-dom'].events.click.main).not.toBe();
+      expect(player.dispatcher.binder.buses['video-dom'].events.click.before).not.toBe();
       player.off('click', fn, { stage: 'before' });
-      expect(player.__dispatcher.binder.buses['video-dom'].events.click.main).not.toBe();
-      expect(player.__dispatcher.binder.buses['video-dom'].events.click.before).toBe();
+      expect(player.dispatcher.binder.buses['video-dom'].events.click.main).not.toBe();
+      expect(player.dispatcher.binder.buses['video-dom'].events.click.before).toBe();
     });
 
     test('off according to target', () => {
       const fn = () => {};
       player.on('click', fn, { target: 'container' });
       player.on('click', fn);
-      expect(player.__dispatcher.binder.buses['video-dom'].events.click.main).not.toBe();
-      expect(player.__dispatcher.binder.buses.container.events.click.main).not.toBe();
+      expect(player.dispatcher.binder.buses['video-dom'].events.click.main).not.toBe();
+      expect(player.dispatcher.binder.buses.container.events.click.main).not.toBe();
       player.off('click', fn, { target: 'container' });
-      expect(player.__dispatcher.binder.buses['video-dom'].events.click.main).not.toBe();
-      expect(player.__dispatcher.binder.buses.container.events.click).toBe();
+      expect(player.dispatcher.binder.buses['video-dom'].events.click.main).not.toBe();
+      expect(player.dispatcher.binder.buses.container.events.click).toBe();
     });
   });
 
@@ -204,13 +204,13 @@ describe('chimee event method', () => {
   test('register a new kernel event', () => {
     const fn = () => {};
     player.on('test', fn);
-    expect(player.__dispatcher.binder.buses.kernel.events).toEqual({});
-    expect(player.__dispatcher.binder.buses.plugin.events).not.toEqual({});
+    expect(player.dispatcher.binder.buses.kernel.events).toEqual({});
+    expect(player.dispatcher.binder.buses.plugin.events).not.toEqual({});
     Chimee.registerEvents({
       name: 'test',
       target: 'kernel',
     });
     player.on('test', () => {});
-    expect(player.__dispatcher.binder.buses.kernel.events).not.toEqual({});
+    expect(player.dispatcher.binder.buses.kernel.events).not.toEqual({});
   });
 });

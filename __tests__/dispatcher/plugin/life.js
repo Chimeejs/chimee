@@ -1,5 +1,5 @@
 import Plugin from 'dispatcher/plugin';
-import { Log } from 'chimee-helper';
+import { chimeeLog } from 'chimee-helper-log';
 import Chimee from 'index';
 
 describe("plugin's lifecycle", () => {
@@ -15,12 +15,12 @@ describe("plugin's lifecycle", () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
 
-    dispatcher = player.__dispatcher;
+    dispatcher = player.dispatcher;
   });
 
   afterEach(() => {
@@ -30,8 +30,8 @@ describe("plugin's lifecycle", () => {
 
   describe('consturctor', () => {
     test('illegal constructor', () => {
-      expect(() => new Plugin()).toThrow('lack of dispatcher');
-      expect(Log.data.error).toEqual([
+      expect(() => new Plugin({})).toThrow('lack of dispatcher');
+      expect(chimeeLog.data.error).toEqual([
         [ 'Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?' ],
       ]);
     });
@@ -81,7 +81,7 @@ describe("plugin's lifecycle", () => {
     test('do nothing', () => {
       const plugin = new Plugin({ id: 'i2' }, dispatcher);
       expect(plugin.$videoConfig).not.toBe();
-      plugin.__init({});
+      plugin.runInitHook({});
       expect(plugin.$videoConfig).toEqual(dispatcher.videoConfig);
       plugin.$destroy();
     });
@@ -93,7 +93,7 @@ describe("plugin's lifecycle", () => {
           config.src = 'i am a test';
         },
       }, dispatcher);
-      plugin.__init(plugin.$videoConfig);
+      plugin.runInitHook(plugin.$videoConfig);
       expect(plugin.$videoConfig.src).toBe('i am a test');
       plugin.$destroy();
     });
@@ -105,7 +105,7 @@ describe("plugin's lifecycle", () => {
           this.src = 'i am a test';
         },
       }, dispatcher);
-      plugin.__init({});
+      plugin.runInitHook({});
       expect(plugin.$videoConfig.src).toBe('i am a test');
       plugin.$destroy();
     });
@@ -120,14 +120,14 @@ describe("plugin's lifecycle", () => {
       inited() { createAndDestroyCall.push('inited'); },
     }, dispatcher);
     expect(createAndDestroyCall).toEqual([ 'create' ]);
-    plugin.__inited();
+    plugin.runInitedHook();
     expect(createAndDestroyCall).toEqual([ 'create', 'inited' ]);
     await expect(plugin.ready).resolves.toBe(plugin);
     plugin.$destroy();
     expect(createAndDestroyCall).toEqual([ 'create', 'inited', 'destroy' ]);
   });
 
-  describe('__removeEvents', () => {
+  describe('removeEvents', () => {
     let plugin;
     beforeEach(() => {
       plugin = new Plugin({ id: 're' }, dispatcher);
@@ -137,26 +137,26 @@ describe("plugin's lifecycle", () => {
     });
 
     test('empty event', () => {
-      expect(() => plugin.__removeEvents('wow', () => {})).not.toThrow();
+      expect(() => plugin.removeEvents('wow', () => {})).not.toThrow();
     });
 
     test('remove function do not exist', () => {
-      plugin.__addEvents('wow', () => {});
-      expect(() => plugin.__removeEvents('wow', () => {})).not.toThrow();
+      plugin.addEvents('wow', () => {});
+      expect(() => plugin.removeEvents('wow', () => {})).not.toThrow();
     });
 
     test('remove but event is not empty', () => {
       const fn = () => {};
-      plugin.__addEvents('wow', () => {});
-      plugin.__addEvents('wow', fn);
-      expect(() => plugin.__removeEvents('wow', fn)).not.toThrow();
+      plugin.addEvents('wow', () => {});
+      plugin.addEvents('wow', fn);
+      expect(() => plugin.removeEvents('wow', fn)).not.toThrow();
     });
   });
 
   describe('ready and readySync', () => {
     test('synchronize', async () => {
       const plugin = new Plugin({ id: 'a' }, dispatcher);
-      plugin.__inited();
+      plugin.runInitedHook();
       expect(plugin.readySync).toBe(true);
       await expect(plugin.ready).resolves.toBe(plugin);
     });
@@ -168,7 +168,7 @@ describe("plugin's lifecycle", () => {
           return Promise.resolve(1);
         },
       }, dispatcher);
-      plugin.__inited();
+      plugin.runInitedHook();
       await expect(plugin.ready).resolves.toBe(plugin);
       expect(plugin.readySync).toBe(true);
     });
@@ -177,10 +177,10 @@ describe("plugin's lifecycle", () => {
       const plugin = new Plugin({
         id: 'b',
         inited() {
-          return Promise.reject();
+          return Promise.reject(new Error('test'));
         },
       }, dispatcher);
-      plugin.__inited();
+      plugin.runInitedHook();
       await expect(plugin.ready).rejects.toBe();
       expect(plugin.readySync).toBe(false);
     });

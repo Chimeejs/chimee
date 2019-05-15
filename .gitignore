@@ -62,3 +62,5 @@ package-lock.json
 lib/index.dev.js
 lib/index.dev.js.map
 bundle-size/iife.html
+
+ts-out

@@ -1,6 +1,6 @@
 import ChimeeKernel from 'dispatcher/kernel';
 import NativeVideoKernel from 'kernels/native';
-import { Log } from 'chimee-helper';
+import { chimeeLog } from 'chimee-helper-log';
 import ChimeeKernelFlv from 'chimee-kernel-flv';
 
 describe('chimee kernel index.js', () => {
@@ -46,8 +46,8 @@ describe('chimee kernel index.js', () => {
         presetConfig: {},
       };
       kernel = new ChimeeKernel(videoElement, config);
-      Log.data.warn = [];
-      Log.data.error = [];
+      chimeeLog.data.warn = [];
+      chimeeLog.data.error = [];
     });
     afterEach(() => {
       kernel.destroy();
@@ -82,7 +82,7 @@ describe('chimee kernel index.js', () => {
       kernel.load();
       expect(kernel.videoElement.currentTime).toBe(0);
       kernel.seek(true);
-      expect(Log.data.error[0]).toEqual([ 'chimee', 'When you try to seek, you must offer us a number, but not boolean' ]);
+      expect(chimeeLog.data.error[0]).toEqual([ 'chimee', 'When you try to seek, you must offer us a number, but not boolean' ]);
       expect(kernel.videoElement.currentTime).toBe(0);
     });
 
@@ -147,11 +147,11 @@ describe('chimee kernel index.js', () => {
 
     test('event listener', () => {
       const fn = jest.fn();
-      kernel.on('error', fn);
-      kernel.videoKernel.emit('error', 'test');
+      kernel.on('test', fn);
+      kernel.videoKernel.emit('test', 'test');
       expect(fn).toHaveBeenCalledTimes(1);
-      kernel.off('error', fn);
-      kernel.videoKernel.emit('error', 'test');
+      kernel.off('test', fn);
+      kernel.videoKernel.emit('test', 'test');
       expect(fn).toHaveBeenCalledTimes(1);
     });
 
@@ -194,7 +194,11 @@ describe('chimee kernel index.js', () => {
       preset: {
         flv: ChimeeKernelFlv,
       },
-      presetConfig: {},
+      presetConfig: {
+        flv: {
+          test: 1,
+        },
+      },
     };
     const kernel = new ChimeeKernel(videoElement, config);
     expect(kernel.videoElement).toBe(videoElement);

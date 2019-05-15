@@ -1,6 +1,5 @@
 import Plugin from 'dispatcher/plugin';
 import Chimee from 'index';
-import { getAttr } from 'chimee-helper';
 
 describe("plugin's video attribute", () => {
   let dispatcher;
@@ -16,12 +15,12 @@ describe("plugin's video attribute", () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
 
-    dispatcher = player.__dispatcher;
+    dispatcher = player.dispatcher;
 
     plugin = new Plugin({ id: 'normal' }, dispatcher);
   });
@@ -142,27 +141,27 @@ describe("plugin's video attribute", () => {
   test('playsinline', () => {
     plugin.playsInline = true;
     expect(plugin.playsInline).toBe(true);
-    expect(getAttr(dispatcher.dom.videoElement, 'playsinline')).toBe('');
-    expect(getAttr(dispatcher.dom.videoElement, 'webkit-playsinline')).toBe('');
-    expect(getAttr(dispatcher.dom.videoElement, 'x5-playsinline')).toBe('');
+    expect(dispatcher.dom.videoElement.getAttribute('playsinline')).toBe('');
+    expect(dispatcher.dom.videoElement.getAttribute('webkit-playsinline')).toBe('');
+    expect(dispatcher.dom.videoElement.getAttribute('x5-playsinline')).toBe('');
   });
 
   test('x5VideoPlayerFullscreen', () => {
     plugin.x5VideoPlayerFullscreen = true;
     expect(plugin.x5VideoPlayerFullscreen).toBe(true);
-    expect(getAttr(dispatcher.dom.videoElement, 'x5-video-player-fullscreen')).toBe('true');
+    expect(dispatcher.dom.videoElement.getAttribute('x5-video-player-fullscreen')).toBe('true');
   });
 
   test('xWebkitAirplay', () => {
     plugin.xWebkitAirplay = true;
     expect(plugin.xWebkitAirplay).toBe(true);
-    expect(getAttr(dispatcher.dom.videoElement, 'x-webkit-airplay')).toBe('true');
+    expect(dispatcher.dom.videoElement.getAttribute('x-webkit-airplay')).toBe('true');
   });
 
   test('x5VideoOrientation', () => {
     plugin.x5VideoOrientation = 'landscape';
     expect(plugin.x5VideoOrientation).toBe('landscape');
-    expect(getAttr(dispatcher.dom.videoElement, 'x5-video-orientation')).toBe('landscape');
+    expect(dispatcher.dom.videoElement.getAttribute('x5-video-orientation')).toBe('landscape');
   });
 
   // test('dispatcher is not ready', () => {

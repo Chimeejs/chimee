@@ -10,7 +10,7 @@ describe('chimee life', () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.body,
       plugin: [],
       events: {},
     })
@@ -43,7 +43,7 @@ describe('chimee life', () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.body,
       plugin: [],
       events: {},
     });

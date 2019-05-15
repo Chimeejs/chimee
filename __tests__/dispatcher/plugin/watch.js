@@ -1,5 +1,7 @@
 import Chimee from 'index';
-import { isBoolean, isNumber, isString, Log } from 'chimee-helper';
+import { isBoolean, isNumber, isString } from 'lodash';
+import { chimeeLog } from 'chimee-helper-log';
+import { videoDomAttributes } from '../../../src/const/attribute';
 
 describe("plugin's watch function", () => {
   let player;
@@ -28,7 +30,7 @@ describe("plugin's watch function", () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
@@ -57,7 +59,7 @@ describe("plugin's watch function", () => {
         test: 1,
       },
       create() {
-        this.$videoConfig._realDomAttr.forEach(key => {
+        videoDomAttributes.forEach(key => {
           this.$watch(key, fn);
         });
       },
@@ -65,7 +67,7 @@ describe("plugin's watch function", () => {
     Chimee.install(videoConfigWatch);
     player.use('videoConfigWatch');
     let index = 0;
-    player.__dispatcher.videoConfig._realDomAttr.forEach(key => {
+    videoDomAttributes.forEach(key => {
       if ([ 'src' ].indexOf(key) > -1) return;
       if (key === 'preload') {
         const origin = player[key];
@@ -117,8 +119,8 @@ describe("plugin's watch function", () => {
 
   test('unwatch nothing', () => {
     player.use('normalWatch');
-    player.normalWatch.__unwatchHandlers.pop();
-    player.normalWatch.__unwatchHandlers.pop();
+    player.normalWatch.unwatchHandlers.pop();
+    player.normalWatch.unwatchHandlers.pop();
     player.normalWatch.unwatch();
   });
 
@@ -142,6 +144,10 @@ describe("plugin's watch function", () => {
 
     beforeEach(() => {
       player.use('deepWatch');
+    });
+
+    afterEach(() => {
+      player.unuse('deepWatch');
     });
 
     test('$set object', () => {
@@ -211,19 +217,19 @@ describe("plugin's watch function", () => {
 
     beforeEach(() => {
       player.use('withoutDeepWatch');
-      Log.data.warn = [];
+      chimeeLog.data.warn = [];
     });
 
     test('$set', () => {
       player.$set(player.withoutDeepWatch.test, 'foo', 2);
       expect(player.withoutDeepWatch.test.foo).toBe(2);
-      expect(Log.data.warn).toEqual([[ 'chimee', '{"foo":1} has not been deep watch. There is no need to use $set.' ]]);
+      expect(chimeeLog.data.warn).toEqual([[ 'chimee', '{"foo":1} has not been deep watch. There is no need to use $set.' ]]);
     });
 
     test('$del', () => {
       player.$del(player.withoutDeepWatch.test, 'foo');
       expect(player.withoutDeepWatch.test.foo).toBe();
-      expect(Log.data.warn).toEqual([[ 'chimee', '{"foo":1} has not been deep watch. There is no need to use $del.' ]]);
+      expect(chimeeLog.data.warn).toEqual([[ 'chimee', '{"foo":1} has not been deep watch. There is no need to use $del.' ]]);
     });
 
     test('$set only support array and object', () => {

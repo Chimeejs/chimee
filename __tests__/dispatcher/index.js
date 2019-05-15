@@ -1,12 +1,12 @@
 import Dispatcher from 'dispatcher/index';
-import Plugin from 'dispatcher/plugin';
-import { Log } from 'chimee-helper';
+import ChimeePlugin from 'dispatcher/plugin';
+import { chimeeLog } from 'chimee-helper-log';
 describe('dispatcher', () => {
   const normalInstall = {
     name: 'normal install',
     level: 1,
   };
-  class NormalFunctionInstall extends Plugin {
+  class NormalFunctionInstall extends ChimeePlugin {
   }
   class GrandSon extends NormalFunctionInstall {
   }
@@ -25,7 +25,7 @@ describe('dispatcher', () => {
   };
 
   beforeEach(() => {
-    Log.data.warn = [];
+    chimeeLog.data.warn = [];
   });
 
   test('install', () => {
@@ -38,7 +38,7 @@ describe('dispatcher', () => {
     expect(Dispatcher.install(NormalFunctionInstall)).toBe('normalFunctionInstall');
     expect(Dispatcher.install(GrandSon)).toBe('grandSon');
     Dispatcher.install(GrandSon);
-    expect(Log.data.warn[0]).toEqual([ 'Dispatcher', 'You have installed GrandSon again. And the older one will be replaced' ]);
+    expect(chimeeLog.data.warn[0]).toEqual([ 'Dispatcher', 'You have installed GrandSon again. And the older one will be replaced' ]);
   });
 
   test('getPluginConfig', () => {
@@ -68,17 +68,21 @@ describe('dispatcher', () => {
         wrapper: document.createElement('div'),
       }, vm);
     });
+
     test('use empty', () => {
       expect(() => dispatcher.use()).toThrow('pluginConfig do not match requirement');
     });
+
     test('use sth we have not installed', () => {
       expect(() => dispatcher.use('nothing')).toThrow('You have not installed plugin nothing');
     });
+
     test('use by string', () => {
       dispatcher.use({ name: 'normal install' });
-      expect(dispatcher.plugins.normalInstall.__id).toBe('normalInstall');
-      expect(vm.normalInstall.__id).toBe('normalInstall');
+      expect(dispatcher.plugins.normalInstall.id).toBe('normalInstall');
+      expect(vm.normalInstall.id).toBe('normalInstall');
     });
+
     test('use by function', () => {
       dispatcher.use('normal function install');
       expect(dispatcher.plugins.normalFunctionInstall instanceof NormalFunctionInstall).toBe(true);
@@ -87,27 +91,33 @@ describe('dispatcher', () => {
       expect(vm.normalInstall.$dom.style.zIndex).toBe('3');
       expect(vm.normalFunctionInstall.$dom.style.zIndex).toBe('2');
     });
+
     test('use with alias', () => {
       dispatcher.use({ name: 'normal install', alias: 'another' });
-      expect(dispatcher.plugins.another.__id).toBe('another');
-      expect(vm.another.__id).toBe('another');
+      expect(dispatcher.plugins.another.id).toBe('another');
+      expect(vm.another.id).toBe('another');
     });
+
     test('unuse nothing', () => {
       expect(() => dispatcher.unuse()).toThrow("Plugin's name must be a string");
     });
+
     test('unuse sth we have not installed', () => {
       expect(() => dispatcher.unuse('nothing')).not.toThrow();
     });
+
     test('unuse by string on function', () => {
       dispatcher.unuse('normalFunctionInstall');
       expect(dispatcher.plugins.normalFunctionInstall).toBe();
       expect(vm.normalFunctionInstall).toBe();
     });
+
     test('unuse by strng on object', () => {
       dispatcher.unuse('normalInstall');
       expect(dispatcher.plugins.normalInstall).toBe();
       expect(vm.normalInstall).toBe();
     });
+
     test('$destroy called checked', () => {
       const fn = jest.fn();
       const dispatcherO = new Dispatcher({
@@ -119,27 +129,29 @@ describe('dispatcher', () => {
       dispatcherO.unuse('test');
       expect(fn).toHaveBeenCalledTimes(1);
     });
+
     afterAll(() => {
       dispatcher.destroy();
     });
   });
 
-  test('_initUserPlugin', () => {
+  test('initUserPlugin', () => {
     const dispatcher = new Dispatcher({
       wrapper: document.createElement('div'),
       autoload: false,
     }, {});
-    dispatcher._initUserPlugin('not a array');
-    expect(Log.data.warn[0]).toEqual([ 'Dispatcher', 'UserConfig.plugin can only by an Array, but not "not a array" in string' ]);
+    dispatcher.initUserPlugin('not a array');
+    expect(chimeeLog.data.warn[0]).toEqual([ 'Dispatcher', 'UserConfig.plugin can only by an Array, but not "not a array" in string' ]);
     dispatcher.destroy();
   });
 
-  test('distroy', () => {
+  test('destroy', () => {
     const dispatcher = new Dispatcher({
       wrapper: document.createElement('div'),
     }, {});
-    // await dispatcher.ready;
+    Dispatcher.install(NormalFunctionInstall);
     dispatcher.use('normal function install');
+    // await dispatcher.ready;
     dispatcher.destroy();
   });
 
@@ -147,7 +159,7 @@ describe('dispatcher', () => {
     expect(() => new Dispatcher()).toThrow('UserConfig must be an Object');
   });
 
-  test('_sortZIndex', () => {
+  test('sortZIndex', () => {
     Dispatcher.install(outer);
     Dispatcher.install(lowInner);
     Dispatcher.install(lowOuter);
@@ -174,7 +186,9 @@ describe('dispatcher', () => {
         return Promise.resolve();
       },
     };
+
     Dispatcher.install(asyncPlugin);
+
     test('synchronous plugins', () => {
       const dispatcher = new Dispatcher({
         wrapper: document.createElement('div'),
@@ -183,6 +197,7 @@ describe('dispatcher', () => {
       expect(dispatcher.readySync).toBe(true);
       dispatcher.destroy();
     });
+
     test('asynchronous plugins', async () => {
       const dispatcher = new Dispatcher({
         wrapper: document.createElement('div'),
@@ -193,22 +208,23 @@ describe('dispatcher', () => {
       expect(dispatcher.readySync).toBe(true);
       dispatcher.destroy();
     });
+
     test('support plugins too', () => {
       const dispatcher = new Dispatcher({
         wrapper: document.createElement('div'),
         plugins: [ 'normalInstall' ],
       }, {});
-      expect(dispatcher.plugins.normalInstall.__id).toBe('normalInstall');
+      expect(dispatcher.plugins.normalInstall.id).toBe('normalInstall');
     });
   });
 
-  describe('_getTopLevel', () => {
+  describe('getTopLevel', () => {
     test('when plugin is empty', () => {
       const dispatcher = new Dispatcher({
         wrapper: document.createElement('div'),
       }, {});
-      expect(dispatcher._getTopLevel(true)).toBe(0);
-      expect(dispatcher._getTopLevel(false)).toBe(0);
+      expect(dispatcher.getTopLevel(true)).toBe(0);
+      expect(dispatcher.getTopLevel(false)).toBe(0);
       dispatcher.destroy();
     });
   });
@@ -219,7 +235,7 @@ describe('dispatcher', () => {
     const dispatcher = new Dispatcher({
       wrapper: document.createElement('div'),
     }, {
-      __throwError: fn,
+      customThrowError: fn,
     });
     dispatcher.throwError(error);
     expect(fn).toHaveBeenCalledTimes(1);

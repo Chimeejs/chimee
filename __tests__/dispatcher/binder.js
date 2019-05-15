@@ -12,7 +12,7 @@ describe('dispatcher/binder', () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
@@ -24,7 +24,7 @@ describe('dispatcher/binder', () => {
   });
 
   test('binder will clear kernel events which is forget to clear by upper layer', () => {
-    player.__dispatcher.binder.on({
+    player.dispatcher.binder.on({
       target: 'kernel',
       name: 'heartbeat',
       id: 'illegal',
@@ -34,7 +34,7 @@ describe('dispatcher/binder', () => {
   });
 
   test('binder will clear video events which is forget to clear by upper layer', () => {
-    player.__dispatcher.binder.on({
+    player.dispatcher.binder.on({
       target: 'video',
       name: 'play',
       id: 'illegal',
@@ -44,16 +44,16 @@ describe('dispatcher/binder', () => {
   });
 
   test('binder triggersync isEventEmitalbe backup', () => {
-    expect(() => player.__dispatcher.binder.triggerSync({})).not.toThrow();
+    expect(() => player.dispatcher.binder.triggerSync({})).not.toThrow();
   });
 
   test('binder emitsync isEventEmitalbe backup', () => {
-    expect(() => player.__dispatcher.binder.emitSync({ name: 'hello' })).not.toThrow();
+    expect(() => player.dispatcher.binder.emitSync({ name: 'hello' })).not.toThrow();
   });
 
   test('prettifyEventParameter without function', () => {
     expect(() => {
-      player.__dispatcher.binder.on({
+      player.dispatcher.binder.on({
         name: 'what',
         target: 'plugin',
         stage: 'main',
@@ -62,7 +62,7 @@ describe('dispatcher/binder', () => {
   });
 
   test('off redudant event which has no function bind', () => {
-    player.__dispatcher.binder.bindedEventNames.kernel.push('heartbeat');
+    player.dispatcher.binder.bindedEventNames.kernel.push('heartbeat');
     player.on('mediaInfo', () => {});
     player.off('heartbeat', () => {});
   });

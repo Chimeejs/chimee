@@ -14,12 +14,12 @@ describe("plugin's event", () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
 
-    dispatcher = player.__dispatcher;
+    dispatcher = player.dispatcher;
   });
 
   afterEach(() => {
@@ -32,7 +32,7 @@ describe("plugin's event", () => {
       id: 'e1',
       events: [ 1 ],
     }, dispatcher);
-    expect(plugin.__events).toEqual({});
+    expect(plugin.events).toEqual({});
     plugin.$destroy();
   });
 
@@ -45,14 +45,14 @@ describe("plugin's event", () => {
         b: fn1,
       },
     }, dispatcher);
-    expect(plugin.__events.a).toEqual([ fn1 ]);
-    expect(plugin.__events.b).toEqual([ fn1 ]);
+    expect(plugin.events.a).toEqual([ fn1 ]);
+    expect(plugin.events.b).toEqual([ fn1 ]);
     dispatcher.binder.buses.plugin.events.a.main.e2[0]();
     dispatcher.binder.buses.plugin.events.b.main.e2[0]();
     expect(fn1).toHaveBeenCalledTimes(2);
-    plugin.__events.ahahah = 1;
+    plugin.events.ahahah = 1;
     plugin.$destroy();
-    expect(plugin.__events).toBe();
+    expect(plugin.events).toBe();
     expect(dispatcher.binder.buses.plugin.events).toEqual({});
     expect(dispatcher.binder.buses.plugin.events).toEqual({});
   });
@@ -95,13 +95,13 @@ describe("plugin's event", () => {
       e: plugin,
     };
     plugin.$once('hi', fn);
-    expect(plugin.__dispatcher.binder.buses.plugin.events.hi.main.e.length).toBe(1);
+    expect(plugin.dispatcher.binder.buses.plugin.events.hi.main.e.length).toBe(1);
     expect(plugin.$emitSync('hi', 1)).toBe(true);
     expect(fn).toHaveBeenCalledTimes(1);
     expect(fn).lastCalledWith(1);
   });
 
-  test('__checkArgsForOnAndOff', () => {
+  test('checkArgsForOnAndOff', () => {
     const plugin = new Plugin({ id: 'check' }, dispatcher);
     expect(() => plugin.$on()).toThrow('key parameter must be String');
     expect(() => plugin.$on('1')).toThrow('fn parameter must be Function');

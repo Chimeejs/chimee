@@ -1,6 +1,6 @@
 import Plugin from 'dispatcher/plugin';
 import Chimee from 'index';
-import { Log } from 'chimee-helper';
+import { chimeeLog } from 'chimee-helper-log';
 
 describe("plugin's data and computed data", () => {
   let dispatcher;
@@ -15,12 +15,12 @@ describe("plugin's data and computed data", () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
 
-    dispatcher = player.__dispatcher;
+    dispatcher = player.dispatcher;
   });
 
   afterEach(() => {
@@ -76,7 +76,7 @@ describe("plugin's data and computed data", () => {
 
     test('wrong computed member', () => {
       expect(plugin.c).toBe();
-      expect(Log.data.warn[0]).toEqual([ 'Dispatcher.plugin', "Wrong computed member 'c' defination in Plugin c2" ]);
+      expect(chimeeLog.data.warn[0]).toEqual([ 'Dispatcher.plugin', "Wrong computed member 'c' defination in Plugin c2" ]);
     });
 
     test('one function return normal getter', () => {

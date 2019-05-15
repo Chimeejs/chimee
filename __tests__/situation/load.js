@@ -19,8 +19,8 @@ describe('load', () => {
       wrapper: document.createElement('div'),
       src: 'http://cdn.toxicjohann.com/lostStar.mp4',
     });
-    oldVideo = player.__dispatcher.dom.videoElement;
-    oldKernel = player.__dispatcher.kernel;
+    oldVideo = player.dispatcher.dom.videoElement;
+    oldKernel = player.dispatcher.kernel;
     Log.data.warn = [];
     Log.data.error = [];
     originFn = global.document.createElement;
@@ -48,7 +48,7 @@ describe('load', () => {
     await sleep(100);
     expect(player.$video).not.toBe(oldVideo);
     expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.dispatcher.kernel).not.toBe(oldKernel);
   });
 
   test('load with different box', async () => {
@@ -61,7 +61,7 @@ describe('load', () => {
     await sleep(100);
     expect(player.$video).not.toBe(oldVideo);
     expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.dispatcher.kernel).not.toBe(oldKernel);
   });
 
   test('load with different preset', async () => {
@@ -73,7 +73,7 @@ describe('load', () => {
     await sleep(100);
     expect(player.$video).not.toBe(oldVideo);
     expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.dispatcher.kernel).not.toBe(oldKernel);
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
   });
 
@@ -85,7 +85,7 @@ describe('load', () => {
     await sleep(100);
     expect(player.$video).not.toBe(oldVideo);
     expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.dispatcher.kernel).not.toBe(oldKernel);
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
   });
 
@@ -98,7 +98,7 @@ describe('load', () => {
     await sleep(100);
     expect(player.$video).not.toBe(oldVideo);
     expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.dispatcher.kernel).not.toBe(oldKernel);
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
   });
 
@@ -111,7 +111,7 @@ describe('load', () => {
     await sleep(100);
     expect(player.$video).not.toBe(oldVideo);
     expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.dispatcher.kernel).not.toBe(oldKernel);
     expect(player.src).toBe('http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4');
   });
 
@@ -123,7 +123,7 @@ describe('load', () => {
     await sleep(100);
     expect(player.$video).not.toBe(oldVideo);
     expect(player.$video).toBe(video);
-    expect(player.__dispatcher.kernel).not.toBe(oldKernel);
+    expect(player.dispatcher.kernel).not.toBe(oldKernel);
     expect(player.src).toBe('');
   });
 

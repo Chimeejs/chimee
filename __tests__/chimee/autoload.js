@@ -29,7 +29,7 @@ describe('chimee autoload attributes', () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [],
       events: {},
     });
@@ -61,7 +61,7 @@ describe('chimee autoload attributes', () => {
     expect(loadCount).toBe(1);
   });
 
-  test('_autoloadVideoSrcAtFirst', async () => {
+  test('autoloadVideoSrcAtFirst', async () => {
     player = new Chimee({
       // 播放地址
       src: 'http://cdn.toxicjohann.com/lostStar.mp4',
@@ -70,7 +70,7 @@ describe('chimee autoload attributes', () => {
       // 编解码容器
       box: 'native',
       // dom容器
-      wrapper: 'body',
+      wrapper: document.createElement('div'),
       plugin: [ 'autoloadtest' ],
       events: {},
       autoload: false,

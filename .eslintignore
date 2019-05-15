@@ -4,3 +4,5 @@ flow
 coverage
 bundle-size
 demo
+flow-typed
+ts-out
