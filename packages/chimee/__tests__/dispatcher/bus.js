@@ -585,7 +585,7 @@ describe('bus', () => {
     expect(() => bus.off('b', 'run', function() {}, 'main')).not.toThrow();
   });
 
-  describe('error handle', async () => {
+  describe('error handle', () => {
     const errmsg = 'i am an error';
     const errorFn = () => { throw new Error(errmsg); };
     let errcount;
