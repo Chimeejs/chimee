@@ -2,7 +2,7 @@
 
 本章节假设你已经大体了解了 [Chimee 插件机制](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md)，我们一起来看一下怎么编写一个UI插件。
 
-这里我们以比较通用的模态窗插件 `popup` 为例（[点击这里看示例效果](http://hzj.qihu.work/h5-videoplayer/demo/ui-popup/)）。
+这里我们以比较通用的模态窗插件 `popup` 为例（[点击这里看示例效果](https://github.com/Chimeejs/chimee-plugin-popup/blob/master/demo/index.js)）。
 
 ## 需求准备
 首先我们的梳理一下基本的插件需求：
@@ -131,14 +131,14 @@ chimee-popup pp-close{
 
 当然，上面只是一个简单的例子，还有[很多功能](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md)是没有用上的。
 
-基于 `Chimee PluginConfing` API可以非常方便的实现自己想要的UI插件，[比如广告控制](http://hzj.qihu.work/h5-videoplayer/demo/ui-ad/)。
+基于 `Chimee PluginConfing` API可以非常方便的实现自己想要的UI插件，[比如广告控制](http://chimee.org/h5-videoplayer/demo/ui-ad/)。
 
 
 也许你已经想到可以做更多的事情了吧？赶紧行动起来吧！插件开发API有什么建议或想法也欢迎随时反馈。
 
 ## popupFactory
 
-另外，为了方便实现弹层插件，我们也另外抽象了一个[popup工厂方法](http://hzj.qihu.work/h5-videoplayer/esdoc/function/index.html#static-function-popupFactory), 像开始提到的popup示例以及前文的广告示例就是基于这个实现的。
+另外，为了方便实现弹层插件，我们也另外抽象了一个[popup工厂方法](https://github.com/Chimeejs/chimee-plugin-popup), 像开始提到的popup示例以及前文的广告示例就是基于这个实现的。
 
 基于这个包装你的 `pluginConfig` ，我们给popup提供了一些定制化参数和 `methods` 扩展，可以更方便的进行尺寸大小、坐标位置控制等。
 
