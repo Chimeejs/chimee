@@ -174,14 +174,15 @@ describe("plugin's lifecycle", () => {
     });
 
     test('asynchronize with reject', async () => {
+      const error = new Error('test');
       const plugin = new Plugin({
         id: 'b',
         inited() {
-          return Promise.reject(new Error('test'));
+          return Promise.reject(error);
         },
       }, dispatcher);
       plugin.runInitedHook();
-      await expect(plugin.ready).rejects.toBe();
+      await expect(plugin.ready).rejects.toBe(error);
       expect(plugin.readySync).toBe(false);
     });
   });
