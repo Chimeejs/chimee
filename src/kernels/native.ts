@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
 import { isElement } from 'toxic-predicate-functions';
 import { IVideoKernel } from './base';
 
