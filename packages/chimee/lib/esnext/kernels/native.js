@@ -1,4 +1,4 @@
-import * as EventEmitter from 'events';
+import EventEmitter from 'events';
 import { isElement } from 'toxic-predicate-functions';
 let tempCurrentTime = 0;
 export default class NativeVideoKernel extends EventEmitter {

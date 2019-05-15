@@ -552,7 +552,7 @@ export default class VideoWrapper {
       Object.defineProperty(this, key, {
         value(...args: any) {
           return new Promise((resolve) => {
-            const id = this.__id;
+            const id = this.id;
             this.dispatcher.binder.once({
               fn: resolve,
               id,

@@ -15,10 +15,10 @@ export default class Chimee extends VideoWrapper {
         this.destroyed = false;
         this.version = process.env.PLAYER_VERSION;
         let config;
-        if (process.env.NODE_ENV !== 'production' && !global.Object.defineProperty) {
+        if (process.env.NODE_ENV !== 'production' && !isFunction(Object.defineProperty)) {
             chimeeLog.error('Chimee', 'We detect that this browser lack of Object.defineProperty. Chimee can\'t run on this browser');
         }
-        if (process.env.NODE_ENV !== 'production' && !global.Promise) {
+        if (process.env.NODE_ENV !== 'production' && typeof Promise === 'undefined') {
             chimeeLog.error('Chimee', 'We detect that this browser lack of Promise. If you are running Chimee in old browser. Please make sure you have import polyfill such as babel-polyfill.');
         }
         if (isString(rawConfig) || isElement(rawConfig)) {

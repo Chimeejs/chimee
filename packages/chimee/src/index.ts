@@ -58,12 +58,12 @@ export default class Chimee extends VideoWrapper {
     super({ id: '_vm' });
     let config: UserConfig;
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && !global.Object.defineProperty) {
+    if (process.env.NODE_ENV !== 'production' && !isFunction(Object.defineProperty)) {
       /* istanbul ignore next */
       chimeeLog.error('Chimee', 'We detect that this browser lack of Object.defineProperty. Chimee can\'t run on this browser');
     }
     /* istanbul ignore if */
-    if (process.env.NODE_ENV !== 'production' && !global.Promise) {
+    if (process.env.NODE_ENV !== 'production' && typeof Promise === 'undefined') {
       /* istanbul ignore next */
       chimeeLog.error('Chimee', 'We detect that this browser lack of Promise. If you are running Chimee in old browser. Please make sure you have import polyfill such as babel-polyfill.');
     }

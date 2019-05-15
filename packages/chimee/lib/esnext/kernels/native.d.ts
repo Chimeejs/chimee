@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import * as EventEmitter from 'events';
+import EventEmitter from 'events';
 import { IVideoKernel } from './base';
 export declare type NativeVideoKernelConfig = {
     src: string;
