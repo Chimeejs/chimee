@@ -26,9 +26,9 @@
   },
   "husky": {
     "hooks": {
-      "precommit": "npm run lint",
-      "prepush": "npm t",
-      "postmerge": "sh tool/auto-npm-install.sh"
+      "pre-commit": "npm run lint",
+      "pre-push": "npm t",
+      "post-merge": "sh tool/auto-npm-install.sh"
     }
   },
   "repository": {
