@@ -1,9 +1,7 @@
 import base, { banner } from './rollup.config.base';
-import serve from 'rollup-plugin-serve';
-import livereload from 'rollup-plugin-livereload';
 import replace from 'rollup-plugin-replace';
-import sourcemaps from 'rollup-plugin-sourcemaps';
 import { camelize } from 'toxic-utils';
+import sourcemaps from 'rollup-plugin-sourcemaps';
 const { name } = require('../package.json');
 const config = base('iife');
 // delete config.plugins;
@@ -13,9 +11,9 @@ config.plugins = config.plugins.concat([
   }),
   // serve(),
   // livereload(),
-  // sourcemaps(),
+  sourcemaps(),
 ]);
-config.input = 'lib/esnext/index.js';
+// config.input = 'lib/esnext/index.js';
 export default Object.assign(config, {
   output: {
     format: 'umd',

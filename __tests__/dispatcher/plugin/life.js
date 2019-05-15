@@ -177,7 +177,7 @@ describe("plugin's lifecycle", () => {
       const plugin = new Plugin({
         id: 'b',
         inited() {
-          return Promise.reject();
+          return Promise.reject(new Error('test'));
         },
       }, dispatcher);
       plugin.runInitedHook();

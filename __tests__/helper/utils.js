@@ -26,7 +26,7 @@ describe('runRejectableQueue', async () => {
   test('function and promise.reject', () => {
     expect(runRejectableQueue([
       () => {},
-      Promise.reject(),
+      Promise.reject(new Error('test')),
       () => new Promise(resolve => resolve()),
     ])).rejects.toMatch('stop');
   });
@@ -34,7 +34,7 @@ describe('runRejectableQueue', async () => {
     expect(runRejectableQueue([
       () => {},
       Promise.resolve(),
-      () => new Promise((resolve, reject) => reject()),
+      () => new Promise((resolve, reject) => reject(new Error('test'))),
     ])).rejects.toMatch('stop');
   });
   test('order', async () => {
@@ -57,11 +57,12 @@ describe('runRejectableQueue', async () => {
     ])).rejects.toBe(error);
   });
   test('reject info catch', async () => {
+    const error = new Error('test');
     await expect(runRejectableQueue([
       () => {},
-      () => Promise.reject('abc'),
+      () => Promise.reject(error),
       () => {},
-    ])).rejects.toBe('abc');
+    ])).rejects.toBe(error);
   });
 });
 

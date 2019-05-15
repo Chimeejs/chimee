@@ -89,7 +89,7 @@ describe("plugin's error", () => {
     const plugin = new Plugin({
       id: 'err',
       inited() {
-        return Promise.reject();
+        return Promise.reject(new Error('test'));
       },
     }, dispatcher);
     expect(plugin.runInitedHook({})).rejects.toBe();

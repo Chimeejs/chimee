@@ -10,7 +10,7 @@ server.listen(3000);
 
 const livereload = require('livereload');
 const lrserver = livereload.createServer();
-lrserver.watch([ path.resolve(__dirname, '../demo'), path.resolve(__dirname, '../lib/esnext/') ]);
+lrserver.watch([ path.resolve(__dirname, '../demo'), path.resolve(__dirname, '../lib/index.dev.js') ]);
 
 function closeServerOnTermination(server) {
   const terminationSignals = [ 'SIGINT', 'SIGTERM' ];
