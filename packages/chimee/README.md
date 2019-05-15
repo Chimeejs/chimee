@@ -8,7 +8,7 @@
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 [![jest](https://facebook.github.io/jest/img/jest-badge.svg)](https://github.com/facebook/jest)
 [![Code Quality: Javascript](https://img.shields.io/lgtm/grade/javascript/g/Chimeejs/chimee.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Chimeejs/chimee/context:javascript)
-[![Total Alerts](https://img.shields.io/lgtm/alerts/g/Chimeejs/chimee.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Chimeejs/chimee/alerts)
+[![Total Alerts](https://img.shields.io/lgtm/alerts/g/Chimeejs/chimee.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Chimeejs/chimee/alerts) [![Greenkeeper badge](https://badges.greenkeeper.io/Chimeejs/chimee.svg)](https://greenkeeper.io/)
 
 English | [中文](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/README.md)
 
