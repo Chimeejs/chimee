@@ -24,7 +24,10 @@
     "autou": "ncu -a",
     "jest": "jest",
     "karma": "karma start karma.conf.js",
-    "dts": "dts-bundle-generator -o ./lib/index.d.ts src/index.ts"
+    "dts": "dts-bundle-generator -o ./lib/index.d.ts src/index.ts",
+    "preversion": "npm test",
+    "version": "npm run build && git add -A dist",
+    "postversion": "git push && git push --tags"
   },
   "husky": {
     "hooks": {
