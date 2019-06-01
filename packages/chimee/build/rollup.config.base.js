@@ -174,6 +174,6 @@ export default function(mode) {
     },
     watch: {
       clearScreen: false,
-    }
+    },
   };
 }
