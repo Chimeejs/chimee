@@ -7,8 +7,6 @@
   "jsnext:main": "lib/index.mjs",
   "browser": "lib/index.browser.js",
   "scripts": {
-    "precommit": "npm run lint",
-    "prepush": "npm run test",
     "prepublishOnly": "npm run lint && npm t && pkg-ok",
     "build": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
     "b-common": "rollup -c build/rollup.config.common.js",
@@ -22,6 +20,12 @@
     "test": "karma start karma.conf.js",
     "unit": "karma start karma.conf.js --auto-watch",
     "upload-coverage": "npm install coveralls && npm install nyc && ./node_modules/.bin/nyc report --temp-directory=coverage --reporter=text-lcov | ./node_modules/.bin/coveralls"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm t"
+    }
   },
   "repository": {
     "type": "git",
