@@ -69,5 +69,8 @@
     "rollup-plugin-serve": "^0.4.2",
     "rollup-plugin-uglify": "^3.0.0",
     "rollup-watch": "^4.3.1"
+  },
+  "jest": {
+    "testURL": "http://localhost"
   }
 }
