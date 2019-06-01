@@ -18,7 +18,8 @@
     "lint": "eslint . --fix && flow check",
     "flow": "flow check",
     "test": "jest --coverage",
-    "unit": "jest --coverage --watch"
+    "unit": "jest --coverage --watch",
+    "upload-coverage": "npm install coveralls && npm install nyc && ./node_modules/.bin/nyc report --temp-directory=coverage --reporter=text-lcov | ./node_modules/.bin/coveralls"
   },
   "repository": {
     "type": "git",
