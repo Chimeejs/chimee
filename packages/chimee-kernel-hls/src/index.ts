@@ -1,13 +1,25 @@
 import { chimeeLog } from 'chimee-helper-log';
 import { EventEmitter } from 'events';
 import HlsCore from 'hls.js';
-import { isPlainObject } from 'lodash';
 import { isElement } from 'toxic-predicate-functions';
-import { IVideoKernel } from 'chimee';
+interface IVideoKernel {
+    attachMedia(): void;
+    destroy(): void;
+    load(src: string): void;
+    off(key: string, fn: (...args: any[]) => any): void;
+    on(key: string, fn: (...args: any[]) => any): void;
+    pause(): void;
+    play(): void;
+    refresh(): void;
+    seek(seconds: number): void;
+    startLoad(src: string): void;
+    stopLoad(): void;
+    unload(): void;
+}
 
 export type HlsJSVideoKernelConfig = {
-  src: string;
   debug?: boolean;
+  src: string;
 };
 
 export type HlsJSCustomConfig = {
@@ -65,7 +77,7 @@ export default class HlsJSVideoKernel extends EventEmitter implements IVideoKern
   public hlsErrorHandler = (event: string, data: any) => {
     this.emit('error', data);
     this.emit(event, data);
-    
+
     /* istanbul ignore next */
     chimeeLog.error(LOG_TAG + (event ? ' ' + event : ''), data.details);
   }

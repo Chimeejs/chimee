@@ -16,16 +16,10 @@
     "start": "tsc --outDir ./lib/esnext -w & rollup -c build/rollup.config.dev.js -w",
     "tsc": "tsc --outDir ./lib/esnext",
     "tscw": "tsc --outDir ./lib/esnext -w",
-    "lint": "eslint . --fix && flow check",
+    "lint": "eslint . --fix",
     "test": "karma start karma.conf.js",
     "unit": "karma start karma.conf.js --auto-watch",
     "upload-coverage": "npm install coveralls && npm install nyc && ./node_modules/.bin/nyc report --temp-directory=coverage --reporter=text-lcov | ./node_modules/.bin/coveralls"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm t"
-    }
   },
   "repository": {
     "type": "git",
@@ -44,7 +38,7 @@
   },
   "homepage": "https://github.com/Chimeejs/chimee-kernel-hls#readme",
   "dependencies": {
-    "@babel/runtime-corejs2": "^7.4.5",
+    "@babel/runtime": "^7.4.5",
     "chimee-helper-log": "^0.2.3",
     "events": "^3.0.0",
     "hls.js": "^0.12.4",
@@ -75,14 +69,10 @@
     "@types/hls.js": "^0.12.4",
     "@types/lodash": "^4.14.133",
     "babel-eslint": "^10.0.1",
-    "babel-plugin-istanbul": "^5.1.4",
     "babel-plugin-lodash": "^3.3.4",
-    "babel-preset-es2015-rollup": "^3.0.0",
     "chai": "^4.2.0",
-    "chimee": "^1.0.1-alpha.0",
     "eslint": "^5.16.0",
     "eslint-config-egg": "^7.4.1",
-    "husky": "^2.3.0",
     "karma": "^4.1.0",
     "karma-coverage": "^1.1.2",
     "karma-coverage-istanbul-reporter": "^2.0.5",
@@ -94,8 +84,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "mocha": "^6.1.4",
     "pkg-ok": "^2.3.1",
-    "puppeteer": "^1.17.0",
-    "rollup": "^1.13.0",
+    "rollup": "^1.13.1",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-includepaths": "^0.2.3",
@@ -105,8 +94,7 @@
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-uglify": "^6.0.2",
     "rollup-plugin-visualizer": "^1.1.1",
-    "rollup-watch": "^4.3.1",
-    "toxic-predicate-functions": "^0.2.5",
+    "toxic-predicate-functions": "^0.3.0",
     "tslint": "^5.17.0",
     "typescript": "^3.5.1"
   }

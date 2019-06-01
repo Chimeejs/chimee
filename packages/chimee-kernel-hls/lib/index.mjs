@@ -1,158 +1,137 @@
 
 /**
  * chimee-kernel-hls v1.3.2
- * (c) 2017-2018 songguangyu
+ * (c) 2017-2019 songguangyu
  * Released under MIT
  */
 
-import _Object$getOwnPropertyDescriptor from 'babel-runtime/core-js/object/get-own-property-descriptor';
-import _typeof from 'babel-runtime/helpers/typeof';
-import _Object$getPrototypeOf from 'babel-runtime/core-js/object/get-prototype-of';
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _createClass from 'babel-runtime/helpers/createClass';
-import _inherits from 'babel-runtime/helpers/inherits';
+import _typeof from '@babel/runtime/helpers/typeof';
+import _classCallCheck from '@babel/runtime/helpers/classCallCheck';
+import _createClass from '@babel/runtime/helpers/createClass';
+import _possibleConstructorReturn from '@babel/runtime/helpers/possibleConstructorReturn';
+import _getPrototypeOf from '@babel/runtime/helpers/getPrototypeOf';
+import _inherits from '@babel/runtime/helpers/inherits';
+import { chimeeLog } from 'chimee-helper-log';
+import { EventEmitter } from 'events';
 import HlsCore from 'hls.js';
-import { CustEvent, deepAssign, Log, isElement, isObject } from 'chimee-helper';
-import { autobind } from 'toxic-decorators';
+import { isElement } from 'toxic-predicate-functions';
 
 var defaultCustomConfig = {
-  debug: false,
-  enableWorker: true
+  debug: false
 };
-
-var _class;
-
-function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
-  var desc = {};
-  Object['ke' + 'ys'](descriptor).forEach(function (key) {
-    desc[key] = descriptor[key];
-  });
-  desc.enumerable = !!desc.enumerable;
-  desc.configurable = !!desc.configurable;
-
-  if ('value' in desc || desc.initializer) {
-    desc.writable = true;
-  }
-
-  desc = decorators.slice().reverse().reduce(function (desc, decorator) {
-    return decorator(target, property, desc) || desc;
-  }, desc);
-
-  if (context && desc.initializer !== void 0) {
-    desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
-    desc.initializer = undefined;
-  }
-
-  if (desc.initializer === void 0) {
-    Object['define' + 'Property'](target, property, desc);
-    desc = null;
-  }
-
-  return desc;
-}
-
 var LOG_TAG = 'chimee-kernel-hls';
 
-var Hls = (_class = function (_CustEvent) {
-  _inherits(Hls, _CustEvent);
+var HlsJSVideoKernel =
+/*#__PURE__*/
+function (_EventEmitter) {
+  _inherits(HlsJSVideoKernel, _EventEmitter);
 
-  _createClass(Hls, null, [{
-    key: 'isSupport',
-    value: function isSupport() {
-      return HlsCore.isSupported();
-    }
-  }]);
+  function HlsJSVideoKernel(videoElement, config) {
+    var _this;
 
-  function Hls(videoElement, config) {
     var customConfig = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-    _classCallCheck(this, Hls);
+    _classCallCheck(this, HlsJSVideoKernel);
 
-    var _this = _possibleConstructorReturn(this, (Hls.__proto__ || _Object$getPrototypeOf(Hls)).call(this));
-
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(HlsJSVideoKernel).call(this));
     _this.version = '1.3.2';
 
-    if (!isElement(videoElement)) throw new Error('video element passed in ' + LOG_TAG + ' must be a HTMLVideoElement, but not ' + (typeof videoElement === 'undefined' ? 'undefined' : _typeof(videoElement)));
-    if (!isObject(config)) throw new Error('config of ' + LOG_TAG + ' must be an Object but not ' + (typeof config === 'undefined' ? 'undefined' : _typeof(config)));
+    _this.hlsErrorHandler = function (event, data) {
+      _this.emit('error', data);
+
+      _this.emit(event, data);
+
+      chimeeLog.error(LOG_TAG + (event ? ' ' + event : ''), data.details);
+    };
+
+    if (!isElement(videoElement)) {
+      throw new Error("video element passed in ".concat(LOG_TAG, " must be a HTMLVideoElement, but not ").concat(_typeof(videoElement)));
+    }
+
     _this.video = videoElement;
     _this.config = config;
-    _this.customConfig = deepAssign({}, defaultCustomConfig, customConfig);
+    _this.customConfig = Object.assign({}, defaultCustomConfig, customConfig);
     _this.hlsKernel = new HlsCore(_this.customConfig);
+
     _this.bindEvents();
+
     _this.attachMedia();
+
+    if (!_this.off) {
+      _this.off = _this.removeListener;
+    }
+
     return _this;
   }
 
-  _createClass(Hls, [{
-    key: 'bindEvents',
+  _createClass(HlsJSVideoKernel, [{
+    key: "attachMedia",
+    value: function attachMedia() {
+      return this.hlsKernel.attachMedia(this.video);
+    }
+  }, {
+    key: "bindEvents",
     value: function bindEvents() {
       var remove = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
       var hlsKernel = this.hlsKernel;
-      /* istanbul ignore else */
+
       if (hlsKernel) {
         hlsKernel[remove ? 'off' : 'on'](HlsCore.Events.ERROR, this.hlsErrorHandler);
       }
     }
   }, {
-    key: 'load',
-    value: function load() {
-      return this.hlsKernel.loadSource(this.config.src);
-    }
-  }, {
-    key: 'startLoad',
-    value: function startLoad() {
-      return this.hlsKernel.startLoad();
-    }
-  }, {
-    key: 'stopLoad',
-    value: function stopLoad() {
-      return this.hlsKernel.stopLoad();
-    }
-  }, {
-    key: 'attachMedia',
-    value: function attachMedia() {
-      return this.hlsKernel.attachMedia(this.video);
-    }
-  }, {
-    key: 'play',
-    value: function play() {
-      return this.video.play();
-    }
-  }, {
-    key: 'destroy',
+    key: "destroy",
     value: function destroy() {
       this.bindEvents(true);
       return this.hlsKernel.destroy();
     }
   }, {
-    key: 'seek',
-    value: function seek(seconds) {
-      this.video.currentTime = seconds;
+    key: "load",
+    value: function load() {
+      return this.hlsKernel.loadSource(this.config.src);
     }
   }, {
-    key: 'pause',
+    key: "pause",
     value: function pause() {
       return this.video.pause();
     }
   }, {
-    key: 'refresh',
+    key: "play",
+    value: function play() {
+      return this.video.play();
+    }
+  }, {
+    key: "refresh",
     value: function refresh() {
       this.hlsKernel.stopLoad();
       return this.hlsKernel.loadSource(this.config.src);
     }
   }, {
-    key: 'hlsErrorHandler',
-    value: function hlsErrorHandler(event, data) {
-      this.emit('error', data);
-      this.emit(event, data);
-      /* istanbul ignore next */
-      Log.error(LOG_TAG + (event ? ' ' + event : ''), data.details);
+    key: "seek",
+    value: function seek(seconds) {
+      this.video.currentTime = seconds;
+    }
+  }, {
+    key: "startLoad",
+    value: function startLoad() {
+      return this.hlsKernel.startLoad();
+    }
+  }, {
+    key: "stopLoad",
+    value: function stopLoad() {
+      return this.hlsKernel.stopLoad();
+    }
+  }, {
+    key: "unload",
+    value: function unload() {}
+  }], [{
+    key: "isSupport",
+    value: function isSupport() {
+      return HlsCore.isSupported();
     }
   }]);
 
-  return Hls;
-}(CustEvent), (_applyDecoratedDescriptor(_class.prototype, 'hlsErrorHandler', [autobind], _Object$getOwnPropertyDescriptor(_class.prototype, 'hlsErrorHandler'), _class.prototype)), _class);
+  return HlsJSVideoKernel;
+}(EventEmitter);
 
-export default Hls;
+export default HlsJSVideoKernel;

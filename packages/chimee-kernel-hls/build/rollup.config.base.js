@@ -14,91 +14,52 @@ import visualizer from 'rollup-plugin-visualizer';
 const babelConfig = {
   common: {
     presets: [
-      [ '@babel/env', {
+      [ '@babel/preset-env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
     ],
+    plugins: [ '@babel/plugin-transform-runtime' ],
     exclude: 'node_modules/**',
-    plugins: [
-      [ '@babel/plugin-proposal-decorators', { legacy: true }],
-      '@babel/plugin-syntax-dynamic-import',
-      '@babel/plugin-proposal-class-properties',
-      'lodash',
-      '@babel/plugin-transform-runtime',
-    ],
-    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false,
   },
   es: {
     presets: [
-      [ '@babel/env', {
+      [ '@babel/preset-env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
     ],
+    plugins: [ '@babel/plugin-transform-runtime' ],
     exclude: 'node_modules/**',
-    plugins: [
-      [ '@babel/plugin-proposal-decorators', { legacy: true }],
-      '@babel/plugin-syntax-dynamic-import',
-      '@babel/plugin-proposal-class-properties',
-      'lodash',
-      '@babel/plugin-transform-runtime',
-    ],
-    externalHelpers: true,
-    runtimeHelpers: true,
-    babelrc: false,
-  },
-  esm: {
-    presets: [
-      [ '@babel/env', {
-        modules: false,
-        targets: {
-          browsers: [ 'last 2 versions', 'not ie <= 8' ],
-        },
-      }],
-    ],
-    exclude: 'node_modules/**',
-    plugins: [
-      [ '@babel/plugin-proposal-decorators', { legacy: true }],
-      '@babel/plugin-syntax-dynamic-import',
-      '@babel/plugin-proposal-class-properties',
-      'lodash',
-      '@babel/plugin-transform-runtime',
-    ],
-    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false,
   },
   umd: {
     presets: [
-      [ '@babel/env', {
+      [ '@babel/preset-env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
     ],
-    exclude: 'node_modules/**',
     plugins: [
-      [ '@babel/plugin-proposal-decorators', { legacy: true }],
-      '@babel/plugin-syntax-dynamic-import',
-      '@babel/plugin-proposal-class-properties',
-      'lodash',
-      '@babel/plugin-transform-runtime',
+      [ '@babel/plugin-transform-runtime', { useESModules: true }],
     ],
-    externalHelpers: true,
+    exclude: 'node_modules/**',
+    include: 'node_modules/@babel/runtime/**',
     runtimeHelpers: true,
     babelrc: false,
   },
   iife: {
     presets: [
-      [ '@babel/env', {
+      [ '@babel/preset-env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
@@ -106,41 +67,26 @@ const babelConfig = {
       }],
     ],
     exclude: 'node_modules/**',
-    plugins: [
-      [ '@babel/plugin-proposal-decorators', { legacy: true }],
-      '@babel/plugin-syntax-dynamic-import',
-      '@babel/plugin-proposal-class-properties',
-      'lodash',
-      '@babel/plugin-transform-runtime',
-    ],
-    externalHelpers: true,
-    runtimeHelpers: true,
+    plugins: [ ],
     babelrc: false,
   },
   min: {
     presets: [
-      [ '@babel/env', {
+      [ '@babel/preset-env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
     ],
+    plugins: [ ],
     exclude: 'node_modules/**',
-    plugins: [
-      [ '@babel/plugin-proposal-decorators', { legacy: true }],
-      '@babel/plugin-syntax-dynamic-import',
-      '@babel/plugin-proposal-class-properties',
-      'lodash',
-    ],
-    runtimeHelpers: true,
     babelrc: false,
   },
 };
 const externalRegExp = new RegExp('^(' + Object.keys(dependencies).join('|') + ')$');
 export default function(mode) {
   return {
-    // input: 'ts-out/index.js',
     input: 'lib/esnext/index.js',
     external(id) {
       return !/min|umd|iife|esm/.test(mode) && externalRegExp.test(id);
@@ -159,9 +105,6 @@ export default function(mode) {
         'process.env.VERSION': `'${version}'`,
       }),
       resolve({
-        customResolveOptions: {
-          moduleDirectory: /min|umd|iife|esm/.test(mode) ? [ 'src', 'node_modules' ] : [ 'src' ],
-        },
         preferBuiltins: false,
       }),
       visualizer({

@@ -24,6 +24,7 @@ module.exports = function(config) {
     preprocessors: {
       'tests/**/*.js': [ 'rollup' ],
       'lib/esnext/index.js': [ 'coverage' ],
+      'src/**/*.ts': [ 'coverage' ],
     },
 
     // test results reporter to use
@@ -44,29 +45,22 @@ module.exports = function(config) {
       plugins: [
         require('rollup-plugin-babel')({
           presets: [
-            [ '@babel/env', {
+            [ '@babel/preset-env', {
               modules: false,
               targets: {
                 browsers: [ 'last 2 versions', 'not ie <= 8' ],
               },
             }],
           ],
-          exclude: 'node_modules/**',
           plugins: [
-            [ '@babel/plugin-proposal-decorators', { legacy: true }],
-            '@babel/plugin-syntax-dynamic-import',
-            '@babel/plugin-proposal-class-properties',
-            'lodash',
-            '@babel/plugin-transform-runtime',
+            [ '@babel/plugin-transform-runtime', { useESModules: true }],
           ],
-          externalHelpers: true,
+          exclude: 'node_modules/**',
+          include: 'node_modules/@babel/runtime/**',
           runtimeHelpers: true,
           babelrc: false,
         }),
         require('rollup-plugin-node-resolve')({
-          customResolveOptions: {
-            moduleDirectory: [ 'src', 'node_modules' ],
-          },
           preferBuiltins: false,
         }),
         require('rollup-plugin-commonjs')({
