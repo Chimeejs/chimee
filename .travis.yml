@@ -5,6 +5,8 @@ node_js:
     - '10'
     - '11'
     - '12'
+before_script:
+    - 'npm run lerna bootstrap --ignore-prepublish'
 script:
     - 'npm test'
 after_success:

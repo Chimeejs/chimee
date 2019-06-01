@@ -1,7 +1,8 @@
 {
 	"scripts": {
 		"test": "lerna exec --parallel -- npm t",
-		"upload-coverage": "lerna exec --parallel -- npm run upload-coverage"
+		"upload-coverage": "lerna exec --parallel -- npm run upload-coverage",
+		"lerna": "lerna"
 	},
 	"devDependencies": {
 		"lerna": "^2.9.0"
