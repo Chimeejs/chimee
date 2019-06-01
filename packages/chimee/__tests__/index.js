@@ -1,5 +1,6 @@
 import Chimee from 'index';
-import { Log, bind } from 'chimee-helper';
+import { chimeeLog } from 'chimee-helper-log';
+import { bind } from 'toxic-utils';
 
 describe('Chimee', () => {
   let player;
@@ -22,8 +23,8 @@ describe('Chimee', () => {
   });
 
   beforeEach(() => {
-    Log.data.warn = [];
-    Log.data.error = [];
+    chimeeLog.data.warn = [];
+    chimeeLog.data.error = [];
     originURLrevoke = global.URL.revokeObjectURL;
     global.URL.revokeObjectURL = () => {};
   });
@@ -45,10 +46,10 @@ describe('Chimee', () => {
     const elements = [ video, container, wrapper ];
     [ 'video', 'container', 'wrapper' ].forEach((key, index) => {
       test('key', () => {
-        Log.data.warn = [];
+        chimeeLog.data.warn = [];
         expect(player['$' + key]).toEqual(elements[index]);
-        // expect(Log.data.warn.length).toBe(1);
-        Log.data.warn = [];
+        // expect(chimeeLog.data.warn.length).toBe(1);
+        chimeeLog.data.warn = [];
       });
     });
   });

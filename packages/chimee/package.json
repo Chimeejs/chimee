@@ -14,6 +14,7 @@
     "unit": "jest --coverage --watch",
     "lint": "tslint -c ./tslint.json 'src/**/*.ts' --fix && eslint . --fix",
     "start": "tsc --outDir ./lib/esnext -w & rollup -c build/rollup.config.dev.js -w & node ./build/livereload",
+    "start1": "tsc --outDir ./lib/esnext -w & rollup -c build/rollup.config.dev.js -w",
     "build": "npm run tsc && npm run dts && npm run b-common && npm run b-es && npm run b-umd && npm run b-min && npm run b-esm",
     "b-common": "rollup -c build/rollup.config.common.js",
     "b-es": "rollup -c build/rollup.config.es.js",
@@ -56,7 +57,6 @@
   "homepage": "https://github.com/Chimeejs/chimee#readme",
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "chimee-helper": "^0.2.11",
     "chimee-helper-log": "^0.2.3",
     "dom-helpers": "^3.4.0",
     "es-fullscreen": "^0.4.0-beta.4",

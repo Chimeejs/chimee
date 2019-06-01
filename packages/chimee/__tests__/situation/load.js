@@ -5,7 +5,8 @@ function sleep(duration) {
   return new Promise(resolve => setTimeout(resolve, duration));
 }
 
-import { bind, Log } from 'chimee-helper';
+import { chimeeLog } from 'chimee-helper-log';
+import { bind } from 'toxic-utils';
 
 describe('load', () => {
   let player;
@@ -21,8 +22,8 @@ describe('load', () => {
     });
     oldVideo = player.dispatcher.dom.videoElement;
     oldKernel = player.dispatcher.kernel;
-    Log.data.warn = [];
-    Log.data.error = [];
+    chimeeLog.data.warn = [];
+    chimeeLog.data.error = [];
     originFn = global.document.createElement;
     global.document.createElement = function(tag) {
       if (tag === 'video') {

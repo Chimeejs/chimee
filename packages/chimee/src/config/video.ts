@@ -309,7 +309,7 @@ export default class VideoConfig {
 
   public playbackRate: number = 1;
 
-  public playsInline = false;
+  public playsInline: boolean = false;
 
   public poster: string = undefined;
 
@@ -350,11 +350,11 @@ export default class VideoConfig {
 
     });
     Object.assign(this, config);
-    // deepAssign(this, config);
   }
 
   public init() {
     videoDomAttributes.forEach((key) => {
+      // @ts-ignore
       this[key] = this[key];
     });
     this.inited = true;

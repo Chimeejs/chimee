@@ -559,7 +559,10 @@ export default class Dispatcher {
     this.videoConfig.autoload = false;
     this.videoConfig.src = config.src;
     videoDomAttributes.forEach((key) => {
-      if (key !== 'src') { this.videoConfig[key] = originVideoConfig[key]; }
+      if (key !== 'src') {
+        // @ts-ignore
+        this.videoConfig[key] = originVideoConfig[key];
+      }
     });
     this.videoConfig.changeWatchable = true;
     this.binder.migrateKernelEvent(oldKernel, kernel);

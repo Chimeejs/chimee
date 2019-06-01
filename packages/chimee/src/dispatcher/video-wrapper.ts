@@ -208,6 +208,7 @@ export default class VideoWrapper {
         return value;
       }
       if (isVideoDomAttribute(attr)) {
+        // @ts-ignore
         this.dispatcher.videoConfig[attr] = value;
         return value;
       }

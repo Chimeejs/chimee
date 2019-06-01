@@ -6,7 +6,6 @@ export const banner = `
  * Released under ${license}
  */
 `;
-import flow from 'rollup-plugin-flow-no-whitespace';
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
@@ -15,7 +14,6 @@ import visualizer from 'rollup-plugin-visualizer';
 const babelConfig = {
   common: {
     presets: [
-      '@babel/preset-flow',
       [ '@babel/env', {
         modules: false,
         targets: {
@@ -37,7 +35,6 @@ const babelConfig = {
   },
   es: {
     presets: [
-      '@babel/preset-flow',
       [ '@babel/env', {
         modules: false,
         targets: {
@@ -59,7 +56,6 @@ const babelConfig = {
   },
   esm: {
     presets: [
-      '@babel/preset-flow',
       [ '@babel/env', {
         modules: false,
         targets: {
@@ -81,7 +77,6 @@ const babelConfig = {
   },
   umd: {
     presets: [
-      '@babel/preset-flow',
       [ '@babel/env', {
         modules: false,
         targets: {
@@ -103,7 +98,6 @@ const babelConfig = {
   },
   iife: {
     presets: [
-      '@babel/preset-flow',
       [ '@babel/env', {
         modules: false,
         targets: {
@@ -125,7 +119,6 @@ const babelConfig = {
   },
   min: {
     presets: [
-      '@babel/preset-flow',
       [ '@babel/env', {
         modules: false,
         targets: {
@@ -154,7 +147,6 @@ export default function(mode) {
     },
     plugins: [
       babel(babelConfig[mode]),
-      flow(),
       commonjs({
         namedExports: {
           // left-hand side can be an absolute path, a path
@@ -180,5 +172,8 @@ export default function(mode) {
       if (warning.code === 'THIS_IS_UNDEFINED') return;
       warn(warning); // this requires Rollup 0.46
     },
+    watch: {
+      clearScreen: false,
+    }
   };
 }

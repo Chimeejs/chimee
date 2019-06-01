@@ -9,11 +9,9 @@
     "jest/globals": true
   },
   "extends": [
-    "eslint-config-egg",
-    "plugin:flowtype/recommended"
+    "eslint-config-egg"
   ],
   "plugins": [
-    "flowtype",
     "jest"
   ],
   "parser": "babel-eslint",
