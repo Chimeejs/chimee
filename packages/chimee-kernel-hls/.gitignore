@@ -36,9 +36,6 @@ build/Release
 node_modules/
 jspm_packages/
 
-# Typescript v1 declaration files
-typings/
-
 # Optional npm cache directory
 .npm
 
@@ -60,3 +57,10 @@ typings/
 package-lock.json
 .DS_Store
 lib/index.dev.js
+lib/index.dev.js.map
+lib/esnext/*
+bundle-size/iife.html
+
+ts-out
+
+lerna-debug.log

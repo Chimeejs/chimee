@@ -2,7 +2,7 @@ const { version, name, author, license, dependencies } = require('../package.jso
 export const banner = `
 /**
  * ${name} v${version}
- * (c) 2017-${(new Date()).getFullYear()} ${author}
+ * (c) 2017-${(new Date().getFullYear())} ${author}
  * Released under ${license}
  */
 `;
@@ -10,23 +10,24 @@ import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
+import visualizer from 'rollup-plugin-visualizer';
 const babelConfig = {
   common: {
     presets: [
-      'flow',
-      [ 'env', {
+      [ '@babel/env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
+      [ '@babel/plugin-proposal-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
+      'lodash',
+      '@babel/plugin-transform-runtime',
     ],
     externalHelpers: true,
     runtimeHelpers: true,
@@ -34,20 +35,41 @@ const babelConfig = {
   },
   es: {
     presets: [
-      'flow',
-      [ 'env', {
+      [ '@babel/env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
+      [ '@babel/plugin-proposal-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
+      'lodash',
+      '@babel/plugin-transform-runtime',
+    ],
+    externalHelpers: true,
+    runtimeHelpers: true,
+    babelrc: false,
+  },
+  esm: {
+    presets: [
+      [ '@babel/env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
+    ],
+    exclude: 'node_modules/**',
+    plugins: [
+      [ '@babel/plugin-proposal-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
+      'lodash',
+      '@babel/plugin-transform-runtime',
     ],
     externalHelpers: true,
     runtimeHelpers: true,
@@ -55,20 +77,20 @@ const babelConfig = {
   },
   umd: {
     presets: [
-      'flow',
-      [ 'env', {
+      [ '@babel/env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
+      [ '@babel/plugin-proposal-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
+      'lodash',
+      '@babel/plugin-transform-runtime',
     ],
     externalHelpers: true,
     runtimeHelpers: true,
@@ -76,20 +98,20 @@ const babelConfig = {
   },
   iife: {
     presets: [
-      'flow',
-      [ 'env', {
+      [ '@babel/env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
-      'external-helpers',
-      'transform-decorators-legacy',
-      'transform-runtime',
+      [ '@babel/plugin-proposal-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
+      'lodash',
+      '@babel/plugin-transform-runtime',
     ],
     externalHelpers: true,
     runtimeHelpers: true,
@@ -97,54 +119,61 @@ const babelConfig = {
   },
   min: {
     presets: [
-      'flow',
-      [ 'env', {
+      [ '@babel/env', {
         modules: false,
         targets: {
           browsers: [ 'last 2 versions', 'not ie <= 8' ],
         },
       }],
-      'stage-0',
     ],
     exclude: 'node_modules/**',
     plugins: [
-      'external-helpers',
-      'transform-decorators-legacy',
+      [ '@babel/plugin-proposal-decorators', { legacy: true }],
+      '@babel/plugin-syntax-dynamic-import',
+      '@babel/plugin-proposal-class-properties',
+      'lodash',
     ],
     runtimeHelpers: true,
     babelrc: false,
   },
 };
-// const externalRegExp = new RegExp(Object.keys(dependencies).concat(Object.keys(helperDependencies)).join('|'));
-const externalRegExp = new RegExp(Object.keys(dependencies).join('|'));
+const externalRegExp = new RegExp('^(' + Object.keys(dependencies).join('|') + ')$');
 export default function(mode) {
   return {
-    input: 'src/index.js',
+    // input: 'ts-out/index.js',
+    input: 'lib/esnext/index.js',
     external(id) {
-      return !/min|umd|iife/.test(mode) && externalRegExp.test(id);
+      return !/min|umd|iife|esm/.test(mode) && externalRegExp.test(id);
     },
     plugins: [
       babel(babelConfig[mode]),
-      resolve({
-        customResolveOptions: {
-          moduleDirectory: [ 'src', 'node_modules' ],
+      commonjs({
+        namedExports: {
+          // left-hand side can be an absolute path, a path
+          // relative to the current directory, or the name
+          // of a module in node_modules
+          'node_modules/events/events.js': [ 'EventEmitter' ],
         },
-        preferBuiltins: true,
       }),
-      commonjs(),
       replace({
         'process.env.VERSION': `'${version}'`,
       }),
-    ].concat(/min|umd|iife/.test(mode)
-      ? [
-        resolve({
-          customResolveOptions: {
-            moduleDirectory: [ 'src', 'node_modules' ],
-          },
-          preferBuiltins: true,
-        }),
-      ]
-      : []
-    ),
+      resolve({
+        customResolveOptions: {
+          moduleDirectory: /min|umd|iife|esm/.test(mode) ? [ 'src', 'node_modules' ] : [ 'src' ],
+        },
+        preferBuiltins: false,
+      }),
+      visualizer({
+        filename: `bundle-size/${mode}.html`,
+      }),
+    ],
+    onwarn(warning, warn) {
+      if (warning.code === 'THIS_IS_UNDEFINED') return;
+      warn(warning); // this requires Rollup 0.46
+    },
+    watch: {
+      clearScreen: false,
+    },
   };
 }

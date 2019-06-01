@@ -8,11 +8,7 @@
     "es6": true
   },
   "extends": [
-    "eslint-config-egg",
-    "plugin:flowtype/recommended"
-  ],
-  "plugins": [
-    "flowtype"
+    "eslint-config-egg"
   ],
   "parser": "babel-eslint",
   "parserOptions": {
