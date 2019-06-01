@@ -67,9 +67,6 @@ export class ChimeeHelperLog {
   }
 
   public formatter(tag: string, msg?: string): string {
-    if (!isString(tag)) {
-      throw new TypeError(`Log's method only acccept string as argument, but not ${tag} in ${typeof tag}`);
-    }
     if (!isString(msg)) {
       return `[${this.GLOBAL_TAG}] > ${tag}`;
     }

@@ -38,25 +38,22 @@
   "homepage": "https://github.com/Chimeejs/chimee-helper-log#readme",
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "toxic-predicate-functions": "^0.2.5"
+    "toxic-predicate-functions": "^0.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
-    "@types/lodash": "^4.14.133",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
-    "babel-plugin-lodash": "^3.3.4",
-    "babel-preset-es2015-rollup": "^3.0.0",
     "documentation": "^11.0.0",
     "eslint": "^5.16.0",
     "eslint-config-egg": "^7.4.1",
     "eslint-plugin-jest": "^22.6.4",
     "husky": "^2.3.0",
     "jest": "^24.8.0",
-    "rollup": "^1.13.0",
+    "rollup": "^1.13.1",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.1",
@@ -84,6 +81,9 @@
       "jsx",
       "json",
       "node"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!lodash-es).+\\.js$"
     ]
   }
 }

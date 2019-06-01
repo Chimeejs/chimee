@@ -26,7 +26,7 @@ const babelConfig = {
         },
       }],
     ],
-    plugins: [ '@babel/plugin-transform-runtime', 'lodash' ],
+    plugins: [ '@babel/plugin-transform-runtime' ],
     exclude: 'node_modules/**',
     runtimeHelpers: true,
     babelrc: false,
@@ -40,7 +40,7 @@ const babelConfig = {
         },
       }],
     ],
-    plugins: [ '@babel/plugin-transform-runtime', 'lodash' ],
+    plugins: [ '@babel/plugin-transform-runtime' ],
     exclude: 'node_modules/**',
     runtimeHelpers: true,
     babelrc: false,
@@ -54,7 +54,7 @@ const babelConfig = {
         },
       }],
     ],
-    plugins: [ '@babel/plugin-transform-runtime', 'lodash' ],
+    plugins: [ '@babel/plugin-transform-runtime' ],
     exclude: 'node_modules/**',
     runtimeHelpers: true,
     babelrc: false,
@@ -69,7 +69,7 @@ const babelConfig = {
       }],
     ],
     exclude: 'node_modules/**',
-    plugins: [ 'lodash' ],
+    plugins: [ ],
     babelrc: false,
   },
   min: {
@@ -81,7 +81,7 @@ const babelConfig = {
         },
       }],
     ],
-    plugins: [ 'lodash' ],
+    plugins: [ ],
     exclude: 'node_modules/**',
     babelrc: false,
   },
@@ -95,11 +95,7 @@ export default function(mode) {
     },
     plugins: [
       babel(babelConfig[mode]),
-      commonjs({
-        namedExports: {
-          lodash: [ 'node_modules/lodash/index.js' ],
-        },
-      }),
+      commonjs(),
       resolve({
         customResolveOptions: {
           moduleDirectory: [ 'ts-out', 'node_modules' ],
