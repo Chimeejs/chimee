@@ -62,3 +62,5 @@ lib/esnext/*
 bundle-size/iife.html
 
 ts-out
+
+lerna-debug.log
