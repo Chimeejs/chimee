@@ -24,12 +24,6 @@
     "version": "npm run build && git add -A lib",
     "postversion": "git push && git push --tags"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm t"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Chimeejs/chimee-helper-log.git"
@@ -60,7 +54,6 @@
     "eslint": "^5.16.0",
     "eslint-config-egg": "^7.4.1",
     "eslint-plugin-jest": "^22.6.4",
-    "husky": "^2.3.0",
     "jest": "^24.8.0",
     "rollup": "^1.13.1",
     "rollup-plugin-babel": "^4.3.2",
