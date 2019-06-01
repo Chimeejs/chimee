@@ -25,6 +25,10 @@ export default class NativeVideoKernel extends EventEmitter implements IVideoKer
     }
     this.video = videoElement;
     this.config = config;
+    // If node.js version is lower than 10, there has not off method
+    if (!this.off) {
+      this.off = this.removeListener;
+    }
   }
 
   public attachMedia() {
