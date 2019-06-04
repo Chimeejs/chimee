@@ -1,5 +1,5 @@
 import { chimeeLog } from 'chimee-helper-log';
-import { camelCase, isFunction, isString } from 'lodash';
+import { camelCase, isFunction, isString } from 'lodash-es';
 import { domEvents, esFullscreenEvents, kernelEvents, videoEvents } from '../const/event';
 import { secondaryEventReg } from '../const/regExp';
 import { AdditionalEventInfo, BinderTarget, EventStage, RawEventInfo, WholeEventInfo } from '../typings/base';

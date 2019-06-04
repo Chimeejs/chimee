@@ -11,6 +11,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import visualizer from 'rollup-plugin-visualizer';
+import builtins from 'rollup-plugin-node-builtins';
 const babelConfig = {
   common: {
     presets: [
@@ -22,7 +23,7 @@ const babelConfig = {
       }],
     ],
     plugins: [ '@babel/plugin-transform-runtime' ],
-    exclude: 'node_modules/**',
+    exclude: /node_modules/,
     runtimeHelpers: true,
     babelrc: false,
   },
@@ -35,8 +36,8 @@ const babelConfig = {
         },
       }],
     ],
-    plugins: [ '@babel/plugin-transform-runtime' ],
-    exclude: 'node_modules/**',
+    plugins: [[ '@babel/plugin-transform-runtime' ]],
+    exclude: /node_modules/,
     runtimeHelpers: true,
     babelrc: false,
   },
@@ -50,10 +51,9 @@ const babelConfig = {
       }],
     ],
     plugins: [
-      [ '@babel/plugin-transform-runtime', { useESModules: true }],
+      [ '@babel/plugin-transform-runtime' ],
     ],
-    exclude: 'node_modules/**',
-    include: 'node_modules/@babel/runtime/**',
+    exclude: /node_modules/,
     runtimeHelpers: true,
     babelrc: false,
   },
@@ -66,7 +66,7 @@ const babelConfig = {
         },
       }],
     ],
-    exclude: 'node_modules/**',
+    exclude: /node_modules/,
     plugins: [ ],
     babelrc: false,
   },
@@ -79,17 +79,21 @@ const babelConfig = {
         },
       }],
     ],
-    plugins: [ ],
-    exclude: 'node_modules/**',
+    plugins: [
+      [ '@babel/plugin-transform-runtime', { useESModules: true }],
+    ],
+    exclude: /node_modules/,
+    runtimeHelpers: true,
     babelrc: false,
   },
 };
-const externalRegExp = new RegExp('^(' + Object.keys(dependencies).join('|') + ')$');
+const externalRegExp = new RegExp(Object.keys(dependencies).join('|'));
 export default function(mode) {
   return {
     input: 'lib/esnext/index.js',
     external(id) {
-      return !/min|umd|iife|esm/.test(mode) && externalRegExp.test(id);
+      const isExternal = !/min|umd|iife/.test(mode) && externalRegExp.test(id);
+      return mode === 'common' ? isExternal && id.indexOf('lodash-es') < 0 : isExternal;
     },
     plugins: [
       babel(babelConfig[mode]),
@@ -105,8 +109,9 @@ export default function(mode) {
         'process.env.VERSION': `'${version}'`,
       }),
       resolve({
-        preferBuiltins: false,
+        preferBuiltins: !/min|umd|iife/.test(mode),
       }),
+      builtins(),
       visualizer({
         filename: `bundle-size/${mode}.html`,
       }),

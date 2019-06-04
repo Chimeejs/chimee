@@ -1,4 +1,4 @@
-import { isNumber, isString } from 'lodash';
+import { isNumber, isString } from 'lodash-es';
 import { accessor, alwaysBoolean, alwaysNumber, alwaysString, applyDecorators, initString, nonenumerable as nonenumerableDecorator } from 'toxic-decorators';
 import { isNumeric } from 'toxic-predicate-functions';
 import { videoDomAttributes } from '../const/attribute';

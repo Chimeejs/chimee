@@ -1,7 +1,7 @@
 
 /**
  * chimee-kernel-hls v1.3.2
- * (c) 2017-2019 songguangyu
+ * (c) 2017-2019 toxic-johann
  * Released under MIT
  */
 

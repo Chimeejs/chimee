@@ -4,7 +4,7 @@ import { addClass } from 'dom-helpers/class';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
 import { querySelectorAll } from 'dom-helpers/query';
 import { esFullscreen } from 'es-fullscreen';
-import { isArray, isFunction, isPlainObject, isString } from 'lodash';
+import { isArray, isFunction, isPlainObject, isString } from 'lodash-es';
 import { autobind, waituntil } from 'toxic-decorators';
 import { isElement, isEvent, isHTMLString, isPosterityNode } from 'toxic-predicate-functions';
 import { hypenate } from 'toxic-utils';

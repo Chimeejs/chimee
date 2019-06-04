@@ -1,10 +1,19 @@
 {
 	"scripts": {
 		"test": "lerna exec --parallel -- npm t",
+		"lint": "lerna exec --parallel -- npm run lint",
 		"upload-coverage": "lerna exec --parallel -- npm run upload-coverage",
-		"lerna": "lerna"
+		"lerna": "lerna",
+		"ncu": "lerna exec --parallel ncu -u"
 	},
 	"devDependencies": {
+		"husky": "^2.3.0",
 		"lerna": "^2.9.0"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm run lint",
+			"pre-push": "npm t"
+		}
 	}
 }

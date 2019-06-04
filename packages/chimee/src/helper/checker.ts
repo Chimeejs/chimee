@@ -1,4 +1,4 @@
-import { isFunction, isString } from 'lodash';
+import { isFunction, isString } from 'lodash-es';
 /**
  * checker for on, off, once function
  * @param {string} key

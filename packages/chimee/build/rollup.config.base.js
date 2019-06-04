@@ -11,6 +11,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import visualizer from 'rollup-plugin-visualizer';
+import builtins from 'rollup-plugin-node-builtins';
 const babelConfig = {
   common: {
     presets: [
@@ -21,15 +22,14 @@ const babelConfig = {
         },
       }],
     ],
-    exclude: 'node_modules/**',
+    exclude: /node_modules/,
     plugins: [
       [ '@babel/plugin-proposal-decorators', { legacy: true }],
       '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-proposal-class-properties',
-      'lodash',
-      '@babel/plugin-transform-runtime',
+      [ '@babel/plugin-transform-runtime', { useESModules: true }],
     ],
-    externalHelpers: true,
+
     runtimeHelpers: true,
     babelrc: false,
   },
@@ -42,15 +42,13 @@ const babelConfig = {
         },
       }],
     ],
-    exclude: 'node_modules/**',
+    exclude: /node_modules/,
     plugins: [
       [ '@babel/plugin-proposal-decorators', { legacy: true }],
       '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-proposal-class-properties',
-      'lodash',
-      '@babel/plugin-transform-runtime',
+      [ '@babel/plugin-transform-runtime', { useESModules: true }],
     ],
-    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false,
   },
@@ -63,15 +61,13 @@ const babelConfig = {
         },
       }],
     ],
-    exclude: 'node_modules/**',
+    exclude: /node_modules/,
     plugins: [
       [ '@babel/plugin-proposal-decorators', { legacy: true }],
       '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-proposal-class-properties',
-      'lodash',
-      '@babel/plugin-transform-runtime',
+      [ '@babel/plugin-transform-runtime', { useESModules: true }],
     ],
-    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false,
   },
@@ -84,15 +80,13 @@ const babelConfig = {
         },
       }],
     ],
-    exclude: 'node_modules/**',
+    exclude: /node_modules/,
     plugins: [
       [ '@babel/plugin-proposal-decorators', { legacy: true }],
       '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-proposal-class-properties',
-      'lodash',
-      '@babel/plugin-transform-runtime',
+      [ '@babel/plugin-transform-runtime', { useESModules: true }],
     ],
-    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false,
   },
@@ -105,15 +99,13 @@ const babelConfig = {
         },
       }],
     ],
-    exclude: 'node_modules/**',
+    exclude: /node_modules/,
     plugins: [
       [ '@babel/plugin-proposal-decorators', { legacy: true }],
       '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-proposal-class-properties',
-      'lodash',
-      '@babel/plugin-transform-runtime',
+      [ '@babel/plugin-transform-runtime', { useESModules: true }],
     ],
-    externalHelpers: true,
     runtimeHelpers: true,
     babelrc: false,
   },
@@ -126,12 +118,11 @@ const babelConfig = {
         },
       }],
     ],
-    exclude: 'node_modules/**',
+    exclude: /node_modules/,
     plugins: [
       [ '@babel/plugin-proposal-decorators', { legacy: true }],
       '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-proposal-class-properties',
-      'lodash',
     ],
     runtimeHelpers: true,
     babelrc: false,
@@ -140,10 +131,10 @@ const babelConfig = {
 const externalRegExp = new RegExp('^(' + Object.keys(dependencies).join('|') + ')$');
 export default function(mode) {
   return {
-    // input: 'ts-out/index.js',
     input: 'lib/esnext/index.js',
     external(id) {
-      return !/min|umd|iife|esm/.test(mode) && externalRegExp.test(id);
+      const isExternal = !/min|umd|iife|esm/.test(mode) && externalRegExp.test(id);
+      return mode === 'common' ? isExternal && id.indexOf('lodash-es') < 0 : isExternal;
     },
     plugins: [
       babel(babelConfig[mode]),
@@ -159,11 +150,9 @@ export default function(mode) {
         'process.env.PLAYER_VERSION': `'${version}'`,
       }),
       resolve({
-        customResolveOptions: {
-          moduleDirectory: /min|umd|iife|esm/.test(mode) ? [ 'src', 'node_modules' ] : [ 'src' ],
-        },
-        preferBuiltins: false,
+        preferBuiltins: !/min|umd|iife|esm/.test(mode),
       }),
+      builtins(),
       visualizer({
         filename: `bundle-size/${mode}.html`,
       }),

@@ -1,5 +1,5 @@
 import { chimeeLog } from 'chimee-helper-log';
-import { cloneDeep, isBoolean, isError, isFunction, isInteger, isPlainObject, isString } from 'lodash';
+import { cloneDeep, isBoolean, isError, isFunction, isInteger, isPlainObject, isString } from 'lodash-es';
 import { accessor, applyDecorators, frozen } from 'toxic-decorators';
 import { isEmpty, isPromise } from 'toxic-predicate-functions';
 import { bind } from 'toxic-utils';

@@ -56,7 +56,7 @@ module.exports = function(config) {
             [ '@babel/plugin-transform-runtime', { useESModules: true }],
           ],
           exclude: 'node_modules/**',
-          include: 'node_modules/@babel/runtime/**',
+          include: [ 'node_modules/@babel/runtime/**', 'lib/** ' ],
           runtimeHelpers: true,
           babelrc: false,
         }),

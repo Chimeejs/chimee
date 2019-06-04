@@ -41,12 +41,14 @@
   "homepage": "https://github.com/Chimeejs/chimee-helper-log#readme",
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "toxic-predicate-functions": "^0.3.0"
+    "lodash-es": "^4.17.11",
+    "toxic-predicate-functions": "^0.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
+    "@types/lodash-es": "^4.17.3",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
@@ -60,7 +62,7 @@
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.1",
     "rollup-plugin-uglify": "^6.0.2",
-    "toxic-utils": "^0.3.1",
+    "toxic-utils": "^0.4.3",
     "ts-jest": "^24.0.2",
     "tslint": "^5.17.0",
     "typescript": "^3.5.1"

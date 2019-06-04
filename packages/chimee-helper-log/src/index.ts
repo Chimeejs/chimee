@@ -1,5 +1,6 @@
 /* tslint:disable: no-console */
-import { inBrowser, isString } from "toxic-predicate-functions";
+import { inBrowser } from "toxic-predicate-functions";
+import { isString } from "lodash-es";
 
 export class ChimeeHelperLog {
   public GLOBAL_TAG: string = "chimee";

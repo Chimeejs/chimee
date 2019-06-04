@@ -1,4 +1,4 @@
-import { isNumber, isString } from 'lodash';
+import { isNumber, isString } from 'lodash-es';
 import { RealChimeeDomElement } from '../const/dom';
 import Dispatcher from '../dispatcher/index';
 import { VesselConfig } from '../typings/base';

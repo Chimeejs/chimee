@@ -1,4 +1,4 @@
-import { isEmpty, isFunction } from 'lodash';
+import { isEmpty, isFunction } from 'lodash-es';
 import { SupportedKernelType } from '../typings/base';
 /**
  * delete the property if the value of the property is empty

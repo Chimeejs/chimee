@@ -18,7 +18,6 @@ interface IVideoKernel {
 }
 
 export type HlsJSVideoKernelConfig = {
-  debug?: boolean;
   src: string;
 };
 

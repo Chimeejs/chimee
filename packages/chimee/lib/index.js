@@ -2082,6 +2082,11 @@ function (_EventEmitter) {
 
     _this.video = videoElement;
     _this.config = config;
+
+    if (!_this.off) {
+      _this.off = _this.removeListener;
+    }
+
     return _this;
   }
 

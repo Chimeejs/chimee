@@ -1,6 +1,6 @@
 import { chimeeLog } from 'chimee-helper-log';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
-import { clone, isArray, isEmpty, isError, isFunction, isPlainObject, isString } from 'lodash';
+import { clone, isArray, isEmpty, isError, isFunction, isPlainObject, isString } from 'lodash-es';
 import { autobind, before, nonenumerable } from 'toxic-decorators';
 import { isPromise } from 'toxic-predicate-functions';
 import { camelize } from 'toxic-utils';

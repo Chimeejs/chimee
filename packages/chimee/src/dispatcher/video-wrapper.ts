@@ -1,5 +1,5 @@
 import { chimeeLog } from 'chimee-helper-log';
-import { isArray, isFunction, isPlainObject, isString } from 'lodash';
+import { isArray, isFunction, isPlainObject, isString } from 'lodash-es';
 import { accessor, alias, applyDecorators, before, nonenumerable, watch } from 'toxic-decorators';
 import { isEmpty } from 'toxic-predicate-functions';
 import { bind, getDeepProperty } from 'toxic-utils';

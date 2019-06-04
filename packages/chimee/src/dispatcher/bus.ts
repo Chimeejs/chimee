@@ -1,5 +1,5 @@
 import { chimeeLog } from 'chimee-helper-log';
-import { bind, isArray, isEmpty, isError, isFunction, isNil } from 'lodash';
+import { bind, isArray, isEmpty, isError, isFunction, isNil } from 'lodash-es';
 import { runnable } from 'toxic-decorators';
 import { dispatcherEventMethodMap, isDispatcherEventMethod, isDomEvent, isVideoEvent, selfProcessorEvents } from '../const/event';
 import { isDomMethod, isKernelMethod } from '../const/method';

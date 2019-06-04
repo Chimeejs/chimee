@@ -1,13 +1,13 @@
 
 /**
  * chimee-helper-log v0.2.3
- * (c) 2017-2018 toxic-johann
+ * (c) 2017-2019 toxic-johann
  * Released under MIT
- * Built ad Thu Dec 13 2018 22:56:42 GMT+0800 (China Standard Time)
+ * Built ad Mon Jun 03 2019 23:56:58 GMT+0800 (China Standard Time)
  */
 
-import _typeof from '@babel/runtime/helpers/typeof';
-import { inBrowser, isString } from 'toxic-predicate-functions';
+import { inBrowser } from 'toxic-predicate-functions';
+import { isString } from 'lodash-es';
 
 var ChimeeHelperLog = function () {
   function ChimeeHelperLog() {
@@ -61,10 +61,6 @@ var ChimeeHelperLog = function () {
   };
 
   ChimeeHelperLog.prototype.formatter = function (tag, msg) {
-    if (!isString(tag)) {
-      throw new TypeError("Log's method only acccept string as argument, but not " + tag + " in " + _typeof(tag));
-    }
-
     if (!isString(msg)) {
       return "[" + this.GLOBAL_TAG + "] > " + tag;
     }

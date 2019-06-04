@@ -1,5 +1,5 @@
 import { chimeeLog } from 'chimee-helper-log';
-import { isFunction, isNumber, isString } from 'lodash';
+import { isFunction, isNumber, isString } from 'lodash-es';
 import { isElement } from 'toxic-predicate-functions';
 import { IVideoKernel, IVideoKernelConstructor } from '../kernels/base';
 import NativeVideoKernel from '../kernels/native';

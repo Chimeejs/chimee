@@ -31,7 +31,7 @@
     "video",
     "hls"
   ],
-  "author": "songguangyu",
+  "author": "toxic-johann",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Chimeejs/chimee-kernel-hls/issues"
@@ -43,7 +43,8 @@
     "events": "^3.0.0",
     "hls.js": "^0.12.4",
     "lodash": "^4.17.11",
-    "toxic-decorators": "^0.4.0-beta.8"
+    "toxic-decorators": "^0.4.0-beta.8",
+    "toxic-predicate-functions": "^0.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
@@ -89,12 +90,12 @@
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-includepaths": "^0.2.3",
     "rollup-plugin-livereload": "^1.0.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-resolve": "^5.0.1",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-uglify": "^6.0.2",
     "rollup-plugin-visualizer": "^1.1.1",
-    "toxic-predicate-functions": "^0.3.0",
     "tslint": "^5.17.0",
     "typescript": "^3.5.1"
   }

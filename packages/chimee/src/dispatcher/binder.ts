@@ -3,7 +3,7 @@
  * It can use to rebind the events
  */
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
-import { isFunction } from 'lodash';
+import { isFunction } from 'lodash-es';
 import { runnable } from 'toxic-decorators';
 import { isMustListenVideoDomEvent, mustListenVideoDomEvents } from '../const/event';
 import Bus from '../dispatcher/bus';

@@ -3,7 +3,7 @@ import replace from 'rollup-plugin-replace';
 import { camelize } from 'toxic-utils';
 import sourcemaps from 'rollup-plugin-sourcemaps';
 const { name } = require('../package.json');
-const config = base('iife');
+const config = base('umd');
 // delete config.plugins;
 config.plugins = config.plugins.concat([
   replace({

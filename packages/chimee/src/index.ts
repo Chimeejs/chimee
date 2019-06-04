@@ -1,5 +1,5 @@
 import { chimeeLog } from 'chimee-helper-log';
-import { isError, isFunction, isPlainObject, isString } from 'lodash';
+import { isError, isFunction, isPlainObject, isString } from 'lodash-es';
 import { isElement } from 'toxic-predicate-functions';
 import GlobalConfig from './config/global';
 import { kernelEvents } from './const/event';

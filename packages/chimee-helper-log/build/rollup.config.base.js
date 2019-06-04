@@ -91,7 +91,8 @@ export default function(mode) {
   return {
     input: 'ts-out/index.js',
     external(id) {
-      return !/min|umd|iife/.test(mode) && externalRegExp.test(id);
+      const isExternal = !/min|umd|iife/.test(mode) && externalRegExp.test(id);
+      return mode === 'common' ? isExternal && id.indexOf('lodash-es') < 0 : isExternal;
     },
     plugins: [
       babel(babelConfig[mode]),
