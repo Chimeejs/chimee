@@ -1,6 +1,6 @@
 import ChimeeKernelHls from '../lib/esnext/index';
 import chai from 'chai';
-import { isFunction } from 'toxic-predicate-functions';
+import { isFunction } from 'lodash-es';
 const { expect } = chai;
 describe('chimee-kernel base requirement', () => {
   let videoElement;

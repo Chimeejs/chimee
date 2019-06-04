@@ -71,6 +71,7 @@ module.exports = function(config) {
             'node_modules/events/events.js': [ 'EventEmitter' ],
           },
         }),
+        require('rollup-plugin-node-builtins')(),
         require('rollup-plugin-replace')({
           'process.env.VERSION': `'${version}'`,
           'process.env.TRAVIS': `${process.env.TRAVIS}`,
