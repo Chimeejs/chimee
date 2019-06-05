@@ -17,7 +17,7 @@
     "tsc": "tsc --outDir ./lib/esnext",
     "tscw": "tsc --outDir ./lib/esnext -w",
     "lint": "eslint . --fix",
-    "test": "karma start karma.conf.js",
+    "test": "npm run tsc && karma start karma.conf.js",
     "unit": "karma start karma.conf.js --auto-watch",
     "upload-coverage": "npm install coveralls && npm install nyc && ./node_modules/.bin/nyc report --temp-directory=coverage --reporter=text-lcov | ./node_modules/.bin/coveralls"
   },
