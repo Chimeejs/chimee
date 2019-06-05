@@ -4,7 +4,7 @@
 		"lint": "lerna exec --parallel -- npm run lint",
 		"upload-coverage": "lerna exec --parallel -- npm run upload-coverage",
 		"lerna": "lerna",
-		"ncu": "lerna exec --parallel ncu -u"
+		"ncu": "lerna exec --parallel -- ncu -u"
 	},
 	"devDependencies": {
 		"husky": "^2.3.0",
