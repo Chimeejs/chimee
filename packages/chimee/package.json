@@ -27,7 +27,7 @@
     "karma": "karma start karma.conf.js",
     "dts": "dts-bundle-generator -o ./lib/index.d.ts src/index.ts",
     "preversion": "npm test",
-    "version": "npm run build && git add -A dist",
+    "version": "npm run build && git add -A lib",
     "postversion": "git push && git push --tags",
     "upload-coverage": "npm install coveralls && npm install nyc && ./node_modules/.bin/nyc report --temp-directory=coverage --reporter=text-lcov | ./node_modules/.bin/coveralls"
   },
