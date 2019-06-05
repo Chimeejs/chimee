@@ -81,8 +81,9 @@ export default class HlsJSVideoKernel extends EventEmitter implements IVideoKern
     chimeeLog.error(LOG_TAG + (event ? ' ' + event : ''), data.details);
   }
 
-  public load() {
-    return this.hlsKernel.loadSource(this.config.src);
+  public load(src: string = this.config.src) {
+    this.config.src = src;
+    return this.hlsKernel.loadSource(src);
   }
 
   public pause() {

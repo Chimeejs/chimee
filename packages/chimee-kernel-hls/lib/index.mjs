@@ -88,7 +88,9 @@ function (_EventEmitter) {
   }, {
     key: "load",
     value: function load() {
-      return this.hlsKernel.loadSource(this.config.src);
+      var src = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.config.src;
+      this.config.src = src;
+      return this.hlsKernel.loadSource(src);
     }
   }, {
     key: "pause",

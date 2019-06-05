@@ -1,7 +1,6 @@
 const player = new window.Chimee({
-  // src: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8',
+  src: 'https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8',
   // src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/44_176_20170224113626af3a75cd-3508-4bc3-b51f-366fca3c7e39.m3u8',
-  src: 'http://v.96koo.net/common/LzEvcmVsZWFzZS8yMDE4MDUzMC9NQmoycnhITUUzL01CajJyeEhNRTNfNjQwXzgwMA==_8446.m3u8',
   // 编解码容器
   box: 'hls', // flv hls mp4
   // dom容器

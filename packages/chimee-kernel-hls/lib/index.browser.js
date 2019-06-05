@@ -2803,7 +2803,7 @@
 
 	/* jshint ignore:start */
 	  module.exports = URLToolkit;
-	})(this);
+	})();
 	/* jshint ignore:end */
 
 
@@ -19429,6 +19429,13 @@
 	        // 3.2 WebVTT metadata header syntax
 	        function parseHeader(input) {
 	            parseOptions(input, function (k, v) {
+	                switch (k) {
+	                    case 'Region':
+	                        // 3.3 WebVTT region metadata header syntax
+	                        // console.log('parse region', v);
+	                        // parseRegion(v);
+	                        break;
+	                }
 	            }, /:/);
 	        }
 	        // 5.1 WebVTT file parsing.
@@ -21065,7 +21072,9 @@
 	  }, {
 	    key: "load",
 	    value: function load() {
-	      return this.hlsKernel.loadSource(this.config.src);
+	      var src = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.config.src;
+	      this.config.src = src;
+	      return this.hlsKernel.loadSource(src);
 	    }
 	  }, {
 	    key: "pause",

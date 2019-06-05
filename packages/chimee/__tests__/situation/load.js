@@ -1,3 +1,4 @@
+import '../../__mocks__/mediasource';
 import Chimee from 'index';
 import ChimeeKernelHls from 'chimee-kernel-hls';
 
