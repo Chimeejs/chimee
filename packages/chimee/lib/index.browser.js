@@ -1,6 +1,6 @@
 
 /**
- * chimee v1.0.1-alpha.0
+ * chimee v2.0.0-alpha.1
  * (c) 2017-2019 toxic-johann
  * Released under MIT
  */
@@ -11,34 +11,15 @@
   (global = global || self, global.Chimee = factory());
 }(this, function () { 'use strict';
 
-  /**
-   * chimee-helper-log v0.2.3
-   * (c) 2017-2019 toxic-johann
-   * Released under MIT
-   * Built ad Sun Jun 02 2019 19:36:22 GMT+0800 (China Standard Time)
-   */
-
-  /**
-   * toxic-predicate-functions v0.4.0
-   * (c) 2017-2019 toxic-johann
-   * Released under MIT
-   * Built ad Sun Jun 02 2019 19:15:55 GMT+0800 (China Standard Time)
-   */
-
-  function createCommonjsModule(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
-  }
-
-  var _typeof_1 = createCommonjsModule(function (module) {
   function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
   function _typeof(obj) {
     if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-      module.exports = _typeof = function _typeof(obj) {
+      _typeof = function _typeof(obj) {
         return _typeof2(obj);
       };
     } else {
-      module.exports = _typeof = function _typeof(obj) {
+      _typeof = function _typeof(obj) {
         return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
       };
     }
@@ -46,8 +27,103 @@
     return _typeof(obj);
   }
 
-  module.exports = _typeof;
-  });
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties(Constructor, staticProps);
+    return Constructor;
+  }
+
+  function _assertThisInitialized(self) {
+    if (self === void 0) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return self;
+  }
+
+  function _possibleConstructorReturn(self, call) {
+    if (call && (_typeof(call) === "object" || typeof call === "function")) {
+      return call;
+    }
+
+    return _assertThisInitialized(self);
+  }
+
+  function _getPrototypeOf(o) {
+    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+      return o.__proto__ || Object.getPrototypeOf(o);
+    };
+    return _getPrototypeOf(o);
+  }
+
+  function _superPropBase(object, property) {
+    while (!Object.prototype.hasOwnProperty.call(object, property)) {
+      object = _getPrototypeOf(object);
+      if (object === null) break;
+    }
+
+    return object;
+  }
+
+  function _get(target, property, receiver) {
+    if (typeof Reflect !== "undefined" && Reflect.get) {
+      _get = Reflect.get;
+    } else {
+      _get = function _get(target, property, receiver) {
+        var base = _superPropBase(target, property);
+        if (!base) return;
+        var desc = Object.getOwnPropertyDescriptor(base, property);
+
+        if (desc.get) {
+          return desc.get.call(receiver);
+        }
+
+        return desc.value;
+      };
+    }
+
+    return _get(target, property, receiver || target);
+  }
+
+  function _setPrototypeOf(o, p) {
+    _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+      o.__proto__ = p;
+      return o;
+    };
+
+    return _setPrototypeOf(o, p);
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function");
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass) _setPrototypeOf(subClass, superClass);
+  }
 
   /** Detect free variable `global` from Node.js. */
   var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -60,291 +136,6 @@
 
   /** Built-in value references. */
   var Symbol$1 = root.Symbol;
-
-  /** Built-in value references. */
-  var symToStringTag = Symbol$1 ? Symbol$1.toStringTag : undefined;
-
-  /** Built-in value references. */
-  var symToStringTag$1 = Symbol$1 ? Symbol$1.toStringTag : undefined;
-
-  /** Used for built-in method references. */
-  var funcProto = Function.prototype;
-
-  /** Used to resolve the decompiled source of functions. */
-  var funcToString = funcProto.toString;
-
-  /** Used to infer the `Object` constructor. */
-  var objectCtorString = funcToString.call(Object);
-
-  /** Used for built-in method references. */
-
-  /**
-   * A specialized version of `_.lastIndexOf` which performs strict equality
-   * comparisons of values, i.e. `===`.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /**
-   * The base implementation of `_.lt` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if `value` is less than `other`,
-   *  else `false`.
-   */
-
-  /**
-   * The base implementation of `_.sum` and `_.sumBy` without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} array The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {number} Returns the sum.
-   */
-
-  /** Error message constants. */
-
-  /**
-   * Converts `iterator` to an array.
-   *
-   * @private
-   * @param {Object} iterator The iterator to convert.
-   * @returns {Array} Returns the converted array.
-   */
-
-  /**
-   * The base implementation of `_.sortBy` which uses `comparer` to define the
-   * sort order of `array` and replaces criteria objects with their corresponding
-   * values.
-   *
-   * @private
-   * @param {Array} array The array to sort.
-   * @param {Function} comparer The function to define sort order.
-   * @returns {Array} Returns `array`.
-   */
-
-  /** Used as references for various `Number` constants. */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * This function is like `baseIndexOf` except that it accepts a comparator.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @param {Function} comparator The comparator invoked per element.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * The base implementation of `_.reduce` and `_.reduceRight`, without support
-   * for iteratee shorthands, which iterates over `collection` using `eachFunc`.
-   *
-   * @private
-   * @param {Array|Object} collection The collection to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} accumulator The initial value.
-   * @param {boolean} initAccum Specify using the first or last element of
-   *  `collection` as the initial value.
-   * @param {Function} eachFunc The function to iterate over `collection`.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /**
-   * A specialized version of `_.reduceRight` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the last element of `array` as
-   *  the initial value.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /** Used for built-in method references. */
-
-  /**
-   * This method returns a new empty object.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {Object} Returns the new empty object.
-   * @example
-   *
-   * var objects = _.times(2, _.stubObject);
-   *
-   * console.log(objects);
-   * // => [{}, {}]
-   *
-   * console.log(objects[0] === objects[1]);
-   * // => false
-   */
-
-  /**
-   * This method returns an empty string.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {string} Returns the empty string.
-   * @example
-   *
-   * _.times(2, _.stubString);
-   * // => ['', '']
-   */
-
-  /**
-   * This method returns `true`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {boolean} Returns `true`.
-   * @example
-   *
-   * _.times(2, _.stubTrue);
-   * // => [true, true]
-   */
-
-  /**
-   * This method invokes `interceptor` and returns `value`. The interceptor
-   * is invoked with one argument; (value). The purpose of this method is to
-   * "tap into" a method chain sequence in order to modify intermediate results.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Seq
-   * @param {*} value The value to provide to `interceptor`.
-   * @param {Function} interceptor The function to invoke.
-   * @returns {*} Returns `value`.
-   * @example
-   *
-   * _([1, 2, 3])
-   *  .tap(function(array) {
-   *    // Mutate input array.
-   *    array.pop();
-   *  })
-   *  .reverse()
-   *  .value();
-   * // => [2, 1]
-   */
-
-  /** Used to escape characters for inclusion in compiled string literals. */
-
-  /** Used to match template delimiters. */
-
-  /** Used to match template delimiters. */
-
-  /** Used to match template delimiters. */
-
-  /**
-   * This method is like `_.tap` except that it returns the result of `interceptor`.
-   * The purpose of this method is to "pass thru" values replacing intermediate
-   * results in a method chain sequence.
-   *
-   * @static
-   * @memberOf _
-   * @since 3.0.0
-   * @category Seq
-   * @param {*} value The value to provide to `interceptor`.
-   * @param {Function} interceptor The function to invoke.
-   * @returns {*} Returns the result of `interceptor`.
-   * @example
-   *
-   * _('  abc  ')
-   *  .chain()
-   *  .trim()
-   *  .thru(function(value) {
-   *    return [value];
-   *  })
-   *  .value();
-   * // => ['abc']
-   */
-
-  /**
-   * Enables the wrapper to be iterable.
-   *
-   * @name Symbol.iterator
-   * @memberOf _
-   * @since 4.0.0
-   * @category Seq
-   * @returns {Object} Returns the wrapper object.
-   * @example
-   *
-   * var wrapped = _([1, 2]);
-   *
-   * wrapped[Symbol.iterator]() === wrapped;
-   * // => true
-   *
-   * Array.from(wrapped);
-   * // => [1, 2]
-   */
-
-  /**
-   * This base implementation of `_.zipObject` which assigns values using `assignFunc`.
-   *
-   * @private
-   * @param {Array} props The property identifiers.
-   * @param {Array} values The property values.
-   * @param {Function} assignFunc The function to assign values.
-   * @returns {Object} Returns the new object.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright JS Foundation and other contributors <https://js.foundation/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-   */
-
-  /**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright JS Foundation and other contributors <https://js.foundation/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-   */
-
-  var inBrowser = typeof window !== "undefined" && Object.prototype.toString.call(window) !== "[object Object]";
-
-  /** Detect free variable `global` from Node.js. */
-  var freeGlobal$1 = typeof global == 'object' && global && global.Object === Object && global;
-
-  /** Detect free variable `self`. */
-  var freeSelf$1 = typeof self == 'object' && self && self.Object === Object && self;
-
-  /** Used as a reference to the global object. */
-  var root$1 = freeGlobal$1 || freeSelf$1 || Function('return this')();
-
-  /** Built-in value references. */
-  var Symbol$2 = root$1.Symbol;
 
   /** Used for built-in method references. */
   var objectProto = Object.prototype;
@@ -360,7 +151,7 @@
   var nativeObjectToString = objectProto.toString;
 
   /** Built-in value references. */
-  var symToStringTag$2 = Symbol$2 ? Symbol$2.toStringTag : undefined;
+  var symToStringTag = Symbol$1 ? Symbol$1.toStringTag : undefined;
 
   /**
    * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
@@ -370,20 +161,20 @@
    * @returns {string} Returns the raw `toStringTag`.
    */
   function getRawTag(value) {
-    var isOwn = hasOwnProperty.call(value, symToStringTag$2),
-        tag = value[symToStringTag$2];
+    var isOwn = hasOwnProperty.call(value, symToStringTag),
+        tag = value[symToStringTag];
 
     try {
-      value[symToStringTag$2] = undefined;
+      value[symToStringTag] = undefined;
       var unmasked = true;
     } catch (e) {}
 
     var result = nativeObjectToString.call(value);
     if (unmasked) {
       if (isOwn) {
-        value[symToStringTag$2] = tag;
+        value[symToStringTag] = tag;
       } else {
-        delete value[symToStringTag$2];
+        delete value[symToStringTag];
       }
     }
     return result;
@@ -415,7 +206,7 @@
       undefinedTag = '[object Undefined]';
 
   /** Built-in value references. */
-  var symToStringTag$3 = Symbol$2 ? Symbol$2.toStringTag : undefined;
+  var symToStringTag$1 = Symbol$1 ? Symbol$1.toStringTag : undefined;
 
   /**
    * The base implementation of `getTag` without fallbacks for buggy environments.
@@ -428,7 +219,7 @@
     if (value == null) {
       return value === undefined ? undefinedTag : nullTag;
     }
-    return (symToStringTag$3 && symToStringTag$3 in Object(value))
+    return (symToStringTag$1 && symToStringTag$1 in Object(value))
       ? getRawTag(value)
       : objectToString(value);
   }
@@ -1533,6 +1324,43 @@
    * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
    */
 
+  function unwrapExports (x) {
+  	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+  }
+
+  function createCommonjsModule(fn, module) {
+  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+  }
+
+  var _typeof_1 = createCommonjsModule(function (module) {
+  function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
+  function _typeof(obj) {
+    if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+      module.exports = _typeof = function _typeof(obj) {
+        return _typeof2(obj);
+      };
+    } else {
+      module.exports = _typeof = function _typeof(obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+      };
+    }
+
+    return _typeof(obj);
+  }
+
+  module.exports = _typeof;
+  });
+
+  var inBrowser = typeof window !== "undefined" && Object.prototype.toString.call(window) !== "[object Object]";
+
+  /**
+   * chimee-helper-log v2.0.0-alpha.1
+   * (c) 2017-2019 toxic-johann
+   * Released under MIT
+   * Built ad Thu Jun 06 2019 00:13:58 GMT+0800 (China Standard Time)
+   */
+
   var ChimeeHelperLog = function () {
     function ChimeeHelperLog() {
       this.GLOBAL_TAG = "chimee";
@@ -1595,19 +1423,20 @@
 
     return ChimeeHelperLog;
   }();
+
   var chimeeLog = inBrowser && window._chimee_log || new ChimeeHelperLog();
 
   /** Detect free variable `global` from Node.js. */
-  var freeGlobal$2 = typeof global == 'object' && global && global.Object === Object && global;
+  var freeGlobal$1 = typeof global == 'object' && global && global.Object === Object && global;
 
   /** Detect free variable `self`. */
-  var freeSelf$2 = typeof self == 'object' && self && self.Object === Object && self;
+  var freeSelf$1 = typeof self == 'object' && self && self.Object === Object && self;
 
   /** Used as a reference to the global object. */
-  var root$2 = freeGlobal$2 || freeSelf$2 || Function('return this')();
+  var root$1 = freeGlobal$1 || freeSelf$1 || Function('return this')();
 
   /** Built-in value references. */
-  var Symbol$3 = root$2.Symbol;
+  var Symbol$2 = root$1.Symbol;
 
   /** Used for built-in method references. */
   var objectProto$2 = Object.prototype;
@@ -1623,7 +1452,7 @@
   var nativeObjectToString$2 = objectProto$2.toString;
 
   /** Built-in value references. */
-  var symToStringTag$4 = Symbol$3 ? Symbol$3.toStringTag : undefined;
+  var symToStringTag$2 = Symbol$2 ? Symbol$2.toStringTag : undefined;
 
   /**
    * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
@@ -1633,20 +1462,20 @@
    * @returns {string} Returns the raw `toStringTag`.
    */
   function getRawTag$1(value) {
-    var isOwn = hasOwnProperty$1.call(value, symToStringTag$4),
-        tag = value[symToStringTag$4];
+    var isOwn = hasOwnProperty$1.call(value, symToStringTag$2),
+        tag = value[symToStringTag$2];
 
     try {
-      value[symToStringTag$4] = undefined;
+      value[symToStringTag$2] = undefined;
       var unmasked = true;
     } catch (e) {}
 
     var result = nativeObjectToString$2.call(value);
     if (unmasked) {
       if (isOwn) {
-        value[symToStringTag$4] = tag;
+        value[symToStringTag$2] = tag;
       } else {
-        delete value[symToStringTag$4];
+        delete value[symToStringTag$2];
       }
     }
     return result;
@@ -1678,7 +1507,7 @@
       undefinedTag$1 = '[object Undefined]';
 
   /** Built-in value references. */
-  var symToStringTag$5 = Symbol$3 ? Symbol$3.toStringTag : undefined;
+  var symToStringTag$3 = Symbol$2 ? Symbol$2.toStringTag : undefined;
 
   /**
    * The base implementation of `getTag` without fallbacks for buggy environments.
@@ -1691,7 +1520,7 @@
     if (value == null) {
       return value === undefined ? undefinedTag$1 : nullTag$1;
     }
-    return (symToStringTag$5 && symToStringTag$5 in Object(value))
+    return (symToStringTag$3 && symToStringTag$3 in Object(value))
       ? getRawTag$1(value)
       : objectToString$1(value);
   }
@@ -1798,7 +1627,7 @@
   var INFINITY = 1 / 0;
 
   /** Used to convert symbols to primitives and strings. */
-  var symbolProto = Symbol$3 ? Symbol$3.prototype : undefined,
+  var symbolProto = Symbol$2 ? Symbol$2.prototype : undefined,
       symbolToString = symbolProto ? symbolProto.toString : undefined;
 
   /**
@@ -2043,7 +1872,7 @@
   }
 
   /** Used to detect overreaching core-js shims. */
-  var coreJsData = root$2['__core-js_shared__'];
+  var coreJsData = root$1['__core-js_shared__'];
 
   /** Used to detect methods masquerading as native. */
   var maskSrcKey = (function() {
@@ -2063,10 +1892,10 @@
   }
 
   /** Used for built-in method references. */
-  var funcProto$1 = Function.prototype;
+  var funcProto = Function.prototype;
 
   /** Used to resolve the decompiled source of functions. */
-  var funcToString$1 = funcProto$1.toString;
+  var funcToString = funcProto.toString;
 
   /**
    * Converts `func` to its source code.
@@ -2078,7 +1907,7 @@
   function toSource(func) {
     if (func != null) {
       try {
-        return funcToString$1.call(func);
+        return funcToString.call(func);
       } catch (e) {}
       try {
         return (func + '');
@@ -2097,18 +1926,18 @@
   var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
   /** Used for built-in method references. */
-  var funcProto$2 = Function.prototype,
+  var funcProto$1 = Function.prototype,
       objectProto$4 = Object.prototype;
 
   /** Used to resolve the decompiled source of functions. */
-  var funcToString$2 = funcProto$2.toString;
+  var funcToString$1 = funcProto$1.toString;
 
   /** Used to check objects for own properties. */
   var hasOwnProperty$2 = objectProto$4.hasOwnProperty;
 
   /** Used to detect if a method is native. */
   var reIsNative = RegExp('^' +
-    funcToString$2.call(hasOwnProperty$2).replace(reRegExpChar, '\\$&')
+    funcToString$1.call(hasOwnProperty$2).replace(reRegExpChar, '\\$&')
     .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
   );
 
@@ -2154,7 +1983,7 @@
   }
 
   /* Built-in method references that are verified to be native. */
-  var WeakMap$1 = getNative(root$2, 'WeakMap');
+  var WeakMap$1 = getNative(root$1, 'WeakMap');
 
   /** Used to store function metadata. */
   var metaMap = WeakMap$1 && new WeakMap$1;
@@ -2250,7 +2079,7 @@
         Ctor = createCtor(func);
 
     function wrapper() {
-      var fn = (this && this !== root$2 && this instanceof wrapper) ? Ctor : func;
+      var fn = (this && this !== root$1 && this instanceof wrapper) ? Ctor : func;
       return fn.apply(isBind ? thisArg : this, arguments);
     }
     return wrapper;
@@ -3207,7 +3036,7 @@
       if (isAry && ary < length) {
         args.length = ary;
       }
-      if (this && this !== root$2 && this instanceof wrapper) {
+      if (this && this !== root$1 && this instanceof wrapper) {
         fn = Ctor || createCtor(fn);
       }
       return fn.apply(thisBinding, args);
@@ -3246,7 +3075,7 @@
           func, bitmask, createHybrid, wrapper.placeholder, undefined,
           args, holders, undefined, undefined, arity - length);
       }
-      var fn = (this && this !== root$2 && this instanceof wrapper) ? Ctor : func;
+      var fn = (this && this !== root$1 && this instanceof wrapper) ? Ctor : func;
       return apply(fn, this, args);
     }
     return wrapper;
@@ -3277,7 +3106,7 @@
           leftIndex = -1,
           leftLength = partials.length,
           args = Array(leftLength + argsLength),
-          fn = (this && this !== root$2 && this instanceof wrapper) ? Ctor : func;
+          fn = (this && this !== root$1 && this instanceof wrapper) ? Ctor : func;
 
       while (++leftIndex < leftLength) {
         args[leftIndex] = partials[leftIndex];
@@ -3804,7 +3633,7 @@
   var moduleExports = freeModule && freeModule.exports === freeExports;
 
   /** Built-in value references. */
-  var Buffer = moduleExports ? root$2.Buffer : undefined;
+  var Buffer = moduleExports ? root$1.Buffer : undefined;
 
   /* Built-in method references for those with the same name as other `lodash` methods. */
   var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
@@ -3906,7 +3735,7 @@
   var moduleExports$1 = freeModule$1 && freeModule$1.exports === freeExports$1;
 
   /** Detect free variable `process` from Node.js. */
-  var freeProcess = moduleExports$1 && freeGlobal$2.process;
+  var freeProcess = moduleExports$1 && freeGlobal$1.process;
 
   /** Used to access faster Node.js helpers. */
   var nodeUtil = (function() {
@@ -4398,7 +4227,7 @@
   ListCache.prototype.set = listCacheSet;
 
   /* Built-in method references that are verified to be native. */
-  var Map$1 = getNative(root$2, 'Map');
+  var Map$1 = getNative(root$1, 'Map');
 
   /**
    * Removes all key-value entries from the map.
@@ -4581,17 +4410,17 @@
   var objectTag$1 = '[object Object]';
 
   /** Used for built-in method references. */
-  var funcProto$3 = Function.prototype,
+  var funcProto$2 = Function.prototype,
       objectProto$f = Object.prototype;
 
   /** Used to resolve the decompiled source of functions. */
-  var funcToString$3 = funcProto$3.toString;
+  var funcToString$2 = funcProto$2.toString;
 
   /** Used to check objects for own properties. */
   var hasOwnProperty$c = objectProto$f.hasOwnProperty;
 
   /** Used to infer the `Object` constructor. */
-  var objectCtorString$1 = funcToString$3.call(Object);
+  var objectCtorString = funcToString$2.call(Object);
 
   /**
    * Checks if `value` is a plain object, that is, an object created by the
@@ -4631,7 +4460,7 @@
     }
     var Ctor = hasOwnProperty$c.call(proto, 'constructor') && proto.constructor;
     return typeof Ctor == 'function' && Ctor instanceof Ctor &&
-      funcToString$3.call(Ctor) == objectCtorString$1;
+      funcToString$2.call(Ctor) == objectCtorString;
   }
 
   /** `Object#toString` result references. */
@@ -5379,7 +5208,7 @@
   var moduleExports$2 = freeModule$2 && freeModule$2.exports === freeExports$2;
 
   /** Built-in value references. */
-  var Buffer$1 = moduleExports$2 ? root$2.Buffer : undefined,
+  var Buffer$1 = moduleExports$2 ? root$1.Buffer : undefined,
       allocUnsafe = Buffer$1 ? Buffer$1.allocUnsafe : undefined;
 
   /**
@@ -5556,13 +5385,13 @@
   }
 
   /* Built-in method references that are verified to be native. */
-  var DataView = getNative(root$2, 'DataView');
+  var DataView = getNative(root$1, 'DataView');
 
   /* Built-in method references that are verified to be native. */
-  var Promise$1 = getNative(root$2, 'Promise');
+  var Promise$1 = getNative(root$1, 'Promise');
 
   /* Built-in method references that are verified to be native. */
-  var Set = getNative(root$2, 'Set');
+  var Set = getNative(root$1, 'Set');
 
   /** `Object#toString` result references. */
   var mapTag$1 = '[object Map]',
@@ -5641,7 +5470,7 @@
   }
 
   /** Built-in value references. */
-  var Uint8Array = root$2.Uint8Array;
+  var Uint8Array = root$1.Uint8Array;
 
   /**
    * Creates a clone of `arrayBuffer`.
@@ -5686,7 +5515,7 @@
   }
 
   /** Used to convert symbols to primitives and strings. */
-  var symbolProto$1 = Symbol$3 ? Symbol$3.prototype : undefined,
+  var symbolProto$1 = Symbol$2 ? Symbol$2.prototype : undefined,
       symbolValueOf = symbolProto$1 ? symbolProto$1.valueOf : undefined;
 
   /**
@@ -6581,2971 +6410,6 @@
    * _.isUndefined(null);
    * // => false
    */
-
-  /** Used for built-in method references. */
-
-  /**
-   * A specialized version of `_.lastIndexOf` which performs strict equality
-   * comparisons of values, i.e. `===`.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /**
-   * The base implementation of `_.lt` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if `value` is less than `other`,
-   *  else `false`.
-   */
-
-  /**
-   * The base implementation of `_.sum` and `_.sumBy` without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} array The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {number} Returns the sum.
-   */
-
-  /** Error message constants. */
-
-  /**
-   * Converts `iterator` to an array.
-   *
-   * @private
-   * @param {Object} iterator The iterator to convert.
-   * @returns {Array} Returns the converted array.
-   */
-
-  /**
-   * The base implementation of `_.sortBy` which uses `comparer` to define the
-   * sort order of `array` and replaces criteria objects with their corresponding
-   * values.
-   *
-   * @private
-   * @param {Array} array The array to sort.
-   * @param {Function} comparer The function to define sort order.
-   * @returns {Array} Returns `array`.
-   */
-
-  /** Used as references for various `Number` constants. */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * This function is like `baseIndexOf` except that it accepts a comparator.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @param {Function} comparator The comparator invoked per element.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * The base implementation of `_.reduce` and `_.reduceRight`, without support
-   * for iteratee shorthands, which iterates over `collection` using `eachFunc`.
-   *
-   * @private
-   * @param {Array|Object} collection The collection to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} accumulator The initial value.
-   * @param {boolean} initAccum Specify using the first or last element of
-   *  `collection` as the initial value.
-   * @param {Function} eachFunc The function to iterate over `collection`.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /**
-   * A specialized version of `_.reduceRight` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the last element of `array` as
-   *  the initial value.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /** Used for built-in method references. */
-
-  /**
-   * This method returns a new empty object.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {Object} Returns the new empty object.
-   * @example
-   *
-   * var objects = _.times(2, _.stubObject);
-   *
-   * console.log(objects);
-   * // => [{}, {}]
-   *
-   * console.log(objects[0] === objects[1]);
-   * // => false
-   */
-
-  /**
-   * This method returns an empty string.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {string} Returns the empty string.
-   * @example
-   *
-   * _.times(2, _.stubString);
-   * // => ['', '']
-   */
-
-  /**
-   * This method returns `true`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {boolean} Returns `true`.
-   * @example
-   *
-   * _.times(2, _.stubTrue);
-   * // => [true, true]
-   */
-
-  /**
-   * This method invokes `interceptor` and returns `value`. The interceptor
-   * is invoked with one argument; (value). The purpose of this method is to
-   * "tap into" a method chain sequence in order to modify intermediate results.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Seq
-   * @param {*} value The value to provide to `interceptor`.
-   * @param {Function} interceptor The function to invoke.
-   * @returns {*} Returns `value`.
-   * @example
-   *
-   * _([1, 2, 3])
-   *  .tap(function(array) {
-   *    // Mutate input array.
-   *    array.pop();
-   *  })
-   *  .reverse()
-   *  .value();
-   * // => [2, 1]
-   */
-
-  /** Used to escape characters for inclusion in compiled string literals. */
-
-  /** Used to match template delimiters. */
-
-  /** Used to match template delimiters. */
-
-  /** Used to match template delimiters. */
-
-  /**
-   * This method is like `_.tap` except that it returns the result of `interceptor`.
-   * The purpose of this method is to "pass thru" values replacing intermediate
-   * results in a method chain sequence.
-   *
-   * @static
-   * @memberOf _
-   * @since 3.0.0
-   * @category Seq
-   * @param {*} value The value to provide to `interceptor`.
-   * @param {Function} interceptor The function to invoke.
-   * @returns {*} Returns the result of `interceptor`.
-   * @example
-   *
-   * _('  abc  ')
-   *  .chain()
-   *  .trim()
-   *  .thru(function(value) {
-   *    return [value];
-   *  })
-   *  .value();
-   * // => ['abc']
-   */
-
-  /**
-   * Enables the wrapper to be iterable.
-   *
-   * @name Symbol.iterator
-   * @memberOf _
-   * @since 4.0.0
-   * @category Seq
-   * @returns {Object} Returns the wrapper object.
-   * @example
-   *
-   * var wrapped = _([1, 2]);
-   *
-   * wrapped[Symbol.iterator]() === wrapped;
-   * // => true
-   *
-   * Array.from(wrapped);
-   * // => [1, 2]
-   */
-
-  /**
-   * This base implementation of `_.zipObject` which assigns values using `assignFunc`.
-   *
-   * @private
-   * @param {Array} props The property identifiers.
-   * @param {Array} values The property values.
-   * @param {Function} assignFunc The function to assign values.
-   * @returns {Object} Returns the new object.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright JS Foundation and other contributors <https://js.foundation/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-   */
-
-  /**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright JS Foundation and other contributors <https://js.foundation/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-   */
-
-  /**
-   * toxic-predicate-functions v0.4.0
-   * (c) 2017-2019 toxic-johann
-   * Released under MIT
-   * Built ad Sun Jun 02 2019 19:15:55 GMT+0800 (China Standard Time)
-   */
-
-  function createCommonjsModule$1(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
-  }
-
-  var _typeof_1$1 = createCommonjsModule$1(function (module) {
-  function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-  function _typeof(obj) {
-    if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-      module.exports = _typeof = function _typeof(obj) {
-        return _typeof2(obj);
-      };
-    } else {
-      module.exports = _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-      };
-    }
-
-    return _typeof(obj);
-  }
-
-  module.exports = _typeof;
-  });
-
-  /** Detect free variable `global` from Node.js. */
-  var freeGlobal$3 = typeof global == 'object' && global && global.Object === Object && global;
-
-  /** Detect free variable `self`. */
-  var freeSelf$3 = typeof self == 'object' && self && self.Object === Object && self;
-
-  /** Used as a reference to the global object. */
-  var root$3 = freeGlobal$3 || freeSelf$3 || Function('return this')();
-
-  /** Built-in value references. */
-  var Symbol$1$1 = root$3.Symbol;
-
-  /** Used for built-in method references. */
-  var objectProto$j = Object.prototype;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty$f = objectProto$j.hasOwnProperty;
-
-  /**
-   * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-   * of values.
-   */
-  var nativeObjectToString$4 = objectProto$j.toString;
-
-  /** Built-in value references. */
-  var symToStringTag$6 = Symbol$1$1 ? Symbol$1$1.toStringTag : undefined;
-
-  /**
-   * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {string} Returns the raw `toStringTag`.
-   */
-  function getRawTag$2(value) {
-    var isOwn = hasOwnProperty$f.call(value, symToStringTag$6),
-        tag = value[symToStringTag$6];
-
-    try {
-      value[symToStringTag$6] = undefined;
-      var unmasked = true;
-    } catch (e) {}
-
-    var result = nativeObjectToString$4.call(value);
-    if (unmasked) {
-      if (isOwn) {
-        value[symToStringTag$6] = tag;
-      } else {
-        delete value[symToStringTag$6];
-      }
-    }
-    return result;
-  }
-
-  /** Used for built-in method references. */
-  var objectProto$1$1 = Object.prototype;
-
-  /**
-   * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-   * of values.
-   */
-  var nativeObjectToString$1$1 = objectProto$1$1.toString;
-
-  /**
-   * Converts `value` to a string using `Object.prototype.toString`.
-   *
-   * @private
-   * @param {*} value The value to convert.
-   * @returns {string} Returns the converted string.
-   */
-  function objectToString$2(value) {
-    return nativeObjectToString$1$1.call(value);
-  }
-
-  /** `Object#toString` result references. */
-  var nullTag$2 = '[object Null]',
-      undefinedTag$2 = '[object Undefined]';
-
-  /** Built-in value references. */
-  var symToStringTag$1$1 = Symbol$1$1 ? Symbol$1$1.toStringTag : undefined;
-
-  /**
-   * The base implementation of `getTag` without fallbacks for buggy environments.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {string} Returns the `toStringTag`.
-   */
-  function baseGetTag$2(value) {
-    if (value == null) {
-      return value === undefined ? undefinedTag$2 : nullTag$2;
-    }
-    return (symToStringTag$1$1 && symToStringTag$1$1 in Object(value))
-      ? getRawTag$2(value)
-      : objectToString$2(value);
-  }
-
-  /**
-   * Checks if `value` is object-like. A value is object-like if it's not `null`
-   * and has a `typeof` result of "object".
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-   * @example
-   *
-   * _.isObjectLike({});
-   * // => true
-   *
-   * _.isObjectLike([1, 2, 3]);
-   * // => true
-   *
-   * _.isObjectLike(_.noop);
-   * // => false
-   *
-   * _.isObjectLike(null);
-   * // => false
-   */
-  function isObjectLike$2(value) {
-    return value != null && typeof value == 'object';
-  }
-
-  /**
-   * A specialized version of `_.map` for arrays without support for iteratee
-   * shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns the new mapped array.
-   */
-
-  /**
-   * Checks if `value` is classified as an `Array` object.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is an array, else `false`.
-   * @example
-   *
-   * _.isArray([1, 2, 3]);
-   * // => true
-   *
-   * _.isArray(document.body.children);
-   * // => false
-   *
-   * _.isArray('abc');
-   * // => false
-   *
-   * _.isArray(_.noop);
-   * // => false
-   */
-  var isArray$2 = Array.isArray;
-
-  /**
-   * This method returns the first argument it receives.
-   *
-   * @static
-   * @since 0.1.0
-   * @memberOf _
-   * @category Util
-   * @param {*} value Any value.
-   * @returns {*} Returns `value`.
-   * @example
-   *
-   * var object = { 'a': 1 };
-   *
-   * console.log(_.identity(object) === object);
-   * // => true
-   */
-
-  /** Used for built-in method references. */
-
-  /**
-   * Gets the value at `key` of `object`.
-   *
-   * @private
-   * @param {Object} [object] The object to query.
-   * @param {string} key The key of the property to get.
-   * @returns {*} Returns the property value.
-   */
-
-  /**
-   * A faster alternative to `Function#apply`, this function invokes `func`
-   * with the `this` binding of `thisArg` and the arguments of `args`.
-   *
-   * @private
-   * @param {Function} func The function to invoke.
-   * @param {*} thisArg The `this` binding of `func`.
-   * @param {Array} args The arguments to invoke `func` with.
-   * @returns {*} Returns the result of `func`.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * Gets the number of `placeholder` occurrences in `array`.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} placeholder The placeholder to search for.
-   * @returns {number} Returns the placeholder count.
-   */
-
-  /**
-   * The function whose prototype chain sequence wrappers inherit from.
-   *
-   * @private
-   */
-
-  /**
-   * This method returns `undefined`.
-   *
-   * @static
-   * @memberOf _
-   * @since 2.3.0
-   * @category Util
-   * @example
-   *
-   * _.times(2, _.noop);
-   * // => [undefined, undefined]
-   */
-
-  /** Used to lookup unminified function names. */
-
-  /**
-   * Copies the values of `source` to `array`.
-   *
-   * @private
-   * @param {Array} source The array to copy values from.
-   * @param {Array} [array=[]] The array to copy values to.
-   * @returns {Array} Returns `array`.
-   */
-
-  /** Used to detect hot functions by number of calls within a span of milliseconds. */
-
-  /** Used to match wrap detail comments. */
-
-  /** Used to match wrap detail comments. */
-
-  /**
-   * Creates a function that returns `value`.
-   *
-   * @static
-   * @memberOf _
-   * @since 2.4.0
-   * @category Util
-   * @param {*} value The value to return from the new function.
-   * @returns {Function} Returns the new constant function.
-   * @example
-   *
-   * var objects = _.times(2, _.constant({ 'a': 1 }));
-   *
-   * console.log(objects);
-   * // => [{ 'a': 1 }, { 'a': 1 }]
-   *
-   * console.log(objects[0] === objects[1]);
-   * // => true
-   */
-
-  /**
-   * A specialized version of `_.forEach` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns `array`.
-   */
-
-  /**
-   * The base implementation of `_.findIndex` and `_.findLastIndex` without
-   * support for iteratee shorthands.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {Function} predicate The function invoked per iteration.
-   * @param {number} fromIndex The index to search from.
-   * @param {boolean} [fromRight] Specify iterating from right to left.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /**
-   * The base implementation of `_.isNaN` without support for number objects.
-   *
-   * @private
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is `NaN`, else `false`.
-   */
-
-  /**
-   * A specialized version of `_.indexOf` which performs strict equality
-   * comparisons of values, i.e. `===`.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /**
-   * Gets the argument placeholder value for `func`.
-   *
-   * @private
-   * @param {Function} func The function to inspect.
-   * @returns {*} Returns the placeholder value.
-   */
-
-  /** Used as references for various `Number` constants. */
-
-  /** Used as the internal argument placeholder. */
-
-  /**
-   * Performs a
-   * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
-   * comparison between two values to determine if they are equivalent.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
-   * @example
-   *
-   * var object = { 'a': 1 };
-   * var other = { 'a': 1 };
-   *
-   * _.eq(object, object);
-   * // => true
-   *
-   * _.eq(object, other);
-   * // => false
-   *
-   * _.eq('a', 'a');
-   * // => true
-   *
-   * _.eq('a', Object('a'));
-   * // => false
-   *
-   * _.eq(NaN, NaN);
-   * // => true
-   */
-
-  /** Used as references for various `Number` constants. */
-
-  /** Used for built-in method references. */
-
-  /**
-   * The base implementation of `_.times` without support for iteratee shorthands
-   * or max array length checks.
-   *
-   * @private
-   * @param {number} n The number of times to invoke `iteratee`.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns the array of results.
-   */
-
-  /**
-   * This method returns `false`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {boolean} Returns `false`.
-   * @example
-   *
-   * _.times(2, _.stubFalse);
-   * // => [false, false]
-   */
-
-  /**
-   * The base implementation of `_.unary` without support for storing metadata.
-   *
-   * @private
-   * @param {Function} func The function to cap arguments for.
-   * @returns {Function} Returns the new capped function.
-   */
-
-  /**
-   * Creates a unary function that invokes `func` with its argument transformed.
-   *
-   * @private
-   * @param {Function} func The function to wrap.
-   * @param {Function} transform The argument transform.
-   * @returns {Function} Returns the new function.
-   */
-  function overArg$1(func, transform) {
-    return function(arg) {
-      return func(transform(arg));
-    };
-  }
-
-  /**
-   * This function is like
-   * [`Object.keys`](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
-   * except that it includes inherited enumerable properties.
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @returns {Array} Returns the array of property names.
-   */
-
-  /**
-   * Removes `key` and its value from the hash.
-   *
-   * @private
-   * @name delete
-   * @memberOf Hash
-   * @param {Object} hash The hash to modify.
-   * @param {string} key The key of the value to remove.
-   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-   */
-
-  /**
-   * Removes all key-value entries from the list cache.
-   *
-   * @private
-   * @name clear
-   * @memberOf ListCache
-   */
-
-  /**
-   * Checks if `value` is suitable for use as unique object key.
-   *
-   * @private
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
-   */
-
-  /**
-   * Appends the elements of `values` to `array`.
-   *
-   * @private
-   * @param {Array} array The array to modify.
-   * @param {Array} values The values to append.
-   * @returns {Array} Returns `array`.
-   */
-
-  /** Built-in value references. */
-  var getPrototype$1 = overArg$1(Object.getPrototypeOf, Object);
-
-  /** `Object#toString` result references. */
-  var objectTag$4 = '[object Object]';
-
-  /** Used for built-in method references. */
-  var funcProto$4 = Function.prototype,
-      objectProto$2$1 = Object.prototype;
-
-  /** Used to resolve the decompiled source of functions. */
-  var funcToString$4 = funcProto$4.toString;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty$1$1 = objectProto$2$1.hasOwnProperty;
-
-  /** Used to infer the `Object` constructor. */
-  var objectCtorString$2 = funcToString$4.call(Object);
-
-  /**
-   * Checks if `value` is a plain object, that is, an object created by the
-   * `Object` constructor or one with a `[[Prototype]]` of `null`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.8.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
-   * @example
-   *
-   * function Foo() {
-   *   this.a = 1;
-   * }
-   *
-   * _.isPlainObject(new Foo);
-   * // => false
-   *
-   * _.isPlainObject([1, 2, 3]);
-   * // => false
-   *
-   * _.isPlainObject({ 'x': 0, 'y': 0 });
-   * // => true
-   *
-   * _.isPlainObject(Object.create(null));
-   * // => true
-   */
-  function isPlainObject$1(value) {
-    if (!isObjectLike$2(value) || baseGetTag$2(value) != objectTag$4) {
-      return false;
-    }
-    var proto = getPrototype$1(value);
-    if (proto === null) {
-      return true;
-    }
-    var Ctor = hasOwnProperty$1$1.call(proto, 'constructor') && proto.constructor;
-    return typeof Ctor == 'function' && Ctor instanceof Ctor &&
-      funcToString$4.call(Ctor) == objectCtorString$2;
-  }
-
-  /**
-   * The base implementation of `_.slice` without an iteratee call guard.
-   *
-   * @private
-   * @param {Array} array The array to slice.
-   * @param {number} [start=0] The start position.
-   * @param {number} [end=array.length] The end position.
-   * @returns {Array} Returns the slice of `array`.
-   */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * Converts an ASCII `string` to an array.
-   *
-   * @private
-   * @param {string} string The string to convert.
-   * @returns {Array} Returns the converted array.
-   */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * A specialized version of `_.reduce` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the first element of `array` as
-   *  the initial value.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /**
-   * The base implementation of `_.propertyOf` without support for deep paths.
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @returns {Function} Returns the new accessor function.
-   */
-
-  /** Used to match words composed of alphanumeric characters. */
-
-  /** Used to detect strings that need a more robust regexp to match words. */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * The base implementation of `_.clamp` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {number} number The number to clamp.
-   * @param {number} [lower] The lower bound.
-   * @param {number} upper The upper bound.
-   * @returns {number} Returns the clamped number.
-   */
-
-  /**
-   * Removes `key` and its value from the stack.
-   *
-   * @private
-   * @name delete
-   * @memberOf Stack
-   * @param {string} key The key of the value to remove.
-   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-   */
-
-  /**
-   * Gets the stack value for `key`.
-   *
-   * @private
-   * @name get
-   * @memberOf Stack
-   * @param {string} key The key of the value to get.
-   * @returns {*} Returns the entry value.
-   */
-
-  /**
-   * Checks if a stack value for `key` exists.
-   *
-   * @private
-   * @name has
-   * @memberOf Stack
-   * @param {string} key The key of the entry to check.
-   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-   */
-
-  /**
-   * A specialized version of `_.filter` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {Array} Returns the new filtered array.
-   */
-
-  /**
-   * This method returns a new empty array.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {Array} Returns the new empty array.
-   * @example
-   *
-   * var arrays = _.times(2, _.stubArray);
-   *
-   * console.log(arrays);
-   * // => [[], []]
-   *
-   * console.log(arrays[0] === arrays[1]);
-   * // => false
-   */
-
-  /** Used for built-in method references. */
-
-  /** Used to match `RegExp` flags from their coerced string values. */
-
-  /**
-   * Creates an array with all falsey values removed. The values `false`, `null`,
-   * `0`, `""`, `undefined`, and `NaN` are falsey.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Array
-   * @param {Array} array The array to compact.
-   * @returns {Array} Returns the new array of filtered values.
-   * @example
-   *
-   * _.compact([0, 1, false, 2, '', 3]);
-   * // => [1, 2, 3]
-   */
-
-  /** Used to stand-in for `undefined` hash values. */
-
-  /**
-   * Checks if `value` is in the array cache.
-   *
-   * @private
-   * @name has
-   * @memberOf SetCache
-   * @param {*} value The value to search for.
-   * @returns {number} Returns `true` if `value` is found, else `false`.
-   */
-
-  /**
-   * A specialized version of `_.some` for arrays without support for iteratee
-   * shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {boolean} Returns `true` if any element passes the predicate check,
-   *  else `false`.
-   */
-
-  /**
-   * Checks if a `cache` value for `key` exists.
-   *
-   * @private
-   * @param {Object} cache The cache to query.
-   * @param {string} key The key of the entry to check.
-   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-   */
-
-  /**
-   * Converts `map` to its key-value pairs.
-   *
-   * @private
-   * @param {Object} map The map to convert.
-   * @returns {Array} Returns the key-value pairs.
-   */
-
-  /**
-   * Converts `set` to an array of its values.
-   *
-   * @private
-   * @param {Object} set The set to convert.
-   * @returns {Array} Returns the values.
-   */
-
-  /**
-   * A specialized version of `matchesProperty` for source values suitable
-   * for strict equality comparisons, i.e. `===`.
-   *
-   * @private
-   * @param {string} key The key of the property to get.
-   * @param {*} srcValue The value to match.
-   * @returns {Function} Returns the new spec function.
-   */
-
-  /**
-   * The base implementation of `_.hasIn` without support for deep paths.
-   *
-   * @private
-   * @param {Object} [object] The object to query.
-   * @param {Array|string} key The key to check.
-   * @returns {boolean} Returns `true` if `key` exists, else `false`.
-   */
-
-  /**
-   * The base implementation of `_.property` without support for deep paths.
-   *
-   * @private
-   * @param {string} key The key of the property to get.
-   * @returns {Function} Returns the new accessor function.
-   */
-
-  /**
-   * The base implementation of `_.conformsTo` which accepts `props` to check.
-   *
-   * @private
-   * @param {Object} object The object to inspect.
-   * @param {Object} source The object of property predicates to conform to.
-   * @returns {boolean} Returns `true` if `object` conforms, else `false`.
-   */
-
-  /**
-   * A specialized version of `baseAggregator` for arrays.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} setter The function to set `accumulator` values.
-   * @param {Function} iteratee The iteratee to transform keys.
-   * @param {Object} accumulator The initial aggregated object.
-   * @returns {Function} Returns `accumulator`.
-   */
-
-  /**
-   * Creates a base function for methods like `_.forIn` and `_.forOwn`.
-   *
-   * @private
-   * @param {boolean} [fromRight] Specify iterating from right to left.
-   * @returns {Function} Returns the new base function.
-   */
-
-  /**
-   * Checks `value` to determine whether a default value should be returned in
-   * its place. The `defaultValue` is returned if `value` is `NaN`, `null`,
-   * or `undefined`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.14.0
-   * @category Util
-   * @param {*} value The value to check.
-   * @param {*} defaultValue The default value.
-   * @returns {*} Returns the resolved value.
-   * @example
-   *
-   * _.defaultTo(1, 10);
-   * // => 1
-   *
-   * _.defaultTo(undefined, 10);
-   * // => 10
-   */
-
-  /**
-   * Gets the value at `key`, unless `key` is "__proto__".
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @param {string} key The key of the property to get.
-   * @returns {*} Returns the property value.
-   */
-
-  /** Error message constants. */
-
-  /**
-   * This function is like `arrayIncludes` except that it accepts a comparator.
-   *
-   * @private
-   * @param {Array} [array] The array to inspect.
-   * @param {*} target The value to search for.
-   * @param {Function} comparator The comparator invoked per element.
-   * @returns {boolean} Returns `true` if `target` is found, else `false`.
-   */
-
-  /**
-   * Gets the last element of `array`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Array
-   * @param {Array} array The array to query.
-   * @returns {*} Returns the last element of `array`.
-   * @example
-   *
-   * _.last([1, 2, 3]);
-   * // => 3
-   */
-
-  /**
-   * A specialized version of `_.forEachRight` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns `array`.
-   */
-
-  /**
-   * Converts `set` to its value-value pairs.
-   *
-   * @private
-   * @param {Object} set The set to convert.
-   * @returns {Array} Returns the value-value pairs.
-   */
-
-  /**
-   * A specialized version of `_.every` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {boolean} Returns `true` if all elements pass the predicate check,
-   *  else `false`.
-   */
-
-  /**
-   * The base implementation of methods like `_.findKey` and `_.findLastKey`,
-   * without support for iteratee shorthands, which iterates over `collection`
-   * using `eachFunc`.
-   *
-   * @private
-   * @param {Array|Object} collection The collection to inspect.
-   * @param {Function} predicate The function invoked per iteration.
-   * @param {Function} eachFunc The function to iterate over `collection`.
-   * @returns {*} Returns the found element or its key, else `undefined`.
-   */
-
-  /**
-   * Gets the first element of `array`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @alias first
-   * @category Array
-   * @param {Array} array The array to query.
-   * @returns {*} Returns the first element of `array`.
-   * @example
-   *
-   * _.head([1, 2, 3]);
-   * // => 1
-   *
-   * _.head([]);
-   * // => undefined
-   */
-
-  /**
-   * The inverse of `_.toPairs`; this method returns an object composed
-   * from key-value `pairs`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Array
-   * @param {Array} pairs The key-value pairs.
-   * @returns {Object} Returns the new object.
-   * @example
-   *
-   * _.fromPairs([['a', 1], ['b', 2]]);
-   * // => { 'a': 1, 'b': 2 }
-   */
-
-  /**
-   * The base implementation of `_.gt` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if `value` is greater than `other`,
-   *  else `false`.
-   */
-
-  /** Used for built-in method references. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /** `Object#toString` result references. */
-  var stringTag$5 = '[object String]';
-
-  /**
-   * Checks if `value` is classified as a `String` primitive or object.
-   *
-   * @static
-   * @since 0.1.0
-   * @memberOf _
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a string, else `false`.
-   * @example
-   *
-   * _.isString('abc');
-   * // => true
-   *
-   * _.isString(1);
-   * // => false
-   */
-  function isString$2(value) {
-    return typeof value == 'string' ||
-      (!isArray$2(value) && isObjectLike$2(value) && baseGetTag$2(value) == stringTag$5);
-  }
-
-  /** Used for built-in method references. */
-
-  /**
-   * A specialized version of `_.lastIndexOf` which performs strict equality
-   * comparisons of values, i.e. `===`.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /**
-   * The base implementation of `_.lt` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if `value` is less than `other`,
-   *  else `false`.
-   */
-
-  /**
-   * The base implementation of `_.sum` and `_.sumBy` without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} array The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {number} Returns the sum.
-   */
-
-  /** Error message constants. */
-
-  /**
-   * Converts `iterator` to an array.
-   *
-   * @private
-   * @param {Object} iterator The iterator to convert.
-   * @returns {Array} Returns the converted array.
-   */
-
-  /**
-   * The base implementation of `_.sortBy` which uses `comparer` to define the
-   * sort order of `array` and replaces criteria objects with their corresponding
-   * values.
-   *
-   * @private
-   * @param {Array} array The array to sort.
-   * @param {Function} comparer The function to define sort order.
-   * @returns {Array} Returns `array`.
-   */
-
-  /** Used as references for various `Number` constants. */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * This function is like `baseIndexOf` except that it accepts a comparator.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @param {Function} comparator The comparator invoked per element.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * The base implementation of `_.reduce` and `_.reduceRight`, without support
-   * for iteratee shorthands, which iterates over `collection` using `eachFunc`.
-   *
-   * @private
-   * @param {Array|Object} collection The collection to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} accumulator The initial value.
-   * @param {boolean} initAccum Specify using the first or last element of
-   *  `collection` as the initial value.
-   * @param {Function} eachFunc The function to iterate over `collection`.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /**
-   * A specialized version of `_.reduceRight` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the last element of `array` as
-   *  the initial value.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /** Used for built-in method references. */
-
-  /**
-   * This method returns a new empty object.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {Object} Returns the new empty object.
-   * @example
-   *
-   * var objects = _.times(2, _.stubObject);
-   *
-   * console.log(objects);
-   * // => [{}, {}]
-   *
-   * console.log(objects[0] === objects[1]);
-   * // => false
-   */
-
-  /**
-   * This method returns an empty string.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {string} Returns the empty string.
-   * @example
-   *
-   * _.times(2, _.stubString);
-   * // => ['', '']
-   */
-
-  /**
-   * This method returns `true`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {boolean} Returns `true`.
-   * @example
-   *
-   * _.times(2, _.stubTrue);
-   * // => [true, true]
-   */
-
-  /**
-   * This method invokes `interceptor` and returns `value`. The interceptor
-   * is invoked with one argument; (value). The purpose of this method is to
-   * "tap into" a method chain sequence in order to modify intermediate results.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Seq
-   * @param {*} value The value to provide to `interceptor`.
-   * @param {Function} interceptor The function to invoke.
-   * @returns {*} Returns `value`.
-   * @example
-   *
-   * _([1, 2, 3])
-   *  .tap(function(array) {
-   *    // Mutate input array.
-   *    array.pop();
-   *  })
-   *  .reverse()
-   *  .value();
-   * // => [2, 1]
-   */
-
-  /** Used to escape characters for inclusion in compiled string literals. */
-
-  /** Used to match template delimiters. */
-
-  /** Used to match template delimiters. */
-
-  /** Used to match template delimiters. */
-
-  /**
-   * This method is like `_.tap` except that it returns the result of `interceptor`.
-   * The purpose of this method is to "pass thru" values replacing intermediate
-   * results in a method chain sequence.
-   *
-   * @static
-   * @memberOf _
-   * @since 3.0.0
-   * @category Seq
-   * @param {*} value The value to provide to `interceptor`.
-   * @param {Function} interceptor The function to invoke.
-   * @returns {*} Returns the result of `interceptor`.
-   * @example
-   *
-   * _('  abc  ')
-   *  .chain()
-   *  .trim()
-   *  .thru(function(value) {
-   *    return [value];
-   *  })
-   *  .value();
-   * // => ['abc']
-   */
-
-  /**
-   * Enables the wrapper to be iterable.
-   *
-   * @name Symbol.iterator
-   * @memberOf _
-   * @since 4.0.0
-   * @category Seq
-   * @returns {Object} Returns the wrapper object.
-   * @example
-   *
-   * var wrapped = _([1, 2]);
-   *
-   * wrapped[Symbol.iterator]() === wrapped;
-   * // => true
-   *
-   * Array.from(wrapped);
-   * // => [1, 2]
-   */
-
-  /**
-   * This base implementation of `_.zipObject` which assigns values using `assignFunc`.
-   *
-   * @private
-   * @param {Array} props The property identifiers.
-   * @param {Array} values The property values.
-   * @param {Function} assignFunc The function to assign values.
-   * @returns {Object} Returns the new object.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright JS Foundation and other contributors <https://js.foundation/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-   */
-
-  /**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright JS Foundation and other contributors <https://js.foundation/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-   */
-
-  var inBrowser$1 = typeof window !== "undefined" && Object.prototype.toString.call(window) !== "[object Object]";
-  var isObject$1 = isPlainObject$1;
-  function isNumeric(obj) {
-    return !isArray$2(obj) && obj - parseFloat(obj) + 1 >= 0;
-  }
-  function isEmpty$1(obj) {
-    if (isArray$2(obj)) {
-      return obj.length === 0;
-    } else if (isObject$1(obj)) {
-      return Object.keys(obj).length === 0;
-    } else {
-      return !obj;
-    }
-  }
-  function isEvent(obj) {
-    return obj instanceof Event || (obj && obj.originalEvent) instanceof Event;
-  }
-  function isPromise(obj) {
-    return !!obj && (_typeof_1$1(obj) === "object" || typeof obj === "function") && typeof obj.then === "function";
-  }
-  function isNode(obj) {
-    return !!((typeof Node === "undefined" ? "undefined" : _typeof_1$1(Node)) === "object" ? obj instanceof Node : obj && _typeof_1$1(obj) === "object" && typeof obj.nodeType === "number" && typeof obj.nodeName === "string");
-  }
-  function isElement(obj) {
-    return !!((typeof HTMLElement === "undefined" ? "undefined" : _typeof_1$1(HTMLElement)) === "object" ? obj instanceof HTMLElement : obj && _typeof_1$1(obj) === "object" && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === "string");
-  }
-  function isPosterityNode(parent, child) {
-    if (!isNode(parent) || !isNode(child)) {
-      return false;
-    }
-
-    while (child.parentNode) {
-      child = child.parentNode;
-
-      if (child === parent) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-  function isHTMLString(str) {
-    return isString$2(str) && /<[^>]+?>/.test(str);
-  }
-
-  /**
-   * es-fullscreen v0.4.0-beta.8
-   * (c) 2017-2019 toxic-johann
-   * Released under MIT
-   * Built ad Sun Jun 02 2019 19:48:40 GMT+0800 (China Standard Time)
-   */
-
-  function createCommonjsModule$2(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
-  }
-
-  var _typeof_1$2 = createCommonjsModule$2(function (module) {
-  function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-  function _typeof(obj) {
-    if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-      module.exports = _typeof = function _typeof(obj) {
-        return _typeof2(obj);
-      };
-    } else {
-      module.exports = _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-      };
-    }
-
-    return _typeof(obj);
-  }
-
-  module.exports = _typeof;
-  });
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var classCallCheck = _classCallCheck;
-
-  function _defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }
-
-  function _createClass(Constructor, protoProps, staticProps) {
-    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) _defineProperties(Constructor, staticProps);
-    return Constructor;
-  }
-
-  var createClass = _createClass;
-
-  /** Detect free variable `global` from Node.js. */
-  var freeGlobal$4 = typeof global == 'object' && global && global.Object === Object && global;
-
-  /** Detect free variable `self`. */
-  var freeSelf$4 = typeof self == 'object' && self && self.Object === Object && self;
-
-  /** Used as a reference to the global object. */
-  var root$4 = freeGlobal$4 || freeSelf$4 || Function('return this')();
-
-  /** Built-in value references. */
-  var Symbol$1$2 = root$4.Symbol;
-
-  /** Used for built-in method references. */
-  var objectProto$k = Object.prototype;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty$g = objectProto$k.hasOwnProperty;
-
-  /**
-   * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-   * of values.
-   */
-  var nativeObjectToString$5 = objectProto$k.toString;
-
-  /** Built-in value references. */
-  var symToStringTag$7 = Symbol$1$2 ? Symbol$1$2.toStringTag : undefined;
-
-  /**
-   * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {string} Returns the raw `toStringTag`.
-   */
-  function getRawTag$3(value) {
-    var isOwn = hasOwnProperty$g.call(value, symToStringTag$7),
-        tag = value[symToStringTag$7];
-
-    try {
-      value[symToStringTag$7] = undefined;
-      var unmasked = true;
-    } catch (e) {}
-
-    var result = nativeObjectToString$5.call(value);
-    if (unmasked) {
-      if (isOwn) {
-        value[symToStringTag$7] = tag;
-      } else {
-        delete value[symToStringTag$7];
-      }
-    }
-    return result;
-  }
-
-  /** Used for built-in method references. */
-  var objectProto$1$2 = Object.prototype;
-
-  /**
-   * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-   * of values.
-   */
-  var nativeObjectToString$1$2 = objectProto$1$2.toString;
-
-  /**
-   * Converts `value` to a string using `Object.prototype.toString`.
-   *
-   * @private
-   * @param {*} value The value to convert.
-   * @returns {string} Returns the converted string.
-   */
-  function objectToString$3(value) {
-    return nativeObjectToString$1$2.call(value);
-  }
-
-  /** `Object#toString` result references. */
-  var nullTag$3 = '[object Null]',
-      undefinedTag$3 = '[object Undefined]';
-
-  /** Built-in value references. */
-  var symToStringTag$1$2 = Symbol$1$2 ? Symbol$1$2.toStringTag : undefined;
-
-  /**
-   * The base implementation of `getTag` without fallbacks for buggy environments.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {string} Returns the `toStringTag`.
-   */
-  function baseGetTag$3(value) {
-    if (value == null) {
-      return value === undefined ? undefinedTag$3 : nullTag$3;
-    }
-    return (symToStringTag$1$2 && symToStringTag$1$2 in Object(value))
-      ? getRawTag$3(value)
-      : objectToString$3(value);
-  }
-
-  /**
-   * Checks if `value` is object-like. A value is object-like if it's not `null`
-   * and has a `typeof` result of "object".
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-   * @example
-   *
-   * _.isObjectLike({});
-   * // => true
-   *
-   * _.isObjectLike([1, 2, 3]);
-   * // => true
-   *
-   * _.isObjectLike(_.noop);
-   * // => false
-   *
-   * _.isObjectLike(null);
-   * // => false
-   */
-  function isObjectLike$3(value) {
-    return value != null && typeof value == 'object';
-  }
-
-  /**
-   * A specialized version of `_.map` for arrays without support for iteratee
-   * shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns the new mapped array.
-   */
-
-  /**
-   * Checks if `value` is classified as an `Array` object.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is an array, else `false`.
-   * @example
-   *
-   * _.isArray([1, 2, 3]);
-   * // => true
-   *
-   * _.isArray(document.body.children);
-   * // => false
-   *
-   * _.isArray('abc');
-   * // => false
-   *
-   * _.isArray(_.noop);
-   * // => false
-   */
-  var isArray$3 = Array.isArray;
-
-  /**
-   * Checks if `value` is the
-   * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
-   * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-   * @example
-   *
-   * _.isObject({});
-   * // => true
-   *
-   * _.isObject([1, 2, 3]);
-   * // => true
-   *
-   * _.isObject(_.noop);
-   * // => true
-   *
-   * _.isObject(null);
-   * // => false
-   */
-  function isObject$2(value) {
-    var type = typeof value;
-    return value != null && (type == 'object' || type == 'function');
-  }
-
-  /**
-   * This method returns the first argument it receives.
-   *
-   * @static
-   * @since 0.1.0
-   * @memberOf _
-   * @category Util
-   * @param {*} value Any value.
-   * @returns {*} Returns `value`.
-   * @example
-   *
-   * var object = { 'a': 1 };
-   *
-   * console.log(_.identity(object) === object);
-   * // => true
-   */
-
-  /** `Object#toString` result references. */
-  var asyncTag$1 = '[object AsyncFunction]',
-      funcTag$3 = '[object Function]',
-      genTag$2 = '[object GeneratorFunction]',
-      proxyTag$1 = '[object Proxy]';
-
-  /**
-   * Checks if `value` is classified as a `Function` object.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a function, else `false`.
-   * @example
-   *
-   * _.isFunction(_);
-   * // => true
-   *
-   * _.isFunction(/abc/);
-   * // => false
-   */
-  function isFunction$1(value) {
-    if (!isObject$2(value)) {
-      return false;
-    }
-    // The use of `Object#toString` avoids issues with the `typeof` operator
-    // in Safari 9 which returns 'object' for typed arrays and other constructors.
-    var tag = baseGetTag$3(value);
-    return tag == funcTag$3 || tag == genTag$2 || tag == asyncTag$1 || tag == proxyTag$1;
-  }
-
-  /** Used for built-in method references. */
-
-  /**
-   * Gets the value at `key` of `object`.
-   *
-   * @private
-   * @param {Object} [object] The object to query.
-   * @param {string} key The key of the property to get.
-   * @returns {*} Returns the property value.
-   */
-
-  /**
-   * A faster alternative to `Function#apply`, this function invokes `func`
-   * with the `this` binding of `thisArg` and the arguments of `args`.
-   *
-   * @private
-   * @param {Function} func The function to invoke.
-   * @param {*} thisArg The `this` binding of `func`.
-   * @param {Array} args The arguments to invoke `func` with.
-   * @returns {*} Returns the result of `func`.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * Gets the number of `placeholder` occurrences in `array`.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} placeholder The placeholder to search for.
-   * @returns {number} Returns the placeholder count.
-   */
-
-  /**
-   * The function whose prototype chain sequence wrappers inherit from.
-   *
-   * @private
-   */
-
-  /**
-   * This method returns `undefined`.
-   *
-   * @static
-   * @memberOf _
-   * @since 2.3.0
-   * @category Util
-   * @example
-   *
-   * _.times(2, _.noop);
-   * // => [undefined, undefined]
-   */
-
-  /** Used to lookup unminified function names. */
-
-  /**
-   * Copies the values of `source` to `array`.
-   *
-   * @private
-   * @param {Array} source The array to copy values from.
-   * @param {Array} [array=[]] The array to copy values to.
-   * @returns {Array} Returns `array`.
-   */
-
-  /** Used to detect hot functions by number of calls within a span of milliseconds. */
-
-  /** Used to match wrap detail comments. */
-
-  /** Used to match wrap detail comments. */
-
-  /**
-   * Creates a function that returns `value`.
-   *
-   * @static
-   * @memberOf _
-   * @since 2.4.0
-   * @category Util
-   * @param {*} value The value to return from the new function.
-   * @returns {Function} Returns the new constant function.
-   * @example
-   *
-   * var objects = _.times(2, _.constant({ 'a': 1 }));
-   *
-   * console.log(objects);
-   * // => [{ 'a': 1 }, { 'a': 1 }]
-   *
-   * console.log(objects[0] === objects[1]);
-   * // => true
-   */
-
-  /**
-   * A specialized version of `_.forEach` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns `array`.
-   */
-
-  /**
-   * The base implementation of `_.findIndex` and `_.findLastIndex` without
-   * support for iteratee shorthands.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {Function} predicate The function invoked per iteration.
-   * @param {number} fromIndex The index to search from.
-   * @param {boolean} [fromRight] Specify iterating from right to left.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /**
-   * The base implementation of `_.isNaN` without support for number objects.
-   *
-   * @private
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is `NaN`, else `false`.
-   */
-
-  /**
-   * A specialized version of `_.indexOf` which performs strict equality
-   * comparisons of values, i.e. `===`.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /**
-   * Gets the argument placeholder value for `func`.
-   *
-   * @private
-   * @param {Function} func The function to inspect.
-   * @returns {*} Returns the placeholder value.
-   */
-
-  /** Used as references for various `Number` constants. */
-
-  /** Used as the internal argument placeholder. */
-
-  /**
-   * Performs a
-   * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
-   * comparison between two values to determine if they are equivalent.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
-   * @example
-   *
-   * var object = { 'a': 1 };
-   * var other = { 'a': 1 };
-   *
-   * _.eq(object, object);
-   * // => true
-   *
-   * _.eq(object, other);
-   * // => false
-   *
-   * _.eq('a', 'a');
-   * // => true
-   *
-   * _.eq('a', Object('a'));
-   * // => false
-   *
-   * _.eq(NaN, NaN);
-   * // => true
-   */
-
-  /** Used as references for various `Number` constants. */
-
-  /** Used for built-in method references. */
-
-  /**
-   * The base implementation of `_.times` without support for iteratee shorthands
-   * or max array length checks.
-   *
-   * @private
-   * @param {number} n The number of times to invoke `iteratee`.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns the array of results.
-   */
-
-  /**
-   * This method returns `false`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {boolean} Returns `false`.
-   * @example
-   *
-   * _.times(2, _.stubFalse);
-   * // => [false, false]
-   */
-
-  /**
-   * The base implementation of `_.unary` without support for storing metadata.
-   *
-   * @private
-   * @param {Function} func The function to cap arguments for.
-   * @returns {Function} Returns the new capped function.
-   */
-
-  /**
-   * Creates a unary function that invokes `func` with its argument transformed.
-   *
-   * @private
-   * @param {Function} func The function to wrap.
-   * @param {Function} transform The argument transform.
-   * @returns {Function} Returns the new function.
-   */
-  function overArg$2(func, transform) {
-    return function(arg) {
-      return func(transform(arg));
-    };
-  }
-
-  /**
-   * This function is like
-   * [`Object.keys`](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
-   * except that it includes inherited enumerable properties.
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @returns {Array} Returns the array of property names.
-   */
-
-  /**
-   * Removes `key` and its value from the hash.
-   *
-   * @private
-   * @name delete
-   * @memberOf Hash
-   * @param {Object} hash The hash to modify.
-   * @param {string} key The key of the value to remove.
-   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-   */
-
-  /**
-   * Removes all key-value entries from the list cache.
-   *
-   * @private
-   * @name clear
-   * @memberOf ListCache
-   */
-
-  /**
-   * Checks if `value` is suitable for use as unique object key.
-   *
-   * @private
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
-   */
-
-  /**
-   * Appends the elements of `values` to `array`.
-   *
-   * @private
-   * @param {Array} array The array to modify.
-   * @param {Array} values The values to append.
-   * @returns {Array} Returns `array`.
-   */
-
-  /** Built-in value references. */
-  var getPrototype$2 = overArg$2(Object.getPrototypeOf, Object);
-
-  /** `Object#toString` result references. */
-  var objectTag$5 = '[object Object]';
-
-  /** Used for built-in method references. */
-  var funcProto$5 = Function.prototype,
-      objectProto$2$2 = Object.prototype;
-
-  /** Used to resolve the decompiled source of functions. */
-  var funcToString$5 = funcProto$5.toString;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty$1$2 = objectProto$2$2.hasOwnProperty;
-
-  /** Used to infer the `Object` constructor. */
-  var objectCtorString$3 = funcToString$5.call(Object);
-
-  /**
-   * Checks if `value` is a plain object, that is, an object created by the
-   * `Object` constructor or one with a `[[Prototype]]` of `null`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.8.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
-   * @example
-   *
-   * function Foo() {
-   *   this.a = 1;
-   * }
-   *
-   * _.isPlainObject(new Foo);
-   * // => false
-   *
-   * _.isPlainObject([1, 2, 3]);
-   * // => false
-   *
-   * _.isPlainObject({ 'x': 0, 'y': 0 });
-   * // => true
-   *
-   * _.isPlainObject(Object.create(null));
-   * // => true
-   */
-  function isPlainObject$2(value) {
-    if (!isObjectLike$3(value) || baseGetTag$3(value) != objectTag$5) {
-      return false;
-    }
-    var proto = getPrototype$2(value);
-    if (proto === null) {
-      return true;
-    }
-    var Ctor = hasOwnProperty$1$2.call(proto, 'constructor') && proto.constructor;
-    return typeof Ctor == 'function' && Ctor instanceof Ctor &&
-      funcToString$5.call(Ctor) == objectCtorString$3;
-  }
-
-  /**
-   * The base implementation of `_.slice` without an iteratee call guard.
-   *
-   * @private
-   * @param {Array} array The array to slice.
-   * @param {number} [start=0] The start position.
-   * @param {number} [end=array.length] The end position.
-   * @returns {Array} Returns the slice of `array`.
-   */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * Converts an ASCII `string` to an array.
-   *
-   * @private
-   * @param {string} string The string to convert.
-   * @returns {Array} Returns the converted array.
-   */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * A specialized version of `_.reduce` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the first element of `array` as
-   *  the initial value.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /**
-   * The base implementation of `_.propertyOf` without support for deep paths.
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @returns {Function} Returns the new accessor function.
-   */
-
-  /** Used to match words composed of alphanumeric characters. */
-
-  /** Used to detect strings that need a more robust regexp to match words. */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * The base implementation of `_.clamp` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {number} number The number to clamp.
-   * @param {number} [lower] The lower bound.
-   * @param {number} upper The upper bound.
-   * @returns {number} Returns the clamped number.
-   */
-
-  /**
-   * Removes `key` and its value from the stack.
-   *
-   * @private
-   * @name delete
-   * @memberOf Stack
-   * @param {string} key The key of the value to remove.
-   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-   */
-
-  /**
-   * Gets the stack value for `key`.
-   *
-   * @private
-   * @name get
-   * @memberOf Stack
-   * @param {string} key The key of the value to get.
-   * @returns {*} Returns the entry value.
-   */
-
-  /**
-   * Checks if a stack value for `key` exists.
-   *
-   * @private
-   * @name has
-   * @memberOf Stack
-   * @param {string} key The key of the entry to check.
-   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-   */
-
-  /**
-   * A specialized version of `_.filter` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {Array} Returns the new filtered array.
-   */
-
-  /**
-   * This method returns a new empty array.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {Array} Returns the new empty array.
-   * @example
-   *
-   * var arrays = _.times(2, _.stubArray);
-   *
-   * console.log(arrays);
-   * // => [[], []]
-   *
-   * console.log(arrays[0] === arrays[1]);
-   * // => false
-   */
-
-  /** Used for built-in method references. */
-
-  /** Used to match `RegExp` flags from their coerced string values. */
-
-  /**
-   * Creates an array with all falsey values removed. The values `false`, `null`,
-   * `0`, `""`, `undefined`, and `NaN` are falsey.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Array
-   * @param {Array} array The array to compact.
-   * @returns {Array} Returns the new array of filtered values.
-   * @example
-   *
-   * _.compact([0, 1, false, 2, '', 3]);
-   * // => [1, 2, 3]
-   */
-
-  /** Used to stand-in for `undefined` hash values. */
-
-  /**
-   * Checks if `value` is in the array cache.
-   *
-   * @private
-   * @name has
-   * @memberOf SetCache
-   * @param {*} value The value to search for.
-   * @returns {number} Returns `true` if `value` is found, else `false`.
-   */
-
-  /**
-   * A specialized version of `_.some` for arrays without support for iteratee
-   * shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {boolean} Returns `true` if any element passes the predicate check,
-   *  else `false`.
-   */
-
-  /**
-   * Checks if a `cache` value for `key` exists.
-   *
-   * @private
-   * @param {Object} cache The cache to query.
-   * @param {string} key The key of the entry to check.
-   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-   */
-
-  /**
-   * Converts `map` to its key-value pairs.
-   *
-   * @private
-   * @param {Object} map The map to convert.
-   * @returns {Array} Returns the key-value pairs.
-   */
-
-  /**
-   * Converts `set` to an array of its values.
-   *
-   * @private
-   * @param {Object} set The set to convert.
-   * @returns {Array} Returns the values.
-   */
-
-  /**
-   * A specialized version of `matchesProperty` for source values suitable
-   * for strict equality comparisons, i.e. `===`.
-   *
-   * @private
-   * @param {string} key The key of the property to get.
-   * @param {*} srcValue The value to match.
-   * @returns {Function} Returns the new spec function.
-   */
-
-  /**
-   * The base implementation of `_.hasIn` without support for deep paths.
-   *
-   * @private
-   * @param {Object} [object] The object to query.
-   * @param {Array|string} key The key to check.
-   * @returns {boolean} Returns `true` if `key` exists, else `false`.
-   */
-
-  /**
-   * The base implementation of `_.property` without support for deep paths.
-   *
-   * @private
-   * @param {string} key The key of the property to get.
-   * @returns {Function} Returns the new accessor function.
-   */
-
-  /**
-   * The base implementation of `_.conformsTo` which accepts `props` to check.
-   *
-   * @private
-   * @param {Object} object The object to inspect.
-   * @param {Object} source The object of property predicates to conform to.
-   * @returns {boolean} Returns `true` if `object` conforms, else `false`.
-   */
-
-  /**
-   * A specialized version of `baseAggregator` for arrays.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} setter The function to set `accumulator` values.
-   * @param {Function} iteratee The iteratee to transform keys.
-   * @param {Object} accumulator The initial aggregated object.
-   * @returns {Function} Returns `accumulator`.
-   */
-
-  /**
-   * Creates a base function for methods like `_.forIn` and `_.forOwn`.
-   *
-   * @private
-   * @param {boolean} [fromRight] Specify iterating from right to left.
-   * @returns {Function} Returns the new base function.
-   */
-
-  /**
-   * Checks `value` to determine whether a default value should be returned in
-   * its place. The `defaultValue` is returned if `value` is `NaN`, `null`,
-   * or `undefined`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.14.0
-   * @category Util
-   * @param {*} value The value to check.
-   * @param {*} defaultValue The default value.
-   * @returns {*} Returns the resolved value.
-   * @example
-   *
-   * _.defaultTo(1, 10);
-   * // => 1
-   *
-   * _.defaultTo(undefined, 10);
-   * // => 10
-   */
-
-  /**
-   * Gets the value at `key`, unless `key` is "__proto__".
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @param {string} key The key of the property to get.
-   * @returns {*} Returns the property value.
-   */
-
-  /** Error message constants. */
-
-  /**
-   * This function is like `arrayIncludes` except that it accepts a comparator.
-   *
-   * @private
-   * @param {Array} [array] The array to inspect.
-   * @param {*} target The value to search for.
-   * @param {Function} comparator The comparator invoked per element.
-   * @returns {boolean} Returns `true` if `target` is found, else `false`.
-   */
-
-  /**
-   * Gets the last element of `array`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Array
-   * @param {Array} array The array to query.
-   * @returns {*} Returns the last element of `array`.
-   * @example
-   *
-   * _.last([1, 2, 3]);
-   * // => 3
-   */
-
-  /**
-   * A specialized version of `_.forEachRight` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns `array`.
-   */
-
-  /**
-   * Converts `set` to its value-value pairs.
-   *
-   * @private
-   * @param {Object} set The set to convert.
-   * @returns {Array} Returns the value-value pairs.
-   */
-
-  /**
-   * A specialized version of `_.every` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {boolean} Returns `true` if all elements pass the predicate check,
-   *  else `false`.
-   */
-
-  /**
-   * The base implementation of methods like `_.findKey` and `_.findLastKey`,
-   * without support for iteratee shorthands, which iterates over `collection`
-   * using `eachFunc`.
-   *
-   * @private
-   * @param {Array|Object} collection The collection to inspect.
-   * @param {Function} predicate The function invoked per iteration.
-   * @param {Function} eachFunc The function to iterate over `collection`.
-   * @returns {*} Returns the found element or its key, else `undefined`.
-   */
-
-  /**
-   * Gets the first element of `array`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @alias first
-   * @category Array
-   * @param {Array} array The array to query.
-   * @returns {*} Returns the first element of `array`.
-   * @example
-   *
-   * _.head([1, 2, 3]);
-   * // => 1
-   *
-   * _.head([]);
-   * // => undefined
-   */
-
-  /**
-   * The inverse of `_.toPairs`; this method returns an object composed
-   * from key-value `pairs`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Array
-   * @param {Array} pairs The key-value pairs.
-   * @returns {Object} Returns the new object.
-   * @example
-   *
-   * _.fromPairs([['a', 1], ['b', 2]]);
-   * // => { 'a': 1, 'b': 2 }
-   */
-
-  /**
-   * The base implementation of `_.gt` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if `value` is greater than `other`,
-   *  else `false`.
-   */
-
-  /** Used for built-in method references. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /** `Object#toString` result references. */
-  var stringTag$6 = '[object String]';
-
-  /**
-   * Checks if `value` is classified as a `String` primitive or object.
-   *
-   * @static
-   * @since 0.1.0
-   * @memberOf _
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a string, else `false`.
-   * @example
-   *
-   * _.isString('abc');
-   * // => true
-   *
-   * _.isString(1);
-   * // => false
-   */
-  function isString$3(value) {
-    return typeof value == 'string' ||
-      (!isArray$3(value) && isObjectLike$3(value) && baseGetTag$3(value) == stringTag$6);
-  }
-
-  /**
-   * Checks if `value` is `null` or `undefined`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is nullish, else `false`.
-   * @example
-   *
-   * _.isNil(null);
-   * // => true
-   *
-   * _.isNil(void 0);
-   * // => true
-   *
-   * _.isNil(NaN);
-   * // => false
-   */
-
-  /**
-   * Checks if `value` is `null`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is `null`, else `false`.
-   * @example
-   *
-   * _.isNull(null);
-   * // => true
-   *
-   * _.isNull(void 0);
-   * // => false
-   */
-
-  /**
-   * Checks if `value` is `undefined`.
-   *
-   * @static
-   * @since 0.1.0
-   * @memberOf _
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is `undefined`, else `false`.
-   * @example
-   *
-   * _.isUndefined(void 0);
-   * // => true
-   *
-   * _.isUndefined(null);
-   * // => false
-   */
-
-  /** Used for built-in method references. */
-
-  /**
-   * A specialized version of `_.lastIndexOf` which performs strict equality
-   * comparisons of values, i.e. `===`.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /**
-   * The base implementation of `_.lt` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if `value` is less than `other`,
-   *  else `false`.
-   */
-
-  /**
-   * The base implementation of `_.sum` and `_.sumBy` without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} array The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {number} Returns the sum.
-   */
-
-  /** Error message constants. */
-
-  /**
-   * Converts `iterator` to an array.
-   *
-   * @private
-   * @param {Object} iterator The iterator to convert.
-   * @returns {Array} Returns the converted array.
-   */
-
-  /**
-   * The base implementation of `_.sortBy` which uses `comparer` to define the
-   * sort order of `array` and replaces criteria objects with their corresponding
-   * values.
-   *
-   * @private
-   * @param {Array} array The array to sort.
-   * @param {Function} comparer The function to define sort order.
-   * @returns {Array} Returns `array`.
-   */
-
-  /** Used as references for various `Number` constants. */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * This function is like `baseIndexOf` except that it accepts a comparator.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @param {Function} comparator The comparator invoked per element.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * The base implementation of `_.reduce` and `_.reduceRight`, without support
-   * for iteratee shorthands, which iterates over `collection` using `eachFunc`.
-   *
-   * @private
-   * @param {Array|Object} collection The collection to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} accumulator The initial value.
-   * @param {boolean} initAccum Specify using the first or last element of
-   *  `collection` as the initial value.
-   * @param {Function} eachFunc The function to iterate over `collection`.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /**
-   * A specialized version of `_.reduceRight` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the last element of `array` as
-   *  the initial value.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /** Used for built-in method references. */
-
-  /**
-   * This method returns a new empty object.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {Object} Returns the new empty object.
-   * @example
-   *
-   * var objects = _.times(2, _.stubObject);
-   *
-   * console.log(objects);
-   * // => [{}, {}]
-   *
-   * console.log(objects[0] === objects[1]);
-   * // => false
-   */
-
-  /**
-   * This method returns an empty string.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {string} Returns the empty string.
-   * @example
-   *
-   * _.times(2, _.stubString);
-   * // => ['', '']
-   */
-
-  /**
-   * This method returns `true`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {boolean} Returns `true`.
-   * @example
-   *
-   * _.times(2, _.stubTrue);
-   * // => [true, true]
-   */
-
-  /**
-   * This method invokes `interceptor` and returns `value`. The interceptor
-   * is invoked with one argument; (value). The purpose of this method is to
-   * "tap into" a method chain sequence in order to modify intermediate results.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Seq
-   * @param {*} value The value to provide to `interceptor`.
-   * @param {Function} interceptor The function to invoke.
-   * @returns {*} Returns `value`.
-   * @example
-   *
-   * _([1, 2, 3])
-   *  .tap(function(array) {
-   *    // Mutate input array.
-   *    array.pop();
-   *  })
-   *  .reverse()
-   *  .value();
-   * // => [2, 1]
-   */
-
-  /** Used to escape characters for inclusion in compiled string literals. */
-
-  /** Used to match template delimiters. */
-
-  /** Used to match template delimiters. */
-
-  /** Used to match template delimiters. */
-
-  /**
-   * This method is like `_.tap` except that it returns the result of `interceptor`.
-   * The purpose of this method is to "pass thru" values replacing intermediate
-   * results in a method chain sequence.
-   *
-   * @static
-   * @memberOf _
-   * @since 3.0.0
-   * @category Seq
-   * @param {*} value The value to provide to `interceptor`.
-   * @param {Function} interceptor The function to invoke.
-   * @returns {*} Returns the result of `interceptor`.
-   * @example
-   *
-   * _('  abc  ')
-   *  .chain()
-   *  .trim()
-   *  .thru(function(value) {
-   *    return [value];
-   *  })
-   *  .value();
-   * // => ['abc']
-   */
-
-  /**
-   * Enables the wrapper to be iterable.
-   *
-   * @name Symbol.iterator
-   * @memberOf _
-   * @since 4.0.0
-   * @category Seq
-   * @returns {Object} Returns the wrapper object.
-   * @example
-   *
-   * var wrapped = _([1, 2]);
-   *
-   * wrapped[Symbol.iterator]() === wrapped;
-   * // => true
-   *
-   * Array.from(wrapped);
-   * // => [1, 2]
-   */
-
-  /**
-   * This base implementation of `_.zipObject` which assigns values using `assignFunc`.
-   *
-   * @private
-   * @param {Array} props The property identifiers.
-   * @param {Array} values The property values.
-   * @param {Function} assignFunc The function to assign values.
-   * @returns {Object} Returns the new object.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright JS Foundation and other contributors <https://js.foundation/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-   */
-
-  /**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright JS Foundation and other contributors <https://js.foundation/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-   */
-
-  /**
-   * toxic-predicate-functions v0.4.0
-   * (c) 2017-2019 toxic-johann
-   * Released under MIT
-   * Built ad Sun Jun 02 2019 19:15:55 GMT+0800 (China Standard Time)
-   */
-
-  function createCommonjsModule$1$1(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
-  }
-
-  var _typeof_1$1$1 = createCommonjsModule$1$1(function (module) {
-  function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-  function _typeof(obj) {
-    if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-      module.exports = _typeof = function _typeof(obj) {
-        return _typeof2(obj);
-      };
-    } else {
-      module.exports = _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-      };
-    }
-
-    return _typeof(obj);
-  }
-
-  module.exports = _typeof;
-  });
-
-  /** Detect free variable `global` from Node.js. */
-  var freeGlobal$1$1 = typeof global == 'object' && global && global.Object === Object && global;
-
-  /** Detect free variable `self`. */
-  var freeSelf$1$1 = typeof self == 'object' && self && self.Object === Object && self;
-
-  /** Used as a reference to the global object. */
-  var root$1$1 = freeGlobal$1$1 || freeSelf$1$1 || Function('return this')();
-
-  /** Built-in value references. */
-  var Symbol$1$1$1 = root$1$1.Symbol;
-
-  /** Built-in value references. */
-  var symToStringTag$2$1 = Symbol$1$1$1 ? Symbol$1$1$1.toStringTag : undefined;
-
-  /** Built-in value references. */
-  var symToStringTag$1$1$1 = Symbol$1$1$1 ? Symbol$1$1$1.toStringTag : undefined;
-
-  /** Used for built-in method references. */
-  var funcProto$1$1 = Function.prototype;
-
-  /** Used to resolve the decompiled source of functions. */
-  var funcToString$1$1 = funcProto$1$1.toString;
-
-  /** Used to infer the `Object` constructor. */
-  var objectCtorString$1$1 = funcToString$1$1.call(Object);
-
-  /**
-   * Checks if `value` is `null`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is `null`, else `false`.
-   * @example
-   *
-   * _.isNull(null);
-   * // => true
-   *
-   * _.isNull(void 0);
-   * // => false
-   */
-
-  /**
-   * Checks if `value` is `undefined`.
-   *
-   * @static
-   * @since 0.1.0
-   * @memberOf _
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is `undefined`, else `false`.
-   * @example
-   *
-   * _.isUndefined(void 0);
-   * // => true
-   *
-   * _.isUndefined(null);
-   * // => false
-   */
   function isUndefined(value) {
     return value === undefined;
   }
@@ -9806,21 +6670,57 @@
    * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
    */
 
-  var inBrowser$2 = typeof window !== "undefined" && Object.prototype.toString.call(window) !== "[object Object]";
+  var _typeof_1$1 = createCommonjsModule(function (module) {
+  function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
+  function _typeof(obj) {
+    if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+      module.exports = _typeof = function _typeof(obj) {
+        return _typeof2(obj);
+      };
+    } else {
+      module.exports = _typeof = function _typeof(obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+      };
+    }
+
+    return _typeof(obj);
+  }
+
+  module.exports = _typeof;
+  });
+
+  var inBrowser$1 = typeof window !== "undefined" && Object.prototype.toString.call(window) !== "[object Object]";
+  var isObject$1 = isPlainObject;
   function defined(obj) {
     return !isUndefined(obj);
   }
-  function isEvent$1(obj) {
+  function isNumeric(obj) {
+    return !isArray$1(obj) && obj - parseFloat(obj) + 1 >= 0;
+  }
+  function isEmpty$1(obj) {
+    if (isArray$1(obj)) {
+      return obj.length === 0;
+    } else if (isObject$1(obj)) {
+      return Object.keys(obj).length === 0;
+    } else {
+      return !obj;
+    }
+  }
+  function isEvent(obj) {
     return obj instanceof Event || (obj && obj.originalEvent) instanceof Event;
   }
-  function isNode$1(obj) {
-    return !!((typeof Node === "undefined" ? "undefined" : _typeof_1$1$1(Node)) === "object" ? obj instanceof Node : obj && _typeof_1$1$1(obj) === "object" && typeof obj.nodeType === "number" && typeof obj.nodeName === "string");
+  function isPromise(obj) {
+    return !!obj && (_typeof_1$1(obj) === "object" || typeof obj === "function") && typeof obj.then === "function";
   }
-  function isElement$1(obj) {
-    return !!((typeof HTMLElement === "undefined" ? "undefined" : _typeof_1$1$1(HTMLElement)) === "object" ? obj instanceof HTMLElement : obj && _typeof_1$1$1(obj) === "object" && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === "string");
+  function isNode(obj) {
+    return !!((typeof Node === "undefined" ? "undefined" : _typeof_1$1(Node)) === "object" ? obj instanceof Node : obj && _typeof_1$1(obj) === "object" && typeof obj.nodeType === "number" && typeof obj.nodeName === "string");
   }
-  function isPosterityNode$1(parent, child) {
-    if (!isNode$1(parent) || !isNode$1(child)) {
+  function isElement(obj) {
+    return !!((typeof HTMLElement === "undefined" ? "undefined" : _typeof_1$1(HTMLElement)) === "object" ? obj instanceof HTMLElement : obj && _typeof_1$1(obj) === "object" && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === "string");
+  }
+  function isPosterityNode(parent, child) {
+    if (!isNode(parent) || !isNode(child)) {
       return false;
     }
 
@@ -9834,6 +6734,35 @@
 
     return false;
   }
+  function isHTMLString(str) {
+    return isString$1(str) && /<[^>]+?>/.test(str);
+  }
+
+  function _classCallCheck$1(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var classCallCheck = _classCallCheck$1;
+
+  function _defineProperties$1(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  function _createClass$1(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties$1(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties$1(Constructor, staticProps);
+    return Constructor;
+  }
+
+  var createClass = _createClass$1;
 
   var VENDOR_PREFIXES = ['', 'o', 'ms', 'moz', 'webkit', 'webkitCurrent'];
   var SYNONYMS = [['', ''], ['exit', 'cancel'], ['screen', 'Screen']];
@@ -9853,7 +6782,7 @@
 
   var supportDocument = typeof document !== 'undefined';
   function setStyle(el, key, val) {
-    if (isString$3(key)) {
+    if (isString$1(key)) {
       el.style[key] = val;
     } else {
       for (var k in key) {
@@ -9864,11 +6793,11 @@
   function native(target, name) {
     var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-    if (name && !isString$3(name)) {
+    if (name && !isString$1(name)) {
       option = name;
     }
 
-    if (isString$3(target)) {
+    if (isString$1(target)) {
       name = target;
     }
 
@@ -9880,12 +6809,12 @@
       return keyOnly ? '' : undefined;
     }
 
-    if (!isElement$1(target)) {
+    if (!isElement(target)) {
       target = document;
     }
 
-    if (!isString$3(name)) {
-      throw new Error("You must pass in a string as name, but not ".concat(_typeof_1$2(name), "."));
+    if (!isString$1(name)) {
+      throw new Error("You must pass in a string as name, but not ".concat(_typeof_1$1(name), "."));
     }
 
     for (var i = 0; i < SYNONYMS.length; i++) {
@@ -9911,7 +6840,7 @@
 
     var event;
 
-    if (isFunction$1(Event)) {
+    if (isFunction(Event)) {
       event = new Event(name, {
         bubbles: bubbles,
         cancelable: cancelable
@@ -9925,7 +6854,7 @@
       event.eventName = name;
     }
 
-    if (!isPlainObject$2(event) && !isEvent$1(event)) {
+    if (!isPlainObject(event) && !isEvent(event)) {
       throw new Error('We can\'t create an object on this browser, please report to author');
     }
 
@@ -9977,11 +6906,11 @@
             force = _ref$force === void 0 ? false : _ref$force;
 
         {
-          if (!isElement$1(element)) {
-            throw new Error("You should passed in a legal element to requestFullScreen, but not ".concat(_typeof_1$2(element), "."));
+          if (!isElement(element)) {
+            throw new Error("You should passed in a legal element to requestFullScreen, but not ".concat(_typeof_1$1(element), "."));
           }
 
-          if (!isPosterityNode$1(document, element)) {
+          if (!isPosterityNode(document, element)) {
             throw new Error('You must pass in a HTML element in document.');
           }
         }
@@ -9999,14 +6928,14 @@
 
         if (!this.useStyleFirst) {
           if (this.isNativelySupport) {
-            if (isFunction$1(element[this._openKey])) {
+            if (isFunction(element[this._openKey])) {
               element[this._openKey]();
             }
 
             return true;
           }
 
-          if (element instanceof HTMLVideoElement && element.webkitSupportsFullscreen && isFunction$1(element.webkitEnterFullscreen)) {
+          if (element instanceof HTMLVideoElement && element.webkitSupportsFullscreen && isFunction(element.webkitEnterFullscreen)) {
             element.webkitEnterFullscreen();
             this._fullscreenElement = element;
             return true;
@@ -10102,12 +7031,12 @@
             throw new Error("".concat(this.constructor.name, " only handle \"fullscreenchange\", \"fullscreenerror\" and \"esfullscreenmethodchange\" event, but not ").concat(name, ". Pleas pass in an right event name."));
           }
 
-          if (!isFunction$1(fn)) {
-            throw new Error("You must pass in an legal function, but not ".concat(_typeof_1$2(fn), "."));
+          if (!isFunction(fn)) {
+            throw new Error("You must pass in an legal function, but not ".concat(_typeof_1$1(fn), "."));
           }
 
-          if (!isElement$1(element) && element !== document) {
-            throw new Error("You should passed in a legal element, but not ".concat(_typeof_1$2(element), "."));
+          if (!isElement(element) && element !== document) {
+            throw new Error("You should passed in a legal element, but not ".concat(_typeof_1$1(element), "."));
           }
         }
 
@@ -10142,7 +7071,7 @@
     }, {
       key: "isFullscreen",
       get: function get() {
-        return isElement$1(this.fullscreenElement);
+        return isElement(this.fullscreenElement);
       }
     }]);
 
@@ -10150,2941 +7079,6 @@
   }();
 
   var esFullscreen = new ESFullscreen();
-
-  /**
-   * toxic-decorators v0.4.0-beta.14
-   * (c) 2017-2019 toxic-johann
-   * Released under GPL-3.0
-   * Built ad Sun Jun 02 2019 19:52:53 GMT+0800 (China Standard Time)
-   */
-
-  /** Detect free variable `global` from Node.js. */
-  var freeGlobal$5 = typeof global == 'object' && global && global.Object === Object && global;
-
-  /** Detect free variable `self`. */
-  var freeSelf$5 = typeof self == 'object' && self && self.Object === Object && self;
-
-  /** Used as a reference to the global object. */
-  var root$5 = freeGlobal$5 || freeSelf$5 || Function('return this')();
-
-  /** Built-in value references. */
-  var Symbol$1$3 = root$5.Symbol;
-
-  /** Used for built-in method references. */
-  var objectProto$l = Object.prototype;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty$h = objectProto$l.hasOwnProperty;
-
-  /**
-   * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-   * of values.
-   */
-  var nativeObjectToString$6 = objectProto$l.toString;
-
-  /** Built-in value references. */
-  var symToStringTag$8 = Symbol$1$3 ? Symbol$1$3.toStringTag : undefined;
-
-  /**
-   * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {string} Returns the raw `toStringTag`.
-   */
-  function getRawTag$4(value) {
-    var isOwn = hasOwnProperty$h.call(value, symToStringTag$8),
-        tag = value[symToStringTag$8];
-
-    try {
-      value[symToStringTag$8] = undefined;
-      var unmasked = true;
-    } catch (e) {}
-
-    var result = nativeObjectToString$6.call(value);
-    if (unmasked) {
-      if (isOwn) {
-        value[symToStringTag$8] = tag;
-      } else {
-        delete value[symToStringTag$8];
-      }
-    }
-    return result;
-  }
-
-  /** Used for built-in method references. */
-  var objectProto$1$3 = Object.prototype;
-
-  /**
-   * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-   * of values.
-   */
-  var nativeObjectToString$1$3 = objectProto$1$3.toString;
-
-  /**
-   * Converts `value` to a string using `Object.prototype.toString`.
-   *
-   * @private
-   * @param {*} value The value to convert.
-   * @returns {string} Returns the converted string.
-   */
-  function objectToString$4(value) {
-    return nativeObjectToString$1$3.call(value);
-  }
-
-  /** `Object#toString` result references. */
-  var nullTag$4 = '[object Null]',
-      undefinedTag$4 = '[object Undefined]';
-
-  /** Built-in value references. */
-  var symToStringTag$1$3 = Symbol$1$3 ? Symbol$1$3.toStringTag : undefined;
-
-  /**
-   * The base implementation of `getTag` without fallbacks for buggy environments.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {string} Returns the `toStringTag`.
-   */
-  function baseGetTag$4(value) {
-    if (value == null) {
-      return value === undefined ? undefinedTag$4 : nullTag$4;
-    }
-    return (symToStringTag$1$3 && symToStringTag$1$3 in Object(value))
-      ? getRawTag$4(value)
-      : objectToString$4(value);
-  }
-
-  /**
-   * Checks if `value` is object-like. A value is object-like if it's not `null`
-   * and has a `typeof` result of "object".
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-   * @example
-   *
-   * _.isObjectLike({});
-   * // => true
-   *
-   * _.isObjectLike([1, 2, 3]);
-   * // => true
-   *
-   * _.isObjectLike(_.noop);
-   * // => false
-   *
-   * _.isObjectLike(null);
-   * // => false
-   */
-  function isObjectLike$4(value) {
-    return value != null && typeof value == 'object';
-  }
-
-  /** `Object#toString` result references. */
-  var symbolTag$3 = '[object Symbol]';
-
-  /**
-   * Checks if `value` is classified as a `Symbol` primitive or object.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
-   * @example
-   *
-   * _.isSymbol(Symbol.iterator);
-   * // => true
-   *
-   * _.isSymbol('abc');
-   * // => false
-   */
-  function isSymbol$1(value) {
-    return typeof value == 'symbol' ||
-      (isObjectLike$4(value) && baseGetTag$4(value) == symbolTag$3);
-  }
-
-  /**
-   * A specialized version of `_.map` for arrays without support for iteratee
-   * shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns the new mapped array.
-   */
-
-  /**
-   * Checks if `value` is classified as an `Array` object.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is an array, else `false`.
-   * @example
-   *
-   * _.isArray([1, 2, 3]);
-   * // => true
-   *
-   * _.isArray(document.body.children);
-   * // => false
-   *
-   * _.isArray('abc');
-   * // => false
-   *
-   * _.isArray(_.noop);
-   * // => false
-   */
-  var isArray$4 = Array.isArray;
-
-  /**
-   * Checks if `value` is the
-   * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
-   * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-   * @example
-   *
-   * _.isObject({});
-   * // => true
-   *
-   * _.isObject([1, 2, 3]);
-   * // => true
-   *
-   * _.isObject(_.noop);
-   * // => true
-   *
-   * _.isObject(null);
-   * // => false
-   */
-  function isObject$3(value) {
-    var type = typeof value;
-    return value != null && (type == 'object' || type == 'function');
-  }
-
-  /** Used as references for various `Number` constants. */
-  var NAN$1 = 0 / 0;
-
-  /** Used to match leading and trailing whitespace. */
-  var reTrim$1 = /^\s+|\s+$/g;
-
-  /** Used to detect bad signed hexadecimal string values. */
-  var reIsBadHex$1 = /^[-+]0x[0-9a-f]+$/i;
-
-  /** Used to detect binary string values. */
-  var reIsBinary$1 = /^0b[01]+$/i;
-
-  /** Used to detect octal string values. */
-  var reIsOctal$1 = /^0o[0-7]+$/i;
-
-  /** Built-in method references without a dependency on `root`. */
-  var freeParseInt$1 = parseInt;
-
-  /**
-   * Converts `value` to a number.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to process.
-   * @returns {number} Returns the number.
-   * @example
-   *
-   * _.toNumber(3.2);
-   * // => 3.2
-   *
-   * _.toNumber(Number.MIN_VALUE);
-   * // => 5e-324
-   *
-   * _.toNumber(Infinity);
-   * // => Infinity
-   *
-   * _.toNumber('3.2');
-   * // => 3.2
-   */
-  function toNumber$1(value) {
-    if (typeof value == 'number') {
-      return value;
-    }
-    if (isSymbol$1(value)) {
-      return NAN$1;
-    }
-    if (isObject$3(value)) {
-      var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
-      value = isObject$3(other) ? (other + '') : other;
-    }
-    if (typeof value != 'string') {
-      return value === 0 ? value : +value;
-    }
-    value = value.replace(reTrim$1, '');
-    var isBinary = reIsBinary$1.test(value);
-    return (isBinary || reIsOctal$1.test(value))
-      ? freeParseInt$1(value.slice(2), isBinary ? 2 : 8)
-      : (reIsBadHex$1.test(value) ? NAN$1 : +value);
-  }
-
-  /** Used as references for various `Number` constants. */
-  var INFINITY$2 = 1 / 0,
-      MAX_INTEGER$1 = 1.7976931348623157e+308;
-
-  /**
-   * Converts `value` to a finite number.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.12.0
-   * @category Lang
-   * @param {*} value The value to convert.
-   * @returns {number} Returns the converted number.
-   * @example
-   *
-   * _.toFinite(3.2);
-   * // => 3.2
-   *
-   * _.toFinite(Number.MIN_VALUE);
-   * // => 5e-324
-   *
-   * _.toFinite(Infinity);
-   * // => 1.7976931348623157e+308
-   *
-   * _.toFinite('3.2');
-   * // => 3.2
-   */
-  function toFinite$1(value) {
-    if (!value) {
-      return value === 0 ? value : 0;
-    }
-    value = toNumber$1(value);
-    if (value === INFINITY$2 || value === -INFINITY$2) {
-      var sign = (value < 0 ? -1 : 1);
-      return sign * MAX_INTEGER$1;
-    }
-    return value === value ? value : 0;
-  }
-
-  /**
-   * Converts `value` to an integer.
-   *
-   * **Note:** This method is loosely based on
-   * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to convert.
-   * @returns {number} Returns the converted integer.
-   * @example
-   *
-   * _.toInteger(3.2);
-   * // => 3
-   *
-   * _.toInteger(Number.MIN_VALUE);
-   * // => 0
-   *
-   * _.toInteger(Infinity);
-   * // => 1.7976931348623157e+308
-   *
-   * _.toInteger('3.2');
-   * // => 3
-   */
-  function toInteger$1(value) {
-    var result = toFinite$1(value),
-        remainder = result % 1;
-
-    return result === result ? (remainder ? result - remainder : result) : 0;
-  }
-
-  /**
-   * This method returns the first argument it receives.
-   *
-   * @static
-   * @since 0.1.0
-   * @memberOf _
-   * @category Util
-   * @param {*} value Any value.
-   * @returns {*} Returns `value`.
-   * @example
-   *
-   * var object = { 'a': 1 };
-   *
-   * console.log(_.identity(object) === object);
-   * // => true
-   */
-  function identity$1(value) {
-    return value;
-  }
-
-  /** `Object#toString` result references. */
-  var asyncTag$2 = '[object AsyncFunction]',
-      funcTag$4 = '[object Function]',
-      genTag$3 = '[object GeneratorFunction]',
-      proxyTag$2 = '[object Proxy]';
-
-  /**
-   * Checks if `value` is classified as a `Function` object.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a function, else `false`.
-   * @example
-   *
-   * _.isFunction(_);
-   * // => true
-   *
-   * _.isFunction(/abc/);
-   * // => false
-   */
-  function isFunction$2(value) {
-    if (!isObject$3(value)) {
-      return false;
-    }
-    // The use of `Object#toString` avoids issues with the `typeof` operator
-    // in Safari 9 which returns 'object' for typed arrays and other constructors.
-    var tag = baseGetTag$4(value);
-    return tag == funcTag$4 || tag == genTag$3 || tag == asyncTag$2 || tag == proxyTag$2;
-  }
-
-  /** Used to detect overreaching core-js shims. */
-  var coreJsData$1 = root$5['__core-js_shared__'];
-
-  /** Used to detect methods masquerading as native. */
-  var maskSrcKey$1 = (function() {
-    var uid = /[^.]+$/.exec(coreJsData$1 && coreJsData$1.keys && coreJsData$1.keys.IE_PROTO || '');
-    return uid ? ('Symbol(src)_1.' + uid) : '';
-  }());
-
-  /**
-   * Checks if `func` has its source masked.
-   *
-   * @private
-   * @param {Function} func The function to check.
-   * @returns {boolean} Returns `true` if `func` is masked, else `false`.
-   */
-  function isMasked$1(func) {
-    return !!maskSrcKey$1 && (maskSrcKey$1 in func);
-  }
-
-  /** Used for built-in method references. */
-  var funcProto$6 = Function.prototype;
-
-  /** Used to resolve the decompiled source of functions. */
-  var funcToString$6 = funcProto$6.toString;
-
-  /**
-   * Converts `func` to its source code.
-   *
-   * @private
-   * @param {Function} func The function to convert.
-   * @returns {string} Returns the source code.
-   */
-  function toSource$1(func) {
-    if (func != null) {
-      try {
-        return funcToString$6.call(func);
-      } catch (e) {}
-      try {
-        return (func + '');
-      } catch (e) {}
-    }
-    return '';
-  }
-
-  /**
-   * Used to match `RegExp`
-   * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
-   */
-  var reRegExpChar$1 = /[\\^$.*+?()[\]{}|]/g;
-
-  /** Used to detect host constructors (Safari). */
-  var reIsHostCtor$1 = /^\[object .+?Constructor\]$/;
-
-  /** Used for built-in method references. */
-  var funcProto$1$2 = Function.prototype,
-      objectProto$2$3 = Object.prototype;
-
-  /** Used to resolve the decompiled source of functions. */
-  var funcToString$1$2 = funcProto$1$2.toString;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty$1$3 = objectProto$2$3.hasOwnProperty;
-
-  /** Used to detect if a method is native. */
-  var reIsNative$1 = RegExp('^' +
-    funcToString$1$2.call(hasOwnProperty$1$3).replace(reRegExpChar$1, '\\$&')
-    .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-  );
-
-  /**
-   * The base implementation of `_.isNative` without bad shim checks.
-   *
-   * @private
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a native function,
-   *  else `false`.
-   */
-  function baseIsNative$1(value) {
-    if (!isObject$3(value) || isMasked$1(value)) {
-      return false;
-    }
-    var pattern = isFunction$2(value) ? reIsNative$1 : reIsHostCtor$1;
-    return pattern.test(toSource$1(value));
-  }
-
-  /**
-   * Gets the value at `key` of `object`.
-   *
-   * @private
-   * @param {Object} [object] The object to query.
-   * @param {string} key The key of the property to get.
-   * @returns {*} Returns the property value.
-   */
-  function getValue$1(object, key) {
-    return object == null ? undefined : object[key];
-  }
-
-  /**
-   * Gets the native function at `key` of `object`.
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @param {string} key The key of the method to get.
-   * @returns {*} Returns the function if it's native, else `undefined`.
-   */
-  function getNative$1(object, key) {
-    var value = getValue$1(object, key);
-    return baseIsNative$1(value) ? value : undefined;
-  }
-
-  /* Built-in method references that are verified to be native. */
-  var WeakMap$1$1 = getNative$1(root$5, 'WeakMap');
-
-  /** Used to store function metadata. */
-  var metaMap$1 = WeakMap$1$1 && new WeakMap$1$1;
-
-  /**
-   * The base implementation of `setData` without support for hot loop shorting.
-   *
-   * @private
-   * @param {Function} func The function to associate metadata with.
-   * @param {*} data The metadata.
-   * @returns {Function} Returns `func`.
-   */
-  var baseSetData$1 = !metaMap$1 ? identity$1 : function(func, data) {
-    metaMap$1.set(func, data);
-    return func;
-  };
-
-  /** Built-in value references. */
-  var objectCreate$1 = Object.create;
-
-  /**
-   * The base implementation of `_.create` without support for assigning
-   * properties to the created object.
-   *
-   * @private
-   * @param {Object} proto The object to inherit from.
-   * @returns {Object} Returns the new object.
-   */
-  var baseCreate$1 = (function() {
-    function object() {}
-    return function(proto) {
-      if (!isObject$3(proto)) {
-        return {};
-      }
-      if (objectCreate$1) {
-        return objectCreate$1(proto);
-      }
-      object.prototype = proto;
-      var result = new object;
-      object.prototype = undefined;
-      return result;
-    };
-  }());
-
-  /**
-   * Creates a function that produces an instance of `Ctor` regardless of
-   * whether it was invoked as part of a `new` expression or by `call` or `apply`.
-   *
-   * @private
-   * @param {Function} Ctor The constructor to wrap.
-   * @returns {Function} Returns the new wrapped function.
-   */
-  function createCtor$1(Ctor) {
-    return function() {
-      // Use a `switch` statement to work with class constructors. See
-      // http://ecma-international.org/ecma-262/7.0/#sec-ecmascript-function-objects-call-thisargument-argumentslist
-      // for more details.
-      var args = arguments;
-      switch (args.length) {
-        case 0: return new Ctor;
-        case 1: return new Ctor(args[0]);
-        case 2: return new Ctor(args[0], args[1]);
-        case 3: return new Ctor(args[0], args[1], args[2]);
-        case 4: return new Ctor(args[0], args[1], args[2], args[3]);
-        case 5: return new Ctor(args[0], args[1], args[2], args[3], args[4]);
-        case 6: return new Ctor(args[0], args[1], args[2], args[3], args[4], args[5]);
-        case 7: return new Ctor(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
-      }
-      var thisBinding = baseCreate$1(Ctor.prototype),
-          result = Ctor.apply(thisBinding, args);
-
-      // Mimic the constructor's `return` behavior.
-      // See https://es5.github.io/#x13.2.2 for more details.
-      return isObject$3(result) ? result : thisBinding;
-    };
-  }
-
-  /** Used to compose bitmasks for function metadata. */
-  var WRAP_BIND_FLAG$8 = 1;
-
-  /**
-   * Creates a function that wraps `func` to invoke it with the optional `this`
-   * binding of `thisArg`.
-   *
-   * @private
-   * @param {Function} func The function to wrap.
-   * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
-   * @param {*} [thisArg] The `this` binding of `func`.
-   * @returns {Function} Returns the new wrapped function.
-   */
-  function createBind$1(func, bitmask, thisArg) {
-    var isBind = bitmask & WRAP_BIND_FLAG$8,
-        Ctor = createCtor$1(func);
-
-    function wrapper() {
-      var fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
-      return fn.apply(isBind ? thisArg : this, arguments);
-    }
-    return wrapper;
-  }
-
-  /**
-   * A faster alternative to `Function#apply`, this function invokes `func`
-   * with the `this` binding of `thisArg` and the arguments of `args`.
-   *
-   * @private
-   * @param {Function} func The function to invoke.
-   * @param {*} thisArg The `this` binding of `func`.
-   * @param {Array} args The arguments to invoke `func` with.
-   * @returns {*} Returns the result of `func`.
-   */
-  function apply$1(func, thisArg, args) {
-    switch (args.length) {
-      case 0: return func.call(thisArg);
-      case 1: return func.call(thisArg, args[0]);
-      case 2: return func.call(thisArg, args[0], args[1]);
-      case 3: return func.call(thisArg, args[0], args[1], args[2]);
-    }
-    return func.apply(thisArg, args);
-  }
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-  var nativeMax$4 = Math.max;
-
-  /**
-   * Creates an array that is the composition of partially applied arguments,
-   * placeholders, and provided arguments into a single array of arguments.
-   *
-   * @private
-   * @param {Array} args The provided arguments.
-   * @param {Array} partials The arguments to prepend to those provided.
-   * @param {Array} holders The `partials` placeholder indexes.
-   * @params {boolean} [isCurried] Specify composing for a curried function.
-   * @returns {Array} Returns the new array of composed arguments.
-   */
-  function composeArgs$1(args, partials, holders, isCurried) {
-    var argsIndex = -1,
-        argsLength = args.length,
-        holdersLength = holders.length,
-        leftIndex = -1,
-        leftLength = partials.length,
-        rangeLength = nativeMax$4(argsLength - holdersLength, 0),
-        result = Array(leftLength + rangeLength),
-        isUncurried = !isCurried;
-
-    while (++leftIndex < leftLength) {
-      result[leftIndex] = partials[leftIndex];
-    }
-    while (++argsIndex < holdersLength) {
-      if (isUncurried || argsIndex < argsLength) {
-        result[holders[argsIndex]] = args[argsIndex];
-      }
-    }
-    while (rangeLength--) {
-      result[leftIndex++] = args[argsIndex++];
-    }
-    return result;
-  }
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-  var nativeMax$1$1 = Math.max;
-
-  /**
-   * This function is like `composeArgs` except that the arguments composition
-   * is tailored for `_.partialRight`.
-   *
-   * @private
-   * @param {Array} args The provided arguments.
-   * @param {Array} partials The arguments to append to those provided.
-   * @param {Array} holders The `partials` placeholder indexes.
-   * @params {boolean} [isCurried] Specify composing for a curried function.
-   * @returns {Array} Returns the new array of composed arguments.
-   */
-  function composeArgsRight$1(args, partials, holders, isCurried) {
-    var argsIndex = -1,
-        argsLength = args.length,
-        holdersIndex = -1,
-        holdersLength = holders.length,
-        rightIndex = -1,
-        rightLength = partials.length,
-        rangeLength = nativeMax$1$1(argsLength - holdersLength, 0),
-        result = Array(rangeLength + rightLength),
-        isUncurried = !isCurried;
-
-    while (++argsIndex < rangeLength) {
-      result[argsIndex] = args[argsIndex];
-    }
-    var offset = argsIndex;
-    while (++rightIndex < rightLength) {
-      result[offset + rightIndex] = partials[rightIndex];
-    }
-    while (++holdersIndex < holdersLength) {
-      if (isUncurried || argsIndex < argsLength) {
-        result[offset + holders[holdersIndex]] = args[argsIndex++];
-      }
-    }
-    return result;
-  }
-
-  /**
-   * Gets the number of `placeholder` occurrences in `array`.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} placeholder The placeholder to search for.
-   * @returns {number} Returns the placeholder count.
-   */
-  function countHolders$1(array, placeholder) {
-    var length = array.length,
-        result = 0;
-
-    while (length--) {
-      if (array[length] === placeholder) {
-        ++result;
-      }
-    }
-    return result;
-  }
-
-  /**
-   * The function whose prototype chain sequence wrappers inherit from.
-   *
-   * @private
-   */
-  function baseLodash$1() {
-    // No operation performed.
-  }
-
-  /** Used as references for the maximum length and index of an array. */
-  var MAX_ARRAY_LENGTH$1 = 4294967295;
-
-  /**
-   * Creates a lazy wrapper object which wraps `value` to enable lazy evaluation.
-   *
-   * @private
-   * @constructor
-   * @param {*} value The value to wrap.
-   */
-  function LazyWrapper$1(value) {
-    this.__wrapped__ = value;
-    this.__actions__ = [];
-    this.__dir__ = 1;
-    this.__filtered__ = false;
-    this.__iteratees__ = [];
-    this.__takeCount__ = MAX_ARRAY_LENGTH$1;
-    this.__views__ = [];
-  }
-
-  // Ensure `LazyWrapper` is an instance of `baseLodash`.
-  LazyWrapper$1.prototype = baseCreate$1(baseLodash$1.prototype);
-  LazyWrapper$1.prototype.constructor = LazyWrapper$1;
-
-  /**
-   * This method returns `undefined`.
-   *
-   * @static
-   * @memberOf _
-   * @since 2.3.0
-   * @category Util
-   * @example
-   *
-   * _.times(2, _.noop);
-   * // => [undefined, undefined]
-   */
-  function noop$1() {
-    // No operation performed.
-  }
-
-  /**
-   * Gets metadata for `func`.
-   *
-   * @private
-   * @param {Function} func The function to query.
-   * @returns {*} Returns the metadata for `func`.
-   */
-  var getData$1 = !metaMap$1 ? noop$1 : function(func) {
-    return metaMap$1.get(func);
-  };
-
-  /** Used to lookup unminified function names. */
-  var realNames$1 = {};
-
-  /** Used for built-in method references. */
-  var objectProto$3$1 = Object.prototype;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty$2$1 = objectProto$3$1.hasOwnProperty;
-
-  /**
-   * Gets the name of `func`.
-   *
-   * @private
-   * @param {Function} func The function to query.
-   * @returns {string} Returns the function name.
-   */
-  function getFuncName$1(func) {
-    var result = (func.name + ''),
-        array = realNames$1[result],
-        length = hasOwnProperty$2$1.call(realNames$1, result) ? array.length : 0;
-
-    while (length--) {
-      var data = array[length],
-          otherFunc = data.func;
-      if (otherFunc == null || otherFunc == func) {
-        return data.name;
-      }
-    }
-    return result;
-  }
-
-  /**
-   * The base constructor for creating `lodash` wrapper objects.
-   *
-   * @private
-   * @param {*} value The value to wrap.
-   * @param {boolean} [chainAll] Enable explicit method chain sequences.
-   */
-  function LodashWrapper$1(value, chainAll) {
-    this.__wrapped__ = value;
-    this.__actions__ = [];
-    this.__chain__ = !!chainAll;
-    this.__index__ = 0;
-    this.__values__ = undefined;
-  }
-
-  LodashWrapper$1.prototype = baseCreate$1(baseLodash$1.prototype);
-  LodashWrapper$1.prototype.constructor = LodashWrapper$1;
-
-  /**
-   * Copies the values of `source` to `array`.
-   *
-   * @private
-   * @param {Array} source The array to copy values from.
-   * @param {Array} [array=[]] The array to copy values to.
-   * @returns {Array} Returns `array`.
-   */
-  function copyArray$1(source, array) {
-    var index = -1,
-        length = source.length;
-
-    array || (array = Array(length));
-    while (++index < length) {
-      array[index] = source[index];
-    }
-    return array;
-  }
-
-  /**
-   * Creates a clone of `wrapper`.
-   *
-   * @private
-   * @param {Object} wrapper The wrapper to clone.
-   * @returns {Object} Returns the cloned wrapper.
-   */
-  function wrapperClone$1(wrapper) {
-    if (wrapper instanceof LazyWrapper$1) {
-      return wrapper.clone();
-    }
-    var result = new LodashWrapper$1(wrapper.__wrapped__, wrapper.__chain__);
-    result.__actions__ = copyArray$1(wrapper.__actions__);
-    result.__index__  = wrapper.__index__;
-    result.__values__ = wrapper.__values__;
-    return result;
-  }
-
-  /** Used for built-in method references. */
-  var objectProto$4$1 = Object.prototype;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty$3$1 = objectProto$4$1.hasOwnProperty;
-
-  /**
-   * Creates a `lodash` object which wraps `value` to enable implicit method
-   * chain sequences. Methods that operate on and return arrays, collections,
-   * and functions can be chained together. Methods that retrieve a single value
-   * or may return a primitive value will automatically end the chain sequence
-   * and return the unwrapped value. Otherwise, the value must be unwrapped
-   * with `_#value`.
-   *
-   * Explicit chain sequences, which must be unwrapped with `_#value`, may be
-   * enabled using `_.chain`.
-   *
-   * The execution of chained methods is lazy, that is, it's deferred until
-   * `_#value` is implicitly or explicitly called.
-   *
-   * Lazy evaluation allows several methods to support shortcut fusion.
-   * Shortcut fusion is an optimization to merge iteratee calls; this avoids
-   * the creation of intermediate arrays and can greatly reduce the number of
-   * iteratee executions. Sections of a chain sequence qualify for shortcut
-   * fusion if the section is applied to an array and iteratees accept only
-   * one argument. The heuristic for whether a section qualifies for shortcut
-   * fusion is subject to change.
-   *
-   * Chaining is supported in custom builds as long as the `_#value` method is
-   * directly or indirectly included in the build.
-   *
-   * In addition to lodash methods, wrappers have `Array` and `String` methods.
-   *
-   * The wrapper `Array` methods are:
-   * `concat`, `join`, `pop`, `push`, `shift`, `sort`, `splice`, and `unshift`
-   *
-   * The wrapper `String` methods are:
-   * `replace` and `split`
-   *
-   * The wrapper methods that support shortcut fusion are:
-   * `at`, `compact`, `drop`, `dropRight`, `dropWhile`, `filter`, `find`,
-   * `findLast`, `head`, `initial`, `last`, `map`, `reject`, `reverse`, `slice`,
-   * `tail`, `take`, `takeRight`, `takeRightWhile`, `takeWhile`, and `toArray`
-   *
-   * The chainable wrapper methods are:
-   * `after`, `ary`, `assign`, `assignIn`, `assignInWith`, `assignWith`, `at`,
-   * `before`, `bind`, `bindAll`, `bindKey`, `castArray`, `chain`, `chunk`,
-   * `commit`, `compact`, `concat`, `conforms`, `constant`, `countBy`, `create`,
-   * `curry`, `debounce`, `defaults`, `defaultsDeep`, `defer`, `delay`,
-   * `difference`, `differenceBy`, `differenceWith`, `drop`, `dropRight`,
-   * `dropRightWhile`, `dropWhile`, `extend`, `extendWith`, `fill`, `filter`,
-   * `flatMap`, `flatMapDeep`, `flatMapDepth`, `flatten`, `flattenDeep`,
-   * `flattenDepth`, `flip`, `flow`, `flowRight`, `fromPairs`, `functions`,
-   * `functionsIn`, `groupBy`, `initial`, `intersection`, `intersectionBy`,
-   * `intersectionWith`, `invert`, `invertBy`, `invokeMap`, `iteratee`, `keyBy`,
-   * `keys`, `keysIn`, `map`, `mapKeys`, `mapValues`, `matches`, `matchesProperty`,
-   * `memoize`, `merge`, `mergeWith`, `method`, `methodOf`, `mixin`, `negate`,
-   * `nthArg`, `omit`, `omitBy`, `once`, `orderBy`, `over`, `overArgs`,
-   * `overEvery`, `overSome`, `partial`, `partialRight`, `partition`, `pick`,
-   * `pickBy`, `plant`, `property`, `propertyOf`, `pull`, `pullAll`, `pullAllBy`,
-   * `pullAllWith`, `pullAt`, `push`, `range`, `rangeRight`, `rearg`, `reject`,
-   * `remove`, `rest`, `reverse`, `sampleSize`, `set`, `setWith`, `shuffle`,
-   * `slice`, `sort`, `sortBy`, `splice`, `spread`, `tail`, `take`, `takeRight`,
-   * `takeRightWhile`, `takeWhile`, `tap`, `throttle`, `thru`, `toArray`,
-   * `toPairs`, `toPairsIn`, `toPath`, `toPlainObject`, `transform`, `unary`,
-   * `union`, `unionBy`, `unionWith`, `uniq`, `uniqBy`, `uniqWith`, `unset`,
-   * `unshift`, `unzip`, `unzipWith`, `update`, `updateWith`, `values`,
-   * `valuesIn`, `without`, `wrap`, `xor`, `xorBy`, `xorWith`, `zip`,
-   * `zipObject`, `zipObjectDeep`, and `zipWith`
-   *
-   * The wrapper methods that are **not** chainable by default are:
-   * `add`, `attempt`, `camelCase`, `capitalize`, `ceil`, `clamp`, `clone`,
-   * `cloneDeep`, `cloneDeepWith`, `cloneWith`, `conformsTo`, `deburr`,
-   * `defaultTo`, `divide`, `each`, `eachRight`, `endsWith`, `eq`, `escape`,
-   * `escapeRegExp`, `every`, `find`, `findIndex`, `findKey`, `findLast`,
-   * `findLastIndex`, `findLastKey`, `first`, `floor`, `forEach`, `forEachRight`,
-   * `forIn`, `forInRight`, `forOwn`, `forOwnRight`, `get`, `gt`, `gte`, `has`,
-   * `hasIn`, `head`, `identity`, `includes`, `indexOf`, `inRange`, `invoke`,
-   * `isArguments`, `isArray`, `isArrayBuffer`, `isArrayLike`, `isArrayLikeObject`,
-   * `isBoolean`, `isBuffer`, `isDate`, `isElement`, `isEmpty`, `isEqual`,
-   * `isEqualWith`, `isError`, `isFinite`, `isFunction`, `isInteger`, `isLength`,
-   * `isMap`, `isMatch`, `isMatchWith`, `isNaN`, `isNative`, `isNil`, `isNull`,
-   * `isNumber`, `isObject`, `isObjectLike`, `isPlainObject`, `isRegExp`,
-   * `isSafeInteger`, `isSet`, `isString`, `isUndefined`, `isTypedArray`,
-   * `isWeakMap`, `isWeakSet`, `join`, `kebabCase`, `last`, `lastIndexOf`,
-   * `lowerCase`, `lowerFirst`, `lt`, `lte`, `max`, `maxBy`, `mean`, `meanBy`,
-   * `min`, `minBy`, `multiply`, `noConflict`, `noop`, `now`, `nth`, `pad`,
-   * `padEnd`, `padStart`, `parseInt`, `pop`, `random`, `reduce`, `reduceRight`,
-   * `repeat`, `result`, `round`, `runInContext`, `sample`, `shift`, `size`,
-   * `snakeCase`, `some`, `sortedIndex`, `sortedIndexBy`, `sortedLastIndex`,
-   * `sortedLastIndexBy`, `startCase`, `startsWith`, `stubArray`, `stubFalse`,
-   * `stubObject`, `stubString`, `stubTrue`, `subtract`, `sum`, `sumBy`,
-   * `template`, `times`, `toFinite`, `toInteger`, `toJSON`, `toLength`,
-   * `toLower`, `toNumber`, `toSafeInteger`, `toString`, `toUpper`, `trim`,
-   * `trimEnd`, `trimStart`, `truncate`, `unescape`, `uniqueId`, `upperCase`,
-   * `upperFirst`, `value`, and `words`
-   *
-   * @name _
-   * @constructor
-   * @category Seq
-   * @param {*} value The value to wrap in a `lodash` instance.
-   * @returns {Object} Returns the new `lodash` wrapper instance.
-   * @example
-   *
-   * function square(n) {
-   *   return n * n;
-   * }
-   *
-   * var wrapped = _([1, 2, 3]);
-   *
-   * // Returns an unwrapped value.
-   * wrapped.reduce(_.add);
-   * // => 6
-   *
-   * // Returns a wrapped value.
-   * var squares = wrapped.map(square);
-   *
-   * _.isArray(squares);
-   * // => false
-   *
-   * _.isArray(squares.value());
-   * // => true
-   */
-  function lodash$1(value) {
-    if (isObjectLike$4(value) && !isArray$4(value) && !(value instanceof LazyWrapper$1)) {
-      if (value instanceof LodashWrapper$1) {
-        return value;
-      }
-      if (hasOwnProperty$3$1.call(value, '__wrapped__')) {
-        return wrapperClone$1(value);
-      }
-    }
-    return new LodashWrapper$1(value);
-  }
-
-  // Ensure wrappers are instances of `baseLodash`.
-  lodash$1.prototype = baseLodash$1.prototype;
-  lodash$1.prototype.constructor = lodash$1;
-
-  /**
-   * Checks if `func` has a lazy counterpart.
-   *
-   * @private
-   * @param {Function} func The function to check.
-   * @returns {boolean} Returns `true` if `func` has a lazy counterpart,
-   *  else `false`.
-   */
-  function isLaziable$1(func) {
-    var funcName = getFuncName$1(func),
-        other = lodash$1[funcName];
-
-    if (typeof other != 'function' || !(funcName in LazyWrapper$1.prototype)) {
-      return false;
-    }
-    if (func === other) {
-      return true;
-    }
-    var data = getData$1(other);
-    return !!data && func === data[0];
-  }
-
-  /** Used to detect hot functions by number of calls within a span of milliseconds. */
-  var HOT_COUNT$1 = 800,
-      HOT_SPAN$1 = 16;
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-  var nativeNow$1 = Date.now;
-
-  /**
-   * Creates a function that'll short out and invoke `identity` instead
-   * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`
-   * milliseconds.
-   *
-   * @private
-   * @param {Function} func The function to restrict.
-   * @returns {Function} Returns the new shortable function.
-   */
-  function shortOut$1(func) {
-    var count = 0,
-        lastCalled = 0;
-
-    return function() {
-      var stamp = nativeNow$1(),
-          remaining = HOT_SPAN$1 - (stamp - lastCalled);
-
-      lastCalled = stamp;
-      if (remaining > 0) {
-        if (++count >= HOT_COUNT$1) {
-          return arguments[0];
-        }
-      } else {
-        count = 0;
-      }
-      return func.apply(undefined, arguments);
-    };
-  }
-
-  /**
-   * Sets metadata for `func`.
-   *
-   * **Note:** If this function becomes hot, i.e. is invoked a lot in a short
-   * period of time, it will trip its breaker and transition to an identity
-   * function to avoid garbage collection pauses in V8. See
-   * [V8 issue 2070](https://bugs.chromium.org/p/v8/issues/detail?id=2070)
-   * for more details.
-   *
-   * @private
-   * @param {Function} func The function to associate metadata with.
-   * @param {*} data The metadata.
-   * @returns {Function} Returns `func`.
-   */
-  var setData$1 = shortOut$1(baseSetData$1);
-
-  /** Used to match wrap detail comments. */
-  var reWrapDetails$1 = /\{\n\/\* \[wrapped with (.+)\] \*/,
-      reSplitDetails$1 = /,? & /;
-
-  /**
-   * Extracts wrapper details from the `source` body comment.
-   *
-   * @private
-   * @param {string} source The source to inspect.
-   * @returns {Array} Returns the wrapper details.
-   */
-  function getWrapDetails$1(source) {
-    var match = source.match(reWrapDetails$1);
-    return match ? match[1].split(reSplitDetails$1) : [];
-  }
-
-  /** Used to match wrap detail comments. */
-  var reWrapComment$1 = /\{(?:\n\/\* \[wrapped with .+\] \*\/)?\n?/;
-
-  /**
-   * Inserts wrapper `details` in a comment at the top of the `source` body.
-   *
-   * @private
-   * @param {string} source The source to modify.
-   * @returns {Array} details The details to insert.
-   * @returns {string} Returns the modified source.
-   */
-  function insertWrapDetails$1(source, details) {
-    var length = details.length;
-    if (!length) {
-      return source;
-    }
-    var lastIndex = length - 1;
-    details[lastIndex] = (length > 1 ? '& ' : '') + details[lastIndex];
-    details = details.join(length > 2 ? ', ' : ' ');
-    return source.replace(reWrapComment$1, '{\n/* [wrapped with ' + details + '] */\n');
-  }
-
-  /**
-   * Creates a function that returns `value`.
-   *
-   * @static
-   * @memberOf _
-   * @since 2.4.0
-   * @category Util
-   * @param {*} value The value to return from the new function.
-   * @returns {Function} Returns the new constant function.
-   * @example
-   *
-   * var objects = _.times(2, _.constant({ 'a': 1 }));
-   *
-   * console.log(objects);
-   * // => [{ 'a': 1 }, { 'a': 1 }]
-   *
-   * console.log(objects[0] === objects[1]);
-   * // => true
-   */
-  function constant$1(value) {
-    return function() {
-      return value;
-    };
-  }
-
-  var defineProperty$1 = (function() {
-    try {
-      var func = getNative$1(Object, 'defineProperty');
-      func({}, '', {});
-      return func;
-    } catch (e) {}
-  }());
-
-  /**
-   * The base implementation of `setToString` without support for hot loop shorting.
-   *
-   * @private
-   * @param {Function} func The function to modify.
-   * @param {Function} string The `toString` result.
-   * @returns {Function} Returns `func`.
-   */
-  var baseSetToString$1 = !defineProperty$1 ? identity$1 : function(func, string) {
-    return defineProperty$1(func, 'toString', {
-      'configurable': true,
-      'enumerable': false,
-      'value': constant$1(string),
-      'writable': true
-    });
-  };
-
-  /**
-   * Sets the `toString` method of `func` to return `string`.
-   *
-   * @private
-   * @param {Function} func The function to modify.
-   * @param {Function} string The `toString` result.
-   * @returns {Function} Returns `func`.
-   */
-  var setToString$1 = shortOut$1(baseSetToString$1);
-
-  /**
-   * A specialized version of `_.forEach` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns `array`.
-   */
-  function arrayEach$1(array, iteratee) {
-    var index = -1,
-        length = array == null ? 0 : array.length;
-
-    while (++index < length) {
-      if (iteratee(array[index], index, array) === false) {
-        break;
-      }
-    }
-    return array;
-  }
-
-  /**
-   * The base implementation of `_.findIndex` and `_.findLastIndex` without
-   * support for iteratee shorthands.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {Function} predicate The function invoked per iteration.
-   * @param {number} fromIndex The index to search from.
-   * @param {boolean} [fromRight] Specify iterating from right to left.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-  function baseFindIndex$1(array, predicate, fromIndex, fromRight) {
-    var length = array.length,
-        index = fromIndex + (fromRight ? 1 : -1);
-
-    while ((fromRight ? index-- : ++index < length)) {
-      if (predicate(array[index], index, array)) {
-        return index;
-      }
-    }
-    return -1;
-  }
-
-  /**
-   * The base implementation of `_.isNaN` without support for number objects.
-   *
-   * @private
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is `NaN`, else `false`.
-   */
-  function baseIsNaN$1(value) {
-    return value !== value;
-  }
-
-  /**
-   * A specialized version of `_.indexOf` which performs strict equality
-   * comparisons of values, i.e. `===`.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-  function strictIndexOf$1(array, value, fromIndex) {
-    var index = fromIndex - 1,
-        length = array.length;
-
-    while (++index < length) {
-      if (array[index] === value) {
-        return index;
-      }
-    }
-    return -1;
-  }
-
-  /**
-   * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-  function baseIndexOf$1(array, value, fromIndex) {
-    return value === value
-      ? strictIndexOf$1(array, value, fromIndex)
-      : baseFindIndex$1(array, baseIsNaN$1, fromIndex);
-  }
-
-  /**
-   * A specialized version of `_.includes` for arrays without support for
-   * specifying an index to search from.
-   *
-   * @private
-   * @param {Array} [array] The array to inspect.
-   * @param {*} target The value to search for.
-   * @returns {boolean} Returns `true` if `target` is found, else `false`.
-   */
-  function arrayIncludes$1(array, value) {
-    var length = array == null ? 0 : array.length;
-    return !!length && baseIndexOf$1(array, value, 0) > -1;
-  }
-
-  /** Used to compose bitmasks for function metadata. */
-  var WRAP_BIND_FLAG$1$1 = 1,
-      WRAP_BIND_KEY_FLAG$5 = 2,
-      WRAP_CURRY_FLAG$5 = 8,
-      WRAP_CURRY_RIGHT_FLAG$3 = 16,
-      WRAP_PARTIAL_FLAG$4 = 32,
-      WRAP_PARTIAL_RIGHT_FLAG$3 = 64,
-      WRAP_ARY_FLAG$3 = 128,
-      WRAP_REARG_FLAG$2 = 256,
-      WRAP_FLIP_FLAG$2 = 512;
-
-  /** Used to associate wrap methods with their bit flags. */
-  var wrapFlags$1 = [
-    ['ary', WRAP_ARY_FLAG$3],
-    ['bind', WRAP_BIND_FLAG$1$1],
-    ['bindKey', WRAP_BIND_KEY_FLAG$5],
-    ['curry', WRAP_CURRY_FLAG$5],
-    ['curryRight', WRAP_CURRY_RIGHT_FLAG$3],
-    ['flip', WRAP_FLIP_FLAG$2],
-    ['partial', WRAP_PARTIAL_FLAG$4],
-    ['partialRight', WRAP_PARTIAL_RIGHT_FLAG$3],
-    ['rearg', WRAP_REARG_FLAG$2]
-  ];
-
-  /**
-   * Updates wrapper `details` based on `bitmask` flags.
-   *
-   * @private
-   * @returns {Array} details The details to modify.
-   * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
-   * @returns {Array} Returns `details`.
-   */
-  function updateWrapDetails$1(details, bitmask) {
-    arrayEach$1(wrapFlags$1, function(pair) {
-      var value = '_.' + pair[0];
-      if ((bitmask & pair[1]) && !arrayIncludes$1(details, value)) {
-        details.push(value);
-      }
-    });
-    return details.sort();
-  }
-
-  /**
-   * Sets the `toString` method of `wrapper` to mimic the source of `reference`
-   * with wrapper details in a comment at the top of the source body.
-   *
-   * @private
-   * @param {Function} wrapper The function to modify.
-   * @param {Function} reference The reference function.
-   * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
-   * @returns {Function} Returns `wrapper`.
-   */
-  function setWrapToString$1(wrapper, reference, bitmask) {
-    var source = (reference + '');
-    return setToString$1(wrapper, insertWrapDetails$1(source, updateWrapDetails$1(getWrapDetails$1(source), bitmask)));
-  }
-
-  /** Used to compose bitmasks for function metadata. */
-  var WRAP_BIND_FLAG$2$1 = 1,
-      WRAP_BIND_KEY_FLAG$1$1 = 2,
-      WRAP_CURRY_BOUND_FLAG$2 = 4,
-      WRAP_CURRY_FLAG$1$1 = 8,
-      WRAP_PARTIAL_FLAG$1$1 = 32,
-      WRAP_PARTIAL_RIGHT_FLAG$1$1 = 64;
-
-  /**
-   * Creates a function that wraps `func` to continue currying.
-   *
-   * @private
-   * @param {Function} func The function to wrap.
-   * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
-   * @param {Function} wrapFunc The function to create the `func` wrapper.
-   * @param {*} placeholder The placeholder value.
-   * @param {*} [thisArg] The `this` binding of `func`.
-   * @param {Array} [partials] The arguments to prepend to those provided to
-   *  the new function.
-   * @param {Array} [holders] The `partials` placeholder indexes.
-   * @param {Array} [argPos] The argument positions of the new function.
-   * @param {number} [ary] The arity cap of `func`.
-   * @param {number} [arity] The arity of `func`.
-   * @returns {Function} Returns the new wrapped function.
-   */
-  function createRecurry$1(func, bitmask, wrapFunc, placeholder, thisArg, partials, holders, argPos, ary, arity) {
-    var isCurry = bitmask & WRAP_CURRY_FLAG$1$1,
-        newHolders = isCurry ? holders : undefined,
-        newHoldersRight = isCurry ? undefined : holders,
-        newPartials = isCurry ? partials : undefined,
-        newPartialsRight = isCurry ? undefined : partials;
-
-    bitmask |= (isCurry ? WRAP_PARTIAL_FLAG$1$1 : WRAP_PARTIAL_RIGHT_FLAG$1$1);
-    bitmask &= ~(isCurry ? WRAP_PARTIAL_RIGHT_FLAG$1$1 : WRAP_PARTIAL_FLAG$1$1);
-
-    if (!(bitmask & WRAP_CURRY_BOUND_FLAG$2)) {
-      bitmask &= ~(WRAP_BIND_FLAG$2$1 | WRAP_BIND_KEY_FLAG$1$1);
-    }
-    var newData = [
-      func, bitmask, thisArg, newPartials, newHolders, newPartialsRight,
-      newHoldersRight, argPos, ary, arity
-    ];
-
-    var result = wrapFunc.apply(undefined, newData);
-    if (isLaziable$1(func)) {
-      setData$1(result, newData);
-    }
-    result.placeholder = placeholder;
-    return setWrapToString$1(result, func, bitmask);
-  }
-
-  /**
-   * Gets the argument placeholder value for `func`.
-   *
-   * @private
-   * @param {Function} func The function to inspect.
-   * @returns {*} Returns the placeholder value.
-   */
-  function getHolder$1(func) {
-    var object = func;
-    return object.placeholder;
-  }
-
-  /** Used as references for various `Number` constants. */
-  var MAX_SAFE_INTEGER$2 = 9007199254740991;
-
-  /** Used to detect unsigned integer values. */
-  var reIsUint$1 = /^(?:0|[1-9]\d*)$/;
-
-  /**
-   * Checks if `value` is a valid array-like index.
-   *
-   * @private
-   * @param {*} value The value to check.
-   * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
-   * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
-   */
-  function isIndex$1(value, length) {
-    var type = typeof value;
-    length = length == null ? MAX_SAFE_INTEGER$2 : length;
-
-    return !!length &&
-      (type == 'number' ||
-        (type != 'symbol' && reIsUint$1.test(value))) &&
-          (value > -1 && value % 1 == 0 && value < length);
-  }
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-  var nativeMin$2 = Math.min;
-
-  /**
-   * Reorder `array` according to the specified indexes where the element at
-   * the first index is assigned as the first element, the element at
-   * the second index is assigned as the second element, and so on.
-   *
-   * @private
-   * @param {Array} array The array to reorder.
-   * @param {Array} indexes The arranged array indexes.
-   * @returns {Array} Returns `array`.
-   */
-  function reorder$1(array, indexes) {
-    var arrLength = array.length,
-        length = nativeMin$2(indexes.length, arrLength),
-        oldArray = copyArray$1(array);
-
-    while (length--) {
-      var index = indexes[length];
-      array[length] = isIndex$1(index, arrLength) ? oldArray[index] : undefined;
-    }
-    return array;
-  }
-
-  /** Used as the internal argument placeholder. */
-  var PLACEHOLDER$2 = '__lodash_placeholder__';
-
-  /**
-   * Replaces all `placeholder` elements in `array` with an internal placeholder
-   * and returns an array of their indexes.
-   *
-   * @private
-   * @param {Array} array The array to modify.
-   * @param {*} placeholder The placeholder to replace.
-   * @returns {Array} Returns the new array of placeholder indexes.
-   */
-  function replaceHolders$1(array, placeholder) {
-    var index = -1,
-        length = array.length,
-        resIndex = 0,
-        result = [];
-
-    while (++index < length) {
-      var value = array[index];
-      if (value === placeholder || value === PLACEHOLDER$2) {
-        array[index] = PLACEHOLDER$2;
-        result[resIndex++] = index;
-      }
-    }
-    return result;
-  }
-
-  /** Used to compose bitmasks for function metadata. */
-  var WRAP_BIND_FLAG$3$1 = 1,
-      WRAP_BIND_KEY_FLAG$2$1 = 2,
-      WRAP_CURRY_FLAG$2$1 = 8,
-      WRAP_CURRY_RIGHT_FLAG$1$1 = 16,
-      WRAP_ARY_FLAG$1$1 = 128,
-      WRAP_FLIP_FLAG$1$1 = 512;
-
-  /**
-   * Creates a function that wraps `func` to invoke it with optional `this`
-   * binding of `thisArg`, partial application, and currying.
-   *
-   * @private
-   * @param {Function|string} func The function or method name to wrap.
-   * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
-   * @param {*} [thisArg] The `this` binding of `func`.
-   * @param {Array} [partials] The arguments to prepend to those provided to
-   *  the new function.
-   * @param {Array} [holders] The `partials` placeholder indexes.
-   * @param {Array} [partialsRight] The arguments to append to those provided
-   *  to the new function.
-   * @param {Array} [holdersRight] The `partialsRight` placeholder indexes.
-   * @param {Array} [argPos] The argument positions of the new function.
-   * @param {number} [ary] The arity cap of `func`.
-   * @param {number} [arity] The arity of `func`.
-   * @returns {Function} Returns the new wrapped function.
-   */
-  function createHybrid$1(func, bitmask, thisArg, partials, holders, partialsRight, holdersRight, argPos, ary, arity) {
-    var isAry = bitmask & WRAP_ARY_FLAG$1$1,
-        isBind = bitmask & WRAP_BIND_FLAG$3$1,
-        isBindKey = bitmask & WRAP_BIND_KEY_FLAG$2$1,
-        isCurried = bitmask & (WRAP_CURRY_FLAG$2$1 | WRAP_CURRY_RIGHT_FLAG$1$1),
-        isFlip = bitmask & WRAP_FLIP_FLAG$1$1,
-        Ctor = isBindKey ? undefined : createCtor$1(func);
-
-    function wrapper() {
-      var length = arguments.length,
-          args = Array(length),
-          index = length;
-
-      while (index--) {
-        args[index] = arguments[index];
-      }
-      if (isCurried) {
-        var placeholder = getHolder$1(wrapper),
-            holdersCount = countHolders$1(args, placeholder);
-      }
-      if (partials) {
-        args = composeArgs$1(args, partials, holders, isCurried);
-      }
-      if (partialsRight) {
-        args = composeArgsRight$1(args, partialsRight, holdersRight, isCurried);
-      }
-      length -= holdersCount;
-      if (isCurried && length < arity) {
-        var newHolders = replaceHolders$1(args, placeholder);
-        return createRecurry$1(
-          func, bitmask, createHybrid$1, wrapper.placeholder, thisArg,
-          args, newHolders, argPos, ary, arity - length
-        );
-      }
-      var thisBinding = isBind ? thisArg : this,
-          fn = isBindKey ? thisBinding[func] : func;
-
-      length = args.length;
-      if (argPos) {
-        args = reorder$1(args, argPos);
-      } else if (isFlip && length > 1) {
-        args.reverse();
-      }
-      if (isAry && ary < length) {
-        args.length = ary;
-      }
-      if (this && this !== root$5 && this instanceof wrapper) {
-        fn = Ctor || createCtor$1(fn);
-      }
-      return fn.apply(thisBinding, args);
-    }
-    return wrapper;
-  }
-
-  /**
-   * Creates a function that wraps `func` to enable currying.
-   *
-   * @private
-   * @param {Function} func The function to wrap.
-   * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
-   * @param {number} arity The arity of `func`.
-   * @returns {Function} Returns the new wrapped function.
-   */
-  function createCurry$1(func, bitmask, arity) {
-    var Ctor = createCtor$1(func);
-
-    function wrapper() {
-      var length = arguments.length,
-          args = Array(length),
-          index = length,
-          placeholder = getHolder$1(wrapper);
-
-      while (index--) {
-        args[index] = arguments[index];
-      }
-      var holders = (length < 3 && args[0] !== placeholder && args[length - 1] !== placeholder)
-        ? []
-        : replaceHolders$1(args, placeholder);
-
-      length -= holders.length;
-      if (length < arity) {
-        return createRecurry$1(
-          func, bitmask, createHybrid$1, wrapper.placeholder, undefined,
-          args, holders, undefined, undefined, arity - length);
-      }
-      var fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
-      return apply$1(fn, this, args);
-    }
-    return wrapper;
-  }
-
-  /** Used to compose bitmasks for function metadata. */
-  var WRAP_BIND_FLAG$4$1 = 1;
-
-  /**
-   * Creates a function that wraps `func` to invoke it with the `this` binding
-   * of `thisArg` and `partials` prepended to the arguments it receives.
-   *
-   * @private
-   * @param {Function} func The function to wrap.
-   * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
-   * @param {*} thisArg The `this` binding of `func`.
-   * @param {Array} partials The arguments to prepend to those provided to
-   *  the new function.
-   * @returns {Function} Returns the new wrapped function.
-   */
-  function createPartial$1(func, bitmask, thisArg, partials) {
-    var isBind = bitmask & WRAP_BIND_FLAG$4$1,
-        Ctor = createCtor$1(func);
-
-    function wrapper() {
-      var argsIndex = -1,
-          argsLength = arguments.length,
-          leftIndex = -1,
-          leftLength = partials.length,
-          args = Array(leftLength + argsLength),
-          fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
-
-      while (++leftIndex < leftLength) {
-        args[leftIndex] = partials[leftIndex];
-      }
-      while (argsLength--) {
-        args[leftIndex++] = arguments[++argsIndex];
-      }
-      return apply$1(fn, isBind ? thisArg : this, args);
-    }
-    return wrapper;
-  }
-
-  /** Used as the internal argument placeholder. */
-  var PLACEHOLDER$1$1 = '__lodash_placeholder__';
-
-  /** Used to compose bitmasks for function metadata. */
-  var WRAP_BIND_FLAG$5$1 = 1,
-      WRAP_BIND_KEY_FLAG$3$1 = 2,
-      WRAP_CURRY_BOUND_FLAG$1$1 = 4,
-      WRAP_CURRY_FLAG$3$1 = 8,
-      WRAP_ARY_FLAG$2$1 = 128,
-      WRAP_REARG_FLAG$1$1 = 256;
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-  var nativeMin$1$1 = Math.min;
-
-  /**
-   * Merges the function metadata of `source` into `data`.
-   *
-   * Merging metadata reduces the number of wrappers used to invoke a function.
-   * This is possible because methods like `_.bind`, `_.curry`, and `_.partial`
-   * may be applied regardless of execution order. Methods like `_.ary` and
-   * `_.rearg` modify function arguments, making the order in which they are
-   * executed important, preventing the merging of metadata. However, we make
-   * an exception for a safe combined case where curried functions have `_.ary`
-   * and or `_.rearg` applied.
-   *
-   * @private
-   * @param {Array} data The destination metadata.
-   * @param {Array} source The source metadata.
-   * @returns {Array} Returns `data`.
-   */
-  function mergeData$1(data, source) {
-    var bitmask = data[1],
-        srcBitmask = source[1],
-        newBitmask = bitmask | srcBitmask,
-        isCommon = newBitmask < (WRAP_BIND_FLAG$5$1 | WRAP_BIND_KEY_FLAG$3$1 | WRAP_ARY_FLAG$2$1);
-
-    var isCombo =
-      ((srcBitmask == WRAP_ARY_FLAG$2$1) && (bitmask == WRAP_CURRY_FLAG$3$1)) ||
-      ((srcBitmask == WRAP_ARY_FLAG$2$1) && (bitmask == WRAP_REARG_FLAG$1$1) && (data[7].length <= source[8])) ||
-      ((srcBitmask == (WRAP_ARY_FLAG$2$1 | WRAP_REARG_FLAG$1$1)) && (source[7].length <= source[8]) && (bitmask == WRAP_CURRY_FLAG$3$1));
-
-    // Exit early if metadata can't be merged.
-    if (!(isCommon || isCombo)) {
-      return data;
-    }
-    // Use source `thisArg` if available.
-    if (srcBitmask & WRAP_BIND_FLAG$5$1) {
-      data[2] = source[2];
-      // Set when currying a bound function.
-      newBitmask |= bitmask & WRAP_BIND_FLAG$5$1 ? 0 : WRAP_CURRY_BOUND_FLAG$1$1;
-    }
-    // Compose partial arguments.
-    var value = source[3];
-    if (value) {
-      var partials = data[3];
-      data[3] = partials ? composeArgs$1(partials, value, source[4]) : value;
-      data[4] = partials ? replaceHolders$1(data[3], PLACEHOLDER$1$1) : source[4];
-    }
-    // Compose partial right arguments.
-    value = source[5];
-    if (value) {
-      partials = data[5];
-      data[5] = partials ? composeArgsRight$1(partials, value, source[6]) : value;
-      data[6] = partials ? replaceHolders$1(data[5], PLACEHOLDER$1$1) : source[6];
-    }
-    // Use source `argPos` if available.
-    value = source[7];
-    if (value) {
-      data[7] = value;
-    }
-    // Use source `ary` if it's smaller.
-    if (srcBitmask & WRAP_ARY_FLAG$2$1) {
-      data[8] = data[8] == null ? source[8] : nativeMin$1$1(data[8], source[8]);
-    }
-    // Use source `arity` if one is not provided.
-    if (data[9] == null) {
-      data[9] = source[9];
-    }
-    // Use source `func` and merge bitmasks.
-    data[0] = source[0];
-    data[1] = newBitmask;
-
-    return data;
-  }
-
-  /** Error message constants. */
-  var FUNC_ERROR_TEXT$1 = 'Expected a function';
-
-  /** Used to compose bitmasks for function metadata. */
-  var WRAP_BIND_FLAG$6$1 = 1,
-      WRAP_BIND_KEY_FLAG$4$1 = 2,
-      WRAP_CURRY_FLAG$4$1 = 8,
-      WRAP_CURRY_RIGHT_FLAG$2$1 = 16,
-      WRAP_PARTIAL_FLAG$2$1 = 32,
-      WRAP_PARTIAL_RIGHT_FLAG$2$1 = 64;
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-  var nativeMax$2$1 = Math.max;
-
-  /**
-   * Creates a function that either curries or invokes `func` with optional
-   * `this` binding and partially applied arguments.
-   *
-   * @private
-   * @param {Function|string} func The function or method name to wrap.
-   * @param {number} bitmask The bitmask flags.
-   *    1 - `_.bind`
-   *    2 - `_.bindKey`
-   *    4 - `_.curry` or `_.curryRight` of a bound function
-   *    8 - `_.curry`
-   *   16 - `_.curryRight`
-   *   32 - `_.partial`
-   *   64 - `_.partialRight`
-   *  128 - `_.rearg`
-   *  256 - `_.ary`
-   *  512 - `_.flip`
-   * @param {*} [thisArg] The `this` binding of `func`.
-   * @param {Array} [partials] The arguments to be partially applied.
-   * @param {Array} [holders] The `partials` placeholder indexes.
-   * @param {Array} [argPos] The argument positions of the new function.
-   * @param {number} [ary] The arity cap of `func`.
-   * @param {number} [arity] The arity of `func`.
-   * @returns {Function} Returns the new wrapped function.
-   */
-  function createWrap$1(func, bitmask, thisArg, partials, holders, argPos, ary, arity) {
-    var isBindKey = bitmask & WRAP_BIND_KEY_FLAG$4$1;
-    if (!isBindKey && typeof func != 'function') {
-      throw new TypeError(FUNC_ERROR_TEXT$1);
-    }
-    var length = partials ? partials.length : 0;
-    if (!length) {
-      bitmask &= ~(WRAP_PARTIAL_FLAG$2$1 | WRAP_PARTIAL_RIGHT_FLAG$2$1);
-      partials = holders = undefined;
-    }
-    ary = ary === undefined ? ary : nativeMax$2$1(toInteger$1(ary), 0);
-    arity = arity === undefined ? arity : toInteger$1(arity);
-    length -= holders ? holders.length : 0;
-
-    if (bitmask & WRAP_PARTIAL_RIGHT_FLAG$2$1) {
-      var partialsRight = partials,
-          holdersRight = holders;
-
-      partials = holders = undefined;
-    }
-    var data = isBindKey ? undefined : getData$1(func);
-
-    var newData = [
-      func, bitmask, thisArg, partials, holders, partialsRight, holdersRight,
-      argPos, ary, arity
-    ];
-
-    if (data) {
-      mergeData$1(newData, data);
-    }
-    func = newData[0];
-    bitmask = newData[1];
-    thisArg = newData[2];
-    partials = newData[3];
-    holders = newData[4];
-    arity = newData[9] = newData[9] === undefined
-      ? (isBindKey ? 0 : func.length)
-      : nativeMax$2$1(newData[9] - length, 0);
-
-    if (!arity && bitmask & (WRAP_CURRY_FLAG$4$1 | WRAP_CURRY_RIGHT_FLAG$2$1)) {
-      bitmask &= ~(WRAP_CURRY_FLAG$4$1 | WRAP_CURRY_RIGHT_FLAG$2$1);
-    }
-    if (!bitmask || bitmask == WRAP_BIND_FLAG$6$1) {
-      var result = createBind$1(func, bitmask, thisArg);
-    } else if (bitmask == WRAP_CURRY_FLAG$4$1 || bitmask == WRAP_CURRY_RIGHT_FLAG$2$1) {
-      result = createCurry$1(func, bitmask, arity);
-    } else if ((bitmask == WRAP_PARTIAL_FLAG$2$1 || bitmask == (WRAP_BIND_FLAG$6$1 | WRAP_PARTIAL_FLAG$2$1)) && !holders.length) {
-      result = createPartial$1(func, bitmask, thisArg, partials);
-    } else {
-      result = createHybrid$1.apply(undefined, newData);
-    }
-    var setter = data ? baseSetData$1 : setData$1;
-    return setWrapToString$1(setter(result, newData), func, bitmask);
-  }
-
-  /**
-   * Performs a
-   * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
-   * comparison between two values to determine if they are equivalent.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
-   * @example
-   *
-   * var object = { 'a': 1 };
-   * var other = { 'a': 1 };
-   *
-   * _.eq(object, object);
-   * // => true
-   *
-   * _.eq(object, other);
-   * // => false
-   *
-   * _.eq('a', 'a');
-   * // => true
-   *
-   * _.eq('a', Object('a'));
-   * // => false
-   *
-   * _.eq(NaN, NaN);
-   * // => true
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-  var nativeMax$3$1 = Math.max;
-
-  /**
-   * A specialized version of `baseRest` which transforms the rest array.
-   *
-   * @private
-   * @param {Function} func The function to apply a rest parameter to.
-   * @param {number} [start=func.length-1] The start position of the rest parameter.
-   * @param {Function} transform The rest array transform.
-   * @returns {Function} Returns the new function.
-   */
-  function overRest$1(func, start, transform) {
-    start = nativeMax$3$1(start === undefined ? (func.length - 1) : start, 0);
-    return function() {
-      var args = arguments,
-          index = -1,
-          length = nativeMax$3$1(args.length - start, 0),
-          array = Array(length);
-
-      while (++index < length) {
-        array[index] = args[start + index];
-      }
-      index = -1;
-      var otherArgs = Array(start + 1);
-      while (++index < start) {
-        otherArgs[index] = args[index];
-      }
-      otherArgs[start] = transform(array);
-      return apply$1(func, this, otherArgs);
-    };
-  }
-
-  /**
-   * The base implementation of `_.rest` which doesn't validate or coerce arguments.
-   *
-   * @private
-   * @param {Function} func The function to apply a rest parameter to.
-   * @param {number} [start=func.length-1] The start position of the rest parameter.
-   * @returns {Function} Returns the new function.
-   */
-  function baseRest$1(func, start) {
-    return setToString$1(overRest$1(func, start, identity$1), func + '');
-  }
-
-  /** Used as references for various `Number` constants. */
-
-  /** Used for built-in method references. */
-
-  /**
-   * The base implementation of `_.times` without support for iteratee shorthands
-   * or max array length checks.
-   *
-   * @private
-   * @param {number} n The number of times to invoke `iteratee`.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns the array of results.
-   */
-
-  /**
-   * This method returns `false`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {boolean} Returns `false`.
-   * @example
-   *
-   * _.times(2, _.stubFalse);
-   * // => [false, false]
-   */
-
-  /**
-   * The base implementation of `_.unary` without support for storing metadata.
-   *
-   * @private
-   * @param {Function} func The function to cap arguments for.
-   * @returns {Function} Returns the new capped function.
-   */
-
-  /**
-   * Creates a unary function that invokes `func` with its argument transformed.
-   *
-   * @private
-   * @param {Function} func The function to wrap.
-   * @param {Function} transform The argument transform.
-   * @returns {Function} Returns the new function.
-   */
-  function overArg$3(func, transform) {
-    return function(arg) {
-      return func(transform(arg));
-    };
-  }
-
-  /**
-   * This function is like
-   * [`Object.keys`](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
-   * except that it includes inherited enumerable properties.
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @returns {Array} Returns the array of property names.
-   */
-
-  /**
-   * Removes `key` and its value from the hash.
-   *
-   * @private
-   * @name delete
-   * @memberOf Hash
-   * @param {Object} hash The hash to modify.
-   * @param {string} key The key of the value to remove.
-   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-   */
-
-  /**
-   * Removes all key-value entries from the list cache.
-   *
-   * @private
-   * @name clear
-   * @memberOf ListCache
-   */
-
-  /**
-   * Checks if `value` is suitable for use as unique object key.
-   *
-   * @private
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
-   */
-
-  /**
-   * Appends the elements of `values` to `array`.
-   *
-   * @private
-   * @param {Array} array The array to modify.
-   * @param {Array} values The values to append.
-   * @returns {Array} Returns `array`.
-   */
-
-  /** Built-in value references. */
-  var getPrototype$3 = overArg$3(Object.getPrototypeOf, Object);
-
-  /** `Object#toString` result references. */
-  var objectTag$6 = '[object Object]';
-
-  /** Used for built-in method references. */
-  var funcProto$2$1 = Function.prototype,
-      objectProto$5$1 = Object.prototype;
-
-  /** Used to resolve the decompiled source of functions. */
-  var funcToString$2$1 = funcProto$2$1.toString;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty$4$1 = objectProto$5$1.hasOwnProperty;
-
-  /** Used to infer the `Object` constructor. */
-  var objectCtorString$4 = funcToString$2$1.call(Object);
-
-  /**
-   * Checks if `value` is a plain object, that is, an object created by the
-   * `Object` constructor or one with a `[[Prototype]]` of `null`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.8.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
-   * @example
-   *
-   * function Foo() {
-   *   this.a = 1;
-   * }
-   *
-   * _.isPlainObject(new Foo);
-   * // => false
-   *
-   * _.isPlainObject([1, 2, 3]);
-   * // => false
-   *
-   * _.isPlainObject({ 'x': 0, 'y': 0 });
-   * // => true
-   *
-   * _.isPlainObject(Object.create(null));
-   * // => true
-   */
-  function isPlainObject$3(value) {
-    if (!isObjectLike$4(value) || baseGetTag$4(value) != objectTag$6) {
-      return false;
-    }
-    var proto = getPrototype$3(value);
-    if (proto === null) {
-      return true;
-    }
-    var Ctor = hasOwnProperty$4$1.call(proto, 'constructor') && proto.constructor;
-    return typeof Ctor == 'function' && Ctor instanceof Ctor &&
-      funcToString$2$1.call(Ctor) == objectCtorString$4;
-  }
-
-  /** Used to compose bitmasks for function metadata. */
-  var WRAP_BIND_FLAG$7$1 = 1,
-      WRAP_PARTIAL_FLAG$3$1 = 32;
-
-  /**
-   * Creates a function that invokes `func` with the `this` binding of `thisArg`
-   * and `partials` prepended to the arguments it receives.
-   *
-   * The `_.bind.placeholder` value, which defaults to `_` in monolithic builds,
-   * may be used as a placeholder for partially applied arguments.
-   *
-   * **Note:** Unlike native `Function#bind`, this method doesn't set the "length"
-   * property of bound functions.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Function
-   * @param {Function} func The function to bind.
-   * @param {*} thisArg The `this` binding of `func`.
-   * @param {...*} [partials] The arguments to be partially applied.
-   * @returns {Function} Returns the new bound function.
-   * @example
-   *
-   * function greet(greeting, punctuation) {
-   *   return greeting + ' ' + this.user + punctuation;
-   * }
-   *
-   * var object = { 'user': 'fred' };
-   *
-   * var bound = _.bind(greet, object, 'hi');
-   * bound('!');
-   * // => 'hi fred!'
-   *
-   * // Bound with placeholders.
-   * var bound = _.bind(greet, object, _, '!');
-   * bound('hi');
-   * // => 'hi fred!'
-   */
-  var bind$1 = baseRest$1(function(func, thisArg, partials) {
-    var bitmask = WRAP_BIND_FLAG$7$1;
-    if (partials.length) {
-      var holders = replaceHolders$1(partials, getHolder$1(bind$1));
-      bitmask |= WRAP_PARTIAL_FLAG$3$1;
-    }
-    return createWrap$1(func, bitmask, thisArg, partials, holders);
-  });
-
-  // Assign default placeholders.
-  bind$1.placeholder = {};
-
-  /**
-   * The base implementation of `_.slice` without an iteratee call guard.
-   *
-   * @private
-   * @param {Array} array The array to slice.
-   * @param {number} [start=0] The start position.
-   * @param {number} [end=array.length] The end position.
-   * @returns {Array} Returns the slice of `array`.
-   */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * Converts an ASCII `string` to an array.
-   *
-   * @private
-   * @param {string} string The string to convert.
-   * @returns {Array} Returns the converted array.
-   */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * A specialized version of `_.reduce` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the first element of `array` as
-   *  the initial value.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /**
-   * The base implementation of `_.propertyOf` without support for deep paths.
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @returns {Function} Returns the new accessor function.
-   */
-
-  /** Used to match words composed of alphanumeric characters. */
-
-  /** Used to detect strings that need a more robust regexp to match words. */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * The base implementation of `_.clamp` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {number} number The number to clamp.
-   * @param {number} [lower] The lower bound.
-   * @param {number} upper The upper bound.
-   * @returns {number} Returns the clamped number.
-   */
-
-  /**
-   * Removes `key` and its value from the stack.
-   *
-   * @private
-   * @name delete
-   * @memberOf Stack
-   * @param {string} key The key of the value to remove.
-   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-   */
-
-  /**
-   * Gets the stack value for `key`.
-   *
-   * @private
-   * @name get
-   * @memberOf Stack
-   * @param {string} key The key of the value to get.
-   * @returns {*} Returns the entry value.
-   */
-
-  /**
-   * Checks if a stack value for `key` exists.
-   *
-   * @private
-   * @name has
-   * @memberOf Stack
-   * @param {string} key The key of the entry to check.
-   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-   */
-
-  /**
-   * A specialized version of `_.filter` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {Array} Returns the new filtered array.
-   */
-
-  /**
-   * This method returns a new empty array.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {Array} Returns the new empty array.
-   * @example
-   *
-   * var arrays = _.times(2, _.stubArray);
-   *
-   * console.log(arrays);
-   * // => [[], []]
-   *
-   * console.log(arrays[0] === arrays[1]);
-   * // => false
-   */
-
-  /** Used for built-in method references. */
-
-  /** Used to match `RegExp` flags from their coerced string values. */
-
-  /**
-   * Creates an array with all falsey values removed. The values `false`, `null`,
-   * `0`, `""`, `undefined`, and `NaN` are falsey.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Array
-   * @param {Array} array The array to compact.
-   * @returns {Array} Returns the new array of filtered values.
-   * @example
-   *
-   * _.compact([0, 1, false, 2, '', 3]);
-   * // => [1, 2, 3]
-   */
-
-  /** Used to stand-in for `undefined` hash values. */
-
-  /**
-   * Checks if `value` is in the array cache.
-   *
-   * @private
-   * @name has
-   * @memberOf SetCache
-   * @param {*} value The value to search for.
-   * @returns {number} Returns `true` if `value` is found, else `false`.
-   */
-
-  /**
-   * A specialized version of `_.some` for arrays without support for iteratee
-   * shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {boolean} Returns `true` if any element passes the predicate check,
-   *  else `false`.
-   */
-
-  /**
-   * Checks if a `cache` value for `key` exists.
-   *
-   * @private
-   * @param {Object} cache The cache to query.
-   * @param {string} key The key of the entry to check.
-   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-   */
-
-  /**
-   * Converts `map` to its key-value pairs.
-   *
-   * @private
-   * @param {Object} map The map to convert.
-   * @returns {Array} Returns the key-value pairs.
-   */
-
-  /**
-   * Converts `set` to an array of its values.
-   *
-   * @private
-   * @param {Object} set The set to convert.
-   * @returns {Array} Returns the values.
-   */
-
-  /**
-   * A specialized version of `matchesProperty` for source values suitable
-   * for strict equality comparisons, i.e. `===`.
-   *
-   * @private
-   * @param {string} key The key of the property to get.
-   * @param {*} srcValue The value to match.
-   * @returns {Function} Returns the new spec function.
-   */
-
-  /**
-   * The base implementation of `_.hasIn` without support for deep paths.
-   *
-   * @private
-   * @param {Object} [object] The object to query.
-   * @param {Array|string} key The key to check.
-   * @returns {boolean} Returns `true` if `key` exists, else `false`.
-   */
-
-  /**
-   * The base implementation of `_.property` without support for deep paths.
-   *
-   * @private
-   * @param {string} key The key of the property to get.
-   * @returns {Function} Returns the new accessor function.
-   */
-
-  /**
-   * The base implementation of `_.conformsTo` which accepts `props` to check.
-   *
-   * @private
-   * @param {Object} object The object to inspect.
-   * @param {Object} source The object of property predicates to conform to.
-   * @returns {boolean} Returns `true` if `object` conforms, else `false`.
-   */
-
-  /**
-   * A specialized version of `baseAggregator` for arrays.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} setter The function to set `accumulator` values.
-   * @param {Function} iteratee The iteratee to transform keys.
-   * @param {Object} accumulator The initial aggregated object.
-   * @returns {Function} Returns `accumulator`.
-   */
-
-  /**
-   * Creates a base function for methods like `_.forIn` and `_.forOwn`.
-   *
-   * @private
-   * @param {boolean} [fromRight] Specify iterating from right to left.
-   * @returns {Function} Returns the new base function.
-   */
-
-  /**
-   * Checks `value` to determine whether a default value should be returned in
-   * its place. The `defaultValue` is returned if `value` is `NaN`, `null`,
-   * or `undefined`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.14.0
-   * @category Util
-   * @param {*} value The value to check.
-   * @param {*} defaultValue The default value.
-   * @returns {*} Returns the resolved value.
-   * @example
-   *
-   * _.defaultTo(1, 10);
-   * // => 1
-   *
-   * _.defaultTo(undefined, 10);
-   * // => 10
-   */
-
-  /**
-   * Gets the value at `key`, unless `key` is "__proto__".
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @param {string} key The key of the property to get.
-   * @returns {*} Returns the property value.
-   */
-
-  /** Error message constants. */
-
-  /**
-   * This function is like `arrayIncludes` except that it accepts a comparator.
-   *
-   * @private
-   * @param {Array} [array] The array to inspect.
-   * @param {*} target The value to search for.
-   * @param {Function} comparator The comparator invoked per element.
-   * @returns {boolean} Returns `true` if `target` is found, else `false`.
-   */
-
-  /**
-   * Gets the last element of `array`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Array
-   * @param {Array} array The array to query.
-   * @returns {*} Returns the last element of `array`.
-   * @example
-   *
-   * _.last([1, 2, 3]);
-   * // => 3
-   */
-
-  /**
-   * A specialized version of `_.forEachRight` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns `array`.
-   */
-
-  /**
-   * Converts `set` to its value-value pairs.
-   *
-   * @private
-   * @param {Object} set The set to convert.
-   * @returns {Array} Returns the value-value pairs.
-   */
-
-  /**
-   * A specialized version of `_.every` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {boolean} Returns `true` if all elements pass the predicate check,
-   *  else `false`.
-   */
-
-  /**
-   * The base implementation of methods like `_.findKey` and `_.findLastKey`,
-   * without support for iteratee shorthands, which iterates over `collection`
-   * using `eachFunc`.
-   *
-   * @private
-   * @param {Array|Object} collection The collection to inspect.
-   * @param {Function} predicate The function invoked per iteration.
-   * @param {Function} eachFunc The function to iterate over `collection`.
-   * @returns {*} Returns the found element or its key, else `undefined`.
-   */
-
-  /**
-   * Gets the first element of `array`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @alias first
-   * @category Array
-   * @param {Array} array The array to query.
-   * @returns {*} Returns the first element of `array`.
-   * @example
-   *
-   * _.head([1, 2, 3]);
-   * // => 1
-   *
-   * _.head([]);
-   * // => undefined
-   */
-
-  /**
-   * The inverse of `_.toPairs`; this method returns an object composed
-   * from key-value `pairs`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Array
-   * @param {Array} pairs The key-value pairs.
-   * @returns {Object} Returns the new object.
-   * @example
-   *
-   * _.fromPairs([['a', 1], ['b', 2]]);
-   * // => { 'a': 1, 'b': 2 }
-   */
-
-  /**
-   * The base implementation of `_.gt` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if `value` is greater than `other`,
-   *  else `false`.
-   */
-
-  /** Used for built-in method references. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /** `Object#toString` result references. */
-  var stringTag$7 = '[object String]';
-
-  /**
-   * Checks if `value` is classified as a `String` primitive or object.
-   *
-   * @static
-   * @since 0.1.0
-   * @memberOf _
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a string, else `false`.
-   * @example
-   *
-   * _.isString('abc');
-   * // => true
-   *
-   * _.isString(1);
-   * // => false
-   */
-  function isString$4(value) {
-    return typeof value == 'string' ||
-      (!isArray$4(value) && isObjectLike$4(value) && baseGetTag$4(value) == stringTag$7);
-  }
-
-  /** `Object#toString` result references. */
-  var boolTag$4 = '[object Boolean]';
-
-  /**
-   * Checks if `value` is classified as a boolean primitive or object.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a boolean, else `false`.
-   * @example
-   *
-   * _.isBoolean(false);
-   * // => true
-   *
-   * _.isBoolean(null);
-   * // => false
-   */
-  function isBoolean$1(value) {
-    return value === true || value === false ||
-      (isObjectLike$4(value) && baseGetTag$4(value) == boolTag$4);
-  }
-
-  /** `Object#toString` result references. */
-  var numberTag$4 = '[object Number]';
-
-  /**
-   * Checks if `value` is classified as a `Number` primitive or object.
-   *
-   * **Note:** To exclude `Infinity`, `-Infinity`, and `NaN`, which are
-   * classified as numbers, use the `_.isFinite` method.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a number, else `false`.
-   * @example
-   *
-   * _.isNumber(3);
-   * // => true
-   *
-   * _.isNumber(Number.MIN_VALUE);
-   * // => true
-   *
-   * _.isNumber(Infinity);
-   * // => true
-   *
-   * _.isNumber('3');
-   * // => false
-   */
-  function isNumber$1(value) {
-    return typeof value == 'number' ||
-      (isObjectLike$4(value) && baseGetTag$4(value) == numberTag$4);
-  }
-
-  /**
-   * Checks if `value` is `null` or `undefined`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is nullish, else `false`.
-   * @example
-   *
-   * _.isNil(null);
-   * // => true
-   *
-   * _.isNil(void 0);
-   * // => true
-   *
-   * _.isNil(NaN);
-   * // => false
-   */
-  function isNil$1(value) {
-    return value == null;
-  }
-
-  /**
-   * Checks if `value` is `null`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is `null`, else `false`.
-   * @example
-   *
-   * _.isNull(null);
-   * // => true
-   *
-   * _.isNull(void 0);
-   * // => false
-   */
-
-  /**
-   * Checks if `value` is `undefined`.
-   *
-   * @static
-   * @since 0.1.0
-   * @memberOf _
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is `undefined`, else `false`.
-   * @example
-   *
-   * _.isUndefined(void 0);
-   * // => true
-   *
-   * _.isUndefined(null);
-   * // => false
-   */
-
-  /** Used for built-in method references. */
-
-  /**
-   * A specialized version of `_.lastIndexOf` which performs strict equality
-   * comparisons of values, i.e. `===`.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /**
-   * The base implementation of `_.lt` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if `value` is less than `other`,
-   *  else `false`.
-   */
-
-  /**
-   * The base implementation of `_.sum` and `_.sumBy` without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} array The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {number} Returns the sum.
-   */
-
-  /** Error message constants. */
-
-  /**
-   * Converts `iterator` to an array.
-   *
-   * @private
-   * @param {Object} iterator The iterator to convert.
-   * @returns {Array} Returns the converted array.
-   */
-
-  /**
-   * The base implementation of `_.sortBy` which uses `comparer` to define the
-   * sort order of `array` and replaces criteria objects with their corresponding
-   * values.
-   *
-   * @private
-   * @param {Array} array The array to sort.
-   * @param {Function} comparer The function to define sort order.
-   * @returns {Array} Returns `array`.
-   */
-
-  /** Used as references for various `Number` constants. */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * This function is like `baseIndexOf` except that it accepts a comparator.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @param {Function} comparator The comparator invoked per element.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * The base implementation of `_.reduce` and `_.reduceRight`, without support
-   * for iteratee shorthands, which iterates over `collection` using `eachFunc`.
-   *
-   * @private
-   * @param {Array|Object} collection The collection to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} accumulator The initial value.
-   * @param {boolean} initAccum Specify using the first or last element of
-   *  `collection` as the initial value.
-   * @param {Function} eachFunc The function to iterate over `collection`.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /**
-   * A specialized version of `_.reduceRight` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the last element of `array` as
-   *  the initial value.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /** Used for built-in method references. */
-
-  /**
-   * This method returns a new empty object.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {Object} Returns the new empty object.
-   * @example
-   *
-   * var objects = _.times(2, _.stubObject);
-   *
-   * console.log(objects);
-   * // => [{}, {}]
-   *
-   * console.log(objects[0] === objects[1]);
-   * // => false
-   */
-
-  /**
-   * This method returns an empty string.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {string} Returns the empty string.
-   * @example
-   *
-   * _.times(2, _.stubString);
-   * // => ['', '']
-   */
-
-  /**
-   * This method returns `true`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {boolean} Returns `true`.
-   * @example
-   *
-   * _.times(2, _.stubTrue);
-   * // => [true, true]
-   */
-
-  /**
-   * This method invokes `interceptor` and returns `value`. The interceptor
-   * is invoked with one argument; (value). The purpose of this method is to
-   * "tap into" a method chain sequence in order to modify intermediate results.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Seq
-   * @param {*} value The value to provide to `interceptor`.
-   * @param {Function} interceptor The function to invoke.
-   * @returns {*} Returns `value`.
-   * @example
-   *
-   * _([1, 2, 3])
-   *  .tap(function(array) {
-   *    // Mutate input array.
-   *    array.pop();
-   *  })
-   *  .reverse()
-   *  .value();
-   * // => [2, 1]
-   */
-
-  /** Used to escape characters for inclusion in compiled string literals. */
-
-  /** Used to match template delimiters. */
-
-  /** Used to match template delimiters. */
-
-  /** Used to match template delimiters. */
-
-  /**
-   * This method is like `_.tap` except that it returns the result of `interceptor`.
-   * The purpose of this method is to "pass thru" values replacing intermediate
-   * results in a method chain sequence.
-   *
-   * @static
-   * @memberOf _
-   * @since 3.0.0
-   * @category Seq
-   * @param {*} value The value to provide to `interceptor`.
-   * @param {Function} interceptor The function to invoke.
-   * @returns {*} Returns the result of `interceptor`.
-   * @example
-   *
-   * _('  abc  ')
-   *  .chain()
-   *  .trim()
-   *  .thru(function(value) {
-   *    return [value];
-   *  })
-   *  .value();
-   * // => ['abc']
-   */
-
-  /**
-   * Enables the wrapper to be iterable.
-   *
-   * @name Symbol.iterator
-   * @memberOf _
-   * @since 4.0.0
-   * @category Seq
-   * @returns {Object} Returns the wrapper object.
-   * @example
-   *
-   * var wrapped = _([1, 2]);
-   *
-   * wrapped[Symbol.iterator]() === wrapped;
-   * // => true
-   *
-   * Array.from(wrapped);
-   * // => [1, 2]
-   */
-
-  /**
-   * This base implementation of `_.zipObject` which assigns values using `assignFunc`.
-   *
-   * @private
-   * @param {Array} props The property identifiers.
-   * @param {Array} values The property values.
-   * @param {Function} assignFunc The function to assign values.
-   * @returns {Object} Returns the new object.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright JS Foundation and other contributors <https://js.foundation/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-   */
-
-  /**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright JS Foundation and other contributors <https://js.foundation/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-   */
-
-  function createCommonjsModule$3(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
-  }
-
-  var _typeof_1$3 = createCommonjsModule$3(function (module) {
-  function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-  function _typeof(obj) {
-    if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-      module.exports = _typeof = function _typeof(obj) {
-        return _typeof2(obj);
-      };
-    } else {
-      module.exports = _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-      };
-    }
-
-    return _typeof(obj);
-  }
-
-  module.exports = _typeof;
-  });
 
   function _arrayWithoutHoles(arr) {
     if (Array.isArray(arr)) {
@@ -13115,637 +7109,6 @@
   }
 
   var toConsumableArray = _toConsumableArray;
-
-  /**
-   * toxic-predicate-functions v0.4.0
-   * (c) 2017-2019 toxic-johann
-   * Released under MIT
-   * Built ad Sun Jun 02 2019 19:15:55 GMT+0800 (China Standard Time)
-   */
-
-  function createCommonjsModule$1$2(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
-  }
-
-  var _typeof_1$1$2 = createCommonjsModule$1$2(function (module) {
-  function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
-  function _typeof(obj) {
-    if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-      module.exports = _typeof = function _typeof(obj) {
-        return _typeof2(obj);
-      };
-    } else {
-      module.exports = _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
-      };
-    }
-
-    return _typeof(obj);
-  }
-
-  module.exports = _typeof;
-  });
-
-  /** Detect free variable `global` from Node.js. */
-  var freeGlobal$1$2 = typeof global == 'object' && global && global.Object === Object && global;
-
-  /** Detect free variable `self`. */
-  var freeSelf$1$2 = typeof self == 'object' && self && self.Object === Object && self;
-
-  /** Used as a reference to the global object. */
-  var root$1$2 = freeGlobal$1$2 || freeSelf$1$2 || Function('return this')();
-
-  /** Built-in value references. */
-  var Symbol$1$1$2 = root$1$2.Symbol;
-
-  /** Built-in value references. */
-  var symToStringTag$2$2 = Symbol$1$1$2 ? Symbol$1$1$2.toStringTag : undefined;
-
-  /** Built-in value references. */
-  var symToStringTag$1$1$2 = Symbol$1$1$2 ? Symbol$1$1$2.toStringTag : undefined;
-
-  /** Used for built-in method references. */
-  var funcProto$3$1 = Function.prototype;
-
-  /** Used to resolve the decompiled source of functions. */
-  var funcToString$3$1 = funcProto$3$1.toString;
-
-  /** Used to infer the `Object` constructor. */
-  var objectCtorString$1$2 = funcToString$3$1.call(Object);
-
-  /** Used for built-in method references. */
-
-  /**
-   * A specialized version of `_.lastIndexOf` which performs strict equality
-   * comparisons of values, i.e. `===`.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /**
-   * The base implementation of `_.lt` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if `value` is less than `other`,
-   *  else `false`.
-   */
-
-  /**
-   * The base implementation of `_.sum` and `_.sumBy` without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} array The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {number} Returns the sum.
-   */
-
-  /** Error message constants. */
-
-  /**
-   * Converts `iterator` to an array.
-   *
-   * @private
-   * @param {Object} iterator The iterator to convert.
-   * @returns {Array} Returns the converted array.
-   */
-
-  /**
-   * The base implementation of `_.sortBy` which uses `comparer` to define the
-   * sort order of `array` and replaces criteria objects with their corresponding
-   * values.
-   *
-   * @private
-   * @param {Array} array The array to sort.
-   * @param {Function} comparer The function to define sort order.
-   * @returns {Array} Returns `array`.
-   */
-
-  /** Used as references for various `Number` constants. */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * This function is like `baseIndexOf` except that it accepts a comparator.
-   *
-   * @private
-   * @param {Array} array The array to inspect.
-   * @param {*} value The value to search for.
-   * @param {number} fromIndex The index to search from.
-   * @param {Function} comparator The comparator invoked per element.
-   * @returns {number} Returns the index of the matched value, else `-1`.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * The base implementation of `_.reduce` and `_.reduceRight`, without support
-   * for iteratee shorthands, which iterates over `collection` using `eachFunc`.
-   *
-   * @private
-   * @param {Array|Object} collection The collection to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} accumulator The initial value.
-   * @param {boolean} initAccum Specify using the first or last element of
-   *  `collection` as the initial value.
-   * @param {Function} eachFunc The function to iterate over `collection`.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /**
-   * A specialized version of `_.reduceRight` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the last element of `array` as
-   *  the initial value.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /** Used for built-in method references. */
-
-  /**
-   * This method returns a new empty object.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {Object} Returns the new empty object.
-   * @example
-   *
-   * var objects = _.times(2, _.stubObject);
-   *
-   * console.log(objects);
-   * // => [{}, {}]
-   *
-   * console.log(objects[0] === objects[1]);
-   * // => false
-   */
-
-  /**
-   * This method returns an empty string.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {string} Returns the empty string.
-   * @example
-   *
-   * _.times(2, _.stubString);
-   * // => ['', '']
-   */
-
-  /**
-   * This method returns `true`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {boolean} Returns `true`.
-   * @example
-   *
-   * _.times(2, _.stubTrue);
-   * // => [true, true]
-   */
-
-  /**
-   * This method invokes `interceptor` and returns `value`. The interceptor
-   * is invoked with one argument; (value). The purpose of this method is to
-   * "tap into" a method chain sequence in order to modify intermediate results.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Seq
-   * @param {*} value The value to provide to `interceptor`.
-   * @param {Function} interceptor The function to invoke.
-   * @returns {*} Returns `value`.
-   * @example
-   *
-   * _([1, 2, 3])
-   *  .tap(function(array) {
-   *    // Mutate input array.
-   *    array.pop();
-   *  })
-   *  .reverse()
-   *  .value();
-   * // => [2, 1]
-   */
-
-  /** Used to escape characters for inclusion in compiled string literals. */
-
-  /** Used to match template delimiters. */
-
-  /** Used to match template delimiters. */
-
-  /** Used to match template delimiters. */
-
-  /**
-   * This method is like `_.tap` except that it returns the result of `interceptor`.
-   * The purpose of this method is to "pass thru" values replacing intermediate
-   * results in a method chain sequence.
-   *
-   * @static
-   * @memberOf _
-   * @since 3.0.0
-   * @category Seq
-   * @param {*} value The value to provide to `interceptor`.
-   * @param {Function} interceptor The function to invoke.
-   * @returns {*} Returns the result of `interceptor`.
-   * @example
-   *
-   * _('  abc  ')
-   *  .chain()
-   *  .trim()
-   *  .thru(function(value) {
-   *    return [value];
-   *  })
-   *  .value();
-   * // => ['abc']
-   */
-
-  /**
-   * Enables the wrapper to be iterable.
-   *
-   * @name Symbol.iterator
-   * @memberOf _
-   * @since 4.0.0
-   * @category Seq
-   * @returns {Object} Returns the wrapper object.
-   * @example
-   *
-   * var wrapped = _([1, 2]);
-   *
-   * wrapped[Symbol.iterator]() === wrapped;
-   * // => true
-   *
-   * Array.from(wrapped);
-   * // => [1, 2]
-   */
-
-  /**
-   * This base implementation of `_.zipObject` which assigns values using `assignFunc`.
-   *
-   * @private
-   * @param {Array} props The property identifiers.
-   * @param {Array} values The property values.
-   * @param {Function} assignFunc The function to assign values.
-   * @returns {Object} Returns the new object.
-   */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright JS Foundation and other contributors <https://js.foundation/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-   */
-
-  /**
-   * @license
-   * Lodash (Custom Build) <https://lodash.com/>
-   * Build: `lodash modularize exports="es" -o ./`
-   * Copyright JS Foundation and other contributors <https://js.foundation/>
-   * Released under MIT license <https://lodash.com/license>
-   * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
-   * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-   */
-
-  var inBrowser$3 = typeof window !== "undefined" && Object.prototype.toString.call(window) !== "[object Object]";
-  function isPromise$1(obj) {
-    return !!obj && (_typeof_1$1$2(obj) === "object" || typeof obj === "function") && typeof obj.then === "function";
-  }
-
-  var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-  function isDescriptor(desc) {
-    if (!desc || !desc.hasOwnProperty) {
-      return false;
-    }
-
-    var keys = ['value', 'initializer', 'get', 'set'];
-
-    for (var i = 0, l = keys.length; i < l; i++) {
-      if (desc.hasOwnProperty(keys[i])) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-  function isAccessorDescriptor(desc) {
-    return desc && (isFunction$2(desc.get) || isFunction$2(desc.set)) && isBoolean$1(desc.configurable) && isBoolean$1(desc.enumerable) && desc.writable === undefined;
-  }
-  function isDataDescriptor(desc) {
-    return desc && desc.hasOwnProperty('value') && isBoolean$1(desc.configurable) && isBoolean$1(desc.enumerable) && isBoolean$1(desc.writable);
-  }
-  function isInitializerDescriptor(desc) {
-    return desc && isFunction$2(desc.initializer) && isBoolean$1(desc.configurable) && isBoolean$1(desc.enumerable) && isBoolean$1(desc.writable);
-  }
-  function createDefaultSetter(key) {
-    return function set(newValue) {
-      Object.defineProperty(this, key, {
-        configurable: true,
-        enumerable: true,
-        value: newValue,
-        writable: true
-      });
-      return newValue;
-    };
-  }
-  function compressOneArgFnArray(fns) {
-    var errmsg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'You must pass me an array of function';
-
-    if (!isArray$4(fns) || fns.length < 1) {
-      throw new TypeError(errmsg);
-    }
-
-    if (fns.length === 1) {
-      if (!isFunction$2(fns[0])) {
-        throw new TypeError(errmsg);
-      }
-
-      return fns[0];
-    }
-
-    return fns.reduce(function (prev, curr) {
-      if (!isFunction$2(curr) || !isFunction$2(prev)) {
-        throw new TypeError(errmsg);
-      }
-
-      return function (value) {
-        return bind$1(curr, this)(bind$1(prev, this)(value));
-      };
-    });
-  }
-  function warn(message) {
-    if (isFunction$2(console.warn)) {
-      return console.warn(message);
-    }
-
-    console.log(message);
-  }
-  function getOwnKeysFn() {
-    var getOwnPropertyNames = Object.getOwnPropertyNames,
-        getOwnPropertySymbols = Object.getOwnPropertySymbols;
-    return isFunction$2(getOwnPropertySymbols) ? function (obj) {
-      return [].concat(toConsumableArray(getOwnPropertySymbols(obj)), toConsumableArray(getOwnPropertyNames(obj)));
-    } : getOwnPropertyNames;
-  }
-  var getOwnKeys = getOwnKeysFn();
-  function getOwnPropertyDescriptorsFn() {
-    return isFunction$2(Object.getOwnPropertyDescriptors) ? Object.getOwnPropertyDescriptors : function (obj) {
-      return getOwnKeys(obj).reduce(function (descs, key) {
-        descs[key] = getOwnPropertyDescriptor(obj, key);
-        return descs;
-      }, {});
-    };
-  }
-  var getOwnPropertyDescriptors = getOwnPropertyDescriptorsFn();
-  function compressMultipleDecorators() {
-    for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
-      fns[_key] = arguments[_key];
-    }
-
-    if (!fns.length) {
-      throw new TypeError('You must pass in decorators in compressMultipleDecorators');
-    }
-
-    fns.forEach(function (fn) {
-      if (!isFunction$2(fn)) {
-        throw new TypeError("Decorators must be a function, but not \"".concat(fn, "\" in ").concat(_typeof_1$3(fn)));
-      }
-    });
-
-    if (fns.length === 1) {
-      return fns[0];
-    }
-
-    return function (obj, prop, descirptor) {
-      return fns.reduce(function (aDescirptor, fn) {
-        return fn(obj, prop, aDescirptor);
-      }, descirptor);
-    };
-  }
-
-  function accessor() {
-    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-        get = _ref.get,
-        set = _ref.set;
-
-    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-        _ref2$preGet = _ref2.preGet,
-        preGet = _ref2$preGet === void 0 ? false : _ref2$preGet,
-        _ref2$preSet = _ref2.preSet,
-        preSet = _ref2$preSet === void 0 ? true : _ref2$preSet;
-
-    if (!(isArray$4(get) && get.length > 0) && !(isArray$4(set) && set.length > 0) && !isFunction$2(get) && !isFunction$2(set)) {
-      throw new TypeError('@accessor need a getter or setter. If you don\'t need to add setter/getter. You should remove @accessor');
-    }
-
-    var errmsg = '@accessor only accept function or array of function as getter/setter';
-    var singleFnGet = isArray$4(get) ? compressOneArgFnArray(get, errmsg) : get;
-    var singleFnSet = isArray$4(set) ? compressOneArgFnArray(set, errmsg) : set;
-    return function (obj, prop, descriptor) {
-      var _ref3 = descriptor || {},
-          _ref3$configurable = _ref3.configurable,
-          configurable = _ref3$configurable === void 0 ? true : _ref3$configurable,
-          _ref3$enumerable = _ref3.enumerable,
-          enumerable = _ref3$enumerable === void 0 ? true : _ref3$enumerable;
-
-      var hasGet = isFunction$2(singleFnGet);
-      var hasSet = isFunction$2(singleFnSet);
-
-      var handleGet = function handleGet(value) {
-        return hasGet ? bind$1(singleFnGet, this)(value) : value;
-      };
-
-      var handleSet = function handleSet(value) {
-        return hasSet ? bind$1(singleFnSet, this)(value) : value;
-      };
-
-      if (isAccessorDescriptor(descriptor)) {
-        var originGet = descriptor.get,
-            originSet = descriptor.set;
-        var hasOriginGet = isFunction$2(originGet);
-        var hasOriginSet = isFunction$2(originSet);
-
-        if (!hasOriginGet && hasGet) {
-          warn("You are trying to set getter via @accessor on ".concat(prop, " without getter. That's not a good idea."));
-        }
-
-        if (!hasOriginSet && hasSet) {
-          warn("You are trying to set setter via @accessor on  ".concat(prop, " without setter. That's not a good idea."));
-        }
-
-        var getter = hasOriginGet || hasGet ? function () {
-          var _this = this;
-
-          var boundGetter = bind$1(handleGet, this);
-
-          var originBoundGetter = function originBoundGetter() {
-            return hasOriginGet ? bind$1(originGet, _this)() : undefined;
-          };
-
-          var order = preGet ? [boundGetter, originBoundGetter] : [originBoundGetter, boundGetter];
-          return order.reduce(function (value, fn) {
-            return fn(value);
-          }, undefined);
-        } : undefined;
-        var setter = hasOriginSet || hasSet ? function (val) {
-          var _this2 = this;
-
-          var boundSetter = bind$1(handleSet, this);
-
-          var originBoundSetter = function originBoundSetter(value) {
-            return hasOriginSet ? bind$1(originSet, _this2)(value) : value;
-          };
-
-          var order = preSet ? [boundSetter, originBoundSetter] : [originBoundSetter, boundSetter];
-          return order.reduce(function (value, fn) {
-            return fn(value);
-          }, val);
-        } : undefined;
-        return {
-          configurable: configurable,
-          enumerable: enumerable,
-          get: getter,
-          set: setter
-        };
-      } else if (isInitializerDescriptor(descriptor)) {
-        var initializer = descriptor.initializer;
-
-        var _value;
-
-        var inited = false;
-        return {
-          get: function get() {
-            var boundFn = bind$1(handleGet, this);
-
-            if (inited) {
-              return boundFn(_value);
-            }
-
-            _value = bind$1(initializer, this)();
-            inited = true;
-            return boundFn(_value);
-          },
-          set: function set(val) {
-            var boundFn = bind$1(handleSet, this);
-            _value = preSet ? boundFn(val) : val;
-            inited = true;
-
-            if (!preSet) {
-              boundFn(_value);
-            }
-
-            return _value;
-          },
-          configurable: configurable,
-          enumerable: enumerable
-        };
-      }
-
-      var _ref4 = descriptor || {
-        value: undefined
-      },
-          value = _ref4.value;
-
-      return {
-        get: function get() {
-          return bind$1(handleGet, this)(value);
-        },
-        set: function set(val) {
-          var boundFn = bind$1(handleSet, this);
-          value = preSet ? boundFn(val) : val;
-
-          if (!preSet) {
-            boundFn(value);
-          }
-
-          return value;
-        },
-        configurable: configurable,
-        enumerable: enumerable
-      };
-    };
-  }
-
-  function before() {
-    for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
-      fns[_key] = arguments[_key];
-    }
-
-    if (fns.length === 0) {
-      throw new Error('@before accept at least one parameter. If you don\'t need to preprocess before your function, do not add @before decorators');
-    }
-
-    if (fns.length > 2 && isDescriptor(fns[2])) {
-      throw new Error('You may use @before straightly, @before return decorators, you should call it before you set it as decorator.');
-    }
-
-    for (var i = fns.length - 1; i > -1; i--) {
-      if (!isFunction$2(fns[i])) {
-        throw new TypeError('@before only accept function parameter');
-      }
-    }
-
-    return function (obj, prop, descriptor) {
-      var _ref = descriptor || {
-        configurable: undefined,
-        enumerable: undefined,
-        value: undefined,
-        writable: undefined
-      },
-          fn = _ref.value,
-          configurable = _ref.configurable,
-          enumerable = _ref.enumerable,
-          writable = _ref.writable;
-
-      if (!isFunction$2(fn)) {
-        throw new TypeError("@before can only be used on function, please check the property \"".concat(prop, "\" is a method or not."));
-      }
-
-      var handler = function handler() {
-        var _this = this;
-
-        for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-          args[_key2] = arguments[_key2];
-        }
-
-        var paras = fns.reduce(function (paras, fn) {
-          var result = bind$1(fn, _this).apply(void 0, toConsumableArray(paras));
-          return result === undefined ? paras : isArray$4(result) ? result : [result];
-        }, args);
-        return bind$1(fn, this).apply(void 0, toConsumableArray(paras));
-      };
-
-      return {
-        configurable: configurable,
-        enumerable: enumerable,
-        value: handler,
-        writable: writable
-      };
-    };
-  }
 
   function _arrayWithHoles(arr) {
     if (Array.isArray(arr)) return arr;
@@ -13793,619 +7156,40 @@
 
   var slicedToArray = _slicedToArray;
 
-  /**
-   * toxic-utils v0.4.2
-   * (c) 2017-2019 toxic-johann
-   * Released under MIT
-   * Built ad Sun Jun 02 2019 01:14:43 GMT+0800 (China Standard Time)
-   */
+  function camelize(str, isBig) {
+    return str.replace(/(^|[^a-zA-Z]+)([a-zA-Z])/g, function (match, spilt, initials, index) {
+      return !isBig && index === 0 ? initials.toLowerCase() : initials.toUpperCase();
+    });
+  }
+  function hypenate(str) {
+    return camelize(str).replace(/([A-Z])/g, function (match) {
+      return "-" + match.toLowerCase();
+    });
+  }
+  function bind$1(fn, context) {
+    if (fn.bind) {
+      return fn.bind(context);
+    } else if (fn.apply) {
+      return function __autobind__() {
+        var args = [];
 
-  /** Detect free variable `global` from Node.js. */
-  var freeGlobal$2$1 = typeof global == 'object' && global && global.Object === Object && global;
+        for (var _i = 0; _i < arguments.length; _i++) {
+          args[_i] = arguments[_i];
+        }
 
-  /** Detect free variable `self`. */
-  var freeSelf$2$1 = typeof self == 'object' && self && self.Object === Object && self;
+        return fn.apply(context, args);
+      };
+    }
 
-  /** Used as a reference to the global object. */
-  var root$2$1 = freeGlobal$2$1 || freeSelf$2$1 || Function('return this')();
+    return function __autobind__() {
+      var args = [];
 
-  /** Built-in value references. */
-  var Symbol$2$1 = root$2$1.Symbol;
-
-  /** Used for built-in method references. */
-  var objectProto$6$1 = Object.prototype;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty$5$1 = objectProto$6$1.hasOwnProperty;
-
-  /**
-   * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-   * of values.
-   */
-  var nativeObjectToString$2$1 = objectProto$6$1.toString;
-
-  /** Built-in value references. */
-  var symToStringTag$3$1 = Symbol$2$1 ? Symbol$2$1.toStringTag : undefined;
-
-  /**
-   * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {string} Returns the raw `toStringTag`.
-   */
-  function getRawTag$1$1(value) {
-    var isOwn = hasOwnProperty$5$1.call(value, symToStringTag$3$1),
-        tag = value[symToStringTag$3$1];
-
-    try {
-      value[symToStringTag$3$1] = undefined;
-      var unmasked = true;
-    } catch (e) {}
-
-    var result = nativeObjectToString$2$1.call(value);
-    if (unmasked) {
-      if (isOwn) {
-        value[symToStringTag$3$1] = tag;
-      } else {
-        delete value[symToStringTag$3$1];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
       }
-    }
-    return result;
-  }
 
-  /** Used for built-in method references. */
-  var objectProto$1$1$1 = Object.prototype;
-
-  /**
-   * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-   * of values.
-   */
-  var nativeObjectToString$1$1$1 = objectProto$1$1$1.toString;
-
-  /**
-   * Converts `value` to a string using `Object.prototype.toString`.
-   *
-   * @private
-   * @param {*} value The value to convert.
-   * @returns {string} Returns the converted string.
-   */
-  function objectToString$1$1(value) {
-    return nativeObjectToString$1$1$1.call(value);
-  }
-
-  /** `Object#toString` result references. */
-  var nullTag$1$1 = '[object Null]',
-      undefinedTag$1$1 = '[object Undefined]';
-
-  /** Built-in value references. */
-  var symToStringTag$1$2$1 = Symbol$2$1 ? Symbol$2$1.toStringTag : undefined;
-
-  /**
-   * The base implementation of `getTag` without fallbacks for buggy environments.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {string} Returns the `toStringTag`.
-   */
-  function baseGetTag$1$1(value) {
-    if (value == null) {
-      return value === undefined ? undefinedTag$1$1 : nullTag$1$1;
-    }
-    return (symToStringTag$1$2$1 && symToStringTag$1$2$1 in Object(value))
-      ? getRawTag$1$1(value)
-      : objectToString$1$1(value);
-  }
-
-  /**
-   * Checks if `value` is object-like. A value is object-like if it's not `null`
-   * and has a `typeof` result of "object".
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-   * @example
-   *
-   * _.isObjectLike({});
-   * // => true
-   *
-   * _.isObjectLike([1, 2, 3]);
-   * // => true
-   *
-   * _.isObjectLike(_.noop);
-   * // => false
-   *
-   * _.isObjectLike(null);
-   * // => false
-   */
-  function isObjectLike$1$1(value) {
-    return value != null && typeof value == 'object';
-  }
-
-  /**
-   * A specialized version of `_.map` for arrays without support for iteratee
-   * shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns the new mapped array.
-   */
-
-  /**
-   * Checks if `value` is classified as an `Array` object.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is an array, else `false`.
-   * @example
-   *
-   * _.isArray([1, 2, 3]);
-   * // => true
-   *
-   * _.isArray(document.body.children);
-   * // => false
-   *
-   * _.isArray('abc');
-   * // => false
-   *
-   * _.isArray(_.noop);
-   * // => false
-   */
-  var isArray$1$1 = Array.isArray;
-
-  /** Used for built-in method references. */
-  var funcProto$4$1 = Function.prototype;
-
-  /** Used to resolve the decompiled source of functions. */
-  var funcToString$4$1 = funcProto$4$1.toString;
-
-  /** Used to infer the `Object` constructor. */
-  var objectCtorString$2$1 = funcToString$4$1.call(Object);
-
-  /**
-   * The base implementation of `_.slice` without an iteratee call guard.
-   *
-   * @private
-   * @param {Array} array The array to slice.
-   * @param {number} [start=0] The start position.
-   * @param {number} [end=array.length] The end position.
-   * @returns {Array} Returns the slice of `array`.
-   */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * Converts an ASCII `string` to an array.
-   *
-   * @private
-   * @param {string} string The string to convert.
-   * @returns {Array} Returns the converted array.
-   */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * A specialized version of `_.reduce` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the first element of `array` as
-   *  the initial value.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /**
-   * The base implementation of `_.propertyOf` without support for deep paths.
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @returns {Function} Returns the new accessor function.
-   */
-
-  /** Used to match words composed of alphanumeric characters. */
-
-  /** Used to detect strings that need a more robust regexp to match words. */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * The base implementation of `_.clamp` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {number} number The number to clamp.
-   * @param {number} [lower] The lower bound.
-   * @param {number} upper The upper bound.
-   * @returns {number} Returns the clamped number.
-   */
-
-  /**
-   * Removes `key` and its value from the stack.
-   *
-   * @private
-   * @name delete
-   * @memberOf Stack
-   * @param {string} key The key of the value to remove.
-   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-   */
-
-  /**
-   * Gets the stack value for `key`.
-   *
-   * @private
-   * @name get
-   * @memberOf Stack
-   * @param {string} key The key of the value to get.
-   * @returns {*} Returns the entry value.
-   */
-
-  /**
-   * Checks if a stack value for `key` exists.
-   *
-   * @private
-   * @name has
-   * @memberOf Stack
-   * @param {string} key The key of the entry to check.
-   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-   */
-
-  /**
-   * A specialized version of `_.filter` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {Array} Returns the new filtered array.
-   */
-
-  /**
-   * This method returns a new empty array.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {Array} Returns the new empty array.
-   * @example
-   *
-   * var arrays = _.times(2, _.stubArray);
-   *
-   * console.log(arrays);
-   * // => [[], []]
-   *
-   * console.log(arrays[0] === arrays[1]);
-   * // => false
-   */
-
-  /** Used for built-in method references. */
-
-  /** Used to match `RegExp` flags from their coerced string values. */
-
-  /**
-   * Creates an array with all falsey values removed. The values `false`, `null`,
-   * `0`, `""`, `undefined`, and `NaN` are falsey.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Array
-   * @param {Array} array The array to compact.
-   * @returns {Array} Returns the new array of filtered values.
-   * @example
-   *
-   * _.compact([0, 1, false, 2, '', 3]);
-   * // => [1, 2, 3]
-   */
-
-  /** Used to stand-in for `undefined` hash values. */
-
-  /**
-   * Checks if `value` is in the array cache.
-   *
-   * @private
-   * @name has
-   * @memberOf SetCache
-   * @param {*} value The value to search for.
-   * @returns {number} Returns `true` if `value` is found, else `false`.
-   */
-
-  /**
-   * A specialized version of `_.some` for arrays without support for iteratee
-   * shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {boolean} Returns `true` if any element passes the predicate check,
-   *  else `false`.
-   */
-
-  /**
-   * Checks if a `cache` value for `key` exists.
-   *
-   * @private
-   * @param {Object} cache The cache to query.
-   * @param {string} key The key of the entry to check.
-   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-   */
-
-  /**
-   * Converts `map` to its key-value pairs.
-   *
-   * @private
-   * @param {Object} map The map to convert.
-   * @returns {Array} Returns the key-value pairs.
-   */
-
-  /**
-   * Converts `set` to an array of its values.
-   *
-   * @private
-   * @param {Object} set The set to convert.
-   * @returns {Array} Returns the values.
-   */
-
-  /**
-   * A specialized version of `matchesProperty` for source values suitable
-   * for strict equality comparisons, i.e. `===`.
-   *
-   * @private
-   * @param {string} key The key of the property to get.
-   * @param {*} srcValue The value to match.
-   * @returns {Function} Returns the new spec function.
-   */
-
-  /**
-   * The base implementation of `_.hasIn` without support for deep paths.
-   *
-   * @private
-   * @param {Object} [object] The object to query.
-   * @param {Array|string} key The key to check.
-   * @returns {boolean} Returns `true` if `key` exists, else `false`.
-   */
-
-  /**
-   * The base implementation of `_.property` without support for deep paths.
-   *
-   * @private
-   * @param {string} key The key of the property to get.
-   * @returns {Function} Returns the new accessor function.
-   */
-
-  /**
-   * The base implementation of `_.conformsTo` which accepts `props` to check.
-   *
-   * @private
-   * @param {Object} object The object to inspect.
-   * @param {Object} source The object of property predicates to conform to.
-   * @returns {boolean} Returns `true` if `object` conforms, else `false`.
-   */
-
-  /**
-   * A specialized version of `baseAggregator` for arrays.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} setter The function to set `accumulator` values.
-   * @param {Function} iteratee The iteratee to transform keys.
-   * @param {Object} accumulator The initial aggregated object.
-   * @returns {Function} Returns `accumulator`.
-   */
-
-  /**
-   * Creates a base function for methods like `_.forIn` and `_.forOwn`.
-   *
-   * @private
-   * @param {boolean} [fromRight] Specify iterating from right to left.
-   * @returns {Function} Returns the new base function.
-   */
-
-  /**
-   * Checks `value` to determine whether a default value should be returned in
-   * its place. The `defaultValue` is returned if `value` is `NaN`, `null`,
-   * or `undefined`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.14.0
-   * @category Util
-   * @param {*} value The value to check.
-   * @param {*} defaultValue The default value.
-   * @returns {*} Returns the resolved value.
-   * @example
-   *
-   * _.defaultTo(1, 10);
-   * // => 1
-   *
-   * _.defaultTo(undefined, 10);
-   * // => 10
-   */
-
-  /**
-   * Gets the value at `key`, unless `key` is "__proto__".
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @param {string} key The key of the property to get.
-   * @returns {*} Returns the property value.
-   */
-
-  /** Error message constants. */
-
-  /**
-   * This function is like `arrayIncludes` except that it accepts a comparator.
-   *
-   * @private
-   * @param {Array} [array] The array to inspect.
-   * @param {*} target The value to search for.
-   * @param {Function} comparator The comparator invoked per element.
-   * @returns {boolean} Returns `true` if `target` is found, else `false`.
-   */
-
-  /**
-   * Gets the last element of `array`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Array
-   * @param {Array} array The array to query.
-   * @returns {*} Returns the last element of `array`.
-   * @example
-   *
-   * _.last([1, 2, 3]);
-   * // => 3
-   */
-
-  /**
-   * A specialized version of `_.forEachRight` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns `array`.
-   */
-
-  /**
-   * Converts `set` to its value-value pairs.
-   *
-   * @private
-   * @param {Object} set The set to convert.
-   * @returns {Array} Returns the value-value pairs.
-   */
-
-  /**
-   * A specialized version of `_.every` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {boolean} Returns `true` if all elements pass the predicate check,
-   *  else `false`.
-   */
-
-  /**
-   * The base implementation of methods like `_.findKey` and `_.findLastKey`,
-   * without support for iteratee shorthands, which iterates over `collection`
-   * using `eachFunc`.
-   *
-   * @private
-   * @param {Array|Object} collection The collection to inspect.
-   * @param {Function} predicate The function invoked per iteration.
-   * @param {Function} eachFunc The function to iterate over `collection`.
-   * @returns {*} Returns the found element or its key, else `undefined`.
-   */
-
-  /**
-   * Gets the first element of `array`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @alias first
-   * @category Array
-   * @param {Array} array The array to query.
-   * @returns {*} Returns the first element of `array`.
-   * @example
-   *
-   * _.head([1, 2, 3]);
-   * // => 1
-   *
-   * _.head([]);
-   * // => undefined
-   */
-
-  /**
-   * The inverse of `_.toPairs`; this method returns an object composed
-   * from key-value `pairs`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Array
-   * @param {Array} pairs The key-value pairs.
-   * @returns {Object} Returns the new object.
-   * @example
-   *
-   * _.fromPairs([['a', 1], ['b', 2]]);
-   * // => { 'a': 1, 'b': 2 }
-   */
-
-  /**
-   * The base implementation of `_.gt` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if `value` is greater than `other`,
-   *  else `false`.
-   */
-
-  /** Used for built-in method references. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /** `Object#toString` result references. */
-  var stringTag$1$1 = '[object String]';
-
-  /**
-   * Checks if `value` is classified as a `String` primitive or object.
-   *
-   * @static
-   * @since 0.1.0
-   * @memberOf _
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a string, else `false`.
-   * @example
-   *
-   * _.isString('abc');
-   * // => true
-   *
-   * _.isString(1);
-   * // => false
-   */
-  function isString$1$1(value) {
-    return typeof value == 'string' ||
-      (!isArray$1$1(value) && isObjectLike$1$1(value) && baseGetTag$1$1(value) == stringTag$1$1);
-  }
-
-  /**
-   * Checks if `value` is `null` or `undefined`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is nullish, else `false`.
-   * @example
-   *
-   * _.isNil(null);
-   * // => true
-   *
-   * _.isNil(void 0);
-   * // => true
-   *
-   * _.isNil(NaN);
-   * // => false
-   */
-  function isNil$1$1(value) {
-    return value == null;
+      return fn.call.apply(fn, [context].concat(args));
+    };
   }
   function getDeepProperty(obj, keys, _a) {
     var _b = _a === void 0 ? {} : _a,
@@ -14413,11 +7197,11 @@
         throwError = _c === void 0 ? false : _c,
         backup = _b.backup;
 
-    if (isString$1$1(keys)) {
+    if (isString$1(keys)) {
       keys = keys.split(".");
     }
 
-    if (!isArray$1$1(keys)) {
+    if (!isArray$1(keys)) {
       throw new TypeError("keys of getDeepProperty must be string or Array<string>");
     }
 
@@ -14427,7 +7211,7 @@
     for (var i = 0, len = keys.length; i < len; i++) {
       var key = keys[i];
 
-      if (isNil$1$1(target)) {
+      if (isNil(target)) {
         if (throwError) {
           throw new Error("obj" + (read.length > 0 ? "." + read.join(".") : " itself") + " is " + target);
         } else {
@@ -14440,6 +7224,379 @@
     }
 
     return target;
+  }
+
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  var defineProperty$1 = _defineProperty;
+
+  var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+  function isDescriptor(desc) {
+    if (!desc || !desc.hasOwnProperty) {
+      return false;
+    }
+
+    var keys = ['value', 'initializer', 'get', 'set'];
+
+    for (var i = 0, l = keys.length; i < l; i++) {
+      if (desc.hasOwnProperty(keys[i])) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+  function isAccessorDescriptor(desc) {
+    return desc && (isFunction(desc.get) || isFunction(desc.set)) && isBoolean(desc.configurable) && isBoolean(desc.enumerable) && desc.writable === undefined;
+  }
+  function isDataDescriptor(desc) {
+    return desc && desc.hasOwnProperty('value') && isBoolean(desc.configurable) && isBoolean(desc.enumerable) && isBoolean(desc.writable);
+  }
+  function isInitializerDescriptor(desc) {
+    return desc && isFunction(desc.initializer) && isBoolean(desc.configurable) && isBoolean(desc.enumerable) && isBoolean(desc.writable);
+  }
+  function createDefaultSetter(key) {
+    return function set(newValue) {
+      Object.defineProperty(this, key, {
+        configurable: true,
+        enumerable: true,
+        value: newValue,
+        writable: true
+      });
+      return newValue;
+    };
+  }
+  function compressOneArgFnArray(fns) {
+    var errmsg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'You must pass me an array of function';
+
+    if (!isArray$1(fns) || fns.length < 1) {
+      throw new TypeError(errmsg);
+    }
+
+    if (fns.length === 1) {
+      if (!isFunction(fns[0])) {
+        throw new TypeError(errmsg);
+      }
+
+      return fns[0];
+    }
+
+    return fns.reduce(function (prev, curr) {
+      if (!isFunction(curr) || !isFunction(prev)) {
+        throw new TypeError(errmsg);
+      }
+
+      return function (value) {
+        return bind(curr, this)(bind(prev, this)(value));
+      };
+    });
+  }
+  function warn(message) {
+    if (isFunction(console.warn)) {
+      return console.warn(message);
+    }
+
+    console.log(message);
+  }
+  function getOwnKeysFn() {
+    var getOwnPropertyNames = Object.getOwnPropertyNames,
+        getOwnPropertySymbols = Object.getOwnPropertySymbols;
+    return isFunction(getOwnPropertySymbols) ? function (obj) {
+      return [].concat(toConsumableArray(getOwnPropertySymbols(obj)), toConsumableArray(getOwnPropertyNames(obj)));
+    } : getOwnPropertyNames;
+  }
+  var getOwnKeys = getOwnKeysFn();
+  function getOwnPropertyDescriptorsFn() {
+    return isFunction(Object.getOwnPropertyDescriptors) ? Object.getOwnPropertyDescriptors : function (obj) {
+      return getOwnKeys(obj).reduce(function (descs, key) {
+        descs[key] = getOwnPropertyDescriptor(obj, key);
+        return descs;
+      }, {});
+    };
+  }
+  var getOwnPropertyDescriptors = getOwnPropertyDescriptorsFn();
+  function compressMultipleDecorators() {
+    for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
+      fns[_key] = arguments[_key];
+    }
+
+    if (!fns.length) {
+      throw new TypeError('You must pass in decorators in compressMultipleDecorators');
+    }
+
+    fns.forEach(function (fn) {
+      if (!isFunction(fn)) {
+        throw new TypeError("Decorators must be a function, but not \"".concat(fn, "\" in ").concat(_typeof_1$1(fn)));
+      }
+    });
+
+    if (fns.length === 1) {
+      return fns[0];
+    }
+
+    return function (obj, prop, descirptor) {
+      return fns.reduce(function (aDescirptor, fn) {
+        return fn(obj, prop, aDescirptor);
+      }, descirptor);
+    };
+  }
+
+  function accessor() {
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        get = _ref.get,
+        set = _ref.set;
+
+    var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+        _ref2$preGet = _ref2.preGet,
+        preGet = _ref2$preGet === void 0 ? false : _ref2$preGet,
+        _ref2$preSet = _ref2.preSet,
+        preSet = _ref2$preSet === void 0 ? true : _ref2$preSet;
+
+    if (!(isArray$1(get) && get.length > 0) && !(isArray$1(set) && set.length > 0) && !isFunction(get) && !isFunction(set)) {
+      throw new TypeError('@accessor need a getter or setter. If you don\'t need to add setter/getter. You should remove @accessor');
+    }
+
+    var errmsg = '@accessor only accept function or array of function as getter/setter';
+    var singleFnGet = isArray$1(get) ? compressOneArgFnArray(get, errmsg) : get;
+    var singleFnSet = isArray$1(set) ? compressOneArgFnArray(set, errmsg) : set;
+    return function (obj, prop, descriptor) {
+      var _ref3 = descriptor || {},
+          _ref3$configurable = _ref3.configurable,
+          configurable = _ref3$configurable === void 0 ? true : _ref3$configurable,
+          _ref3$enumerable = _ref3.enumerable,
+          enumerable = _ref3$enumerable === void 0 ? true : _ref3$enumerable;
+
+      var hasGet = isFunction(singleFnGet);
+      var hasSet = isFunction(singleFnSet);
+
+      var handleGet = function handleGet(value) {
+        return hasGet ? bind(singleFnGet, this)(value) : value;
+      };
+
+      var handleSet = function handleSet(value) {
+        return hasSet ? bind(singleFnSet, this)(value) : value;
+      };
+
+      if (isAccessorDescriptor(descriptor)) {
+        var originGet = descriptor.get,
+            originSet = descriptor.set;
+        var hasOriginGet = isFunction(originGet);
+        var hasOriginSet = isFunction(originSet);
+
+        if (!hasOriginGet && hasGet) {
+          warn("You are trying to set getter via @accessor on ".concat(prop, " without getter. That's not a good idea."));
+        }
+
+        if (!hasOriginSet && hasSet) {
+          warn("You are trying to set setter via @accessor on  ".concat(prop, " without setter. That's not a good idea."));
+        }
+
+        var getter = hasOriginGet || hasGet ? function () {
+          var _this = this;
+
+          var boundGetter = bind(handleGet, this);
+
+          var originBoundGetter = function originBoundGetter() {
+            return hasOriginGet ? bind(originGet, _this)() : undefined;
+          };
+
+          var order = preGet ? [boundGetter, originBoundGetter] : [originBoundGetter, boundGetter];
+          return order.reduce(function (value, fn) {
+            return fn(value);
+          }, undefined);
+        } : undefined;
+        var setter = hasOriginSet || hasSet ? function (val) {
+          var _this2 = this;
+
+          var boundSetter = bind(handleSet, this);
+
+          var originBoundSetter = function originBoundSetter(value) {
+            return hasOriginSet ? bind(originSet, _this2)(value) : value;
+          };
+
+          var order = preSet ? [boundSetter, originBoundSetter] : [originBoundSetter, boundSetter];
+          return order.reduce(function (value, fn) {
+            return fn(value);
+          }, val);
+        } : undefined;
+        return {
+          configurable: configurable,
+          enumerable: enumerable,
+          get: getter,
+          set: setter
+        };
+      } else if (isInitializerDescriptor(descriptor)) {
+        var initializer = descriptor.initializer;
+
+        var _value;
+
+        var inited = false;
+        return {
+          get: function get() {
+            var boundFn = bind(handleGet, this);
+
+            if (inited) {
+              return boundFn(_value);
+            }
+
+            _value = bind(initializer, this)();
+            inited = true;
+            return boundFn(_value);
+          },
+          set: function set(val) {
+            var boundFn = bind(handleSet, this);
+            _value = preSet ? boundFn(val) : val;
+            inited = true;
+
+            if (!preSet) {
+              boundFn(_value);
+            }
+
+            return _value;
+          },
+          configurable: configurable,
+          enumerable: enumerable
+        };
+      }
+
+      var _ref4 = descriptor || {
+        value: undefined
+      },
+          value = _ref4.value;
+
+      return {
+        get: function get() {
+          return bind(handleGet, this)(value);
+        },
+        set: function set(val) {
+          var boundFn = bind(handleSet, this);
+          value = preSet ? boundFn(val) : val;
+
+          if (!preSet) {
+            boundFn(value);
+          }
+
+          return value;
+        },
+        configurable: configurable,
+        enumerable: enumerable
+      };
+    };
+  }
+
+  function before() {
+    for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
+      fns[_key] = arguments[_key];
+    }
+
+    if (fns.length === 0) {
+      throw new Error('@before accept at least one parameter. If you don\'t need to preprocess before your function, do not add @before decorators');
+    }
+
+    if (fns.length > 2 && isDescriptor(fns[2])) {
+      throw new Error('You may use @before straightly, @before return decorators, you should call it before you set it as decorator.');
+    }
+
+    for (var i = fns.length - 1; i > -1; i--) {
+      if (!isFunction(fns[i])) {
+        throw new TypeError('@before only accept function parameter');
+      }
+    }
+
+    return function (obj, prop, descriptor) {
+      var _ref = descriptor || {
+        configurable: undefined,
+        enumerable: undefined,
+        value: undefined,
+        writable: undefined
+      },
+          fn = _ref.value,
+          configurable = _ref.configurable,
+          enumerable = _ref.enumerable,
+          writable = _ref.writable;
+
+      if (!isFunction(fn)) {
+        throw new TypeError("@before can only be used on function, please check the property \"".concat(prop, "\" is a method or not."));
+      }
+
+      var handler = function handler() {
+        var _this = this;
+
+        for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+
+        var paras = fns.reduce(function (paras, fn) {
+          var result = bind(fn, _this).apply(void 0, toConsumableArray(paras));
+          return result === undefined ? paras : isArray$1(result) ? result : [result];
+        }, args);
+        return bind(fn, this).apply(void 0, toConsumableArray(paras));
+      };
+
+      return {
+        configurable: configurable,
+        enumerable: enumerable,
+        value: handler,
+        writable: writable
+      };
+    };
+  }
+
+  function after() {
+    for (var _len = arguments.length, fns = new Array(_len), _key = 0; _key < _len; _key++) {
+      fns[_key] = arguments[_key];
+    }
+
+    if (fns.length === 0) {
+      throw new Error('@after accept at least one parameter. If you don\'t need to preprocess after your function, do not add @after decorators');
+    }
+
+    if (fns.length > 2 && isDescriptor(fns[2])) {
+      throw new Error('You may have used @after straightly. @after return decorators. You should call it before you use it as decorators');
+    }
+
+    var fn = compressOneArgFnArray(fns, '@after only accept function parameter');
+    return function (obj, prop, descriptor) {
+      var _ref = descriptor || {
+        configurable: undefined,
+        enumerable: undefined,
+        value: undefined,
+        writable: undefined
+      },
+          value = _ref.value,
+          configurable = _ref.configurable,
+          enumerable = _ref.enumerable,
+          writable = _ref.writable;
+
+      if (!isFunction(value)) {
+        throw new TypeError("@after can only be used on function, please checkout your property \"".concat(prop, "\" is a method or not."));
+      }
+
+      var handler = function handler() {
+        var ret = bind(value, this).apply(void 0, arguments);
+        return bind(fn, this)(ret);
+      };
+
+      return {
+        configurable: configurable,
+        enumerable: enumerable,
+        value: handler,
+        writable: writable
+      };
+    };
   }
 
   function initialize() {
@@ -14461,7 +7618,7 @@
         return {
           configurable: true,
           enumerable: true,
-          value: bind$1(fn, obj)(),
+          value: bind(fn, obj)(),
           writable: true
         };
       }
@@ -14475,7 +7632,7 @@
               return value;
             }
 
-            return bind$1(fn, this)(value);
+            return bind(fn, this)(value);
           },
           set: originSet ? function (value) {
             hasBeenReset = true;
@@ -14488,7 +7645,7 @@
         var initializer = descriptor.initializer;
 
         var handler = function handler() {
-          return bind$1(fn, this)(bind$1(initializer, this)());
+          return bind(fn, this)(bind(initializer, this)());
         };
 
         return {
@@ -14499,7 +7656,7 @@
         };
       }
 
-      var value = bind$1(fn, this)(descriptor.value);
+      var value = bind(fn, this)(descriptor.value);
       return {
         configurable: descriptor.configurable,
         enumerable: descriptor.enumerable,
@@ -14510,7 +7667,7 @@
   }
 
   var getOwnPropertyDescriptor$1 = Object.getOwnPropertyDescriptor,
-      defineProperty$1$1 = Object.defineProperty;
+      defineProperty$2 = Object.defineProperty;
 
   function setAlias(root, prop, _ref, obj, key, _ref2) {
     var configurable = _ref.configurable,
@@ -14533,7 +7690,7 @@
       }
     }
 
-    defineProperty$1$1(obj, key, {
+    defineProperty$2(obj, key, {
       get: function get() {
         return root[prop];
       },
@@ -14547,7 +7704,7 @@
 
   function alias(other, key, option) {
     if (arguments.length === 2) {
-      if (isString$4(other)) {
+      if (isString$1(other)) {
         option = key;
         key = other;
         other = undefined;
@@ -14557,17 +7714,17 @@
       other = undefined;
     }
 
-    if (!isString$4(key)) {
+    if (!isString$1(key)) {
       throw new TypeError('@alias need a string as a key to find the porperty to set alias on');
     }
 
     var illegalObjErrorMsg = 'If you want to use @alias to set alias on other instance, you must pass in a legal instance';
 
-    if (other !== undefined && !isObject$3(other)) {
+    if (other !== undefined && !isObject(other)) {
       throw new TypeError(illegalObjErrorMsg);
     }
 
-    var _ref3 = isPlainObject$3(option) ? option : {
+    var _ref3 = isPlainObject(option) ? option : {
       force: false,
       omit: false
     },
@@ -14583,7 +7740,7 @@
       };
 
       function getTargetAndName(other, obj, key) {
-        var target = !isObject$3(other) ? obj : other;
+        var target = !isObject(other) ? obj : other;
         var keys = key.split('.');
 
         var _keys$slice = keys.slice(-1),
@@ -14594,7 +7751,7 @@
           throwError: true
         });
 
-        if (!isObject$3(target)) {
+        if (!isObject(target)) {
           throw new TypeError(illegalObjErrorMsg);
         }
 
@@ -14656,7 +7813,7 @@
     };
   }
 
-  var defineProperty$2 = Object.defineProperty;
+  var defineProperty$1$1 = Object.defineProperty;
   function classify(decorator) {
     var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
         requirement = _ref.requirement,
@@ -14678,28 +7835,28 @@
         args[_key - 1] = arguments[_key];
       }
 
-      if (!isArray$4(exclude)) {
+      if (!isArray$1(exclude)) {
         throw new TypeError('options.exclude must be an array');
       }
 
-      if (!isArray$4(include)) {
+      if (!isArray$1(include)) {
         throw new TypeError('options.include must be an array');
       }
 
       return function (Klass) {
-        var isClass = isFunction$2(Klass);
+        var isClass = isFunction(Klass);
 
         if (!self && !isClass) {
           throw new TypeError("@".concat(decorator.name, "Class can only be used on class"));
         }
 
-        if (self && !isObject$3(Klass)) {
+        if (self && !isObject(Klass)) {
           throw new TypeError("@".concat(decorator.name, "Class must be used on non-primitive type value in 'self' mode"));
         }
 
         var prototype = self ? Klass : Klass.prototype;
 
-        if (isNil$1(prototype)) {
+        if (isNil(prototype)) {
           throw new Error("The prototype of the ".concat(Klass.name, " is empty, please check it"));
         }
 
@@ -14707,13 +7864,13 @@
         getOwnKeys(prototype).concat(include).forEach(function (key) {
           var desc = descs[key];
 
-          if (key === 'constructor' && !construct || self && isClass && ['name', 'length', 'prototype'].indexOf(key) > -1 || exclude.indexOf(key) > -1 || isFunction$2(requirement) && requirement(prototype, key, desc, {
+          if (key === 'constructor' && !construct || self && isClass && ['name', 'length', 'prototype'].indexOf(key) > -1 || exclude.indexOf(key) > -1 || isFunction(requirement) && requirement(prototype, key, desc, {
             self: self
           }) === false) {
             return;
           }
 
-          defineProperty$2(prototype, key, (customArgs ? decorator.apply(void 0, args) : decorator)(prototype, key, desc));
+          defineProperty$1$1(prototype, key, (customArgs ? decorator.apply(void 0, args) : decorator)(prototype, key, desc));
         });
       };
     };
@@ -14737,7 +7894,7 @@
     var superStore = mapStore.get(obj);
 
     if (superStore.has(fn) === false) {
-      superStore.set(fn, bind$1(fn, obj));
+      superStore.set(fn, bind(fn, obj));
     }
 
     return superStore.get(fn);
@@ -14747,7 +7904,7 @@
     if (arguments.length === 1) {
       return classify(autobind, {
         requirement: function requirement(obj, prop, desc) {
-          return isDataDescriptor(desc) && isFunction$2(desc.value);
+          return isDataDescriptor(desc) && isFunction(desc.value);
         }
       })()(obj);
     }
@@ -14759,8 +7916,8 @@
         fn = _ref.value,
         configurable = _ref.configurable;
 
-    if (!isFunction$2(fn)) {
-      throw new TypeError("@autobind can only be used on functions, not \"".concat(fn, "\" in ").concat(_typeof_1$3(fn), " on property \"").concat(prop, "\""));
+    if (!isFunction(fn)) {
+      throw new TypeError("@autobind can only be used on functions, not \"".concat(fn, "\" in ").concat(_typeof_1$1(fn), " on property \"").concat(prop, "\""));
     }
 
     var constructor = obj.constructor;
@@ -14802,7 +7959,7 @@
     };
   }
 
-  var defineProperty$3 = Object.defineProperty;
+  var defineProperty$2$1 = Object.defineProperty;
   function frozen(obj, prop, descriptor) {
     if (descriptor === undefined) {
       {
@@ -14824,7 +7981,7 @@
       var _get = descriptor.get;
       descriptor.set = undefined;
 
-      if (!isFunction$2(_get)) {
+      if (!isFunction(_get)) {
         {
           warn('You are using @frozen on one accessor descriptor without getter. This property will become a frozen undefined finally.Which maybe meaningless.');
         }
@@ -14836,8 +7993,8 @@
         configurable: false,
         enumerable: false,
         get: function get() {
-          var value = bind$1(_get, this)();
-          defineProperty$3(this, prop, {
+          var value = bind(_get, this)();
+          defineProperty$2$1(this, prop, {
             configurable: false,
             enumerable: false,
             value: value,
@@ -14854,12 +8011,12 @@
   }
 
   var getOwnPropertyDescriptor$2 = Object.getOwnPropertyDescriptor,
-      defineProperty$4 = Object.defineProperty;
+      defineProperty$3 = Object.defineProperty;
   function waituntil(key) {
     var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
         other = _ref.other;
 
-    if (!isFunction$2(key) && !isPromise$1(key) && !isString$4(key)) {
+    if (!isFunction(key) && !isPromise(key) && !isString$1(key)) {
       throw new TypeError('@waitUntil only accept Function, Promise or String');
     }
 
@@ -14871,27 +8028,27 @@
           _value = _ref2.value,
           configurable = _ref2.configurable;
 
-      if (!isFunction$2(_value)) {
+      if (!isFunction(_value)) {
         throw new TypeError("@waituntil can only be used on function, but not ".concat(_value, " on property \"").concat(prop, "\""));
       }
 
       var binded = false;
       var waitingQueue = [];
-      var canIRun = isPromise$1(key) ? function () {
+      var canIRun = isPromise(key) ? function () {
         return key;
-      } : isFunction$2(key) ? key : function () {
+      } : isFunction(key) ? key : function () {
         var keys = key.split('.');
 
         var _keys$slice = keys.slice(-1),
             _keys$slice2 = slicedToArray(_keys$slice, 1),
             prop = _keys$slice2[0];
 
-        var originTarget = !isObject$3(other) ? this : other;
+        var originTarget = !isObject(other) ? this : other;
 
         if (!binded) {
           var target = getDeepProperty(originTarget, keys.slice(0, -1));
 
-          if (isNil$1(target)) {
+          if (isNil(target)) {
             return target;
           }
 
@@ -14920,7 +8077,7 @@
           });
 
           if (desc) {
-            defineProperty$4(target, prop, desc);
+            defineProperty$3(target, prop, desc);
           }
 
           binded = true;
@@ -14938,15 +8095,15 @@
             args[_key] = arguments[_key];
           }
 
-          var boundFn = bind$1(_value, this);
-          var runnable = bind$1(canIRun, this).apply(void 0, args);
+          var boundFn = bind(_value, this);
+          var runnable = bind(canIRun, this).apply(void 0, args);
 
-          if (isPromise$1(runnable)) {
+          if (isPromise(runnable)) {
             return Promise.resolve(runnable).then(function () {
-              return bind$1(_value, _this).apply(void 0, args);
+              return bind(_value, _this).apply(void 0, args);
             });
           } else if (runnable === true) {
-            return bind$1(_value, this).apply(void 0, args);
+            return bind(_value, this).apply(void 0, args);
           }
 
           return new Promise(function (resolve) {
@@ -14963,24 +8120,7 @@
     };
   }
 
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
-  var defineProperty$7 = _defineProperty;
-
-  var defineProperty$8 = Object.defineProperty,
+  var defineProperty$6 = Object.defineProperty,
       getOwnPropertyDescriptor$3 = Object.getOwnPropertyDescriptor;
   function applyDecorators(Class, props) {
     var _ref = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
@@ -14989,10 +8129,10 @@
         _ref$omit = _ref.omit,
         omit = _ref$omit === void 0 ? false : _ref$omit;
 
-    var isPropsFunction = isFunction$2(props);
+    var isPropsFunction = isFunction(props);
 
-    if (isPropsFunction || isArray$4(props)) {
-      if (!isFunction$2(Class)) {
+    if (isPropsFunction || isArray$1(props)) {
+      if (!isFunction(Class)) {
         throw new TypeError('If you want to decorator class, you must pass it a legal class');
       }
 
@@ -15002,7 +8142,7 @@
         for (var i = 0, len = props.length; i < len; i++) {
           var fn = props[i];
 
-          if (!isFunction$2(fn)) {
+          if (!isFunction(fn)) {
             throw new TypeError('If you want to decorate an class, you must pass it function or array of function');
           }
 
@@ -15013,27 +8153,27 @@
       return Class;
     }
 
-    if (!self && !isFunction$2(Class)) {
+    if (!self && !isFunction(Class)) {
       throw new TypeError('applyDecorators only accept class as first arguments. If you want to modify instance, you should set options.self true.');
     }
 
-    if (self && !isObject$3(Class)) {
+    if (self && !isObject(Class)) {
       throw new TypeError('We can\'t apply docorators on a primitive value, even in self mode');
     }
 
-    if (!isPlainObject$3(props)) {
+    if (!isPlainObject(props)) {
       throw new TypeError('applyDecorators only accept object as second arguments');
     }
 
     var prototype = self ? Class : Class.prototype;
 
-    if (isNil$1(prototype)) {
+    if (isNil(prototype)) {
       throw new Error('The class muse have a prototype, please take a check');
     }
 
     for (var key in props) {
       var value = props[key];
-      var decorators = isArray$4(value) ? value : [value];
+      var decorators = isArray$1(value) ? value : [value];
       var handler = void 0;
 
       try {
@@ -15056,7 +8196,7 @@
         continue;
       }
 
-      defineProperty$8(prototype, key, handler(prototype, key, descriptor));
+      defineProperty$6(prototype, key, handler(prototype, key, descriptor));
     }
 
     return Class;
@@ -15089,10 +8229,10 @@
       get: function get(target, property, receiver) {
         var value = target[property];
 
-        if (isArray$4(target) && arrayChangeMethod.indexOf(property) > -1) {
+        if (isArray$1(target) && arrayChangeMethod.indexOf(property) > -1) {
           return function () {
             arrayChanging = true;
-            bind$1(value, receiver).apply(void 0, arguments);
+            bind(value, receiver).apply(void 0, arguments);
             arrayChanging = false;
             hook();
           };
@@ -15102,7 +8242,7 @@
           return value;
         }
 
-        if (isPlainObject$3(value) || isArray$4(value)) {
+        if (isPlainObject(value) || isArray$1(value)) {
           var _proxyValue = mapStore[property] || deepProxy(value, hook, {
             diff: diff,
             operationPrefix: operationPrefix
@@ -15117,7 +8257,7 @@
       },
       set: function set(target, property, value) {
         var oldVal = target[property];
-        var newVal = isPlainObject$3(value) || isArray$4(value) ? deepProxy(value, hook, {
+        var newVal = isPlainObject(value) || isArray$1(value) ? deepProxy(value, hook, {
           diff: diff,
           operationPrefix: operationPrefix
         }) : value;
@@ -15143,11 +8283,11 @@
         return true;
       }
     });
-    var operateProps = (_operateProps = {}, defineProperty$7(_operateProps, operationPrefix + 'set', [initialize(function () {
+    var operateProps = (_operateProps = {}, defineProperty$1(_operateProps, operationPrefix + 'set', [initialize(function () {
       return function (property, val) {
         proxyValue[property] = val;
       };
-    }), nonenumerable]), defineProperty$7(_operateProps, operationPrefix + 'del', [initialize(function () {
+    }), nonenumerable]), defineProperty$1(_operateProps, operationPrefix + 'del', [initialize(function () {
       return function (property) {
         delete proxyValue[property];
       };
@@ -15181,7 +8321,7 @@
               return val;
             }
 
-            if (isPlainObject$3(val) || isArray$4(val)) {
+            if (isPlainObject(val) || isArray$1(val)) {
               deepObserve(val, hook, {
                 operationPrefix: operationPrefix,
                 diff: diff
@@ -15192,7 +8332,7 @@
             return val;
           },
           set: function set(val) {
-            if (isPlainObject$3(val) || isArray$4(val)) {
+            if (isPlainObject(val) || isArray$1(val)) {
               deepObserve(val, hook, {
                 operationPrefix: operationPrefix,
                 diff: diff
@@ -15220,14 +8360,14 @@
       omit: true
     });
 
-    if (isArray$4(value)) {
+    if (isArray$1(value)) {
       var methodProps = arrayChangeMethod.reduce(function (props, key) {
         props[key] = [initialize(function (method) {
-          method = isFunction$2(method) ? method : Array.prototype[key];
+          method = isFunction(method) ? method : Array.prototype[key];
           return function () {
             var originLength = value.length;
             arrayChanging = true;
-            bind$1(method, value).apply(void 0, arguments);
+            bind(method, value).apply(void 0, arguments);
             arrayChanging = false;
 
             if (originLength < value.length) {
@@ -15253,7 +8393,7 @@
       });
     }
 
-    var operateProps = (_operateProps2 = {}, defineProperty$7(_operateProps2, operationPrefix + 'set', [initialize(function (method) {
+    var operateProps = (_operateProps2 = {}, defineProperty$1(_operateProps2, operationPrefix + 'set', [initialize(function (method) {
       return function (property, val) {
         var _ref3 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
             disable = _ref3.disable,
@@ -15261,8 +8401,8 @@
 
         isNewVal = isNewVal || getOwnKeys(value).indexOf(property) === -1;
 
-        if (isFunction$2(method)) {
-          bind$1(method, _this)(property, val, {
+        if (isFunction(method)) {
+          bind(method, _this)(property, val, {
             disable: true,
             isNewVal: isNewVal
           });
@@ -15281,10 +8421,10 @@
           value[property] = val;
         }
       };
-    }), nonenumerable]), defineProperty$7(_operateProps2, operationPrefix + 'del', [initialize(function (method) {
+    }), nonenumerable]), defineProperty$1(_operateProps2, operationPrefix + 'del', [initialize(function (method) {
       return function (property) {
-        if (isFunction$2(method)) {
-          bind$1(method, _this)(property);
+        if (isFunction(method)) {
+          bind(method, _this)(property);
         } else {
           delete value[property];
         }
@@ -15303,7 +8443,7 @@
       args[_key] = arguments[_key];
     }
 
-    var option = isPlainObject$3(args[args.length - 1]) ? args[args.length - 1] : {};
+    var option = isPlainObject(args[args.length - 1]) ? args[args.length - 1] : {};
     var deep = option.deep,
         omit = option.omit,
         other = option.other,
@@ -15325,17 +8465,17 @@
       throw new TypeError('You must pass a function or a string to find the hanlder function.');
     }
 
-    if (other !== undefined && !isObject$3(other)) {
+    if (other !== undefined && !isObject(other)) {
       throw new TypeError('If you want us to trigger function on the other instance, you must pass in a legal instance');
     }
 
-    if (!isString$4(operationPrefix)) {
+    if (!isString$1(operationPrefix)) {
       throw new TypeError('operationPrefix must be an string');
     }
 
     return function (obj, prop, descriptor) {
       var fns = args.reduce(function (fns, keyOrFn, index) {
-        if (!isString$4(keyOrFn) && !isFunction$2(keyOrFn)) {
+        if (!isString$1(keyOrFn) && !isFunction(keyOrFn)) {
           if (!index || index !== args.length - 1) {
             throw new TypeError('You can only pass function or string as handler');
           }
@@ -15343,11 +8483,11 @@
           return fns;
         }
 
-        fns.push(isString$4(keyOrFn) ? function (newVal, oldVal) {
+        fns.push(isString$1(keyOrFn) ? function (newVal, oldVal) {
           var target = other || obj;
           var fn = getDeepProperty(target, keyOrFn);
 
-          if (!isFunction$2(fn)) {
+          if (!isFunction(fn)) {
             if (!omit) {
               throw new Error('You pass in a function for us to trigger, please ensure the property to be a function or set omit flag true');
             }
@@ -15355,7 +8495,7 @@
             return;
           }
 
-          return bind$1(fn, this)(newVal, oldVal);
+          return bind(fn, this)(newVal, oldVal);
         } : keyOrFn);
         return fns;
       }, []);
@@ -15364,7 +8504,7 @@
         var _this2 = this;
 
         fns.forEach(function (fn) {
-          return bind$1(fn, _this2)(newVal, oldVal);
+          return bind(fn, _this2)(newVal, oldVal);
         });
       };
 
@@ -15380,10 +8520,10 @@
           proxyValue = undefined;
 
           var hook = function hook() {
-            return bind$1(handler, _this3)(newVal, oldVal);
+            return bind(handler, _this3)(newVal, oldVal);
           };
 
-          return deep && (isPlainObject$3(value) || isArray$4(value)) ? proxy ? deepProxy(value, hook, {
+          return deep && (isPlainObject(value) || isArray$1(value)) ? proxy ? deepProxy(value, hook, {
             diff: diff,
             operationPrefix: operationPrefix
           }) : deepObserve(value, hook, {
@@ -15402,10 +8542,10 @@
             inited = true;
 
             var hook = function hook() {
-              return bind$1(handler, _this4)(newVal, oldVal);
+              return bind(handler, _this4)(newVal, oldVal);
             };
 
-            if (deep && (isPlainObject$3(value) || isArray$4(value))) {
+            if (deep && (isPlainObject(value) || isArray$1(value))) {
               if (proxy) {
                 proxyValue = deepProxy(value, hook, {
                   diff: diff,
@@ -15435,7 +8575,7 @@
           newVal = value;
 
           if (!diff || oldVal !== value) {
-            bind$1(handler, this)(newVal, oldVal);
+            bind(handler, this)(newVal, oldVal);
           }
 
           oldVal = value;
@@ -15452,7 +8592,7 @@
         other = _ref.other,
         backup = _ref.backup;
 
-    if (!isFunction$2(key) && !isString$4(key)) {
+    if (!isFunction(key) && !isString$1(key)) {
       throw new TypeError('@runnable only accept Function or String');
     }
 
@@ -15464,26 +8604,26 @@
           _value = _ref2.value,
           configurable = _ref2.configurable;
 
-      if (!isFunction$2(_value)) {
+      if (!isFunction(_value)) {
         throw new TypeError("@runnable can only be used on method, but not ".concat(_value, " on property \"").concat(prop, "\"."));
       }
 
-      var canIRun = isFunction$2(key) ? key : function () {
+      var canIRun = isFunction(key) ? key : function () {
         var keys = key.split('.');
-        var originTarget = !isObject$3(other) ? this : other;
+        var originTarget = !isObject(other) ? this : other;
         return getDeepProperty(originTarget, keys);
       };
-      backup = isFunction$2(backup) ? backup : function () {};
+      backup = isFunction(backup) ? backup : function () {};
       return {
         configurable: configurable,
         enumerable: false,
         writable: false,
         value: function value() {
-          if (bind$1(canIRun, this).apply(void 0, arguments) === true) {
-            return bind$1(_value, this).apply(void 0, arguments);
+          if (bind(canIRun, this).apply(void 0, arguments) === true) {
+            return bind(_value, this).apply(void 0, arguments);
           }
 
-          return bind$1(backup, this).apply(void 0, arguments);
+          return bind(backup, this).apply(void 0, arguments);
         }
       };
     };
@@ -15494,15 +8634,15 @@
       args[_key - 1] = arguments[_key];
     }
 
-    if (isFunction$2(defaultValue)) {
+    if (isFunction(defaultValue)) {
       args.unshift(defaultValue);
       defaultValue = '';
-    } else if (!isString$4(defaultValue)) {
+    } else if (!isString$1(defaultValue)) {
       defaultValue = '';
     }
 
     args.unshift(function (value) {
-      return isString$4(value) ? value : defaultValue;
+      return isString$1(value) ? value : defaultValue;
     });
     return initialize.apply(void 0, args);
   }
@@ -15512,15 +8652,15 @@
       args[_key - 1] = arguments[_key];
     }
 
-    if (isFunction$2(defaultValue)) {
+    if (isFunction(defaultValue)) {
       args.unshift(defaultValue);
       defaultValue = '';
-    } else if (!isString$4(defaultValue)) {
+    } else if (!isString$1(defaultValue)) {
       defaultValue = '';
     }
 
     args.unshift(function (value) {
-      return isString$4(value) ? value : defaultValue;
+      return isString$1(value) ? value : defaultValue;
     });
     return accessor({
       set: args,
@@ -15533,15 +8673,15 @@
       args[_key - 1] = arguments[_key];
     }
 
-    if (isFunction$2(defaultValue)) {
+    if (isFunction(defaultValue)) {
       args.unshift(defaultValue);
       defaultValue = false;
-    } else if (!isBoolean$1(defaultValue)) {
+    } else if (!isBoolean(defaultValue)) {
       defaultValue = false;
     }
 
     args.unshift(function (value) {
-      return isBoolean$1(value) ? value : defaultValue;
+      return isBoolean(value) ? value : defaultValue;
     });
     return accessor({
       set: args,
@@ -15554,15 +8694,15 @@
       args[_key - 1] = arguments[_key];
     }
 
-    if (isFunction$2(defaultValue)) {
+    if (isFunction(defaultValue)) {
       args.unshift(defaultValue);
       defaultValue = 0;
-    } else if (!isNumber$1(defaultValue)) {
+    } else if (!isNumber(defaultValue)) {
       defaultValue = 0;
     }
 
     args.unshift(function (value) {
-      return isNumber$1(value) ? value : defaultValue;
+      return isNumber(value) ? value : defaultValue;
     });
     return accessor({
       set: args,
@@ -15570,168 +8710,947 @@
     });
   }
 
-  var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-      var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-      if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-      else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-      return c > 3 && r && Object.defineProperty(target, key, r), r;
-  };
-  const nonenumerable$1 = nonenumerable;
-  class GlobalConfig {
-      constructor() {
-          this.errorHandler = undefined;
-          this.log = {
-              debug: true,
-              error: true,
-              info: true,
-              verbose: true,
-              warn: true,
-          };
-          this.silentValue = false;
-          const props = Object.keys(this.log)
-              .reduce((props, key) => {
-              const switchKey = 'ENABLE_' + key.toUpperCase();
-              props[key] = accessor({
-                  get() {
-                      return chimeeLog[switchKey];
-                  },
-                  set(val) {
-                      chimeeLog[switchKey] = val;
-                      if (val === true) {
-                          this.silent = false;
-                      }
-                      return val;
-                  },
-              });
-              return props;
-          }, {});
-          applyDecorators(this.log, props, { self: true });
-      }
-      get silent() {
-          return this.silentValue;
-      }
-      set silent(val) {
-          val = !!val;
-          this.silentValue = val;
-          Object.keys(this.log).forEach((key) => { this.log[key] = !val; });
-      }
-      get useStyleFullscreen() {
-          return esFullscreen.useStyleFirst;
-      }
-      set useStyleFullscreen(val) {
-          esFullscreen.useStyleFirst = !!val;
-      }
-  }
-  __decorate([
-      nonenumerable$1
-  ], GlobalConfig.prototype, "silentValue", void 0);
+  var autobind$1 = classify(autobind, {
+    requirement: function requirement(obj, prop, desc) {
+      return isDataDescriptor(desc) && isFunction(desc.value);
+    }
+  });
 
-  const domEvents = [
-      'beforeinput',
-      'blur',
-      'click',
-      'compositionend',
-      'compositionstart',
-      'compositionupdate',
-      'dblclick',
-      'focus',
-      'focusin',
-      'focusout',
-      'input',
-      'keydown',
-      'keypress',
-      'keyup',
-      'mousedown',
-      'mouseenter',
-      'mouseleave',
-      'mousemove',
-      'mouseout',
-      'mouseover',
-      'mouseup',
-      'resize',
-      'scroll',
-      'select',
-      'wheel',
-      'mousewheel',
-      'contextmenu',
-      'touchstart',
-      'touchmove',
-      'touchend',
-      'fullscreen',
-  ];
+  var before$1 = classify(before, {
+    requirement: function requirement(obj, prop, desc) {
+      return isDataDescriptor(desc) && isFunction(desc.value);
+    },
+    customArgs: true
+  });
+
+  var after$1 = classify(after, {
+    requirement: function requirement(obj, prop, desc) {
+      return isDataDescriptor(desc) && isFunction(desc.value);
+    },
+    customArgs: true
+  });
+
+  var runnable$1 = classify(runnable, {
+    requirement: function requirement(obj, prop, desc) {
+      return isDataDescriptor(desc) && isFunction(desc.value);
+    },
+    customArgs: true
+  });
+
+  var waituntil$1 = classify(waituntil, {
+    requirement: function requirement(obj, prop, desc) {
+      return isDataDescriptor(desc) && isFunction(desc.value);
+    },
+    customArgs: true
+  });
+
+  var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+      if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    }
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+  };
+  var nonenumerable$1 = nonenumerable;
+
+  var GlobalConfig =
+  /*#__PURE__*/
+  function () {
+    function GlobalConfig() {
+      _classCallCheck(this, GlobalConfig);
+
+      this.errorHandler = undefined;
+      this.log = {
+        debug: true,
+        error: true,
+        info: true,
+        verbose: true,
+        warn: true
+      };
+      this.silentValue = false;
+      var props = Object.keys(this.log).reduce(function (props, key) {
+        var switchKey = 'ENABLE_' + key.toUpperCase();
+        props[key] = accessor({
+          get: function get() {
+            return chimeeLog[switchKey];
+          },
+          set: function set(val) {
+            chimeeLog[switchKey] = val;
+
+            if (val === true) {
+              this.silent = false;
+            }
+
+            return val;
+          }
+        });
+        return props;
+      }, {});
+      applyDecorators(this.log, props, {
+        self: true
+      });
+    }
+
+    _createClass(GlobalConfig, [{
+      key: "silent",
+      get: function get() {
+        return this.silentValue;
+      },
+      set: function set(val) {
+        var _this = this;
+
+        val = !!val;
+        this.silentValue = val;
+        Object.keys(this.log).forEach(function (key) {
+          _this.log[key] = !val;
+        });
+      }
+    }, {
+      key: "useStyleFullscreen",
+      get: function get() {
+        return esFullscreen.useStyleFirst;
+      },
+      set: function set(val) {
+        esFullscreen.useStyleFirst = !!val;
+      }
+    }]);
+
+    return GlobalConfig;
+  }();
+
+  __decorate([nonenumerable$1], GlobalConfig.prototype, "silentValue", void 0);
+
+  var domEvents = ['beforeinput', 'blur', 'click', 'compositionend', 'compositionstart', 'compositionupdate', 'dblclick', 'focus', 'focusin', 'focusout', 'input', 'keydown', 'keypress', 'keyup', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize', 'scroll', 'select', 'wheel', 'mousewheel', 'contextmenu', 'touchstart', 'touchmove', 'touchend', 'fullscreen'];
   function isDomEvent(x) {
-      return domEvents.includes(x);
+    return domEvents.includes(x);
   }
-  const esFullscreenEvents = [
-      'fullscreenchange',
-  ];
-  const dispatcherEventMethodMap = {
-      enterpictureinpicture: 'requestPictureInPicture',
-      leavepictureinpicture: 'exitPictureInPicture',
-      load: 'load',
+  var esFullscreenEvents = ['fullscreenchange'];
+  var dispatcherEventMethodMap = {
+    enterpictureinpicture: 'requestPictureInPicture',
+    leavepictureinpicture: 'exitPictureInPicture',
+    load: 'load'
   };
   function isDispatcherEventMethod(x) {
-      return Object.keys(dispatcherEventMethodMap).includes(x);
+    return Object.keys(dispatcherEventMethodMap).includes(x);
   }
-  const mustListenVideoDomEvents = [
-      'mouseenter',
-      'mouseleave',
-  ];
+  var mustListenVideoDomEvents = ['mouseenter', 'mouseleave'];
   function isMustListenVideoDomEvent(x) {
-      return mustListenVideoDomEvents.includes(x);
+    return mustListenVideoDomEvents.includes(x);
   }
-  const kernelEvents = [
-      'mediaInfo',
-      'heartbeat',
-      'error',
-  ];
-  const selfProcessorEvents = [
-      'silentLoad',
-      'fullscreen',
-  ];
-  const videoEvents = [
-      'abort',
-      'canplay',
-      'canplaythrough',
-      'durationchange',
-      'emptied',
-      'encrypted',
-      'ended',
-      'error',
-      'interruptbegin',
-      'interruptend',
-      'loadeddata',
-      'loadedmetadata',
-      'loadstart',
-      'mozaudioavailable',
-      'pause',
-      'play',
-      'playing',
-      'progress',
-      'ratechange',
-      'seeked',
-      'seeking',
-      'stalled',
-      'suspend',
-      'timeupdate',
-      'volumechange',
-      'waiting',
-      'enterpictureinpicture',
-      'leavepictureinpicture',
-  ];
+  var kernelEvents = ['mediaInfo', 'heartbeat', 'error'];
+  var selfProcessorEvents = ['silentLoad', 'fullscreen'];
+  var videoEvents = ['abort', 'canplay', 'canplaythrough', 'durationchange', 'emptied', 'encrypted', 'ended', 'error', 'interruptbegin', 'interruptend', 'loadeddata', 'loadedmetadata', 'loadstart', 'mozaudioavailable', 'pause', 'play', 'playing', 'progress', 'ratechange', 'seeked', 'seeking', 'stalled', 'suspend', 'timeupdate', 'volumechange', 'waiting', 'enterpictureinpicture', 'leavepictureinpicture'];
   function isVideoEvent(x) {
-      return videoEvents.includes(x);
+    return videoEvents.includes(x);
   }
 
-  function unwrapExports (x) {
-  	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+  function _arrayWithHoles$1(arr) {
+    if (Array.isArray(arr)) return arr;
   }
 
-  function createCommonjsModule$4(fn, module) {
-  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+  function _iterableToArrayLimit$1(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"] != null) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
   }
 
-  var interopRequireDefault = createCommonjsModule$4(function (module) {
+  function _nonIterableRest$1() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance");
+  }
+
+  function _slicedToArray$1(arr, i) {
+    return _arrayWithHoles$1(arr) || _iterableToArrayLimit$1(arr, i) || _nonIterableRest$1();
+  }
+
+  var runtime_1 = createCommonjsModule(function (module) {
+  /**
+   * Copyright (c) 2014-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+  var runtime = (function (exports) {
+
+    var Op = Object.prototype;
+    var hasOwn = Op.hasOwnProperty;
+    var undefined$1; // More compressible than void 0.
+    var $Symbol = typeof Symbol === "function" ? Symbol : {};
+    var iteratorSymbol = $Symbol.iterator || "@@iterator";
+    var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+    var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+    function wrap(innerFn, outerFn, self, tryLocsList) {
+      // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+      var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+      var generator = Object.create(protoGenerator.prototype);
+      var context = new Context(tryLocsList || []);
+
+      // The ._invoke method unifies the implementations of the .next,
+      // .throw, and .return methods.
+      generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+      return generator;
+    }
+    exports.wrap = wrap;
+
+    // Try/catch helper to minimize deoptimizations. Returns a completion
+    // record like context.tryEntries[i].completion. This interface could
+    // have been (and was previously) designed to take a closure to be
+    // invoked without arguments, but in all the cases we care about we
+    // already have an existing method we want to call, so there's no need
+    // to create a new function object. We can even get away with assuming
+    // the method takes exactly one argument, since that happens to be true
+    // in every case, so we don't have to touch the arguments object. The
+    // only additional allocation required is the completion record, which
+    // has a stable shape and so hopefully should be cheap to allocate.
+    function tryCatch(fn, obj, arg) {
+      try {
+        return { type: "normal", arg: fn.call(obj, arg) };
+      } catch (err) {
+        return { type: "throw", arg: err };
+      }
+    }
+
+    var GenStateSuspendedStart = "suspendedStart";
+    var GenStateSuspendedYield = "suspendedYield";
+    var GenStateExecuting = "executing";
+    var GenStateCompleted = "completed";
+
+    // Returning this object from the innerFn has the same effect as
+    // breaking out of the dispatch switch statement.
+    var ContinueSentinel = {};
+
+    // Dummy constructor functions that we use as the .constructor and
+    // .constructor.prototype properties for functions that return Generator
+    // objects. For full spec compliance, you may wish to configure your
+    // minifier not to mangle the names of these two functions.
+    function Generator() {}
+    function GeneratorFunction() {}
+    function GeneratorFunctionPrototype() {}
+
+    // This is a polyfill for %IteratorPrototype% for environments that
+    // don't natively support it.
+    var IteratorPrototype = {};
+    IteratorPrototype[iteratorSymbol] = function () {
+      return this;
+    };
+
+    var getProto = Object.getPrototypeOf;
+    var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+    if (NativeIteratorPrototype &&
+        NativeIteratorPrototype !== Op &&
+        hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+      // This environment has a native %IteratorPrototype%; use it instead
+      // of the polyfill.
+      IteratorPrototype = NativeIteratorPrototype;
+    }
+
+    var Gp = GeneratorFunctionPrototype.prototype =
+      Generator.prototype = Object.create(IteratorPrototype);
+    GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+    GeneratorFunctionPrototype.constructor = GeneratorFunction;
+    GeneratorFunctionPrototype[toStringTagSymbol] =
+      GeneratorFunction.displayName = "GeneratorFunction";
+
+    // Helper for defining the .next, .throw, and .return methods of the
+    // Iterator interface in terms of a single ._invoke method.
+    function defineIteratorMethods(prototype) {
+      ["next", "throw", "return"].forEach(function(method) {
+        prototype[method] = function(arg) {
+          return this._invoke(method, arg);
+        };
+      });
+    }
+
+    exports.isGeneratorFunction = function(genFun) {
+      var ctor = typeof genFun === "function" && genFun.constructor;
+      return ctor
+        ? ctor === GeneratorFunction ||
+          // For the native GeneratorFunction constructor, the best we can
+          // do is to check its .name property.
+          (ctor.displayName || ctor.name) === "GeneratorFunction"
+        : false;
+    };
+
+    exports.mark = function(genFun) {
+      if (Object.setPrototypeOf) {
+        Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+      } else {
+        genFun.__proto__ = GeneratorFunctionPrototype;
+        if (!(toStringTagSymbol in genFun)) {
+          genFun[toStringTagSymbol] = "GeneratorFunction";
+        }
+      }
+      genFun.prototype = Object.create(Gp);
+      return genFun;
+    };
+
+    // Within the body of any async function, `await x` is transformed to
+    // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+    // `hasOwn.call(value, "__await")` to determine if the yielded value is
+    // meant to be awaited.
+    exports.awrap = function(arg) {
+      return { __await: arg };
+    };
+
+    function AsyncIterator(generator) {
+      function invoke(method, arg, resolve, reject) {
+        var record = tryCatch(generator[method], generator, arg);
+        if (record.type === "throw") {
+          reject(record.arg);
+        } else {
+          var result = record.arg;
+          var value = result.value;
+          if (value &&
+              typeof value === "object" &&
+              hasOwn.call(value, "__await")) {
+            return Promise.resolve(value.__await).then(function(value) {
+              invoke("next", value, resolve, reject);
+            }, function(err) {
+              invoke("throw", err, resolve, reject);
+            });
+          }
+
+          return Promise.resolve(value).then(function(unwrapped) {
+            // When a yielded Promise is resolved, its final value becomes
+            // the .value of the Promise<{value,done}> result for the
+            // current iteration.
+            result.value = unwrapped;
+            resolve(result);
+          }, function(error) {
+            // If a rejected Promise was yielded, throw the rejection back
+            // into the async generator function so it can be handled there.
+            return invoke("throw", error, resolve, reject);
+          });
+        }
+      }
+
+      var previousPromise;
+
+      function enqueue(method, arg) {
+        function callInvokeWithMethodAndArg() {
+          return new Promise(function(resolve, reject) {
+            invoke(method, arg, resolve, reject);
+          });
+        }
+
+        return previousPromise =
+          // If enqueue has been called before, then we want to wait until
+          // all previous Promises have been resolved before calling invoke,
+          // so that results are always delivered in the correct order. If
+          // enqueue has not been called before, then it is important to
+          // call invoke immediately, without waiting on a callback to fire,
+          // so that the async generator function has the opportunity to do
+          // any necessary setup in a predictable way. This predictability
+          // is why the Promise constructor synchronously invokes its
+          // executor callback, and why async functions synchronously
+          // execute code before the first await. Since we implement simple
+          // async functions in terms of async generators, it is especially
+          // important to get this right, even though it requires care.
+          previousPromise ? previousPromise.then(
+            callInvokeWithMethodAndArg,
+            // Avoid propagating failures to Promises returned by later
+            // invocations of the iterator.
+            callInvokeWithMethodAndArg
+          ) : callInvokeWithMethodAndArg();
+      }
+
+      // Define the unified helper method that is used to implement .next,
+      // .throw, and .return (see defineIteratorMethods).
+      this._invoke = enqueue;
+    }
+
+    defineIteratorMethods(AsyncIterator.prototype);
+    AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+      return this;
+    };
+    exports.AsyncIterator = AsyncIterator;
+
+    // Note that simple async functions are implemented on top of
+    // AsyncIterator objects; they just return a Promise for the value of
+    // the final result produced by the iterator.
+    exports.async = function(innerFn, outerFn, self, tryLocsList) {
+      var iter = new AsyncIterator(
+        wrap(innerFn, outerFn, self, tryLocsList)
+      );
+
+      return exports.isGeneratorFunction(outerFn)
+        ? iter // If outerFn is a generator, return the full iterator.
+        : iter.next().then(function(result) {
+            return result.done ? result.value : iter.next();
+          });
+    };
+
+    function makeInvokeMethod(innerFn, self, context) {
+      var state = GenStateSuspendedStart;
+
+      return function invoke(method, arg) {
+        if (state === GenStateExecuting) {
+          throw new Error("Generator is already running");
+        }
+
+        if (state === GenStateCompleted) {
+          if (method === "throw") {
+            throw arg;
+          }
+
+          // Be forgiving, per 25.3.3.3.3 of the spec:
+          // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+          return doneResult();
+        }
+
+        context.method = method;
+        context.arg = arg;
+
+        while (true) {
+          var delegate = context.delegate;
+          if (delegate) {
+            var delegateResult = maybeInvokeDelegate(delegate, context);
+            if (delegateResult) {
+              if (delegateResult === ContinueSentinel) continue;
+              return delegateResult;
+            }
+          }
+
+          if (context.method === "next") {
+            // Setting context._sent for legacy support of Babel's
+            // function.sent implementation.
+            context.sent = context._sent = context.arg;
+
+          } else if (context.method === "throw") {
+            if (state === GenStateSuspendedStart) {
+              state = GenStateCompleted;
+              throw context.arg;
+            }
+
+            context.dispatchException(context.arg);
+
+          } else if (context.method === "return") {
+            context.abrupt("return", context.arg);
+          }
+
+          state = GenStateExecuting;
+
+          var record = tryCatch(innerFn, self, context);
+          if (record.type === "normal") {
+            // If an exception is thrown from innerFn, we leave state ===
+            // GenStateExecuting and loop back for another invocation.
+            state = context.done
+              ? GenStateCompleted
+              : GenStateSuspendedYield;
+
+            if (record.arg === ContinueSentinel) {
+              continue;
+            }
+
+            return {
+              value: record.arg,
+              done: context.done
+            };
+
+          } else if (record.type === "throw") {
+            state = GenStateCompleted;
+            // Dispatch the exception by looping back around to the
+            // context.dispatchException(context.arg) call above.
+            context.method = "throw";
+            context.arg = record.arg;
+          }
+        }
+      };
+    }
+
+    // Call delegate.iterator[context.method](context.arg) and handle the
+    // result, either by returning a { value, done } result from the
+    // delegate iterator, or by modifying context.method and context.arg,
+    // setting context.delegate to null, and returning the ContinueSentinel.
+    function maybeInvokeDelegate(delegate, context) {
+      var method = delegate.iterator[context.method];
+      if (method === undefined$1) {
+        // A .throw or .return when the delegate iterator has no .throw
+        // method always terminates the yield* loop.
+        context.delegate = null;
+
+        if (context.method === "throw") {
+          // Note: ["return"] must be used for ES3 parsing compatibility.
+          if (delegate.iterator["return"]) {
+            // If the delegate iterator has a return method, give it a
+            // chance to clean up.
+            context.method = "return";
+            context.arg = undefined$1;
+            maybeInvokeDelegate(delegate, context);
+
+            if (context.method === "throw") {
+              // If maybeInvokeDelegate(context) changed context.method from
+              // "return" to "throw", let that override the TypeError below.
+              return ContinueSentinel;
+            }
+          }
+
+          context.method = "throw";
+          context.arg = new TypeError(
+            "The iterator does not provide a 'throw' method");
+        }
+
+        return ContinueSentinel;
+      }
+
+      var record = tryCatch(method, delegate.iterator, context.arg);
+
+      if (record.type === "throw") {
+        context.method = "throw";
+        context.arg = record.arg;
+        context.delegate = null;
+        return ContinueSentinel;
+      }
+
+      var info = record.arg;
+
+      if (! info) {
+        context.method = "throw";
+        context.arg = new TypeError("iterator result is not an object");
+        context.delegate = null;
+        return ContinueSentinel;
+      }
+
+      if (info.done) {
+        // Assign the result of the finished delegate to the temporary
+        // variable specified by delegate.resultName (see delegateYield).
+        context[delegate.resultName] = info.value;
+
+        // Resume execution at the desired location (see delegateYield).
+        context.next = delegate.nextLoc;
+
+        // If context.method was "throw" but the delegate handled the
+        // exception, let the outer generator proceed normally. If
+        // context.method was "next", forget context.arg since it has been
+        // "consumed" by the delegate iterator. If context.method was
+        // "return", allow the original .return call to continue in the
+        // outer generator.
+        if (context.method !== "return") {
+          context.method = "next";
+          context.arg = undefined$1;
+        }
+
+      } else {
+        // Re-yield the result returned by the delegate method.
+        return info;
+      }
+
+      // The delegate iterator is finished, so forget it and continue with
+      // the outer generator.
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    // Define Generator.prototype.{next,throw,return} in terms of the
+    // unified ._invoke helper method.
+    defineIteratorMethods(Gp);
+
+    Gp[toStringTagSymbol] = "Generator";
+
+    // A Generator should always return itself as the iterator object when the
+    // @@iterator function is called on it. Some browsers' implementations of the
+    // iterator prototype chain incorrectly implement this, causing the Generator
+    // object to not be returned from this call. This ensures that doesn't happen.
+    // See https://github.com/facebook/regenerator/issues/274 for more details.
+    Gp[iteratorSymbol] = function() {
+      return this;
+    };
+
+    Gp.toString = function() {
+      return "[object Generator]";
+    };
+
+    function pushTryEntry(locs) {
+      var entry = { tryLoc: locs[0] };
+
+      if (1 in locs) {
+        entry.catchLoc = locs[1];
+      }
+
+      if (2 in locs) {
+        entry.finallyLoc = locs[2];
+        entry.afterLoc = locs[3];
+      }
+
+      this.tryEntries.push(entry);
+    }
+
+    function resetTryEntry(entry) {
+      var record = entry.completion || {};
+      record.type = "normal";
+      delete record.arg;
+      entry.completion = record;
+    }
+
+    function Context(tryLocsList) {
+      // The root entry object (effectively a try statement without a catch
+      // or a finally block) gives us a place to store values thrown from
+      // locations where there is no enclosing try statement.
+      this.tryEntries = [{ tryLoc: "root" }];
+      tryLocsList.forEach(pushTryEntry, this);
+      this.reset(true);
+    }
+
+    exports.keys = function(object) {
+      var keys = [];
+      for (var key in object) {
+        keys.push(key);
+      }
+      keys.reverse();
+
+      // Rather than returning an object with a next method, we keep
+      // things simple and return the next function itself.
+      return function next() {
+        while (keys.length) {
+          var key = keys.pop();
+          if (key in object) {
+            next.value = key;
+            next.done = false;
+            return next;
+          }
+        }
+
+        // To avoid creating an additional object, we just hang the .value
+        // and .done properties off the next function object itself. This
+        // also ensures that the minifier will not anonymize the function.
+        next.done = true;
+        return next;
+      };
+    };
+
+    function values(iterable) {
+      if (iterable) {
+        var iteratorMethod = iterable[iteratorSymbol];
+        if (iteratorMethod) {
+          return iteratorMethod.call(iterable);
+        }
+
+        if (typeof iterable.next === "function") {
+          return iterable;
+        }
+
+        if (!isNaN(iterable.length)) {
+          var i = -1, next = function next() {
+            while (++i < iterable.length) {
+              if (hasOwn.call(iterable, i)) {
+                next.value = iterable[i];
+                next.done = false;
+                return next;
+              }
+            }
+
+            next.value = undefined$1;
+            next.done = true;
+
+            return next;
+          };
+
+          return next.next = next;
+        }
+      }
+
+      // Return an iterator with no values.
+      return { next: doneResult };
+    }
+    exports.values = values;
+
+    function doneResult() {
+      return { value: undefined$1, done: true };
+    }
+
+    Context.prototype = {
+      constructor: Context,
+
+      reset: function(skipTempReset) {
+        this.prev = 0;
+        this.next = 0;
+        // Resetting context._sent for legacy support of Babel's
+        // function.sent implementation.
+        this.sent = this._sent = undefined$1;
+        this.done = false;
+        this.delegate = null;
+
+        this.method = "next";
+        this.arg = undefined$1;
+
+        this.tryEntries.forEach(resetTryEntry);
+
+        if (!skipTempReset) {
+          for (var name in this) {
+            // Not sure about the optimal order of these conditions:
+            if (name.charAt(0) === "t" &&
+                hasOwn.call(this, name) &&
+                !isNaN(+name.slice(1))) {
+              this[name] = undefined$1;
+            }
+          }
+        }
+      },
+
+      stop: function() {
+        this.done = true;
+
+        var rootEntry = this.tryEntries[0];
+        var rootRecord = rootEntry.completion;
+        if (rootRecord.type === "throw") {
+          throw rootRecord.arg;
+        }
+
+        return this.rval;
+      },
+
+      dispatchException: function(exception) {
+        if (this.done) {
+          throw exception;
+        }
+
+        var context = this;
+        function handle(loc, caught) {
+          record.type = "throw";
+          record.arg = exception;
+          context.next = loc;
+
+          if (caught) {
+            // If the dispatched exception was caught by a catch block,
+            // then let that catch block handle the exception normally.
+            context.method = "next";
+            context.arg = undefined$1;
+          }
+
+          return !! caught;
+        }
+
+        for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+          var entry = this.tryEntries[i];
+          var record = entry.completion;
+
+          if (entry.tryLoc === "root") {
+            // Exception thrown outside of any try block that could handle
+            // it, so set the completion value of the entire function to
+            // throw the exception.
+            return handle("end");
+          }
+
+          if (entry.tryLoc <= this.prev) {
+            var hasCatch = hasOwn.call(entry, "catchLoc");
+            var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+            if (hasCatch && hasFinally) {
+              if (this.prev < entry.catchLoc) {
+                return handle(entry.catchLoc, true);
+              } else if (this.prev < entry.finallyLoc) {
+                return handle(entry.finallyLoc);
+              }
+
+            } else if (hasCatch) {
+              if (this.prev < entry.catchLoc) {
+                return handle(entry.catchLoc, true);
+              }
+
+            } else if (hasFinally) {
+              if (this.prev < entry.finallyLoc) {
+                return handle(entry.finallyLoc);
+              }
+
+            } else {
+              throw new Error("try statement without catch or finally");
+            }
+          }
+        }
+      },
+
+      abrupt: function(type, arg) {
+        for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+          var entry = this.tryEntries[i];
+          if (entry.tryLoc <= this.prev &&
+              hasOwn.call(entry, "finallyLoc") &&
+              this.prev < entry.finallyLoc) {
+            var finallyEntry = entry;
+            break;
+          }
+        }
+
+        if (finallyEntry &&
+            (type === "break" ||
+             type === "continue") &&
+            finallyEntry.tryLoc <= arg &&
+            arg <= finallyEntry.finallyLoc) {
+          // Ignore the finally entry if control is not jumping to a
+          // location outside the try/catch block.
+          finallyEntry = null;
+        }
+
+        var record = finallyEntry ? finallyEntry.completion : {};
+        record.type = type;
+        record.arg = arg;
+
+        if (finallyEntry) {
+          this.method = "next";
+          this.next = finallyEntry.finallyLoc;
+          return ContinueSentinel;
+        }
+
+        return this.complete(record);
+      },
+
+      complete: function(record, afterLoc) {
+        if (record.type === "throw") {
+          throw record.arg;
+        }
+
+        if (record.type === "break" ||
+            record.type === "continue") {
+          this.next = record.arg;
+        } else if (record.type === "return") {
+          this.rval = this.arg = record.arg;
+          this.method = "return";
+          this.next = "end";
+        } else if (record.type === "normal" && afterLoc) {
+          this.next = afterLoc;
+        }
+
+        return ContinueSentinel;
+      },
+
+      finish: function(finallyLoc) {
+        for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+          var entry = this.tryEntries[i];
+          if (entry.finallyLoc === finallyLoc) {
+            this.complete(entry.completion, entry.afterLoc);
+            resetTryEntry(entry);
+            return ContinueSentinel;
+          }
+        }
+      },
+
+      "catch": function(tryLoc) {
+        for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+          var entry = this.tryEntries[i];
+          if (entry.tryLoc === tryLoc) {
+            var record = entry.completion;
+            if (record.type === "throw") {
+              var thrown = record.arg;
+              resetTryEntry(entry);
+            }
+            return thrown;
+          }
+        }
+
+        // The context.catch method must only be called with a location
+        // argument that corresponds to a known catch block.
+        throw new Error("illegal catch attempt");
+      },
+
+      delegateYield: function(iterable, resultName, nextLoc) {
+        this.delegate = {
+          iterator: values(iterable),
+          resultName: resultName,
+          nextLoc: nextLoc
+        };
+
+        if (this.method === "next") {
+          // Deliberately forget the last sent value so that we don't
+          // accidentally pass it on to the delegate.
+          this.arg = undefined$1;
+        }
+
+        return ContinueSentinel;
+      }
+    };
+
+    // Regardless of whether this script is executing as a CommonJS module
+    // or not, return the runtime object so that we can declare the variable
+    // regeneratorRuntime in the outer scope, which allows this module to be
+    // injected easily by `bin/regenerator --include-runtime script.js`.
+    return exports;
+
+  }(
+    // If this script is executing as a CommonJS module, use module.exports
+    // as the regeneratorRuntime namespace. Otherwise create a new empty
+    // object. Either way, the resulting object will be used to initialize
+    // the regeneratorRuntime variable at the top of this file.
+    module.exports
+  ));
+
+  try {
+    regeneratorRuntime = runtime;
+  } catch (accidentalStrictMode) {
+    // This module should not be running in strict mode, so the above
+    // assignment should always work unless something is misconfigured. Just
+    // in case runtime.js accidentally runs in strict mode, we can escape
+    // strict mode using a global Function call. This could conceivably fail
+    // if a Content Security Policy forbids using Function, but in that case
+    // the proper solution is to fix the accidental strict mode problem. If
+    // you've misconfigured your bundler to force strict mode and applied a
+    // CSP to forbid Function, and you're not willing to fix either of those
+    // problems, please detail your unique predicament in a GitHub issue.
+    Function("r", "regeneratorRuntime = r")(runtime);
+  }
+  });
+
+  var regenerator = runtime_1;
+
+  function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+    try {
+      var info = gen[key](arg);
+      var value = info.value;
+    } catch (error) {
+      reject(error);
+      return;
+    }
+
+    if (info.done) {
+      resolve(value);
+    } else {
+      Promise.resolve(value).then(_next, _throw);
+    }
+  }
+
+  function _asyncToGenerator(fn) {
+    return function () {
+      var self = this,
+          args = arguments;
+      return new Promise(function (resolve, reject) {
+        var gen = fn.apply(self, args);
+
+        function _next(value) {
+          asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+        }
+
+        function _throw(err) {
+          asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+        }
+
+        _next(undefined);
+      });
+    };
+  }
+
+  var interopRequireDefault = createCommonjsModule(function (module) {
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
       "default": obj
@@ -15743,7 +9662,7 @@
 
   unwrapExports(interopRequireDefault);
 
-  var inDOM = createCommonjsModule$4(function (module, exports) {
+  var inDOM = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
   exports.default = void 0;
@@ -15756,7 +9675,7 @@
 
   unwrapExports(inDOM);
 
-  var on_1 = createCommonjsModule$4(function (module, exports) {
+  var on_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -15789,7 +9708,7 @@
 
   unwrapExports(on_1);
 
-  var off_1 = createCommonjsModule$4(function (module, exports) {
+  var off_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -15817,7 +9736,7 @@
 
   unwrapExports(off_1);
 
-  var contains = createCommonjsModule$4(function (module, exports) {
+  var contains = createCommonjsModule(function (module, exports) {
 
 
 
@@ -15854,7 +9773,7 @@
 
   unwrapExports(contains);
 
-  var querySelectorAll = createCommonjsModule$4(function (module, exports) {
+  var querySelectorAll = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
   exports.default = qsa;
@@ -15889,7 +9808,7 @@
 
   unwrapExports(querySelectorAll);
 
-  var filter = createCommonjsModule$4(function (module, exports) {
+  var filter = createCommonjsModule(function (module, exports) {
 
 
 
@@ -15916,7 +9835,7 @@
 
   unwrapExports(filter);
 
-  var listen_1 = createCommonjsModule$4(function (module, exports) {
+  var listen_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -15947,7 +9866,7 @@
 
   unwrapExports(listen_1);
 
-  var events = createCommonjsModule$4(function (module, exports) {
+  var events = createCommonjsModule(function (module, exports) {
 
 
 
@@ -15984,1790 +9903,1530 @@
   var events_3 = events.filter;
   var events_4 = events.listen;
 
-  /**
-   * toxic-utils v0.4.2
-   * (c) 2017-2019 toxic-johann
-   * Released under MIT
-   * Built ad Sun Jun 02 2019 01:14:43 GMT+0800 (China Standard Time)
-   */
-
-  /** Detect free variable `global` from Node.js. */
-  var freeGlobal$6 = typeof global == 'object' && global && global.Object === Object && global;
-
-  /** Detect free variable `self`. */
-  var freeSelf$6 = typeof self == 'object' && self && self.Object === Object && self;
-
-  /** Used as a reference to the global object. */
-  var root$6 = freeGlobal$6 || freeSelf$6 || Function('return this')();
-
-  /** Built-in value references. */
-  var Symbol$4 = root$6.Symbol;
-
-  /** Used for built-in method references. */
-  var objectProto$m = Object.prototype;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty$i = objectProto$m.hasOwnProperty;
-
-  /**
-   * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-   * of values.
-   */
-  var nativeObjectToString$7 = objectProto$m.toString;
-
-  /** Built-in value references. */
-  var symToStringTag$9 = Symbol$4 ? Symbol$4.toStringTag : undefined;
-
-  /**
-   * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {string} Returns the raw `toStringTag`.
-   */
-  function getRawTag$5(value) {
-    var isOwn = hasOwnProperty$i.call(value, symToStringTag$9),
-        tag = value[symToStringTag$9];
-
-    try {
-      value[symToStringTag$9] = undefined;
-      var unmasked = true;
-    } catch (e) {}
-
-    var result = nativeObjectToString$7.call(value);
-    if (unmasked) {
-      if (isOwn) {
-        value[symToStringTag$9] = tag;
-      } else {
-        delete value[symToStringTag$9];
-      }
-    }
-    return result;
-  }
-
-  /** Used for built-in method references. */
-  var objectProto$1$4 = Object.prototype;
-
-  /**
-   * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-   * of values.
-   */
-  var nativeObjectToString$1$4 = objectProto$1$4.toString;
-
-  /**
-   * Converts `value` to a string using `Object.prototype.toString`.
-   *
-   * @private
-   * @param {*} value The value to convert.
-   * @returns {string} Returns the converted string.
-   */
-  function objectToString$5(value) {
-    return nativeObjectToString$1$4.call(value);
-  }
-
-  /** `Object#toString` result references. */
-  var nullTag$5 = '[object Null]',
-      undefinedTag$5 = '[object Undefined]';
-
-  /** Built-in value references. */
-  var symToStringTag$1$4 = Symbol$4 ? Symbol$4.toStringTag : undefined;
-
-  /**
-   * The base implementation of `getTag` without fallbacks for buggy environments.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {string} Returns the `toStringTag`.
-   */
-  function baseGetTag$5(value) {
-    if (value == null) {
-      return value === undefined ? undefinedTag$5 : nullTag$5;
-    }
-    return (symToStringTag$1$4 && symToStringTag$1$4 in Object(value))
-      ? getRawTag$5(value)
-      : objectToString$5(value);
-  }
-
-  /**
-   * Checks if `value` is object-like. A value is object-like if it's not `null`
-   * and has a `typeof` result of "object".
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-   * @example
-   *
-   * _.isObjectLike({});
-   * // => true
-   *
-   * _.isObjectLike([1, 2, 3]);
-   * // => true
-   *
-   * _.isObjectLike(_.noop);
-   * // => false
-   *
-   * _.isObjectLike(null);
-   * // => false
-   */
-  function isObjectLike$5(value) {
-    return value != null && typeof value == 'object';
-  }
-
-  /**
-   * A specialized version of `_.map` for arrays without support for iteratee
-   * shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns the new mapped array.
-   */
-
-  /**
-   * Checks if `value` is classified as an `Array` object.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is an array, else `false`.
-   * @example
-   *
-   * _.isArray([1, 2, 3]);
-   * // => true
-   *
-   * _.isArray(document.body.children);
-   * // => false
-   *
-   * _.isArray('abc');
-   * // => false
-   *
-   * _.isArray(_.noop);
-   * // => false
-   */
-  var isArray$5 = Array.isArray;
-
-  /** Used for built-in method references. */
-  var funcProto$7 = Function.prototype;
-
-  /** Used to resolve the decompiled source of functions. */
-  var funcToString$7 = funcProto$7.toString;
-
-  /** Used to infer the `Object` constructor. */
-  var objectCtorString$5 = funcToString$7.call(Object);
-
-  /**
-   * The base implementation of `_.slice` without an iteratee call guard.
-   *
-   * @private
-   * @param {Array} array The array to slice.
-   * @param {number} [start=0] The start position.
-   * @param {number} [end=array.length] The end position.
-   * @returns {Array} Returns the slice of `array`.
-   */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * Converts an ASCII `string` to an array.
-   *
-   * @private
-   * @param {string} string The string to convert.
-   * @returns {Array} Returns the converted array.
-   */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * A specialized version of `_.reduce` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @param {*} [accumulator] The initial value.
-   * @param {boolean} [initAccum] Specify using the first element of `array` as
-   *  the initial value.
-   * @returns {*} Returns the accumulated value.
-   */
-
-  /**
-   * The base implementation of `_.propertyOf` without support for deep paths.
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @returns {Function} Returns the new accessor function.
-   */
-
-  /** Used to match words composed of alphanumeric characters. */
-
-  /** Used to detect strings that need a more robust regexp to match words. */
-
-  /** Used to compose unicode character classes. */
-
-  /**
-   * The base implementation of `_.clamp` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {number} number The number to clamp.
-   * @param {number} [lower] The lower bound.
-   * @param {number} upper The upper bound.
-   * @returns {number} Returns the clamped number.
-   */
-
-  /**
-   * Removes `key` and its value from the stack.
-   *
-   * @private
-   * @name delete
-   * @memberOf Stack
-   * @param {string} key The key of the value to remove.
-   * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-   */
-
-  /**
-   * Gets the stack value for `key`.
-   *
-   * @private
-   * @name get
-   * @memberOf Stack
-   * @param {string} key The key of the value to get.
-   * @returns {*} Returns the entry value.
-   */
-
-  /**
-   * Checks if a stack value for `key` exists.
-   *
-   * @private
-   * @name has
-   * @memberOf Stack
-   * @param {string} key The key of the entry to check.
-   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-   */
-
-  /**
-   * A specialized version of `_.filter` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {Array} Returns the new filtered array.
-   */
-
-  /**
-   * This method returns a new empty array.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.13.0
-   * @category Util
-   * @returns {Array} Returns the new empty array.
-   * @example
-   *
-   * var arrays = _.times(2, _.stubArray);
-   *
-   * console.log(arrays);
-   * // => [[], []]
-   *
-   * console.log(arrays[0] === arrays[1]);
-   * // => false
-   */
-
-  /** Used for built-in method references. */
-
-  /** Used to match `RegExp` flags from their coerced string values. */
-
-  /**
-   * Creates an array with all falsey values removed. The values `false`, `null`,
-   * `0`, `""`, `undefined`, and `NaN` are falsey.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Array
-   * @param {Array} array The array to compact.
-   * @returns {Array} Returns the new array of filtered values.
-   * @example
-   *
-   * _.compact([0, 1, false, 2, '', 3]);
-   * // => [1, 2, 3]
-   */
-
-  /** Used to stand-in for `undefined` hash values. */
-
-  /**
-   * Checks if `value` is in the array cache.
-   *
-   * @private
-   * @name has
-   * @memberOf SetCache
-   * @param {*} value The value to search for.
-   * @returns {number} Returns `true` if `value` is found, else `false`.
-   */
-
-  /**
-   * A specialized version of `_.some` for arrays without support for iteratee
-   * shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {boolean} Returns `true` if any element passes the predicate check,
-   *  else `false`.
-   */
-
-  /**
-   * Checks if a `cache` value for `key` exists.
-   *
-   * @private
-   * @param {Object} cache The cache to query.
-   * @param {string} key The key of the entry to check.
-   * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-   */
-
-  /**
-   * Converts `map` to its key-value pairs.
-   *
-   * @private
-   * @param {Object} map The map to convert.
-   * @returns {Array} Returns the key-value pairs.
-   */
-
-  /**
-   * Converts `set` to an array of its values.
-   *
-   * @private
-   * @param {Object} set The set to convert.
-   * @returns {Array} Returns the values.
-   */
-
-  /**
-   * A specialized version of `matchesProperty` for source values suitable
-   * for strict equality comparisons, i.e. `===`.
-   *
-   * @private
-   * @param {string} key The key of the property to get.
-   * @param {*} srcValue The value to match.
-   * @returns {Function} Returns the new spec function.
-   */
-
-  /**
-   * The base implementation of `_.hasIn` without support for deep paths.
-   *
-   * @private
-   * @param {Object} [object] The object to query.
-   * @param {Array|string} key The key to check.
-   * @returns {boolean} Returns `true` if `key` exists, else `false`.
-   */
-
-  /**
-   * The base implementation of `_.property` without support for deep paths.
-   *
-   * @private
-   * @param {string} key The key of the property to get.
-   * @returns {Function} Returns the new accessor function.
-   */
-
-  /**
-   * The base implementation of `_.conformsTo` which accepts `props` to check.
-   *
-   * @private
-   * @param {Object} object The object to inspect.
-   * @param {Object} source The object of property predicates to conform to.
-   * @returns {boolean} Returns `true` if `object` conforms, else `false`.
-   */
-
-  /**
-   * A specialized version of `baseAggregator` for arrays.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} setter The function to set `accumulator` values.
-   * @param {Function} iteratee The iteratee to transform keys.
-   * @param {Object} accumulator The initial aggregated object.
-   * @returns {Function} Returns `accumulator`.
-   */
-
-  /**
-   * Creates a base function for methods like `_.forIn` and `_.forOwn`.
-   *
-   * @private
-   * @param {boolean} [fromRight] Specify iterating from right to left.
-   * @returns {Function} Returns the new base function.
-   */
-
-  /**
-   * Checks `value` to determine whether a default value should be returned in
-   * its place. The `defaultValue` is returned if `value` is `NaN`, `null`,
-   * or `undefined`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.14.0
-   * @category Util
-   * @param {*} value The value to check.
-   * @param {*} defaultValue The default value.
-   * @returns {*} Returns the resolved value.
-   * @example
-   *
-   * _.defaultTo(1, 10);
-   * // => 1
-   *
-   * _.defaultTo(undefined, 10);
-   * // => 10
-   */
-
-  /**
-   * Gets the value at `key`, unless `key` is "__proto__".
-   *
-   * @private
-   * @param {Object} object The object to query.
-   * @param {string} key The key of the property to get.
-   * @returns {*} Returns the property value.
-   */
-
-  /** Error message constants. */
-
-  /**
-   * This function is like `arrayIncludes` except that it accepts a comparator.
-   *
-   * @private
-   * @param {Array} [array] The array to inspect.
-   * @param {*} target The value to search for.
-   * @param {Function} comparator The comparator invoked per element.
-   * @returns {boolean} Returns `true` if `target` is found, else `false`.
-   */
-
-  /**
-   * Gets the last element of `array`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Array
-   * @param {Array} array The array to query.
-   * @returns {*} Returns the last element of `array`.
-   * @example
-   *
-   * _.last([1, 2, 3]);
-   * // => 3
-   */
-
-  /**
-   * A specialized version of `_.forEachRight` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} iteratee The function invoked per iteration.
-   * @returns {Array} Returns `array`.
-   */
-
-  /**
-   * Converts `set` to its value-value pairs.
-   *
-   * @private
-   * @param {Object} set The set to convert.
-   * @returns {Array} Returns the value-value pairs.
-   */
-
-  /**
-   * A specialized version of `_.every` for arrays without support for
-   * iteratee shorthands.
-   *
-   * @private
-   * @param {Array} [array] The array to iterate over.
-   * @param {Function} predicate The function invoked per iteration.
-   * @returns {boolean} Returns `true` if all elements pass the predicate check,
-   *  else `false`.
-   */
-
-  /**
-   * The base implementation of methods like `_.findKey` and `_.findLastKey`,
-   * without support for iteratee shorthands, which iterates over `collection`
-   * using `eachFunc`.
-   *
-   * @private
-   * @param {Array|Object} collection The collection to inspect.
-   * @param {Function} predicate The function invoked per iteration.
-   * @param {Function} eachFunc The function to iterate over `collection`.
-   * @returns {*} Returns the found element or its key, else `undefined`.
-   */
-
-  /**
-   * Gets the first element of `array`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @alias first
-   * @category Array
-   * @param {Array} array The array to query.
-   * @returns {*} Returns the first element of `array`.
-   * @example
-   *
-   * _.head([1, 2, 3]);
-   * // => 1
-   *
-   * _.head([]);
-   * // => undefined
-   */
-
-  /**
-   * The inverse of `_.toPairs`; this method returns an object composed
-   * from key-value `pairs`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Array
-   * @param {Array} pairs The key-value pairs.
-   * @returns {Object} Returns the new object.
-   * @example
-   *
-   * _.fromPairs([['a', 1], ['b', 2]]);
-   * // => { 'a': 1, 'b': 2 }
-   */
-
-  /**
-   * The base implementation of `_.gt` which doesn't coerce arguments.
-   *
-   * @private
-   * @param {*} value The value to compare.
-   * @param {*} other The other value to compare.
-   * @returns {boolean} Returns `true` if `value` is greater than `other`,
-   *  else `false`.
-   */
-
-  /** Used for built-in method references. */
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-
-  /** `Object#toString` result references. */
-  var stringTag$8 = '[object String]';
-
-  /**
-   * Checks if `value` is classified as a `String` primitive or object.
-   *
-   * @static
-   * @since 0.1.0
-   * @memberOf _
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a string, else `false`.
-   * @example
-   *
-   * _.isString('abc');
-   * // => true
-   *
-   * _.isString(1);
-   * // => false
-   */
-  function isString$5(value) {
-    return typeof value == 'string' ||
-      (!isArray$5(value) && isObjectLike$5(value) && baseGetTag$5(value) == stringTag$8);
-  }
-
-  /**
-   * Checks if `value` is `null` or `undefined`.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is nullish, else `false`.
-   * @example
-   *
-   * _.isNil(null);
-   * // => true
-   *
-   * _.isNil(void 0);
-   * // => true
-   *
-   * _.isNil(NaN);
-   * // => false
-   */
-  function isNil$2(value) {
-    return value == null;
-  }
-  function camelize(str, isBig) {
-    return str.replace(/(^|[^a-zA-Z]+)([a-zA-Z])/g, function (match, spilt, initials, index) {
-      return !isBig && index === 0 ? initials.toLowerCase() : initials.toUpperCase();
-    });
-  }
-  function hypenate(str) {
-    return camelize(str).replace(/([A-Z])/g, function (match) {
-      return "-" + match.toLowerCase();
-    });
-  }
-  function bind$2(fn, context) {
-    if (fn.bind) {
-      return fn.bind(context);
-    } else if (fn.apply) {
-      return function __autobind__() {
-        var args = [];
-
-        for (var _i = 0; _i < arguments.length; _i++) {
-          args[_i] = arguments[_i];
-        }
-
-        return fn.apply(context, args);
-      };
-    }
-
-    return function __autobind__() {
-      var args = [];
-
-      for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-      }
-
-      return fn.call.apply(fn, [context].concat(args));
-    };
-  }
-  function getDeepProperty$1(obj, keys, _a) {
-    var _b = _a === void 0 ? {} : _a,
-        _c = _b.throwError,
-        throwError = _c === void 0 ? false : _c,
-        backup = _b.backup;
-
-    if (isString$5(keys)) {
-      keys = keys.split(".");
-    }
-
-    if (!isArray$5(keys)) {
-      throw new TypeError("keys of getDeepProperty must be string or Array<string>");
-    }
-
-    var read = [];
-    var target = obj;
-
-    for (var i = 0, len = keys.length; i < len; i++) {
-      var key = keys[i];
-
-      if (isNil$2(target)) {
-        if (throwError) {
-          throw new Error("obj" + (read.length > 0 ? "." + read.join(".") : " itself") + " is " + target);
-        } else {
-          return backup;
-        }
-      }
-
-      target = target[key];
-      read.push(key);
-    }
-
-    return target;
-  }
-
   var defaultContainerConfig = {
-      display: 'block',
-      height: '100%',
-      position: 'relative',
-      width: '100%',
+    display: 'block',
+    height: '100%',
+    position: 'relative',
+    width: '100%'
   };
 
-  class Vessel {
-      constructor(dispatcher, target, config) {
-          this.dispatcher = dispatcher;
-          this.target = target;
-          ['width', 'height', 'position', 'display'].forEach((key) => {
-              Object.defineProperty(this, key, {
-                  get() {
-                      return this.dispatcher.dom.getStyle(this.target, key);
-                  },
-                  set(value) {
-                      if (isNumber(value)) {
-                          value = value + 'px';
-                      }
-                      if (!isString$1(value)) {
-                          throw new Error(`The value of ${key} in ${this.target}Config must be string, but not ${typeof value}.`);
-                      }
-                      this.dispatcher.dom.setStyle(this.target, key, value);
-                  },
-                  configurable: true,
-                  enumerable: true,
-              });
-          });
-          Object.assign(this, config);
-      }
-  }
+  var Vessel = function Vessel(dispatcher, target, config) {
+    var _this = this;
 
-  const videoDomAttributes = [
-      'src',
-      'controls',
-      'width',
-      'height',
-      'crossOrigin',
-      'loop',
-      'muted',
-      'preload',
-      'poster',
-      'autoplay',
-      'playsInline',
-      'x5VideoPlayerFullscreen',
-      'x5VideoOrientation',
-      'xWebkitAirplay',
-      'playbackRate',
-      'defaultPlaybackRate',
-      'autoload',
-      'disableRemotePlayback',
-      'defaultMuted',
-      'volume',
-      'x5VideoPlayerType',
-  ];
-  function isVideoDomAttribute(attr) {
-      return videoDomAttributes.includes(attr);
-  }
+    _classCallCheck(this, Vessel);
 
-  var __decorate$1 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-      var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-      if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-      else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-      return c > 3 && r && Object.defineProperty(target, key, r), r;
-  };
-  const nonenumerable$2 = nonenumerable;
-  function stringOrVoid(value) {
-      return isString$1(value) ? value : undefined;
-  }
-  function accessorVideoProperty(property) {
-      return accessor({
-          get(value) {
-              return (this.dispatcher.videoConfigReady && this.inited)
-                  ? this.dom.videoElement[property]
-                  : value;
-          },
-          set(value) {
-              if (!this.dispatcher.videoConfigReady) {
-                  return value;
-              }
-              this.dom.videoElement[property] = value;
-              return value;
-          },
-      });
-  }
-  function accessorVideoAttribute(attribute) {
-      const { set, get, isBoolean } = isString$1(attribute)
-          ? {
-              get: attribute,
-              isBoolean: false,
-              set: attribute,
+    this.dispatcher = dispatcher;
+    this.target = target;
+    ['width', 'height', 'position', 'display'].forEach(function (key) {
+      Object.defineProperty(_this, key, {
+        get: function get() {
+          return this.dispatcher.dom.getStyle(this.target, key);
+        },
+        set: function set(value) {
+          if (isNumber(value)) {
+            value = value + 'px';
           }
-          : attribute;
-      return accessor({
-          get(value) {
-              return (this.dispatcher.videoConfigReady && this.inited)
-                  ? this.dom.videoElement[get]
-                  : value;
-          },
-          set(value) {
-              if (!this.dispatcher.videoConfigReady) {
-                  return value;
-              }
-              const val = isBoolean
-                  ? value
-                      ? ''
-                      : undefined
-                  : value === null
-                      ? undefined
-                      : value;
-              this.dom.setAttr('videoElement', set, val);
-              return value;
-          },
-      }, {
-          preSet: false,
+
+          if (!isString$1(value)) {
+            throw new Error("The value of ".concat(key, " in ").concat(this.target, "Config must be string, but not ").concat(_typeof(value), "."));
+          }
+
+          this.dispatcher.dom.setStyle(this.target, key, value);
+        },
+        configurable: true,
+        enumerable: true
       });
-  }
-  function accessorCustomAttribute(attribute, isBoolean) {
-      return accessor({
-          get(value) {
-              const attrValue = this.dom.getAttr('videoElement', attribute);
-              return (this.dispatcher.videoConfigReady && this.inited)
-                  ? isBoolean
-                      ? !!attrValue
-                      : attrValue
-                  : value;
-          },
-          set(value) {
-              if (!this.dispatcher.videoConfigReady) {
-                  return value;
-              }
-              const val = isBoolean
-                  ? value || undefined
-                  : value === null
-                      ? undefined
-                      : value;
-              this.dom.setAttr('videoElement', attribute, val);
-              return value;
-          },
-      });
-  }
-  function accessorWidthAndHeight(property) {
-      return accessor({
-          get(value) {
-              if (!this.dispatcher.videoConfigReady || !this.inited) {
-                  return value;
-              }
-              const attr = this.dom.getAttr('videoElement', property);
-              const prop = this.dom.videoElement[property];
-              if (isNumeric(attr) && isNumber(prop)) {
-                  return prop;
-              }
-              return attr || undefined;
-          },
-          set(value) {
-              if (!this.dispatcher.videoConfigReady) {
-                  return value;
-              }
-              let val;
-              if (value === undefined || isNumber(value)) {
-                  val = value;
-              }
-              else if (isString$1(value) && !Number.isNaN(parseFloat(value))) {
-                  val = value;
-              }
-              this.dom.setAttr('videoElement', property, val);
-              return val;
-          },
-      });
-  }
-  const accessorMap = {
-      autoload: boolean$1(),
-      autoplay: [
-          boolean$1(),
-          accessorVideoProperty('autoplay'),
-      ],
-      controls: [
-          boolean$1(),
-          accessorVideoProperty('controls'),
-      ],
-      crossOrigin: [
-          accessor({ set: stringOrVoid }),
-          accessorVideoAttribute({ set: 'crossorigin', get: 'crossOrigin' }),
-      ],
-      defaultMuted: [
-          boolean$1(),
-          accessorVideoAttribute({ get: 'defaultMuted', set: 'muted', isBoolean: true }),
-      ],
-      defaultPlaybackRate: [
-          accessorVideoProperty('defaultPlaybackRate'),
-          number$1(1),
-      ],
-      disableRemotePlayback: [
-          boolean$1(),
-          accessorVideoProperty('disableRemotePlayback'),
-      ],
-      height: [
-          accessorWidthAndHeight('height'),
-      ],
-      loop: [
-          boolean$1(),
-          accessorVideoProperty('loop'),
-      ],
-      muted: [
-          boolean$1(),
-          accessorVideoProperty('muted'),
-      ],
-      playbackRate: [
-          number$1(1),
-          accessorVideoProperty('playbackRate'),
-      ],
-      playsInline: [
-          accessor({
-              get(value) {
-                  const playsInline = this.dom.videoElement.playsInline;
-                  return (this.dispatcher.videoConfigReady && this.inited)
-                      ? playsInline === undefined
-                          ? value
-                          : playsInline
-                      : value;
-              },
-              set(value) {
-                  if (!this.dispatcher.videoConfigReady) {
-                      return value;
-                  }
-                  this.dom.videoElement.playsInline = value;
-                  const val = value ? '' : undefined;
-                  this.dom.setAttr('videoElement', 'playsinline', val);
-                  this.dom.setAttr('videoElement', 'webkit-playsinline', val);
-                  this.dom.setAttr('videoElement', 'x5-playsinline', val);
-                  return value;
-              },
-          }),
-          boolean$1(),
-      ],
-      poster: [
-          string$1(),
-          accessor({
-              get(value) {
-                  return (this.dispatcher.videoConfigReady && this.inited)
-                      ? this.dom.videoElement.poster
-                      : value;
-              },
-              set(value) {
-                  if (!this.dispatcher.videoConfigReady) {
-                      return value;
-                  }
-                  if (value.length) {
-                      this.dom.setAttr('videoElement', 'poster', value);
-                  }
-                  return value;
-              },
-          }),
-      ],
-      preload: [
-          accessor({
-              set(value) {
-                  const options = ['none', 'auto', 'metadata', ''];
-                  return options.indexOf(value) > -1
-                      ? value
-                      : 'none';
-              },
-          }, {
-              preSet: true,
-          }),
-          accessorVideoAttribute('preload'),
-      ],
-      src: [
-          string$1(),
-          accessor({
-              set(val) {
-                  if (this.dispatcher.readySync && this.autoload && val !== this.src) {
-                      this.needToLoadSrc = true;
-                  }
-                  return val;
-              },
-          }),
-          accessor({
-              set(val) {
-                  if (this.needToLoadSrc) {
-                      this.needToLoadSrc = false;
-                      this.dispatcher.binder.emit({
-                          id: 'dispatcher',
-                          name: 'load',
-                          target: 'plugin',
-                      }, val);
-                  }
-                  return val;
-              },
-          }, { preSet: false }),
-      ],
-      volume: [
-          number$1(1),
-          accessorVideoProperty('volume'),
-      ],
-      width: [
-          accessorWidthAndHeight('width'),
-      ],
-      x5VideoOrientation: [
-          accessor({ set: stringOrVoid }),
-          accessorCustomAttribute('x5-video-orientation'),
-      ],
-      x5VideoPlayerFullscreen: [
-          accessor({ set(value) { return !!value; }, get(value) { return !!value; } }),
-          accessorCustomAttribute('x5-video-player-fullscreen', true),
-      ],
-      x5VideoPlayerType: [
-          accessor({
-              set(value) {
-                  if (!this.dispatcher.videoConfigReady) {
-                      return value;
-                  }
-                  const val = value === 'h5' ? 'h5' : undefined;
-                  this.dom.setAttr('videoElement', 'x5-video-player-type', val);
-                  return value;
-              },
-              get(value) {
-                  return (this.dispatcher.videoConfigReady && value) ||
-                      (this.dom.getAttr('videoElement', 'x5-video-player-type') ? 'h5' : undefined);
-              },
-          }),
-      ],
-      xWebkitAirplay: [
-          accessor({ set(value) { return !!value; }, get(value) { return !!value; } }),
-          accessorCustomAttribute('x-webkit-airplay', true),
-      ],
+    });
+    Object.assign(this, config);
   };
-  class VideoConfig {
-      constructor(dispatcher, config) {
-          this.autoload = true;
-          this.autoplay = false;
-          this.box = '';
-          this.changeWatchable = true;
-          this.controls = false;
-          this.crossOrigin = undefined;
-          this.defaultMuted = false;
-          this.defaultPlaybackRate = 1;
-          this.disableRemotePlayback = false;
-          this.height = '100%';
-          this.inited = false;
-          this.isLive = false;
-          this.loop = false;
-          this.muted = false;
+
+  var videoDomAttributes = ['src', 'controls', 'width', 'height', 'crossOrigin', 'loop', 'muted', 'preload', 'poster', 'autoplay', 'playsInline', 'x5VideoPlayerFullscreen', 'x5VideoOrientation', 'xWebkitAirplay', 'playbackRate', 'defaultPlaybackRate', 'autoload', 'disableRemotePlayback', 'defaultMuted', 'volume', 'x5VideoPlayerType'];
+  function isVideoDomAttribute(attr) {
+    return videoDomAttributes.includes(attr);
+  }
+
+  var __decorate$1 = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+      if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    }
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+  };
+  var nonenumerable$2 = nonenumerable;
+
+  function stringOrVoid(value) {
+    return isString$1(value) ? value : undefined;
+  }
+
+  function accessorVideoProperty(property) {
+    return accessor({
+      get: function get(value) {
+        return this.dispatcher.videoConfigReady && this.inited ? this.dom.videoElement[property] : value;
+      },
+      set: function set(value) {
+        if (!this.dispatcher.videoConfigReady) {
+          return value;
+        }
+
+        this.dom.videoElement[property] = value;
+        return value;
+      }
+    });
+  }
+
+  function accessorVideoAttribute(attribute) {
+    var _ref = isString$1(attribute) ? {
+      get: attribute,
+      isBoolean: false,
+      set: attribute
+    } : attribute,
+        _set = _ref.set,
+        _get = _ref.get,
+        isBoolean = _ref.isBoolean;
+
+    return accessor({
+      get: function get(value) {
+        return this.dispatcher.videoConfigReady && this.inited ? this.dom.videoElement[_get] : value;
+      },
+      set: function set(value) {
+        if (!this.dispatcher.videoConfigReady) {
+          return value;
+        }
+
+        var val = isBoolean ? value ? '' : undefined : value === null ? undefined : value;
+        this.dom.setAttr('videoElement', _set, val);
+        return value;
+      }
+    }, {
+      preSet: false
+    });
+  }
+
+  function accessorCustomAttribute(attribute, isBoolean) {
+    return accessor({
+      get: function get(value) {
+        var attrValue = this.dom.getAttr('videoElement', attribute);
+        return this.dispatcher.videoConfigReady && this.inited ? isBoolean ? !!attrValue : attrValue : value;
+      },
+      set: function set(value) {
+        if (!this.dispatcher.videoConfigReady) {
+          return value;
+        }
+
+        var val = isBoolean ? value || undefined : value === null ? undefined : value;
+        this.dom.setAttr('videoElement', attribute, val);
+        return value;
+      }
+    });
+  }
+
+  function accessorWidthAndHeight(property) {
+    return accessor({
+      get: function get(value) {
+        if (!this.dispatcher.videoConfigReady || !this.inited) {
+          return value;
+        }
+
+        var attr = this.dom.getAttr('videoElement', property);
+        var prop = this.dom.videoElement[property];
+
+        if (isNumeric(attr) && isNumber(prop)) {
+          return prop;
+        }
+
+        return attr || undefined;
+      },
+      set: function set(value) {
+        if (!this.dispatcher.videoConfigReady) {
+          return value;
+        }
+
+        var val;
+
+        if (value === undefined || isNumber(value)) {
+          val = value;
+        } else if (isString$1(value) && !Number.isNaN(parseFloat(value))) {
+          val = value;
+        }
+
+        this.dom.setAttr('videoElement', property, val);
+        return val;
+      }
+    });
+  }
+
+  var accessorMap = {
+    autoload: boolean$1(),
+    autoplay: [boolean$1(), accessorVideoProperty('autoplay')],
+    controls: [boolean$1(), accessorVideoProperty('controls')],
+    crossOrigin: [accessor({
+      set: stringOrVoid
+    }), accessorVideoAttribute({
+      set: 'crossorigin',
+      get: 'crossOrigin'
+    })],
+    defaultMuted: [boolean$1(), accessorVideoAttribute({
+      get: 'defaultMuted',
+      set: 'muted',
+      isBoolean: true
+    })],
+    defaultPlaybackRate: [accessorVideoProperty('defaultPlaybackRate'), number$1(1)],
+    disableRemotePlayback: [boolean$1(), accessorVideoProperty('disableRemotePlayback')],
+    height: [accessorWidthAndHeight('height')],
+    loop: [boolean$1(), accessorVideoProperty('loop')],
+    muted: [boolean$1(), accessorVideoProperty('muted')],
+    playbackRate: [number$1(1), accessorVideoProperty('playbackRate')],
+    playsInline: [accessor({
+      get: function get(value) {
+        var playsInline = this.dom.videoElement.playsInline;
+        return this.dispatcher.videoConfigReady && this.inited ? playsInline === undefined ? value : playsInline : value;
+      },
+      set: function set(value) {
+        if (!this.dispatcher.videoConfigReady) {
+          return value;
+        }
+
+        this.dom.videoElement.playsInline = value;
+        var val = value ? '' : undefined;
+        this.dom.setAttr('videoElement', 'playsinline', val);
+        this.dom.setAttr('videoElement', 'webkit-playsinline', val);
+        this.dom.setAttr('videoElement', 'x5-playsinline', val);
+        return value;
+      }
+    }), boolean$1()],
+    poster: [string$1(), accessor({
+      get: function get(value) {
+        return this.dispatcher.videoConfigReady && this.inited ? this.dom.videoElement.poster : value;
+      },
+      set: function set(value) {
+        if (!this.dispatcher.videoConfigReady) {
+          return value;
+        }
+
+        if (value.length) {
+          this.dom.setAttr('videoElement', 'poster', value);
+        }
+
+        return value;
+      }
+    })],
+    preload: [accessor({
+      set: function set(value) {
+        var options = ['none', 'auto', 'metadata', ''];
+        return options.indexOf(value) > -1 ? value : 'none';
+      }
+    }, {
+      preSet: true
+    }), accessorVideoAttribute('preload')],
+    src: [string$1(), accessor({
+      set: function set(val) {
+        if (this.dispatcher.readySync && this.autoload && val !== this.src) {
+          this.needToLoadSrc = true;
+        }
+
+        return val;
+      }
+    }), accessor({
+      set: function set(val) {
+        if (this.needToLoadSrc) {
           this.needToLoadSrc = false;
-          this.playbackRate = 1;
-          this.playsInline = false;
-          this.poster = undefined;
-          this.preload = 'auto';
-          this.preset = {};
-          this.presetConfig = {};
-          this.src = '';
-          this.volume = 1;
-          this.width = '100%';
-          this.x5VideoOrientation = undefined;
-          this.x5VideoPlayerFullscreen = false;
-          this.x5VideoPlayerType = undefined;
-          this.xWebkitAirplay = false;
-          applyDecorators(this, accessorMap, { self: true });
-          Object.defineProperty(this, 'dispatcher', {
-              configurable: false,
-              enumerable: false,
-              value: dispatcher,
-              writable: false,
-          });
-          Object.defineProperty(this, 'dom', {
-              configurable: false,
-              enumerable: false,
-              value: dispatcher.dom,
-              writable: false,
-          });
-          Object.assign(this, config);
-      }
-      init() {
-          videoDomAttributes.forEach((key) => {
-              this[key] = this[key];
-          });
-          this.inited = true;
-      }
-  }
-  __decorate$1([
-      string((str) => str.toLocaleLowerCase())
-  ], VideoConfig.prototype, "box", void 0);
-  __decorate$1([
-      nonenumerable$2
-  ], VideoConfig.prototype, "changeWatchable", void 0);
-  __decorate$1([
-      nonenumerable$2
-  ], VideoConfig.prototype, "inited", void 0);
-  __decorate$1([
-      nonenumerable$2
-  ], VideoConfig.prototype, "needToLoadSrc", void 0);
+          this.dispatcher.binder.emit({
+            id: 'dispatcher',
+            name: 'load',
+            target: 'plugin'
+          }, val);
+        }
 
-  const domMethods = [
-      'focus',
-      'fullscreen',
-      'requestFullscreen',
-      'exitFullscreen',
-  ];
+        return val;
+      }
+    }, {
+      preSet: false
+    })],
+    volume: [number$1(1), accessorVideoProperty('volume')],
+    width: [accessorWidthAndHeight('width')],
+    x5VideoOrientation: [accessor({
+      set: stringOrVoid
+    }), accessorCustomAttribute('x5-video-orientation')],
+    x5VideoPlayerFullscreen: [accessor({
+      set: function set(value) {
+        return !!value;
+      },
+      get: function get(value) {
+        return !!value;
+      }
+    }), accessorCustomAttribute('x5-video-player-fullscreen', true)],
+    x5VideoPlayerType: [accessor({
+      set: function set(value) {
+        if (!this.dispatcher.videoConfigReady) {
+          return value;
+        }
+
+        var val = value === 'h5' ? 'h5' : undefined;
+        this.dom.setAttr('videoElement', 'x5-video-player-type', val);
+        return value;
+      },
+      get: function get(value) {
+        return this.dispatcher.videoConfigReady && value || (this.dom.getAttr('videoElement', 'x5-video-player-type') ? 'h5' : undefined);
+      }
+    })],
+    xWebkitAirplay: [accessor({
+      set: function set(value) {
+        return !!value;
+      },
+      get: function get(value) {
+        return !!value;
+      }
+    }), accessorCustomAttribute('x-webkit-airplay', true)]
+  };
+
+  var VideoConfig =
+  /*#__PURE__*/
+  function () {
+    function VideoConfig(dispatcher, config) {
+      _classCallCheck(this, VideoConfig);
+
+      this.autoload = true;
+      this.autoplay = false;
+      this.box = '';
+      this.changeWatchable = true;
+      this.controls = false;
+      this.crossOrigin = undefined;
+      this.defaultMuted = false;
+      this.defaultPlaybackRate = 1;
+      this.disableRemotePlayback = false;
+      this.height = '100%';
+      this.inited = false;
+      this.isLive = false;
+      this.loop = false;
+      this.muted = false;
+      this.needToLoadSrc = false;
+      this.playbackRate = 1;
+      this.playsInline = false;
+      this.poster = undefined;
+      this.preload = 'auto';
+      this.preset = {};
+      this.presetConfig = {};
+      this.src = '';
+      this.volume = 1;
+      this.width = '100%';
+      this.x5VideoOrientation = undefined;
+      this.x5VideoPlayerFullscreen = false;
+      this.x5VideoPlayerType = undefined;
+      this.xWebkitAirplay = false;
+      applyDecorators(this, accessorMap, {
+        self: true
+      });
+      Object.defineProperty(this, 'dispatcher', {
+        configurable: false,
+        enumerable: false,
+        value: dispatcher,
+        writable: false
+      });
+      Object.defineProperty(this, 'dom', {
+        configurable: false,
+        enumerable: false,
+        value: dispatcher.dom,
+        writable: false
+      });
+      Object.assign(this, config);
+    }
+
+    _createClass(VideoConfig, [{
+      key: "init",
+      value: function init() {
+        var _this = this;
+
+        videoDomAttributes.forEach(function (key) {
+          _this[key] = _this[key];
+        });
+        this.inited = true;
+      }
+    }]);
+
+    return VideoConfig;
+  }();
+
+  __decorate$1([string(function (str) {
+    return str.toLocaleLowerCase();
+  })], VideoConfig.prototype, "box", void 0);
+
+  __decorate$1([nonenumerable$2], VideoConfig.prototype, "changeWatchable", void 0);
+
+  __decorate$1([nonenumerable$2], VideoConfig.prototype, "inited", void 0);
+
+  __decorate$1([nonenumerable$2], VideoConfig.prototype, "needToLoadSrc", void 0);
+
+  var domMethods = ['focus', 'fullscreen', 'requestFullscreen', 'exitFullscreen'];
   function isDomMethod(x) {
-      return domMethods.includes(x);
+    return domMethods.includes(x);
   }
-  const kernelMethods = [
-      'play',
-      'pause',
-      'seek',
-      'startLoad',
-      'stopLoad',
-  ];
+  var kernelMethods = ['play', 'pause', 'seek', 'startLoad', 'stopLoad'];
   function isKernelMethod(x) {
-      return kernelMethods.includes(x);
+    return kernelMethods.includes(x);
   }
-  const videoMethods = [
-      'canPlayType',
-      'captureStream',
-      'setSinkId',
-  ];
+  var videoMethods = ['canPlayType', 'captureStream', 'setSinkId'];
 
-  const secondaryEventReg = /^(before|after|_)/;
+  var secondaryEventReg = /^(before|after|_)/;
 
   function deletePropertyIfItIsEmpty(obj, key) {
-      if (!obj) {
-          return;
-      }
-      if (isEmpty(obj[key])) {
-          delete obj[key];
-      }
+    if (!obj) {
+      return;
+    }
+
+    if (isEmpty(obj[key])) {
+      delete obj[key];
+    }
   }
-  function runRejectableQueue(queue, ...args) {
-      return new Promise((resolve, reject) => {
-          function step(index) {
-              if (index >= queue.length) {
-                  resolve();
-                  return;
-              }
-              const result = isFunction(queue[index])
-                  ? queue[index](...args)
-                  : queue[index];
-              if (result === false) {
-                  reject('stop');
-                  return;
-              }
-              Promise.resolve(result)
-                  .then(() => step(index + 1))
-                  .catch((err) => reject(err || 'stop'));
-          }
-          step(0);
-      });
-  }
-  function runStoppableQueue(queue, ...args) {
+  function runRejectableQueue(queue) {
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
+    return new Promise(function (resolve, reject) {
       function step(index) {
-          if (index >= queue.length) {
-              return true;
-          }
-          const result = isFunction(queue[index])
-              ? queue[index](...args)
-              : queue[index];
-          if (result === false) {
-              return false;
-          }
-          return step(++index);
+        if (index >= queue.length) {
+          resolve();
+          return;
+        }
+
+        var result = isFunction(queue[index]) ? queue[index].apply(queue, args) : queue[index];
+
+        if (result === false) {
+          reject('stop');
+          return;
+        }
+
+        Promise.resolve(result).then(function () {
+          return step(index + 1);
+        }).catch(function (err) {
+          return reject(err || 'stop');
+        });
       }
-      return step(0);
+
+      step(0);
+    });
   }
-  function transObjectAttrIntoArray(obj, fn = (a, b) => +a - +b) {
-      return Object.keys(obj)
-          .sort(fn)
-          .reduce((order, key) => {
-          return order.concat(obj[key]);
-      }, []);
+  function runStoppableQueue(queue) {
+    for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+      args[_key2 - 1] = arguments[_key2];
+    }
+
+    function step(index) {
+      if (index >= queue.length) {
+        return true;
+      }
+
+      var result = isFunction(queue[index]) ? queue[index].apply(queue, args) : queue[index];
+
+      if (result === false) {
+        return false;
+      }
+
+      return step(++index);
+    }
+
+    return step(0);
+  }
+  function transObjectAttrIntoArray(obj) {
+    var fn = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function (a, b) {
+      return +a - +b;
+    };
+    return Object.keys(obj).sort(fn).reduce(function (order, key) {
+      return order.concat(obj[key]);
+    }, []);
   }
   function isSupportedKernelType(type) {
-      return type === 'flv' || type === 'hls' || type === 'mp4';
+    return type === 'flv' || type === 'hls' || type === 'mp4';
   }
 
-  var __decorate$2 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-      var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-      if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-      else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-      return c > 3 && r && Object.defineProperty(target, key, r), r;
+  var __decorate$2 = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+      if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    }
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
   };
+
   function secondaryChecker(key) {
-      if (key.match(secondaryEventReg)) {
-          {
-              chimeeLog.warn('bus', `Secondary Event "${key}" could not be call straightly by API.`);
-          }
-          return false;
+    if (key.match(secondaryEventReg)) {
+      {
+        chimeeLog.warn('bus', "Secondary Event \"".concat(key, "\" could not be call straightly by API."));
       }
-      return true;
+
+      return false;
+    }
+
+    return true;
   }
+
   function getKeyForOnceMap(eventName, stage, pluginId) {
-      return `${eventName}-${stage}-${pluginId}`;
+    return "".concat(eventName, "-").concat(stage, "-").concat(pluginId);
   }
-  class Bus {
-      constructor(dispatcher, kind) {
-          this.dispatcher = dispatcher;
-          this.kind = kind;
-          this.events = {};
-          this.onceMap = {};
+
+  var Bus =
+  /*#__PURE__*/
+  function () {
+    function Bus(dispatcher, kind) {
+      _classCallCheck(this, Bus);
+
+      this.dispatcher = dispatcher;
+      this.kind = kind;
+      this.events = {};
+      this.onceMap = {};
+    }
+
+    _createClass(Bus, [{
+      key: "destroy",
+      value: function destroy() {
+        delete this.events;
+        delete this.dispatcher;
       }
-      destroy() {
-          delete this.events;
-          delete this.dispatcher;
-      }
-      emit(key, ...args) {
-          const event = this.events[key];
-          if (isEmpty(event)) {
-              if (selfProcessorEvents.indexOf(key) > -1) {
-                  return Promise.resolve();
-              }
-              return this.eventProcessor(key, { sync: false }, ...args);
+    }, {
+      key: "emit",
+      value: function emit(key) {
+        var _this = this;
+
+        for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          args[_key - 1] = arguments[_key];
+        }
+
+        var event = this.events[key];
+
+        if (isEmpty(event)) {
+          if (selfProcessorEvents.indexOf(key) > -1) {
+            return Promise.resolve();
           }
-          const beforeQueue = this.getEventQueue(event.before);
-          return runRejectableQueue(beforeQueue, ...args)
-              .then(() => {
-              if (selfProcessorEvents.indexOf(key) > -1) {
-                  return;
-              }
-              return this.eventProcessor(key, { sync: false }, ...args);
-          })
-              .catch((error) => {
-              if (isError(error)) {
-                  this.dispatcher.throwError(error);
-              }
-              return Promise.reject(error);
+
+          return this.eventProcessor.apply(this, [key, {
+            sync: false
+          }].concat(args));
+        }
+
+        var beforeQueue = this.getEventQueue(event.before);
+        return runRejectableQueue.apply(void 0, [beforeQueue].concat(args)).then(function () {
+          if (selfProcessorEvents.indexOf(key) > -1) {
+            return;
+          }
+
+          return _this.eventProcessor.apply(_this, [key, {
+            sync: false
+          }].concat(args));
+        }).catch(function (error) {
+          if (isError(error)) {
+            _this.dispatcher.throwError(error);
+          }
+
+          return Promise.reject(error);
+        });
+      }
+    }, {
+      key: "emitSync",
+      value: function emitSync(key) {
+        var event = this.events[key];
+
+        for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+          args[_key2 - 1] = arguments[_key2];
+        }
+
+        if (isEmpty(event)) {
+          if (selfProcessorEvents.indexOf(key) > -1) {
+            return true;
+          }
+
+          return this.eventProcessor.apply(this, [key, {
+            sync: true
+          }].concat(args));
+        }
+
+        var beforeQueue = this.getEventQueue(event.before);
+        return runStoppableQueue.apply(void 0, [beforeQueue].concat(args)) && (selfProcessorEvents.indexOf(key) > -1 || this.eventProcessor.apply(this, [key, {
+          sync: true
+        }].concat(args)));
+      }
+    }, {
+      key: "hasEvents",
+      value: function hasEvents() {
+        return !isEmpty(this.events);
+      }
+    }, {
+      key: "off",
+      value: function off(pluginId, eventName, fn, stage) {
+        var deleted = this.removeEvent({
+          eventName: eventName,
+          fn: fn,
+          pluginId: pluginId,
+          stage: stage
+        });
+
+        if (deleted) {
+          return;
+        }
+
+        var handler = this.getFirstHandlerFromOnceMap({
+          eventName: eventName,
+          fn: fn,
+          pluginId: pluginId,
+          stage: stage
+        });
+
+        if (isFunction(handler)) {
+          var _deleted = this.removeEvent({
+            eventName: eventName,
+            fn: handler,
+            pluginId: pluginId,
+            stage: stage
           });
-      }
-      emitSync(key, ...args) {
-          const event = this.events[key];
-          if (isEmpty(event)) {
-              if (selfProcessorEvents.indexOf(key) > -1) {
-                  return true;
-              }
-              return this.eventProcessor(key, { sync: true }, ...args);
+
+          if (_deleted) {
+            this.removeFromOnceMap({
+              eventName: eventName,
+              fn: fn,
+              handler: handler,
+              pluginId: pluginId,
+              stage: stage
+            });
           }
-          const beforeQueue = this.getEventQueue(event.before);
-          return runStoppableQueue(beforeQueue, ...args) && (selfProcessorEvents.indexOf(key) > -1 ||
-              this.eventProcessor(key, { sync: true }, ...args));
+        }
       }
-      hasEvents() {
-          return !isEmpty(this.events);
+    }, {
+      key: "on",
+      value: function on(pluginId, eventName, fn, stage) {
+        this.addEvent({
+          eventName: eventName,
+          stage: stage,
+          pluginId: pluginId,
+          fn: fn
+        });
       }
-      off(pluginId, eventName, fn, stage) {
-          const deleted = this.removeEvent({
-              eventName,
-              fn,
-              pluginId,
-              stage,
+    }, {
+      key: "once",
+      value: function once(pluginId, eventName, fn, stage) {
+        var bus = this;
+
+        var handler = function handler() {
+          bind(fn, this).apply(void 0, arguments);
+          bus.removeEvent({
+            eventName: eventName,
+            fn: handler,
+            pluginId: pluginId,
+            stage: stage
           });
-          if (deleted) {
-              return;
-          }
-          const handler = this.getFirstHandlerFromOnceMap({
-              eventName,
-              fn,
-              pluginId,
-              stage,
+          bus.removeFromOnceMap({
+            eventName: eventName,
+            fn: fn,
+            handler: handler,
+            pluginId: pluginId,
+            stage: stage
           });
-          if (isFunction(handler)) {
-              const deleted = this.removeEvent({
-                  eventName,
-                  fn: handler,
-                  pluginId,
-                  stage,
-              });
-              if (deleted) {
-                  this.removeFromOnceMap({
-                      eventName,
-                      fn,
-                      handler,
-                      pluginId,
-                      stage,
-                  });
-              }
-          }
+        };
+
+        this.addEvent({
+          eventName: eventName,
+          fn: handler,
+          pluginId: pluginId,
+          stage: stage
+        });
+        this.addToOnceMap({
+          eventName: eventName,
+          fn: fn,
+          handler: handler,
+          pluginId: pluginId,
+          stage: stage
+        });
       }
-      on(pluginId, eventName, fn, stage) {
-          this.addEvent({ eventName, stage, pluginId, fn });
+    }, {
+      key: "trigger",
+      value: function trigger(key) {
+        var _this2 = this;
+
+        for (var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+          args[_key3 - 1] = arguments[_key3];
+        }
+
+        var event = this.events[key];
+
+        if (isEmpty(event)) {
+          return Promise.resolve(true);
+        }
+
+        var mainQueue = this.getEventQueue(event.main);
+        return runRejectableQueue.apply(void 0, [mainQueue].concat(args)).then(function () {
+          var afterQueue = _this2.getEventQueue(event.after);
+
+          return runRejectableQueue.apply(void 0, [afterQueue].concat(args));
+        }).then(function () {
+          return _this2.runSideEffectEvent.apply(_this2, [key].concat(args));
+        }).catch(function (error) {
+          if (isError(error)) {
+            _this2.dispatcher.throwError(error);
+          }
+
+          return _this2.runSideEffectEvent.apply(_this2, [key].concat(args));
+        });
       }
-      once(pluginId, eventName, fn, stage) {
-          const bus = this;
-          const handler = function (...args) {
-              bind(fn, this)(...args);
-              bus.removeEvent({
-                  eventName,
-                  fn: handler,
-                  pluginId,
-                  stage,
-              });
-              bus.removeFromOnceMap({
-                  eventName,
-                  fn,
-                  handler,
-                  pluginId,
-                  stage,
-              });
-          };
-          this.addEvent({
-              eventName,
-              fn: handler,
-              pluginId,
-              stage,
-          });
-          this.addToOnceMap({
-              eventName,
-              fn,
-              handler,
-              pluginId,
-              stage,
-          });
-      }
-      trigger(key, ...args) {
-          const event = this.events[key];
-          if (isEmpty(event)) {
-              return Promise.resolve(true);
-          }
-          const mainQueue = this.getEventQueue(event.main);
-          return runRejectableQueue(mainQueue, ...args)
-              .then(() => {
-              const afterQueue = this.getEventQueue(event.after);
-              return runRejectableQueue(afterQueue, ...args);
-          })
-              .then(() => {
-              return this.runSideEffectEvent(key, ...args);
-          })
-              .catch((error) => {
-              if (isError(error)) {
-                  this.dispatcher.throwError(error);
-              }
-              return this.runSideEffectEvent(key, ...args);
-          });
-      }
-      triggerSync(key, ...args) {
-          const event = this.events[key];
-          if (isEmpty(event)) {
-              return true;
-          }
-          const mainQueue = this.getEventQueue(event.main);
-          const afterQueue = this.getEventQueue(event.after);
-          const result = runStoppableQueue(mainQueue, ...args) && runStoppableQueue(afterQueue, ...args);
-          this.runSideEffectEvent(key, ...args);
-          return result;
-      }
-      addEvent({ eventName, stage, pluginId, fn, }) {
-          this.events[eventName] = this.events[eventName] || {};
-          this.events[eventName][stage] = this.events[eventName][stage] || {};
-          this.events[eventName][stage][pluginId] = this.events[eventName][stage][pluginId] || [];
-          this.events[eventName][stage][pluginId].push(fn);
-      }
-      addToOnceMap({ eventName, stage, pluginId, fn, handler, }) {
-          const key = getKeyForOnceMap(eventName, stage, pluginId);
-          const map = this.onceMap[key] = this.onceMap[key] || new Map();
-          if (!map.has(fn)) {
-              map.set(fn, []);
-          }
-          const handlers = map.get(fn);
-          handlers.push(handler);
-      }
-      eventProcessor(key, { sync }, ...args) {
-          if (isDispatcherEventMethod(key)) {
-              const methodName = dispatcherEventMethodMap[key];
-              this.dispatcher[methodName](...args);
-          }
-          else if (isKernelMethod(key)) {
-              this.dispatcher.kernel[key](...args);
-          }
-          else if (isDomMethod(key)) {
-              this.dispatcher.dom[key](...args);
-          }
-          if (isVideoEvent(key) || isDomEvent(key)) {
-              return true;
-          }
-          return this[sync ? 'triggerSync' : 'trigger'](key, ...args);
-      }
-      getEventQueue(handlerSet, customOrder = false) {
-          if (this.dispatcher.destroyed) {
-              return [];
-          }
-          const order = (customOrder || this.dispatcher.order).concat(['_vm']);
-          return isEmpty(handlerSet)
-              ? []
-              : order.reduce((queue, id) => {
-                  if (isEmpty(handlerSet[id]) ||
-                      !isArray$1(handlerSet[id]) ||
-                      (!this.dispatcher.plugins[id] && id !== '_vm')) {
-                      return queue;
-                  }
-                  return queue.concat(handlerSet[id].map((fn) => {
-                      return bind(fn, this.dispatcher.plugins[id] || this.dispatcher.vm);
-                  }));
-              }, []);
-      }
-      getFirstHandlerFromOnceMap({ eventName, stage, pluginId, fn, }) {
-          const key = getKeyForOnceMap(eventName, stage, pluginId);
-          const map = this.onceMap[key];
-          if (isNil(map) || !map.has(fn)) {
-              return;
-          }
-          const handlers = map.get(fn);
-          return handlers[0];
-      }
-      removeEvent({ eventName, stage, pluginId, fn, }) {
-          const eventsForEventName = this.events[eventName];
-          if (!eventsForEventName) {
-              return;
-          }
-          const eventsForStage = eventsForEventName[stage];
-          if (!eventsForStage) {
-              return;
-          }
-          const eventsForPlugin = eventsForStage[pluginId];
-          if (!eventsForPlugin) {
-              return;
-          }
-          const index = eventsForPlugin.indexOf(fn);
-          const hasFn = index > -1;
-          if (hasFn) {
-              eventsForPlugin.splice(index, 1);
-          }
-          deletePropertyIfItIsEmpty(eventsForStage, pluginId);
-          deletePropertyIfItIsEmpty(eventsForEventName, stage);
-          deletePropertyIfItIsEmpty(this.events, eventName);
-          return hasFn;
-      }
-      removeFromOnceMap({ eventName, stage, pluginId, fn, handler, }) {
-          const key = getKeyForOnceMap(eventName, stage, pluginId);
-          const map = this.onceMap[key];
-          if (isNil(map) || !map.has(fn)) {
-              return;
-          }
-          const handlers = map.get(fn);
-          const index = handlers.indexOf(handler);
-          handlers.splice(index, 1);
-          if (isEmpty(handlers)) {
-              map.delete(fn);
-          }
-      }
-      runSideEffectEvent(key, ...args) {
-          const event = this.events[key];
-          if (isEmpty(event)) {
-              return false;
-          }
-          const queue = this.getEventQueue(event._);
-          queue.forEach((run) => run(...args));
+    }, {
+      key: "triggerSync",
+      value: function triggerSync(key) {
+        var event = this.events[key];
+
+        if (isEmpty(event)) {
           return true;
+        }
+
+        var mainQueue = this.getEventQueue(event.main);
+        var afterQueue = this.getEventQueue(event.after);
+
+        for (var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+          args[_key4 - 1] = arguments[_key4];
+        }
+
+        var result = runStoppableQueue.apply(void 0, [mainQueue].concat(args)) && runStoppableQueue.apply(void 0, [afterQueue].concat(args));
+        this.runSideEffectEvent.apply(this, [key].concat(args));
+        return result;
       }
-  }
-  __decorate$2([
-      runnable(secondaryChecker)
-  ], Bus.prototype, "emit", null);
-  __decorate$2([
-      runnable(secondaryChecker, { backup() { return false; } })
-  ], Bus.prototype, "emitSync", null);
-  __decorate$2([
-      runnable(secondaryChecker)
-  ], Bus.prototype, "trigger", null);
-  __decorate$2([
-      runnable(secondaryChecker, { backup() { return false; } })
-  ], Bus.prototype, "triggerSync", null);
+    }, {
+      key: "addEvent",
+      value: function addEvent(_ref) {
+        var eventName = _ref.eventName,
+            stage = _ref.stage,
+            pluginId = _ref.pluginId,
+            fn = _ref.fn;
+        this.events[eventName] = this.events[eventName] || {};
+        this.events[eventName][stage] = this.events[eventName][stage] || {};
+        this.events[eventName][stage][pluginId] = this.events[eventName][stage][pluginId] || [];
+        this.events[eventName][stage][pluginId].push(fn);
+      }
+    }, {
+      key: "addToOnceMap",
+      value: function addToOnceMap(_ref2) {
+        var eventName = _ref2.eventName,
+            stage = _ref2.stage,
+            pluginId = _ref2.pluginId,
+            fn = _ref2.fn,
+            handler = _ref2.handler;
+        var key = getKeyForOnceMap(eventName, stage, pluginId);
+        var map = this.onceMap[key] = this.onceMap[key] || new Map();
+
+        if (!map.has(fn)) {
+          map.set(fn, []);
+        }
+
+        var handlers = map.get(fn);
+        handlers.push(handler);
+      }
+    }, {
+      key: "eventProcessor",
+      value: function eventProcessor(key, _ref3) {
+        var sync = _ref3.sync;
+
+        for (var _len5 = arguments.length, args = new Array(_len5 > 2 ? _len5 - 2 : 0), _key5 = 2; _key5 < _len5; _key5++) {
+          args[_key5 - 2] = arguments[_key5];
+        }
+
+        if (isDispatcherEventMethod(key)) {
+          var _this$dispatcher;
+
+          var methodName = dispatcherEventMethodMap[key];
+
+          (_this$dispatcher = this.dispatcher)[methodName].apply(_this$dispatcher, args);
+        } else if (isKernelMethod(key)) {
+          var _this$dispatcher$kern;
+
+          (_this$dispatcher$kern = this.dispatcher.kernel)[key].apply(_this$dispatcher$kern, args);
+        } else if (isDomMethod(key)) {
+          var _this$dispatcher$dom;
+
+          (_this$dispatcher$dom = this.dispatcher.dom)[key].apply(_this$dispatcher$dom, args);
+        }
+
+        if (isVideoEvent(key) || isDomEvent(key)) {
+          return true;
+        }
+
+        return this[sync ? 'triggerSync' : 'trigger'].apply(this, [key].concat(args));
+      }
+    }, {
+      key: "getEventQueue",
+      value: function getEventQueue(handlerSet) {
+        var _this3 = this;
+
+        var customOrder = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+        if (this.dispatcher.destroyed) {
+          return [];
+        }
+
+        var order = (customOrder || this.dispatcher.order).concat(['_vm']);
+        return isEmpty(handlerSet) ? [] : order.reduce(function (queue, id) {
+          if (isEmpty(handlerSet[id]) || !isArray$1(handlerSet[id]) || !_this3.dispatcher.plugins[id] && id !== '_vm') {
+            return queue;
+          }
+
+          return queue.concat(handlerSet[id].map(function (fn) {
+            return bind(fn, _this3.dispatcher.plugins[id] || _this3.dispatcher.vm);
+          }));
+        }, []);
+      }
+    }, {
+      key: "getFirstHandlerFromOnceMap",
+      value: function getFirstHandlerFromOnceMap(_ref4) {
+        var eventName = _ref4.eventName,
+            stage = _ref4.stage,
+            pluginId = _ref4.pluginId,
+            fn = _ref4.fn;
+        var key = getKeyForOnceMap(eventName, stage, pluginId);
+        var map = this.onceMap[key];
+
+        if (isNil(map) || !map.has(fn)) {
+          return;
+        }
+
+        var handlers = map.get(fn);
+        return handlers[0];
+      }
+    }, {
+      key: "removeEvent",
+      value: function removeEvent(_ref5) {
+        var eventName = _ref5.eventName,
+            stage = _ref5.stage,
+            pluginId = _ref5.pluginId,
+            fn = _ref5.fn;
+        var eventsForEventName = this.events[eventName];
+
+        if (!eventsForEventName) {
+          return;
+        }
+
+        var eventsForStage = eventsForEventName[stage];
+
+        if (!eventsForStage) {
+          return;
+        }
+
+        var eventsForPlugin = eventsForStage[pluginId];
+
+        if (!eventsForPlugin) {
+          return;
+        }
+
+        var index = eventsForPlugin.indexOf(fn);
+        var hasFn = index > -1;
+
+        if (hasFn) {
+          eventsForPlugin.splice(index, 1);
+        }
+
+        deletePropertyIfItIsEmpty(eventsForStage, pluginId);
+        deletePropertyIfItIsEmpty(eventsForEventName, stage);
+        deletePropertyIfItIsEmpty(this.events, eventName);
+        return hasFn;
+      }
+    }, {
+      key: "removeFromOnceMap",
+      value: function removeFromOnceMap(_ref6) {
+        var eventName = _ref6.eventName,
+            stage = _ref6.stage,
+            pluginId = _ref6.pluginId,
+            fn = _ref6.fn,
+            handler = _ref6.handler;
+        var key = getKeyForOnceMap(eventName, stage, pluginId);
+        var map = this.onceMap[key];
+
+        if (isNil(map) || !map.has(fn)) {
+          return;
+        }
+
+        var handlers = map.get(fn);
+        var index = handlers.indexOf(handler);
+        handlers.splice(index, 1);
+
+        if (isEmpty(handlers)) {
+          map.delete(fn);
+        }
+      }
+    }, {
+      key: "runSideEffectEvent",
+      value: function runSideEffectEvent(key) {
+        for (var _len6 = arguments.length, args = new Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
+          args[_key6 - 1] = arguments[_key6];
+        }
+
+        var event = this.events[key];
+
+        if (isEmpty(event)) {
+          return false;
+        }
+
+        var queue = this.getEventQueue(event._);
+        queue.forEach(function (run) {
+          return run.apply(void 0, args);
+        });
+        return true;
+      }
+    }]);
+
+    return Bus;
+  }();
+
+  __decorate$2([runnable(secondaryChecker)], Bus.prototype, "emit", null);
+
+  __decorate$2([runnable(secondaryChecker, {
+    backup: function backup() {
+      return false;
+    }
+  })], Bus.prototype, "emitSync", null);
+
+  __decorate$2([runnable(secondaryChecker)], Bus.prototype, "trigger", null);
+
+  __decorate$2([runnable(secondaryChecker, {
+    backup: function backup() {
+      return false;
+    }
+  })], Bus.prototype, "triggerSync", null);
 
   function getEventTargetByOldLogic(oldName) {
-      const targetKeyReg = new RegExp('^(c|w)_');
-      const matches = oldName.match(targetKeyReg);
-      if (matches) {
-          const name = oldName.replace(targetKeyReg, '');
-          const target = oldName.indexOf('c') === 0
-              ? 'container'
-              : 'wrapper';
-          {
-              chimeeLog.warn(`We no longer support event names like ${oldName}. Please use ${name} and options like { target: '${target}' } instead`);
-          }
-          return { name, target };
+    var targetKeyReg = new RegExp('^(c|w)_');
+    var matches = oldName.match(targetKeyReg);
+
+    if (matches) {
+      var name = oldName.replace(targetKeyReg, '');
+      var target = oldName.indexOf('c') === 0 ? 'container' : 'wrapper';
+
+      {
+        chimeeLog.warn("We no longer support event names like ".concat(oldName, ". Please use ").concat(name, " and options like { target: '").concat(target, "' } instead"));
       }
-      else if (oldName === 'error') {
-          return { name: 'error', target: 'kernel' };
-      }
-      return false;
+
+      return {
+        name: name,
+        target: target
+      };
+    } else if (oldName === 'error') {
+      return {
+        name: 'error',
+        target: 'kernel'
+      };
+    }
+
+    return false;
   }
   function getEventStage(name) {
-      const matches = name.match(secondaryEventReg);
-      const stage = ((matches && matches[0]) || 'main');
-      if (matches) {
-          name = camelCase(name.replace(secondaryEventReg, ''));
-      }
-      return { name, stage };
+    var matches = name.match(secondaryEventReg);
+    var stage = matches && matches[0] || 'main';
+
+    if (matches) {
+      name = camelCase(name.replace(secondaryEventReg, ''));
+    }
+
+    return {
+      name: name,
+      stage: stage
+    };
   }
   function getEventTargetByEventName(name) {
-      if (videoEvents.indexOf(name) > -1) {
-          return 'video';
-      }
-      if (kernelEvents.indexOf(name) > -1) {
-          return 'kernel';
-      }
-      if (domEvents.indexOf(name) > -1) {
-          return 'video-dom';
-      }
-      if (esFullscreenEvents.indexOf(name) > -1) {
-          return 'esFullscreen';
-      }
-      return 'plugin';
+    if (videoEvents.indexOf(name) > -1) {
+      return 'video';
+    }
+
+    if (kernelEvents.indexOf(name) > -1) {
+      return 'kernel';
+    }
+
+    if (domEvents.indexOf(name) > -1) {
+      return 'video-dom';
+    }
+
+    if (esFullscreenEvents.indexOf(name) > -1) {
+      return 'esFullscreen';
+    }
+
+    return 'plugin';
   }
-  function getEventInfo({ name, target, stage }) {
-      const oldInfo = getEventTargetByOldLogic(name);
-      if (oldInfo) {
-          name = oldInfo.name;
-          target = oldInfo.target;
-      }
-      const { stage: newStage, name: newName } = getEventStage(name);
-      name = newName;
-      if (!target) {
-          target = getEventTargetByEventName(name);
-      }
-      return {
-          name,
-          stage: stage || newStage,
-          target,
-      };
+  function getEventInfo(_ref) {
+    var name = _ref.name,
+        target = _ref.target,
+        stage = _ref.stage;
+    var oldInfo = getEventTargetByOldLogic(name);
+
+    if (oldInfo) {
+      name = oldInfo.name;
+      target = oldInfo.target;
+    }
+
+    var _getEventStage = getEventStage(name),
+        newStage = _getEventStage.stage,
+        newName = _getEventStage.name;
+
+    name = newName;
+
+    if (!target) {
+      target = getEventTargetByEventName(name);
+    }
+
+    return {
+      name: name,
+      stage: stage || newStage,
+      target: target
+    };
   }
   function prettifyEventParameter(info) {
-      const { id, fn } = info;
-      const { name, target, stage } = getEventInfo(info);
-      if (!isFunction(fn)) {
-          throw new Error(`You must provide a function to handle with event ${name}, but not ${typeof fn}`);
-      }
-      return {
-          fn,
-          id,
-          name,
-          stage,
-          target,
-      };
+    var id = info.id,
+        fn = info.fn;
+
+    var _getEventInfo = getEventInfo(info),
+        name = _getEventInfo.name,
+        target = _getEventInfo.target,
+        stage = _getEventInfo.stage;
+
+    if (!isFunction(fn)) {
+      throw new Error("You must provide a function to handle with event ".concat(name, ", but not ").concat(_typeof(fn)));
+    }
+
+    return {
+      fn: fn,
+      id: id,
+      name: name,
+      stage: stage,
+      target: target
+    };
   }
-  function isEventEmitalbe({ id, name, }) {
-      if (!name || !isString$1(name) || secondaryEventReg.test(name)) {
-          chimeeLog.error('You must provide a legal event name, which is string and could not started with before/after/_');
-          return false;
-      }
-      if (!id || !isString$1(id)) {
-          chimeeLog.error('You must provide the id of emitter');
-          return false;
-      }
-      return true;
+  function isEventEmitalbe(_ref2) {
+    var id = _ref2.id,
+        name = _ref2.name;
+
+    if (!name || !isString$1(name) || secondaryEventReg.test(name)) {
+      chimeeLog.error('You must provide a legal event name, which is string and could not started with before/after/_');
+      return false;
+    }
+
+    if (!id || !isString$1(id)) {
+      chimeeLog.error('You must provide the id of emitter');
+      return false;
+    }
+
+    return true;
   }
 
-  var __decorate$3 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-      var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-      if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-      else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-      return c > 3 && r && Object.defineProperty(target, key, r), r;
+  var __decorate$3 = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+      if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    }
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
   };
-  class Binder {
-      constructor(dispatcher) {
-          this.dispatcher = dispatcher;
-          this.kinds = [
-              'kernel',
-              'container',
-              'wrapper',
-              'video',
-              'video-dom',
-              'plugin',
-              'esFullscreen',
-          ];
-          this.buses = {};
-          this.bindedEventNames = {};
-          this.bindedEventInfo = {};
-          this.pendingEventsInfo = {};
-          for (const kind of this.kinds) {
-              this.bindedEventNames[kind] = [];
-              this.bindedEventInfo[kind] = [];
-              this.pendingEventsInfo[kind] = [];
-              this.buses[kind] = new Bus(dispatcher, kind);
-          }
-      }
-      addPendingEvent(target, name, id) {
-          this.pendingEventsInfo[target].push([name, id]);
-      }
-      applyPendingEvents(target) {
-          const pendingEvents = this.pendingEventsInfo[target];
-          const pendingEventsCopy = pendingEvents.splice(0, pendingEvents.length);
-          while (pendingEventsCopy.length) {
-              const [name, id] = pendingEventsCopy.pop();
-              this.addEventListenerOnTarget({ name, target, id });
-          }
-      }
-      bindEventOnPenetrateNode(node, remove = false) {
-          this.bindedEventInfo['video-dom']
-              .forEach(([name, fn]) => {
-              remove
-                  ? events_2(node, name, fn)
-                  : events_1(node, name, fn);
-          });
-      }
-      bindEventOnVideo(node, remove = false) {
-          this.bindedEventInfo['video-dom']
-              .concat(this.bindedEventInfo.video)
-              .forEach(([name, fn]) => {
-              remove
-                  ? events_2(node, name, fn)
-                  : events_1(node, name, fn);
-          });
-      }
-      destroy() {
-          this.kinds.forEach((target) => {
-              if (target === 'kernel') {
-                  this.bindedEventInfo.kernel.forEach(([name, fn]) => {
-                      this.dispatcher.kernel.off(name, fn);
-                  });
-              }
-              else {
-                  const targetDom = this.getTargetDom(target);
-                  this.bindedEventInfo[target].forEach(([name, fn]) => {
-                      events_2(targetDom, name, fn);
-                      if (target === 'video-dom') {
-                          this.dispatcher.dom.videoExtendedNodes.forEach((node) => events_2(node, name, fn));
-                      }
-                  });
-              }
-              this.bindedEventInfo.kernel = [];
-              this.bindedEventNames.kernel = [];
-          });
-      }
-      emit({ name, stage, target: rawTarget, }, ...args) {
-          const { target } = getEventInfo({ name, target: rawTarget, stage });
-          return this.buses[target].emit(name, ...args);
-      }
-      emitSync({ name, stage, target: rawTarget, }, ...args) {
-          const { target } = getEventInfo({ name, target: rawTarget, stage });
-          return this.buses[target].emitSync(name, ...args);
-      }
-      listenOnMouseMoveEvent(node) {
-          const dom = this.dispatcher.dom;
-          const target = 'video-dom';
-          const id = '_vm';
-          mustListenVideoDomEvents.forEach((name) => {
-              const fn = (...args) => {
-                  const { toElement, currentTarget, relatedTarget, type } = args[0];
-                  const to = toElement || relatedTarget;
-                  if (dom.mouseInVideo && type === 'mouseleave' && !dom.isNodeInsideVideo(to)) {
-                      dom.mouseInVideo = false;
-                      return this.triggerSync({
-                          id,
-                          name,
-                          target,
-                      }, ...args);
-                  }
-                  if (!dom.mouseInVideo && type === 'mouseenter' && dom.isNodeInsideVideo(currentTarget)) {
-                      dom.mouseInVideo = true;
-                      return this.triggerSync({
-                          id,
-                          name,
-                          target,
-                      }, ...args);
-                  }
-              };
-              events_1(node, name, fn);
-              if (this.bindedEventNames[target].indexOf(name) < 0) {
-                  this.bindedEventNames[target].push(name);
-                  this.bindedEventInfo[target].push([name, fn]);
-              }
-          });
-      }
-      migrateKernelEvent(oldKernel, newKernel) {
-          const bindedEventInfoList = this.bindedEventInfo.kernel;
-          bindedEventInfoList.forEach(([name, fn]) => {
-              oldKernel.off(name, fn);
-              newKernel.on(name, fn);
-          });
-      }
-      off(info) {
-          const { id, name, fn, stage, target } = prettifyEventParameter(info);
-          const ret = this.buses[target].off(id, name, fn, stage);
-          this.removeEventListenerOnTargetWhenIsUseless({ name, target });
-          return ret;
-      }
-      on(info) {
-          const { id, name, fn, stage, target } = prettifyEventParameter(info);
-          this.addEventListenerOnTarget({
-              id,
-              name,
-              target,
-          });
-          return this.buses[target].on(id, name, fn, stage);
-      }
-      once(info) {
-          const { id, name, fn, stage, target } = prettifyEventParameter(info);
-          return this.buses[target].once(id, name, fn, stage);
-      }
-      trigger({ name, stage, target: rawTarget, }, ...args) {
-          const { target } = getEventInfo({ name, target: rawTarget, stage });
-          return this.buses[target].trigger(name, ...args);
-      }
-      triggerSync({ name, stage, target: rawTarget, }, ...args) {
-          const { target } = getEventInfo({ name, target: rawTarget, stage });
-          return this.buses[target].triggerSync(name, ...args);
-      }
-      addEventListenerOnTarget({ name, target, id, }) {
-          if (!this.isEventNeedToBeHandled(target, name)) {
-              return;
-          }
-          let fn;
-          if (this.bindedEventNames[target].indexOf(name) > -1) {
-              return;
-          }
-          const targetDom = this.getTargetDom(target);
-          if (target === 'kernel') {
-              if (!this.dispatcher.kernel) {
-                  this.addPendingEvent(target, name, id);
-                  return;
-              }
-              fn = (...args) => this.triggerSync({ target, name, id: 'kernel' }, ...args);
-              this.dispatcher.kernel.on(name, fn);
-          }
-          else if (target === 'container' || target === 'wrapper') {
-              fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
-              events_1(targetDom, name, fn);
-          }
-          else if (target === 'video') {
-              fn = (...args) => this.trigger({ target, name, id: target }, ...args);
-              events_1(targetDom, name, fn);
-          }
-          else if (target === 'video-dom') {
-              fn = (...args) => this.triggerSync({ target, name, id: target }, ...args);
-              this.dispatcher.dom.videoExtendedNodes.forEach((node) => events_1(node, name, fn));
-              events_1(targetDom, name, fn);
-          }
-          this.bindedEventNames[target].push(name);
-          this.bindedEventInfo[target].push([name, fn]);
-      }
-      getTargetDom(target) {
-          let targetDom;
-          switch (target) {
-              case 'container':
-              case 'wrapper':
-                  targetDom = this.dispatcher.dom[target];
-                  break;
-              default:
-                  targetDom = this.dispatcher.dom.videoElement;
-                  break;
-          }
-          return targetDom;
-      }
-      isEventNeedToBeHandled(target, name) {
-          return target !== 'plugin' &&
-              target !== 'esFullscreen' &&
-              (!isMustListenVideoDomEvent(name) || target !== 'video');
-      }
-      removeEventListenerOnTargetWhenIsUseless({ name, target, }) {
-          if (!this.isEventNeedToBeHandled(target, name)) {
-              return;
-          }
-          const eventNamesList = this.bindedEventNames[target];
-          const nameIndex = eventNamesList.indexOf(name);
-          if (nameIndex < 0) {
-              return;
-          }
-          if (this.buses[target].hasEvents()) {
-              return;
-          }
-          const bindedEventInfoList = this.bindedEventInfo[target];
-          let fn;
-          let index;
-          for (index = 0; index < bindedEventInfoList.length; index++) {
-              if (bindedEventInfoList[index][0] === name) {
-                  fn = bindedEventInfoList[index][1];
-                  break;
-              }
-          }
-          if (!isFunction(fn)) {
-              return;
-          }
-          if (target === 'kernel') {
-              this.dispatcher.kernel.off(name, fn);
-          }
-          else {
-              const targetDom = this.getTargetDom(target);
-              events_2(targetDom, name, fn);
-              if (target === 'video-dom') {
-                  this.dispatcher.dom.videoExtendedNodes.forEach((node) => {
-                      events_2(node, name, fn);
-                  });
-              }
-          }
-          bindedEventInfoList.splice(index, 1);
-          eventNamesList.splice(nameIndex, 1);
-      }
-  }
-  __decorate$3([
-      runnable(isEventEmitalbe)
-  ], Binder.prototype, "emit", null);
-  __decorate$3([
-      runnable(isEventEmitalbe, { backup() { return false; } })
-  ], Binder.prototype, "emitSync", null);
-  __decorate$3([
-      runnable(isEventEmitalbe)
-  ], Binder.prototype, "trigger", null);
-  __decorate$3([
-      runnable(isEventEmitalbe, { backup() { return false; } })
-  ], Binder.prototype, "triggerSync", null);
 
-  var interopRequireWildcard = createCommonjsModule$4(function (module) {
+  var Binder =
+  /*#__PURE__*/
+  function () {
+    function Binder(dispatcher) {
+      _classCallCheck(this, Binder);
+
+      this.dispatcher = dispatcher;
+      this.kinds = ['kernel', 'container', 'wrapper', 'video', 'video-dom', 'plugin', 'esFullscreen'];
+      this.buses = {};
+      this.bindedEventNames = {};
+      this.bindedEventInfo = {};
+      this.pendingEventsInfo = {};
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.kinds[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var kind = _step.value;
+          this.bindedEventNames[kind] = [];
+          this.bindedEventInfo[kind] = [];
+          this.pendingEventsInfo[kind] = [];
+          this.buses[kind] = new Bus(dispatcher, kind);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return != null) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
+
+    _createClass(Binder, [{
+      key: "addPendingEvent",
+      value: function addPendingEvent(target, name, id) {
+        this.pendingEventsInfo[target].push([name, id]);
+      }
+    }, {
+      key: "applyPendingEvents",
+      value: function applyPendingEvents(target) {
+        var pendingEvents = this.pendingEventsInfo[target];
+        var pendingEventsCopy = pendingEvents.splice(0, pendingEvents.length);
+
+        while (pendingEventsCopy.length) {
+          var _pendingEventsCopy$po = pendingEventsCopy.pop(),
+              _pendingEventsCopy$po2 = _slicedToArray$1(_pendingEventsCopy$po, 2),
+              name = _pendingEventsCopy$po2[0],
+              id = _pendingEventsCopy$po2[1];
+
+          this.addEventListenerOnTarget({
+            name: name,
+            target: target,
+            id: id
+          });
+        }
+      }
+    }, {
+      key: "bindEventOnPenetrateNode",
+      value: function bindEventOnPenetrateNode(node) {
+        var remove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+        this.bindedEventInfo['video-dom'].forEach(function (_ref) {
+          var _ref2 = _slicedToArray$1(_ref, 2),
+              name = _ref2[0],
+              fn = _ref2[1];
+
+          remove ? events_2(node, name, fn) : events_1(node, name, fn);
+        });
+      }
+    }, {
+      key: "bindEventOnVideo",
+      value: function bindEventOnVideo(node) {
+        var remove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+        this.bindedEventInfo['video-dom'].concat(this.bindedEventInfo.video).forEach(function (_ref3) {
+          var _ref4 = _slicedToArray$1(_ref3, 2),
+              name = _ref4[0],
+              fn = _ref4[1];
+
+          remove ? events_2(node, name, fn) : events_1(node, name, fn);
+        });
+      }
+    }, {
+      key: "destroy",
+      value: function destroy() {
+        var _this = this;
+
+        this.kinds.forEach(function (target) {
+          if (target === 'kernel') {
+            _this.bindedEventInfo.kernel.forEach(function (_ref5) {
+              var _ref6 = _slicedToArray$1(_ref5, 2),
+                  name = _ref6[0],
+                  fn = _ref6[1];
+
+              _this.dispatcher.kernel.off(name, fn);
+            });
+          } else {
+            var targetDom = _this.getTargetDom(target);
+
+            _this.bindedEventInfo[target].forEach(function (_ref7) {
+              var _ref8 = _slicedToArray$1(_ref7, 2),
+                  name = _ref8[0],
+                  fn = _ref8[1];
+
+              events_2(targetDom, name, fn);
+
+              if (target === 'video-dom') {
+                _this.dispatcher.dom.videoExtendedNodes.forEach(function (node) {
+                  return events_2(node, name, fn);
+                });
+              }
+            });
+          }
+
+          _this.bindedEventInfo.kernel = [];
+          _this.bindedEventNames.kernel = [];
+        });
+      }
+    }, {
+      key: "emit",
+      value: function emit(_ref9) {
+        var _this$buses$target;
+
+        var name = _ref9.name,
+            stage = _ref9.stage,
+            rawTarget = _ref9.target;
+
+        var _getEventInfo = getEventInfo({
+          name: name,
+          target: rawTarget,
+          stage: stage
+        }),
+            target = _getEventInfo.target;
+
+        for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          args[_key - 1] = arguments[_key];
+        }
+
+        return (_this$buses$target = this.buses[target]).emit.apply(_this$buses$target, [name].concat(args));
+      }
+    }, {
+      key: "emitSync",
+      value: function emitSync(_ref10) {
+        var _this$buses$target2;
+
+        var name = _ref10.name,
+            stage = _ref10.stage,
+            rawTarget = _ref10.target;
+
+        var _getEventInfo2 = getEventInfo({
+          name: name,
+          target: rawTarget,
+          stage: stage
+        }),
+            target = _getEventInfo2.target;
+
+        for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+          args[_key2 - 1] = arguments[_key2];
+        }
+
+        return (_this$buses$target2 = this.buses[target]).emitSync.apply(_this$buses$target2, [name].concat(args));
+      }
+    }, {
+      key: "listenOnMouseMoveEvent",
+      value: function listenOnMouseMoveEvent(node) {
+        var _this2 = this;
+
+        var dom = this.dispatcher.dom;
+        var target = 'video-dom';
+        var id = '_vm';
+        mustListenVideoDomEvents.forEach(function (name) {
+          var fn = function fn() {
+            for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+              args[_key3] = arguments[_key3];
+            }
+
+            var _args$ = args[0],
+                toElement = _args$.toElement,
+                currentTarget = _args$.currentTarget,
+                relatedTarget = _args$.relatedTarget,
+                type = _args$.type;
+            var to = toElement || relatedTarget;
+
+            if (dom.mouseInVideo && type === 'mouseleave' && !dom.isNodeInsideVideo(to)) {
+              dom.mouseInVideo = false;
+              return _this2.triggerSync.apply(_this2, [{
+                id: id,
+                name: name,
+                target: target
+              }].concat(args));
+            }
+
+            if (!dom.mouseInVideo && type === 'mouseenter' && dom.isNodeInsideVideo(currentTarget)) {
+              dom.mouseInVideo = true;
+              return _this2.triggerSync.apply(_this2, [{
+                id: id,
+                name: name,
+                target: target
+              }].concat(args));
+            }
+          };
+
+          events_1(node, name, fn);
+
+          if (_this2.bindedEventNames[target].indexOf(name) < 0) {
+            _this2.bindedEventNames[target].push(name);
+
+            _this2.bindedEventInfo[target].push([name, fn]);
+          }
+        });
+      }
+    }, {
+      key: "migrateKernelEvent",
+      value: function migrateKernelEvent(oldKernel, newKernel) {
+        var bindedEventInfoList = this.bindedEventInfo.kernel;
+        bindedEventInfoList.forEach(function (_ref11) {
+          var _ref12 = _slicedToArray$1(_ref11, 2),
+              name = _ref12[0],
+              fn = _ref12[1];
+
+          oldKernel.off(name, fn);
+          newKernel.on(name, fn);
+        });
+      }
+    }, {
+      key: "off",
+      value: function off(info) {
+        var _prettifyEventParamet = prettifyEventParameter(info),
+            id = _prettifyEventParamet.id,
+            name = _prettifyEventParamet.name,
+            fn = _prettifyEventParamet.fn,
+            stage = _prettifyEventParamet.stage,
+            target = _prettifyEventParamet.target;
+
+        var ret = this.buses[target].off(id, name, fn, stage);
+        this.removeEventListenerOnTargetWhenIsUseless({
+          name: name,
+          target: target
+        });
+        return ret;
+      }
+    }, {
+      key: "on",
+      value: function on(info) {
+        var _prettifyEventParamet2 = prettifyEventParameter(info),
+            id = _prettifyEventParamet2.id,
+            name = _prettifyEventParamet2.name,
+            fn = _prettifyEventParamet2.fn,
+            stage = _prettifyEventParamet2.stage,
+            target = _prettifyEventParamet2.target;
+
+        this.addEventListenerOnTarget({
+          id: id,
+          name: name,
+          target: target
+        });
+        return this.buses[target].on(id, name, fn, stage);
+      }
+    }, {
+      key: "once",
+      value: function once(info) {
+        var _prettifyEventParamet3 = prettifyEventParameter(info),
+            id = _prettifyEventParamet3.id,
+            name = _prettifyEventParamet3.name,
+            fn = _prettifyEventParamet3.fn,
+            stage = _prettifyEventParamet3.stage,
+            target = _prettifyEventParamet3.target;
+
+        return this.buses[target].once(id, name, fn, stage);
+      }
+    }, {
+      key: "trigger",
+      value: function trigger(_ref13) {
+        var _this$buses$target3;
+
+        var name = _ref13.name,
+            stage = _ref13.stage,
+            rawTarget = _ref13.target;
+
+        var _getEventInfo3 = getEventInfo({
+          name: name,
+          target: rawTarget,
+          stage: stage
+        }),
+            target = _getEventInfo3.target;
+
+        for (var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+          args[_key4 - 1] = arguments[_key4];
+        }
+
+        return (_this$buses$target3 = this.buses[target]).trigger.apply(_this$buses$target3, [name].concat(args));
+      }
+    }, {
+      key: "triggerSync",
+      value: function triggerSync(_ref14) {
+        var _this$buses$target4;
+
+        var name = _ref14.name,
+            stage = _ref14.stage,
+            rawTarget = _ref14.target;
+
+        var _getEventInfo4 = getEventInfo({
+          name: name,
+          target: rawTarget,
+          stage: stage
+        }),
+            target = _getEventInfo4.target;
+
+        for (var _len5 = arguments.length, args = new Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
+          args[_key5 - 1] = arguments[_key5];
+        }
+
+        return (_this$buses$target4 = this.buses[target]).triggerSync.apply(_this$buses$target4, [name].concat(args));
+      }
+    }, {
+      key: "addEventListenerOnTarget",
+      value: function addEventListenerOnTarget(_ref15) {
+        var _this3 = this;
+
+        var name = _ref15.name,
+            target = _ref15.target,
+            id = _ref15.id;
+
+        if (!this.isEventNeedToBeHandled(target, name)) {
+          return;
+        }
+
+        var fn;
+
+        if (this.bindedEventNames[target].indexOf(name) > -1) {
+          return;
+        }
+
+        var targetDom = this.getTargetDom(target);
+
+        if (target === 'kernel') {
+          if (!this.dispatcher.kernel) {
+            this.addPendingEvent(target, name, id);
+            return;
+          }
+
+          fn = function fn() {
+            for (var _len6 = arguments.length, args = new Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+              args[_key6] = arguments[_key6];
+            }
+
+            return _this3.triggerSync.apply(_this3, [{
+              target: target,
+              name: name,
+              id: 'kernel'
+            }].concat(args));
+          };
+
+          this.dispatcher.kernel.on(name, fn);
+        } else if (target === 'container' || target === 'wrapper') {
+          fn = function fn() {
+            for (var _len7 = arguments.length, args = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
+              args[_key7] = arguments[_key7];
+            }
+
+            return _this3.triggerSync.apply(_this3, [{
+              target: target,
+              name: name,
+              id: target
+            }].concat(args));
+          };
+
+          events_1(targetDom, name, fn);
+        } else if (target === 'video') {
+          fn = function fn() {
+            for (var _len8 = arguments.length, args = new Array(_len8), _key8 = 0; _key8 < _len8; _key8++) {
+              args[_key8] = arguments[_key8];
+            }
+
+            return _this3.trigger.apply(_this3, [{
+              target: target,
+              name: name,
+              id: target
+            }].concat(args));
+          };
+
+          events_1(targetDom, name, fn);
+        } else if (target === 'video-dom') {
+          fn = function fn() {
+            for (var _len9 = arguments.length, args = new Array(_len9), _key9 = 0; _key9 < _len9; _key9++) {
+              args[_key9] = arguments[_key9];
+            }
+
+            return _this3.triggerSync.apply(_this3, [{
+              target: target,
+              name: name,
+              id: target
+            }].concat(args));
+          };
+
+          this.dispatcher.dom.videoExtendedNodes.forEach(function (node) {
+            return events_1(node, name, fn);
+          });
+          events_1(targetDom, name, fn);
+        }
+
+        this.bindedEventNames[target].push(name);
+        this.bindedEventInfo[target].push([name, fn]);
+      }
+    }, {
+      key: "getTargetDom",
+      value: function getTargetDom(target) {
+        var targetDom;
+
+        switch (target) {
+          case 'container':
+          case 'wrapper':
+            targetDom = this.dispatcher.dom[target];
+            break;
+
+          default:
+            targetDom = this.dispatcher.dom.videoElement;
+            break;
+        }
+
+        return targetDom;
+      }
+    }, {
+      key: "isEventNeedToBeHandled",
+      value: function isEventNeedToBeHandled(target, name) {
+        return target !== 'plugin' && target !== 'esFullscreen' && (!isMustListenVideoDomEvent(name) || target !== 'video');
+      }
+    }, {
+      key: "removeEventListenerOnTargetWhenIsUseless",
+      value: function removeEventListenerOnTargetWhenIsUseless(_ref16) {
+        var name = _ref16.name,
+            target = _ref16.target;
+
+        if (!this.isEventNeedToBeHandled(target, name)) {
+          return;
+        }
+
+        var eventNamesList = this.bindedEventNames[target];
+        var nameIndex = eventNamesList.indexOf(name);
+
+        if (nameIndex < 0) {
+          return;
+        }
+
+        if (this.buses[target].hasEvents()) {
+          return;
+        }
+
+        var bindedEventInfoList = this.bindedEventInfo[target];
+        var fn;
+        var index;
+
+        for (index = 0; index < bindedEventInfoList.length; index++) {
+          if (bindedEventInfoList[index][0] === name) {
+            fn = bindedEventInfoList[index][1];
+            break;
+          }
+        }
+
+        if (!isFunction(fn)) {
+          return;
+        }
+
+        if (target === 'kernel') {
+          this.dispatcher.kernel.off(name, fn);
+        } else {
+          var targetDom = this.getTargetDom(target);
+          events_2(targetDom, name, fn);
+
+          if (target === 'video-dom') {
+            this.dispatcher.dom.videoExtendedNodes.forEach(function (node) {
+              events_2(node, name, fn);
+            });
+          }
+        }
+
+        bindedEventInfoList.splice(index, 1);
+        eventNamesList.splice(nameIndex, 1);
+      }
+    }]);
+
+    return Binder;
+  }();
+
+  __decorate$3([runnable(isEventEmitalbe)], Binder.prototype, "emit", null);
+
+  __decorate$3([runnable(isEventEmitalbe, {
+    backup: function backup() {
+      return false;
+    }
+  })], Binder.prototype, "emitSync", null);
+
+  __decorate$3([runnable(isEventEmitalbe)], Binder.prototype, "trigger", null);
+
+  __decorate$3([runnable(isEventEmitalbe, {
+    backup: function backup() {
+      return false;
+    }
+  })], Binder.prototype, "triggerSync", null);
+
+  var interopRequireWildcard = createCommonjsModule(function (module) {
   function _interopRequireWildcard(obj) {
     if (obj && obj.__esModule) {
       return obj;
@@ -17798,7 +11457,7 @@
 
   unwrapExports(interopRequireWildcard);
 
-  var _extends_1 = createCommonjsModule$4(function (module) {
+  var _extends_1 = createCommonjsModule(function (module) {
   function _extends() {
     module.exports = _extends = Object.assign || function (target) {
       for (var i = 1; i < arguments.length; i++) {
@@ -17820,7 +11479,7 @@
   module.exports = _extends;
   });
 
-  var camelize_1 = createCommonjsModule$4(function (module, exports) {
+  var camelize_1 = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
   exports.default = camelize;
@@ -17837,7 +11496,7 @@
 
   unwrapExports(camelize_1);
 
-  var camelizeStyle = createCommonjsModule$4(function (module, exports) {
+  var camelizeStyle = createCommonjsModule(function (module, exports) {
 
 
 
@@ -17862,7 +11521,7 @@
 
   unwrapExports(camelizeStyle);
 
-  var hyphenate_1 = createCommonjsModule$4(function (module, exports) {
+  var hyphenate_1 = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
   exports.default = hyphenate;
@@ -17877,7 +11536,7 @@
 
   unwrapExports(hyphenate_1);
 
-  var hyphenateStyle = createCommonjsModule$4(function (module, exports) {
+  var hyphenateStyle = createCommonjsModule(function (module, exports) {
 
 
 
@@ -17902,7 +11561,7 @@
 
   unwrapExports(hyphenateStyle);
 
-  var getComputedStyle = createCommonjsModule$4(function (module, exports) {
+  var getComputedStyle = createCommonjsModule(function (module, exports) {
 
 
 
@@ -17950,7 +11609,7 @@
 
   unwrapExports(getComputedStyle);
 
-  var removeStyle_1 = createCommonjsModule$4(function (module, exports) {
+  var removeStyle_1 = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
   exports.default = removeStyle;
@@ -17964,7 +11623,7 @@
 
   unwrapExports(removeStyle_1);
 
-  var properties = createCommonjsModule$4(function (module, exports) {
+  var properties = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18071,7 +11730,7 @@
   var properties_10 = properties.transitionProperty;
   var properties_11 = properties.transform;
 
-  var isTransform_1 = createCommonjsModule$4(function (module, exports) {
+  var isTransform_1 = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
   exports.default = isTransform;
@@ -18086,7 +11745,7 @@
 
   unwrapExports(isTransform_1);
 
-  var style_1 = createCommonjsModule$4(function (module, exports) {
+  var style_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18142,7 +11801,7 @@
 
   unwrapExports(style_1);
 
-  var matches_1 = createCommonjsModule$4(function (module, exports) {
+  var matches_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18183,7 +11842,7 @@
 
   unwrapExports(matches_1);
 
-  var isWindow = createCommonjsModule$4(function (module, exports) {
+  var isWindow = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
   exports.default = getWindow;
@@ -18197,7 +11856,7 @@
 
   unwrapExports(isWindow);
 
-  var ownerDocument_1 = createCommonjsModule$4(function (module, exports) {
+  var ownerDocument_1 = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
   exports.default = ownerDocument;
@@ -18211,7 +11870,7 @@
 
   unwrapExports(ownerDocument_1);
 
-  var offset_1 = createCommonjsModule$4(function (module, exports) {
+  var offset_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18253,7 +11912,7 @@
 
   unwrapExports(offset_1);
 
-  var height_1 = createCommonjsModule$4(function (module, exports) {
+  var height_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18274,7 +11933,7 @@
 
   unwrapExports(height_1);
 
-  var width_1 = createCommonjsModule$4(function (module, exports) {
+  var width_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18295,7 +11954,7 @@
 
   unwrapExports(width_1);
 
-  var offsetParent_1 = createCommonjsModule$4(function (module, exports) {
+  var offsetParent_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18326,7 +11985,7 @@
 
   unwrapExports(offsetParent_1);
 
-  var scrollTop_1 = createCommonjsModule$4(function (module, exports) {
+  var scrollTop_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18346,7 +12005,7 @@
 
   unwrapExports(scrollTop_1);
 
-  var scrollLeft = createCommonjsModule$4(function (module, exports) {
+  var scrollLeft = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18366,7 +12025,7 @@
 
   unwrapExports(scrollLeft);
 
-  var position_1 = createCommonjsModule$4(function (module, exports) {
+  var position_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18419,7 +12078,7 @@
 
   unwrapExports(position_1);
 
-  var scrollParent = createCommonjsModule$4(function (module, exports) {
+  var scrollParent = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18451,7 +12110,7 @@
 
   unwrapExports(scrollParent);
 
-  var closest_1 = createCommonjsModule$4(function (module, exports) {
+  var closest_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18477,7 +12136,7 @@
 
   unwrapExports(closest_1);
 
-  var query = createCommonjsModule$4(function (module, exports) {
+  var query = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18556,7 +12215,7 @@
   var query_10 = query.querySelectorAll;
   var query_11 = query.closest;
 
-  var activeElement_1 = createCommonjsModule$4(function (module, exports) {
+  var activeElement_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18582,7 +12241,7 @@
 
   unwrapExports(activeElement_1);
 
-  var ownerWindow_1 = createCommonjsModule$4(function (module, exports) {
+  var ownerWindow_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18601,7 +12260,7 @@
 
   unwrapExports(ownerWindow_1);
 
-  var requestAnimationFrame$1 = createCommonjsModule$4(function (module, exports) {
+  var requestAnimationFrame$1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18659,7 +12318,7 @@
 
   unwrapExports(requestAnimationFrame$1);
 
-  var domHelpers = createCommonjsModule$4(function (module, exports) {
+  var domHelpers = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18731,7 +12390,7 @@
   var domHelpers_4 = domHelpers.ownerWindow;
   var domHelpers_5 = domHelpers.requestAnimationFrame;
 
-  var hasClass_1 = createCommonjsModule$4(function (module, exports) {
+  var hasClass_1 = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
   exports.default = hasClass;
@@ -18745,7 +12404,7 @@
 
   unwrapExports(hasClass_1);
 
-  var addClass_1 = createCommonjsModule$4(function (module, exports) {
+  var addClass_1 = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18771,7 +12430,7 @@
     if (element.classList) element.classList.remove(className);else if (typeof element.className === 'string') element.className = replaceClassName(element.className, className);else element.setAttribute('class', replaceClassName(element.className && element.className.baseVal || '', className));
   };
 
-  var _class = createCommonjsModule$4(function (module, exports) {
+  var _class = createCommonjsModule(function (module, exports) {
 
 
 
@@ -18802,357 +12461,420 @@
   var _class_2 = _class.removeClass;
   var _class_3 = _class.hasClass;
 
-  var __decorate$4 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-      var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-      if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-      else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-      return c > 3 && r && Object.defineProperty(target, key, r), r;
+  var __decorate$4 = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+      if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    }
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
   };
-  class Dom {
-      constructor(config, dispatcher) {
-          const { wrapper } = config;
-          this.dispatcher = dispatcher;
-          this.mouseInVideoValue = false;
-          this.destroyed = false;
-          this.isFullscreen = false;
-          this.originHTML = '';
-          this.plugins = {};
-          this.videoExtendedNodesArray = [];
-          if (isString$1(wrapper)) {
-              const $wrapper = query_10(document.body, wrapper);
-              if ($wrapper.length === 0) {
-                  throw new TypeError('Can not get dom node accroding wrapper. Please check your wrapper');
-              }
-              this.wrapper = $wrapper[0];
-          }
-          else if (isElement(wrapper)) {
-              this.wrapper = wrapper;
-          }
-          else {
-              throw new TypeError(`Wrapper can only be string or HTMLElement, but not ${typeof wrapper}`);
-          }
-          this.originHTML = this.wrapper.innerHTML;
-          let videoElement = query_10(this.wrapper, 'video')[0];
-          if (!videoElement) {
-              videoElement = document.createElement('video');
-          }
-          this.installVideo(videoElement);
-          this.fullscreenMonitor();
-          esFullscreen.on('fullscreenchange', this.fullscreenMonitor);
-          const videoRequiredGuardedAttributes = isArray$1(config.videoRequiredGuardedAttributes)
-              ? config.videoRequiredGuardedAttributes
-              : [];
-          if (videoRequiredGuardedAttributes.indexOf('style') < 0) {
-              videoRequiredGuardedAttributes.unshift('style');
-          }
-          this.videoRequireGuardedAttributes = videoRequiredGuardedAttributes;
+
+  var Dom =
+  /*#__PURE__*/
+  function () {
+    function Dom(config, dispatcher) {
+      _classCallCheck(this, Dom);
+
+      var wrapper = config.wrapper;
+      this.dispatcher = dispatcher;
+      this.mouseInVideoValue = false;
+      this.destroyed = false;
+      this.isFullscreen = false;
+      this.originHTML = '';
+      this.plugins = {};
+      this.videoExtendedNodesArray = [];
+
+      if (isString$1(wrapper)) {
+        var $wrapper = query_10(document.body, wrapper);
+
+        if ($wrapper.length === 0) {
+          throw new TypeError('Can not get dom node accroding wrapper. Please check your wrapper');
+        }
+
+        this.wrapper = $wrapper[0];
+      } else if (isElement(wrapper)) {
+        this.wrapper = wrapper;
+      } else {
+        throw new TypeError("Wrapper can only be string or HTMLElement, but not ".concat(_typeof(wrapper)));
       }
-      get mouseInVideo() {
-          return this.mouseInVideoValue;
+
+      this.originHTML = this.wrapper.innerHTML;
+      var videoElement = query_10(this.wrapper, 'video')[0];
+
+      if (!videoElement) {
+        videoElement = document.createElement('video');
       }
-      set mouseInVideo(val) {
-          this.mouseInVideoValue = !!val;
+
+      this.installVideo(videoElement);
+      this.fullscreenMonitor();
+      esFullscreen.on('fullscreenchange', this.fullscreenMonitor);
+      var videoRequiredGuardedAttributes = isArray$1(config.videoRequiredGuardedAttributes) ? config.videoRequiredGuardedAttributes : [];
+
+      if (videoRequiredGuardedAttributes.indexOf('style') < 0) {
+        videoRequiredGuardedAttributes.unshift('style');
       }
-      get videoExtendedNodes() {
-          return this.videoExtendedNodesArray;
+
+      this.videoRequireGuardedAttributes = videoRequiredGuardedAttributes;
+    }
+
+    _createClass(Dom, [{
+      key: "destroy",
+      value: function destroy() {
+        this.removeVideo();
+        esFullscreen.off('fullscreenchange', this.fullscreenMonitor);
+        this.wrapper.innerHTML = this.originHTML;
+        delete this.wrapper;
+        delete this.plugins;
+        this.destroyed = true;
       }
-      destroy() {
-          this.removeVideo();
-          esFullscreen.off('fullscreenchange', this.fullscreenMonitor);
-          this.wrapper.innerHTML = this.originHTML;
-          delete this.wrapper;
-          delete this.plugins;
-          this.destroyed = true;
+    }, {
+      key: "exitFullscreen",
+      value: function exitFullscreen() {
+        return esFullscreen.exit();
       }
-      exitFullscreen() {
-          return esFullscreen.exit();
+    }, {
+      key: "focus",
+      value: function focus() {
+        this.videoElement.focus();
       }
-      focus() {
-          this.videoElement.focus();
+    }, {
+      key: "fullscreen",
+      value: function fullscreen() {
+        var request = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+        var target = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'container';
+        return request ? this.requestFullscreen(target) : this.exitFullscreen();
       }
-      fullscreen(request = true, target = 'container') {
-          return request
-              ? this.requestFullscreen(target)
-              : this.exitFullscreen();
+    }, {
+      key: "getAttr",
+      value: function getAttr(target, attr) {
+        return this[target].getAttribute(attr);
       }
-      getAttr(target, attr) {
-          return this[target].getAttribute(attr);
+    }, {
+      key: "getStyle",
+      value: function getStyle(target, attr) {
+        if (!isString$1(attr)) {
+          throw new TypeError("to handle dom's attribute or style, your attr parameter must be string, but not ".concat(attr, " in ").concat(_typeof(attr)));
+        }
+
+        if (!isString$1(target)) {
+          throw new TypeError("to handle dom's attribute or style, your target parameter must be string, , but not ".concat(target, " in ").concat(_typeof(target)));
+        }
+
+        if (!isElement(this[target])) {
+          throw new TypeError("Your target \"".concat(target, "\" is not a legal HTMLElement"));
+        }
+
+        return domHelpers_1(this[target], attr);
       }
-      getStyle(target, attr) {
-          if (!isString$1(attr)) {
-              throw new TypeError(`to handle dom's attribute or style, your attr parameter must be string, but not ${attr} in ${typeof attr}`);
+    }, {
+      key: "insertPlugin",
+      value: function insertPlugin(id, el) {
+        var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+        if (!isString$1(id)) {
+          throw new TypeError('insertPlugin id parameter must be string');
+        }
+
+        if (isElement(this.plugins[id])) {
+          {
+            chimeeLog.warn('Dispatcher.dom', "Plugin ".concat(id, " have already had a dom node. Now it will be replaced"));
           }
-          if (!isString$1(target)) {
-              throw new TypeError(`to handle dom's attribute or style, your target parameter must be string, , but not ${target} in ${typeof target}`);
+
+          this.removePlugin(id);
+        }
+
+        if (isString$1(el)) {
+          if (isHTMLString(el)) {
+            var outer = document.createElement('div');
+            outer.innerHTML = el;
+            el = outer.children[0];
+          } else {
+            el = document.createElement(hypenate(el));
           }
-          if (!isElement(this[target])) {
-              throw new TypeError(`Your target "${target}" is not a legal HTMLElement`);
-          }
-          return domHelpers_1(this[target], attr);
-      }
-      insertPlugin(id, el, option = {}) {
-          if (!isString$1(id)) {
-              throw new TypeError('insertPlugin id parameter must be string');
-          }
-          if (isElement(this.plugins[id])) {
-              {
-                  chimeeLog.warn('Dispatcher.dom', `Plugin ${id} have already had a dom node. Now it will be replaced`);
-              }
-              this.removePlugin(id);
-          }
-          if (isString$1(el)) {
-              if (isHTMLString(el)) {
-                  const outer = document.createElement('div');
-                  outer.innerHTML = el;
-                  el = outer.children[0];
-              }
-              else {
-                  el = document.createElement(hypenate(el));
-              }
-          }
-          else if (el && isPlainObject(el)) {
-              option = el;
-          }
-          const { inner, penetrate, className } = option;
-          const node = (el && isElement(el)) ? el : document.createElement('div');
-          const classNames = isString$1(className)
-              ? className.split(/\s+/)
-              : isArray$1(className)
-                  ? className
-                  : [];
-          classNames.forEach((name) => {
-              _class_1(node, name);
-          });
-          this.plugins[id] = node;
-          const outerElement = inner ? this.container : this.wrapper;
-          const originElement = inner ? this.videoElement : this.container;
-          if (penetrate) {
-              this.dispatcher.binder.bindEventOnPenetrateNode(node);
-              this.videoExtendedNodesArray.push(node);
-          }
-          if (outerElement.lastChild === originElement) {
-              outerElement.appendChild(node);
-              return node;
-          }
-          outerElement.insertBefore(node, originElement.nextSibling);
+        } else if (el && isPlainObject(el)) {
+          option = el;
+        }
+
+        var _option = option,
+            inner = _option.inner,
+            penetrate = _option.penetrate,
+            className = _option.className;
+        var node = el && isElement(el) ? el : document.createElement('div');
+        var classNames = isString$1(className) ? className.split(/\s+/) : isArray$1(className) ? className : [];
+        classNames.forEach(function (name) {
+          _class_1(node, name);
+        });
+        this.plugins[id] = node;
+        var outerElement = inner ? this.container : this.wrapper;
+        var originElement = inner ? this.videoElement : this.container;
+
+        if (penetrate) {
+          this.dispatcher.binder.bindEventOnPenetrateNode(node);
+          this.videoExtendedNodesArray.push(node);
+        }
+
+        if (outerElement.lastChild === originElement) {
+          outerElement.appendChild(node);
           return node;
-      }
-      installVideo(videoElement) {
-          this.videoExtendedNodesArray.push(videoElement);
-          videoElement.setAttribute('tabindex', '-1');
-          this.autoFocusToVideo(videoElement);
-          if (!isElement(this.container)) {
-              if (videoElement.parentElement &&
-                  isElement(videoElement.parentElement) &&
-                  videoElement.parentElement !== this.wrapper) {
-                  this.container = videoElement.parentElement;
-              }
-              else {
-                  this.container = document.createElement('container');
-                  this.container.appendChild(videoElement);
-              }
-          }
-          else {
-              const container = this.container;
-              if (container.childNodes.length === 0) {
-                  container.appendChild(videoElement);
-              }
-              else {
-                  container.insertBefore(videoElement, container.childNodes[0]);
-              }
-          }
-          if (this.container.parentElement !== this.wrapper) {
-              this.wrapper.appendChild(this.container);
-          }
-          this.videoElement = videoElement;
-          return videoElement;
-      }
-      isNodeInsideVideo(node) {
-          return this.videoExtendedNodesArray.indexOf(node) > -1 ||
-              this.videoExtendedNodesArray.reduce((flag, video) => {
-                  if (flag) {
-                      return flag;
-                  }
-                  return isPosterityNode(video, node);
-              }, false);
-      }
-      migrateVideoRequiredGuardedAttributes(video) {
-          const guardedAttributesAndValue = this.videoRequireGuardedAttributes.map((attr) => ([attr, this.videoElement.getAttribute(attr)]));
-          guardedAttributesAndValue.forEach(([attr, value]) => { video.setAttribute(attr, value); });
-      }
-      removePlugin(id) {
-          if (!isString$1(id)) {
-              return;
-          }
-          const dom = this.plugins[id];
-          if (isElement(dom)) {
-              if (dom.parentNode) {
-                  dom.parentNode.removeChild(dom);
-              }
-              this.autoFocusToVideo(dom, true);
-          }
-          const { penetrate = false } = this.dispatcher.getPluginConfig(id) || {};
-          if (penetrate) {
-              this.dispatcher.binder.bindEventOnPenetrateNode(dom, true);
-          }
-          delete this.plugins[id];
-      }
-      removeVideo() {
-          const videoElement = this.videoElement;
-          this.autoFocusToVideo(this.videoElement, false);
-          if (this.dispatcher.binder) {
-              this.dispatcher.binder.bindEventOnVideo(videoElement, true);
-          }
-          if (this.videoElement.parentNode) {
-              this.videoElement.parentNode.removeChild(this.videoElement);
-          }
-          delete this.videoElement;
-          return videoElement;
-      }
-      requestFullscreen(target) {
-          if (target === 'video') {
-              target = 'videoElement';
-          }
-          return esFullscreen.open(this[target]);
-      }
-      setAttr(target, attr, val) {
-          if (typeof val === 'undefined') {
-              this[target].removeAttribute(attr);
-              return;
-          }
-          this[target].setAttribute(attr, val);
-      }
-      setPluginsZIndex(plugins) {
-          plugins.forEach((key, index) => domHelpers_1(key.match(/^(videoElement|container)$/) ? this[key] : this.plugins[key], 'z-index', ++index));
-      }
-      setStyle(target, attr, val) {
-          if (!isString$1(attr)) {
-              throw new TypeError(`to handle dom's attribute or style, your attr parameter must be string, but not ${attr} in ${typeof attr}`);
-          }
-          if (!isString$1(target)) {
-              throw new TypeError(`to handle dom's attribute or style, your target parameter must be string, , but not ${target} in ${typeof target}`);
-          }
-          if (!isElement(this[target])) {
-              throw new TypeError(`Your target "${target}" is not a legal HTMLElement`);
-          }
-          domHelpers_1(this[target], attr, val);
-      }
-      autoFocusToVideo(element, remove = false) {
-          if (!isElement(element)) {
-              return;
-          }
-          (remove ? events_2 : events_1)(element, 'mouseup', this.focusToVideo);
-          (remove ? events_2 : events_1)(element, 'touchend', this.focusToVideo);
-      }
-      focusToVideo() {
-          const x = window.scrollX;
-          const y = window.scrollY;
-          if (isFunction(this.videoElement.focus)) {
-              this.videoElement.focus();
-          }
-          window.scrollTo(x, y);
-      }
-      fullscreenMonitor(evt) {
-          const element = esFullscreen.fullscreenElement;
-          const original = this.isFullscreen;
-          if (!element || (!isPosterityNode(this.wrapper, element) && element !== this.wrapper)) {
-              this.isFullscreen = false;
-              this.fullscreenElement = undefined;
-          }
-          else {
-              this.isFullscreen = true;
-              this.fullscreenElement = this.wrapper === element
-                  ? 'wrapper'
-                  : this.container === element
-                      ? 'container'
-                      : this.videoElement === element
-                          ? 'video'
-                          : element;
-          }
-          if (isEvent(evt) && original !== this.isFullscreen) {
-              this.dispatcher.binder.triggerSync({
-                  id: 'dispatcher',
-                  name: 'fullscreenchange',
-                  target: 'esFullscreen',
-              }, evt);
-          }
-      }
-  }
-  __decorate$4([
-      waituntil('dispatcher.videoConfigReady')
-  ], Dom.prototype, "setAttr", null);
-  __decorate$4([
-      autobind
-  ], Dom.prototype, "focusToVideo", null);
-  __decorate$4([
-      autobind
-  ], Dom.prototype, "fullscreenMonitor", null);
+        }
 
-  // Copyright Joyent, Inc. and other Node contributors.
+        outerElement.insertBefore(node, originElement.nextSibling);
+        return node;
+      }
+    }, {
+      key: "installVideo",
+      value: function installVideo(videoElement) {
+        this.videoExtendedNodesArray.push(videoElement);
+        videoElement.setAttribute('tabindex', '-1');
+        this.autoFocusToVideo(videoElement);
 
-  var R = typeof Reflect === 'object' ? Reflect : null;
-  var ReflectApply = R && typeof R.apply === 'function'
-    ? R.apply
-    : function ReflectApply(target, receiver, args) {
-      return Function.prototype.apply.call(target, receiver, args);
-    };
+        if (!isElement(this.container)) {
+          if (videoElement.parentElement && isElement(videoElement.parentElement) && videoElement.parentElement !== this.wrapper) {
+            this.container = videoElement.parentElement;
+          } else {
+            this.container = document.createElement('container');
+            this.container.appendChild(videoElement);
+          }
+        } else {
+          var container = this.container;
 
-  var ReflectOwnKeys;
-  if (R && typeof R.ownKeys === 'function') {
-    ReflectOwnKeys = R.ownKeys;
-  } else if (Object.getOwnPropertySymbols) {
-    ReflectOwnKeys = function ReflectOwnKeys(target) {
-      return Object.getOwnPropertyNames(target)
-        .concat(Object.getOwnPropertySymbols(target));
-    };
-  } else {
-    ReflectOwnKeys = function ReflectOwnKeys(target) {
-      return Object.getOwnPropertyNames(target);
-    };
-  }
+          if (container.childNodes.length === 0) {
+            container.appendChild(videoElement);
+          } else {
+            container.insertBefore(videoElement, container.childNodes[0]);
+          }
+        }
 
-  function ProcessEmitWarning(warning) {
-    if (console && console.warn) console.warn(warning);
-  }
+        if (this.container.parentElement !== this.wrapper) {
+          this.wrapper.appendChild(this.container);
+        }
 
-  var NumberIsNaN = Number.isNaN || function NumberIsNaN(value) {
-    return value !== value;
-  };
+        this.videoElement = videoElement;
+        return videoElement;
+      }
+    }, {
+      key: "isNodeInsideVideo",
+      value: function isNodeInsideVideo(node) {
+        return this.videoExtendedNodesArray.indexOf(node) > -1 || this.videoExtendedNodesArray.reduce(function (flag, video) {
+          if (flag) {
+            return flag;
+          }
+
+          return isPosterityNode(video, node);
+        }, false);
+      }
+    }, {
+      key: "migrateVideoRequiredGuardedAttributes",
+      value: function migrateVideoRequiredGuardedAttributes(video) {
+        var _this = this;
+
+        var guardedAttributesAndValue = this.videoRequireGuardedAttributes.map(function (attr) {
+          return [attr, _this.videoElement.getAttribute(attr)];
+        });
+        guardedAttributesAndValue.forEach(function (_ref) {
+          var _ref2 = _slicedToArray$1(_ref, 2),
+              attr = _ref2[0],
+              value = _ref2[1];
+
+          video.setAttribute(attr, value);
+        });
+      }
+    }, {
+      key: "removePlugin",
+      value: function removePlugin(id) {
+        if (!isString$1(id)) {
+          return;
+        }
+
+        var dom = this.plugins[id];
+
+        if (isElement(dom)) {
+          if (dom.parentNode) {
+            dom.parentNode.removeChild(dom);
+          }
+
+          this.autoFocusToVideo(dom, true);
+        }
+
+        var _ref3 = this.dispatcher.getPluginConfig(id) || {},
+            _ref3$penetrate = _ref3.penetrate,
+            penetrate = _ref3$penetrate === void 0 ? false : _ref3$penetrate;
+
+        if (penetrate) {
+          this.dispatcher.binder.bindEventOnPenetrateNode(dom, true);
+        }
+
+        delete this.plugins[id];
+      }
+    }, {
+      key: "removeVideo",
+      value: function removeVideo() {
+        var videoElement = this.videoElement;
+        this.autoFocusToVideo(this.videoElement, false);
+
+        if (this.dispatcher.binder) {
+          this.dispatcher.binder.bindEventOnVideo(videoElement, true);
+        }
+
+        if (this.videoElement.parentNode) {
+          this.videoElement.parentNode.removeChild(this.videoElement);
+        }
+
+        delete this.videoElement;
+        return videoElement;
+      }
+    }, {
+      key: "requestFullscreen",
+      value: function requestFullscreen(target) {
+        if (target === 'video') {
+          target = 'videoElement';
+        }
+
+        return esFullscreen.open(this[target]);
+      }
+    }, {
+      key: "setAttr",
+      value: function setAttr(target, attr, val) {
+        if (typeof val === 'undefined') {
+          this[target].removeAttribute(attr);
+          return;
+        }
+
+        this[target].setAttribute(attr, val);
+      }
+    }, {
+      key: "setPluginsZIndex",
+      value: function setPluginsZIndex(plugins) {
+        var _this2 = this;
+
+        plugins.forEach(function (key, index) {
+          return domHelpers_1(key.match(/^(videoElement|container)$/) ? _this2[key] : _this2.plugins[key], 'z-index', ++index);
+        });
+      }
+    }, {
+      key: "setStyle",
+      value: function setStyle(target, attr, val) {
+        if (!isString$1(attr)) {
+          throw new TypeError("to handle dom's attribute or style, your attr parameter must be string, but not ".concat(attr, " in ").concat(_typeof(attr)));
+        }
+
+        if (!isString$1(target)) {
+          throw new TypeError("to handle dom's attribute or style, your target parameter must be string, , but not ".concat(target, " in ").concat(_typeof(target)));
+        }
+
+        if (!isElement(this[target])) {
+          throw new TypeError("Your target \"".concat(target, "\" is not a legal HTMLElement"));
+        }
+
+        domHelpers_1(this[target], attr, val);
+      }
+    }, {
+      key: "autoFocusToVideo",
+      value: function autoFocusToVideo(element) {
+        var remove = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+        if (!isElement(element)) {
+          return;
+        }
+
+        (remove ? events_2 : events_1)(element, 'mouseup', this.focusToVideo);
+        (remove ? events_2 : events_1)(element, 'touchend', this.focusToVideo);
+      }
+    }, {
+      key: "focusToVideo",
+      value: function focusToVideo() {
+        var x = window.scrollX;
+        var y = window.scrollY;
+
+        if (isFunction(this.videoElement.focus)) {
+          this.videoElement.focus();
+        }
+
+        window.scrollTo(x, y);
+      }
+    }, {
+      key: "fullscreenMonitor",
+      value: function fullscreenMonitor(evt) {
+        var element = esFullscreen.fullscreenElement;
+        var original = this.isFullscreen;
+
+        if (!element || !isPosterityNode(this.wrapper, element) && element !== this.wrapper) {
+          this.isFullscreen = false;
+          this.fullscreenElement = undefined;
+        } else {
+          this.isFullscreen = true;
+          this.fullscreenElement = this.wrapper === element ? 'wrapper' : this.container === element ? 'container' : this.videoElement === element ? 'video' : element;
+        }
+
+        if (isEvent(evt) && original !== this.isFullscreen) {
+          this.dispatcher.binder.triggerSync({
+            id: 'dispatcher',
+            name: 'fullscreenchange',
+            target: 'esFullscreen'
+          }, evt);
+        }
+      }
+    }, {
+      key: "mouseInVideo",
+      get: function get() {
+        return this.mouseInVideoValue;
+      },
+      set: function set(val) {
+        this.mouseInVideoValue = !!val;
+      }
+    }, {
+      key: "videoExtendedNodes",
+      get: function get() {
+        return this.videoExtendedNodesArray;
+      }
+    }]);
+
+    return Dom;
+  }();
+
+  __decorate$4([waituntil('dispatcher.videoConfigReady')], Dom.prototype, "setAttr", null);
+
+  __decorate$4([autobind], Dom.prototype, "focusToVideo", null);
+
+  __decorate$4([autobind], Dom.prototype, "fullscreenMonitor", null);
+
+  var domain;
+
+  // This constructor is used to store event handlers. Instantiating this is
+  // faster than explicitly calling `Object.create(null)` to get a "clean" empty
+  // object (tested with v8 v4.9).
+  function EventHandlers() {}
+  EventHandlers.prototype = Object.create(null);
 
   function EventEmitter() {
     EventEmitter.init.call(this);
   }
-  var events$1 = EventEmitter;
 
-  // Backwards-compat with node 0.10.x
+  // nodejs oddity
+  // require('events') === require('events').EventEmitter
   EventEmitter.EventEmitter = EventEmitter;
 
+  EventEmitter.usingDomains = false;
+
+  EventEmitter.prototype.domain = undefined;
   EventEmitter.prototype._events = undefined;
-  EventEmitter.prototype._eventsCount = 0;
   EventEmitter.prototype._maxListeners = undefined;
 
   // By default EventEmitters will print a warning if more than 10 listeners are
   // added to it. This is a useful default which helps finding memory leaks.
-  var defaultMaxListeners = 10;
-
-  Object.defineProperty(EventEmitter, 'defaultMaxListeners', {
-    enumerable: true,
-    get: function() {
-      return defaultMaxListeners;
-    },
-    set: function(arg) {
-      if (typeof arg !== 'number' || arg < 0 || NumberIsNaN(arg)) {
-        throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received ' + arg + '.');
-      }
-      defaultMaxListeners = arg;
-    }
-  });
+  EventEmitter.defaultMaxListeners = 10;
 
   EventEmitter.init = function() {
+    this.domain = null;
+    if (EventEmitter.usingDomains) {
+      // if there is an active domain, then attach to it.
+      if (domain.active && !(this instanceof domain.Domain)) ;
+    }
 
-    if (this._events === undefined ||
-        this._events === Object.getPrototypeOf(this)._events) {
-      this._events = Object.create(null);
+    if (!this._events || this._events === Object.getPrototypeOf(this)._events) {
+      this._events = new EventHandlers();
       this._eventsCount = 0;
     }
 
@@ -19162,9 +12884,8 @@
   // Obviously not all Emitters should be limited to 10. This function allows
   // that to be increased. Set to zero for unlimited.
   EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
-    if (typeof n !== 'number' || n < 0 || NumberIsNaN(n)) {
-      throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received ' + n + '.');
-    }
+    if (typeof n !== 'number' || n < 0 || isNaN(n))
+      throw new TypeError('"n" argument must be a positive number');
     this._maxListeners = n;
     return this;
   };
@@ -19179,45 +12900,123 @@
     return $getMaxListeners(this);
   };
 
-  EventEmitter.prototype.emit = function emit(type) {
-    var args = [];
-    for (var i = 1; i < arguments.length; i++) args.push(arguments[i]);
-    var doError = (type === 'error');
-
-    var events = this._events;
-    if (events !== undefined)
-      doError = (doError && events.error === undefined);
-    else if (!doError)
-      return false;
-
-    // If there is no 'error' event listener then throw.
-    if (doError) {
-      var er;
-      if (args.length > 0)
-        er = args[0];
-      if (er instanceof Error) {
-        // Note: The comments on the `throw` lines are intentional, they show
-        // up in Node's output if this results in an unhandled exception.
-        throw er; // Unhandled 'error' event
-      }
-      // At least give some kind of context to the user
-      var err = new Error('Unhandled error.' + (er ? ' (' + er.message + ')' : ''));
-      err.context = er;
-      throw err; // Unhandled 'error' event
-    }
-
-    var handler = events[type];
-
-    if (handler === undefined)
-      return false;
-
-    if (typeof handler === 'function') {
-      ReflectApply(handler, this, args);
-    } else {
+  // These standalone emit* functions are used to optimize calling of event
+  // handlers for fast cases because emit() itself often has a variable number of
+  // arguments and can be deoptimized because of that. These functions always have
+  // the same number of arguments and thus do not get deoptimized, so the code
+  // inside them can execute faster.
+  function emitNone(handler, isFn, self) {
+    if (isFn)
+      handler.call(self);
+    else {
       var len = handler.length;
       var listeners = arrayClone(handler, len);
       for (var i = 0; i < len; ++i)
-        ReflectApply(listeners[i], this, args);
+        listeners[i].call(self);
+    }
+  }
+  function emitOne(handler, isFn, self, arg1) {
+    if (isFn)
+      handler.call(self, arg1);
+    else {
+      var len = handler.length;
+      var listeners = arrayClone(handler, len);
+      for (var i = 0; i < len; ++i)
+        listeners[i].call(self, arg1);
+    }
+  }
+  function emitTwo(handler, isFn, self, arg1, arg2) {
+    if (isFn)
+      handler.call(self, arg1, arg2);
+    else {
+      var len = handler.length;
+      var listeners = arrayClone(handler, len);
+      for (var i = 0; i < len; ++i)
+        listeners[i].call(self, arg1, arg2);
+    }
+  }
+  function emitThree(handler, isFn, self, arg1, arg2, arg3) {
+    if (isFn)
+      handler.call(self, arg1, arg2, arg3);
+    else {
+      var len = handler.length;
+      var listeners = arrayClone(handler, len);
+      for (var i = 0; i < len; ++i)
+        listeners[i].call(self, arg1, arg2, arg3);
+    }
+  }
+
+  function emitMany(handler, isFn, self, args) {
+    if (isFn)
+      handler.apply(self, args);
+    else {
+      var len = handler.length;
+      var listeners = arrayClone(handler, len);
+      for (var i = 0; i < len; ++i)
+        listeners[i].apply(self, args);
+    }
+  }
+
+  EventEmitter.prototype.emit = function emit(type) {
+    var er, handler, len, args, i, events, domain;
+    var doError = (type === 'error');
+
+    events = this._events;
+    if (events)
+      doError = (doError && events.error == null);
+    else if (!doError)
+      return false;
+
+    domain = this.domain;
+
+    // If there is no 'error' event listener then throw.
+    if (doError) {
+      er = arguments[1];
+      if (domain) {
+        if (!er)
+          er = new Error('Uncaught, unspecified "error" event');
+        er.domainEmitter = this;
+        er.domain = domain;
+        er.domainThrown = false;
+        domain.emit('error', er);
+      } else if (er instanceof Error) {
+        throw er; // Unhandled 'error' event
+      } else {
+        // At least give some kind of context to the user
+        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+        err.context = er;
+        throw err;
+      }
+      return false;
+    }
+
+    handler = events[type];
+
+    if (!handler)
+      return false;
+
+    var isFn = typeof handler === 'function';
+    len = arguments.length;
+    switch (len) {
+      // fast cases
+      case 1:
+        emitNone(handler, isFn, this);
+        break;
+      case 2:
+        emitOne(handler, isFn, this, arguments[1]);
+        break;
+      case 3:
+        emitTwo(handler, isFn, this, arguments[1], arguments[2]);
+        break;
+      case 4:
+        emitThree(handler, isFn, this, arguments[1], arguments[2], arguments[3]);
+        break;
+      // slower
+      default:
+        args = new Array(len - 1);
+        for (i = 1; i < len; i++)
+          args[i - 1] = arguments[i];
+        emitMany(handler, isFn, this, args);
     }
 
     return true;
@@ -19228,18 +13027,17 @@
     var events;
     var existing;
 
-    if (typeof listener !== 'function') {
-      throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
-    }
+    if (typeof listener !== 'function')
+      throw new TypeError('"listener" argument must be a function');
 
     events = target._events;
-    if (events === undefined) {
-      events = target._events = Object.create(null);
+    if (!events) {
+      events = target._events = new EventHandlers();
       target._eventsCount = 0;
     } else {
       // To avoid recursion in the case that type === "newListener"! Before
       // adding it to the listeners, first emit "newListener".
-      if (events.newListener !== undefined) {
+      if (events.newListener) {
         target.emit('newListener', type,
                     listener.listener ? listener.listener : listener);
 
@@ -19250,43 +13048,46 @@
       existing = events[type];
     }
 
-    if (existing === undefined) {
+    if (!existing) {
       // Optimize the case of one listener. Don't need the extra array object.
       existing = events[type] = listener;
       ++target._eventsCount;
     } else {
       if (typeof existing === 'function') {
         // Adding the second element, need to change to array.
-        existing = events[type] =
-          prepend ? [listener, existing] : [existing, listener];
-        // If we've already got an array, just append.
-      } else if (prepend) {
-        existing.unshift(listener);
+        existing = events[type] = prepend ? [listener, existing] :
+                                            [existing, listener];
       } else {
-        existing.push(listener);
+        // If we've already got an array, just append.
+        if (prepend) {
+          existing.unshift(listener);
+        } else {
+          existing.push(listener);
+        }
       }
 
       // Check for listener leak
-      m = $getMaxListeners(target);
-      if (m > 0 && existing.length > m && !existing.warned) {
-        existing.warned = true;
-        // No error code for this since it is a Warning
-        // eslint-disable-next-line no-restricted-syntax
-        var w = new Error('Possible EventEmitter memory leak detected. ' +
-                            existing.length + ' ' + String(type) + ' listeners ' +
-                            'added. Use emitter.setMaxListeners() to ' +
-                            'increase limit');
-        w.name = 'MaxListenersExceededWarning';
-        w.emitter = target;
-        w.type = type;
-        w.count = existing.length;
-        ProcessEmitWarning(w);
+      if (!existing.warned) {
+        m = $getMaxListeners(target);
+        if (m && m > 0 && existing.length > m) {
+          existing.warned = true;
+          var w = new Error('Possible EventEmitter memory leak detected. ' +
+                              existing.length + ' ' + type + ' listeners added. ' +
+                              'Use emitter.setMaxListeners() to increase limit');
+          w.name = 'MaxListenersExceededWarning';
+          w.emitter = target;
+          w.type = type;
+          w.count = existing.length;
+          emitWarning(w);
+        }
       }
     }
 
     return target;
   }
-
+  function emitWarning(e) {
+    typeof console.warn === 'function' ? console.warn(e) : console.log(e);
+  }
   EventEmitter.prototype.addListener = function addListener(type, listener) {
     return _addListener(this, type, listener, false);
   };
@@ -19298,61 +13099,53 @@
         return _addListener(this, type, listener, true);
       };
 
-  function onceWrapper() {
-    var args = [];
-    for (var i = 0; i < arguments.length; i++) args.push(arguments[i]);
-    if (!this.fired) {
-      this.target.removeListener(this.type, this.wrapFn);
-      this.fired = true;
-      ReflectApply(this.listener, this.target, args);
-    }
-  }
-
   function _onceWrap(target, type, listener) {
-    var state = { fired: false, wrapFn: undefined, target: target, type: type, listener: listener };
-    var wrapped = onceWrapper.bind(state);
-    wrapped.listener = listener;
-    state.wrapFn = wrapped;
-    return wrapped;
+    var fired = false;
+    function g() {
+      target.removeListener(type, g);
+      if (!fired) {
+        fired = true;
+        listener.apply(target, arguments);
+      }
+    }
+    g.listener = listener;
+    return g;
   }
 
   EventEmitter.prototype.once = function once(type, listener) {
-    if (typeof listener !== 'function') {
-      throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
-    }
+    if (typeof listener !== 'function')
+      throw new TypeError('"listener" argument must be a function');
     this.on(type, _onceWrap(this, type, listener));
     return this;
   };
 
   EventEmitter.prototype.prependOnceListener =
       function prependOnceListener(type, listener) {
-        if (typeof listener !== 'function') {
-          throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
-        }
+        if (typeof listener !== 'function')
+          throw new TypeError('"listener" argument must be a function');
         this.prependListener(type, _onceWrap(this, type, listener));
         return this;
       };
 
-  // Emits a 'removeListener' event if and only if the listener was removed.
+  // emits a 'removeListener' event iff the listener was removed
   EventEmitter.prototype.removeListener =
       function removeListener(type, listener) {
         var list, events, position, i, originalListener;
 
-        if (typeof listener !== 'function') {
-          throw new TypeError('The "listener" argument must be of type Function. Received type ' + typeof listener);
-        }
+        if (typeof listener !== 'function')
+          throw new TypeError('"listener" argument must be a function');
 
         events = this._events;
-        if (events === undefined)
+        if (!events)
           return this;
 
         list = events[type];
-        if (list === undefined)
+        if (!list)
           return this;
 
-        if (list === listener || list.listener === listener) {
+        if (list === listener || (list.listener && list.listener === listener)) {
           if (--this._eventsCount === 0)
-            this._events = Object.create(null);
+            this._events = new EventHandlers();
           else {
             delete events[type];
             if (events.removeListener)
@@ -19361,8 +13154,9 @@
         } else if (typeof list !== 'function') {
           position = -1;
 
-          for (i = list.length - 1; i >= 0; i--) {
-            if (list[i] === listener || list[i].listener === listener) {
+          for (i = list.length; i-- > 0;) {
+            if (list[i] === listener ||
+                (list[i].listener && list[i].listener === listener)) {
               originalListener = list[i].listener;
               position = i;
               break;
@@ -19372,40 +13166,41 @@
           if (position < 0)
             return this;
 
-          if (position === 0)
-            list.shift();
-          else {
+          if (list.length === 1) {
+            list[0] = undefined;
+            if (--this._eventsCount === 0) {
+              this._events = new EventHandlers();
+              return this;
+            } else {
+              delete events[type];
+            }
+          } else {
             spliceOne(list, position);
           }
 
-          if (list.length === 1)
-            events[type] = list[0];
-
-          if (events.removeListener !== undefined)
+          if (events.removeListener)
             this.emit('removeListener', type, originalListener || listener);
         }
 
         return this;
       };
 
-  EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
-
   EventEmitter.prototype.removeAllListeners =
       function removeAllListeners(type) {
-        var listeners, events, i;
+        var listeners, events;
 
         events = this._events;
-        if (events === undefined)
+        if (!events)
           return this;
 
         // not listening for removeListener, no need to emit
-        if (events.removeListener === undefined) {
+        if (!events.removeListener) {
           if (arguments.length === 0) {
-            this._events = Object.create(null);
+            this._events = new EventHandlers();
             this._eventsCount = 0;
-          } else if (events[type] !== undefined) {
+          } else if (events[type]) {
             if (--this._eventsCount === 0)
-              this._events = Object.create(null);
+              this._events = new EventHandlers();
             else
               delete events[type];
           }
@@ -19415,14 +13210,13 @@
         // emit removeListener for all listeners on all events
         if (arguments.length === 0) {
           var keys = Object.keys(events);
-          var key;
-          for (i = 0; i < keys.length; ++i) {
+          for (var i = 0, key; i < keys.length; ++i) {
             key = keys[i];
             if (key === 'removeListener') continue;
             this.removeAllListeners(key);
           }
           this.removeAllListeners('removeListener');
-          this._events = Object.create(null);
+          this._events = new EventHandlers();
           this._eventsCount = 0;
           return this;
         }
@@ -19431,39 +13225,34 @@
 
         if (typeof listeners === 'function') {
           this.removeListener(type, listeners);
-        } else if (listeners !== undefined) {
+        } else if (listeners) {
           // LIFO order
-          for (i = listeners.length - 1; i >= 0; i--) {
-            this.removeListener(type, listeners[i]);
-          }
+          do {
+            this.removeListener(type, listeners[listeners.length - 1]);
+          } while (listeners[0]);
         }
 
         return this;
       };
 
-  function _listeners(target, type, unwrap) {
-    var events = target._events;
-
-    if (events === undefined)
-      return [];
-
-    var evlistener = events[type];
-    if (evlistener === undefined)
-      return [];
-
-    if (typeof evlistener === 'function')
-      return unwrap ? [evlistener.listener || evlistener] : [evlistener];
-
-    return unwrap ?
-      unwrapListeners(evlistener) : arrayClone(evlistener, evlistener.length);
-  }
-
   EventEmitter.prototype.listeners = function listeners(type) {
-    return _listeners(this, type, true);
-  };
+    var evlistener;
+    var ret;
+    var events = this._events;
 
-  EventEmitter.prototype.rawListeners = function rawListeners(type) {
-    return _listeners(this, type, false);
+    if (!events)
+      ret = [];
+    else {
+      evlistener = events[type];
+      if (!evlistener)
+        ret = [];
+      else if (typeof evlistener === 'function')
+        ret = [evlistener.listener || evlistener];
+      else
+        ret = unwrapListeners(evlistener);
+    }
+
+    return ret;
   };
 
   EventEmitter.listenerCount = function(emitter, type) {
@@ -19478,12 +13267,12 @@
   function listenerCount(type) {
     var events = this._events;
 
-    if (events !== undefined) {
+    if (events) {
       var evlistener = events[type];
 
       if (typeof evlistener === 'function') {
         return 1;
-      } else if (evlistener !== undefined) {
+      } else if (evlistener) {
         return evlistener.length;
       }
     }
@@ -19492,20 +13281,21 @@
   }
 
   EventEmitter.prototype.eventNames = function eventNames() {
-    return this._eventsCount > 0 ? ReflectOwnKeys(this._events) : [];
+    return this._eventsCount > 0 ? Reflect.ownKeys(this._events) : [];
   };
 
-  function arrayClone(arr, n) {
-    var copy = new Array(n);
-    for (var i = 0; i < n; ++i)
-      copy[i] = arr[i];
-    return copy;
+  // About 1.5x faster than the two-arg version of Array#splice().
+  function spliceOne(list, index) {
+    for (var i = index, k = i + 1, n = list.length; k < n; i += 1, k += 1)
+      list[i] = list[k];
+    list.pop();
   }
 
-  function spliceOne(list, index) {
-    for (; index + 1 < list.length; index++)
-      list[index] = list[index + 1];
-    list.pop();
+  function arrayClone(arr, i) {
+    var copy = new Array(i);
+    while (i--)
+      copy[i] = arr[i];
+    return copy;
   }
 
   function unwrapListeners(arr) {
@@ -19515,1691 +13305,2393 @@
     }
     return ret;
   }
-  var events_1$1 = events$1.EventEmitter;
 
-  let tempCurrentTime = 0;
-  class NativeVideoKernel extends events_1$1 {
-      static isSupport() {
-          return true;
-      }
-      constructor(videoElement, config = { src: '' }, customConfig) {
-          super();
-          if (!isElement(videoElement)) {
-              throw new Error(`You must pass in an legal video element but not ${typeof videoElement}`);
-          }
-          this.video = videoElement;
-          this.config = config;
-          if (!this.off) {
-              this.off = this.removeListener;
-          }
-      }
-      attachMedia() {
-      }
-      destroy() {
-          if (isElement(this.video)) {
-              this.stopLoad();
-          }
-      }
-      load(src) {
-          this.video.setAttribute('src', src);
-          this.video.src = src;
-      }
-      pause() {
-          return this.video.pause();
-      }
-      play() {
-          return this.video.play();
-      }
-      refresh() {
-          this.video.src = this.config.src;
-      }
-      seek(seconds) {
-          this.video.currentTime = seconds;
-      }
-      startLoad(src) {
-          const currentTime = typeof this.video.currentTime === 'number'
-              ? this.video.currentTime
-              : tempCurrentTime;
-          this.load(src);
-          this.seek(currentTime);
-      }
-      stopLoad() {
-          tempCurrentTime = this.video.currentTime;
-          this.video.src = '';
-          this.video.removeAttribute('src');
-      }
-      unload() {
-      }
-  }
+  var tempCurrentTime = 0;
 
-  const LOG_TAG = 'chimee';
-  const boxSuffixMap = {
-      flv: '.flv',
-      hls: '.m3u8',
-      native: '.mp4',
+  var NativeVideoKernel =
+  /*#__PURE__*/
+  function (_EventEmitter) {
+    _inherits(NativeVideoKernel, _EventEmitter);
+
+    _createClass(NativeVideoKernel, null, [{
+      key: "isSupport",
+      value: function isSupport() {
+        return true;
+      }
+    }]);
+
+    function NativeVideoKernel(videoElement) {
+      var _this;
+
+      var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
+        src: ''
+      };
+
+      _classCallCheck(this, NativeVideoKernel);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(NativeVideoKernel).call(this));
+
+      if (!isElement(videoElement)) {
+        throw new Error("You must pass in an legal video element but not ".concat(_typeof(videoElement)));
+      }
+
+      _this.video = videoElement;
+      _this.config = config;
+
+      if (!_this.off) {
+        _this.off = _this.removeListener;
+      }
+
+      return _this;
+    }
+
+    _createClass(NativeVideoKernel, [{
+      key: "attachMedia",
+      value: function attachMedia() {}
+    }, {
+      key: "destroy",
+      value: function destroy() {
+        if (isElement(this.video)) {
+          this.stopLoad();
+        }
+      }
+    }, {
+      key: "load",
+      value: function load(src) {
+        this.video.setAttribute('src', src);
+        this.video.src = src;
+      }
+    }, {
+      key: "pause",
+      value: function pause() {
+        return this.video.pause();
+      }
+    }, {
+      key: "play",
+      value: function play() {
+        return this.video.play();
+      }
+    }, {
+      key: "refresh",
+      value: function refresh() {
+        this.video.src = this.config.src;
+      }
+    }, {
+      key: "seek",
+      value: function seek(seconds) {
+        this.video.currentTime = seconds;
+      }
+    }, {
+      key: "startLoad",
+      value: function startLoad(src) {
+        var currentTime = typeof this.video.currentTime === 'number' ? this.video.currentTime : tempCurrentTime;
+        this.load(src);
+        this.seek(currentTime);
+      }
+    }, {
+      key: "stopLoad",
+      value: function stopLoad() {
+        tempCurrentTime = this.video.currentTime;
+        this.video.src = '';
+        this.video.removeAttribute('src');
+      }
+    }, {
+      key: "unload",
+      value: function unload() {}
+    }]);
+
+    return NativeVideoKernel;
+  }(EventEmitter);
+
+  var LOG_TAG = 'chimee';
+  var boxSuffixMap = {
+    flv: '.flv',
+    hls: '.m3u8',
+    native: '.mp4'
   };
-  function getLegalBox({ src, box }) {
-      if (isString$1(box) && box) {
-          return box;
+  function getLegalBox(_ref) {
+    var src = _ref.src,
+        box = _ref.box;
+
+    if (isString$1(box) && box) {
+      return box;
+    }
+
+    src = src.toLowerCase();
+
+    for (var key in boxSuffixMap) {
+      if (boxSuffixMap.hasOwnProperty(key)) {
+        var suffix = boxSuffixMap[key];
+
+        if (src.indexOf(suffix) > -1) {
+          return key;
+        }
       }
-      src = src.toLowerCase();
-      for (const key in boxSuffixMap) {
-          if (boxSuffixMap.hasOwnProperty(key)) {
-              const suffix = boxSuffixMap[key];
-              if (src.indexOf(suffix) > -1) {
-                  return key;
-              }
-          }
-      }
-      return 'native';
-  }
-  class ChimeeKernel {
-      get currentTime() {
-          return this.videoElement.currentTime || 0;
-      }
-      constructor(videoElement, config) {
-          if (!isElement(videoElement)) {
-              throw new Error('You must pass in an video element to the chimee-kernel');
-          }
-          this.config = config;
-          this.videoElement = videoElement;
-          this.initVideoKernel();
-      }
-      attachMedia() {
-          this.videoKernel.attachMedia();
-      }
-      destroy() {
-          this.videoKernel.destroy();
-      }
-      initVideoKernel() {
-          const config = this.config;
-          const box = getLegalBox(config);
-          this.box = box;
-          const VideoKernel = this.chooseVideoKernel(this.box, config.preset);
-          if (!isFunction(VideoKernel)) {
-              throw new Error(`We can't find video kernel for ${box}. Please check your config and make sure it's installed or provided`);
-          }
-          const customConfig = config.presetConfig[this.box];
-          if (customConfig) {
-              Object.assign(config, customConfig);
-          }
-          this.videoKernel = new VideoKernel(this.videoElement, config, customConfig);
-      }
-      load(src = this.config.src) {
-          this.config.src = src;
-          this.videoKernel.load(src);
-      }
-      off(key, fn) {
-          this.videoKernel.off(key, fn);
-      }
-      on(key, fn) {
-          this.videoKernel.on(key, fn);
-      }
-      pause() {
-          this.videoKernel.pause();
-      }
-      play() {
-          this.videoKernel.play();
-      }
-      refresh() {
-          this.videoKernel.refresh();
-      }
-      seek(seconds) {
-          if (!isNumber(seconds)) {
-              chimeeLog.error(LOG_TAG, `When you try to seek, you must offer us a number, but not ${typeof seconds}`);
-              return;
-          }
-          this.videoKernel.seek(seconds);
-      }
-      startLoad() {
-          if (!isFunction(this.videoKernel.startLoad)) {
-              throw new Error('This video kernel do not support startLoad, please contact us on https://github.com/Chimeejs/chimee/issues');
-          }
-          this.videoKernel.startLoad(this.config.src);
-      }
-      stopLoad() {
-          if (isFunction(this.videoKernel.stopLoad)) {
-              this.videoKernel.stopLoad();
-          }
-      }
-      chooseVideoKernel(box, preset) {
-          switch (box) {
-              case 'native':
-                  return NativeVideoKernel;
-              case 'mp4':
-                  return this.getMp4Kernel(preset.mp4);
-              case 'flv':
-              case 'hls':
-                  return preset[box];
-              default:
-                  throw new Error(`We currently do not support box ${box}, please contact us through https://github.com/Chimeejs/chimee/issues.`);
-          }
-      }
-      getMp4Kernel(Mp4Kernel) {
-          if (!Mp4Kernel || !isFunction(Mp4Kernel.isSupport) || !Mp4Kernel.isSupport()) {
-              if (Mp4Kernel) {
-                  chimeeLog.warn(LOG_TAG, 'mp4 decode is not support in this browser, we will switch to the native video kernel');
-              }
-              this.box = 'native';
-              return NativeVideoKernel;
-          }
-          return Mp4Kernel;
-      }
+    }
+
+    return 'native';
   }
 
-  const chimeeDomElements = ['container', 'wrapper', 'video'];
+  var ChimeeKernel =
+  /*#__PURE__*/
+  function () {
+    _createClass(ChimeeKernel, [{
+      key: "currentTime",
+      get: function get() {
+        return this.videoElement.currentTime || 0;
+      }
+    }]);
+
+    function ChimeeKernel(videoElement, config) {
+      _classCallCheck(this, ChimeeKernel);
+
+      if (!isElement(videoElement)) {
+        throw new Error('You must pass in an video element to the chimee-kernel');
+      }
+
+      this.config = config;
+      this.videoElement = videoElement;
+      this.initVideoKernel();
+    }
+
+    _createClass(ChimeeKernel, [{
+      key: "attachMedia",
+      value: function attachMedia() {
+        this.videoKernel.attachMedia();
+      }
+    }, {
+      key: "destroy",
+      value: function destroy() {
+        this.videoKernel.destroy();
+      }
+    }, {
+      key: "initVideoKernel",
+      value: function initVideoKernel() {
+        var config = this.config;
+        var box = getLegalBox(config);
+        this.box = box;
+        var VideoKernel = this.chooseVideoKernel(this.box, config.preset);
+
+        if (!isFunction(VideoKernel)) {
+          throw new Error("We can't find video kernel for ".concat(box, ". Please check your config and make sure it's installed or provided"));
+        }
+
+        var customConfig = config.presetConfig[this.box];
+
+        if (customConfig) {
+          Object.assign(config, customConfig);
+        }
+
+        this.videoKernel = new VideoKernel(this.videoElement, config, customConfig);
+      }
+    }, {
+      key: "load",
+      value: function load() {
+        var src = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.config.src;
+        this.config.src = src;
+        this.videoKernel.load(src);
+      }
+    }, {
+      key: "off",
+      value: function off(key, fn) {
+        this.videoKernel.off(key, fn);
+      }
+    }, {
+      key: "on",
+      value: function on(key, fn) {
+        this.videoKernel.on(key, fn);
+      }
+    }, {
+      key: "pause",
+      value: function pause() {
+        this.videoKernel.pause();
+      }
+    }, {
+      key: "play",
+      value: function play() {
+        this.videoKernel.play();
+      }
+    }, {
+      key: "refresh",
+      value: function refresh() {
+        this.videoKernel.refresh();
+      }
+    }, {
+      key: "seek",
+      value: function seek(seconds) {
+        if (!isNumber(seconds)) {
+          chimeeLog.error(LOG_TAG, "When you try to seek, you must offer us a number, but not ".concat(_typeof(seconds)));
+          return;
+        }
+
+        this.videoKernel.seek(seconds);
+      }
+    }, {
+      key: "startLoad",
+      value: function startLoad() {
+        if (!isFunction(this.videoKernel.startLoad)) {
+          throw new Error('This video kernel do not support startLoad, please contact us on https://github.com/Chimeejs/chimee/issues');
+        }
+
+        this.videoKernel.startLoad(this.config.src);
+      }
+    }, {
+      key: "stopLoad",
+      value: function stopLoad() {
+        if (isFunction(this.videoKernel.stopLoad)) {
+          this.videoKernel.stopLoad();
+        }
+      }
+    }, {
+      key: "chooseVideoKernel",
+      value: function chooseVideoKernel(box, preset) {
+        switch (box) {
+          case 'native':
+            return NativeVideoKernel;
+
+          case 'mp4':
+            return this.getMp4Kernel(preset.mp4);
+
+          case 'flv':
+          case 'hls':
+            return preset[box];
+
+          default:
+            throw new Error("We currently do not support box ".concat(box, ", please contact us through https://github.com/Chimeejs/chimee/issues."));
+        }
+      }
+    }, {
+      key: "getMp4Kernel",
+      value: function getMp4Kernel(Mp4Kernel) {
+        if (!Mp4Kernel || !isFunction(Mp4Kernel.isSupport) || !Mp4Kernel.isSupport()) {
+          if (Mp4Kernel) {
+            chimeeLog.warn(LOG_TAG, 'mp4 decode is not support in this browser, we will switch to the native video kernel');
+          }
+
+          this.box = 'native';
+          return NativeVideoKernel;
+        }
+
+        return Mp4Kernel;
+      }
+    }]);
+
+    return ChimeeKernel;
+  }();
+
+  function _defineProperty$1(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  var chimeeDomElements = ['container', 'wrapper', 'video'];
   function isChimeeDomElement(element) {
-      return chimeeDomElements.includes(element);
+    return chimeeDomElements.includes(element);
   }
   function turnChimeeDomElementIntoRealChimeeDomElement(element) {
-      if (element === 'video') {
-          return 'videoElement';
-      }
-      return element;
+    if (element === 'video') {
+      return 'videoElement';
+    }
+
+    return element;
   }
 
-  const videoReadOnlyProperties = [
-      'buffered',
-      'currentSrc',
-      'duration',
-      'error',
-      'ended',
-      'networkState',
-      'paused',
-      'readyState',
-      'seekable',
-      'sinkId',
-      'controlsList',
-      'tabIndex',
-      'dataset',
-      'offsetHeight',
-      'offsetLeft',
-      'offsetParent',
-      'offsetTop',
-      'offsetWidth',
-  ];
-  const kernelProperties = ['isLive', 'box', 'preset', 'kernels', 'presetConfig'];
+  var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'error', 'ended', 'networkState', 'paused', 'readyState', 'seekable', 'sinkId', 'controlsList', 'tabIndex', 'dataset', 'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth'];
+  var kernelProperties = ['isLive', 'box', 'preset', 'kernels', 'presetConfig'];
 
   function eventBinderCheck(key, fn) {
-      if (!isString$1(key)) {
-          throw new TypeError('key parameter must be String');
-      }
-      if (!isFunction(fn)) {
-          throw new TypeError('fn parameter must be Function');
-      }
+    if (!isString$1(key)) {
+      throw new TypeError('key parameter must be String');
+    }
+
+    if (!isFunction(fn)) {
+      throw new TypeError('fn parameter must be Function');
+    }
   }
 
-  var __decorate$5 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-      var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-      if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-      else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-      return c > 3 && r && Object.defineProperty(target, key, r), r;
+  var __decorate$5 = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+      if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    }
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
   };
-  class VideoWrapper {
-      constructor({ dispatcher, id }) {
-          this.events = {};
-          this.unwatchHandlers = [];
-          if (dispatcher) {
-              this.dispatcher = dispatcher;
-          }
-          this.id = id;
-      }
-      get $container() {
-          return this.dispatcher.dom.container;
-      }
-      get $pluginOrder() {
-          return this.dispatcher.order;
-      }
-      get $plugins() {
-          return this.dispatcher.plugins;
-      }
-      get $video() {
-          return this.dispatcher.dom.videoElement;
-      }
-      get $wrapper() {
-          return this.dispatcher.dom.wrapper;
-      }
-      get container() {
-          return this.dispatcher.containerConfig;
-      }
-      set container(config) {
-          if (!isPlainObject(config)) {
-              throw new Error(`The config of container must be Object, but not ${typeof config}.`);
-          }
-          Object.assign(this.dispatcher.containerConfig, config);
-      }
-      get currentTime() {
-          return this.dispatcher.kernel.currentTime;
-      }
-      set currentTime(second) {
-          this.dispatcher.binder.emitSync({
-              id: this.id,
-              name: 'seek',
-              target: 'video',
-          }, second);
-      }
-      get fullscreenElement() {
-          return this.dispatcher.dom.fullscreenElement;
-      }
-      get inPictureInPictureMode() {
-          return this.dispatcher.inPictureInPictureMode;
-      }
-      get isFullscreen() {
-          return this.dispatcher.dom.isFullscreen;
-      }
-      get pictureInPictureWindow() {
-          return window.__chimee_picture_in_picture;
-      }
-      get videoRequireGuardedAttributes() {
-          return this.dispatcher.dom.videoRequireGuardedAttributes;
-      }
-      $attr(targetOrAttr, attrOrValue, valueOrNothing) {
-          const { method, target, attr, value } = this.getRealInfoForStyleAndAttr(arguments.length, targetOrAttr, attrOrValue, valueOrNothing);
-          if (method === 'set' && target === 'videoElement') {
-              if (!this.dispatcher.videoConfigReady) {
-                  {
-                      chimeeLog.warn('chimee', `${this.id} is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger`);
-                  }
-                  return value;
-              }
-              if (isVideoDomAttribute(attr)) {
-                  this.dispatcher.videoConfig[attr] = value;
-                  return value;
-              }
-          }
-          return method === 'set'
-              ? this.dispatcher.dom.setAttr(target, attr, value)
-              : this.dispatcher.dom.getAttr(target, attr);
-      }
-      $css(targetOrAttr, attrOrValue, valueOrNothing) {
-          const { method, target, attr, value } = this.getRealInfoForStyleAndAttr(arguments.length, targetOrAttr, attrOrValue, valueOrNothing);
-          return method === 'set'
-              ? this.dispatcher.dom.setStyle(target, attr, value)
-              : this.dispatcher.dom.getStyle(target, attr);
-      }
-      $del(obj, property) {
-          if (!isPlainObject(obj) && !isArray$1(obj)) {
-              throw new TypeError(`$del only support Array or Object, but not ${obj}, whose type is ${typeof obj}`);
-          }
-          if (!isFunction(obj.__del)) {
-              {
-                  chimeeLog.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $del.`);
-              }
-              delete obj[property];
-              return;
-          }
-          obj.__del(property);
-      }
-      $emit(key, ...args) {
-          let target;
-          if (!isString$1(key) && isPlainObject(key) && isString$1(key.name) && isString$1(key.target)) {
-              target = key.target;
-              key = key.name;
-          }
-          if (!isString$1(key)) {
-              throw new TypeError('emit key parameter must be String');
-          }
-          if (domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
-              chimeeLog.warn('plugin', `You are try to emit ${key} event. As emit is wrapped in Promise. It make you can't use event.preventDefault and event.stopPropagation. So we advice you to use emitSync`);
-          }
-          return this.dispatcher.binder.emit({
-              id: this.id,
-              name: key,
-              target,
-          }, ...args);
-      }
-      $emitSync(key, ...args) {
-          let target;
-          if (!isString$1(key) && isPlainObject(key) && isString$1(key.name) && isString$1(key.target)) {
-              target = key.target;
-              key = key.name;
-          }
-          if (!isString$1(key)) {
-              throw new TypeError('emitSync key parameter must be String');
-          }
-          return this.dispatcher.binder.emitSync({
-              id: this.id,
-              name: key,
-              target,
-          }, ...args);
-      }
-      $fullscreen(flag = true, element = 'container') {
-          if (!this.dispatcher.binder.emitSync({
-              id: this.id,
-              name: 'fullscreen',
-              target: 'video-dom',
-          }, flag, element)) {
-              return false;
-          }
-          const result = this.dispatcher.dom.fullscreen(flag, turnChimeeDomElementIntoRealChimeeDomElement(element));
-          this.dispatcher.binder.triggerSync({
-              id: this.id,
-              name: 'fullscreen',
-              target: 'video-dom',
-          }, flag, element);
-          return result;
-      }
-      $off(key, fn, options = {}) {
-          const eventInfo = Object.assign({}, options, {
-              fn,
-              id: this.id,
-              name: key,
-          });
-          this.dispatcher.binder.off(eventInfo);
-          this.removeEvents(key, fn);
-      }
-      $on(key, fn, options = {}) {
-          const eventInfo = Object.assign({}, options, {
-              fn,
-              id: this.id,
-              name: key,
-          });
-          this.dispatcher.binder.on(eventInfo);
-          this.addEvents(key, fn);
-      }
-      $once(key, fn, options = {}) {
-          const self = this;
-          const boundFn = function (...args) {
-              bind$2(fn, this)(...args);
-              self.removeEvents(key, boundFn);
-          };
-          self.addEvents(key, boundFn);
-          const eventInfo = Object.assign({}, options, {
-              fn: boundFn,
-              id: this.id,
-              name: key,
-          });
-          this.dispatcher.binder.once(eventInfo);
-      }
-      $set(obj, property, value) {
-          if (!isPlainObject(obj) && !isArray$1(obj)) {
-              throw new TypeError(`$set only support Array or Object, but not ${obj}, whose type is ${typeof obj}`);
-          }
-          if (!isFunction(obj.__set)) {
-              {
-                  chimeeLog.warn('chimee', `${JSON.stringify(obj)} has not been deep watch. There is no need to use $set.`);
-              }
-              obj[property] = value;
-              return;
-          }
-          obj.__set(property, value);
-      }
-      $silentLoad(src, option = {}) {
-          return this.dispatcher.binder.emit({
-              id: this.id,
-              name: 'silentLoad',
-              target: 'video',
-          })
-              .then(() => {
-              return this.dispatcher.silentLoad(src, option);
-          }).then((result) => {
-              this.dispatcher.binder.trigger({
-                  id: this.id,
-                  name: 'silentLoad',
-                  target: 'video',
-              }, result);
-          });
-      }
-      $watch(key, handler, { deep, diff = true, other, proxy = false, } = {}) {
-          if (!isString$1(key) && !isArray$1(key)) {
-              throw new TypeError(`$watch only accept string and Array<string> as key to find the target to spy on, but not ${key}, whose type is ${typeof key}`);
-          }
-          let watching = true;
-          const watcher = function (...args) {
-              if (watching && (!(this instanceof VideoConfig) || this.dispatcher.changeWatchable)) {
-                  bind$2(handler, this)(...args);
-              }
-          };
-          const unwatcher = () => {
-              watching = false;
-              const index = this.unwatchHandlers.indexOf(unwatcher);
-              if (index > -1) {
-                  this.unwatchHandlers.splice(index, 1);
-              }
-          };
-          const keys = isString$1(key)
-              ? key.split('.')
-              : key;
-          const property = keys.pop();
-          const videoConfig = this.dispatcher.videoConfig;
-          const target = (keys.length === 0 &&
-              !other &&
-              isVideoDomAttribute(property))
-              ? videoConfig
-              : ['isFullscreen', 'fullscreenElement'].indexOf(property) > -1
-                  ? this.dispatcher.dom
-                  : getDeepProperty$1(other || this, keys, { throwError: true });
-          applyDecorators(target, {
-              [property]: watch(watcher, { deep, diff, proxy }),
-          }, { self: true });
-          this.unwatchHandlers.push(unwatcher);
-          return unwatcher;
-      }
-      exitPictureInPicture() {
-          return this.dispatcher.binder.emit({
-              id: this.id,
-              name: 'leavepictureinpicture',
-              target: 'video',
-          });
-      }
-      load(...args) {
-          return new Promise((resolve) => {
-              this.dispatcher.binder.once({
-                  fn: resolve,
-                  id: this.id,
-                  name: '_load',
-                  target: 'plugin',
-              });
-              this.dispatcher.binder.emit({
-                  id: this.id,
-                  name: 'load',
-                  target: 'plugin',
-              }, ...args);
-          });
-      }
-      requestPictureInPicture() {
-          return this.dispatcher.binder.emit({
-              id: this.id,
-              name: 'enterpictureinpicture',
-              target: 'video',
-          });
-      }
-      destroyVideoWrapper() {
-          this.unwatchHandlers.forEach((unwatcher) => unwatcher());
-          Object.keys(this.events)
-              .forEach((key) => {
-              if (!isArray$1(this.events[key])) {
-                  return;
-              }
-              this.events[key].forEach((fn) => this.$off(key, fn));
-          });
-          delete this.events;
-      }
-      wrapAsVideo(videoConfig) {
-          videoReadOnlyProperties.forEach((key) => {
-              Object.defineProperty(this, key, {
-                  configurable: false,
-                  enumerable: false,
-                  get() {
-                      return this.dispatcher.dom.videoElement[key];
-                  },
-                  set: undefined,
-              });
-          });
-          videoMethods.forEach((key) => {
-              Object.defineProperty(this, key, {
-                  configurable: false,
-                  enumerable: false,
-                  get() {
-                      const video = this.dispatcher.dom.videoElement;
-                      return bind$2(video[key], video);
-                  },
-                  set: undefined,
-              });
-          });
-          const props = ([]).concat(kernelProperties).concat(videoDomAttributes)
-              .reduce((props, key) => {
-              props[key] = [
-                  accessor({
-                      get() {
-                          return videoConfig[key];
-                      },
-                      set(value) {
-                          videoConfig[key] = value;
-                          return value;
-                      },
-                  }),
-                  nonenumerable,
-              ];
-              return props;
-          }, {});
-          applyDecorators(this, props, { self: true });
-          kernelMethods.forEach((key) => {
-              Object.defineProperty(this, key, {
-                  value(...args) {
-                      return new Promise((resolve) => {
-                          const id = this.id;
-                          this.dispatcher.binder.once({
-                              fn: resolve,
-                              id,
-                              name: '_' + key,
-                          });
-                          this.dispatcher.binder[/^(seek)$/.test(key) ? 'emitSync' : 'emit']({
-                              id,
-                              name: key,
-                              target: 'video',
-                          }, ...args);
-                      });
-                  },
-                  configurable: true,
-                  enumerable: false,
-                  writable: true,
-              });
-          });
-          domMethods.forEach((key) => {
-              if (key === 'fullscreen') {
-                  return;
-              }
-              Object.defineProperty(this, key, {
-                  value(...args) {
-                      return this.dispatcher.dom[key](...args);
-                  },
-                  configurable: true,
-                  enumerable: false,
-                  writable: true,
-              });
-          });
-      }
-      addEvents(key, fn) {
-          this.events[key] = this.events[key] || [];
-          this.events[key].push(fn);
-      }
-      getRealInfoForStyleAndAttr(argumentsLength, targetOrAttr, attrOrValue, valueOrNothing) {
-          let method;
-          let target;
-          let attr;
-          let value;
-          if (argumentsLength > 2) {
-              method = 'set';
-              target = targetOrAttr;
-              attr = attrOrValue;
-              value = valueOrNothing;
-          }
-          else if (argumentsLength === 2) {
-              if (isChimeeDomElement(targetOrAttr)) {
-                  method = 'get';
-                  target = targetOrAttr;
-                  attr = attrOrValue;
-              }
-              else {
-                  method = 'set';
-                  target = 'container';
-                  attr = targetOrAttr;
-                  value = attrOrValue;
-              }
-          }
-          else if (argumentsLength === 1) {
-              method = 'get';
-              target = 'container';
-              attr = targetOrAttr;
-          }
-          else {
-              throw new Error('You have to pass at least one argument to run $attr or $ css');
-          }
-          const realTarget = turnChimeeDomElementIntoRealChimeeDomElement(target);
-          return { attr, method, value, target: realTarget };
-      }
-      removeEvents(key, fn) {
-          if (isEmpty$1(this.events[key])) {
-              return;
-          }
-          const index = this.events[key].indexOf(fn);
-          if (index < 0) {
-              return;
-          }
-          this.events[key].splice(index, 1);
-          if (isEmpty$1(this.events[key])) {
-              delete this.events[key];
-          }
-      }
-  }
-  __decorate$5([
-      nonenumerable
-  ], VideoWrapper.prototype, "$container", null);
-  __decorate$5([
-      nonenumerable
-  ], VideoWrapper.prototype, "$pluginOrder", null);
-  __decorate$5([
-      nonenumerable
-  ], VideoWrapper.prototype, "$plugins", null);
-  __decorate$5([
-      nonenumerable
-  ], VideoWrapper.prototype, "$video", null);
-  __decorate$5([
-      nonenumerable
-  ], VideoWrapper.prototype, "$wrapper", null);
-  __decorate$5([
-      nonenumerable
-  ], VideoWrapper.prototype, "inPictureInPictureMode", null);
-  __decorate$5([
-      nonenumerable
-  ], VideoWrapper.prototype, "pictureInPictureWindow", null);
-  __decorate$5([
-      alias('attr')
-  ], VideoWrapper.prototype, "$attr", null);
-  __decorate$5([
-      alias('css')
-  ], VideoWrapper.prototype, "$css", null);
-  __decorate$5([
-      alias('emit')
-  ], VideoWrapper.prototype, "$emit", null);
-  __decorate$5([
-      alias('emitSync')
-  ], VideoWrapper.prototype, "$emitSync", null);
-  __decorate$5([
-      alias('fullScreen'),
-      alias('$fullScreen'),
-      alias('fullscreen')
-  ], VideoWrapper.prototype, "$fullscreen", null);
-  __decorate$5([
-      alias('off'),
-      alias('removeEventListener'),
-      before(eventBinderCheck)
-  ], VideoWrapper.prototype, "$off", null);
-  __decorate$5([
-      alias('on'),
-      alias('addEventListener'),
-      before(eventBinderCheck)
-  ], VideoWrapper.prototype, "$on", null);
-  __decorate$5([
-      alias('once'),
-      before(eventBinderCheck)
-  ], VideoWrapper.prototype, "$once", null);
-  __decorate$5([
-      alias('silentLoad')
-  ], VideoWrapper.prototype, "$silentLoad", null);
 
-  class ChimeePlugin extends VideoWrapper {
-      constructor({ id, name, level = 0, operable = true, beforeCreate, create, init, inited, destroy, events = {}, data = {}, computed = {}, methods = {}, el, penetrate = false, inner = true, autoFocus, className, }, dispatcher, option = { name }) {
-          super({ dispatcher, id });
-          this.destroyed = false;
-          this.VERSION = '1.0.1-alpha.0';
-          this.autoFocusValue = false;
-          this.levelValue = 0;
-          this.operableValue = true;
-          if (!dispatcher) {
-              {
-                  chimeeLog.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
-              }
-              throw new TypeError('lack of dispatcher');
-          }
-          if (!isString$1(id)) {
-              throw new TypeError('id of PluginConfig must be string');
-          }
-          this.id = id;
-          this.$videoConfig = this.dispatcher.videoConfig;
-          this.wrapAsVideo(this.$videoConfig);
-          this.beforeCreate = this.beforeCreate || beforeCreate;
-          try {
-              if (isFunction(this.beforeCreate)) {
-                  this.beforeCreate({
-                      computed,
-                      data,
-                      events,
-                      methods,
-                  }, option);
-              }
-          }
-          catch (error) {
-              this.$throwError(error);
-          }
-          if (!isEmpty$1(methods) && isPlainObject(methods)) {
-              Object.keys(methods).forEach((key) => {
-                  const fn = methods[key];
-                  if (!isFunction(fn)) {
-                      throw new TypeError('plugins methods must be Function');
-                  }
-                  Object.defineProperty(this, key, {
-                      configurable: true,
-                      enumerable: false,
-                      value: bind$2(fn, this),
-                      writable: true,
-                  });
-              });
-          }
-          if (!isEmpty$1(events) && isPlainObject(events)) {
-              Object.keys(events)
-                  .forEach((key) => {
-                  if (!isFunction(events[key])) {
-                      throw new TypeError('plugins events hook must bind with Function');
-                  }
-                  this.$on(key, events[key]);
-              });
-          }
-          if (!isEmpty$1(data) && isPlainObject(data)) {
-              Object.assign(this, cloneDeep(data));
-          }
-          if (!isEmpty$1(computed) && isPlainObject(computed)) {
-              const props = Object.keys(computed)
-                  .reduce((props, key) => {
-                  const val = computed[key];
-                  if (isFunction(val)) {
-                      props[key] = accessor({ get: val });
-                      return props;
-                  }
-                  if (isPlainObject(val) && (isFunction(val.get) || isFunction(val.set))) {
-                      props[key] = accessor(val);
-                      return props;
-                  }
-                  {
-                      chimeeLog.warn('Dispatcher.plugin', `Wrong computed member '${key}' defination in Plugin ${name}`);
-                  }
-                  return props;
-              }, {});
-              applyDecorators(this, props, { self: true });
-          }
-          this.create = this.create || create;
-          this.init = this.init || init;
-          this.inited = this.inited || inited;
-          this.destroy = this.destroy || destroy;
-          this.$dom = this.dispatcher.dom.insertPlugin(this.id, el, { penetrate, inner, className });
-          this.$autoFocus = isBoolean(autoFocus) ? autoFocus : inner;
-          this.$inner = inner;
-          this.$penetrate = penetrate;
-          applyDecorators(this, {
-              $inner: frozen,
-              $penetrate: frozen,
-          }, { self: true });
-          this.$operable = isBoolean(option.operable)
-              ? option.operable
-              : operable;
-          this.levelValue = isInteger(option.level)
-              ? option.level
-              : level;
-          this.$config = option;
-          try {
-              if (isFunction(this.create)) {
-                  this.create();
-              }
-          }
-          catch (error) {
-              this.$throwError(error);
-          }
-      }
-      get $autoFocus() {
-          return this.autoFocusValue;
-      }
-      set $autoFocus(val) {
-          this.autoFocusValue = val;
-          const dom = this.dispatcher.dom;
-          dom.autoFocusToVideo(this.$dom, !val);
-      }
-      set $level(val) {
-          if (!isInteger(val)) {
-              return;
-          }
-          this.levelValue = val;
-          const dispatcher = this.dispatcher;
-          dispatcher.sortZIndex();
-      }
-      get $level() {
-          return this.levelValue;
-      }
-      set $operable(val) {
-          if (!isBoolean(val)) {
-              return;
-          }
-          this.$dom.style.pointerEvents = val ? 'auto' : 'none';
-          this.operableValue = val;
-      }
-      get $operable() {
-          return this.operableValue;
-      }
-      $bumpToTop() {
-          const dispatcher = this.dispatcher;
-          const topLevel = dispatcher.getTopLevel(this.$inner);
-          this.$level = topLevel + 1;
-      }
-      $destroy() {
-          if (this.destroyed) {
-              return;
-          }
-          if (isFunction(this.destroy)) {
-              this.destroy();
-          }
-          super.destroyVideoWrapper();
-          this.dispatcher.dom.removePlugin(this.id);
-          delete this.dispatcher;
-          delete this.$dom;
-          this.destroyed = true;
-      }
-      $throwError(error) {
-          this.dispatcher.throwError(error);
-      }
-      runInitedHook() {
-          let result;
-          try {
-              result = isFunction(this.inited) && this.inited();
-          }
-          catch (error) {
-              this.$throwError(error);
-          }
-          const promiseResult = isPromise(result) && result;
-          this.readySync = !promiseResult;
-          this.ready = promiseResult
-              ? promiseResult
-                  .then(() => {
-                  this.readySync = true;
-                  return this;
-              })
-                  .catch((error) => {
-                  if (isError(error)) {
-                      this.$throwError(error);
-                  }
-                  return Promise.reject(error);
-              })
-              : Promise.resolve(this);
-          return this.readySync
-              ? this
-              : this.ready;
-      }
-      runInitHook(videoConfig) {
-          try {
-              if (isFunction(this.init)) {
-                  this.init(videoConfig);
-              }
-          }
-          catch (error) {
-              this.$throwError(error);
-          }
-      }
-  }
+  var VideoWrapper =
+  /*#__PURE__*/
+  function () {
+    function VideoWrapper(_ref) {
+      var dispatcher = _ref.dispatcher,
+          id = _ref.id;
 
-  class PictureInPicture extends ChimeePlugin {
-      constructor(config, dispatcher, option) {
-          super(Object.assign(config, {
-              el: document.createElement('canvas'),
-              inner: false,
-              penetrate: true,
-          }), dispatcher, option);
-          this.hasStopRender = true;
-          this.isShown = false;
-          this.myStyle = {
-              bottom: 0,
-              height: 156,
-              left: '',
-              position: 'fixed',
-              right: 0,
-              top: '',
-              width: 277,
-          };
-          this.exitPictureInPicture = () => {
-              this.hide();
-              window.__chimee_picture_in_picture = {};
-              return Promise.resolve();
-          };
-          this.inited = () => {
-              this.setStyle();
-          };
-          this.requestPictureInPicture = ({ autoplay = false, } = {}) => {
-              this.closeCurrentPicture();
-              this.show();
-              this.poller(this.render);
-              if (autoplay && this.paused) {
-                  this.play();
-              }
-              else if (!autoplay && !this.paused) {
-                  this.pause();
-              }
-              window.__chimee_picture_in_picture = {
-                  element: this.$video,
-                  plugin: this,
-                  window: this.$dom,
-              };
-              return Promise.resolve();
-          };
-      }
-      closeCurrentPicture() {
-          if (window.__chimee_picture_in_picture && window.__chimee_picture_in_picture.plugin) {
-              window.__chimee_picture_in_picture.plugin.exitPictureInPicture();
-          }
-      }
-      create() {
-          _class_1(this.$dom, 'chimee-plugin-picture-in-picture');
-          this.getContext();
-      }
-      getContext() {
-          this.ctx = this.$dom.getContext('2d');
-      }
-      hide() {
-          domHelpers_1(this.$dom, 'display', 'none');
-          this.isShown = false;
-      }
-      poller(fn) {
-          requestAnimationFrame(() => {
-              fn.call(this);
-              if (this.isShown) {
-                  this.poller(fn);
-                  this.hasStopRender = false;
-              }
-              else {
-                  this.hasStopRender = true;
-              }
-          });
-      }
-      render() {
-          if (this.isShown) {
-              this.ctx.drawImage(this.$video, 0, 0, this.myStyle.width, this.myStyle.height);
-          }
-      }
-      setStyle(styles = {}) {
-          Object.assign(this.myStyle, styles);
-          this.$dom.setAttribute('width', this.myStyle.width.toString());
-          this.$dom.setAttribute('height', this.myStyle.height.toString());
-          for (const key in this.myStyle) {
-              if (key === 'width' || key === 'height') {
-                  continue;
-              }
-              const value = this.myStyle[key];
-              domHelpers_1(this.$dom, key, value);
-          }
-      }
-      show() {
-          domHelpers_1(this.$dom, 'display', 'block');
-          this.isShown = true;
-      }
-  }
+      _classCallCheck(this, VideoWrapper);
 
-  var __decorate$6 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-      var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-      if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-      else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-      return c > 3 && r && Object.defineProperty(target, key, r), r;
-  };
-  const pluginConfigSet = {};
-  const kernelsSet = {};
-  function convertNameIntoId(name) {
-      if (!isString$1(name)) {
-          throw new Error(`Plugin's name must be a string, but not "${name}" in ${typeof name}`);
+      this.events = {};
+      this.unwatchHandlers = [];
+
+      if (dispatcher) {
+        this.dispatcher = dispatcher;
       }
-      return camelize(name);
-  }
-  function checkPluginConfig(config) {
-      if (isFunction(config)) {
-          if (!(config.prototype instanceof ChimeePlugin)) {
-              throw new TypeError(`Your are trying to install plugin ${config.name}, but it's not extends from Chimee.plugin.`);
+
+      this.id = id;
+    }
+
+    _createClass(VideoWrapper, [{
+      key: "$attr",
+      value: function $attr(targetOrAttr, attrOrValue, valueOrNothing) {
+        var _this$getRealInfoForS = this.getRealInfoForStyleAndAttr(arguments.length, targetOrAttr, attrOrValue, valueOrNothing),
+            method = _this$getRealInfoForS.method,
+            target = _this$getRealInfoForS.target,
+            attr = _this$getRealInfoForS.attr,
+            value = _this$getRealInfoForS.value;
+
+        if (method === 'set' && target === 'videoElement') {
+          if (!this.dispatcher.videoConfigReady) {
+            {
+              chimeeLog.warn('chimee', "".concat(this.id, " is tring to set attribute on video before video inited. Please wait until the inited event has benn trigger"));
+            }
+
+            return value;
           }
+
+          if (isVideoDomAttribute(attr)) {
+            this.dispatcher.videoConfig[attr] = value;
+            return value;
+          }
+        }
+
+        return method === 'set' ? this.dispatcher.dom.setAttr(target, attr, value) : this.dispatcher.dom.getAttr(target, attr);
+      }
+    }, {
+      key: "$css",
+      value: function $css(targetOrAttr, attrOrValue, valueOrNothing) {
+        var _this$getRealInfoForS2 = this.getRealInfoForStyleAndAttr(arguments.length, targetOrAttr, attrOrValue, valueOrNothing),
+            method = _this$getRealInfoForS2.method,
+            target = _this$getRealInfoForS2.target,
+            attr = _this$getRealInfoForS2.attr,
+            value = _this$getRealInfoForS2.value;
+
+        return method === 'set' ? this.dispatcher.dom.setStyle(target, attr, value) : this.dispatcher.dom.getStyle(target, attr);
+      }
+    }, {
+      key: "$del",
+      value: function $del(obj, property) {
+        if (!isPlainObject(obj) && !isArray$1(obj)) {
+          throw new TypeError("$del only support Array or Object, but not ".concat(obj, ", whose type is ").concat(_typeof(obj)));
+        }
+
+        if (!isFunction(obj.__del)) {
+          {
+            chimeeLog.warn('chimee', "".concat(JSON.stringify(obj), " has not been deep watch. There is no need to use $del."));
+          }
+
+          delete obj[property];
           return;
-      }
-      if (!isPlainObject(config) || isEmpty(config)) {
-          throw new TypeError(`plugin's config must be an Object, but not "${config}" in ${typeof config}`);
-      }
-      const { name } = config;
-      if (!isString$1(name) || name.length < 1) {
-          throw new TypeError(`plugin must have a legal namea, but not "${name}" in ${typeof name}`);
-      }
-  }
-  class Dispatcher {
-      constructor(config, vm) {
-          this.changeWatchable = true;
-          this.kernelEventHandlerList = [];
-          this.order = [];
-          this.plugins = {};
-          this.readySync = false;
-          this.zIndexMap = {
-              inner: [],
-              outer: [],
-          };
-          if (!isPlainObject(config)) {
-              throw new TypeError(`UserConfig must be an Object, but not "${config}" in ${typeof config}`);
-          }
-          this.dom = new Dom(config, this);
-          this.vm = vm;
-          this.videoConfigReady = false;
-          this.videoConfig = new VideoConfig(this, config);
-          if (isArray$1(config.plugins) && !isArray$1(config.plugin)) {
-              config.plugin = config.plugins;
-              delete config.plugins;
-          }
-          this.binder = new Binder(this);
-          this.binder.listenOnMouseMoveEvent(this.dom.videoElement);
-          this.initUserPlugin(config.plugin);
-          const containerConfig = Object.assign({}, defaultContainerConfig, config.container || {});
-          this.order.forEach((key) => this.plugins[key].runInitHook(this.videoConfig));
-          this.videoConfigReady = true;
-          this.videoConfig.init();
-          this.containerConfig = new Vessel(this, 'container', containerConfig);
-          this.kernel = this.createKernel(this.dom.videoElement, this.videoConfig);
-          this.binder.applyPendingEvents('kernel');
-          if (config.noDefaultContextMenu) {
-              const { noDefaultContextMenu } = config;
-              const target = (noDefaultContextMenu === 'container' || noDefaultContextMenu === 'wrapper')
-                  ? noDefaultContextMenu
-                  : 'video-dom';
-              this.binder.on({
-                  fn: (evt) => evt.preventDefault(),
-                  id: '_vm',
-                  name: 'contextmenu',
-                  stage: 'main',
-                  target,
-              });
-          }
-          const asyncInitedTasks = [];
-          this.order.forEach((key) => {
-              const ready = this.plugins[key].runInitedHook();
-              if (isPromise(ready)) {
-                  asyncInitedTasks.push(ready);
-              }
-          });
-          this.readySync = asyncInitedTasks.length === 0;
-          this.ready = this.readySync
-              ? Promise.resolve()
-              : Promise.all(asyncInitedTasks)
-                  .then(() => {
-                  this.readySync = true;
-                  this.onReady();
-              });
-          if (this.readySync) {
-              this.onReady();
-          }
-      }
-      static getPluginConfig(id) {
-          return pluginConfigSet[id];
-      }
-      static hasInstalled(id) {
-          return !!pluginConfigSet[id];
-      }
-      static hasInstalledKernel(key) {
-          return isFunction(kernelsSet[key]);
-      }
-      get inPictureInPictureMode() {
-          return 'pictureInPictureEnabled' in document
-              ? this.dom.videoElement === document.pictureInPictureElement
-              : Boolean(this.plugins.pictureInPicture && this.plugins.pictureInPicture.isShown);
-      }
-      static install(config) {
-          const { name } = config;
-          const id = camelize(name);
-          if (pluginConfigSet[id]) {
-              {
-                  chimeeLog.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
-              }
-          }
-          const pluginConfig = isFunction(config)
-              ? config
-              : Object.assign({}, config, { id });
-          pluginConfigSet[id] = pluginConfig;
-          return id;
-      }
-      static installKernel(key, value) {
-          const tasks = isPlainObject(key)
-              ? Object.entries(key)
-              : [[key, value]];
-          tasks.forEach(([key, value]) => {
-              if (!isFunction(value)) {
-                  throw new Error(`The kernel you install on ${key} must be a Function, but not ${typeof value}`);
-              }
-              if (isFunction(kernelsSet[key])) {
-                  chimeeLog.warn(`You have alrady install a kernel on ${key}, and now we will replace it`);
-              }
-              kernelsSet[key] = value;
-          });
-      }
-      static uninstall(id) {
-          delete pluginConfigSet[id];
-      }
-      static uninstallKernel(key) {
-          delete kernelsSet[key];
-      }
-      destroy() {
-          for (const key in this.plugins) {
-              if (this.plugins.hasOwnProperty(key)) {
-                  this.unuse(key);
-              }
-          }
-          this.binder.destroy();
-          delete this.binder;
-          this.dom.destroy();
-          delete this.dom;
-          this.kernel.destroy();
-          delete this.kernel;
-          delete this.vm;
-          delete this.plugins;
-          delete this.order;
-          this.destroyed = true;
-      }
-      exitPictureInPicture() {
-          if ('pictureInPictureEnabled' in document) {
-              if (this.inPictureInPictureMode) {
-                  window.__chimee_picture_in_picture = undefined;
-                  return document.exitPictureInPicture();
-              }
-          }
-          return this.plugins.pictureInPicture && this.plugins.pictureInPicture.exitPictureInPicture();
-      }
-      getPluginConfig(id) {
-          return Dispatcher.getPluginConfig(id);
-      }
-      hasUsed(id) {
-          const plugin = this.plugins[id];
-          return isPlainObject(plugin);
-      }
-      load(srcOrOption, option = {}) {
-          const src = isString$1(srcOrOption)
-              ? srcOrOption
-              : isPlainObject(srcOrOption) && isString$1(srcOrOption.src)
-                  ? srcOrOption.src
-                  : '';
-          if (!isString$1(srcOrOption)) {
-              delete srcOrOption.src;
-              option = srcOrOption;
-          }
-          const oldBox = this.kernel.box;
-          const videoConfig = this.videoConfig;
-          const { isLive = videoConfig.isLive, box = getLegalBox({ src, box: videoConfig.box }), preset = videoConfig.preset, kernels = videoConfig.kernels, } = option;
-          if (box !== 'native' || box !== oldBox || !isEmpty(option)) {
-              const video = document.createElement('video');
-              const config = { isLive, box, preset, src, kernels };
-              const kernel = this.createKernel(video, config);
-              this.switchKernel({ video, kernel, config, notifyChange: true });
-          }
-          const originAutoLoad = this.videoConfig.autoload;
-          this.changeUnwatchable(this.videoConfig, 'autoload', false);
-          this.videoConfig.src = src || this.videoConfig.src;
-          this.kernel.load(this.videoConfig.src);
-          this.changeUnwatchable(this.videoConfig, 'autoload', originAutoLoad);
-      }
-      onReady() {
-          this.binder.trigger({
-              id: 'dispatcher',
-              name: 'ready',
-              target: 'plugin',
-          });
-          this.autoloadVideoSrcAtFirst();
-      }
-      async requestPictureInPicture() {
-          if ('pictureInPictureEnabled' in document) {
-              if (this.inPictureInPictureMode) {
-                  return Promise.resolve(window.__chimee_picture_in_picture);
-              }
-              const pipWindow = await this.dom.videoElement.requestPictureInPicture();
-              window.__chimee_picture_in_picture = pipWindow;
-              return pipWindow;
-          }
-          if (!Dispatcher.hasInstalled(PictureInPicture.name)) {
-              Dispatcher.install(PictureInPicture);
-          }
-          if (!this.hasUsed(PictureInPicture.name)) {
-              this.use(PictureInPicture.name);
-          }
-          return this.plugins.pictureInPicture.requestPictureInPicture();
-      }
-      silentLoad(src, option = {}) {
-          const { duration = 3, bias = 0, repeatTimes = 0, increment = 0, isLive = this.videoConfig.isLive, box = this.videoConfig.box, kernels = this.videoConfig.kernels, preset = this.videoConfig.preset, } = option;
-          const immediate = option.immediate || isLive;
-          const config = { isLive, box, src, kernels, preset };
-          const tasks = new Array(repeatTimes + 1).fill(1).map((value, index) => {
-              return () => {
-                  return new Promise((resolve, reject) => {
-                      if (option.abort) {
-                          reject({ error: true, message: 'user abort the mission' });
-                      }
-                      const video = document.createElement('video');
-                      const idealTime = this.kernel.currentTime + duration + increment * index;
-                      video.muted = true;
-                      const that = this;
-                      let newVideoReady = false;
-                      let kernel;
-                      function oldVideoTimeupdate() {
-                          const currentTime = that.kernel.currentTime;
-                          if ((bias <= 0 && currentTime >= idealTime) ||
-                              (bias > 0 &&
-                                  ((Math.abs(idealTime - currentTime) <= bias && newVideoReady) ||
-                                      (currentTime - idealTime) > bias))) {
-                              events_2(that.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-                              events_2(video, 'error', videoError, true);
-                              if (!newVideoReady) {
-                                  events_2(video, 'canplay', videoCanplay, true);
-                                  events_2(video, 'loadedmetadata', videoLoadedmetadata, true);
-                                  kernel.destroy();
-                                  return resolve();
-                              }
-                              return reject({
-                                  error: false,
-                                  kernel,
-                                  video,
-                              });
-                          }
-                      }
-                      function videoCanplay() {
-                          newVideoReady = true;
-                          if (immediate) {
-                              events_2(that.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-                              events_2(video, 'error', videoError, true);
-                              return reject({
-                                  error: false,
-                                  kernel,
-                                  video,
-                              });
-                          }
-                      }
-                      function videoLoadedmetadata() {
-                          if (!isLive) {
-                              kernel.seek(immediate ? this.kernel.currentTime : idealTime);
-                          }
-                      }
-                      function videoError(evt) {
-                          events_2(video, 'canplay', videoCanplay, true);
-                          events_2(video, 'loadedmetadata', videoLoadedmetadata, true);
-                          events_2(that.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-                          kernel.off('error', videoError);
-                          let error;
-                          if (evt && evt.errmsg) {
-                              const { errmsg } = evt;
-                              chimeeLog.error('chimee\'s silentload bump into a kernel error', errmsg);
-                              error = new Error(errmsg);
-                          }
-                          else {
-                              error = !isEmpty(video.error)
-                                  ? new Error(video.error.message)
-                                  : new Error('unknow video error');
-                              chimeeLog.error('chimee\'s silentload', error.message);
-                          }
-                          kernel.destroy();
-                          that.silentLoadTempKernel = undefined;
-                          return index === repeatTimes
-                              ? reject(error)
-                              : resolve(error);
-                      }
-                      events_1(video, 'canplay', videoCanplay, true);
-                      events_1(video, 'loadedmetadata', videoLoadedmetadata.bind(this), true);
-                      events_1(video, 'error', videoError, true);
-                      kernel = this.createKernel(video, config);
-                      this.silentLoadTempKernel = kernel;
-                      kernel.on('error', videoError);
-                      events_1(this.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-                      kernel.load();
-                  });
-              };
-          });
-          return runRejectableQueue(tasks)
-              .then(() => {
-              const message = `The silentLoad for ${src} timed out. Please set a longer duration or check your network`;
-              {
-                  chimeeLog.warn('chimee\'s silentLoad', message);
-              }
-              return Promise.reject(new Error(message));
-          }).catch((result) => {
-              if (isError(result)) {
-                  return Promise.reject(result);
-              }
-              let kernelError;
-              let data;
-              if (result.error) {
-                  kernelError = result;
-              }
-              else {
-                  data = result;
-              }
-              if (kernelError && kernelError.error) {
-                  {
-                      chimeeLog.warn('chimee\'s silentLoad', kernelError.message);
-                  }
-                  return Promise.reject(new Error(kernelError.message));
-              }
-              const { video, kernel } = data;
-              if (option.abort) {
-                  kernel.destroy();
-                  return Promise.reject(new Error('user abort the mission'));
-              }
-              const paused = this.dom.videoElement.paused;
-              if (paused) {
-                  this.switchKernel({ video, kernel, config });
-                  return Promise.resolve();
-              }
-              return new Promise((resolve) => {
-                  events_1(video, 'play', () => {
-                      this.switchKernel({ video, kernel, config });
-                      resolve();
-                  }, true);
-                  video.play();
-              });
-          });
-      }
-      switchKernel({ video, kernel, config, notifyChange }) {
-          const oldKernel = this.kernel;
-          const originVideoConfig = clone(this.videoConfig);
-          this.dom.migrateVideoRequiredGuardedAttributes(video);
-          this.dom.removeVideo();
-          this.dom.installVideo(video);
-          this.videoConfig.changeWatchable = false;
-          this.videoConfig.autoload = false;
-          this.videoConfig.src = config.src;
-          videoDomAttributes.forEach((key) => {
-              if (key !== 'src') {
-                  this.videoConfig[key] = originVideoConfig[key];
-              }
-          });
-          this.videoConfig.changeWatchable = true;
-          this.binder.migrateKernelEvent(oldKernel, kernel);
-          this.kernel = kernel;
-          this.silentLoadTempKernel = undefined;
-          const { isLive, box, preset, kernels } = config;
-          Object.assign(this.videoConfig, { isLive, box, preset, kernels });
-          oldKernel.destroy();
-          if (notifyChange) {
-              if (this.binder && this.binder.bindEventOnVideo) {
-                  this.binder.bindEventOnVideo(video);
-              }
-          }
-          else {
-              setTimeout(() => {
-                  if (this.binder && this.binder.bindEventOnVideo) {
-                      this.binder.bindEventOnVideo(video);
-                  }
-              });
-          }
-          if (this.inPictureInPictureMode) {
-              this.exitPictureInPicture();
-          }
-      }
-      throwError(error) {
-          this.vm.customThrowError(error);
-      }
-      unuse(id) {
-          const plugin = this.plugins[id];
-          if (!plugin) {
-              delete this.plugins[id];
-              return;
-          }
-          plugin.$destroy();
-          const orderIndex = this.order.indexOf(id);
-          if (orderIndex > -1) {
-              this.order.splice(orderIndex, 1);
-          }
-          delete this.plugins[id];
-          delete this.vm[id];
-      }
-      use(option) {
-          if (isString$1(option)) {
-              option = { name: option, alias: undefined };
-          }
-          if (!isPlainObject(option) || (isPlainObject(option) && !isString$1(option.name))) {
-              throw new TypeError('pluginConfig do not match requirement');
-          }
-          if (!isString$1(option.alias)) {
-              option.alias = undefined;
-          }
-          const { name, alias } = option;
-          option.name = alias || name;
-          delete option.alias;
-          const key = camelize(name);
-          const id = camelize(alias || name);
-          const pluginOption = option;
-          const pluginConfig = Dispatcher.getPluginConfig(key);
-          if (!pluginConfig) {
-              throw new TypeError('You have not installed plugin ' + key);
-          }
-          if (isPlainObject(pluginConfig)) {
-              pluginConfig.id = id;
-          }
-          const plugin = isFunction(pluginConfig)
-              ? new pluginConfig({ id }, this, pluginOption)
-              : new ChimeePlugin(pluginConfig, this, pluginOption);
-          this.plugins[id] = plugin;
-          Object.defineProperty(this.vm, id, {
-              configurable: true,
-              enumerable: false,
-              value: plugin,
-              writable: false,
-          });
-          this.order.push(id);
-          this.sortZIndex();
-          if (this.videoConfigReady) {
-              plugin.runInitedHook();
-          }
-          return plugin.ready;
-      }
-      autoloadVideoSrcAtFirst() {
-          if (this.videoConfig.autoload) {
-              if (!this.videoConfig.src) {
-                  chimeeLog.warn('You have not set the src, so you better set autoload to be false. Accroding to https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md#src.');
-                  return;
-              }
-              this.binder.emit({
-                  id: 'dispatcher',
-                  name: 'load',
-                  target: 'plugin',
-              }, { src: this.videoConfig.src });
-          }
-      }
-      changeUnwatchable(object, property, value) {
-          this.changeWatchable = false;
-          object[property] = value;
-          this.changeWatchable = true;
-      }
-      createKernel(video, config) {
-          const { kernels, preset } = config;
-          if (isEmpty(kernels) && !isEmpty(preset)) {
-              chimeeLog.warn('preset will be deprecated in next major version, please use kernels instead.');
-          }
-          const presetConfig = {};
-          let newPreset = {};
-          if (isArray$1(kernels)) {
-              newPreset = kernels.reduce((kernels, keyOrSKC) => {
-                  if (isString$1(keyOrSKC)) {
-                      if (!isSupportedKernelType(keyOrSKC)) {
-                          throw new Error(`We have not support ${keyOrSKC} kernel type`);
-                      }
-                      const kernelFn = kernelsSet[keyOrSKC];
-                      if (!isFunction(kernelFn)) {
-                          chimeeLog.warn(`You have not installed kernel for ${keyOrSKC}.`);
-                          return kernels;
-                      }
-                      kernels[keyOrSKC] = kernelFn;
-                      return kernels;
-                  }
-                  if (isPlainObject(keyOrSKC)) {
-                      const { name, handler } = keyOrSKC;
-                      if (isString$1(handler)) {
-                          if (!isSupportedKernelType(handler)) {
-                              throw new Error(`We have not support ${handler} kernel type`);
-                          }
-                          const kernelFn = kernelsSet[handler];
-                          if (!isFunction(kernelFn)) {
-                              chimeeLog.warn(`You have not installed kernel for ${handler}.`);
-                              return kernels;
-                          }
-                          kernels[handler] = kernelFn;
-                          presetConfig[handler] = keyOrSKC;
-                          return kernels;
-                      }
-                      if (isFunction(handler)) {
-                          const kernelName = name || handler.name;
-                          if (!isSupportedKernelType(kernelName)) {
-                              throw new Error(`We have not support ${kernelName} kernel type`);
-                          }
-                          kernels[kernelName] = handler;
-                          presetConfig[kernelName] = keyOrSKC;
-                          return kernels;
-                      }
-                      chimeeLog.warn(`When you pass in an SingleKernelConfig in Array, you must clarify it's handler, we only support handler in string or function but not ${typeof handler}`);
-                      return kernels;
-                  }
-                  chimeeLog.warn(`If you pass in kernels as array, you must pass in kernels in string or function, but not ${typeof keyOrSKC}`);
-                  return kernels;
-              }, {});
-          }
-          else {
-              Object.keys(kernels || {}).forEach((key) => {
-                  const fnOrSKC = kernels[key];
-                  if (isFunction(fnOrSKC)) {
-                      const fn = fnOrSKC;
-                      newPreset[key] = fn;
-                      return;
-                  }
-                  if (isPlainObject(fnOrSKC)) {
-                      const SKC = fnOrSKC;
-                      const { handler } = SKC;
-                      if (isString$1(handler)) {
-                          if (!isSupportedKernelType(handler)) {
-                              throw new Error(`We have not support ${handler} kernel type`);
-                          }
-                          const kernelFn = kernelsSet[handler];
-                          if (!isFunction(kernelFn)) {
-                              chimeeLog.warn(`You have not installed kernel for ${handler}.`);
-                              return;
-                          }
-                          newPreset[key] = kernelFn;
-                          presetConfig[key] = SKC;
-                          return;
-                      }
-                      if (isFunction(handler)) {
-                          newPreset[key] = handler;
-                          presetConfig[key] = SKC;
-                          return;
-                      }
-                      chimeeLog.warn(`When you pass in an SingleKernelConfig in Object, you must clarify it's handler, we only support handler in string or function but not ${typeof handler}`);
-                      return;
-                  }
-                  chimeeLog.warn(`If you pass in kernels as object, you must pass in kernels in string or function, but not ${typeof fnOrSKC}`);
-                  return kernels;
-              });
-          }
-          config.preset = Object.assign(newPreset, preset);
-          const legalConfig = Object.assign(config, { presetConfig });
-          const kernel = new ChimeeKernel(video, legalConfig);
-          return kernel;
-      }
-      getTopLevel(inner) {
-          const arr = this.zIndexMap[inner ? 'inner' : 'outer'];
-          const plugin = this.plugins[arr[arr.length - 1]];
-          return isEmpty(plugin) ? 0 : plugin.$level;
-      }
-      initUserPlugin(configs = []) {
-          if (!isArray$1(configs)) {
-              {
-                  chimeeLog.warn('Dispatcher', `UserConfig.plugin can only by an Array, but not "${configs}" in ${typeof configs}`);
-              }
-              configs = [];
-          }
-          return configs.map((config) => this.use(config));
-      }
-      sortZIndex() {
-          const { inner, outer } = this.order.reduce((levelSet, key) => {
-              const plugin = this.plugins[key];
-              if (isEmpty(plugin)) {
-                  return levelSet;
-              }
-              const set = levelSet[plugin.$inner ? 'inner' : 'outer'];
-              const level = plugin.$level;
-              set[level] = set[level] || [];
-              set[level].push(key);
-              return levelSet;
-          }, ({ inner: {}, outer: {} }));
-          inner[0] = inner[0] || [];
-          inner[0].unshift('videoElement');
-          outer[0] = outer[0] || [];
-          outer[0].unshift('container');
-          const innerOrderArr = transObjectAttrIntoArray(inner);
-          const outerOrderArr = transObjectAttrIntoArray(outer);
-          this.dom.setPluginsZIndex(innerOrderArr);
-          this.dom.setPluginsZIndex(outerOrderArr);
-          this.zIndexMap.inner = innerOrderArr;
-          this.zIndexMap.outer = outerOrderArr;
-      }
-  }
-  __decorate$6([
-      nonenumerable
-  ], Dispatcher.prototype, "inPictureInPictureMode", null);
-  __decorate$6([
-      before(convertNameIntoId)
-  ], Dispatcher.prototype, "hasUsed", null);
-  __decorate$6([
-      autobind
-  ], Dispatcher.prototype, "throwError", null);
-  __decorate$6([
-      before(convertNameIntoId)
-  ], Dispatcher.prototype, "unuse", null);
-  __decorate$6([
-      before(convertNameIntoId)
-  ], Dispatcher, "getPluginConfig", null);
-  __decorate$6([
-      before(convertNameIntoId)
-  ], Dispatcher, "hasInstalled", null);
-  __decorate$6([
-      before(checkPluginConfig)
-  ], Dispatcher, "install", null);
-  __decorate$6([
-      before(convertNameIntoId)
-  ], Dispatcher, "uninstall", null);
+        }
 
-  class Chimee extends VideoWrapper {
-      constructor(rawConfig) {
-          super({ id: '_vm' });
-          this.config = {
-              errorHandler: undefined,
-          };
-          this.destroyed = false;
-          this.version = '1.0.1-alpha.0';
-          let config;
-          if (!isFunction(Object.defineProperty)) {
-              chimeeLog.error('Chimee', 'We detect that this browser lack of Object.defineProperty. Chimee can\'t run on this browser');
-          }
-          if (typeof Promise === 'undefined') {
-              chimeeLog.error('Chimee', 'We detect that this browser lack of Promise. If you are running Chimee in old browser. Please make sure you have import polyfill such as babel-polyfill.');
-          }
-          if (isString$1(rawConfig) || isElement(rawConfig)) {
-              config = {
-                  controls: true,
-                  wrapper: rawConfig,
-              };
-          }
-          else if (isPlainObject(rawConfig)) {
-              if (!rawConfig.wrapper) {
-                  throw new Error('You must pass in an legal object');
-              }
-              config = rawConfig;
-          }
-          else {
-              throw new Error('You must pass in an Object containing wrapper or string or element to new a Chimee');
-          }
-          this.dispatcher = new Dispatcher(config, this);
-          this.ready = this.dispatcher.ready;
-          this.readySync = this.dispatcher.readySync;
-          this.wrapAsVideo(this.dispatcher.videoConfig);
+        obj.__del(property);
       }
-      static registerEvents({ name, target, } = {}) {
-          if (!name || !isString$1(name)) {
-              throw new Error(`The event name must be a string, but not ${typeof name}`);
-          }
-          if (!target || !isString$1(target)) {
-              throw new Error(`The event target must be a string, but not ${typeof target}`);
-          }
-          if (target === 'kernel') {
-              kernelEvents.push(name);
-          }
+    }, {
+      key: "$emit",
+      value: function $emit(key) {
+        var _this$dispatcher$bind;
+
+        var target;
+
+        if (!isString$1(key) && isPlainObject(key) && isString$1(key.name) && isString$1(key.target)) {
+          target = key.target;
+          key = key.name;
+        }
+
+        if (!isString$1(key)) {
+          throw new TypeError('emit key parameter must be String');
+        }
+
+        if (domEvents.indexOf(key.replace(/^\w_/, '')) > -1) {
+          chimeeLog.warn('plugin', "You are try to emit ".concat(key, " event. As emit is wrapped in Promise. It make you can't use event.preventDefault and event.stopPropagation. So we advice you to use emitSync"));
+        }
+
+        for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          args[_key - 1] = arguments[_key];
+        }
+
+        return (_this$dispatcher$bind = this.dispatcher.binder).emit.apply(_this$dispatcher$bind, [{
+          id: this.id,
+          name: key,
+          target: target
+        }].concat(args));
       }
-      customThrowError(error) {
-          if (isString$1(error)) {
-              error = new Error(error);
-          }
-          const errorHandler = this.config.errorHandler || Chimee.config.errorHandler;
-          if (isFunction(errorHandler)) {
-              return errorHandler(error);
-          }
-          if (Chimee.config.silent) {
-              return;
-          }
-          if (isError(error)) {
-              throw error;
-          }
-          else {
-              console.error(error);
-          }
+    }, {
+      key: "$emitSync",
+      value: function $emitSync(key) {
+        var _this$dispatcher$bind2;
+
+        var target;
+
+        if (!isString$1(key) && isPlainObject(key) && isString$1(key.name) && isString$1(key.target)) {
+          target = key.target;
+          key = key.name;
+        }
+
+        if (!isString$1(key)) {
+          throw new TypeError('emitSync key parameter must be String');
+        }
+
+        for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+          args[_key2 - 1] = arguments[_key2];
+        }
+
+        return (_this$dispatcher$bind2 = this.dispatcher.binder).emitSync.apply(_this$dispatcher$bind2, [{
+          id: this.id,
+          name: key,
+          target: target
+        }].concat(args));
       }
-      destroy() {
-          if (this.destroyed) {
-              return;
+    }, {
+      key: "$fullscreen",
+      value: function $fullscreen() {
+        var flag = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+        var element = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'container';
+
+        if (!this.dispatcher.binder.emitSync({
+          id: this.id,
+          name: 'fullscreen',
+          target: 'video-dom'
+        }, flag, element)) {
+          return false;
+        }
+
+        var result = this.dispatcher.dom.fullscreen(flag, turnChimeeDomElementIntoRealChimeeDomElement(element));
+        this.dispatcher.binder.triggerSync({
+          id: this.id,
+          name: 'fullscreen',
+          target: 'video-dom'
+        }, flag, element);
+        return result;
+      }
+    }, {
+      key: "$off",
+      value: function $off(key, fn) {
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+        var eventInfo = Object.assign({}, options, {
+          fn: fn,
+          id: this.id,
+          name: key
+        });
+        this.dispatcher.binder.off(eventInfo);
+        this.removeEvents(key, fn);
+      }
+    }, {
+      key: "$on",
+      value: function $on(key, fn) {
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+        var eventInfo = Object.assign({}, options, {
+          fn: fn,
+          id: this.id,
+          name: key
+        });
+        this.dispatcher.binder.on(eventInfo);
+        this.addEvents(key, fn);
+      }
+    }, {
+      key: "$once",
+      value: function $once(key, fn) {
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+        var self = this;
+
+        var boundFn = function boundFn() {
+          bind$1(fn, this).apply(void 0, arguments);
+          self.removeEvents(key, boundFn);
+        };
+
+        self.addEvents(key, boundFn);
+        var eventInfo = Object.assign({}, options, {
+          fn: boundFn,
+          id: this.id,
+          name: key
+        });
+        this.dispatcher.binder.once(eventInfo);
+      }
+    }, {
+      key: "$set",
+      value: function $set(obj, property, value) {
+        if (!isPlainObject(obj) && !isArray$1(obj)) {
+          throw new TypeError("$set only support Array or Object, but not ".concat(obj, ", whose type is ").concat(_typeof(obj)));
+        }
+
+        if (!isFunction(obj.__set)) {
+          {
+            chimeeLog.warn('chimee', "".concat(JSON.stringify(obj), " has not been deep watch. There is no need to use $set."));
           }
-          super.destroyVideoWrapper();
-          this.dispatcher.destroy();
-          Object.defineProperty(this, 'dispatcher', {
-              configurable: true,
-              enumerable: true,
-              get() {
-                  throw new Error('This instance has been destroyed.');
-              },
+
+          obj[property] = value;
+          return;
+        }
+
+        obj.__set(property, value);
+      }
+    }, {
+      key: "$silentLoad",
+      value: function $silentLoad(src) {
+        var _this = this;
+
+        var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        return this.dispatcher.binder.emit({
+          id: this.id,
+          name: 'silentLoad',
+          target: 'video'
+        }).then(function () {
+          return _this.dispatcher.silentLoad(src, option);
+        }).then(function (result) {
+          _this.dispatcher.binder.trigger({
+            id: _this.id,
+            name: 'silentLoad',
+            target: 'video'
+          }, result);
+        });
+      }
+    }, {
+      key: "$watch",
+      value: function $watch(key, handler) {
+        var _this2 = this;
+
+        var _ref2 = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {},
+            deep = _ref2.deep,
+            _ref2$diff = _ref2.diff,
+            diff = _ref2$diff === void 0 ? true : _ref2$diff,
+            other = _ref2.other,
+            _ref2$proxy = _ref2.proxy,
+            proxy = _ref2$proxy === void 0 ? false : _ref2$proxy;
+
+        if (!isString$1(key) && !isArray$1(key)) {
+          throw new TypeError("$watch only accept string and Array<string> as key to find the target to spy on, but not ".concat(key, ", whose type is ").concat(_typeof(key)));
+        }
+
+        var watching = true;
+
+        var watcher = function watcher() {
+          if (watching && (!(this instanceof VideoConfig) || this.dispatcher.changeWatchable)) {
+            bind$1(handler, this).apply(void 0, arguments);
+          }
+        };
+
+        var unwatcher = function unwatcher() {
+          watching = false;
+
+          var index = _this2.unwatchHandlers.indexOf(unwatcher);
+
+          if (index > -1) {
+            _this2.unwatchHandlers.splice(index, 1);
+          }
+        };
+
+        var keys = isString$1(key) ? key.split('.') : key;
+        var property = keys.pop();
+        var videoConfig = this.dispatcher.videoConfig;
+        var target = keys.length === 0 && !other && isVideoDomAttribute(property) ? videoConfig : ['isFullscreen', 'fullscreenElement'].indexOf(property) > -1 ? this.dispatcher.dom : getDeepProperty(other || this, keys, {
+          throwError: true
+        });
+        applyDecorators(target, _defineProperty$1({}, property, watch(watcher, {
+          deep: deep,
+          diff: diff,
+          proxy: proxy
+        })), {
+          self: true
+        });
+        this.unwatchHandlers.push(unwatcher);
+        return unwatcher;
+      }
+    }, {
+      key: "exitPictureInPicture",
+      value: function exitPictureInPicture() {
+        return this.dispatcher.binder.emit({
+          id: this.id,
+          name: 'leavepictureinpicture',
+          target: 'video'
+        });
+      }
+    }, {
+      key: "load",
+      value: function load() {
+        var _this3 = this;
+
+        for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+          args[_key3] = arguments[_key3];
+        }
+
+        return new Promise(function (resolve) {
+          var _this3$dispatcher$bin;
+
+          _this3.dispatcher.binder.once({
+            fn: resolve,
+            id: _this3.id,
+            name: '_load',
+            target: 'plugin'
           });
-          this.destroyed = true;
+
+          (_this3$dispatcher$bin = _this3.dispatcher.binder).emit.apply(_this3$dispatcher$bin, [{
+            id: _this3.id,
+            name: 'load',
+            target: 'plugin'
+          }].concat(args));
+        });
       }
-      unuse(name) {
-          return this.dispatcher.unuse(name);
+    }, {
+      key: "requestPictureInPicture",
+      value: function requestPictureInPicture() {
+        return this.dispatcher.binder.emit({
+          id: this.id,
+          name: 'enterpictureinpicture',
+          target: 'video'
+        });
       }
-      use(option) {
-          return this.dispatcher.use(option);
+    }, {
+      key: "destroyVideoWrapper",
+      value: function destroyVideoWrapper() {
+        var _this4 = this;
+
+        this.unwatchHandlers.forEach(function (unwatcher) {
+          return unwatcher();
+        });
+        Object.keys(this.events).forEach(function (key) {
+          if (!isArray$1(_this4.events[key])) {
+            return;
+          }
+
+          _this4.events[key].forEach(function (fn) {
+            return _this4.$off(key, fn);
+          });
+        });
+        delete this.events;
       }
+    }, {
+      key: "wrapAsVideo",
+      value: function wrapAsVideo(videoConfig) {
+        var _this5 = this;
+
+        videoReadOnlyProperties.forEach(function (key) {
+          Object.defineProperty(_this5, key, {
+            configurable: false,
+            enumerable: false,
+            get: function get() {
+              return this.dispatcher.dom.videoElement[key];
+            },
+            set: undefined
+          });
+        });
+        videoMethods.forEach(function (key) {
+          Object.defineProperty(_this5, key, {
+            configurable: false,
+            enumerable: false,
+            get: function get() {
+              var video = this.dispatcher.dom.videoElement;
+              return bind$1(video[key], video);
+            },
+            set: undefined
+          });
+        });
+        var props = [].concat(kernelProperties).concat(videoDomAttributes).reduce(function (props, key) {
+          props[key] = [accessor({
+            get: function get() {
+              return videoConfig[key];
+            },
+            set: function set(value) {
+              videoConfig[key] = value;
+              return value;
+            }
+          }), nonenumerable];
+          return props;
+        }, {});
+        applyDecorators(this, props, {
+          self: true
+        });
+        kernelMethods.forEach(function (key) {
+          Object.defineProperty(_this5, key, {
+            value: function value() {
+              var _this6 = this;
+
+              for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+                args[_key4] = arguments[_key4];
+              }
+
+              return new Promise(function (resolve) {
+                var _this6$dispatcher$bin;
+
+                var id = _this6.id;
+
+                _this6.dispatcher.binder.once({
+                  fn: resolve,
+                  id: id,
+                  name: '_' + key
+                });
+
+                (_this6$dispatcher$bin = _this6.dispatcher.binder)[/^(seek)$/.test(key) ? 'emitSync' : 'emit'].apply(_this6$dispatcher$bin, [{
+                  id: id,
+                  name: key,
+                  target: 'video'
+                }].concat(args));
+              });
+            },
+            configurable: true,
+            enumerable: false,
+            writable: true
+          });
+        });
+        domMethods.forEach(function (key) {
+          if (key === 'fullscreen') {
+            return;
+          }
+
+          Object.defineProperty(_this5, key, {
+            value: function value() {
+              var _this$dispatcher$dom;
+
+              return (_this$dispatcher$dom = this.dispatcher.dom)[key].apply(_this$dispatcher$dom, arguments);
+            },
+            configurable: true,
+            enumerable: false,
+            writable: true
+          });
+        });
+      }
+    }, {
+      key: "addEvents",
+      value: function addEvents(key, fn) {
+        this.events[key] = this.events[key] || [];
+        this.events[key].push(fn);
+      }
+    }, {
+      key: "getRealInfoForStyleAndAttr",
+      value: function getRealInfoForStyleAndAttr(argumentsLength, targetOrAttr, attrOrValue, valueOrNothing) {
+        var method;
+        var target;
+        var attr;
+        var value;
+
+        if (argumentsLength > 2) {
+          method = 'set';
+          target = targetOrAttr;
+          attr = attrOrValue;
+          value = valueOrNothing;
+        } else if (argumentsLength === 2) {
+          if (isChimeeDomElement(targetOrAttr)) {
+            method = 'get';
+            target = targetOrAttr;
+            attr = attrOrValue;
+          } else {
+            method = 'set';
+            target = 'container';
+            attr = targetOrAttr;
+            value = attrOrValue;
+          }
+        } else if (argumentsLength === 1) {
+          method = 'get';
+          target = 'container';
+          attr = targetOrAttr;
+        } else {
+          throw new Error('You have to pass at least one argument to run $attr or $ css');
+        }
+
+        var realTarget = turnChimeeDomElementIntoRealChimeeDomElement(target);
+        return {
+          attr: attr,
+          method: method,
+          value: value,
+          target: realTarget
+        };
+      }
+    }, {
+      key: "removeEvents",
+      value: function removeEvents(key, fn) {
+        if (isEmpty$1(this.events[key])) {
+          return;
+        }
+
+        var index = this.events[key].indexOf(fn);
+
+        if (index < 0) {
+          return;
+        }
+
+        this.events[key].splice(index, 1);
+
+        if (isEmpty$1(this.events[key])) {
+          delete this.events[key];
+        }
+      }
+    }, {
+      key: "$container",
+      get: function get() {
+        return this.dispatcher.dom.container;
+      }
+    }, {
+      key: "$pluginOrder",
+      get: function get() {
+        return this.dispatcher.order;
+      }
+    }, {
+      key: "$plugins",
+      get: function get() {
+        return this.dispatcher.plugins;
+      }
+    }, {
+      key: "$video",
+      get: function get() {
+        return this.dispatcher.dom.videoElement;
+      }
+    }, {
+      key: "$wrapper",
+      get: function get() {
+        return this.dispatcher.dom.wrapper;
+      }
+    }, {
+      key: "container",
+      get: function get() {
+        return this.dispatcher.containerConfig;
+      },
+      set: function set(config) {
+        if (!isPlainObject(config)) {
+          throw new Error("The config of container must be Object, but not ".concat(_typeof(config), "."));
+        }
+
+        Object.assign(this.dispatcher.containerConfig, config);
+      }
+    }, {
+      key: "currentTime",
+      get: function get() {
+        return this.dispatcher.kernel.currentTime;
+      },
+      set: function set(second) {
+        this.dispatcher.binder.emitSync({
+          id: this.id,
+          name: 'seek',
+          target: 'video'
+        }, second);
+      }
+    }, {
+      key: "fullscreenElement",
+      get: function get() {
+        return this.dispatcher.dom.fullscreenElement;
+      }
+    }, {
+      key: "inPictureInPictureMode",
+      get: function get() {
+        return this.dispatcher.inPictureInPictureMode;
+      }
+    }, {
+      key: "isFullscreen",
+      get: function get() {
+        return this.dispatcher.dom.isFullscreen;
+      }
+    }, {
+      key: "pictureInPictureWindow",
+      get: function get() {
+        return window.__chimee_picture_in_picture;
+      }
+    }, {
+      key: "videoRequireGuardedAttributes",
+      get: function get() {
+        return this.dispatcher.dom.videoRequireGuardedAttributes;
+      }
+    }]);
+
+    return VideoWrapper;
+  }();
+
+  __decorate$5([nonenumerable], VideoWrapper.prototype, "$container", null);
+
+  __decorate$5([nonenumerable], VideoWrapper.prototype, "$pluginOrder", null);
+
+  __decorate$5([nonenumerable], VideoWrapper.prototype, "$plugins", null);
+
+  __decorate$5([nonenumerable], VideoWrapper.prototype, "$video", null);
+
+  __decorate$5([nonenumerable], VideoWrapper.prototype, "$wrapper", null);
+
+  __decorate$5([nonenumerable], VideoWrapper.prototype, "inPictureInPictureMode", null);
+
+  __decorate$5([nonenumerable], VideoWrapper.prototype, "pictureInPictureWindow", null);
+
+  __decorate$5([alias('attr')], VideoWrapper.prototype, "$attr", null);
+
+  __decorate$5([alias('css')], VideoWrapper.prototype, "$css", null);
+
+  __decorate$5([alias('emit')], VideoWrapper.prototype, "$emit", null);
+
+  __decorate$5([alias('emitSync')], VideoWrapper.prototype, "$emitSync", null);
+
+  __decorate$5([alias('fullScreen'), alias('$fullScreen'), alias('fullscreen')], VideoWrapper.prototype, "$fullscreen", null);
+
+  __decorate$5([alias('off'), alias('removeEventListener'), before(eventBinderCheck)], VideoWrapper.prototype, "$off", null);
+
+  __decorate$5([alias('on'), alias('addEventListener'), before(eventBinderCheck)], VideoWrapper.prototype, "$on", null);
+
+  __decorate$5([alias('once'), before(eventBinderCheck)], VideoWrapper.prototype, "$once", null);
+
+  __decorate$5([alias('silentLoad')], VideoWrapper.prototype, "$silentLoad", null);
+
+  var ChimeePlugin =
+  /*#__PURE__*/
+  function (_VideoWrapper) {
+    _inherits(ChimeePlugin, _VideoWrapper);
+
+    function ChimeePlugin(_ref, dispatcher) {
+      var _this;
+
+      var id = _ref.id,
+          name = _ref.name,
+          _ref$level = _ref.level,
+          level = _ref$level === void 0 ? 0 : _ref$level,
+          _ref$operable = _ref.operable,
+          operable = _ref$operable === void 0 ? true : _ref$operable,
+          beforeCreate = _ref.beforeCreate,
+          create = _ref.create,
+          init = _ref.init,
+          inited = _ref.inited,
+          destroy = _ref.destroy,
+          _ref$events = _ref.events,
+          events = _ref$events === void 0 ? {} : _ref$events,
+          _ref$data = _ref.data,
+          data = _ref$data === void 0 ? {} : _ref$data,
+          _ref$computed = _ref.computed,
+          computed = _ref$computed === void 0 ? {} : _ref$computed,
+          _ref$methods = _ref.methods,
+          methods = _ref$methods === void 0 ? {} : _ref$methods,
+          el = _ref.el,
+          _ref$penetrate = _ref.penetrate,
+          penetrate = _ref$penetrate === void 0 ? false : _ref$penetrate,
+          _ref$inner = _ref.inner,
+          inner = _ref$inner === void 0 ? true : _ref$inner,
+          autoFocus = _ref.autoFocus,
+          className = _ref.className;
+      var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {
+        name: name
+      };
+
+      _classCallCheck(this, ChimeePlugin);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(ChimeePlugin).call(this, {
+        dispatcher: dispatcher,
+        id: id
+      }));
+      _this.destroyed = false;
+      _this.VERSION = '2.0.0-alpha.1';
+      _this.autoFocusValue = false;
+      _this.levelValue = 0;
+      _this.operableValue = true;
+
+      if (!dispatcher) {
+        {
+          chimeeLog.error('Dispatcher.plugin', 'lack of dispatcher. Do you forget to pass arguments to super in plugin?');
+        }
+
+        throw new TypeError('lack of dispatcher');
+      }
+
+      if (!isString$1(id)) {
+        throw new TypeError('id of PluginConfig must be string');
+      }
+
+      _this.id = id;
+      _this.$videoConfig = _this.dispatcher.videoConfig;
+
+      _this.wrapAsVideo(_this.$videoConfig);
+
+      _this.beforeCreate = _this.beforeCreate || beforeCreate;
+
+      try {
+        if (isFunction(_this.beforeCreate)) {
+          _this.beforeCreate({
+            computed: computed,
+            data: data,
+            events: events,
+            methods: methods
+          }, option);
+        }
+      } catch (error) {
+        _this.$throwError(error);
+      }
+
+      if (!isEmpty$1(methods) && isPlainObject(methods)) {
+        Object.keys(methods).forEach(function (key) {
+          var fn = methods[key];
+
+          if (!isFunction(fn)) {
+            throw new TypeError('plugins methods must be Function');
+          }
+
+          Object.defineProperty(_assertThisInitialized(_this), key, {
+            configurable: true,
+            enumerable: false,
+            value: bind$1(fn, _assertThisInitialized(_this)),
+            writable: true
+          });
+        });
+      }
+
+      if (!isEmpty$1(events) && isPlainObject(events)) {
+        Object.keys(events).forEach(function (key) {
+          if (!isFunction(events[key])) {
+            throw new TypeError('plugins events hook must bind with Function');
+          }
+
+          _this.$on(key, events[key]);
+        });
+      }
+
+      if (!isEmpty$1(data) && isPlainObject(data)) {
+        Object.assign(_assertThisInitialized(_this), cloneDeep(data));
+      }
+
+      if (!isEmpty$1(computed) && isPlainObject(computed)) {
+        var props = Object.keys(computed).reduce(function (props, key) {
+          var val = computed[key];
+
+          if (isFunction(val)) {
+            props[key] = accessor({
+              get: val
+            });
+            return props;
+          }
+
+          if (isPlainObject(val) && (isFunction(val.get) || isFunction(val.set))) {
+            props[key] = accessor(val);
+            return props;
+          }
+
+          {
+            chimeeLog.warn('Dispatcher.plugin', "Wrong computed member '".concat(key, "' defination in Plugin ").concat(name));
+          }
+
+          return props;
+        }, {});
+        applyDecorators(_assertThisInitialized(_this), props, {
+          self: true
+        });
+      }
+
+      _this.create = _this.create || create;
+      _this.init = _this.init || init;
+      _this.inited = _this.inited || inited;
+      _this.destroy = _this.destroy || destroy;
+      _this.$dom = _this.dispatcher.dom.insertPlugin(_this.id, el, {
+        penetrate: penetrate,
+        inner: inner,
+        className: className
+      });
+      _this.$autoFocus = isBoolean(autoFocus) ? autoFocus : inner;
+      _this.$inner = inner;
+      _this.$penetrate = penetrate;
+      applyDecorators(_assertThisInitialized(_this), {
+        $inner: frozen,
+        $penetrate: frozen
+      }, {
+        self: true
+      });
+      _this.$operable = isBoolean(option.operable) ? option.operable : operable;
+      _this.levelValue = isInteger(option.level) ? option.level : level;
+      _this.$config = option;
+
+      try {
+        if (isFunction(_this.create)) {
+          _this.create();
+        }
+      } catch (error) {
+        _this.$throwError(error);
+      }
+
+      return _this;
+    }
+
+    _createClass(ChimeePlugin, [{
+      key: "$bumpToTop",
+      value: function $bumpToTop() {
+        var dispatcher = this.dispatcher;
+        var topLevel = dispatcher.getTopLevel(this.$inner);
+        this.$level = topLevel + 1;
+      }
+    }, {
+      key: "$destroy",
+      value: function $destroy() {
+        if (this.destroyed) {
+          return;
+        }
+
+        if (isFunction(this.destroy)) {
+          this.destroy();
+        }
+
+        _get(_getPrototypeOf(ChimeePlugin.prototype), "destroyVideoWrapper", this).call(this);
+
+        this.dispatcher.dom.removePlugin(this.id);
+        delete this.dispatcher;
+        delete this.$dom;
+        this.destroyed = true;
+      }
+    }, {
+      key: "$throwError",
+      value: function $throwError(error) {
+        this.dispatcher.throwError(error);
+      }
+    }, {
+      key: "runInitedHook",
+      value: function runInitedHook() {
+        var _this2 = this;
+
+        var result;
+
+        try {
+          result = isFunction(this.inited) && this.inited();
+        } catch (error) {
+          this.$throwError(error);
+        }
+
+        var promiseResult = isPromise(result) && result;
+        this.readySync = !promiseResult;
+        this.ready = promiseResult ? promiseResult.then(function () {
+          _this2.readySync = true;
+          return _this2;
+        }).catch(function (error) {
+          if (isError(error)) {
+            _this2.$throwError(error);
+          }
+
+          return Promise.reject(error);
+        }) : Promise.resolve(this);
+        return this.readySync ? this : this.ready;
+      }
+    }, {
+      key: "runInitHook",
+      value: function runInitHook(videoConfig) {
+        try {
+          if (isFunction(this.init)) {
+            this.init(videoConfig);
+          }
+        } catch (error) {
+          this.$throwError(error);
+        }
+      }
+    }, {
+      key: "$autoFocus",
+      get: function get() {
+        return this.autoFocusValue;
+      },
+      set: function set(val) {
+        this.autoFocusValue = val;
+        var dom = this.dispatcher.dom;
+        dom.autoFocusToVideo(this.$dom, !val);
+      }
+    }, {
+      key: "$level",
+      set: function set(val) {
+        if (!isInteger(val)) {
+          return;
+        }
+
+        this.levelValue = val;
+        var dispatcher = this.dispatcher;
+        dispatcher.sortZIndex();
+      },
+      get: function get() {
+        return this.levelValue;
+      }
+    }, {
+      key: "$operable",
+      set: function set(val) {
+        if (!isBoolean(val)) {
+          return;
+        }
+
+        this.$dom.style.pointerEvents = val ? 'auto' : 'none';
+        this.operableValue = val;
+      },
+      get: function get() {
+        return this.operableValue;
+      }
+    }]);
+
+    return ChimeePlugin;
+  }(VideoWrapper);
+
+  var PictureInPicture =
+  /*#__PURE__*/
+  function (_ChimeePlugin) {
+    _inherits(PictureInPicture, _ChimeePlugin);
+
+    function PictureInPicture(config, dispatcher, option) {
+      var _this;
+
+      _classCallCheck(this, PictureInPicture);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(PictureInPicture).call(this, Object.assign(config, {
+        el: document.createElement('canvas'),
+        inner: false,
+        penetrate: true
+      }), dispatcher, option));
+      _this.hasStopRender = true;
+      _this.isShown = false;
+      _this.myStyle = {
+        bottom: 0,
+        height: 156,
+        left: '',
+        position: 'fixed',
+        right: 0,
+        top: '',
+        width: 277
+      };
+
+      _this.exitPictureInPicture = function () {
+        _this.hide();
+
+        window.__chimee_picture_in_picture = {};
+        return Promise.resolve();
+      };
+
+      _this.inited = function () {
+        _this.setStyle();
+      };
+
+      _this.requestPictureInPicture = function () {
+        var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            _ref$autoplay = _ref.autoplay,
+            autoplay = _ref$autoplay === void 0 ? false : _ref$autoplay;
+
+        _this.closeCurrentPicture();
+
+        _this.show();
+
+        _this.poller(_this.render);
+
+        if (autoplay && _this.paused) {
+          _this.play();
+        } else if (!autoplay && !_this.paused) {
+          _this.pause();
+        }
+
+        window.__chimee_picture_in_picture = {
+          element: _this.$video,
+          plugin: _assertThisInitialized(_this),
+          window: _this.$dom
+        };
+        return Promise.resolve();
+      };
+
+      return _this;
+    }
+
+    _createClass(PictureInPicture, [{
+      key: "closeCurrentPicture",
+      value: function closeCurrentPicture() {
+        if (window.__chimee_picture_in_picture && window.__chimee_picture_in_picture.plugin) {
+          window.__chimee_picture_in_picture.plugin.exitPictureInPicture();
+        }
+      }
+    }, {
+      key: "create",
+      value: function create() {
+        _class_1(this.$dom, 'chimee-plugin-picture-in-picture');
+        this.getContext();
+      }
+    }, {
+      key: "getContext",
+      value: function getContext() {
+        this.ctx = this.$dom.getContext('2d');
+      }
+    }, {
+      key: "hide",
+      value: function hide() {
+        domHelpers_1(this.$dom, 'display', 'none');
+        this.isShown = false;
+      }
+    }, {
+      key: "poller",
+      value: function poller(fn) {
+        var _this2 = this;
+
+        requestAnimationFrame(function () {
+          fn.call(_this2);
+
+          if (_this2.isShown) {
+            _this2.poller(fn);
+
+            _this2.hasStopRender = false;
+          } else {
+            _this2.hasStopRender = true;
+          }
+        });
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        if (this.isShown) {
+          this.ctx.drawImage(this.$video, 0, 0, this.myStyle.width, this.myStyle.height);
+        }
+      }
+    }, {
+      key: "setStyle",
+      value: function setStyle() {
+        var styles = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        Object.assign(this.myStyle, styles);
+        this.$dom.setAttribute('width', this.myStyle.width.toString());
+        this.$dom.setAttribute('height', this.myStyle.height.toString());
+
+        for (var key in this.myStyle) {
+          if (key === 'width' || key === 'height') {
+            continue;
+          }
+
+          var value = this.myStyle[key];
+          domHelpers_1(this.$dom, key, value);
+        }
+      }
+    }, {
+      key: "show",
+      value: function show() {
+        domHelpers_1(this.$dom, 'display', 'block');
+        this.isShown = true;
+      }
+    }]);
+
+    return PictureInPicture;
+  }(ChimeePlugin);
+
+  var __decorate$6 = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+      if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    }
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+  };
+  var pluginConfigSet = {};
+  var kernelsSet = {};
+
+  function convertNameIntoId(name) {
+    if (!isString$1(name)) {
+      throw new Error("Plugin's name must be a string, but not \"".concat(name, "\" in ").concat(_typeof(name)));
+    }
+
+    return camelize(name);
   }
+
+  function checkPluginConfig(config) {
+    if (isFunction(config)) {
+      if (!(config.prototype instanceof ChimeePlugin)) {
+        throw new TypeError("Your are trying to install plugin ".concat(config.name, ", but it's not extends from Chimee.plugin."));
+      }
+
+      return;
+    }
+
+    if (!isPlainObject(config) || isEmpty(config)) {
+      throw new TypeError("plugin's config must be an Object, but not \"".concat(config, "\" in ").concat(_typeof(config)));
+    }
+
+    var name = config.name;
+
+    if (!isString$1(name) || name.length < 1) {
+      throw new TypeError("plugin must have a legal namea, but not \"".concat(name, "\" in ").concat(_typeof(name)));
+    }
+  }
+
+  var Dispatcher =
+  /*#__PURE__*/
+  function () {
+    function Dispatcher(config, vm) {
+      var _this = this;
+
+      _classCallCheck(this, Dispatcher);
+
+      this.changeWatchable = true;
+      this.kernelEventHandlerList = [];
+      this.order = [];
+      this.plugins = {};
+      this.readySync = false;
+      this.zIndexMap = {
+        inner: [],
+        outer: []
+      };
+
+      if (!isPlainObject(config)) {
+        throw new TypeError("UserConfig must be an Object, but not \"".concat(config, "\" in ").concat(_typeof(config)));
+      }
+
+      this.dom = new Dom(config, this);
+      this.vm = vm;
+      this.videoConfigReady = false;
+      this.videoConfig = new VideoConfig(this, config);
+
+      if (isArray$1(config.plugins) && !isArray$1(config.plugin)) {
+        config.plugin = config.plugins;
+        delete config.plugins;
+      }
+
+      this.binder = new Binder(this);
+      this.binder.listenOnMouseMoveEvent(this.dom.videoElement);
+      this.initUserPlugin(config.plugin);
+      var containerConfig = Object.assign({}, defaultContainerConfig, config.container || {});
+      this.order.forEach(function (key) {
+        return _this.plugins[key].runInitHook(_this.videoConfig);
+      });
+      this.videoConfigReady = true;
+      this.videoConfig.init();
+      this.containerConfig = new Vessel(this, 'container', containerConfig);
+      this.kernel = this.createKernel(this.dom.videoElement, this.videoConfig);
+      this.binder.applyPendingEvents('kernel');
+
+      if (config.noDefaultContextMenu) {
+        var noDefaultContextMenu = config.noDefaultContextMenu;
+        var target = noDefaultContextMenu === 'container' || noDefaultContextMenu === 'wrapper' ? noDefaultContextMenu : 'video-dom';
+        this.binder.on({
+          fn: function fn(evt) {
+            return evt.preventDefault();
+          },
+          id: '_vm',
+          name: 'contextmenu',
+          stage: 'main',
+          target: target
+        });
+      }
+
+      var asyncInitedTasks = [];
+      this.order.forEach(function (key) {
+        var ready = _this.plugins[key].runInitedHook();
+
+        if (isPromise(ready)) {
+          asyncInitedTasks.push(ready);
+        }
+      });
+      this.readySync = asyncInitedTasks.length === 0;
+      this.ready = this.readySync ? Promise.resolve() : Promise.all(asyncInitedTasks).then(function () {
+        _this.readySync = true;
+
+        _this.onReady();
+      });
+
+      if (this.readySync) {
+        this.onReady();
+      }
+    }
+
+    _createClass(Dispatcher, [{
+      key: "destroy",
+      value: function destroy() {
+        for (var key in this.plugins) {
+          if (this.plugins.hasOwnProperty(key)) {
+            this.unuse(key);
+          }
+        }
+
+        this.binder.destroy();
+        delete this.binder;
+        this.dom.destroy();
+        delete this.dom;
+        this.kernel.destroy();
+        delete this.kernel;
+        delete this.vm;
+        delete this.plugins;
+        delete this.order;
+        this.destroyed = true;
+      }
+    }, {
+      key: "exitPictureInPicture",
+      value: function exitPictureInPicture() {
+        if ('pictureInPictureEnabled' in document) {
+          if (this.inPictureInPictureMode) {
+            window.__chimee_picture_in_picture = undefined;
+            return document.exitPictureInPicture();
+          }
+        }
+
+        return this.plugins.pictureInPicture && this.plugins.pictureInPicture.exitPictureInPicture();
+      }
+    }, {
+      key: "getPluginConfig",
+      value: function getPluginConfig(id) {
+        return Dispatcher.getPluginConfig(id);
+      }
+    }, {
+      key: "hasUsed",
+      value: function hasUsed(id) {
+        var plugin = this.plugins[id];
+        return isPlainObject(plugin);
+      }
+    }, {
+      key: "load",
+      value: function load(srcOrOption) {
+        var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        var src = isString$1(srcOrOption) ? srcOrOption : isPlainObject(srcOrOption) && isString$1(srcOrOption.src) ? srcOrOption.src : '';
+
+        if (!isString$1(srcOrOption)) {
+          delete srcOrOption.src;
+          option = srcOrOption;
+        }
+
+        var oldBox = this.kernel.box;
+        var videoConfig = this.videoConfig;
+        var _option = option,
+            _option$isLive = _option.isLive,
+            isLive = _option$isLive === void 0 ? videoConfig.isLive : _option$isLive,
+            _option$box = _option.box,
+            box = _option$box === void 0 ? getLegalBox({
+          src: src,
+          box: videoConfig.box
+        }) : _option$box,
+            _option$preset = _option.preset,
+            preset = _option$preset === void 0 ? videoConfig.preset : _option$preset,
+            _option$kernels = _option.kernels,
+            kernels = _option$kernels === void 0 ? videoConfig.kernels : _option$kernels;
+
+        if (box !== 'native' || box !== oldBox || !isEmpty(option)) {
+          var video = document.createElement('video');
+          var config = {
+            isLive: isLive,
+            box: box,
+            preset: preset,
+            src: src,
+            kernels: kernels
+          };
+          var kernel = this.createKernel(video, config);
+          this.switchKernel({
+            video: video,
+            kernel: kernel,
+            config: config,
+            notifyChange: true
+          });
+        }
+
+        var originAutoLoad = this.videoConfig.autoload;
+        this.changeUnwatchable(this.videoConfig, 'autoload', false);
+        this.videoConfig.src = src || this.videoConfig.src;
+        this.kernel.load(this.videoConfig.src);
+        this.changeUnwatchable(this.videoConfig, 'autoload', originAutoLoad);
+      }
+    }, {
+      key: "onReady",
+      value: function onReady() {
+        this.binder.trigger({
+          id: 'dispatcher',
+          name: 'ready',
+          target: 'plugin'
+        });
+        this.autoloadVideoSrcAtFirst();
+      }
+    }, {
+      key: "requestPictureInPicture",
+      value: function () {
+        var _requestPictureInPicture = _asyncToGenerator(
+        /*#__PURE__*/
+        regenerator.mark(function _callee() {
+          var pipWindow;
+          return regenerator.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  if (!('pictureInPictureEnabled' in document)) {
+                    _context.next = 8;
+                    break;
+                  }
+
+                  if (!this.inPictureInPictureMode) {
+                    _context.next = 3;
+                    break;
+                  }
+
+                  return _context.abrupt("return", Promise.resolve(window.__chimee_picture_in_picture));
+
+                case 3:
+                  _context.next = 5;
+                  return this.dom.videoElement.requestPictureInPicture();
+
+                case 5:
+                  pipWindow = _context.sent;
+                  window.__chimee_picture_in_picture = pipWindow;
+                  return _context.abrupt("return", pipWindow);
+
+                case 8:
+                  if (!Dispatcher.hasInstalled(PictureInPicture.name)) {
+                    Dispatcher.install(PictureInPicture);
+                  }
+
+                  if (!this.hasUsed(PictureInPicture.name)) {
+                    this.use(PictureInPicture.name);
+                  }
+
+                  return _context.abrupt("return", this.plugins.pictureInPicture.requestPictureInPicture());
+
+                case 11:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, this);
+        }));
+
+        function requestPictureInPicture() {
+          return _requestPictureInPicture.apply(this, arguments);
+        }
+
+        return requestPictureInPicture;
+      }()
+    }, {
+      key: "silentLoad",
+      value: function silentLoad(src) {
+        var _this2 = this;
+
+        var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        var _option$duration = option.duration,
+            duration = _option$duration === void 0 ? 3 : _option$duration,
+            _option$bias = option.bias,
+            bias = _option$bias === void 0 ? 0 : _option$bias,
+            _option$repeatTimes = option.repeatTimes,
+            repeatTimes = _option$repeatTimes === void 0 ? 0 : _option$repeatTimes,
+            _option$increment = option.increment,
+            increment = _option$increment === void 0 ? 0 : _option$increment,
+            _option$isLive2 = option.isLive,
+            isLive = _option$isLive2 === void 0 ? this.videoConfig.isLive : _option$isLive2,
+            _option$box2 = option.box,
+            box = _option$box2 === void 0 ? this.videoConfig.box : _option$box2,
+            _option$kernels2 = option.kernels,
+            kernels = _option$kernels2 === void 0 ? this.videoConfig.kernels : _option$kernels2,
+            _option$preset2 = option.preset,
+            preset = _option$preset2 === void 0 ? this.videoConfig.preset : _option$preset2;
+        var immediate = option.immediate || isLive;
+        var config = {
+          isLive: isLive,
+          box: box,
+          src: src,
+          kernels: kernels,
+          preset: preset
+        };
+        var tasks = new Array(repeatTimes + 1).fill(1).map(function (value, index) {
+          return function () {
+            return new Promise(function (resolve, reject) {
+              if (option.abort) {
+                reject({
+                  error: true,
+                  message: 'user abort the mission'
+                });
+              }
+
+              var video = document.createElement('video');
+              var idealTime = _this2.kernel.currentTime + duration + increment * index;
+              video.muted = true;
+              var that = _this2;
+              var newVideoReady = false;
+              var kernel;
+
+              function oldVideoTimeupdate() {
+                var currentTime = that.kernel.currentTime;
+
+                if (bias <= 0 && currentTime >= idealTime || bias > 0 && (Math.abs(idealTime - currentTime) <= bias && newVideoReady || currentTime - idealTime > bias)) {
+                  events_2(that.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+                  events_2(video, 'error', videoError, true);
+
+                  if (!newVideoReady) {
+                    events_2(video, 'canplay', videoCanplay, true);
+                    events_2(video, 'loadedmetadata', videoLoadedmetadata, true);
+                    kernel.destroy();
+                    return resolve();
+                  }
+
+                  return reject({
+                    error: false,
+                    kernel: kernel,
+                    video: video
+                  });
+                }
+              }
+
+              function videoCanplay() {
+                newVideoReady = true;
+
+                if (immediate) {
+                  events_2(that.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+                  events_2(video, 'error', videoError, true);
+                  return reject({
+                    error: false,
+                    kernel: kernel,
+                    video: video
+                  });
+                }
+              }
+
+              function videoLoadedmetadata() {
+                if (!isLive) {
+                  kernel.seek(immediate ? this.kernel.currentTime : idealTime);
+                }
+              }
+
+              function videoError(evt) {
+                events_2(video, 'canplay', videoCanplay, true);
+                events_2(video, 'loadedmetadata', videoLoadedmetadata, true);
+                events_2(that.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+                kernel.off('error', videoError);
+                var error;
+
+                if (evt && evt.errmsg) {
+                  var errmsg = evt.errmsg;
+                  chimeeLog.error('chimee\'s silentload bump into a kernel error', errmsg);
+                  error = new Error(errmsg);
+                } else {
+                  error = !isEmpty(video.error) ? new Error(video.error.message) : new Error('unknow video error');
+                  chimeeLog.error('chimee\'s silentload', error.message);
+                }
+
+                kernel.destroy();
+                that.silentLoadTempKernel = undefined;
+                return index === repeatTimes ? reject(error) : resolve(error);
+              }
+
+              events_1(video, 'canplay', videoCanplay, true);
+              events_1(video, 'loadedmetadata', videoLoadedmetadata.bind(_this2), true);
+              events_1(video, 'error', videoError, true);
+              kernel = _this2.createKernel(video, config);
+              _this2.silentLoadTempKernel = kernel;
+              kernel.on('error', videoError);
+              events_1(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+              kernel.load();
+            });
+          };
+        });
+        return runRejectableQueue(tasks).then(function () {
+          var message = "The silentLoad for ".concat(src, " timed out. Please set a longer duration or check your network");
+
+          {
+            chimeeLog.warn('chimee\'s silentLoad', message);
+          }
+
+          return Promise.reject(new Error(message));
+        }).catch(function (result) {
+          if (isError(result)) {
+            return Promise.reject(result);
+          }
+
+          var kernelError;
+          var data;
+
+          if (result.error) {
+            kernelError = result;
+          } else {
+            data = result;
+          }
+
+          if (kernelError && kernelError.error) {
+            {
+              chimeeLog.warn('chimee\'s silentLoad', kernelError.message);
+            }
+
+            return Promise.reject(new Error(kernelError.message));
+          }
+
+          var _data = data,
+              video = _data.video,
+              kernel = _data.kernel;
+
+          if (option.abort) {
+            kernel.destroy();
+            return Promise.reject(new Error('user abort the mission'));
+          }
+
+          var paused = _this2.dom.videoElement.paused;
+
+          if (paused) {
+            _this2.switchKernel({
+              video: video,
+              kernel: kernel,
+              config: config
+            });
+
+            return Promise.resolve();
+          }
+
+          return new Promise(function (resolve) {
+            events_1(video, 'play', function () {
+              _this2.switchKernel({
+                video: video,
+                kernel: kernel,
+                config: config
+              });
+
+              resolve();
+            }, true);
+            video.play();
+          });
+        });
+      }
+    }, {
+      key: "switchKernel",
+      value: function switchKernel(_ref) {
+        var _this3 = this;
+
+        var video = _ref.video,
+            kernel = _ref.kernel,
+            config = _ref.config,
+            notifyChange = _ref.notifyChange;
+        var oldKernel = this.kernel;
+        var originVideoConfig = clone(this.videoConfig);
+        this.dom.migrateVideoRequiredGuardedAttributes(video);
+        this.dom.removeVideo();
+        this.dom.installVideo(video);
+        this.videoConfig.changeWatchable = false;
+        this.videoConfig.autoload = false;
+        this.videoConfig.src = config.src;
+        videoDomAttributes.forEach(function (key) {
+          if (key !== 'src') {
+            _this3.videoConfig[key] = originVideoConfig[key];
+          }
+        });
+        this.videoConfig.changeWatchable = true;
+        this.binder.migrateKernelEvent(oldKernel, kernel);
+        this.kernel = kernel;
+        this.silentLoadTempKernel = undefined;
+        var isLive = config.isLive,
+            box = config.box,
+            preset = config.preset,
+            kernels = config.kernels;
+        Object.assign(this.videoConfig, {
+          isLive: isLive,
+          box: box,
+          preset: preset,
+          kernels: kernels
+        });
+        oldKernel.destroy();
+
+        if (notifyChange) {
+          if (this.binder && this.binder.bindEventOnVideo) {
+            this.binder.bindEventOnVideo(video);
+          }
+        } else {
+          setTimeout(function () {
+            if (_this3.binder && _this3.binder.bindEventOnVideo) {
+              _this3.binder.bindEventOnVideo(video);
+            }
+          });
+        }
+
+        if (this.inPictureInPictureMode) {
+          this.exitPictureInPicture();
+        }
+      }
+    }, {
+      key: "throwError",
+      value: function throwError(error) {
+        this.vm.customThrowError(error);
+      }
+    }, {
+      key: "unuse",
+      value: function unuse(id) {
+        var plugin = this.plugins[id];
+
+        if (!plugin) {
+          delete this.plugins[id];
+          return;
+        }
+
+        plugin.$destroy();
+        var orderIndex = this.order.indexOf(id);
+
+        if (orderIndex > -1) {
+          this.order.splice(orderIndex, 1);
+        }
+
+        delete this.plugins[id];
+        delete this.vm[id];
+      }
+    }, {
+      key: "use",
+      value: function use(option) {
+        if (isString$1(option)) {
+          option = {
+            name: option,
+            alias: undefined
+          };
+        }
+
+        if (!isPlainObject(option) || isPlainObject(option) && !isString$1(option.name)) {
+          throw new TypeError('pluginConfig do not match requirement');
+        }
+
+        if (!isString$1(option.alias)) {
+          option.alias = undefined;
+        }
+
+        var _option2 = option,
+            name = _option2.name,
+            alias = _option2.alias;
+        option.name = alias || name;
+        delete option.alias;
+        var key = camelize(name);
+        var id = camelize(alias || name);
+        var pluginOption = option;
+        var pluginConfig = Dispatcher.getPluginConfig(key);
+
+        if (!pluginConfig) {
+          throw new TypeError('You have not installed plugin ' + key);
+        }
+
+        if (isPlainObject(pluginConfig)) {
+          pluginConfig.id = id;
+        }
+
+        var plugin = isFunction(pluginConfig) ? new pluginConfig({
+          id: id
+        }, this, pluginOption) : new ChimeePlugin(pluginConfig, this, pluginOption);
+        this.plugins[id] = plugin;
+        Object.defineProperty(this.vm, id, {
+          configurable: true,
+          enumerable: false,
+          value: plugin,
+          writable: false
+        });
+        this.order.push(id);
+        this.sortZIndex();
+
+        if (this.videoConfigReady) {
+          plugin.runInitedHook();
+        }
+
+        return plugin.ready;
+      }
+    }, {
+      key: "autoloadVideoSrcAtFirst",
+      value: function autoloadVideoSrcAtFirst() {
+        if (this.videoConfig.autoload) {
+          if (!this.videoConfig.src) {
+            chimeeLog.warn('You have not set the src, so you better set autoload to be false. Accroding to https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/chimee-api.md#src.');
+            return;
+          }
+
+          this.binder.emit({
+            id: 'dispatcher',
+            name: 'load',
+            target: 'plugin'
+          }, {
+            src: this.videoConfig.src
+          });
+        }
+      }
+    }, {
+      key: "changeUnwatchable",
+      value: function changeUnwatchable(object, property, value) {
+        this.changeWatchable = false;
+        object[property] = value;
+        this.changeWatchable = true;
+      }
+    }, {
+      key: "createKernel",
+      value: function createKernel(video, config) {
+        var kernels = config.kernels,
+            preset = config.preset;
+
+        if (isEmpty(kernels) && !isEmpty(preset)) {
+          chimeeLog.warn('preset will be deprecated in next major version, please use kernels instead.');
+        }
+
+        var presetConfig = {};
+        var newPreset = {};
+
+        if (isArray$1(kernels)) {
+          newPreset = kernels.reduce(function (kernels, keyOrSKC) {
+            if (isString$1(keyOrSKC)) {
+              if (!isSupportedKernelType(keyOrSKC)) {
+                throw new Error("We have not support ".concat(keyOrSKC, " kernel type"));
+              }
+
+              var kernelFn = kernelsSet[keyOrSKC];
+
+              if (!isFunction(kernelFn)) {
+                chimeeLog.warn("You have not installed kernel for ".concat(keyOrSKC, "."));
+                return kernels;
+              }
+
+              kernels[keyOrSKC] = kernelFn;
+              return kernels;
+            }
+
+            if (isPlainObject(keyOrSKC)) {
+              var name = keyOrSKC.name,
+                  handler = keyOrSKC.handler;
+
+              if (isString$1(handler)) {
+                if (!isSupportedKernelType(handler)) {
+                  throw new Error("We have not support ".concat(handler, " kernel type"));
+                }
+
+                var _kernelFn = kernelsSet[handler];
+
+                if (!isFunction(_kernelFn)) {
+                  chimeeLog.warn("You have not installed kernel for ".concat(handler, "."));
+                  return kernels;
+                }
+
+                kernels[handler] = _kernelFn;
+                presetConfig[handler] = keyOrSKC;
+                return kernels;
+              }
+
+              if (isFunction(handler)) {
+                var kernelName = name || handler.name;
+
+                if (!isSupportedKernelType(kernelName)) {
+                  throw new Error("We have not support ".concat(kernelName, " kernel type"));
+                }
+
+                kernels[kernelName] = handler;
+                presetConfig[kernelName] = keyOrSKC;
+                return kernels;
+              }
+
+              chimeeLog.warn("When you pass in an SingleKernelConfig in Array, you must clarify it's handler, we only support handler in string or function but not ".concat(_typeof(handler)));
+              return kernels;
+            }
+
+            chimeeLog.warn("If you pass in kernels as array, you must pass in kernels in string or function, but not ".concat(_typeof(keyOrSKC)));
+            return kernels;
+          }, {});
+        } else {
+          Object.keys(kernels || {}).forEach(function (key) {
+            var fnOrSKC = kernels[key];
+
+            if (isFunction(fnOrSKC)) {
+              var fn = fnOrSKC;
+              newPreset[key] = fn;
+              return;
+            }
+
+            if (isPlainObject(fnOrSKC)) {
+              var SKC = fnOrSKC;
+              var handler = SKC.handler;
+
+              if (isString$1(handler)) {
+                if (!isSupportedKernelType(handler)) {
+                  throw new Error("We have not support ".concat(handler, " kernel type"));
+                }
+
+                var kernelFn = kernelsSet[handler];
+
+                if (!isFunction(kernelFn)) {
+                  chimeeLog.warn("You have not installed kernel for ".concat(handler, "."));
+                  return;
+                }
+
+                newPreset[key] = kernelFn;
+                presetConfig[key] = SKC;
+                return;
+              }
+
+              if (isFunction(handler)) {
+                newPreset[key] = handler;
+                presetConfig[key] = SKC;
+                return;
+              }
+
+              chimeeLog.warn("When you pass in an SingleKernelConfig in Object, you must clarify it's handler, we only support handler in string or function but not ".concat(_typeof(handler)));
+              return;
+            }
+
+            chimeeLog.warn("If you pass in kernels as object, you must pass in kernels in string or function, but not ".concat(_typeof(fnOrSKC)));
+            return kernels;
+          });
+        }
+
+        config.preset = Object.assign(newPreset, preset);
+        var legalConfig = Object.assign(config, {
+          presetConfig: presetConfig
+        });
+        var kernel = new ChimeeKernel(video, legalConfig);
+        return kernel;
+      }
+    }, {
+      key: "getTopLevel",
+      value: function getTopLevel(inner) {
+        var arr = this.zIndexMap[inner ? 'inner' : 'outer'];
+        var plugin = this.plugins[arr[arr.length - 1]];
+        return isEmpty(plugin) ? 0 : plugin.$level;
+      }
+    }, {
+      key: "initUserPlugin",
+      value: function initUserPlugin() {
+        var _this4 = this;
+
+        var configs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+        if (!isArray$1(configs)) {
+          {
+            chimeeLog.warn('Dispatcher', "UserConfig.plugin can only by an Array, but not \"".concat(configs, "\" in ").concat(_typeof(configs)));
+          }
+
+          configs = [];
+        }
+
+        return configs.map(function (config) {
+          return _this4.use(config);
+        });
+      }
+    }, {
+      key: "sortZIndex",
+      value: function sortZIndex() {
+        var _this5 = this;
+
+        var _this$order$reduce = this.order.reduce(function (levelSet, key) {
+          var plugin = _this5.plugins[key];
+
+          if (isEmpty(plugin)) {
+            return levelSet;
+          }
+
+          var set = levelSet[plugin.$inner ? 'inner' : 'outer'];
+          var level = plugin.$level;
+          set[level] = set[level] || [];
+          set[level].push(key);
+          return levelSet;
+        }, {
+          inner: {},
+          outer: {}
+        }),
+            inner = _this$order$reduce.inner,
+            outer = _this$order$reduce.outer;
+
+        inner[0] = inner[0] || [];
+        inner[0].unshift('videoElement');
+        outer[0] = outer[0] || [];
+        outer[0].unshift('container');
+        var innerOrderArr = transObjectAttrIntoArray(inner);
+        var outerOrderArr = transObjectAttrIntoArray(outer);
+        this.dom.setPluginsZIndex(innerOrderArr);
+        this.dom.setPluginsZIndex(outerOrderArr);
+        this.zIndexMap.inner = innerOrderArr;
+        this.zIndexMap.outer = outerOrderArr;
+      }
+    }, {
+      key: "inPictureInPictureMode",
+      get: function get() {
+        return 'pictureInPictureEnabled' in document ? this.dom.videoElement === document.pictureInPictureElement : Boolean(this.plugins.pictureInPicture && this.plugins.pictureInPicture.isShown);
+      }
+    }], [{
+      key: "getPluginConfig",
+      value: function getPluginConfig(id) {
+        return pluginConfigSet[id];
+      }
+    }, {
+      key: "hasInstalled",
+      value: function hasInstalled(id) {
+        return !!pluginConfigSet[id];
+      }
+    }, {
+      key: "hasInstalledKernel",
+      value: function hasInstalledKernel(key) {
+        return isFunction(kernelsSet[key]);
+      }
+    }, {
+      key: "install",
+      value: function install(config) {
+        var name = config.name;
+        var id = camelize(name);
+
+        if (pluginConfigSet[id]) {
+          {
+            chimeeLog.warn('Dispatcher', 'You have installed ' + name + ' again. And the older one will be replaced');
+          }
+        }
+
+        var pluginConfig = isFunction(config) ? config : Object.assign({}, config, {
+          id: id
+        });
+        pluginConfigSet[id] = pluginConfig;
+        return id;
+      }
+    }, {
+      key: "installKernel",
+      value: function installKernel(key, value) {
+        var tasks = isPlainObject(key) ? Object.entries(key) : [[key, value]];
+        tasks.forEach(function (_ref2) {
+          var _ref3 = _slicedToArray$1(_ref2, 2),
+              key = _ref3[0],
+              value = _ref3[1];
+
+          if (!isFunction(value)) {
+            throw new Error("The kernel you install on ".concat(key, " must be a Function, but not ").concat(_typeof(value)));
+          }
+
+          if (isFunction(kernelsSet[key])) {
+            chimeeLog.warn("You have alrady install a kernel on ".concat(key, ", and now we will replace it"));
+          }
+
+          kernelsSet[key] = value;
+        });
+      }
+    }, {
+      key: "uninstall",
+      value: function uninstall(id) {
+        delete pluginConfigSet[id];
+      }
+    }, {
+      key: "uninstallKernel",
+      value: function uninstallKernel(key) {
+        delete kernelsSet[key];
+      }
+    }]);
+
+    return Dispatcher;
+  }();
+
+  __decorate$6([nonenumerable], Dispatcher.prototype, "inPictureInPictureMode", null);
+
+  __decorate$6([before(convertNameIntoId)], Dispatcher.prototype, "hasUsed", null);
+
+  __decorate$6([autobind], Dispatcher.prototype, "throwError", null);
+
+  __decorate$6([before(convertNameIntoId)], Dispatcher.prototype, "unuse", null);
+
+  __decorate$6([before(convertNameIntoId)], Dispatcher, "getPluginConfig", null);
+
+  __decorate$6([before(convertNameIntoId)], Dispatcher, "hasInstalled", null);
+
+  __decorate$6([before(checkPluginConfig)], Dispatcher, "install", null);
+
+  __decorate$6([before(convertNameIntoId)], Dispatcher, "uninstall", null);
+
+  var Chimee =
+  /*#__PURE__*/
+  function (_VideoWrapper) {
+    _inherits(Chimee, _VideoWrapper);
+
+    function Chimee(rawConfig) {
+      var _this;
+
+      _classCallCheck(this, Chimee);
+
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(Chimee).call(this, {
+        id: '_vm'
+      }));
+      _this.config = {
+        errorHandler: undefined
+      };
+      _this.destroyed = false;
+      _this.version = '2.0.0-alpha.1';
+      var config;
+
+      if (!isFunction(Object.defineProperty)) {
+        chimeeLog.error('Chimee', 'We detect that this browser lack of Object.defineProperty. Chimee can\'t run on this browser');
+      }
+
+      if (typeof Promise === 'undefined') {
+        chimeeLog.error('Chimee', 'We detect that this browser lack of Promise. If you are running Chimee in old browser. Please make sure you have import polyfill such as babel-polyfill.');
+      }
+
+      if (isString$1(rawConfig) || isElement(rawConfig)) {
+        config = {
+          controls: true,
+          wrapper: rawConfig
+        };
+      } else if (isPlainObject(rawConfig)) {
+        if (!rawConfig.wrapper) {
+          throw new Error('You must pass in an legal object');
+        }
+
+        config = rawConfig;
+      } else {
+        throw new Error('You must pass in an Object containing wrapper or string or element to new a Chimee');
+      }
+
+      _this.dispatcher = new Dispatcher(config, _assertThisInitialized(_this));
+      _this.ready = _this.dispatcher.ready;
+      _this.readySync = _this.dispatcher.readySync;
+
+      _this.wrapAsVideo(_this.dispatcher.videoConfig);
+
+      return _this;
+    }
+
+    _createClass(Chimee, [{
+      key: "customThrowError",
+      value: function customThrowError(error) {
+        if (isString$1(error)) {
+          error = new Error(error);
+        }
+
+        var errorHandler = this.config.errorHandler || Chimee.config.errorHandler;
+
+        if (isFunction(errorHandler)) {
+          return errorHandler(error);
+        }
+
+        if (Chimee.config.silent) {
+          return;
+        }
+
+        if (isError(error)) {
+          throw error;
+        } else {
+          console.error(error);
+        }
+      }
+    }, {
+      key: "destroy",
+      value: function destroy() {
+        if (this.destroyed) {
+          return;
+        }
+
+        _get(_getPrototypeOf(Chimee.prototype), "destroyVideoWrapper", this).call(this);
+
+        this.dispatcher.destroy();
+        Object.defineProperty(this, 'dispatcher', {
+          configurable: true,
+          enumerable: true,
+          get: function get() {
+            throw new Error('This instance has been destroyed.');
+          }
+        });
+        this.destroyed = true;
+      }
+    }, {
+      key: "unuse",
+      value: function unuse(name) {
+        return this.dispatcher.unuse(name);
+      }
+    }, {
+      key: "use",
+      value: function use(option) {
+        return this.dispatcher.use(option);
+      }
+    }], [{
+      key: "registerEvents",
+      value: function registerEvents() {
+        var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+            name = _ref.name,
+            target = _ref.target;
+
+        if (!name || !isString$1(name)) {
+          throw new Error("The event name must be a string, but not ".concat(_typeof(name)));
+        }
+
+        if (!target || !isString$1(target)) {
+          throw new Error("The event target must be a string, but not ".concat(_typeof(target)));
+        }
+
+        if (target === 'kernel') {
+          kernelEvents.push(name);
+        }
+      }
+    }]);
+
+    return Chimee;
+  }(VideoWrapper);
   Chimee.config = new GlobalConfig();
   Chimee.getPluginConfig = Dispatcher.getPluginConfig;
   Chimee.hasInstalled = Dispatcher.hasInstalled;

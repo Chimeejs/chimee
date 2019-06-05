@@ -1,9 +1,9 @@
 
 /**
- * chimee-helper-log v0.2.3
+ * chimee-helper-log v2.0.0-alpha.1
  * (c) 2017-2019 toxic-johann
  * Released under MIT
- * Built ad Mon Jun 03 2019 23:56:52 GMT+0800 (China Standard Time)
+ * Built ad Thu Jun 06 2019 00:13:55 GMT+0800 (China Standard Time)
  */
 
 'use strict';

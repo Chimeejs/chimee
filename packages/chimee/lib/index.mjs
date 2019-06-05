@@ -1,46 +1,131 @@
 
 /**
- * chimee v1.0.1-alpha.0
+ * chimee v2.0.0-alpha.1
  * (c) 2017-2019 toxic-johann
  * Released under MIT
  */
 
-import _typeof from '@babel/runtime/helpers/typeof';
-import _classCallCheck from '@babel/runtime/helpers/classCallCheck';
-import _createClass from '@babel/runtime/helpers/createClass';
-import _possibleConstructorReturn from '@babel/runtime/helpers/possibleConstructorReturn';
-import _assertThisInitialized from '@babel/runtime/helpers/assertThisInitialized';
-import _getPrototypeOf from '@babel/runtime/helpers/getPrototypeOf';
-import _get from '@babel/runtime/helpers/get';
-import _inherits from '@babel/runtime/helpers/inherits';
-import _isString from 'lodash/isString';
-import _isPlainObject from 'lodash/isPlainObject';
-import _isFunction from 'lodash/isFunction';
-import _isError from 'lodash/isError';
 import { chimeeLog } from 'chimee-helper-log';
-import { isNumeric, isElement, isHTMLString, isPosterityNode, isEvent, isEmpty, isPromise } from 'toxic-predicate-functions';
+import { isString, isArray, isNil, isNumber, isEmpty, isFunction, isError, bind as bind$1, camelCase, isPlainObject, cloneDeep, isBoolean, isInteger, clone } from 'lodash-es';
+import { isNumeric, isElement, isHTMLString, isPosterityNode, isEvent, isEmpty as isEmpty$1, isPromise } from 'toxic-predicate-functions';
 import { esFullscreen } from 'es-fullscreen';
 import { nonenumerable as nonenumerable$2, accessor, applyDecorators, alwaysBoolean, alwaysNumber, alwaysString, initString, runnable, waituntil, autobind, alias, before, watch, frozen } from 'toxic-decorators';
-import _slicedToArray from '@babel/runtime/helpers/slicedToArray';
-import _regeneratorRuntime from '@babel/runtime/regenerator';
-import _asyncToGenerator from '@babel/runtime/helpers/asyncToGenerator';
-import _isEmpty from 'lodash/isEmpty';
-import _isArray from 'lodash/isArray';
-import _clone from 'lodash/clone';
-import { off, on } from 'dom-helpers/events';
-import { hypenate, getDeepProperty, bind, camelize } from 'toxic-utils';
-import _isNumber from 'lodash/isNumber';
-import _isNil from 'lodash/isNil';
-import _bind from 'lodash/bind';
-import _camelCase from 'lodash/camelCase';
 import { style } from 'dom-helpers';
-import { addClass } from 'dom-helpers/class';
-import { querySelectorAll } from 'dom-helpers/query';
 import { EventEmitter } from 'events';
-import _isInteger from 'lodash/isInteger';
-import _isBoolean from 'lodash/isBoolean';
-import _cloneDeep from 'lodash/cloneDeep';
-import _defineProperty from '@babel/runtime/helpers/defineProperty';
+
+function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
+    _typeof = function _typeof(obj) {
+      return _typeof2(obj);
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+    };
+  }
+
+  return _typeof(obj);
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (_typeof(call) === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return _assertThisInitialized(self);
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+function _superPropBase(object, property) {
+  while (!Object.prototype.hasOwnProperty.call(object, property)) {
+    object = _getPrototypeOf(object);
+    if (object === null) break;
+  }
+
+  return object;
+}
+
+function _get(target, property, receiver) {
+  if (typeof Reflect !== "undefined" && Reflect.get) {
+    _get = Reflect.get;
+  } else {
+    _get = function _get(target, property, receiver) {
+      var base = _superPropBase(target, property);
+      if (!base) return;
+      var desc = Object.getOwnPropertyDescriptor(base, property);
+
+      if (desc.get) {
+        return desc.get.call(receiver);
+      }
+
+      return desc.value;
+    };
+  }
+
+  return _get(target, property, receiver || target);
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
 
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
@@ -144,6 +229,1141 @@ function isVideoEvent(x) {
   return videoEvents.includes(x);
 }
 
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+function _iterableToArrayLimit(arr, i) {
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+
+  try {
+    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+}
+
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+}
+
+function unwrapExports (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var runtime_1 = createCommonjsModule(function (module) {
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var runtime = (function (exports) {
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined$1; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] =
+    GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      prototype[method] = function(arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return Promise.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return Promise.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new Promise(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList) {
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList)
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined$1) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined$1;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined$1;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined$1;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined$1, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined$1;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined$1;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined$1;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined$1;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined$1;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+  module.exports
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
+});
+
+var regenerator = runtime_1;
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
+var interopRequireDefault = createCommonjsModule(function (module) {
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    "default": obj
+  };
+}
+
+module.exports = _interopRequireDefault;
+});
+
+unwrapExports(interopRequireDefault);
+
+var inDOM = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _default = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+
+exports.default = _default;
+module.exports = exports["default"];
+});
+
+unwrapExports(inDOM);
+
+var on_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _inDOM = interopRequireDefault(inDOM);
+
+var on = function on() {};
+
+if (_inDOM.default) {
+  on = function () {
+    if (document.addEventListener) return function (node, eventName, handler, capture) {
+      return node.addEventListener(eventName, handler, capture || false);
+    };else if (document.attachEvent) return function (node, eventName, handler) {
+      return node.attachEvent('on' + eventName, function (e) {
+        e = e || window.event;
+        e.target = e.target || e.srcElement;
+        e.currentTarget = node;
+        handler.call(node, e);
+      });
+    };
+  }();
+}
+
+var _default = on;
+exports.default = _default;
+module.exports = exports["default"];
+});
+
+unwrapExports(on_1);
+
+var off_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _inDOM = interopRequireDefault(inDOM);
+
+var off = function off() {};
+
+if (_inDOM.default) {
+  off = function () {
+    if (document.addEventListener) return function (node, eventName, handler, capture) {
+      return node.removeEventListener(eventName, handler, capture || false);
+    };else if (document.attachEvent) return function (node, eventName, handler) {
+      return node.detachEvent('on' + eventName, handler);
+    };
+  }();
+}
+
+var _default = off;
+exports.default = _default;
+module.exports = exports["default"];
+});
+
+unwrapExports(off_1);
+
+var contains = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _inDOM = interopRequireDefault(inDOM);
+
+var _default = function () {
+  // HTML DOM and SVG DOM may have different support levels,
+  // so we need to check on context instead of a document root element.
+  return _inDOM.default ? function (context, node) {
+    if (context.contains) {
+      return context.contains(node);
+    } else if (context.compareDocumentPosition) {
+      return context === node || !!(context.compareDocumentPosition(node) & 16);
+    } else {
+      return fallback(context, node);
+    }
+  } : fallback;
+}();
+
+exports.default = _default;
+
+function fallback(context, node) {
+  if (node) do {
+    if (node === context) return true;
+  } while (node = node.parentNode);
+  return false;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(contains);
+
+var querySelectorAll = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+exports.default = qsa;
+// Zepto.js
+// (c) 2010-2015 Thomas Fuchs
+// Zepto.js may be freely distributed under the MIT license.
+var simpleSelectorRE = /^[\w-]*$/;
+var toArray = Function.prototype.bind.call(Function.prototype.call, [].slice);
+
+function qsa(element, selector) {
+  var maybeID = selector[0] === '#',
+      maybeClass = selector[0] === '.',
+      nameOnly = maybeID || maybeClass ? selector.slice(1) : selector,
+      isSimple = simpleSelectorRE.test(nameOnly),
+      found;
+
+  if (isSimple) {
+    if (maybeID) {
+      element = element.getElementById ? element : document;
+      return (found = element.getElementById(nameOnly)) ? [found] : [];
+    }
+
+    if (element.getElementsByClassName && maybeClass) return toArray(element.getElementsByClassName(nameOnly));
+    return toArray(element.getElementsByTagName(selector));
+  }
+
+  return toArray(element.querySelectorAll(selector));
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(querySelectorAll);
+
+var filter = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = filterEvents;
+
+var _contains = interopRequireDefault(contains);
+
+var _querySelectorAll = interopRequireDefault(querySelectorAll);
+
+function filterEvents(selector, handler) {
+  return function filterHandler(e) {
+    var top = e.currentTarget,
+        target = e.target,
+        matches = (0, _querySelectorAll.default)(top, selector);
+    if (matches.some(function (match) {
+      return (0, _contains.default)(match, target);
+    })) handler.call(this, e);
+  };
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(filter);
+
+var listen_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _inDOM = interopRequireDefault(inDOM);
+
+var _on = interopRequireDefault(on_1);
+
+var _off = interopRequireDefault(off_1);
+
+var listen = function listen() {};
+
+if (_inDOM.default) {
+  listen = function listen(node, eventName, handler, capture) {
+    (0, _on.default)(node, eventName, handler, capture);
+    return function () {
+      (0, _off.default)(node, eventName, handler, capture);
+    };
+  };
+}
+
+var _default = listen;
+exports.default = _default;
+module.exports = exports["default"];
+});
+
+unwrapExports(listen_1);
+
+var events = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _on = interopRequireDefault(on_1);
+
+exports.on = _on.default;
+
+var _off = interopRequireDefault(off_1);
+
+exports.off = _off.default;
+
+var _filter = interopRequireDefault(filter);
+
+exports.filter = _filter.default;
+
+var _listen = interopRequireDefault(listen_1);
+
+exports.listen = _listen.default;
+var _default = {
+  on: _on.default,
+  off: _off.default,
+  filter: _filter.default,
+  listen: _listen.default
+};
+exports.default = _default;
+});
+
+unwrapExports(events);
+var events_1 = events.on;
+var events_2 = events.off;
+var events_3 = events.filter;
+var events_4 = events.listen;
+
+function camelize(str, isBig) {
+  return str.replace(/(^|[^a-zA-Z]+)([a-zA-Z])/g, function (match, spilt, initials, index) {
+    return !isBig && index === 0 ? initials.toLowerCase() : initials.toUpperCase();
+  });
+}
+function hypenate(str) {
+  return camelize(str).replace(/([A-Z])/g, function (match) {
+    return "-" + match.toLowerCase();
+  });
+}
+function bind(fn, context) {
+  if (fn.bind) {
+    return fn.bind(context);
+  } else if (fn.apply) {
+    return function __autobind__() {
+      var args = [];
+
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+      }
+
+      return fn.apply(context, args);
+    };
+  }
+
+  return function __autobind__() {
+    var args = [];
+
+    for (var _i = 0; _i < arguments.length; _i++) {
+      args[_i] = arguments[_i];
+    }
+
+    return fn.call.apply(fn, [context].concat(args));
+  };
+}
+function getDeepProperty(obj, keys, _a) {
+  var _b = _a === void 0 ? {} : _a,
+      _c = _b.throwError,
+      throwError = _c === void 0 ? false : _c,
+      backup = _b.backup;
+
+  if (isString(keys)) {
+    keys = keys.split(".");
+  }
+
+  if (!isArray(keys)) {
+    throw new TypeError("keys of getDeepProperty must be string or Array<string>");
+  }
+
+  var read = [];
+  var target = obj;
+
+  for (var i = 0, len = keys.length; i < len; i++) {
+    var key = keys[i];
+
+    if (isNil(target)) {
+      if (throwError) {
+        throw new Error("obj" + (read.length > 0 ? "." + read.join(".") : " itself") + " is " + target);
+      } else {
+        return backup;
+      }
+    }
+
+    target = target[key];
+    read.push(key);
+  }
+
+  return target;
+}
+
 var defaultContainerConfig = {
   display: 'block',
   height: '100%',
@@ -164,11 +1384,11 @@ var Vessel = function Vessel(dispatcher, target, config) {
         return this.dispatcher.dom.getStyle(this.target, key);
       },
       set: function set(value) {
-        if (_isNumber(value)) {
+        if (isNumber(value)) {
           value = value + 'px';
         }
 
-        if (!_isString(value)) {
+        if (!isString(value)) {
           throw new Error("The value of ".concat(key, " in ").concat(this.target, "Config must be string, but not ").concat(_typeof(value), "."));
         }
 
@@ -198,7 +1418,7 @@ var __decorate$1 = undefined && undefined.__decorate || function (decorators, ta
 var nonenumerable$1 = nonenumerable$2;
 
 function stringOrVoid(value) {
-  return _isString(value) ? value : undefined;
+  return isString(value) ? value : undefined;
 }
 
 function accessorVideoProperty(property) {
@@ -218,7 +1438,7 @@ function accessorVideoProperty(property) {
 }
 
 function accessorVideoAttribute(attribute) {
-  var _ref = _isString(attribute) ? {
+  var _ref = isString(attribute) ? {
     get: attribute,
     isBoolean: false,
     set: attribute
@@ -273,7 +1493,7 @@ function accessorWidthAndHeight(property) {
       var attr = this.dom.getAttr('videoElement', property);
       var prop = this.dom.videoElement[property];
 
-      if (isNumeric(attr) && _isNumber(prop)) {
+      if (isNumeric(attr) && isNumber(prop)) {
         return prop;
       }
 
@@ -286,9 +1506,9 @@ function accessorWidthAndHeight(property) {
 
       var val;
 
-      if (value === undefined || _isNumber(value)) {
+      if (value === undefined || isNumber(value)) {
         val = value;
-      } else if (_isString(value) && !Number.isNaN(parseFloat(value))) {
+      } else if (isString(value) && !Number.isNaN(parseFloat(value))) {
         val = value;
       }
 
@@ -516,7 +1736,7 @@ function deletePropertyIfItIsEmpty(obj, key) {
     return;
   }
 
-  if (_isEmpty(obj[key])) {
+  if (isEmpty(obj[key])) {
     delete obj[key];
   }
 }
@@ -532,7 +1752,7 @@ function runRejectableQueue(queue) {
         return;
       }
 
-      var result = _isFunction(queue[index]) ? queue[index].apply(queue, args) : queue[index];
+      var result = isFunction(queue[index]) ? queue[index].apply(queue, args) : queue[index];
 
       if (result === false) {
         reject('stop');
@@ -559,7 +1779,7 @@ function runStoppableQueue(queue) {
       return true;
     }
 
-    var result = _isFunction(queue[index]) ? queue[index].apply(queue, args) : queue[index];
+    var result = isFunction(queue[index]) ? queue[index].apply(queue, args) : queue[index];
 
     if (result === false) {
       return false;
@@ -637,7 +1857,7 @@ function () {
 
       var event = this.events[key];
 
-      if (_isEmpty(event)) {
+      if (isEmpty(event)) {
         if (selfProcessorEvents.indexOf(key) > -1) {
           return Promise.resolve();
         }
@@ -657,7 +1877,7 @@ function () {
           sync: false
         }].concat(args));
       }).catch(function (error) {
-        if (_isError(error)) {
+        if (isError(error)) {
           _this.dispatcher.throwError(error);
         }
 
@@ -673,7 +1893,7 @@ function () {
         args[_key2 - 1] = arguments[_key2];
       }
 
-      if (_isEmpty(event)) {
+      if (isEmpty(event)) {
         if (selfProcessorEvents.indexOf(key) > -1) {
           return true;
         }
@@ -691,7 +1911,7 @@ function () {
   }, {
     key: "hasEvents",
     value: function hasEvents() {
-      return !_isEmpty(this.events);
+      return !isEmpty(this.events);
     }
   }, {
     key: "off",
@@ -714,7 +1934,7 @@ function () {
         stage: stage
       });
 
-      if (_isFunction(handler)) {
+      if (isFunction(handler)) {
         var _deleted = this.removeEvent({
           eventName: eventName,
           fn: handler,
@@ -749,8 +1969,7 @@ function () {
       var bus = this;
 
       var handler = function handler() {
-        _bind(fn, this).apply(void 0, arguments);
-
+        bind$1(fn, this).apply(void 0, arguments);
         bus.removeEvent({
           eventName: eventName,
           fn: handler,
@@ -791,7 +2010,7 @@ function () {
 
       var event = this.events[key];
 
-      if (_isEmpty(event)) {
+      if (isEmpty(event)) {
         return Promise.resolve(true);
       }
 
@@ -803,7 +2022,7 @@ function () {
       }).then(function () {
         return _this2.runSideEffectEvent.apply(_this2, [key].concat(args));
       }).catch(function (error) {
-        if (_isError(error)) {
+        if (isError(error)) {
           _this2.dispatcher.throwError(error);
         }
 
@@ -815,7 +2034,7 @@ function () {
     value: function triggerSync(key) {
       var event = this.events[key];
 
-      if (_isEmpty(event)) {
+      if (isEmpty(event)) {
         return true;
       }
 
@@ -903,13 +2122,13 @@ function () {
       }
 
       var order = (customOrder || this.dispatcher.order).concat(['_vm']);
-      return _isEmpty(handlerSet) ? [] : order.reduce(function (queue, id) {
-        if (_isEmpty(handlerSet[id]) || !_isArray(handlerSet[id]) || !_this3.dispatcher.plugins[id] && id !== '_vm') {
+      return isEmpty(handlerSet) ? [] : order.reduce(function (queue, id) {
+        if (isEmpty(handlerSet[id]) || !isArray(handlerSet[id]) || !_this3.dispatcher.plugins[id] && id !== '_vm') {
           return queue;
         }
 
         return queue.concat(handlerSet[id].map(function (fn) {
-          return _bind(fn, _this3.dispatcher.plugins[id] || _this3.dispatcher.vm);
+          return bind$1(fn, _this3.dispatcher.plugins[id] || _this3.dispatcher.vm);
         }));
       }, []);
     }
@@ -923,7 +2142,7 @@ function () {
       var key = getKeyForOnceMap(eventName, stage, pluginId);
       var map = this.onceMap[key];
 
-      if (_isNil(map) || !map.has(fn)) {
+      if (isNil(map) || !map.has(fn)) {
         return;
       }
 
@@ -978,7 +2197,7 @@ function () {
       var key = getKeyForOnceMap(eventName, stage, pluginId);
       var map = this.onceMap[key];
 
-      if (_isNil(map) || !map.has(fn)) {
+      if (isNil(map) || !map.has(fn)) {
         return;
       }
 
@@ -986,7 +2205,7 @@ function () {
       var index = handlers.indexOf(handler);
       handlers.splice(index, 1);
 
-      if (_isEmpty(handlers)) {
+      if (isEmpty(handlers)) {
         map.delete(fn);
       }
     }
@@ -999,7 +2218,7 @@ function () {
 
       var event = this.events[key];
 
-      if (_isEmpty(event)) {
+      if (isEmpty(event)) {
         return false;
       }
 
@@ -1060,7 +2279,7 @@ function getEventStage(name) {
   var stage = matches && matches[0] || 'main';
 
   if (matches) {
-    name = _camelCase(name.replace(secondaryEventReg, ''));
+    name = camelCase(name.replace(secondaryEventReg, ''));
   }
 
   return {
@@ -1123,7 +2342,7 @@ function prettifyEventParameter(info) {
       target = _getEventInfo.target,
       stage = _getEventInfo.stage;
 
-  if (!_isFunction(fn)) {
+  if (!isFunction(fn)) {
     throw new Error("You must provide a function to handle with event ".concat(name, ", but not ").concat(_typeof(fn)));
   }
 
@@ -1139,12 +2358,12 @@ function isEventEmitalbe(_ref2) {
   var id = _ref2.id,
       name = _ref2.name;
 
-  if (!name || !_isString(name) || secondaryEventReg.test(name)) {
+  if (!name || !isString(name) || secondaryEventReg.test(name)) {
     chimeeLog.error('You must provide a legal event name, which is string and could not started with before/after/_');
     return false;
   }
 
-  if (!id || !_isString(id)) {
+  if (!id || !isString(id)) {
     chimeeLog.error('You must provide the id of emitter');
     return false;
   }
@@ -1235,7 +2454,7 @@ function () {
             name = _ref2[0],
             fn = _ref2[1];
 
-        remove ? off(node, name, fn) : on(node, name, fn);
+        remove ? events_2(node, name, fn) : events_1(node, name, fn);
       });
     }
   }, {
@@ -1247,7 +2466,7 @@ function () {
             name = _ref4[0],
             fn = _ref4[1];
 
-        remove ? off(node, name, fn) : on(node, name, fn);
+        remove ? events_2(node, name, fn) : events_1(node, name, fn);
       });
     }
   }, {
@@ -1272,11 +2491,11 @@ function () {
                 name = _ref8[0],
                 fn = _ref8[1];
 
-            off(targetDom, name, fn);
+            events_2(targetDom, name, fn);
 
             if (target === 'video-dom') {
               _this.dispatcher.dom.videoExtendedNodes.forEach(function (node) {
-                return off(node, name, fn);
+                return events_2(node, name, fn);
               });
             }
           });
@@ -1370,7 +2589,7 @@ function () {
           }
         };
 
-        on(node, name, fn);
+        events_1(node, name, fn);
 
         if (_this2.bindedEventNames[target].indexOf(name) < 0) {
           _this2.bindedEventNames[target].push(name);
@@ -1535,7 +2754,7 @@ function () {
           }].concat(args));
         };
 
-        on(targetDom, name, fn);
+        events_1(targetDom, name, fn);
       } else if (target === 'video') {
         fn = function fn() {
           for (var _len8 = arguments.length, args = new Array(_len8), _key8 = 0; _key8 < _len8; _key8++) {
@@ -1549,7 +2768,7 @@ function () {
           }].concat(args));
         };
 
-        on(targetDom, name, fn);
+        events_1(targetDom, name, fn);
       } else if (target === 'video-dom') {
         fn = function fn() {
           for (var _len9 = arguments.length, args = new Array(_len9), _key9 = 0; _key9 < _len9; _key9++) {
@@ -1564,9 +2783,9 @@ function () {
         };
 
         this.dispatcher.dom.videoExtendedNodes.forEach(function (node) {
-          return on(node, name, fn);
+          return events_1(node, name, fn);
         });
-        on(targetDom, name, fn);
+        events_1(targetDom, name, fn);
       }
 
       this.bindedEventNames[target].push(name);
@@ -1627,7 +2846,7 @@ function () {
         }
       }
 
-      if (!_isFunction(fn)) {
+      if (!isFunction(fn)) {
         return;
       }
 
@@ -1635,11 +2854,11 @@ function () {
         this.dispatcher.kernel.off(name, fn);
       } else {
         var targetDom = this.getTargetDom(target);
-        off(targetDom, name, fn);
+        events_2(targetDom, name, fn);
 
         if (target === 'video-dom') {
           this.dispatcher.dom.videoExtendedNodes.forEach(function (node) {
-            off(node, name, fn);
+            events_2(node, name, fn);
           });
         }
       }
@@ -1668,6 +2887,835 @@ __decorate$3([runnable(isEventEmitalbe, {
   }
 })], Binder.prototype, "triggerSync", null);
 
+var hasClass_1 = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+exports.default = hasClass;
+
+function hasClass(element, className) {
+  if (element.classList) return !!className && element.classList.contains(className);else return (" " + (element.className.baseVal || element.className) + " ").indexOf(" " + className + " ") !== -1;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(hasClass_1);
+
+var addClass_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = addClass;
+
+var _hasClass = interopRequireDefault(hasClass_1);
+
+function addClass(element, className) {
+  if (element.classList) element.classList.add(className);else if (!(0, _hasClass.default)(element, className)) if (typeof element.className === 'string') element.className = element.className + ' ' + className;else element.setAttribute('class', (element.className && element.className.baseVal || '') + ' ' + className);
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(addClass_1);
+
+function replaceClassName(origClass, classToRemove) {
+  return origClass.replace(new RegExp('(^|\\s)' + classToRemove + '(?:\\s|$)', 'g'), '$1').replace(/\s+/g, ' ').replace(/^\s*|\s*$/g, '');
+}
+
+var removeClass = function removeClass(element, className) {
+  if (element.classList) element.classList.remove(className);else if (typeof element.className === 'string') element.className = replaceClassName(element.className, className);else element.setAttribute('class', replaceClassName(element.className && element.className.baseVal || '', className));
+};
+
+var _class = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _addClass = interopRequireDefault(addClass_1);
+
+exports.addClass = _addClass.default;
+
+var _removeClass = interopRequireDefault(removeClass);
+
+exports.removeClass = _removeClass.default;
+
+var _hasClass = interopRequireDefault(hasClass_1);
+
+exports.hasClass = _hasClass.default;
+var _default = {
+  addClass: _addClass.default,
+  removeClass: _removeClass.default,
+  hasClass: _hasClass.default
+};
+exports.default = _default;
+});
+
+unwrapExports(_class);
+var _class_1 = _class.addClass;
+var _class_2 = _class.removeClass;
+var _class_3 = _class.hasClass;
+
+var matches_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = matches;
+
+var _inDOM = interopRequireDefault(inDOM);
+
+var _querySelectorAll = interopRequireDefault(querySelectorAll);
+
+var matchesCache;
+
+function matches(node, selector) {
+  if (!matchesCache && _inDOM.default) {
+    var body = document.body;
+    var nativeMatch = body.matches || body.matchesSelector || body.webkitMatchesSelector || body.mozMatchesSelector || body.msMatchesSelector;
+    matchesCache = nativeMatch ? function (node, selector) {
+      return nativeMatch.call(node, selector);
+    } : ie8MatchesSelector;
+  }
+
+  return matchesCache ? matchesCache(node, selector) : null;
+}
+
+function ie8MatchesSelector(node, selector) {
+  var matches = (0, _querySelectorAll.default)(node.document || node.ownerDocument, selector),
+      i = 0;
+
+  while (matches[i] && matches[i] !== node) {
+    i++;
+  }
+
+  return !!matches[i];
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(matches_1);
+
+var isWindow = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+exports.default = getWindow;
+
+function getWindow(node) {
+  return node === node.window ? node : node.nodeType === 9 ? node.defaultView || node.parentWindow : false;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(isWindow);
+
+var ownerDocument_1 = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+exports.default = ownerDocument;
+
+function ownerDocument(node) {
+  return node && node.ownerDocument || document;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(ownerDocument_1);
+
+var offset_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = offset;
+
+var _contains = interopRequireDefault(contains);
+
+var _isWindow = interopRequireDefault(isWindow);
+
+var _ownerDocument = interopRequireDefault(ownerDocument_1);
+
+function offset(node) {
+  var doc = (0, _ownerDocument.default)(node),
+      win = (0, _isWindow.default)(doc),
+      docElem = doc && doc.documentElement,
+      box = {
+    top: 0,
+    left: 0,
+    height: 0,
+    width: 0
+  };
+  if (!doc) return; // Make sure it's not a disconnected DOM node
+
+  if (!(0, _contains.default)(docElem, node)) return box;
+  if (node.getBoundingClientRect !== undefined) box = node.getBoundingClientRect(); // IE8 getBoundingClientRect doesn't support width & height
+
+  box = {
+    top: box.top + (win.pageYOffset || docElem.scrollTop) - (docElem.clientTop || 0),
+    left: box.left + (win.pageXOffset || docElem.scrollLeft) - (docElem.clientLeft || 0),
+    width: (box.width == null ? node.offsetWidth : box.width) || 0,
+    height: (box.height == null ? node.offsetHeight : box.height) || 0
+  };
+  return box;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(offset_1);
+
+var height_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = height;
+
+var _offset = interopRequireDefault(offset_1);
+
+var _isWindow = interopRequireDefault(isWindow);
+
+function height(node, client) {
+  var win = (0, _isWindow.default)(node);
+  return win ? win.innerHeight : client ? node.clientHeight : (0, _offset.default)(node).height;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(height_1);
+
+var width_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = width;
+
+var _offset = interopRequireDefault(offset_1);
+
+var _isWindow = interopRequireDefault(isWindow);
+
+function width(node, client) {
+  var win = (0, _isWindow.default)(node);
+  return win ? win.innerWidth : client ? node.clientWidth : (0, _offset.default)(node).width;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(width_1);
+
+var camelize_1 = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+exports.default = camelize;
+var rHyphen = /-(.)/g;
+
+function camelize(string) {
+  return string.replace(rHyphen, function (_, chr) {
+    return chr.toUpperCase();
+  });
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(camelize_1);
+
+var camelizeStyle = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = camelizeStyleName;
+
+var _camelize = interopRequireDefault(camelize_1);
+
+/**
+ * Copyright 2014-2015, Facebook, Inc.
+ * All rights reserved.
+ * https://github.com/facebook/react/blob/2aeb8a2a6beb00617a4217f7f8284924fa2ad819/src/vendor/core/camelizeStyleName.js
+ */
+var msPattern = /^-ms-/;
+
+function camelizeStyleName(string) {
+  return (0, _camelize.default)(string.replace(msPattern, 'ms-'));
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(camelizeStyle);
+
+var hyphenate_1 = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+exports.default = hyphenate;
+var rUpper = /([A-Z])/g;
+
+function hyphenate(string) {
+  return string.replace(rUpper, '-$1').toLowerCase();
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(hyphenate_1);
+
+var hyphenateStyle = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = hyphenateStyleName;
+
+var _hyphenate = interopRequireDefault(hyphenate_1);
+
+/**
+ * Copyright 2013-2014, Facebook, Inc.
+ * All rights reserved.
+ * https://github.com/facebook/react/blob/2aeb8a2a6beb00617a4217f7f8284924fa2ad819/src/vendor/core/hyphenateStyleName.js
+ */
+var msPattern = /^ms-/;
+
+function hyphenateStyleName(string) {
+  return (0, _hyphenate.default)(string).replace(msPattern, '-ms-');
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(hyphenateStyle);
+
+var getComputedStyle = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = _getComputedStyle;
+
+var _camelizeStyle = interopRequireDefault(camelizeStyle);
+
+var rposition = /^(top|right|bottom|left)$/;
+var rnumnonpx = /^([+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|))(?!px)[a-z%]+$/i;
+
+function _getComputedStyle(node) {
+  if (!node) throw new TypeError('No Element passed to `getComputedStyle()`');
+  var doc = node.ownerDocument;
+  return 'defaultView' in doc ? doc.defaultView.opener ? node.ownerDocument.defaultView.getComputedStyle(node, null) : window.getComputedStyle(node, null) : {
+    //ie 8 "magic" from: https://github.com/jquery/jquery/blob/1.11-stable/src/css/curCSS.js#L72
+    getPropertyValue: function getPropertyValue(prop) {
+      var style = node.style;
+      prop = (0, _camelizeStyle.default)(prop);
+      if (prop == 'float') prop = 'styleFloat';
+      var current = node.currentStyle[prop] || null;
+      if (current == null && style && style[prop]) current = style[prop];
+
+      if (rnumnonpx.test(current) && !rposition.test(prop)) {
+        // Remember the original values
+        var left = style.left;
+        var runStyle = node.runtimeStyle;
+        var rsLeft = runStyle && runStyle.left; // Put in the new values to get a computed value out
+
+        if (rsLeft) runStyle.left = node.currentStyle.left;
+        style.left = prop === 'fontSize' ? '1em' : current;
+        current = style.pixelLeft + 'px'; // Revert the changed values
+
+        style.left = left;
+        if (rsLeft) runStyle.left = rsLeft;
+      }
+
+      return current;
+    }
+  };
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(getComputedStyle);
+
+var removeStyle_1 = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+exports.default = removeStyle;
+
+function removeStyle(node, key) {
+  return 'removeProperty' in node.style ? node.style.removeProperty(key) : node.style.removeAttribute(key);
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(removeStyle_1);
+
+var properties = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = exports.animationEnd = exports.animationDelay = exports.animationTiming = exports.animationDuration = exports.animationName = exports.transitionEnd = exports.transitionDuration = exports.transitionDelay = exports.transitionTiming = exports.transitionProperty = exports.transform = void 0;
+
+var _inDOM = interopRequireDefault(inDOM);
+
+var transform = 'transform';
+exports.transform = transform;
+var prefix, transitionEnd, animationEnd;
+exports.animationEnd = animationEnd;
+exports.transitionEnd = transitionEnd;
+var transitionProperty, transitionDuration, transitionTiming, transitionDelay;
+exports.transitionDelay = transitionDelay;
+exports.transitionTiming = transitionTiming;
+exports.transitionDuration = transitionDuration;
+exports.transitionProperty = transitionProperty;
+var animationName, animationDuration, animationTiming, animationDelay;
+exports.animationDelay = animationDelay;
+exports.animationTiming = animationTiming;
+exports.animationDuration = animationDuration;
+exports.animationName = animationName;
+
+if (_inDOM.default) {
+  var _getTransitionPropert = getTransitionProperties();
+
+  prefix = _getTransitionPropert.prefix;
+  exports.transitionEnd = transitionEnd = _getTransitionPropert.transitionEnd;
+  exports.animationEnd = animationEnd = _getTransitionPropert.animationEnd;
+  exports.transform = transform = prefix + "-" + transform;
+  exports.transitionProperty = transitionProperty = prefix + "-transition-property";
+  exports.transitionDuration = transitionDuration = prefix + "-transition-duration";
+  exports.transitionDelay = transitionDelay = prefix + "-transition-delay";
+  exports.transitionTiming = transitionTiming = prefix + "-transition-timing-function";
+  exports.animationName = animationName = prefix + "-animation-name";
+  exports.animationDuration = animationDuration = prefix + "-animation-duration";
+  exports.animationTiming = animationTiming = prefix + "-animation-delay";
+  exports.animationDelay = animationDelay = prefix + "-animation-timing-function";
+}
+
+var _default = {
+  transform: transform,
+  end: transitionEnd,
+  property: transitionProperty,
+  timing: transitionTiming,
+  delay: transitionDelay,
+  duration: transitionDuration
+};
+exports.default = _default;
+
+function getTransitionProperties() {
+  var style = document.createElement('div').style;
+  var vendorMap = {
+    O: function O(e) {
+      return "o" + e.toLowerCase();
+    },
+    Moz: function Moz(e) {
+      return e.toLowerCase();
+    },
+    Webkit: function Webkit(e) {
+      return "webkit" + e;
+    },
+    ms: function ms(e) {
+      return "MS" + e;
+    }
+  };
+  var vendors = Object.keys(vendorMap);
+  var transitionEnd, animationEnd;
+  var prefix = '';
+
+  for (var i = 0; i < vendors.length; i++) {
+    var vendor = vendors[i];
+
+    if (vendor + "TransitionProperty" in style) {
+      prefix = "-" + vendor.toLowerCase();
+      transitionEnd = vendorMap[vendor]('TransitionEnd');
+      animationEnd = vendorMap[vendor]('AnimationEnd');
+      break;
+    }
+  }
+
+  if (!transitionEnd && 'transitionProperty' in style) transitionEnd = 'transitionend';
+  if (!animationEnd && 'animationName' in style) animationEnd = 'animationend';
+  style = null;
+  return {
+    animationEnd: animationEnd,
+    transitionEnd: transitionEnd,
+    prefix: prefix
+  };
+}
+});
+
+unwrapExports(properties);
+var properties_1 = properties.animationEnd;
+var properties_2 = properties.animationDelay;
+var properties_3 = properties.animationTiming;
+var properties_4 = properties.animationDuration;
+var properties_5 = properties.animationName;
+var properties_6 = properties.transitionEnd;
+var properties_7 = properties.transitionDuration;
+var properties_8 = properties.transitionDelay;
+var properties_9 = properties.transitionTiming;
+var properties_10 = properties.transitionProperty;
+var properties_11 = properties.transform;
+
+var isTransform_1 = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+exports.default = isTransform;
+var supportedTransforms = /^((translate|rotate|scale)(X|Y|Z|3d)?|matrix(3d)?|perspective|skew(X|Y)?)$/i;
+
+function isTransform(property) {
+  return !!(property && supportedTransforms.test(property));
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(isTransform_1);
+
+var style_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = style;
+
+var _camelizeStyle = interopRequireDefault(camelizeStyle);
+
+var _hyphenateStyle = interopRequireDefault(hyphenateStyle);
+
+var _getComputedStyle2 = interopRequireDefault(getComputedStyle);
+
+var _removeStyle = interopRequireDefault(removeStyle_1);
+
+
+
+var _isTransform = interopRequireDefault(isTransform_1);
+
+function style(node, property, value) {
+  var css = '';
+  var transforms = '';
+  var props = property;
+
+  if (typeof property === 'string') {
+    if (value === undefined) {
+      return node.style[(0, _camelizeStyle.default)(property)] || (0, _getComputedStyle2.default)(node).getPropertyValue((0, _hyphenateStyle.default)(property));
+    } else {
+      (props = {})[property] = value;
+    }
+  }
+
+  Object.keys(props).forEach(function (key) {
+    var value = props[key];
+
+    if (!value && value !== 0) {
+      (0, _removeStyle.default)(node, (0, _hyphenateStyle.default)(key));
+    } else if ((0, _isTransform.default)(key)) {
+      transforms += key + "(" + value + ") ";
+    } else {
+      css += (0, _hyphenateStyle.default)(key) + ": " + value + ";";
+    }
+  });
+
+  if (transforms) {
+    css += properties.transform + ": " + transforms + ";";
+  }
+
+  node.style.cssText += ';' + css;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(style_1);
+
+var offsetParent_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = offsetParent;
+
+var _ownerDocument = interopRequireDefault(ownerDocument_1);
+
+var _style = interopRequireDefault(style_1);
+
+function nodeName(node) {
+  return node.nodeName && node.nodeName.toLowerCase();
+}
+
+function offsetParent(node) {
+  var doc = (0, _ownerDocument.default)(node),
+      offsetParent = node && node.offsetParent;
+
+  while (offsetParent && nodeName(node) !== 'html' && (0, _style.default)(offsetParent, 'position') === 'static') {
+    offsetParent = offsetParent.offsetParent;
+  }
+
+  return offsetParent || doc.documentElement;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(offsetParent_1);
+
+var _extends_1 = createCommonjsModule(function (module) {
+function _extends() {
+  module.exports = _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+module.exports = _extends;
+});
+
+var scrollTop_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = scrollTop;
+
+var _isWindow = interopRequireDefault(isWindow);
+
+function scrollTop(node, val) {
+  var win = (0, _isWindow.default)(node);
+  if (val === undefined) return win ? 'pageYOffset' in win ? win.pageYOffset : win.document.documentElement.scrollTop : node.scrollTop;
+  if (win) win.scrollTo('pageXOffset' in win ? win.pageXOffset : win.document.documentElement.scrollLeft, val);else node.scrollTop = val;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(scrollTop_1);
+
+var scrollLeft = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = scrollTop;
+
+var _isWindow = interopRequireDefault(isWindow);
+
+function scrollTop(node, val) {
+  var win = (0, _isWindow.default)(node);
+  if (val === undefined) return win ? 'pageXOffset' in win ? win.pageXOffset : win.document.documentElement.scrollLeft : node.scrollLeft;
+  if (win) win.scrollTo(val, 'pageYOffset' in win ? win.pageYOffset : win.document.documentElement.scrollTop);else node.scrollLeft = val;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(scrollLeft);
+
+var position_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = position;
+
+var _extends2 = interopRequireDefault(_extends_1);
+
+var _offset = interopRequireDefault(offset_1);
+
+var _offsetParent = interopRequireDefault(offsetParent_1);
+
+var _scrollTop = interopRequireDefault(scrollTop_1);
+
+var _scrollLeft = interopRequireDefault(scrollLeft);
+
+var _style = interopRequireDefault(style_1);
+
+function nodeName(node) {
+  return node.nodeName && node.nodeName.toLowerCase();
+}
+
+function position(node, offsetParent) {
+  var parentOffset = {
+    top: 0,
+    left: 0
+  },
+      offset; // Fixed elements are offset from window (parentOffset = {top:0, left: 0},
+  // because it is its only offset parent
+
+  if ((0, _style.default)(node, 'position') === 'fixed') {
+    offset = node.getBoundingClientRect();
+  } else {
+    offsetParent = offsetParent || (0, _offsetParent.default)(node);
+    offset = (0, _offset.default)(node);
+    if (nodeName(offsetParent) !== 'html') parentOffset = (0, _offset.default)(offsetParent);
+    parentOffset.top += parseInt((0, _style.default)(offsetParent, 'borderTopWidth'), 10) - (0, _scrollTop.default)(offsetParent) || 0;
+    parentOffset.left += parseInt((0, _style.default)(offsetParent, 'borderLeftWidth'), 10) - (0, _scrollLeft.default)(offsetParent) || 0;
+  } // Subtract parent offsets and node margins
+
+
+  return (0, _extends2.default)({}, offset, {
+    top: offset.top - parentOffset.top - (parseInt((0, _style.default)(node, 'marginTop'), 10) || 0),
+    left: offset.left - parentOffset.left - (parseInt((0, _style.default)(node, 'marginLeft'), 10) || 0)
+  });
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(position_1);
+
+var scrollParent = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = scrollPrarent;
+
+var _style = interopRequireDefault(style_1);
+
+var _height = interopRequireDefault(height_1);
+
+function scrollPrarent(node) {
+  var position = (0, _style.default)(node, 'position'),
+      excludeStatic = position === 'absolute',
+      ownerDoc = node.ownerDocument;
+  if (position === 'fixed') return ownerDoc || document;
+
+  while ((node = node.parentNode) && node.nodeType !== 9) {
+    var isStatic = excludeStatic && (0, _style.default)(node, 'position') === 'static',
+        style = (0, _style.default)(node, 'overflow') + (0, _style.default)(node, 'overflow-y') + (0, _style.default)(node, 'overflow-x');
+    if (isStatic) continue;
+    if (/(auto|scroll)/.test(style) && (0, _height.default)(node) < node.scrollHeight) return node;
+  }
+
+  return document;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(scrollParent);
+
+var closest_1 = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = closest;
+
+var _matches = interopRequireDefault(matches_1);
+
+var isDoc = function isDoc(obj) {
+  return obj != null && obj.nodeType === obj.DOCUMENT_NODE;
+};
+
+function closest(node, selector, context) {
+  while (node && (isDoc(node) || !(0, _matches.default)(node, selector))) {
+    node = node !== context && !isDoc(node) ? node.parentNode : undefined;
+  }
+
+  return node;
+}
+
+module.exports = exports["default"];
+});
+
+unwrapExports(closest_1);
+
+var query = createCommonjsModule(function (module, exports) {
+
+
+
+exports.__esModule = true;
+exports.default = void 0;
+
+var _matches = interopRequireDefault(matches_1);
+
+exports.matches = _matches.default;
+
+var _height = interopRequireDefault(height_1);
+
+exports.height = _height.default;
+
+var _width = interopRequireDefault(width_1);
+
+exports.width = _width.default;
+
+var _offset = interopRequireDefault(offset_1);
+
+exports.offset = _offset.default;
+
+var _offsetParent = interopRequireDefault(offsetParent_1);
+
+exports.offsetParent = _offsetParent.default;
+
+var _position = interopRequireDefault(position_1);
+
+exports.position = _position.default;
+
+var _contains = interopRequireDefault(contains);
+
+exports.contains = _contains.default;
+
+var _scrollParent = interopRequireDefault(scrollParent);
+
+exports.scrollParent = _scrollParent.default;
+
+var _scrollTop = interopRequireDefault(scrollTop_1);
+
+exports.scrollTop = _scrollTop.default;
+
+var _querySelectorAll = interopRequireDefault(querySelectorAll);
+
+exports.querySelectorAll = _querySelectorAll.default;
+
+var _closest = interopRequireDefault(closest_1);
+
+exports.closest = _closest.default;
+var _default = {
+  matches: _matches.default,
+  height: _height.default,
+  width: _width.default,
+  offset: _offset.default,
+  offsetParent: _offsetParent.default,
+  position: _position.default,
+  contains: _contains.default,
+  scrollParent: _scrollParent.default,
+  scrollTop: _scrollTop.default,
+  querySelectorAll: _querySelectorAll.default,
+  closest: _closest.default
+};
+exports.default = _default;
+});
+
+unwrapExports(query);
+var query_1 = query.matches;
+var query_2 = query.height;
+var query_3 = query.width;
+var query_4 = query.offset;
+var query_5 = query.offsetParent;
+var query_6 = query.position;
+var query_7 = query.contains;
+var query_8 = query.scrollParent;
+var query_9 = query.scrollTop;
+var query_10 = query.querySelectorAll;
+var query_11 = query.closest;
+
 var __decorate$4 = undefined && undefined.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
       r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -1693,8 +3741,8 @@ function () {
     this.plugins = {};
     this.videoExtendedNodesArray = [];
 
-    if (_isString(wrapper)) {
-      var $wrapper = querySelectorAll(document.body, wrapper);
+    if (isString(wrapper)) {
+      var $wrapper = query_10(document.body, wrapper);
 
       if ($wrapper.length === 0) {
         throw new TypeError('Can not get dom node accroding wrapper. Please check your wrapper');
@@ -1708,7 +3756,7 @@ function () {
     }
 
     this.originHTML = this.wrapper.innerHTML;
-    var videoElement = querySelectorAll(this.wrapper, 'video')[0];
+    var videoElement = query_10(this.wrapper, 'video')[0];
 
     if (!videoElement) {
       videoElement = document.createElement('video');
@@ -1717,7 +3765,7 @@ function () {
     this.installVideo(videoElement);
     this.fullscreenMonitor();
     esFullscreen.on('fullscreenchange', this.fullscreenMonitor);
-    var videoRequiredGuardedAttributes = _isArray(config.videoRequiredGuardedAttributes) ? config.videoRequiredGuardedAttributes : [];
+    var videoRequiredGuardedAttributes = isArray(config.videoRequiredGuardedAttributes) ? config.videoRequiredGuardedAttributes : [];
 
     if (videoRequiredGuardedAttributes.indexOf('style') < 0) {
       videoRequiredGuardedAttributes.unshift('style');
@@ -1761,11 +3809,11 @@ function () {
   }, {
     key: "getStyle",
     value: function getStyle(target, attr) {
-      if (!_isString(attr)) {
+      if (!isString(attr)) {
         throw new TypeError("to handle dom's attribute or style, your attr parameter must be string, but not ".concat(attr, " in ").concat(_typeof(attr)));
       }
 
-      if (!_isString(target)) {
+      if (!isString(target)) {
         throw new TypeError("to handle dom's attribute or style, your target parameter must be string, , but not ".concat(target, " in ").concat(_typeof(target)));
       }
 
@@ -1780,7 +3828,7 @@ function () {
     value: function insertPlugin(id, el) {
       var option = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
-      if (!_isString(id)) {
+      if (!isString(id)) {
         throw new TypeError('insertPlugin id parameter must be string');
       }
 
@@ -1792,7 +3840,7 @@ function () {
         this.removePlugin(id);
       }
 
-      if (_isString(el)) {
+      if (isString(el)) {
         if (isHTMLString(el)) {
           var outer = document.createElement('div');
           outer.innerHTML = el;
@@ -1800,7 +3848,7 @@ function () {
         } else {
           el = document.createElement(hypenate(el));
         }
-      } else if (el && _isPlainObject(el)) {
+      } else if (el && isPlainObject(el)) {
         option = el;
       }
 
@@ -1809,9 +3857,9 @@ function () {
           penetrate = _option.penetrate,
           className = _option.className;
       var node = el && isElement(el) ? el : document.createElement('div');
-      var classNames = _isString(className) ? className.split(/\s+/) : _isArray(className) ? className : [];
+      var classNames = isString(className) ? className.split(/\s+/) : isArray(className) ? className : [];
       classNames.forEach(function (name) {
-        addClass(node, name);
+        _class_1(node, name);
       });
       this.plugins[id] = node;
       var outerElement = inner ? this.container : this.wrapper;
@@ -1891,7 +3939,7 @@ function () {
   }, {
     key: "removePlugin",
     value: function removePlugin(id) {
-      if (!_isString(id)) {
+      if (!isString(id)) {
         return;
       }
 
@@ -1963,11 +4011,11 @@ function () {
   }, {
     key: "setStyle",
     value: function setStyle(target, attr, val) {
-      if (!_isString(attr)) {
+      if (!isString(attr)) {
         throw new TypeError("to handle dom's attribute or style, your attr parameter must be string, but not ".concat(attr, " in ").concat(_typeof(attr)));
       }
 
-      if (!_isString(target)) {
+      if (!isString(target)) {
         throw new TypeError("to handle dom's attribute or style, your target parameter must be string, , but not ".concat(target, " in ").concat(_typeof(target)));
       }
 
@@ -1986,8 +4034,8 @@ function () {
         return;
       }
 
-      (remove ? off : on)(element, 'mouseup', this.focusToVideo);
-      (remove ? off : on)(element, 'touchend', this.focusToVideo);
+      (remove ? events_2 : events_1)(element, 'mouseup', this.focusToVideo);
+      (remove ? events_2 : events_1)(element, 'touchend', this.focusToVideo);
     }
   }, {
     key: "focusToVideo",
@@ -1995,7 +4043,7 @@ function () {
       var x = window.scrollX;
       var y = window.scrollY;
 
-      if (_isFunction(this.videoElement.focus)) {
+      if (isFunction(this.videoElement.focus)) {
         this.videoElement.focus();
       }
 
@@ -2154,7 +4202,7 @@ function getLegalBox(_ref) {
   var src = _ref.src,
       box = _ref.box;
 
-  if (_isString(box) && box) {
+  if (isString(box) && box) {
     return box;
   }
 
@@ -2213,7 +4261,7 @@ function () {
       this.box = box;
       var VideoKernel = this.chooseVideoKernel(this.box, config.preset);
 
-      if (!_isFunction(VideoKernel)) {
+      if (!isFunction(VideoKernel)) {
         throw new Error("We can't find video kernel for ".concat(box, ". Please check your config and make sure it's installed or provided"));
       }
 
@@ -2260,7 +4308,7 @@ function () {
   }, {
     key: "seek",
     value: function seek(seconds) {
-      if (!_isNumber(seconds)) {
+      if (!isNumber(seconds)) {
         chimeeLog.error(LOG_TAG, "When you try to seek, you must offer us a number, but not ".concat(_typeof(seconds)));
         return;
       }
@@ -2270,7 +4318,7 @@ function () {
   }, {
     key: "startLoad",
     value: function startLoad() {
-      if (!_isFunction(this.videoKernel.startLoad)) {
+      if (!isFunction(this.videoKernel.startLoad)) {
         throw new Error('This video kernel do not support startLoad, please contact us on https://github.com/Chimeejs/chimee/issues');
       }
 
@@ -2279,7 +4327,7 @@ function () {
   }, {
     key: "stopLoad",
     value: function stopLoad() {
-      if (_isFunction(this.videoKernel.stopLoad)) {
+      if (isFunction(this.videoKernel.stopLoad)) {
         this.videoKernel.stopLoad();
       }
     }
@@ -2304,7 +4352,7 @@ function () {
   }, {
     key: "getMp4Kernel",
     value: function getMp4Kernel(Mp4Kernel) {
-      if (!Mp4Kernel || !_isFunction(Mp4Kernel.isSupport) || !Mp4Kernel.isSupport()) {
+      if (!Mp4Kernel || !isFunction(Mp4Kernel.isSupport) || !Mp4Kernel.isSupport()) {
         if (Mp4Kernel) {
           chimeeLog.warn(LOG_TAG, 'mp4 decode is not support in this browser, we will switch to the native video kernel');
         }
@@ -2319,6 +4367,21 @@ function () {
 
   return ChimeeKernel;
 }();
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
 
 var chimeeDomElements = ['container', 'wrapper', 'video'];
 function isChimeeDomElement(element) {
@@ -2336,11 +4399,11 @@ var videoReadOnlyProperties = ['buffered', 'currentSrc', 'duration', 'error', 'e
 var kernelProperties = ['isLive', 'box', 'preset', 'kernels', 'presetConfig'];
 
 function eventBinderCheck(key, fn) {
-  if (!_isString(key)) {
+  if (!isString(key)) {
     throw new TypeError('key parameter must be String');
   }
 
-  if (!_isFunction(fn)) {
+  if (!isFunction(fn)) {
     throw new TypeError('fn parameter must be Function');
   }
 }
@@ -2414,11 +4477,11 @@ function () {
   }, {
     key: "$del",
     value: function $del(obj, property) {
-      if (!_isPlainObject(obj) && !_isArray(obj)) {
+      if (!isPlainObject(obj) && !isArray(obj)) {
         throw new TypeError("$del only support Array or Object, but not ".concat(obj, ", whose type is ").concat(_typeof(obj)));
       }
 
-      if (!_isFunction(obj.__del)) {
+      if (!isFunction(obj.__del)) {
         if (process.env.NODE_ENV !== 'production') {
           chimeeLog.warn('chimee', "".concat(JSON.stringify(obj), " has not been deep watch. There is no need to use $del."));
         }
@@ -2436,12 +4499,12 @@ function () {
 
       var target;
 
-      if (!_isString(key) && _isPlainObject(key) && _isString(key.name) && _isString(key.target)) {
+      if (!isString(key) && isPlainObject(key) && isString(key.name) && isString(key.target)) {
         target = key.target;
         key = key.name;
       }
 
-      if (!_isString(key)) {
+      if (!isString(key)) {
         throw new TypeError('emit key parameter must be String');
       }
 
@@ -2466,12 +4529,12 @@ function () {
 
       var target;
 
-      if (!_isString(key) && _isPlainObject(key) && _isString(key.name) && _isString(key.target)) {
+      if (!isString(key) && isPlainObject(key) && isString(key.name) && isString(key.target)) {
         target = key.target;
         key = key.name;
       }
 
-      if (!_isString(key)) {
+      if (!isString(key)) {
         throw new TypeError('emitSync key parameter must be String');
       }
 
@@ -2553,11 +4616,11 @@ function () {
   }, {
     key: "$set",
     value: function $set(obj, property, value) {
-      if (!_isPlainObject(obj) && !_isArray(obj)) {
+      if (!isPlainObject(obj) && !isArray(obj)) {
         throw new TypeError("$set only support Array or Object, but not ".concat(obj, ", whose type is ").concat(_typeof(obj)));
       }
 
-      if (!_isFunction(obj.__set)) {
+      if (!isFunction(obj.__set)) {
         if (process.env.NODE_ENV !== 'production') {
           chimeeLog.warn('chimee', "".concat(JSON.stringify(obj), " has not been deep watch. There is no need to use $set."));
         }
@@ -2601,7 +4664,7 @@ function () {
           _ref2$proxy = _ref2.proxy,
           proxy = _ref2$proxy === void 0 ? false : _ref2$proxy;
 
-      if (!_isString(key) && !_isArray(key)) {
+      if (!isString(key) && !isArray(key)) {
         throw new TypeError("$watch only accept string and Array<string> as key to find the target to spy on, but not ".concat(key, ", whose type is ").concat(_typeof(key)));
       }
 
@@ -2623,7 +4686,7 @@ function () {
         }
       };
 
-      var keys = _isString(key) ? key.split('.') : key;
+      var keys = isString(key) ? key.split('.') : key;
       var property = keys.pop();
       var videoConfig = this.dispatcher.videoConfig;
       var target = keys.length === 0 && !other && isVideoDomAttribute(property) ? videoConfig : ['isFullscreen', 'fullscreenElement'].indexOf(property) > -1 ? this.dispatcher.dom : getDeepProperty(other || this, keys, {
@@ -2692,7 +4755,7 @@ function () {
         return unwatcher();
       });
       Object.keys(this.events).forEach(function (key) {
-        if (!_isArray(_this4.events[key])) {
+        if (!isArray(_this4.events[key])) {
           return;
         }
 
@@ -2841,7 +4904,7 @@ function () {
   }, {
     key: "removeEvents",
     value: function removeEvents(key, fn) {
-      if (isEmpty(this.events[key])) {
+      if (isEmpty$1(this.events[key])) {
         return;
       }
 
@@ -2853,7 +4916,7 @@ function () {
 
       this.events[key].splice(index, 1);
 
-      if (isEmpty(this.events[key])) {
+      if (isEmpty$1(this.events[key])) {
         delete this.events[key];
       }
     }
@@ -2888,7 +4951,7 @@ function () {
       return this.dispatcher.containerConfig;
     },
     set: function set(config) {
-      if (!_isPlainObject(config)) {
+      if (!isPlainObject(config)) {
         throw new Error("The config of container must be Object, but not ".concat(_typeof(config), "."));
       }
 
@@ -3013,7 +5076,7 @@ function (_VideoWrapper) {
       id: id
     }));
     _this.destroyed = false;
-    _this.VERSION = '1.0.1-alpha.0';
+    _this.VERSION = '2.0.0-alpha.1';
     _this.autoFocusValue = false;
     _this.levelValue = 0;
     _this.operableValue = true;
@@ -3026,7 +5089,7 @@ function (_VideoWrapper) {
       throw new TypeError('lack of dispatcher');
     }
 
-    if (!_isString(id)) {
+    if (!isString(id)) {
       throw new TypeError('id of PluginConfig must be string');
     }
 
@@ -3038,7 +5101,7 @@ function (_VideoWrapper) {
     _this.beforeCreate = _this.beforeCreate || beforeCreate;
 
     try {
-      if (_isFunction(_this.beforeCreate)) {
+      if (isFunction(_this.beforeCreate)) {
         _this.beforeCreate({
           computed: computed,
           data: data,
@@ -3050,11 +5113,11 @@ function (_VideoWrapper) {
       _this.$throwError(error);
     }
 
-    if (!isEmpty(methods) && _isPlainObject(methods)) {
+    if (!isEmpty$1(methods) && isPlainObject(methods)) {
       Object.keys(methods).forEach(function (key) {
         var fn = methods[key];
 
-        if (!_isFunction(fn)) {
+        if (!isFunction(fn)) {
           throw new TypeError('plugins methods must be Function');
         }
 
@@ -3067,9 +5130,9 @@ function (_VideoWrapper) {
       });
     }
 
-    if (!isEmpty(events) && _isPlainObject(events)) {
+    if (!isEmpty$1(events) && isPlainObject(events)) {
       Object.keys(events).forEach(function (key) {
-        if (!_isFunction(events[key])) {
+        if (!isFunction(events[key])) {
           throw new TypeError('plugins events hook must bind with Function');
         }
 
@@ -3077,22 +5140,22 @@ function (_VideoWrapper) {
       });
     }
 
-    if (!isEmpty(data) && _isPlainObject(data)) {
-      Object.assign(_assertThisInitialized(_this), _cloneDeep(data));
+    if (!isEmpty$1(data) && isPlainObject(data)) {
+      Object.assign(_assertThisInitialized(_this), cloneDeep(data));
     }
 
-    if (!isEmpty(computed) && _isPlainObject(computed)) {
+    if (!isEmpty$1(computed) && isPlainObject(computed)) {
       var props = Object.keys(computed).reduce(function (props, key) {
         var val = computed[key];
 
-        if (_isFunction(val)) {
+        if (isFunction(val)) {
           props[key] = accessor({
             get: val
           });
           return props;
         }
 
-        if (_isPlainObject(val) && (_isFunction(val.get) || _isFunction(val.set))) {
+        if (isPlainObject(val) && (isFunction(val.get) || isFunction(val.set))) {
           props[key] = accessor(val);
           return props;
         }
@@ -3117,7 +5180,7 @@ function (_VideoWrapper) {
       inner: inner,
       className: className
     });
-    _this.$autoFocus = _isBoolean(autoFocus) ? autoFocus : inner;
+    _this.$autoFocus = isBoolean(autoFocus) ? autoFocus : inner;
     _this.$inner = inner;
     _this.$penetrate = penetrate;
     applyDecorators(_assertThisInitialized(_this), {
@@ -3126,12 +5189,12 @@ function (_VideoWrapper) {
     }, {
       self: true
     });
-    _this.$operable = _isBoolean(option.operable) ? option.operable : operable;
-    _this.levelValue = _isInteger(option.level) ? option.level : level;
+    _this.$operable = isBoolean(option.operable) ? option.operable : operable;
+    _this.levelValue = isInteger(option.level) ? option.level : level;
     _this.$config = option;
 
     try {
-      if (_isFunction(_this.create)) {
+      if (isFunction(_this.create)) {
         _this.create();
       }
     } catch (error) {
@@ -3155,7 +5218,7 @@ function (_VideoWrapper) {
         return;
       }
 
-      if (_isFunction(this.destroy)) {
+      if (isFunction(this.destroy)) {
         this.destroy();
       }
 
@@ -3179,7 +5242,7 @@ function (_VideoWrapper) {
       var result;
 
       try {
-        result = _isFunction(this.inited) && this.inited();
+        result = isFunction(this.inited) && this.inited();
       } catch (error) {
         this.$throwError(error);
       }
@@ -3190,7 +5253,7 @@ function (_VideoWrapper) {
         _this2.readySync = true;
         return _this2;
       }).catch(function (error) {
-        if (_isError(error)) {
+        if (isError(error)) {
           _this2.$throwError(error);
         }
 
@@ -3202,7 +5265,7 @@ function (_VideoWrapper) {
     key: "runInitHook",
     value: function runInitHook(videoConfig) {
       try {
-        if (_isFunction(this.init)) {
+        if (isFunction(this.init)) {
           this.init(videoConfig);
         }
       } catch (error) {
@@ -3222,7 +5285,7 @@ function (_VideoWrapper) {
   }, {
     key: "$level",
     set: function set(val) {
-      if (!_isInteger(val)) {
+      if (!isInteger(val)) {
         return;
       }
 
@@ -3236,7 +5299,7 @@ function (_VideoWrapper) {
   }, {
     key: "$operable",
     set: function set(val) {
-      if (!_isBoolean(val)) {
+      if (!isBoolean(val)) {
         return;
       }
 
@@ -3327,7 +5390,7 @@ function (_ChimeePlugin) {
   }, {
     key: "create",
     value: function create() {
-      addClass(this.$dom, 'chimee-plugin-picture-in-picture');
+      _class_1(this.$dom, 'chimee-plugin-picture-in-picture');
       this.getContext();
     }
   }, {
@@ -3406,7 +5469,7 @@ var pluginConfigSet = {};
 var kernelsSet = {};
 
 function convertNameIntoId(name) {
-  if (!_isString(name)) {
+  if (!isString(name)) {
     throw new Error("Plugin's name must be a string, but not \"".concat(name, "\" in ").concat(_typeof(name)));
   }
 
@@ -3414,7 +5477,7 @@ function convertNameIntoId(name) {
 }
 
 function checkPluginConfig(config) {
-  if (_isFunction(config)) {
+  if (isFunction(config)) {
     if (!(config.prototype instanceof ChimeePlugin)) {
       throw new TypeError("Your are trying to install plugin ".concat(config.name, ", but it's not extends from Chimee.plugin."));
     }
@@ -3422,13 +5485,13 @@ function checkPluginConfig(config) {
     return;
   }
 
-  if (!_isPlainObject(config) || _isEmpty(config)) {
+  if (!isPlainObject(config) || isEmpty(config)) {
     throw new TypeError("plugin's config must be an Object, but not \"".concat(config, "\" in ").concat(_typeof(config)));
   }
 
   var name = config.name;
 
-  if (!_isString(name) || name.length < 1) {
+  if (!isString(name) || name.length < 1) {
     throw new TypeError("plugin must have a legal namea, but not \"".concat(name, "\" in ").concat(_typeof(name)));
   }
 }
@@ -3451,7 +5514,7 @@ function () {
       outer: []
     };
 
-    if (!_isPlainObject(config)) {
+    if (!isPlainObject(config)) {
       throw new TypeError("UserConfig must be an Object, but not \"".concat(config, "\" in ").concat(_typeof(config)));
     }
 
@@ -3460,7 +5523,7 @@ function () {
     this.videoConfigReady = false;
     this.videoConfig = new VideoConfig(this, config);
 
-    if (_isArray(config.plugins) && !_isArray(config.plugin)) {
+    if (isArray(config.plugins) && !isArray(config.plugin)) {
       config.plugin = config.plugins;
       delete config.plugins;
     }
@@ -3553,15 +5616,15 @@ function () {
     key: "hasUsed",
     value: function hasUsed(id) {
       var plugin = this.plugins[id];
-      return _isPlainObject(plugin);
+      return isPlainObject(plugin);
     }
   }, {
     key: "load",
     value: function load(srcOrOption) {
       var option = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var src = _isString(srcOrOption) ? srcOrOption : _isPlainObject(srcOrOption) && _isString(srcOrOption.src) ? srcOrOption.src : '';
+      var src = isString(srcOrOption) ? srcOrOption : isPlainObject(srcOrOption) && isString(srcOrOption.src) ? srcOrOption.src : '';
 
-      if (!_isString(srcOrOption)) {
+      if (!isString(srcOrOption)) {
         delete srcOrOption.src;
         option = srcOrOption;
       }
@@ -3581,7 +5644,7 @@ function () {
           _option$kernels = _option.kernels,
           kernels = _option$kernels === void 0 ? videoConfig.kernels : _option$kernels;
 
-      if (box !== 'native' || box !== oldBox || !_isEmpty(option)) {
+      if (box !== 'native' || box !== oldBox || !isEmpty(option)) {
         var video = document.createElement('video');
         var config = {
           isLive: isLive,
@@ -3620,9 +5683,9 @@ function () {
     value: function () {
       var _requestPictureInPicture = _asyncToGenerator(
       /*#__PURE__*/
-      _regeneratorRuntime.mark(function _callee() {
+      regenerator.mark(function _callee() {
         var pipWindow;
-        return _regeneratorRuntime.wrap(function _callee$(_context) {
+        return regenerator.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
@@ -3723,12 +5786,12 @@ function () {
               var currentTime = that.kernel.currentTime;
 
               if (bias <= 0 && currentTime >= idealTime || bias > 0 && (Math.abs(idealTime - currentTime) <= bias && newVideoReady || currentTime - idealTime > bias)) {
-                off(that.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-                off(video, 'error', videoError, true);
+                events_2(that.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+                events_2(video, 'error', videoError, true);
 
                 if (!newVideoReady) {
-                  off(video, 'canplay', videoCanplay, true);
-                  off(video, 'loadedmetadata', videoLoadedmetadata, true);
+                  events_2(video, 'canplay', videoCanplay, true);
+                  events_2(video, 'loadedmetadata', videoLoadedmetadata, true);
                   kernel.destroy();
                   return resolve();
                 }
@@ -3745,8 +5808,8 @@ function () {
               newVideoReady = true;
 
               if (immediate) {
-                off(that.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
-                off(video, 'error', videoError, true);
+                events_2(that.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+                events_2(video, 'error', videoError, true);
                 return reject({
                   error: false,
                   kernel: kernel,
@@ -3762,9 +5825,9 @@ function () {
             }
 
             function videoError(evt) {
-              off(video, 'canplay', videoCanplay, true);
-              off(video, 'loadedmetadata', videoLoadedmetadata, true);
-              off(that.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+              events_2(video, 'canplay', videoCanplay, true);
+              events_2(video, 'loadedmetadata', videoLoadedmetadata, true);
+              events_2(that.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
               kernel.off('error', videoError);
               var error;
 
@@ -3773,7 +5836,7 @@ function () {
                 chimeeLog.error('chimee\'s silentload bump into a kernel error', errmsg);
                 error = new Error(errmsg);
               } else {
-                error = !_isEmpty(video.error) ? new Error(video.error.message) : new Error('unknow video error');
+                error = !isEmpty(video.error) ? new Error(video.error.message) : new Error('unknow video error');
                 chimeeLog.error('chimee\'s silentload', error.message);
               }
 
@@ -3782,13 +5845,13 @@ function () {
               return index === repeatTimes ? reject(error) : resolve(error);
             }
 
-            on(video, 'canplay', videoCanplay, true);
-            on(video, 'loadedmetadata', videoLoadedmetadata.bind(_this2), true);
-            on(video, 'error', videoError, true);
+            events_1(video, 'canplay', videoCanplay, true);
+            events_1(video, 'loadedmetadata', videoLoadedmetadata.bind(_this2), true);
+            events_1(video, 'error', videoError, true);
             kernel = _this2.createKernel(video, config);
             _this2.silentLoadTempKernel = kernel;
             kernel.on('error', videoError);
-            on(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
+            events_1(_this2.dom.videoElement, 'timeupdate', oldVideoTimeupdate);
             kernel.load();
           });
         };
@@ -3802,7 +5865,7 @@ function () {
 
         return Promise.reject(new Error(message));
       }).catch(function (result) {
-        if (_isError(result)) {
+        if (isError(result)) {
           return Promise.reject(result);
         }
 
@@ -3845,7 +5908,7 @@ function () {
         }
 
         return new Promise(function (resolve) {
-          on(video, 'play', function () {
+          events_1(video, 'play', function () {
             _this2.switchKernel({
               video: video,
               kernel: kernel,
@@ -3868,9 +5931,7 @@ function () {
           config = _ref.config,
           notifyChange = _ref.notifyChange;
       var oldKernel = this.kernel;
-
-      var originVideoConfig = _clone(this.videoConfig);
-
+      var originVideoConfig = clone(this.videoConfig);
       this.dom.migrateVideoRequiredGuardedAttributes(video);
       this.dom.removeVideo();
       this.dom.installVideo(video);
@@ -3942,18 +6003,18 @@ function () {
   }, {
     key: "use",
     value: function use(option) {
-      if (_isString(option)) {
+      if (isString(option)) {
         option = {
           name: option,
           alias: undefined
         };
       }
 
-      if (!_isPlainObject(option) || _isPlainObject(option) && !_isString(option.name)) {
+      if (!isPlainObject(option) || isPlainObject(option) && !isString(option.name)) {
         throw new TypeError('pluginConfig do not match requirement');
       }
 
-      if (!_isString(option.alias)) {
+      if (!isString(option.alias)) {
         option.alias = undefined;
       }
 
@@ -3971,11 +6032,11 @@ function () {
         throw new TypeError('You have not installed plugin ' + key);
       }
 
-      if (_isPlainObject(pluginConfig)) {
+      if (isPlainObject(pluginConfig)) {
         pluginConfig.id = id;
       }
 
-      var plugin = _isFunction(pluginConfig) ? new pluginConfig({
+      var plugin = isFunction(pluginConfig) ? new pluginConfig({
         id: id
       }, this, pluginOption) : new ChimeePlugin(pluginConfig, this, pluginOption);
       this.plugins[id] = plugin;
@@ -4025,23 +6086,23 @@ function () {
       var kernels = config.kernels,
           preset = config.preset;
 
-      if (process.env.NODE_ENV !== 'production' && _isEmpty(kernels) && !_isEmpty(preset)) {
+      if (process.env.NODE_ENV !== 'production' && isEmpty(kernels) && !isEmpty(preset)) {
         chimeeLog.warn('preset will be deprecated in next major version, please use kernels instead.');
       }
 
       var presetConfig = {};
       var newPreset = {};
 
-      if (_isArray(kernels)) {
+      if (isArray(kernels)) {
         newPreset = kernels.reduce(function (kernels, keyOrSKC) {
-          if (_isString(keyOrSKC)) {
+          if (isString(keyOrSKC)) {
             if (!isSupportedKernelType(keyOrSKC)) {
               throw new Error("We have not support ".concat(keyOrSKC, " kernel type"));
             }
 
             var kernelFn = kernelsSet[keyOrSKC];
 
-            if (!_isFunction(kernelFn)) {
+            if (!isFunction(kernelFn)) {
               chimeeLog.warn("You have not installed kernel for ".concat(keyOrSKC, "."));
               return kernels;
             }
@@ -4050,18 +6111,18 @@ function () {
             return kernels;
           }
 
-          if (_isPlainObject(keyOrSKC)) {
+          if (isPlainObject(keyOrSKC)) {
             var name = keyOrSKC.name,
                 handler = keyOrSKC.handler;
 
-            if (_isString(handler)) {
+            if (isString(handler)) {
               if (!isSupportedKernelType(handler)) {
                 throw new Error("We have not support ".concat(handler, " kernel type"));
               }
 
               var _kernelFn = kernelsSet[handler];
 
-              if (!_isFunction(_kernelFn)) {
+              if (!isFunction(_kernelFn)) {
                 chimeeLog.warn("You have not installed kernel for ".concat(handler, "."));
                 return kernels;
               }
@@ -4071,7 +6132,7 @@ function () {
               return kernels;
             }
 
-            if (_isFunction(handler)) {
+            if (isFunction(handler)) {
               var kernelName = name || handler.name;
 
               if (!isSupportedKernelType(kernelName)) {
@@ -4094,24 +6155,24 @@ function () {
         Object.keys(kernels || {}).forEach(function (key) {
           var fnOrSKC = kernels[key];
 
-          if (_isFunction(fnOrSKC)) {
+          if (isFunction(fnOrSKC)) {
             var fn = fnOrSKC;
             newPreset[key] = fn;
             return;
           }
 
-          if (_isPlainObject(fnOrSKC)) {
+          if (isPlainObject(fnOrSKC)) {
             var SKC = fnOrSKC;
             var handler = SKC.handler;
 
-            if (_isString(handler)) {
+            if (isString(handler)) {
               if (!isSupportedKernelType(handler)) {
                 throw new Error("We have not support ".concat(handler, " kernel type"));
               }
 
               var kernelFn = kernelsSet[handler];
 
-              if (!_isFunction(kernelFn)) {
+              if (!isFunction(kernelFn)) {
                 chimeeLog.warn("You have not installed kernel for ".concat(handler, "."));
                 return;
               }
@@ -4121,7 +6182,7 @@ function () {
               return;
             }
 
-            if (_isFunction(handler)) {
+            if (isFunction(handler)) {
               newPreset[key] = handler;
               presetConfig[key] = SKC;
               return;
@@ -4148,7 +6209,7 @@ function () {
     value: function getTopLevel(inner) {
       var arr = this.zIndexMap[inner ? 'inner' : 'outer'];
       var plugin = this.plugins[arr[arr.length - 1]];
-      return _isEmpty(plugin) ? 0 : plugin.$level;
+      return isEmpty(plugin) ? 0 : plugin.$level;
     }
   }, {
     key: "initUserPlugin",
@@ -4157,7 +6218,7 @@ function () {
 
       var configs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-      if (!_isArray(configs)) {
+      if (!isArray(configs)) {
         if (process.env.NODE_ENV !== 'production') {
           chimeeLog.warn('Dispatcher', "UserConfig.plugin can only by an Array, but not \"".concat(configs, "\" in ").concat(_typeof(configs)));
         }
@@ -4177,7 +6238,7 @@ function () {
       var _this$order$reduce = this.order.reduce(function (levelSet, key) {
         var plugin = _this5.plugins[key];
 
-        if (_isEmpty(plugin)) {
+        if (isEmpty(plugin)) {
           return levelSet;
         }
 
@@ -4222,7 +6283,7 @@ function () {
   }, {
     key: "hasInstalledKernel",
     value: function hasInstalledKernel(key) {
-      return _isFunction(kernelsSet[key]);
+      return isFunction(kernelsSet[key]);
     }
   }, {
     key: "install",
@@ -4236,7 +6297,7 @@ function () {
         }
       }
 
-      var pluginConfig = _isFunction(config) ? config : Object.assign({}, config, {
+      var pluginConfig = isFunction(config) ? config : Object.assign({}, config, {
         id: id
       });
       pluginConfigSet[id] = pluginConfig;
@@ -4245,17 +6306,17 @@ function () {
   }, {
     key: "installKernel",
     value: function installKernel(key, value) {
-      var tasks = _isPlainObject(key) ? Object.entries(key) : [[key, value]];
+      var tasks = isPlainObject(key) ? Object.entries(key) : [[key, value]];
       tasks.forEach(function (_ref2) {
         var _ref3 = _slicedToArray(_ref2, 2),
             key = _ref3[0],
             value = _ref3[1];
 
-        if (!_isFunction(value)) {
+        if (!isFunction(value)) {
           throw new Error("The kernel you install on ".concat(key, " must be a Function, but not ").concat(_typeof(value)));
         }
 
-        if (_isFunction(kernelsSet[key])) {
+        if (isFunction(kernelsSet[key])) {
           chimeeLog.warn("You have alrady install a kernel on ".concat(key, ", and now we will replace it"));
         }
 
@@ -4310,10 +6371,10 @@ function (_VideoWrapper) {
       errorHandler: undefined
     };
     _this.destroyed = false;
-    _this.version = '1.0.1-alpha.0';
+    _this.version = '2.0.0-alpha.1';
     var config;
 
-    if (process.env.NODE_ENV !== 'production' && !_isFunction(Object.defineProperty)) {
+    if (process.env.NODE_ENV !== 'production' && !isFunction(Object.defineProperty)) {
       chimeeLog.error('Chimee', 'We detect that this browser lack of Object.defineProperty. Chimee can\'t run on this browser');
     }
 
@@ -4321,12 +6382,12 @@ function (_VideoWrapper) {
       chimeeLog.error('Chimee', 'We detect that this browser lack of Promise. If you are running Chimee in old browser. Please make sure you have import polyfill such as babel-polyfill.');
     }
 
-    if (_isString(rawConfig) || isElement(rawConfig)) {
+    if (isString(rawConfig) || isElement(rawConfig)) {
       config = {
         controls: true,
         wrapper: rawConfig
       };
-    } else if (_isPlainObject(rawConfig)) {
+    } else if (isPlainObject(rawConfig)) {
       if (!rawConfig.wrapper) {
         throw new Error('You must pass in an legal object');
       }
@@ -4348,13 +6409,13 @@ function (_VideoWrapper) {
   _createClass(Chimee, [{
     key: "customThrowError",
     value: function customThrowError(error) {
-      if (_isString(error)) {
+      if (isString(error)) {
         error = new Error(error);
       }
 
       var errorHandler = this.config.errorHandler || Chimee.config.errorHandler;
 
-      if (_isFunction(errorHandler)) {
+      if (isFunction(errorHandler)) {
         return errorHandler(error);
       }
 
@@ -4362,7 +6423,7 @@ function (_VideoWrapper) {
         return;
       }
 
-      if (_isError(error)) {
+      if (isError(error)) {
         throw error;
       } else {
         console.error(error);
@@ -4404,11 +6465,11 @@ function (_VideoWrapper) {
           name = _ref.name,
           target = _ref.target;
 
-      if (!name || !_isString(name)) {
+      if (!name || !isString(name)) {
         throw new Error("The event name must be a string, but not ".concat(_typeof(name)));
       }
 
-      if (!target || !_isString(target)) {
+      if (!target || !isString(target)) {
         throw new Error("The event target must be a string, but not ".concat(_typeof(target)));
       }
 

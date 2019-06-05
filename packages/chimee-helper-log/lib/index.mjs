@@ -1,13 +1,13 @@
 
 /**
- * chimee-helper-log v0.2.3
+ * chimee-helper-log v2.0.0-alpha.1
  * (c) 2017-2019 toxic-johann
  * Released under MIT
- * Built ad Mon Jun 03 2019 23:56:58 GMT+0800 (China Standard Time)
+ * Built ad Thu Jun 06 2019 00:13:58 GMT+0800 (China Standard Time)
  */
 
-import { inBrowser } from 'toxic-predicate-functions';
 import { isString } from 'lodash-es';
+import { inBrowser } from 'toxic-predicate-functions';
 
 var ChimeeHelperLog = function () {
   function ChimeeHelperLog() {
