@@ -1,8 +1,7 @@
 {
   "presets": [
-    "flow",
     [
-      "env",
+      "@babel/preset-env",
       {
         "targets": {
           "browsers": [
@@ -11,10 +10,8 @@
           ]
         }
       }
-    ],
-    "stage-0"
+    ]
   ],
   "plugins": [
-    "transform-decorators-legacy"
   ]
 }

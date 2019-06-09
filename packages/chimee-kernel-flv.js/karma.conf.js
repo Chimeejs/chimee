@@ -22,7 +22,8 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'tests/**/*.js': [ 'rollup' ],
-      'src/**/*.js': [ 'coverage' ],
+      'lib/esnext/index.js': [ 'coverage' ],
+      'src/**/*.ts': [ 'coverage' ],
     },
 
     // test results reporter to use
@@ -43,39 +44,37 @@ module.exports = function(config) {
       plugins: [
         require('rollup-plugin-babel')({
           presets: [
-            'flow',
-            [ 'env', {
+            [ '@babel/preset-env', {
               modules: false,
               targets: {
                 browsers: [ 'last 2 versions', 'not ie <= 8' ],
               },
             }],
-            'stage-0',
+          ],
+          plugins: [
+            [ '@babel/plugin-transform-runtime', { useESModules: true }],
           ],
           exclude: 'node_modules/**',
-          plugins: [
-            'istanbul',
-            'external-helpers',
-            'transform-decorators-legacy',
-            'transform-runtime',
-          ],
-          externalHelpers: true,
+          include: [ 'node_modules/@babel/runtime/**', 'lib/** ' ],
           runtimeHelpers: true,
           babelrc: false,
         }),
-        require('rollup-plugin-flow-no-whitespace')(),
         require('rollup-plugin-node-resolve')({
-          customResolveOptions: {
-            moduleDirectory: [ 'src', 'node_modules' ],
-          },
-          preferBuiltins: true,
+          preferBuiltins: false,
         }),
-        require('rollup-plugin-commonjs')(),
+        require('rollup-plugin-commonjs')({
+          namedExports: {
+            // left-hand side can be an absolute path, a path
+            // relative to the current directory, or the name
+            // of a module in node_modules
+            'node_modules/events/events.js': [ 'EventEmitter' ],
+          },
+        }),
+        require('rollup-plugin-node-builtins')(),
         require('rollup-plugin-replace')({
           'process.env.VERSION': `'${version}'`,
           'process.env.TRAVIS': `${process.env.TRAVIS}`,
         }),
-        require('rollup-plugin-node-builtins')(),
       ],
       output: {
         format: 'iife', // Helps prevent naming collisions.
