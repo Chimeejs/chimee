@@ -59,8 +59,10 @@ package-lock.json
 lib/index.dev.js
 lib/index.dev.js.map
 lib/esnext/*
-bundle-size/iife.html
+packages/*/bundle-size/*
 
 ts-out
 
 lerna-debug.log
+
+packages/*/lib/*

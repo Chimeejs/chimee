@@ -112,6 +112,6 @@ export default class HlsJSVideoKernel extends EventEmitter implements IVideoKern
   }
 
   public unload() {
-    // do nothing
+    return this.stopLoad();
   }
 }
