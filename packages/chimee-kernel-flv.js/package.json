@@ -4,8 +4,6 @@
   "description": "A flv decoder for chimee, using flv.js",
   "main": "lib/index.js",
   "scripts": {
-    "precommit": "npm run lint && npm t",
-    "prepush": "npm run test",
     "prepublishOnly": "npm run lint && npm t && pkg-ok",
     "build": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
     "tsc": "tsc --outDir ./lib/esnext",
@@ -30,36 +28,17 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime-corejs2": "^7.4.5",
-    "chimee-helper": "^0.2.11",
     "chimee-helper-log": "^0.2.3",
     "events": "^3.0.0",
     "flv.js": "^1.5.0",
-    "toxic-decorators": "^0.3.8",
     "toxic-predicate-functions": "^0.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
-    "@babel/plugin-proposal-class-properties": "^7.4.4",
-    "@babel/plugin-proposal-decorators": "^7.4.4",
-    "@babel/plugin-proposal-do-expressions": "^7.2.0",
-    "@babel/plugin-proposal-export-default-from": "^7.2.0",
-    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
-    "@babel/plugin-proposal-function-bind": "^7.2.0",
-    "@babel/plugin-proposal-function-sent": "^7.2.0",
-    "@babel/plugin-proposal-json-strings": "^7.2.0",
-    "@babel/plugin-proposal-logical-assignment-operators": "^7.2.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.4.4",
-    "@babel/plugin-proposal-numeric-separator": "^7.2.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.2.0",
-    "@babel/plugin-proposal-pipeline-operator": "^7.3.2",
-    "@babel/plugin-proposal-throw-expressions": "^7.2.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/plugin-syntax-import-meta": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@types/events": "^3.0.0",
     "babel-eslint": "^10.0.1",
-    "babel-preset-es2015-rollup": "^3.0.0",
     "chai": "^4.2.0",
     "chimee-kernel": "^1.4.0",
     "eslint": "^5.16.0",
@@ -87,7 +66,6 @@
     "rollup-plugin-uglify": "^6.0.2",
     "rollup-plugin-visualizer": "^1.1.1",
     "tslint": "^5.17.0",
-    "typescript": "^3.5.1",
-    "uglify-es": "^3.3.9"
+    "typescript": "^3.5.1"
   }
 }
