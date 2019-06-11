@@ -54,7 +54,6 @@ jspm_packages/
 # dotenv environment variables file
 .env
 
-package-lock.json
 .DS_Store
 lib/index.dev.js
 lib/index.dev.js.map
