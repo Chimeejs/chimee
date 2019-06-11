@@ -1,5 +1,6 @@
 class MediaSource {
   addEventListener() {}
+  removeEventListener() {}
 }
 global.MediaSource = MediaSource;
 class URL {

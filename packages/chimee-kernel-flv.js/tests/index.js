@@ -1,6 +1,6 @@
 import ChimeeKernelFlvJs from '../lib/esnext/index';
 import chai from 'chai';
-import { isFunction } from 'chimee-helper';
+import { isFunction } from 'lodash-es';
 const { expect } = chai;
 describe('chimee-kernel base requirement', () => {
   let videoElement;

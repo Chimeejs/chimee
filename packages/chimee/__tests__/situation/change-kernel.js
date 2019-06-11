@@ -1,5 +1,6 @@
+import '../../__mocks__/mediasource';
 import Chimee from 'index';
-import flv from 'chimee-kernel-flv';
+import flv from 'chimee-kernel-flv.js';
 
 function sleep(duration) {
   return new Promise(resolve => setTimeout(resolve, duration));

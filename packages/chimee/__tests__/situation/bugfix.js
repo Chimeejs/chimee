@@ -1,5 +1,6 @@
+import '../../__mocks__/mediasource';
 import Chimee from 'index';
-import chimeeKernelFlv from 'chimee-kernel-flv';
+import chimeeKernelFlv from 'chimee-kernel-flv.js';
 import { chimeeLog } from 'chimee-helper-log';
 describe('bugfix', () => {
   let originURLrevoke;

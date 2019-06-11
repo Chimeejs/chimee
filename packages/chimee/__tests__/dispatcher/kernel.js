@@ -1,7 +1,8 @@
+import '../../__mocks__/mediasource';
 import ChimeeKernel from 'dispatcher/kernel';
 import NativeVideoKernel from 'kernels/native';
 import { chimeeLog } from 'chimee-helper-log';
-import ChimeeKernelFlv from 'chimee-kernel-flv';
+import ChimeeKernelFlv from 'chimee-kernel-flv.js';
 
 describe('chimee kernel index.js', () => {
   let videoElement;
