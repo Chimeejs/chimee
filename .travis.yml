@@ -6,7 +6,8 @@ node_js:
     - '11'
     - '12'
 before_script:
-    - 'npm run lerna bootstrap'
+    - npm install -g lerna
+    - lerna bootstrap
 script:
     - 'npm test'
 after_success:
