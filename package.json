@@ -8,7 +8,7 @@
 		"b-common": "lerna exec --parallel -- npm run b-common"
 	},
 	"devDependencies": {
-		"husky": "^2.3.0",
+		"husky": "^2.4.0",
 		"lerna": "^3.14.1"
 	},
 	"husky": {
