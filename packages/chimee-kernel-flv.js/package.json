@@ -8,7 +8,7 @@
   "browser": "lib/index.browser.js",
   "scripts": {
     "prepublishOnly": "npm run lint && npm t && pkg-ok",
-    "build": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
+    "build": "npm run tsc && npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
     "tsc": "tsc --outDir ./lib/esnext",
     "tscw": "tsc --outDir ./lib/esnext -w",
     "b-common": "rollup -c build/rollup.config.common.js",
