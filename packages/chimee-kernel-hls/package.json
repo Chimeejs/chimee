@@ -19,7 +19,9 @@
     "lint": "tslint -c ./tslint.json 'src/**/*.ts' --fix && eslint . --fix",
     "test": "npm run tsc && karma start karma.conf.js",
     "unit": "karma start karma.conf.js --auto-watch",
-    "upload-coverage": "npm install coveralls && npm install nyc && ./node_modules/.bin/nyc report --temp-directory=coverage --reporter=text-lcov | ./node_modules/.bin/coveralls"
+    "upload-coverage": "npm install coveralls && npm install nyc && ./node_modules/.bin/nyc report --temp-directory=coverage --reporter=text-lcov | ./node_modules/.bin/coveralls",
+    "version": "npm run build && git add -A lib",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",

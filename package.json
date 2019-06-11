@@ -5,7 +5,7 @@
 		"upload-coverage": "lerna exec --parallel -- npm run upload-coverage",
 		"lerna": "lerna",
 		"ncu": "lerna exec --parallel -- ncu -u",
-		"b-common": "lerna exec --parallel -- npm run b-common"
+		"build": "lerna exec --parallel -- npm run build"
 	},
 	"devDependencies": {
 		"husky": "^2.4.0",

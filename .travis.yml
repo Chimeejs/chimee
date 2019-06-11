@@ -9,6 +9,7 @@ before_script:
     - npm install -g lerna
     - lerna clean
     - lerna bootstrap
+    - npm run build
 script:
     - 'npm test'
 after_success:
