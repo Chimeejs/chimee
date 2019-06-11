@@ -17,7 +17,7 @@
     "b-min": "rollup -c build/rollup.config.min.js",
     "start": "rollup -c build/rollup.config.dev.js -w",
     "lint": "tslint -c ./tslint.json 'src/**/*.ts' --fix && eslint . --fix",
-    "test": "karma start karma.conf.js",
+    "test": "",
     "unit": "karma start karma.conf.js --auto-watch"
   },
   "keywords": [
