@@ -9,7 +9,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm t && pkg-ok",
-    "test": "jest --coverage && npm run b-common && node env-check.js",
+    "test": "jest --coverage && node env-check.js",
     "tsc": "tsc --outDir ./lib/esnext",
     "tscw": "tsc --outDir ./lib/esnext -w",
     "unit": "jest --coverage --watch",
