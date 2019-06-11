@@ -66,6 +66,7 @@
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-uglify": "^6.0.2",
     "rollup-plugin-visualizer": "^1.1.1",
+    "toxic-utils": "^0.4.3",
     "tslint": "^5.17.0",
     "typescript": "^3.5.1"
   }
