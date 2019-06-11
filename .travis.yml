@@ -7,6 +7,7 @@ node_js:
     - '12'
 before_script:
     - npm install -g lerna
+    - lerna clean
     - lerna bootstrap
 script:
     - 'npm test'
