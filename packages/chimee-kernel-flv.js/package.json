@@ -1,6 +1,6 @@
 {
   "name": "chimee-kernel-flv.js",
-  "version": "0.2.0",
+  "version": "2.0.0-alpha.2",
   "description": "A flv decoder for chimee, using flv.js",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
