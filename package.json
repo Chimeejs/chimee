@@ -92,7 +92,7 @@
     "@types/events": "^3.0.0",
     "@types/jest": "^24.0.13",
     "@types/lodash": "^4.14.133",
-    "@types/node": "^12.0.4",
+    "@types/node": "^12.0.10",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
