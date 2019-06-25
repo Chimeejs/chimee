@@ -8,7 +8,9 @@ import ChimeePlugin, { IChimeePluginConstructor } from './dispatcher/plugin';
 import VideoWrapper from './dispatcher/video-wrapper';
 import { PluginOption, UserConfig } from './typings/base';
 
-export default class Chimee extends VideoWrapper {
+export const Plugin: IChimeePluginConstructor = ChimeePlugin;
+
+export class Chimee extends VideoWrapper {
   // In some situation, we may have custom events
   // For example, we may have a custom kernel event
   // We can register the event through this method
@@ -120,3 +122,5 @@ export default class Chimee extends VideoWrapper {
     return this.dispatcher.use(option);
   }
 }
+
+export default Chimee;

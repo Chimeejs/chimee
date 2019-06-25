@@ -7,6 +7,7 @@ config.plugins.unshift(replace({
   'process.env.NODE_ENV': '"development"',
 }));
 export default Object.assign(config, {
+  input: 'lib/esnext/umd.js',
   output: {
     format: 'umd',
     file: 'lib/index.browser.js',
