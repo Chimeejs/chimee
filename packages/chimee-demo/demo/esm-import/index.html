@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>esm import</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Chimee Player Demo">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <script type="module">
+	    import Chimee from "../../lib/index.esm.js";
+	    new Chimee({
+            src: 'http://cdn.toxicjohann.com/lostStar.mp4',
+            wrapper: '#wrapper',
+            autoplay: true,
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper"></div>
+</body>
+</html>

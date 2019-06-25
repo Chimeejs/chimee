@@ -1,0 +1,40 @@
+{
+  "name": "chimee-demo",
+  "version": "2.0.0-alpha.2",
+  "description": "demo package for chimee",
+  "keywords": [
+    "chimee"
+  ],
+  "author": "toxic-johann <353904974@qq.com>",
+  "homepage": "https://github.com/Chimeejs/chimee#readme",
+  "license": "ISC",
+  "main": "lib/chimee-demo.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chimeejs/chimee.git"
+  },
+  "scripts": {
+    "test": "",
+    "start": "node ./build/livereload",
+    "lint": ""
+  },
+  "bugs": {
+    "url": "https://github.com/Chimeejs/chimee/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chimee": "^2.0.0-alpha.2",
+    "chimee-kernel-flv.js": "^2.0.0-alpha.2",
+    "chimee-kernel-hls": "^2.0.0-alpha.2",
+    "chimee-plugin-gesture": "0.0.13",
+    "connect": "^3.7.0",
+    "serve-static": "^1.14.1"
+  }
+}
