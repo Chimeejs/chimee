@@ -64,6 +64,8 @@ export default class ChimeePlugin extends VideoWrapper {
   public destroyed: boolean = false;
   public ready: Promise<this>;
   public readySync: boolean;
+  public registerCustomEventTargetAndEventNameTranformer: Dispatcher['binder']['registerCustomEventTargetAndEventNameTranformer'];
+  public unregisterCustomEventTargetAndEventNameTranformer: Dispatcher['binder']['unregisterCustomEventTargetAndEventNameTranformer'];
   public VERSION: string = process.env.PLAYER_VERSION;
   private autoFocusValue: boolean = false;
   private levelValue: number = 0;
@@ -125,6 +127,8 @@ export default class ChimeePlugin extends VideoWrapper {
       }
       throw new TypeError('lack of dispatcher');
     }
+    this.registerCustomEventTargetAndEventNameTranformer = this.dispatcher.binder.registerCustomEventTargetAndEventNameTranformer;
+    this.unregisterCustomEventTargetAndEventNameTranformer = this.dispatcher.binder.unregisterCustomEventTargetAndEventNameTranformer;
     if (!isString(id)) {
       throw new TypeError('id of PluginConfig must be string');
     }

@@ -92,9 +92,6 @@ export default function(mode) {
   return {
     input: 'lib/esnext/index.js',
     external(id) {
-      if (/flv\/./.test(id)) {
-        console.warn(id, /node_modules\/(?!flv\.js)/.test(id));
-      }
       const isExternal = !/min|umd|iife/.test(mode) && externalRegExp.test(id);
       return mode === 'common' ? isExternal && id.indexOf('lodash-es') < 0 : isExternal;
     },

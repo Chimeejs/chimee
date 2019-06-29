@@ -22,13 +22,15 @@
   },
   "scripts": {
     "test": "",
-    "start": "node ./build/livereload",
+    "start": "kill-port 3000 && node ./build/livereload",
     "lint": ""
   },
   "bugs": {
     "url": "https://github.com/Chimeejs/chimee/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "kill-port": "^1.5.1"
+  },
   "devDependencies": {
     "chimee": "^2.0.0-alpha.2",
     "chimee-kernel-flv.js": "^2.0.0-alpha.2",

@@ -1,7 +1,8 @@
-import base from './rollup.config.base';
-export default base({
+import base, { banner } from './rollup.config.base';
+export default Object.assign(base('common'), {
   output: {
+    banner,
     format: 'cjs',
-    file: 'lib/index.js'
-  }
+    file: 'lib/index.js',
+  },
 });

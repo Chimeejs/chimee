@@ -1,4 +1,8 @@
-const Chimee = window.Chimee;
+const gestures = ['tap' , 'doubletap' , 'press' , 'swipe' , 'panend' , 'panstart' , 'panmove'];
+const events = gestures.reduce((events, name) => {
+  events[name] = (evt) => console.log(name, evt);
+  return events;
+}, {});
 const plugin = {
   // 插件名为 controller
   name: 'controller',
@@ -25,64 +29,26 @@ const plugin = {
     console.log(this.$plugins);
   },
   // 插件会在播放暂停操作发生后改变自己的文案及相应的行为
-  events: {
-    pause() {
-      this.changeButtonText('play');
-    },
-    play() {
-      this.changeButtonText('pause');
-    },
-    // c_contextmenu(evt) {
-    //   console.log(evt);
-    // },
-    // c_click(evt) {
-    //   console.warn(evt);
-    // },
-    // c_mouseenter(evt) {
-    //   console.warn(evt, 'c_mouseenter');
-    // },
-    // after_c_click(evt) {
-    //   console.log(evt, 'after_c');
-    // },
-    // click(evt) {
-    //   console.log(evt);
-    // },
-  },
+  events,
 };
 Chimee.install(plugin);
+Chimee.install(ChimeePluginGesture)
 const player = new Chimee({
-  // 播放地址
   src: 'http://cdn.toxicjohann.com/lostStar.mp4',
-  // src: 'http://cdn.toxicjohann.com/%E4%BA%8E%E6%98%AF.mp4',
-  // src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/TL1ce1196bce348070bfeef2116efbdea6.flv',
-  // src: 'http://yunxianchang.live.ujne7.com/vod-system-bj/79_3041054cc65-ae8c-4b63-8937-5ccb05f79720.m3u8',
-  // dom容器
   wrapper: '#wrapper',
-  plugin: [{
+  plugin: [ChimeePluginGesture.name, {
     name: 'controller',
     inner: false,
   }],
-  // preset: {
-  //   flv: window.chimeeKernelFlv,
-  //   hls: window.chimeeKernelHls
-  // },
-  // width: 60,
-  // height: 90,
   volume: 0.1,
-  // autoplay: true,
   controls: true,
-  // noDefaultContextMenu: true,
   noDefaultContextMenu: 'wrapper',
   muted: true,
 });
-// [ 'touchstart', 'touchmove', 'touchend' ].forEach(key => {
-//   player.$on(key, evt => console.log(evt, key));
-// });
 
-// player.$on('mouseenter', event => console.log(event), { target: 'container' });
-// player.$on('mouseenter', event => console.log(event, 'mouseenter'));
+gestures.forEach(key => {
+  player.$on(key, evt => console.log(evt, key));
+});
 
-player.$on('play', evt => console.warn(evt));
-player.$video.addEventListener('play', evt => console.error(evt));
 player.play();
 window.player = player;

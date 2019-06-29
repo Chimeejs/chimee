@@ -16,6 +16,7 @@ export default class Binder {
   private bindedEventInfo: { [key in BinderTarget]: Array<[string, (...args: any[]) => any]> };
   private bindedEventNames: { [key in BinderTarget]: string[] };
   private buses: { [key in BinderTarget ]: Bus };
+  private customEventTargetAndEventNameTranformers: Array<(name: string) => BinderTarget | undefined>;
   private dispatcher: Dispatcher;
   private kinds: BinderTarget [];
   private pendingEventsInfo: { [key in BinderTarget ]: Array<[string, string]> };
@@ -35,6 +36,7 @@ export default class Binder {
     this.bindedEventNames = ({} as { [key in BinderTarget ]: string[] });
     this.bindedEventInfo = ({} as { [key in BinderTarget ]: Array<[string, (...args: any[]) => any]> });
     this.pendingEventsInfo = ({} as { [key in BinderTarget ]: Array<[string, string]> });
+    this.customEventTargetAndEventNameTranformers = [];
     for (const kind of this.kinds) {
       this.bindedEventNames[kind] = [];
       this.bindedEventInfo[kind] = [];
@@ -192,6 +194,14 @@ export default class Binder {
   }
 
   public on(info: RawEventInfo) {
+    if (typeof info.target === 'undefined' && this.customEventTargetAndEventNameTranformers.length) {
+      for (const fn of this.customEventTargetAndEventNameTranformers) {
+        info.target = fn(info.name);
+        if (typeof info.target === 'string') {
+          break;
+        }
+      }
+    }
     const { id, name, fn, stage, target } = prettifyEventParameter(info);
     this.addEventListenerOnTarget({
       id,
@@ -204,6 +214,13 @@ export default class Binder {
   public once(info: RawEventInfo) {
     const { id, name, fn, stage, target } = prettifyEventParameter(info);
     return this.buses[target].once(id, name, fn, stage);
+  }
+
+  public registerCustomEventTargetAndEventNameTranformer = (fn: (name: string) => BinderTarget | undefined) => {
+    if (this.customEventTargetAndEventNameTranformers.indexOf(fn) > -1) {
+      return;
+    }
+    this.customEventTargetAndEventNameTranformers.push(fn);
   }
 
   @runnable(isEventEmitalbe)
@@ -238,6 +255,14 @@ export default class Binder {
     ...args: any[]) {
     const { target } = getEventInfo({ name, target: rawTarget, stage });
     return this.buses[target].triggerSync(name, ...args);
+  }
+
+  public unregisterCustomEventTargetAndEventNameTranformer = (fn: (name: string) => BinderTarget | undefined) => {
+    const index = this.customEventTargetAndEventNameTranformers.indexOf(fn);
+    if (index < 0) {
+      return;
+    }
+    this.customEventTargetAndEventNameTranformers.splice(index, 1);
   }
 
   // Some event needs us to transfer it from the real target

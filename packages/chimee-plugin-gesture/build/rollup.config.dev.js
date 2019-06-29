@@ -1,18 +1,22 @@
 import base, { banner } from './rollup.config.base';
-import { uglify } from 'rollup-plugin-uglify';
+import serve from 'rollup-plugin-serve';
+import livereload from 'rollup-plugin-livereload';
 import replace from 'rollup-plugin-replace';
-const { name } = require('../package.json');
 import { camelize } from 'toxic-utils';
-const config = base('min');
+const { name } = require('../package.json');
+const config = base('iife');
+config.plugins.push(
+  serve(),
+  livereload()
+);
 config.plugins.unshift(replace({
-  'process.env.NODE_ENV': '"production"',
+  'process.env.NODE_ENV': '"development"',
 }));
-config.plugins.push(uglify());
 export default Object.assign(config, {
   output: {
     banner,
     format: 'umd',
-    file: 'lib/index.min.js',
+    file: 'lib/index.dev.js',
     name: camelize(name, true),
   },
 });

@@ -51,6 +51,8 @@ export class Chimee extends VideoWrapper {
   public static readonly installKernel = Dispatcher.installKernel;
 
   public static readonly plugin: IChimeePluginConstructor = ChimeePlugin;
+  
+  public static readonly Plugin: IChimeePluginConstructor = ChimeePlugin;
 
   public static readonly uninstall = Dispatcher.uninstall;
 

@@ -11,6 +11,7 @@ server.listen(3000);
 const livereload = require('livereload');
 const lrserver = livereload.createServer();
 lrserver.watch([ path.resolve(__dirname, '../demo'), path.resolve(__dirname, '../node_modules') ]);
+console.log('live load server is running!!');
 
 function closeServerOnTermination(server) {
   const terminationSignals = [ 'SIGINT', 'SIGTERM' ];

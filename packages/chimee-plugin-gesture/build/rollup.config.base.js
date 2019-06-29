@@ -1,98 +1,118 @@
-const {version, name, author, license, dependencies} = require('../package.json');
-const banner = `
+const { version, name, author, license, dependencies } = require('../package.json');
+export const banner = `
 /**
  * ${name} v${version}
- * (c) 2017 ${author}
+ * (c) 2017-${(new Date().getFullYear())} ${author}
  * Released under ${license}
  */
 `;
 import babel from 'rollup-plugin-babel';
-import uglify from 'rollup-plugin-uglify';
-
-// 模块加载
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-
+import replace from 'rollup-plugin-replace';
+import visualizer from 'rollup-plugin-visualizer';
 const babelConfig = {
-  cjs: {
+  common: {
     presets: [
-      ['latest', {es2015: {modules: false}}],
-      'stage-0'
+      [ '@babel/preset-env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
     ],
-    plugins: [
-      'transform-decorators-legacy',
-      'transform-runtime'
-    ],
-    exclude: 'node_modules/**',
+    plugins: [ '@babel/plugin-transform-runtime' ],
+    exclude: /node_modules\/(?!flv\.js)/,
     runtimeHelpers: true,
-    babelrc: false
+    babelrc: false,
   },
   es: {
     presets: [
-      ['latest', {es2015: {modules: false}}],
-      'stage-0'
+      [ '@babel/preset-env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
     ],
-    plugins: [
-      'transform-decorators-legacy',
-      'transform-runtime'
-    ],
-    exclude: 'node_modules/**',
+    plugins: [[ '@babel/plugin-transform-runtime' ]],
+    exclude: /node_modules\/(?!flv\.js)/,
     runtimeHelpers: true,
-    babelrc: false
+    babelrc: false,
   },
   umd: {
-    presets: ['es2015-rollup', 'stage-0'],
-    plugins: [
-      'transform-decorators-legacy',
-      'transform-runtime'
+    presets: [
+      [ '@babel/preset-env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
     ],
-    exclude: 'node_modules/**',
+    plugins: [
+      [ '@babel/plugin-transform-runtime' ],
+    ],
+    exclude: /node_modules\/(?!flv\.js)/,
     runtimeHelpers: true,
-    babelrc: false
+    babelrc: false,
   },
   iife: {
-    presets: ['es2015-rollup', 'stage-0'],
-    plugins: ['transform-decorators-legacy'],
-    babelrc: false
+    presets: [
+      [ '@babel/preset-env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
+    ],
+    exclude: /node_modules\/(?!flv\.js)/,
+    plugins: [ ],
+    babelrc: false,
   },
   min: {
-    presets: ['es2015-rollup', 'stage-0'],
-    exclude: 'node_modules/**',
-    plugins: [],
-    babelrc: false
-  }
+    presets: [
+      [ '@babel/preset-env', {
+        modules: false,
+        targets: {
+          browsers: [ 'last 2 versions', 'not ie <= 8' ],
+        },
+      }],
+    ],
+    plugins: [
+      [ '@babel/plugin-transform-runtime', { useESModules: true }],
+    ],
+    exclude: /node_modules\/(?!flv\.js)/,
+    runtimeHelpers: true,
+    babelrc: false,
+  },
 };
-const externalRegExp = new RegExp(Object.keys(dependencies).join('|'));
-export default function (modeConf) {
-  const mode = modeConf.output.format;
-  const config = {
-    input: 'src/index.js',
-    banner,
-    external (id) {
-      return !/min|umd|iife/.test(mode) && externalRegExp.test(id);
+const externalRegExp = new RegExp(`/(${Object.keys(dependencies).join('|')})/`);
+export default function(mode) {
+  return {
+    input: 'lib/esnext/index.js',
+    external(id) {
+      const isExternal = id === 'chimee' || (!/min|umd|iife/.test(mode) && externalRegExp.test(id));
+      return mode === 'common' ? isExternal && id.indexOf('lodash-es') < 0 : isExternal;
     },
     plugins: [
       babel(babelConfig[mode]),
-      resolve(),
-      commonjs()
-    ]
+      commonjs(),
+      replace({
+        'process.env.VERSION': `'${version}'`,
+      }),
+      resolve({
+        preferBuiltins: !/min|umd|iife/.test(mode),
+      }),
+      visualizer({
+        filename: `bundle-size/${mode}.html`,
+      }),
+    ],
+    onwarn(warning, warn) {
+      if (warning.code === 'THIS_IS_UNDEFINED') return;
+      warn(warning); // this requires Rollup 0.46
+    },
+    watch: {
+      clearScreen: false,
+    },
   };
-  modeConf.uglify && config.plugins.push(uglify());
-  delete modeConf.uglify;
-  Object.assign(config, modeConf);
-  if(mode === 'umd') {
-    config.name = camelize(name);
-  }
-  return config;
-};
-
-/**
- * camelize any string, e.g hello world -> helloWorld
- * @param  {string} str only accept string!
- * @return {string}     camelize string
- */
-function camelize (str) {
-  return str.replace(/(^|[^a-zA-Z]+)([a-zA-Z])/g, function (match, spilt, initials, index) {
-    return (index === 0) ? initials.toLowerCase() : initials.toUpperCase();
-  });
 }
