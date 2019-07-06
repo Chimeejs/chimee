@@ -21,8 +21,8 @@
     "tsc": " tsc --outDir ./ts-out",
     "doc": "documentation readme  src/index.js --section=doc --github=true --project-version=true",
     "preversion": "npm test",
-    "version": "npm run build && git add -A lib --no-verify",
-    "postversion": "git push && git push --tags"
+    "version": "npm run build && git add -A lib",
+    "postversion": "git push && git push --tags --no-verify"
   },
   "repository": {
     "type": "git",
