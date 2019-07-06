@@ -3,6 +3,7 @@ const events = gestures.reduce((events, name) => {
   events[name] = (evt) => console.log(name, evt);
   return events;
 }, {});
+const { GestureHelper } = ChimeePluginGesture;
 const plugin = {
   // 插件名为 controller
   name: 'controller',
@@ -47,7 +48,15 @@ const player = new Chimee({
 });
 
 gestures.forEach(key => {
-  player.$on(key, evt => console.log(evt, key));
+  player.$on(key, evt => console.log(key, evt));
+});
+
+gestures.forEach(key => {
+  player.$on(key, evt => console.log('container', key, evt)), { target: 'container'};
+});
+
+gestures.forEach(key => {
+  player.$on(key, evt => console.log('wrapper', key, evt)), { target: 'wrapper'};
 });
 
 player.play();

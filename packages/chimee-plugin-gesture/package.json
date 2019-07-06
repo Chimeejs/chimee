@@ -6,11 +6,12 @@
   "module": "lib/index.mjs",
   "jsnext:main": "lib/index.mjs",
   "browser": "lib/index.browser.js",
+  "types": "lib/types/index.d.ts",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "build": "npm run tsc && npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
+    "build": "npm run tsc && npm run types && npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
     "b-common": "rollup -c build/rollup.config.common.js",
     "b-es": "rollup -c build/rollup.config.es.js",
     "b-umd": "rollup -c build/rollup.config.umd.js",
@@ -19,7 +20,11 @@
     "dev": "npm run tscw & npm run b-umd-w",
     "tsc": "tsc --outDir ./lib/esnext",
     "tscw": "tsc --outDir ./lib/esnext -w --preserveWatchOutput",
+    "types": "tsc --outDir ./lib/types --emitDeclarationOnly",
+    "typesw": "tsc --outDir ./lib/types --emitDeclarationOnly -w",
     "lint": "tslint -c ./tslint.json 'src/**/*.ts' --fix && eslint . --fix",
+    "version": "npm run build && git add -A lib",
+    "postversion": "git push && git push --tags --no-verify",
     "test": "jest --coverage"
   },
   "repository": {
@@ -53,12 +58,14 @@
     "rollup-plugin-node-resolve": "^5.1.0",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-uglify": "^6.0.2",
+    "rollup-plugin-visualizer": "^2.4.4",
+    "toxic-utils": "^0.4.3",
     "ts-jest": "^24.0.2",
     "tslint": "^5.18.0",
     "typescript": "^3.5.2"
   },
   "dependencies": {
-    "chimee-helper": "^0.2.11"
+    "toxic-predicate-functions": "^0.4.1"
   },
   "peerDependencies": {
     "chimee": "^2.0.0-alpha.2"

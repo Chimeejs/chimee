@@ -49,6 +49,7 @@ describe('plugin function test', () => {
 
   test('werid event', () => {
     const fn = jest.fn();
+    // @ts-ignore
     player.$on('abc', fn);
     videoDom.dispatchEvent(new TouchEvent('touchstart', {
       changedTouches: [

@@ -53,7 +53,7 @@ export class Chimee extends VideoWrapper {
   public static readonly installKernel = Dispatcher.installKernel;
 
   public static readonly plugin: IChimeePluginConstructor = ChimeePlugin;
-  
+
   public static readonly Plugin: IChimeePluginConstructor = ChimeePlugin;
 
   public static readonly uninstall = Dispatcher.uninstall;
@@ -88,7 +88,6 @@ export class Chimee extends VideoWrapper {
     this.ready = this.dispatcher.ready;
     this.readySync = this.dispatcher.readySync;
     this.wrapAsVideo(this.dispatcher.videoConfig);
-    this.$on('contextmenu', (e) => console.log(e));
   }
 
   public customThrowError(error: Error | string) {

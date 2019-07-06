@@ -9,8 +9,10 @@
 		"publish": "lerna publish from-package --dist-tag alpha"
 	},
 	"devDependencies": {
+		"@types/jest": "^24.0.13",
 		"husky": "^2.4.0",
-		"lerna": "^3.14.1"
+		"lerna": "^3.14.1",
+		"ts-jest": "^24.0.2"
 	},
 	"husky": {
 		"hooks": {
