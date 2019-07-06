@@ -25,6 +25,8 @@ describe('plugin function test', () => {
 
   test('video-dom tap', () => {
     const fn = jest.fn();
+    player.$on('tap', (e) => console.log(e));
+    player.$on('touchmove', (e) => console.log(e));
     player.$on('tap', fn);
     videoDom.dispatchEvent(new TouchEvent('touchstart', {
       changedTouches: [
