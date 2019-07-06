@@ -24,7 +24,7 @@
     "typesw": "tsc --outDir ./lib/types --emitDeclarationOnly -w",
     "lint": "tslint -c ./tslint.json 'src/**/*.ts' --fix && eslint . --fix",
     "version": "npm run build && git add -A lib",
-    "postversion": "git push && git push --tags --no-verify",
+    "postversion": "git push --no-verify && git push --tags --no-verify",
     "test": "jest --coverage"
   },
   "repository": {

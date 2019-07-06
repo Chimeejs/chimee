@@ -30,7 +30,7 @@
     "karma": "karma start karma.conf.js",
     "preversion": "npm test",
     "version": "npm run build && git add -A lib",
-    "postversion": "git push && git push --tags --no-verify",
+    "postversion": "git push --no-verify && git push --tags --no-verify",
     "upload-coverage": "npm install coveralls && npm install nyc && ./node_modules/.bin/nyc report --temp-directory=coverage --reporter=text-lcov | ./node_modules/.bin/coveralls"
   },
   "repository": {
