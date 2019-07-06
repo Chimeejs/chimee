@@ -100,5 +100,6 @@
     "rollup-plugin-visualizer": "^2.4.4",
     "tslint": "^5.18.0",
     "typescript": "^3.5.2"
-  }
+  },
+  "gitHead": "f32a0f03adbd4ae6a1a7d676f54c7a2ede627ca4"
 }

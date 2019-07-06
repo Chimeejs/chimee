@@ -89,5 +89,6 @@
     "transformIgnorePatterns": [
       "/node_modules/(?!lodash-es).+\\.js$"
     ]
-  }
+  },
+  "gitHead": "f32a0f03adbd4ae6a1a7d676f54c7a2ede627ca4"
 }

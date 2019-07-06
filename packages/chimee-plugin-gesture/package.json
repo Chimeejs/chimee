@@ -69,5 +69,6 @@
   },
   "peerDependencies": {
     "chimee": "^2.0.0-alpha.2"
-  }
+  },
+  "gitHead": "f32a0f03adbd4ae6a1a7d676f54c7a2ede627ca4"
 }
