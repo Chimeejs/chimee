@@ -92,6 +92,8 @@ export default class VideoWrapper {
     return this.dispatcher.dom.videoRequireGuardedAttributes;
   }
 
+  public addEventListener: this['$on'];
+
   public autoload: boolean;
 
   public autoplay: boolean;
@@ -116,6 +118,7 @@ export default class VideoWrapper {
 
   public disableRemotePlayback: boolean;
   public readonly duration: number;
+  public emit: this['$emit'];
   public readonly ended: boolean;
   public readonly error: MediaError;
   public readonly exitFullscreen: Dom['exitFullscreen'];
@@ -133,11 +136,13 @@ export default class VideoWrapper {
 
   public muted: boolean;
   public readonly networkState: number;
+  public off: this['$off'];
   public readonly offsetHeight: number;
   public readonly offsetLeft: number;
   public readonly offsetParent: Element;
   public readonly offsetTop: number;
   public readonly offsetWidth: number;
+  public on: this['$on'];
   public readonly pause: () => Promise<void>;
   public readonly paused: boolean;
   public readonly play: () => Promise<void>;
@@ -158,6 +163,7 @@ export default class VideoWrapper {
   };
 
   public readonly readyState: number;
+  public removeEventListener: this['$off'];
   public readonly requestFullscreen: Dom['requestFullscreen'];
   public readonly seek: (n: number) => Promise<void>;
   public readonly seekable: TimeRanges;
@@ -180,7 +186,7 @@ export default class VideoWrapper {
   public x5VideoPlayerType: 'h5' | undefined;
 
   public xWebkitAirplay: boolean;
-  private events: { [evetName: string]: Array<(...args: any[]) => any> } = {};
+  private events: Partial<{ [key in keyof ChimeeSpace.IChimeeEventRecord]: Array<Parameters<this['$on']>[1]> }>;
   private unwatchHandlers: Array<(...args: any[]) => any> = [];
 
   constructor({ dispatcher, id }: { dispatcher?: Dispatcher, id: string }) {
@@ -188,6 +194,8 @@ export default class VideoWrapper {
       this.dispatcher = dispatcher;
     }
     this.id = id;
+    // @ts-ignore
+    this.events = {};
   }
 
   /**
@@ -249,12 +257,12 @@ export default class VideoWrapper {
    * @param  {...args} args
    */
   @(alias('emit') as MethodDecorator)
-  public $emit(
-    key: string | {
-      name: string,
+  public $emit<P extends keyof ChimeeSpace.IChimeeEventRecord>(
+    key: P | {
+      name: P,
       target: BinderTarget,
     },
-    ...args: any) {
+    ...args: ChimeeSpace.ListenerType<ChimeeSpace.IChimeeEventRecord[P]>) {
     let target: BinderTarget | void;
     if (!isString(key) && isPlainObject(key) && isString(key.name) && isString(key.target)) {
       target = key.target;
@@ -280,12 +288,12 @@ export default class VideoWrapper {
    * @param  {...args} args
    */
   @(alias('emitSync') as MethodDecorator)
-  public $emitSync(
-    key: string | {
-      name: string,
+  public $emitSync<P extends keyof ChimeeSpace.IChimeeEventRecord>(
+    key: P | {
+      name: P,
       target: BinderTarget,
     },
-    ...args: any) {
+    ...args: ChimeeSpace.ListenerType<ChimeeSpace.IChimeeEventRecord[P]>) {
     let target: BinderTarget | void;
     if (!isString(key) && isPlainObject(key) && isString(key.name) && isString(key.target)) {
       target = key.target;
@@ -331,7 +339,7 @@ export default class VideoWrapper {
   @(alias('off') as MethodDecorator)
   @(alias('removeEventListener') as MethodDecorator)
   @before(eventBinderCheck)
-  public $off(key: string, fn: (...args: any[]) => any, options: EventOptions = {}) {
+  public $off<P extends keyof ChimeeSpace.IChimeeEventRecord>(key: P, fn: (...args: ChimeeSpace.ListenerType<ChimeeSpace.IChimeeEventRecord[P]>) => void | boolean | Promise<boolean>, options: EventOptions = {}) {
     const eventInfo = Object.assign({}, options, {
       fn,
       id: this.id,
@@ -349,7 +357,7 @@ export default class VideoWrapper {
   @(alias('on') as MethodDecorator)
   @(alias('addEventListener') as MethodDecorator)
   @before(eventBinderCheck)
-  public $on(key: string, fn: (...args: any[]) => any, options: EventOptions = {}) {
+  public $on<P extends keyof ChimeeSpace.IChimeeEventRecord>(key: P, fn: (...args: ChimeeSpace.ListenerType<ChimeeSpace.IChimeeEventRecord[P]>) => void | boolean | Promise<boolean>, options: EventOptions = {}) {
     const eventInfo = Object.assign({}, options, {
       fn,
       id: this.id,
@@ -366,7 +374,7 @@ export default class VideoWrapper {
    */
   @(alias('once') as MethodDecorator)
   @before(eventBinderCheck)
-  public $once(key: string, fn: (...args: any[]) => any, options: EventOptions = {}) {
+  public $once<P extends keyof ChimeeSpace.IChimeeEventRecord>(key: P, fn: (...args: ChimeeSpace.ListenerType<ChimeeSpace.IChimeeEventRecord[P]>) => void | boolean | Promise<boolean>, options: EventOptions = {}) {
     const self = this;
     const boundFn = function(...args: any[]) {
       bind(fn, this)(...args);
@@ -499,7 +507,7 @@ export default class VideoWrapper {
 
   protected destroyVideoWrapper() {
     this.unwatchHandlers.forEach((unwatcher) => unwatcher());
-    Object.keys(this.events)
+    (Object.keys(this.events) as Array<keyof ChimeeSpace.IChimeeEventRecord>)
       .forEach((key) => {
         if (!isArray(this.events[key])) { return; }
         this.events[key].forEach((fn) => this.$off(key, fn));
@@ -584,7 +592,7 @@ export default class VideoWrapper {
     });
   }
 
-  private addEvents(key: string, fn: (...args: any[]) => any) {
+  private addEvents(key: keyof ChimeeSpace.IChimeeEventRecord, fn: (...args: any[]) => any) {
     this.events[key] = this.events[key] || [];
     this.events[key].push(fn);
   }
@@ -626,7 +634,7 @@ export default class VideoWrapper {
     return { attr, method, value, target: realTarget };
   }
 
-  private removeEvents(key: string, fn: (...args: any[]) => any) {
+  private removeEvents(key: keyof ChimeeSpace.IChimeeEventRecord, fn: (...args: any[]) => any) {
     if (isEmpty(this.events[key])) { return; }
     const index = this.events[key].indexOf(fn);
     if (index < 0) { return; }

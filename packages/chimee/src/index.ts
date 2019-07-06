@@ -1,3 +1,5 @@
+// tslint:disable-next-line:no-reference
+/// <reference path="./typings/chimee-space.ts" />
 import { chimeeLog } from 'chimee-helper-log';
 import { isError, isFunction, isPlainObject, isString } from 'lodash-es';
 import { isElement } from 'toxic-predicate-functions';
@@ -86,6 +88,7 @@ export class Chimee extends VideoWrapper {
     this.ready = this.dispatcher.ready;
     this.readySync = this.dispatcher.readySync;
     this.wrapAsVideo(this.dispatcher.videoConfig);
+    this.$on('contextmenu', (e) => console.log(e));
   }
 
   public customThrowError(error: Error | string) {

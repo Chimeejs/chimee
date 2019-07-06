@@ -17,7 +17,7 @@ export type ComputedMap = {
   },
 };
 
-export type PluginEvents = { [evetName: string]: (...args: any[]) => any };
+export type PluginEvents = Partial<{ [key in keyof ChimeeSpace.IChimeeEventRecord]: Parameters<ChimeePlugin['$on']>[1] }>;
 
 export type PluginMethods = { [x: string]: (...args: any[]) => any };
 

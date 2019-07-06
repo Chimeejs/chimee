@@ -163,7 +163,7 @@ export default class ChimeePlugin extends VideoWrapper {
     }
     // hook plugin events on bus
     if (!isEmpty(events) && isPlainObject(events)) {
-      Object.keys(events)
+      (Object.keys(events) as Array<keyof ChimeeSpace.IChimeeEventRecord>)
         .forEach((key) => {
           if (!isFunction(events[key])) { throw new TypeError('plugins events hook must bind with Function'); }
           this.$on(key, events[key]);
