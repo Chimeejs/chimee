@@ -1,6 +1,6 @@
 {
   "name": "chimee-kernel-hls",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0-alpha.3",
   "description": "kernel-hls of chimee",
   "main": "lib/index.js",
   "module": "lib/index.mjs",
@@ -41,7 +41,7 @@
   "homepage": "https://github.com/Chimeejs/chimee-kernel-hls#readme",
   "dependencies": {
     "@babel/runtime": "^7.5.1",
-    "chimee-helper-log": "^2.0.0-alpha.2",
+    "chimee-helper-log": "^2.0.0-alpha.3",
     "events": "^3.0.0",
     "hls.js": "^0.12.4",
     "lodash": "^4.17.11",
