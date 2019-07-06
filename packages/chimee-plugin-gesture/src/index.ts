@@ -1,4 +1,3 @@
-// tslint:disable-next-line:no-reference
 /// <reference path="./chimee-space.ts" />
 import { Plugin } from 'chimee';
 import { GestureHelper, isSupportedEvents } from './gesture';
