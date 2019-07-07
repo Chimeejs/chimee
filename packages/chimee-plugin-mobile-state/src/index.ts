@@ -1,7 +1,7 @@
 /// <reference path="./chimee-space.ts" />
 /// <reference path="./svg.d.ts" />
 import { Plugin } from 'chimee';
-import { Gesture } from 'chimee-plugin-gesture';
+import Gesture from 'chimee-plugin-gesture';
 import { addClass, removeClass } from 'dom-helpers/class';
 import { contains, querySelectorAll } from 'dom-helpers/query';
 import loadingStr from './image/loading.svg';
@@ -28,6 +28,8 @@ export class MobileState extends Plugin {
     play: string;
   };
   private timeout: number;
+  public currentState: 'play' | 'error' | 'loading';
+  public isShown: boolean;
 
   constructor(config: PluginParameters[0], dispatcher: PluginParameters[1], option: PluginParameters[2] & {
     errorTips?: MobileState['errorTips'],
@@ -37,7 +39,7 @@ export class MobileState extends Plugin {
     super(Object.assign(config, {
       dependencies: [ Gesture.name ],
       el: template,
-      operable: true,
+      operable: false,
       penetrate: true,
     }), dispatcher, option);
     const {
@@ -91,47 +93,47 @@ export class MobileState extends Plugin {
       this.timeout = null;
     }
   }
-  private onDoubletap = (evt: TouchEvent) => {
+  private onDoubletap(evt: TouchEvent) {
     const playElements = querySelectorAll(this.$dom, 'chimee-state-play');
     if (playElements && playElements[0] && contains(playElements[0], evt.target as Node)) {
       this.play();
     }
   }
 
-  private onLoad = () => {
+  private onLoad() {
     this.showState('play', true);
   }
-  private onPanend = (evt: TouchEvent) => {
-    this.emit('state-panend', evt);
+  private onPanend(evt: TouchEvent) {
+    this.emitSync('state-panend', evt);
   }
-  private onPanmove = (evt: TouchEvent) => {
-    this.emit('state-panmove', evt);
+  private onPanmove(evt: TouchEvent) {
+    this.emitSync('state-panmove', evt);
   }
-  private onPanstart = (evt: TouchEvent) => {
-    this.emit('state-panstart', evt);
+  private onPanstart(evt: TouchEvent) {
+    this.emitSync('state-panstart', evt);
   }
-  private onPause = () => {
+  private onPause() {
     this.showState('play', true);
   }
-  private onPlay = ()  => {
+  private onPlay() {
     this.showState('play', false);
   }
-  private onPlaying = () => {
+  private onPlaying() {
     this.playing();
   }
-  private onSeeked = () => {
+  private onSeeked() {
     this.playing();
   }
-  private onSeeking = () => {
+  private onSeeking() {
     this.waiting();
   }
-  private onTap = (evt: TouchEvent) => {
-    this.emit('state-tap', evt);
+  private onTap(evt: TouchEvent) {
+    this.emitSync('state-tap', evt);
   }
-  private onTimeupdate = () => {
+  private onTimeupdate() {
     this.clearTimeout();
   }
-  private onWaiting = () => {
+  private onWaiting() {
     this.waiting();
   }
 
@@ -142,11 +144,13 @@ export class MobileState extends Plugin {
   }
 
   private showState(state: 'loading' | 'error' | 'play', show: boolean) {
+    this.currentState = state;
+    this.isShown = show;
     if (show) {
-      this.emit('state-change', state);
+      this.emitSync('state-change', state);
     }
     ['loading', 'error', 'play'].forEach((key) => {
-      if (key === state) {
+      if (key === state && show) {
         addClass(this.$dom, key);
       } else {
         removeClass(this.$dom, key);
