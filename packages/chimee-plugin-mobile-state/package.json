@@ -18,8 +18,10 @@
     "tscw": "tsc --outDir ./lib/esnext -w --preserveWatchOutput",
     "types": "tsc --outDir ./lib/types --emitDeclarationOnly",
     "typesw": "tsc --outDir ./lib/types --emitDeclarationOnly -w",
-    "lint": "",
-    "test": ""
+    "lint": "tslint -c ./tslint.json 'src/**/*.ts' --fix && eslint . --fix",
+    "version": "npm run build && git add -A lib",
+    "postversion": "git push --no-verify && git push --tags --no-verify",
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -55,6 +57,8 @@
     "cpx": "^1.5.0",
     "cssnano": "^3.10.0",
     "eslint": "^4.2.0",
+    "eslint-config-egg": "^7.4.1",
+    "eslint-plugin-jest": "^22.7.2",
     "postcss-base64": "^0.7.1",
     "rollup": "^0.51.8",
     "rollup-plugin-babel": "^4.0.1",

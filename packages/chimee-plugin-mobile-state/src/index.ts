@@ -21,6 +21,8 @@ const template = `
 `;
 
 export class MobileState extends Plugin {
+  public currentState: 'play' | 'error' | 'loading';
+  public isShown: boolean;
   private errorTips: string;
   private expectTime: number;
   private icon: {
@@ -28,8 +30,6 @@ export class MobileState extends Plugin {
     play: string;
   };
   private timeout: number;
-  public currentState: 'play' | 'error' | 'loading';
-  public isShown: boolean;
 
   constructor(config: PluginParameters[0], dispatcher: PluginParameters[1], option: PluginParameters[2] & {
     errorTips?: MobileState['errorTips'],

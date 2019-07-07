@@ -106,18 +106,18 @@ export default function(mode) {
     },
     plugins: [
       string({
-        include: '**/image/*.svg'
+        include: '**/image/*.svg',
       }),
       babel(babelConfig[mode]),
       postcss({
         plugins: [
           base64({
-            extensions: ['.svg', 'png'],
-            root: './src/'
+            extensions: [ '.svg', 'png' ],
+            root: './src/',
           }),
           cssnano(),
         ],
-        extensions: ['.css'],
+        extensions: [ '.css' ],
         extract: true,
       }),
       commonjs(),
