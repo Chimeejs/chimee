@@ -28,6 +28,7 @@ export type PluginConfig = {
   computed: ComputedMap,
   create: ChimeePlugin['create'],
   data: any,
+  dependencies: string[],
   destroy: ChimeePlugin['destroy'],
   el: string | Element | void;
   events: PluginEvents,
@@ -45,7 +46,7 @@ export type PluginConfig = {
 export type PluginOption = {
   alias?: string,
   level?: number,
-  name: string,
+  name?: string,
   operable?: boolean,
 };
 
@@ -81,6 +82,7 @@ export type UserConfig = {
   container?: VesselConfig,
   controls?: boolean,
   crossorigin?: string,
+  debug?: boolean;
   defaultMuted?: boolean,
   defaultPlaybackRate?: number,
   disableRemotePlayback?: boolean,

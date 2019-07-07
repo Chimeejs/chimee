@@ -9,7 +9,9 @@ import Dispatcher, { IFriendlyDispatcher } from '../dispatcher/index';
 import VideoWrapper from '../dispatcher/video-wrapper';
 import { ComputedMap, PluginConfig, PluginEvents, PluginMethods, PluginOption } from '../typings/base';
 
-export type IChimeePluginConstructor = new(...args: any[]) => ChimeePlugin;
+type GetConstructorArgs<T> = T extends new (...args: infer U) => any ? U : never;
+
+export type IChimeePluginConstructor = new (...args: GetConstructorArgs<typeof ChimeePlugin>) => ChimeePlugin;
 
 /**
  * <pre>
@@ -60,6 +62,7 @@ export default class ChimeePlugin extends VideoWrapper {
   public $inner: boolean;
   public $penetrate: boolean;
   public $videoConfig: VideoConfig;
+  public dependencies: PluginConfig['dependencies'];
 
   public destroyed: boolean = false;
   public ready: Promise<this>;
@@ -104,6 +107,7 @@ export default class ChimeePlugin extends VideoWrapper {
       operable = true,
       beforeCreate,
       create,
+      dependencies = [],
       init,
       inited,
       destroy,
@@ -224,6 +228,7 @@ export default class ChimeePlugin extends VideoWrapper {
     // now we can frozen inner, autoFocus and penetrate
     this.$inner = inner;
     this.$penetrate = penetrate;
+    this.dependencies = this.dependencies || dependencies;
     applyDecorators(this, {
       $inner: frozen,
       $penetrate: frozen,
@@ -309,6 +314,12 @@ export default class ChimeePlugin extends VideoWrapper {
         return Promise.reject(error);
       })
       : Promise.resolve(this);
+    this.dependencies.forEach((dependency) => {
+      if (this.dispatcher.hasUsed(dependency)) {
+        return;
+      }
+      this.dispatcher.vm.customThrowError(`${this.id} depends on ${dependency}, but it has not been used`);
+    });
     return this.readySync
       ? this
       : this.ready;

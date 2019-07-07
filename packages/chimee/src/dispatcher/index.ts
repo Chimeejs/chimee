@@ -133,6 +133,7 @@ export default class Dispatcher {
   public binder: Binder;
   public changeWatchable: boolean = true;
   public containerConfig: Vessel;
+  public debug: boolean;
   public destroyed: true;
   public dom: Dom;
   public kernel: ChimeeKernel;
@@ -184,6 +185,7 @@ export default class Dispatcher {
    */
   constructor(config: UserConfig, vm: Chimee) {
     if (!isPlainObject(config)) { throw new TypeError(`UserConfig must be an Object, but not "${config}" in ${typeof config}`); }
+    this.debug = config.debug;
     /**
      * dom Manager
      * @type {Dom}
@@ -296,7 +298,7 @@ export default class Dispatcher {
   @before(convertNameIntoId)
   public hasUsed(id: string) {
     const plugin = this.plugins[id];
-    return isPlainObject(plugin);
+    return !!plugin;
   }
 
   public load(
@@ -643,7 +645,7 @@ export default class Dispatcher {
       (pluginConfig as PluginConfig).id = id;
     }
     const plugin = isFunction(pluginConfig)
-      ? new (pluginConfig as IChimeePluginConstructor)({id}, this, pluginOption)
+      ? new (pluginConfig as IChimeePluginConstructor)(({id} as PluginConfig), this, pluginOption)
       : new ChimeePlugin((pluginConfig as PluginConfig), this, pluginOption);
     this.plugins[id] = plugin;
     Object.defineProperty(this.vm, id, {

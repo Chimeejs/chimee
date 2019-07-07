@@ -119,6 +119,7 @@ export default class VideoWrapper {
   public disableRemotePlayback: boolean;
   public readonly duration: number;
   public emit: this['$emit'];
+  public emitSync: this['$emitSync'];
   public readonly ended: boolean;
   public readonly error: MediaError;
   public readonly exitFullscreen: Dom['exitFullscreen'];
@@ -567,7 +568,7 @@ export default class VideoWrapper {
               id,
               name: '_' + key,
             });
-            this.dispatcher.binder[/^(seek)$/.test(key) ? 'emitSync' : 'emit']({
+            this.dispatcher.binder['seek' === key ? 'emitSync' : 'emit']({
               id,
               name: key,
               target: 'video',

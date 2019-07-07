@@ -10,7 +10,7 @@ import ChimeePlugin, { IChimeePluginConstructor } from './dispatcher/plugin';
 import VideoWrapper from './dispatcher/video-wrapper';
 import { PluginOption, UserConfig } from './typings/base';
 
-export const Plugin: IChimeePluginConstructor = ChimeePlugin;
+export const Plugin = ChimeePlugin;
 
 export class Chimee extends VideoWrapper {
   // In some situation, we may have custom events

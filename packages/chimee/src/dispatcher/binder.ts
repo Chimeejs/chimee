@@ -116,6 +116,10 @@ export default class Binder {
     },
     ...args: any[]) {
     const { target } = getEventInfo({ name, target: rawTarget, stage });
+    if (process.env.NODE_ENV !== 'production' && this.dispatcher.debug) {
+      // tslint:disable-next-line:no-console
+      console.log(`[Event] emit event ${name} on ${target}`);
+    }
     return this.buses[target].emit(name, ...args);
   }
 
@@ -133,6 +137,10 @@ export default class Binder {
     },
     ...args: any[]) {
     const { target } = getEventInfo({ name, target: rawTarget, stage });
+    if (process.env.NODE_ENV !== 'production' && this.dispatcher.debug) {
+      // tslint:disable-next-line:no-console
+      console.log(`[Event] emit sync event ${name} on ${target}`);
+    }
     return this.buses[target].emitSync(name, ...args);
   }
 
@@ -237,6 +245,10 @@ export default class Binder {
     },
     ...args: any[]) {
     const { target } = getEventInfo({ name, target: rawTarget, stage });
+    if (process.env.NODE_ENV !== 'production' && this.dispatcher.debug) {
+      // tslint:disable-next-line:no-console
+      console.log(`[Event] trigger event ${name} on ${target}`);
+    }
     return this.buses[target].trigger(name, ...args);
   }
 
@@ -254,6 +266,10 @@ export default class Binder {
     },
     ...args: any[]) {
     const { target } = getEventInfo({ name, target: rawTarget, stage });
+    if (process.env.NODE_ENV !== 'production' && this.dispatcher.debug) {
+      // tslint:disable-next-line:no-console
+      console.log(`[Event] trigger sync event ${name} on ${target}`);
+    }
     return this.buses[target].triggerSync(name, ...args);
   }
 
