@@ -36,6 +36,7 @@
     "chimee-kernel-flv.js": "^2.0.0-alpha.3",
     "chimee-kernel-hls": "^2.0.0-alpha.3",
     "chimee-plugin-gesture": "^2.0.0-alpha.3",
+    "chimee-plugin-mobile-state": "^0.0.21",
     "connect": "^3.7.0",
     "livereload": "^0.8.0",
     "serve-static": "^1.14.1"
