@@ -17,13 +17,15 @@ import Chimee from '../index';
 import { IVideoKernelConstructor } from '../kernels/base';
 import { ChimeePictureInPictureOnWindow } from '../plugin/picture-in-picture';
 import PictureInPicture from '../plugin/picture-in-picture';
-import { PluginConfig, PluginOption, SingleKernelConfig, SupportedKernelType, UserConfig, UserKernelsConfig, UserKernelsConstructorMap } from '../typings/base';
+import { GetConstructorArgs, PluginConfig, PluginOption, SingleKernelConfig, SupportedKernelType, UserConfig, UserKernelsConfig, UserKernelsConstructorMap } from '../typings/base';
 declare global {
   // tslint:disable-next-line:interface-name
   interface Window {
     __chimee_picture_in_picture: ChimeePictureInPictureOnWindow;
   }
 }
+
+type GetParamtersForUseFn<T> = T extends ChimeePlugin ? PluginOption & T['optionType'] : PluginOption & { [index: string ]: any };
 
 const pluginConfigSet: {
   [id: string]: PluginConfig | IChimeePluginConstructor,
@@ -289,6 +291,11 @@ export default class Dispatcher {
       }
     }
     return this.plugins.pictureInPicture && this.plugins.pictureInPicture.exitPictureInPicture();
+  }
+
+  @before(convertNameIntoId)
+  public getPluginByName(id: string): ChimeePlugin | void {
+    return this.plugins[id];
   }
 
   public getPluginConfig(id: string): PluginConfig | void | IChimeePluginConstructor {
@@ -625,7 +632,10 @@ export default class Dispatcher {
    * @param  {Object|string} option you can just set a plugin name or plugin config
    * @return {Promise}
    */
-  public use(option: string | PluginOption): Promise<ChimeePlugin> {
+  public use<T>(rawOption: string | GetParamtersForUseFn<T>): Promise<ChimeePlugin> {
+    // narrow down raw option type
+    // the complicate just want to provide tips for user.
+    let option: PluginOption | string = rawOption;
     if (isString(option)) { option = { name: option, alias: undefined }; }
     if (!isPlainObject(option) || (isPlainObject(option) && !isString(option.name))) {
       throw new TypeError('pluginConfig do not match requirement');

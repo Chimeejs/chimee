@@ -2,7 +2,7 @@ import { chimeeLog } from 'chimee-helper-log';
 import { style } from 'dom-helpers';
 import { addClass } from 'dom-helpers/class';
 import { off as removeEvent, on as addEvent } from 'dom-helpers/events';
-import { querySelectorAll } from 'dom-helpers/query';
+import { querySelectorAll, scrollTop } from 'dom-helpers/query';
 import { esFullscreen } from 'es-fullscreen';
 import { isArray, isFunction, isPlainObject, isString } from 'lodash-es';
 import { autobind, waituntil } from 'toxic-decorators';
@@ -338,12 +338,10 @@ export default class Dom {
 
   @(autobind as MethodDecorator)
   private focusToVideo() {
-    const x = window.scrollX;
-    const y = window.scrollY;
     if (isFunction(this.videoElement.focus)) {
       this.videoElement.focus();
     }
-    window.scrollTo(x, y);
+    scrollTop(this.videoElement);
   }
 
   @(autobind as MethodDecorator)

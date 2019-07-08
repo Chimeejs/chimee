@@ -8,7 +8,7 @@ import { kernelEvents } from './const/event';
 import Dispatcher from './dispatcher/index';
 import ChimeePlugin, { IChimeePluginConstructor } from './dispatcher/plugin';
 import VideoWrapper from './dispatcher/video-wrapper';
-import { PluginOption, UserConfig } from './typings/base';
+import { UserConfig } from './typings/base';
 
 export const Plugin = ChimeePlugin;
 
@@ -37,6 +37,8 @@ export class Chimee extends VideoWrapper {
   public destroyed: boolean = false;
   public ready: Promise<void>;
   public readySync: boolean;
+  public unuse: Dispatcher['unuse'];
+  public use: Dispatcher['use'];
 
   public readonly version: string = process.env.PLAYER_VERSION;
 
@@ -88,6 +90,8 @@ export class Chimee extends VideoWrapper {
     this.ready = this.dispatcher.ready;
     this.readySync = this.dispatcher.readySync;
     this.wrapAsVideo(this.dispatcher.videoConfig);
+    this.use = this.dispatcher.use.bind(this.dispatcher);
+    this.unuse = this.dispatcher.unuse.bind(this.dispatcher);
   }
 
   public customThrowError(error: Error | string) {
@@ -116,14 +120,6 @@ export class Chimee extends VideoWrapper {
       },
     });
     this.destroyed = true;
-  }
-
-  public unuse(name: string) {
-    return this.dispatcher.unuse(name);
-  }
-
-  public use(option: string | PluginOption) {
-    return this.dispatcher.use(option);
   }
 }
 

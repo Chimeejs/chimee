@@ -7,9 +7,7 @@ import VideoConfig from '../config/video';
 import { IFriendlyDom } from '../dispatcher/dom';
 import Dispatcher, { IFriendlyDispatcher } from '../dispatcher/index';
 import VideoWrapper from '../dispatcher/video-wrapper';
-import { ComputedMap, PluginConfig, PluginEvents, PluginMethods, PluginOption } from '../typings/base';
-
-type GetConstructorArgs<T> = T extends new (...args: infer U) => any ? U : never;
+import { ComputedMap, GetConstructorArgs, PluginConfig, PluginEvents, PluginMethods, PluginOption } from '../typings/base';
 
 export type IChimeePluginConstructor = new (...args: GetConstructorArgs<typeof ChimeePlugin>) => ChimeePlugin;
 
@@ -20,7 +18,7 @@ export type IChimeePluginConstructor = new (...args: GetConstructorArgs<typeof C
  * Developer can do most of things base on this plugin
  * </pre>
  */
-export default class ChimeePlugin extends VideoWrapper {
+export default class ChimeePlugin<CurrentChimeePluginOption extends PluginOption = PluginOption> extends VideoWrapper {
 
   get $autoFocus(): boolean {
     return this.autoFocusValue;
@@ -65,6 +63,7 @@ export default class ChimeePlugin extends VideoWrapper {
   public dependencies: PluginConfig['dependencies'];
 
   public destroyed: boolean = false;
+  public optionType: CurrentChimeePluginOption;
   public ready: Promise<this>;
   public readySync: boolean;
   public registerCustomEventTargetAndEventNameTranformer: Dispatcher['binder']['registerCustomEventTargetAndEventNameTranformer'];
@@ -122,7 +121,7 @@ export default class ChimeePlugin extends VideoWrapper {
       className,
     }: PluginConfig,
     dispatcher: Dispatcher,
-    option: PluginOption = { name }) {
+    option: CurrentChimeePluginOption) {
     super({ dispatcher, id });
     if (!dispatcher) {
       /* istanbul ignore else  */

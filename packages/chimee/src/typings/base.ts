@@ -1,6 +1,8 @@
 import ChimeePlugin from '../dispatcher/plugin';
 import { IVideoKernelConstructor } from '../kernels/base';
 
+export type GetConstructorArgs<T> = T extends new (...args: infer U) => any ? U : never;
+
 export type EventStage = 'before' | 'main' | 'after' | '_';
 
 export type BinderTarget = 'kernel' | 'container' | 'wrapper' | 'video' | 'video-dom' | 'plugin' | 'esFullscreen';
