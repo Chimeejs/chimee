@@ -10,16 +10,18 @@
             "node_modules/@types",
         ],
         "types": [
-            "node"
+            "node",
+            "jest"
         ],
         "lib": [
-            "dom",
-            "esnext",
+            "dom"
         ],
         "declaration": true
     },
     "include": [
-        "src/*.ts",
+        "src/index.ts",
+        "src/umd.ts",
+        "__tests__/**/*.ts",
     ],
     "exclude": [
         "node_modules",

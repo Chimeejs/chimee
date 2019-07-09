@@ -20,24 +20,31 @@ const template = `
 </chimee-state>
 `;
 
-export class MobileState extends Plugin {
-  public currentState: 'play' | 'error' | 'loading';
+export class MobileState extends Plugin<PluginParameters[2] & {
+  customGesture?: boolean;
+  errorTips?: MobileState['errorTips'],
+  expectTime?: MobileState['expectTime'],
+  icon?: Partial<MobileState['icon']>,
+}> {
+  public currentState: 'play' | 'error' | 'loading' | '';
   public isShown: boolean;
+  public name: 'ChimeePluginMobileState';
   private errorTips: string;
   private expectTime: number;
   private icon: {
     loading: string;
     play: string;
   };
-  private timeout: number;
+  private timeout: any;
 
   constructor(config: PluginParameters[0], dispatcher: PluginParameters[1], option: PluginParameters[2] & {
+    customGesture?: boolean;
     errorTips?: MobileState['errorTips'],
     expectTime?: MobileState['expectTime'],
     icon?: Partial<MobileState['icon']>,
-  } = {}) {
+  }) {
     super(Object.assign(config, {
-      dependencies: [ Gesture.name ],
+      dependencies: option.customGesture ? [] : [ Gesture.name ],
       el: template,
       operable: false,
       penetrate: true,
@@ -46,17 +53,19 @@ export class MobileState extends Plugin {
       expectTime = 3e4,
       errorTips = '加载失败，请刷新重试',
       icon = {},
-    } = option || {};
+    } = option;
     this.errorTips = errorTips;
     this.expectTime = expectTime;
     this.icon = Object.assign({
       loading: loadingStr,
       play: playStr,
     }, icon);
+    this.currentState = '';
+    this.isShown = false;
   }
 
   public create() {
-    this.on('doubletap', this.onDoubletap);
+    // this.on('doubletap', this.onDoubletap);
     this.on('load', this.onLoad);
     this.on('panend', this.onPanend);
     this.on('panmove', this.onPanmove);
@@ -81,6 +90,7 @@ export class MobileState extends Plugin {
   private addInnerHtml() {
     ['play', 'loading', 'error'].forEach((key: 'play' | 'loading' | 'error') => {
       const containers = querySelectorAll(this.$dom, `chimee-state-${key}`);
+      /* istanbul ignore else  */
       if (containers.length && containers[0]) {
         containers[0].innerHTML = key === 'error' ? this.errorTips : this.icon[key];
       }
@@ -93,12 +103,12 @@ export class MobileState extends Plugin {
       this.timeout = null;
     }
   }
-  private onDoubletap(evt: TouchEvent) {
-    const playElements = querySelectorAll(this.$dom, 'chimee-state-play');
-    if (playElements && playElements[0] && contains(playElements[0], evt.target as Node)) {
-      this.play();
-    }
-  }
+  // private onDoubletap(evt: TouchEvent) {
+  //   const playElements = querySelectorAll(this.$dom, 'chimee-state-play');
+  //   if (playElements && playElements[0] && contains(playElements[0], evt.target as Node)) {
+  //     this.play();
+  //   }
+  // }
 
   private onLoad() {
     this.showState('play', true);
@@ -116,7 +126,7 @@ export class MobileState extends Plugin {
     this.showState('play', true);
   }
   private onPlay() {
-    this.showState('play', false);
+    this.showState('', false);
   }
   private onPlaying() {
     this.playing();
@@ -139,11 +149,10 @@ export class MobileState extends Plugin {
 
   private playing() {
     this.clearTimeout();
-    this.showState('loading', false);
-    this.showState('error', false);
+    this.showState('', false);
   }
 
-  private showState(state: 'loading' | 'error' | 'play', show: boolean) {
+  private showState(state: 'loading' | 'error' | 'play' | '', show: boolean) {
     this.currentState = state;
     this.isShown = show;
     if (show) {
@@ -167,3 +176,5 @@ export class MobileState extends Plugin {
     }
   }
 }
+
+export default MobileState;

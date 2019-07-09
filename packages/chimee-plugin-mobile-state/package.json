@@ -51,6 +51,8 @@
     "@babel/core": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
+    "@types/jest": "^24.0.15",
+    "@types/node": "^12.0.12",
     "babel-eslint": "^9.0.0",
     "babel-preset-es2015-rollup": "^3.0.0",
     "chimee": "^2.0.0-alpha.3",
@@ -59,6 +61,9 @@
     "eslint": "^4.2.0",
     "eslint-config-egg": "^7.4.1",
     "eslint-plugin-jest": "^22.7.2",
+    "jest": "^24.8.0",
+    "jest-css-modules": "^2.1.0",
+    "jest-svg-transformer": "^1.0.0",
     "postcss-base64": "^0.7.1",
     "rollup": "^0.51.8",
     "rollup-plugin-babel": "^4.0.1",
@@ -72,6 +77,7 @@
     "stylelint": "^8.3.0",
     "stylelint-config-standard": "^18.0.0",
     "toxic-utils": "^0.4.3",
+    "ts-jest": "^24.0.2",
     "tslint": "^5.18.0",
     "typescript": "^3.5.2"
   }
