@@ -87,7 +87,7 @@ export class Chimee<PluginTypes = never> extends VideoWrapper {
     } else {
       throw new Error('You must pass in an Object containing wrapper or string or element to new a Chimee');
     }
-    this.dispatcher = new Dispatcher<PluginTypes>(config, this);
+    this.dispatcher = new Dispatcher(config, this);
     this.ready = this.dispatcher.ready;
     this.readySync = this.dispatcher.readySync;
     this.wrapAsVideo(this.dispatcher.videoConfig);

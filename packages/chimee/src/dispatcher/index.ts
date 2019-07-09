@@ -17,7 +17,7 @@ import Chimee from '../index';
 import { IVideoKernelConstructor } from '../kernels/base';
 import { ChimeePictureInPictureOnWindow } from '../plugin/picture-in-picture';
 import PictureInPicture from '../plugin/picture-in-picture';
-import { GetConstructorArgs, PluginConfig, PluginOption, SingleKernelConfig, SupportedKernelType, UserConfig, UserKernelsConfig, UserKernelsConstructorMap } from '../typings/base';
+import { PluginConfig, PluginOption, SingleKernelConfig, SupportedKernelType, UserConfig, UserKernelsConfig, UserKernelsConstructorMap } from '../typings/base';
 declare global {
   // tslint:disable-next-line:interface-name
   interface Window {
