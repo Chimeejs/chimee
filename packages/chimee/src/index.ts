@@ -9,10 +9,11 @@ import Dispatcher from './dispatcher/index';
 import ChimeePlugin, { IChimeePluginConstructor } from './dispatcher/plugin';
 import VideoWrapper from './dispatcher/video-wrapper';
 import { UserConfig } from './typings/base';
+export { getLegalPluginOptionByChimeePlugin } from './dispatcher/index';
 
 export const Plugin = ChimeePlugin;
 
-export class Chimee extends VideoWrapper {
+export class Chimee<PluginTypes = never> extends VideoWrapper {
   // In some situation, we may have custom events
   // For example, we may have a custom kernel event
   // We can register the event through this method
@@ -62,7 +63,7 @@ export class Chimee extends VideoWrapper {
 
   public static readonly uninstallKernel = Dispatcher.uninstallKernel;
 
-  constructor(rawConfig: UserConfig | string | Element) {
+  constructor(rawConfig: UserConfig<PluginTypes> | string | Element) {
     super({ id: '_vm' });
     let config: UserConfig;
     /* istanbul ignore if */
@@ -86,7 +87,7 @@ export class Chimee extends VideoWrapper {
     } else {
       throw new Error('You must pass in an Object containing wrapper or string or element to new a Chimee');
     }
-    this.dispatcher = new Dispatcher(config, this);
+    this.dispatcher = new Dispatcher<PluginTypes>(config, this);
     this.ready = this.dispatcher.ready;
     this.readySync = this.dispatcher.readySync;
     this.wrapAsVideo(this.dispatcher.videoConfig);

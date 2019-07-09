@@ -1,3 +1,4 @@
+import { getLegalPluginOptionByChimeePlugin } from '../dispatcher/index';
 import ChimeePlugin from '../dispatcher/plugin';
 import { IVideoKernelConstructor } from '../kernels/base';
 
@@ -77,7 +78,9 @@ export type UserKernelsConfig = SupportedKernelType[] | UserKernelsConstructorMa
   mp4?: SingleKernelConfig,
 } | SingleKernelConfig[];
 
-export type UserConfig = {
+type mapPluginsToPluginOptions<U> = U extends ChimeePlugin ? getLegalPluginOptionByChimeePlugin<U> : never;
+
+export type UserConfig<PluginTypes = never> = {
   autoload?: boolean,
   autoplay?: boolean,
   box?: string,
@@ -96,8 +99,8 @@ export type UserConfig = {
   noDefaultContextMenu?: string | boolean,
   playbackRate?: number,
   playsinline?: boolean,
-  plugin?: Array<string | PluginOption>,
-  plugins?: Array<string | PluginOption>,
+  plugin?: Array<string | PluginOption | mapPluginsToPluginOptions<PluginTypes>>,
+  plugins?: Array<string | PluginOption | mapPluginsToPluginOptions<PluginTypes>>,
   poster?: string,
   preload?: string,
   preset?: {

@@ -25,7 +25,7 @@ declare global {
   }
 }
 
-type GetParamtersForUseFn<T> = T extends ChimeePlugin ? PluginOption & T['optionType'] : PluginOption & { [index: string ]: any };
+export type getLegalPluginOptionByChimeePlugin<T> = T extends ChimeePlugin ? PluginOption & T['optionType'] : PluginOption & { [index: string ]: any };
 
 const pluginConfigSet: {
   [id: string]: PluginConfig | IChimeePluginConstructor,
@@ -632,7 +632,7 @@ export default class Dispatcher {
    * @param  {Object|string} option you can just set a plugin name or plugin config
    * @return {Promise}
    */
-  public use<T>(rawOption: string | GetParamtersForUseFn<T>): Promise<ChimeePlugin> {
+  public use<T>(rawOption: string | getLegalPluginOptionByChimeePlugin<T>): Promise<ChimeePlugin> {
     // narrow down raw option type
     // the complicate just want to provide tips for user.
     let option: PluginOption | string = rawOption;
