@@ -1,6 +1,6 @@
 {
   "name": "chimee-helper-log",
-  "version": "2.0.0-alpha.3",
+  "version": "2.0.0-alpha.4",
   "description": "logger of chimee",
   "main": "lib/index.js",
   "module": "lib/index.mjs",

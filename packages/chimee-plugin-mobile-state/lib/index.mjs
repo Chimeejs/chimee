@@ -1,6 +1,6 @@
 
 /**
- * chimee-plugin-mobile-state v0.0.21
+ * chimee-plugin-mobile-state v2.0.0-alpha.4
  * (c) 2017-2019 yandeqiang
  * Released under ISC
  */

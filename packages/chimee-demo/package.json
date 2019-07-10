@@ -1,6 +1,6 @@
 {
   "name": "chimee-demo",
-  "version": "2.0.0-alpha.3",
+  "version": "2.0.0-alpha.4",
   "description": "demo package for chimee",
   "keywords": [
     "chimee"
@@ -32,11 +32,11 @@
     "kill-port": "^1.5.1"
   },
   "devDependencies": {
-    "chimee": "^2.0.0-alpha.3",
-    "chimee-kernel-flv.js": "^2.0.0-alpha.3",
-    "chimee-kernel-hls": "^2.0.0-alpha.3",
-    "chimee-plugin-gesture": "^2.0.0-alpha.3",
-    "chimee-plugin-mobile-state": "^0.0.21",
+    "chimee": "^2.0.0-alpha.4",
+    "chimee-kernel-flv.js": "^2.0.0-alpha.4",
+    "chimee-kernel-hls": "^2.0.0-alpha.4",
+    "chimee-plugin-gesture": "^2.0.0-alpha.4",
+    "chimee-plugin-mobile-state": "^2.0.0-alpha.4",
     "connect": "^3.7.0",
     "livereload": "^0.8.0",
     "serve-static": "^1.14.1"
