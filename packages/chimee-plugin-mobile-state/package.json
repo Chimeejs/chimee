@@ -14,7 +14,7 @@
     "b-umd-w": "rollup -c build/rollup.config.umd.js -w",
     "b-min": "rollup -c build/rollup.config.min.js",
     "dev": "npm run tscw & npm run b-umd-w",
-    "tsc": "tsc --outDir ./lib/esnext",
+    "tsc": "tsc --outDir ./lib/esnext && cpx \"src/*.css\" \"lib/esnext\" && cpx \"src/image/*\" \"lib/esnext/image\"",
     "tscw": "tsc --outDir ./lib/esnext -w --preserveWatchOutput",
     "types": "tsc --outDir ./lib/types --emitDeclarationOnly",
     "typesw": "tsc --outDir ./lib/types --emitDeclarationOnly -w",
