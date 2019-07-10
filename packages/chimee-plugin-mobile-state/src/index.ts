@@ -3,7 +3,7 @@
 import { Plugin } from 'chimee';
 import Gesture from 'chimee-plugin-gesture';
 import { addClass, removeClass } from 'dom-helpers/class';
-import { contains, querySelectorAll } from 'dom-helpers/query';
+import { querySelectorAll } from 'dom-helpers/query';
 import loadingStr from './image/loading.svg';
 import playStr from './image/play.svg';
 import './state.css';

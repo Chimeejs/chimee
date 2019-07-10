@@ -14,7 +14,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 import visualizer from 'rollup-plugin-visualizer';
 import postcss from 'rollup-plugin-postcss';
-import string from 'rollup-plugin-string';
+import { string } from 'rollup-plugin-string';
 // PostCSS plugins
 import cssnano from 'cssnano';
 import base64 from 'postcss-base64';
@@ -96,7 +96,7 @@ const babelConfig = {
     babelrc: false,
   },
 };
-const externalRegExp = new RegExp(`/(${Object.keys(dependencies).join('|')})/`);
+const externalRegExp = new RegExp(`/?(${Object.keys(dependencies).join('|')})/`);
 export default function(mode) {
   return {
     input: 'lib/esnext/index.js',
@@ -124,9 +124,7 @@ export default function(mode) {
       replace({
         'process.env.VERSION': `'${version}'`,
       }),
-      resolve({
-        preferBuiltins: !/min|umd|iife/.test(mode),
-      }),
+      resolve(),
       visualizer({
         filename: `bundle-size/${mode}.html`,
       }),

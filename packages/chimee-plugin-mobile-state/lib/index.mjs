@@ -1,175 +1,203 @@
-function __$styleInject(css, ref) {
-  if ( ref === void 0 ) ref = {};
-  var insertAt = ref.insertAt;
 
-  if (!css || typeof document === 'undefined') { return; }
+/**
+ * chimee-plugin-mobile-state v0.0.21
+ * (c) 2017-2019 yandeqiang
+ * Released under ISC
+ */
 
-  var head = document.head || document.getElementsByTagName('head')[0];
-  var style = document.createElement('style');
-  style.type = 'text/css';
-
-  if (insertAt === 'top') {
-    if (head.firstChild) {
-      head.insertBefore(style, head.firstChild);
-    } else {
-      head.appendChild(style);
-    }
-  } else {
-    head.appendChild(style);
-  }
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    style.appendChild(document.createTextNode(css));
-  }
-}
-
-import { $, deepAssign, isObject } from 'chimee-helper';
-import gestureFactory from 'chimee-plugin-gesture';
-
-__$styleInject(":root{--barColor:#de698c;--trackColor:#4c4c4c}video::-webkit-media-controls-start-playback-button{display:none}chimee-state svg{width:100%;height:100%}@keyframes a{0%{transform:rotate(0)}to{transform:rotate(1turn)}}chimee-state{position:absolute;top:0;left:0;width:100%;height:100%;font-size:24px}chimee-state-error,chimee-state-loading,chimee-state-pause,chimee-state-play{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}chimee-state-pause,chimee-state-play{width:2em;height:2em;box-sizing:initial}chimee-state-loading{width:2em;height:2em;transform:none;margin:-1em;animation:.9s a linear infinite}chimee-state-error{display:none;font-size:16px;z-index:1;color:#ffcf00;text-shadow:0 0 3px red;font-weight:100}chimee-state.error chimee-state-error,chimee-state.loading chimee-state-loading,chimee-state.play chimee-state-play{display:inline-block}", {});
-
-var playStr = "\n<svg width=\"92px\" height=\"92px\" viewBox=\"0 0 92 92\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->\n    <desc>Created with Sketch.</desc>\n    <defs></defs>\n    <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n        <circle id=\"Oval\" fill-opacity=\"0.5\" fill=\"#000000\" cx=\"46\" cy=\"46\" r=\"46\"></circle>\n        <polygon id=\"Triangle\" fill=\"#FFFFFF\" transform=\"translate(51.000000, 46.500000) rotate(90.000000) translate(-51.000000, -46.500000) \" points=\"51 26 76 67 26 67\"></polygon>\n    </g>\n</svg>";
+import { Plugin } from 'chimee';
+import Gesture from 'chimee-plugin-gesture';
+import { addClass, removeClass } from 'dom-helpers/class';
+import { querySelectorAll } from 'dom-helpers/query';
 
 var loadingStr = "<svg width='120px' height='120px' xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" preserveAspectRatio=\"xMidYMid\" class=\"uil-default\"><rect x=\"0\" y=\"0\" width=\"100\" height=\"100\" fill=\"none\" class=\"bk\"></rect><rect  x='47' y='40' width='6' height='20' rx='5' ry='5' fill='#ffffff' transform='rotate(0 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='-1s' repeatCount='indefinite'/></rect><rect  x='47' y='40' width='6' height='20' rx='5' ry='5' fill='#ffffff' transform='rotate(30 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='-0.9166666666666666s' repeatCount='indefinite'/></rect><rect  x='47' y='40' width='6' height='20' rx='5' ry='5' fill='#ffffff' transform='rotate(60 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='-0.8333333333333334s' repeatCount='indefinite'/></rect><rect  x='47' y='40' width='6' height='20' rx='5' ry='5' fill='#ffffff' transform='rotate(90 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='-0.75s' repeatCount='indefinite'/></rect><rect  x='47' y='40' width='6' height='20' rx='5' ry='5' fill='#ffffff' transform='rotate(120 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='-0.6666666666666666s' repeatCount='indefinite'/></rect><rect  x='47' y='40' width='6' height='20' rx='5' ry='5' fill='#ffffff' transform='rotate(150 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='-0.5833333333333334s' repeatCount='indefinite'/></rect><rect  x='47' y='40' width='6' height='20' rx='5' ry='5' fill='#ffffff' transform='rotate(180 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='-0.5s' repeatCount='indefinite'/></rect><rect  x='47' y='40' width='6' height='20' rx='5' ry='5' fill='#ffffff' transform='rotate(210 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='-0.4166666666666667s' repeatCount='indefinite'/></rect><rect  x='47' y='40' width='6' height='20' rx='5' ry='5' fill='#ffffff' transform='rotate(240 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='-0.3333333333333333s' repeatCount='indefinite'/></rect><rect  x='47' y='40' width='6' height='20' rx='5' ry='5' fill='#ffffff' transform='rotate(270 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='-0.25s' repeatCount='indefinite'/></rect><rect  x='47' y='40' width='6' height='20' rx='5' ry='5' fill='#ffffff' transform='rotate(300 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='-0.16666666666666666s' repeatCount='indefinite'/></rect><rect  x='47' y='40' width='6' height='20' rx='5' ry='5' fill='#ffffff' transform='rotate(330 50 50) translate(0 -30)'>  <animate attributeName='opacity' from='1' to='0' dur='1s' begin='-0.08333333333333333s' repeatCount='indefinite'/></rect></svg>";
 
-var defaultConfig = {
-  errorTips: '加载失败，请刷新重试',
-  icon: {
-    loading: loadingStr,
-    play: playStr
-  },
-  expectTime: 3e4 // 超过最长加载时间则报错
-};
+var playStr = "\n<svg width=\"92px\" height=\"92px\" viewBox=\"0 0 92 92\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->\n    <desc>Created with Sketch.</desc>\n    <defs></defs>\n    <g id=\"Page-1\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\">\n        <circle id=\"Oval\" fill-opacity=\"0.5\" fill=\"#000000\" cx=\"46\" cy=\"46\" r=\"46\"></circle>\n        <polygon id=\"Triangle\" fill=\"#FFFFFF\" transform=\"translate(51.000000, 46.500000) rotate(90.000000) translate(-51.000000, -46.500000) \" points=\"51 26 76 67 26 67\"></polygon>\n    </g>\n</svg>";
 
-var chimeeState = gestureFactory({
-  name: 'chimeeState',
-  el: '\n    <chimee-state class="play">\n      <chimee-state-loading></chimee-state-loading>\n      <chimee-state-play></chimee-state-play>\n      <chimee-state-error></chimee-state-error>\n    </chimee-state>\n  ',
-  init: function init() {
-    this.config = isObject(this.$config) ? deepAssign(defaultConfig, this.$config) : defaultConfig;
-    this._addInnerHtml();
-  },
-  inited: function inited() {
-    // 存在 src 并且 设置了 prelaod || autoplay 的情况下， 显示 loading
-    this.src && (this.preload === 'auto' || this.preload === 'metadata' || this.preload === '' || this.autoplay === true) && this.showState('loading', true);
-  },
-
-  penetrate: true,
-  operable: true,
-  destroy: function destroy() {
-    this.clearTimeout();
-  },
-
-  events: {
-    load: function load() {
-      console.log('load');
-      this.showState('play', true);
-    },
-    pause: function pause() {
-      console.log('pause');
-      this.showState('play', true);
-    },
-    play: function play() {
-      this.showState('play', false);
-    },
-
-    // loadedmetadata () {
-    // this.playing();
-    // console.log('loadedmetadata')
-    // this.showState('play', true);
-    // },
-    seeked: function seeked() {
-      console.log('seeked');
-      this.playing();
-    },
-    playing: function playing() {
-      console.log('playing');
-      this.playing();
-    },
-
-    // loadstart () {
-    //   this.waiting();
-    // },
-    seeking: function seeking() {
-      console.log('seeking');
-      this.waiting();
-    },
-    waiting: function waiting() {
-      console.log('waiting');
-      this.waiting();
-    },
-
-    // 卡顿(FLV|HLS加载异常待内部特供事件)
-    // stalled () {
-    //   this.showLoading();
-    // },
-    timeupdate: function timeupdate() {
-      this.clearTimeout();
-    },
-    panstart: function panstart(evt) {
-      this.emit('state-panstart', evt);
-    },
-    panmove: function panmove(evt) {
-      this.emit('state-panmove', evt);
-    },
-    panend: function panend(evt) {
-      this.emit('state-panend', evt);
-    },
-    tap: function tap(evt) {
-      this.emit('state-tap', evt);
-    },
-    d_tap: function d_tap(evt) {
-      var playElem = this.$dom.querySelector('chimee-state-play');
-      if (playElem.contains(evt.target)) {
-        this.play();
+var __extends = undefined && undefined.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
       }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
     }
-  },
-  methods: {
-    playing: function playing() {
-      this.clearTimeout();
-      this.showState('loading', false);
-      this.showState('error', false);
-    },
-    waiting: function waiting() {
-      var _this = this;
 
-      this.clearTimeout();
-      // 加载超过30秒则超时显示异常
-      this._timeout = setTimeout(function () {
-        return _this.showState('error', true);
-      }, this.config.expectTime);
-      !this.paused && this.showState('loading', true);
-    },
-    clearTimeout: function (_clearTimeout) {
-      function clearTimeout() {
-        return _clearTimeout.apply(this, arguments);
-      }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+var template = "\n<chimee-state class=\"play\">\n  <chimee-state-loading></chimee-state-loading>\n  <chimee-state-play></chimee-state-play>\n  <chimee-state-error></chimee-state-error>\n</chimee-state>\n";
 
-      clearTimeout.toString = function () {
-        return _clearTimeout.toString();
-      };
+var MobileState = function (_super) {
+  __extends(MobileState, _super);
 
-      return clearTimeout;
-    }(function () {
-      if (this._timeout) {
-        clearTimeout(this._timeout);
-        this._timeout = null;
-      }
-    }),
-    showState: function showState(state, show) {
-      console.log(state, show);
-      show && this.emit('state-change', state);
-      this.$dom.className = show ? state : '';
-    },
-    _addInnerHtml: function _addInnerHtml() {
-      var dom = $(this.$dom);
-      dom.find('chimee-state-loading').html(this.config.icon.loading);
-      dom.find('chimee-state-play').html(this.config.icon.play);
-      dom.find('chimee-state-error').html(this.config.errorTips);
-    }
+  function MobileState(config, dispatcher, option) {
+    var _this = _super.call(this, Object.assign(config, {
+      dependencies: option.customGesture ? [] : [Gesture.name],
+      el: template,
+      operable: false,
+      penetrate: true
+    }), dispatcher, option) || this;
+
+    var _a = option.expectTime,
+        expectTime = _a === void 0 ? 3e4 : _a,
+        _b = option.errorTips,
+        errorTips = _b === void 0 ? '加载失败，请刷新重试' : _b,
+        _c = option.icon,
+        icon = _c === void 0 ? {} : _c;
+    _this.errorTips = errorTips;
+    _this.expectTime = expectTime;
+    _this.icon = Object.assign({
+      loading: loadingStr,
+      play: playStr
+    }, icon);
+    _this.currentState = '';
+    _this.isShown = false;
+    return _this;
   }
-});
 
-export default chimeeState;
+  MobileState.prototype.create = function () {
+    this.on('load', this.onLoad);
+    this.on('panend', this.onPanend);
+    this.on('panmove', this.onPanmove);
+    this.on('panstart', this.onPanstart);
+    this.on('pause', this.onPause);
+    this.on('play', this.onPlay);
+    this.on('playing', this.onPlaying);
+    this.on('seeked', this.onSeeked);
+    this.on('seeking', this.onSeeking);
+    this.on('tap', this.onTap);
+    this.on('timeupdate', this.onTimeupdate);
+    this.on('waiting', this.onWaiting);
+  };
+
+  MobileState.prototype.inited = function () {
+    this.addInnerHtml();
+
+    if (this.src && (this.preload === 'auto' || this.preload === 'metadata' || this.preload === '' || this.autoplay === true)) {
+      this.showState('loading', true);
+    }
+  };
+
+  MobileState.prototype.addInnerHtml = function () {
+    var _this = this;
+
+    ['play', 'loading', 'error'].forEach(function (key) {
+      var containers = querySelectorAll(_this.$dom, "chimee-state-" + key);
+
+      if (containers.length && containers[0]) {
+        containers[0].innerHTML = key === 'error' ? _this.errorTips : _this.icon[key];
+      }
+    });
+  };
+
+  MobileState.prototype.clearTimeout = function () {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+      this.timeout = null;
+    }
+  };
+
+  MobileState.prototype.onLoad = function () {
+    this.showState('play', true);
+  };
+
+  MobileState.prototype.onPanend = function (evt) {
+    this.emitSync('state-panend', evt);
+  };
+
+  MobileState.prototype.onPanmove = function (evt) {
+    this.emitSync('state-panmove', evt);
+  };
+
+  MobileState.prototype.onPanstart = function (evt) {
+    this.emitSync('state-panstart', evt);
+  };
+
+  MobileState.prototype.onPause = function () {
+    this.showState('play', true);
+  };
+
+  MobileState.prototype.onPlay = function () {
+    this.showState('', false);
+  };
+
+  MobileState.prototype.onPlaying = function () {
+    this.playing();
+  };
+
+  MobileState.prototype.onSeeked = function () {
+    this.playing();
+  };
+
+  MobileState.prototype.onSeeking = function () {
+    this.waiting();
+  };
+
+  MobileState.prototype.onTap = function (evt) {
+    this.emitSync('state-tap', evt);
+  };
+
+  MobileState.prototype.onTimeupdate = function () {
+    this.clearTimeout();
+  };
+
+  MobileState.prototype.onWaiting = function () {
+    this.waiting();
+  };
+
+  MobileState.prototype.playing = function () {
+    this.clearTimeout();
+    this.showState('', false);
+  };
+
+  MobileState.prototype.showState = function (state, show) {
+    var _this = this;
+
+    this.currentState = state;
+    this.isShown = show;
+
+    if (show) {
+      this.emitSync('state-change', state);
+    }
+
+    ['loading', 'error', 'play'].forEach(function (key) {
+      if (key === state && show) {
+        addClass(_this.$dom, key);
+      } else {
+        removeClass(_this.$dom, key);
+      }
+    });
+  };
+
+  MobileState.prototype.waiting = function () {
+    var _this = this;
+
+    this.clearTimeout();
+    this.timeout = setTimeout(function () {
+      return _this.showState('error', true);
+    }, this.expectTime);
+
+    if (!this.paused) {
+      this.showState('loading', true);
+    }
+  };
+
+  return MobileState;
+}(Plugin);
+
+export default MobileState;
+export { MobileState };
