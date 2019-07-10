@@ -601,9 +601,15 @@ export default class Dispatcher {
     }
   }
 
-  @(autobind as MethodDecorator)
-  public throwError(error: Error | string) {
-    this.vm.customThrowError(error);
+  public throwError = (error: Error | string) => {
+    if (this.destroyed) {
+      // tslint:disable-next-line:no-console
+      console.error(error);
+      return;
+    }
+    if (this.vm) {
+      this.vm.customThrowError(error);
+    }
   }
 
   /**
