@@ -121,7 +121,7 @@ export default class ChimeePlugin<CurrentChimeePluginOption extends PluginOption
       className,
     }: PluginConfig,
     dispatcher: Dispatcher,
-    option: CurrentChimeePluginOption) {
+    option: CurrentChimeePluginOption | PluginOption = {}) {
     super({ dispatcher, id });
     if (!dispatcher) {
       /* istanbul ignore else  */
