@@ -28,7 +28,7 @@
             }
           ],
         "max-line-length": [true, 350],
-        "no-reference": false,
+        "no-reference": false
     },
     "rulesDirectory": []
 }

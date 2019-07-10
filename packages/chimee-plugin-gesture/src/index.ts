@@ -19,7 +19,7 @@ export class Gesture extends Plugin {
       'wrapper': new GestureHelper({ fire: this.getFireFn('wrapper') }),
     };
     this.registerCustomEventTargetAndEventNameTranformer((name: string) => {
-      return isSupportedEvents(name) ? 'video-dom' : 'plugin';
+      return isSupportedEvents(name) ? 'video-dom' : undefined;
     });
     this.bind('$on');
   }
@@ -46,3 +46,5 @@ export class Gesture extends Plugin {
     };
   }
 }
+
+export default Gesture;
