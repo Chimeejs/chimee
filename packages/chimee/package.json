@@ -11,7 +11,7 @@
     "prepublishOnly": "npm t && pkg-ok",
     "test": "jest --coverage && node env-check.js",
     "dev": "npm run tscw & npm run typesw & npm run b-umd-w",
-    "tsc": "tsc --outDir ./lib/esnext && cp -R ./lib/esnext/**/*.d.ts ./lib/types/",
+    "tsc": "tsc --outDir ./lib/esnext",
     "tscw": "tsc --outDir ./lib/esnext -w --preserveWatchOutput",
     "types": "tsc --outDir ./lib/types --emitDeclarationOnly",
     "typesw": "tsc --outDir ./lib/types --emitDeclarationOnly -w --preserveWatchOutput",
@@ -158,5 +158,5 @@
       "/node_modules/(?!lodash-es).+\\.js$"
     ]
   },
-  "gitHead": "f32a0f03adbd4ae6a1a7d676f54c7a2ede627ca4"
+  "gitHead": "0ed132cf947195290d6facc53c2ed16707b621b6"
 }
