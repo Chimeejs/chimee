@@ -49,7 +49,8 @@ const player = new Chimee({
   noDefaultContextMenu: 'wrapper',
   muted: true,
   debug: false,
+  preload: 'none',
 });
 
-player.play();
+// player.play();
 window.player = player;
