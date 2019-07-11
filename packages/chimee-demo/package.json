@@ -23,7 +23,8 @@
   "scripts": {
     "test": "",
     "start": "kill-port 3000 && node ./build/livereload",
-    "lint": ""
+    "lint": "",
+    "build": ""
   },
   "bugs": {
     "url": "https://github.com/Chimeejs/chimee/issues"
