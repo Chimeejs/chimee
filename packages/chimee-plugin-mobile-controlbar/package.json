@@ -12,12 +12,11 @@
     "test": "",
     "lint": "",
     "precommit": "npm run lint",
-    "build": "",
-    "build-1": "npm run b-common && npm run b-es && npm run b-umd && npm run b-min",
     "b-common": "rollup -c build/rollup.config.common.js",
     "b-es": "rollup -c build/rollup.config.es.js",
     "b-umd": "rollup -c build/rollup.config.umd.js",
-    "b-min": "rollup -c build/rollup.config.min.js"
+    "b-min": "rollup -c build/rollup.config.min.js",
+    "build": ""
   },
   "repository": {
     "type": "git",
