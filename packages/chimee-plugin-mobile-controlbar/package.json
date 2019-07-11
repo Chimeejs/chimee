@@ -16,7 +16,7 @@
     "b-es": "rollup -c build/rollup.config.es.js",
     "b-umd": "rollup -c build/rollup.config.umd.js",
     "b-min": "rollup -c build/rollup.config.min.js",
-    "build": ""
+    "build": "exit;"
   },
   "repository": {
     "type": "git",
