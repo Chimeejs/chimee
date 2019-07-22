@@ -111,7 +111,7 @@
     "dts-bundle-generator": "^3.0.0",
     "eslint": "^5.16.0",
     "eslint-config-egg": "^7.4.1",
-    "eslint-plugin-jest": "^22.6.4",
+    "eslint-plugin-jest": "^22.13.5",
     "esm": "^3.2.25",
     "husky": "^2.3.0",
     "jest": "^24.8.0",
