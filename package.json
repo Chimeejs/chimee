@@ -124,7 +124,7 @@
     "karma-mocha-reporter": "^2.2.5",
     "karma-rollup-preprocessor": "^7.0.0",
     "livereload": "^0.8.0",
-    "mocha": "^6.1.4",
+    "mocha": "6.2.0",
     "npm-check-updates": "^3.1.9",
     "pkg-ok": "^2.3.1",
     "rollup": "^1.13.0",
