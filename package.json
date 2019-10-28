@@ -102,7 +102,7 @@
     "chimee-kernel-hls": "^1.3.2",
     "chimee-mobile-player": "^0.2.8",
     "chimee-player": "^1.4.8",
-    "chimee-plugin-center-state": "0.0.12",
+    "chimee-plugin-center-state": "0.0.14",
     "chimee-plugin-controlbar": "^0.5.0",
     "chimee-plugin-danmu": "0.1.3",
     "chimee-plugin-popup": "0.0.7",
