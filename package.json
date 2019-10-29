@@ -88,7 +88,7 @@
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
-    "@types/dom-helpers": "^3.4.1",
+    "@types/dom-helpers": "^5.0.1",
     "@types/events": "^3.0.0",
     "@types/jest": "^24.0.13",
     "@types/lodash": "^4.14.133",
