@@ -55,7 +55,7 @@
   },
   "homepage": "https://github.com/Chimeejs/chimee#readme",
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
+    "@babel/runtime": "^7.7.2",
     "chimee-helper": "^0.2.11",
     "chimee-helper-log": "^0.2.3",
     "dom-helpers": "^3.4.0",
