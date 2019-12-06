@@ -87,7 +87,7 @@
     "@babel/plugin-transform-classes": "^7.7.4",
     "@babel/plugin-transform-runtime": "^7.7.5",
     "@babel/polyfill": "^7.7.0",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-env": "^7.7.5",
     "@types/dom-helpers": "^3.4.1",
     "@types/events": "^3.0.0",
     "@types/jest": "^24.0.13",
