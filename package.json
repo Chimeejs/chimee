@@ -60,7 +60,7 @@
     "chimee-helper-log": "^0.2.3",
     "dom-helpers": "^3.4.0",
     "es-fullscreen": "^0.4.0-beta.4",
-    "events": "^3.0.0",
+    "events": "^3.1.0",
     "lodash": "^4.17.11",
     "toxic-decorators": "^0.4.0-beta.8",
     "toxic-predicate-functions": "^0.2.5"
