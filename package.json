@@ -72,7 +72,7 @@
     "@babel/plugin-proposal-decorators": "^7.8.0",
     "@babel/plugin-proposal-do-expressions": "^7.8.0",
     "@babel/plugin-proposal-export-default-from": "^7.8.0",
-    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.8.0",
     "@babel/plugin-proposal-function-bind": "^7.2.0",
     "@babel/plugin-proposal-function-sent": "^7.2.0",
     "@babel/plugin-proposal-json-strings": "^7.2.0",
