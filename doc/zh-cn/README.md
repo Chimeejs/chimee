@@ -279,3 +279,9 @@ npm start
 ## 证书
 
 [MIT](https://opensource.org/licenses/MIT)
+
+## 捐赠
+
+如果你十分喜欢我们这个项目，可以通过支付宝对我们进行捐赠。
+
+![image](https://user-images.githubusercontent.com/2577157/74649176-0a7db980-51ba-11ea-9db4-4dea2e72c6be.png)
