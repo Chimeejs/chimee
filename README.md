@@ -263,3 +263,11 @@ Please read the [release notes](https://github.com/Chimeejs/chimee/releases).
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
+
+Please read the [release notes](https://github.com/Chimeejs/chimee/releases).
+
+## Donation
+
+You can donate to us through Alipay. That will keep us moving.
+
+![image](https://user-images.githubusercontent.com/2577157/74649176-0a7db980-51ba-11ea-9db4-4dea2e72c6be.png)
