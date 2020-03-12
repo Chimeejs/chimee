@@ -70,7 +70,7 @@
     "@babel/plugin-external-helpers": "^7.8.3",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-decorators": "^7.8.3",
-    "@babel/plugin-proposal-do-expressions": "^7.2.0",
+    "@babel/plugin-proposal-do-expressions": "^7.8.3",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
     "@babel/plugin-proposal-function-bind": "^7.2.0",
