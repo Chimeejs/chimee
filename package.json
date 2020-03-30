@@ -141,7 +141,7 @@
     "serve-static": "^1.14.1",
     "strict-event-emitter-types": "^2.0.0",
     "toxic-utils": "^0.3.1",
-    "ts-jest": "^24.0.2",
+    "ts-jest": "^25.3.0",
     "tslint": "^5.17.0",
     "typescript": "^3.5.1"
   },
