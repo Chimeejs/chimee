@@ -139,7 +139,7 @@ const chimee = new Chimee({
 
 如果你想了解更多关于 chimee 插件的知识，请点击[此处](https://github.com/Chimeejs/chimee/blob/master/doc/zh-cn/api/plugin-api.md)。
 
-可能你并不是太关心 chimee 是怎么运行的，你只是需要一个封装好的播放器。那么你可以直接下载 chimee-player。里面已经有基础 ui 和需要用的插件。
+可能你并不是太关心 chimee 是怎么运行的，你只是需要一个封装好的播放器。那么你可以直接使用 [chimee-player](https://github.com/Chimeejs/chimee-player)。里面已经有基础 ui 和需要用的插件。
 
 ```javascript
 import ChimeePlayer from 'chimee-player';
