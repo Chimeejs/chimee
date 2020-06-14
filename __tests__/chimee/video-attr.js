@@ -272,9 +272,9 @@ describe('chimee video attributes', () => {
   test('x5VideoPlayerType', () => {
     expect(player.x5VideoPlayerType).toBe();
     expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
-    player.x5VideoPlayerType = 'h5';
-    expect(player.x5VideoPlayerType).toBe('h5');
-    expect(getAttr(videoElement, 'x5-video-player-type')).toBe('h5');
+    player.x5VideoPlayerType = 'h5-page';
+    expect(player.x5VideoPlayerType).toBe('h5-page');
+    expect(getAttr(videoElement, 'x5-video-player-type')).toBe('h5-page');
     player.x5VideoPlayerType = false;
     expect(player.x5VideoPlayerType).toBe();
     expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
@@ -284,7 +284,7 @@ describe('chimee video attributes', () => {
     expect(player.x5VideoPlayerType).toBe();
     expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
     player.__dispatcher.videoConfigReady = false;
-    player.x5VideoPlayerType = 'h5';
+    player.x5VideoPlayerType = 'h5-page';
     expect(player.x5VideoPlayerType).toBe();
     expect(getAttr(videoElement, 'x5-video-player-type')).toBe(null);
   });

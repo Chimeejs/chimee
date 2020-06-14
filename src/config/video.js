@@ -221,13 +221,13 @@ const accessorMap = {
     accessor({
       set(value) {
         if (!this.dispatcher.videoConfigReady) return value;
-        const val = value === 'h5' ? 'h5' : undefined;
+        const val = value === 'h5-page' ? 'h5-page' : undefined;
         this.dom.setAttr('video', 'x5-video-player-type', val);
         return value;
       },
       get(value) {
         return (this.dispatcher.videoConfigReady && value) ||
-          (this.dom.getAttr('video', 'x5-video-player-type') ? 'h5' : undefined);
+          (this.dom.getAttr('video', 'x5-video-player-type') ? 'h5-page' : undefined);
       },
     }),
   ],

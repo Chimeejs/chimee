@@ -7,7 +7,7 @@ const player = new Chimee({
   playsInline: true,
   preload: 'auto',
   x5VideoPlayerFullscreen: true,
-  x5VideoPlayerType: 'h5',
+  x5VideoPlayerType: 'h5-page',
   x5VideoOrientation: 'landscape',
   xWebkitAirplay: true,
   muted: true,
