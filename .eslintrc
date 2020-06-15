@@ -21,6 +21,7 @@
     "sourceType": "module"
   },
   "rules": {
-    "valid-jsdoc": "off"
+    "valid-jsdoc": "off",
+    "prefer-promise-reject-errors": "off"
   }
 }

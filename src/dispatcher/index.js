@@ -191,7 +191,7 @@ export default class Dispatcher {
       pluginConfig.id = id;
     }
     const plugin = isFunction(pluginConfig)
-      ? new pluginConfig({id}, this, pluginOption) // eslint-disable-line 
+      ? new pluginConfig({id}, this, pluginOption) // eslint-disable-line
       : new Plugin(pluginConfig, this, pluginOption);
     this.plugins[id] = plugin;
     Object.defineProperty(this.vm, id, {
